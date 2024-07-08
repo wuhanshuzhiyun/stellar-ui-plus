@@ -1,0 +1,23 @@
+{
+  "pages": [
+    {
+      "path": "pages/pc/index",
+      "type": "home"
+    },
+    {
+      "path": "pages/mp/index",
+      "type": "page"
+    }
+  ],
+  "globalStyle": {
+    "backgroundColor": "@bgColor",
+    "backgroundColorBottom": "@bgColorBottom",
+    "backgroundColorTop": "@bgColorTop",
+    "backgroundTextStyle": "@bgTxtStyle",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTextStyle": "@navTxtStyle",
+    "navigationBarTitleText": "Vitesse-Uni",
+    "navigationStyle": "custom"
+  },
+  "subPackages": []
+}

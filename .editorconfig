@@ -3,7 +3,11 @@ root = true
 [*]
 charset = utf-8
 indent_style = space
+<<<<<<< HEAD
 indent_size = 4
+=======
+indent_size = 2
+>>>>>>> f9c262a (feat(init): init)
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true

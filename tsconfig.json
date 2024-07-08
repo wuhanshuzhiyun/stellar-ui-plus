@@ -2,6 +2,7 @@
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
     "ignoreDeprecations": "5.0",
+<<<<<<< HEAD
     "lib": [
       "esnext",
       "dom"
@@ -39,3 +40,19 @@
     ]
   }
 }
+=======
+    "lib": ["esnext", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["@dcloudio/types", "@uni-helper/uni-app-types"],
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "vueCompilerOptions": {
+    "experimentalRuntimeMode": "runtime-uni-app",
+    "nativeTags": ["block", "component", "template", "slot", "view"]
+  }
+}
+>>>>>>> f9c262a (feat(init): init)

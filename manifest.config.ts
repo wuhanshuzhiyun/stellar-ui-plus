@@ -1,7 +1,11 @@
 import { defineManifestConfig } from '@uni-helper/vite-plugin-uni-manifest'
 
 export default defineManifestConfig({
+<<<<<<< HEAD
   'name': 'Stellar Plus',
+=======
+  'name': 'vitesse-uni-app',
+>>>>>>> f9c262a (feat(init): init)
   'appid': '',
   'description': '',
   'versionName': '1.0.0',
@@ -18,10 +22,13 @@ export default defineManifestConfig({
       autoclose: true,
       delay: 0,
     },
+<<<<<<< HEAD
     compatible: {
       /* 表示忽略版本检查提示框，HBuilderX1.9.0及以上版本支持   */
       ignoreVersion: true,
     },
+=======
+>>>>>>> f9c262a (feat(init): init)
     /* 模块配置 */
     modules: {},
     /* 应用发布信息 */
@@ -56,12 +63,20 @@ export default defineManifestConfig({
   'quickapp': {},
   /* 小程序特有相关 */
   'mp-weixin': {
+<<<<<<< HEAD
     appid: 'wxce58845415b46440',
+=======
+    appid: '',
+>>>>>>> f9c262a (feat(init): init)
     setting: {
       urlCheck: false,
     },
     usingComponents: true,
+<<<<<<< HEAD
     darkmode: false,
+=======
+    darkmode: true,
+>>>>>>> f9c262a (feat(init): init)
     themeLocation: 'theme.json',
   },
   'mp-alipay': {
@@ -74,11 +89,16 @@ export default defineManifestConfig({
     usingComponents: true,
   },
   'h5': {
+<<<<<<< HEAD
     darkmode: false,
     themeLocation: 'theme.json',
     router: {
       base: '/plus/',
     },
+=======
+    darkmode: true,
+    themeLocation: 'theme.json',
+>>>>>>> f9c262a (feat(init): init)
   },
   'uniStatistics': {
     enable: false,

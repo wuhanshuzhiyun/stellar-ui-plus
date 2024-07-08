@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "insetLoader": {
     "config": {
       "toast": "<ste-toast ref='steToast'></ste-toast>",
@@ -10,6 +11,8 @@
     ],
     "rootEle": ".*"
   },
+=======
+>>>>>>> f9c262a (feat(init): init)
   "pages": [
     {
       "path": "pages/pc/index",
@@ -18,6 +21,7 @@
     {
       "path": "pages/mp/index",
       "type": "page"
+<<<<<<< HEAD
     },
     {
       "path": "pages/pc/login",
@@ -226,6 +230,8 @@
     {
       "path": "pages/mp/demo-views/video/video",
       "type": "page"
+=======
+>>>>>>> f9c262a (feat(init): init)
     }
   ],
   "globalStyle": {
@@ -235,6 +241,7 @@
     "backgroundTextStyle": "@bgTxtStyle",
     "navigationBarBackgroundColor": "#000000",
     "navigationBarTextStyle": "@navTxtStyle",
+<<<<<<< HEAD
     "navigationBarTitleText": "",
     "navigationStyle": "custom",
     "disableScroll": true,
@@ -251,6 +258,10 @@
       "^(.*)": "@/components/$1/$1.vue",
       "^ste-(.*)": "@/uni_modules/stellar-ui-plus/components/ste-$1/ste-$1.vue"
     }
+=======
+    "navigationBarTitleText": "Vitesse-Uni",
+    "navigationStyle": "custom"
+>>>>>>> f9c262a (feat(init): init)
   },
   "subPackages": []
 }

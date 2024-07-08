@@ -1,4 +1,5 @@
 <script setup lang="ts">
+<<<<<<< HEAD
 import { onLoad } from '@dcloudio/uni-app';
 // #ifdef H5
 import { provide, ref, computed } from 'vue';
@@ -146,5 +147,22 @@ onLoad(() => {
             padding-right: calc(var(--pc-view-width) + 20px + 28px);
         }
     }
+=======
+
+</script>
+
+<template>
+  <div>
+    <h1>My Vue Component <text>!!!</text>111 </h1>
+  </div>
+</template>
+
+<style scoped lang="scss">
+h1 {
+  color: blue;
+  text{
+    color: red;
+  }
+>>>>>>> f9c262a (feat(init): init)
 }
 </style>

@@ -8,10 +8,7 @@
     "main": "index.js",
     "repository": {
         "type": "git",
-        "url": "http://172.16.108.253:8001/Mall/stellarui-plus.git"
-    },
-    "publishConfig": {
-        "registry": "http://172.16.109.59:8010/repository/npm-hosted/"
+        "url": "https://github.com/wuhanshuzhiyun/stellar-ui-plus.git"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",

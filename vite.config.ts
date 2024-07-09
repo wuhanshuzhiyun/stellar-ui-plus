@@ -6,9 +6,12 @@ import UniHelperComponents from '@uni-helper/vite-plugin-uni-components'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
 
+import mdPlugin, { Mode } from 'vite-plugin-markdown'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    mdPlugin({ mode: [Mode.HTML] }),
     // https://github.com/uni-helper/vite-plugin-uni-manifest
     UniHelperManifest(),
     // https://github.com/uni-helper/vite-plugin-uni-pages

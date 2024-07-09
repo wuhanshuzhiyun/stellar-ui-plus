@@ -20,7 +20,7 @@ const navActive = ref(config.NAV_KEY_DEV);
 
 const isCompView = computed(() => {
     return navActive.value === config.NAV_KEY_COMP;
-}); // æ ‡è¯†å½“å‰æ˜¯å¦åœ¨ç»„ä»¶é¢„è§ˆé¡µé¢
+}); // ±êÊ¶µ±Ç°ÊÇ·ñÔÚ×é¼şÔ¤ÀÀÒ³Ãæ
 
 const cmpShowH5 = computed(() => {
     return isCompView.value || config.SHOW_H5_PAGE.find(e => datas?.active.value.indexOf(e) > -1);
@@ -28,11 +28,11 @@ const cmpShowH5 = computed(() => {
 
 const handleHeaderNavChange = (item: NavItem) => {
     if (item.key === config.NAV_KEY_DEV) {
-        // å¼€å‘æŒ‡å—
+        // ¿ª·¢Ö¸ÄÏ
         datas.contents.value = rests;
         datas.setActive(rests[0].contents[0].key);
     } else if (item.key === config.NAV_KEY_COMP) {
-        // ç»„ä»¶
+        // ×é¼ş
         datas.contents.value = components;
         datas.setActive(components[0].contents[0].key);
     }
@@ -152,13 +152,16 @@ onLoad(() => {
 
 =======
 import './markdown/requireFiles'
->>>>>>> 5a68363 (feat(save): æ‹·è´mdæ–‡æ¡£)
+>>>>>>> 5a68363 (feat(save): ¿½±´mdÎÄµµ)
 </script>
 
 <template>
   <div class="pc-page-body">
-    123
+    <div class="left">
+      <Left />
+    </div>
   </div>
+  <!-- #endif -->
 </template>
 
 <style scoped lang="scss">
@@ -177,6 +180,11 @@ h1 {
 	flex-direction: row;
 	background-color: #fff;
 	position: relative;
->>>>>>> 5a68363 (feat(save): æ‹·è´mdæ–‡æ¡£)
+>>>>>>> 5a68363 (feat(save): ¿½±´mdÎÄµµ)
+  .left {
+    width: 240px;
+    height: 100%;
+    background-color: #f5f5f5;
+  }
 }
 </style>

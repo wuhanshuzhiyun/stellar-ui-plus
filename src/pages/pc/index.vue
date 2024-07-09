@@ -1,18 +1,20 @@
 <script setup lang="ts">
-
+import './markdown/requireFiles'
 </script>
 
 <template>
-  <div>
-    <h1>My Vue Component <text>!!!</text>111 </h1>
+  <div class="pc-page-body">
+    123
   </div>
 </template>
 
 <style scoped lang="scss">
-h1 {
-  color: blue;
-  text{
-    color: red;
-  }
+.pc-page-body {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+	background-color: #fff;
+	position: relative;
 }
 </style>

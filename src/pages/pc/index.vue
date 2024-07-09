@@ -1,5 +1,6 @@
 <script setup lang="ts">
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { onLoad } from '@dcloudio/uni-app';
 // #ifdef H5
 import { provide, ref, computed } from 'vue';
@@ -149,20 +150,33 @@ onLoad(() => {
     }
 =======
 
+=======
+import './markdown/requireFiles'
+>>>>>>> 5a68363 (feat(save): 拷贝md文档)
 </script>
 
 <template>
-  <div>
-    <h1>My Vue Component <text>!!!</text>111 </h1>
+  <div class="pc-page-body">
+    123
   </div>
 </template>
 
 <style scoped lang="scss">
+<<<<<<< HEAD
 h1 {
   color: blue;
   text{
     color: red;
   }
 >>>>>>> f9c262a (feat(init): init)
+=======
+.pc-page-body {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: row;
+	background-color: #fff;
+	position: relative;
+>>>>>>> 5a68363 (feat(save): 拷贝md文档)
 }
 </style>

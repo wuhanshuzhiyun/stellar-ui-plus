@@ -15,15 +15,21 @@ import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
 >>>>>>> f9c262a (feat(init): init)
 
+import mdPlugin, { Mode } from 'vite-plugin-markdown'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+<<<<<<< HEAD
 <<<<<<< HEAD
     vue3InsetLoaderPlugin,
     // comTypes(),
     md2HtmlPlugin(),
 =======
 >>>>>>> f9c262a (feat(init): init)
+=======
+    mdPlugin({ mode: [Mode.HTML] }),
+>>>>>>> 88be933 (feat(save): save)
     // https://github.com/uni-helper/vite-plugin-uni-manifest
     UniHelperManifest(),
     // https://github.com/uni-helper/vite-plugin-uni-pages

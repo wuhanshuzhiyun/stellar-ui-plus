@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 import type { Group, Markdown } from '../types.js'
 import ComponentGroups from './componentGroups.json'
 
 const parser = new DOMParser()
+=======
+interface MarkDown {
+  html: string
+}
+>>>>>>> 88be933 (feat(save): save)
 
 function templateFiles() {
   const deg = /.+\/(\w+)\.(md|json)$/
   const map: Obj = {}
+<<<<<<< HEAD
   const mds: { [key: string]: Markdown } = import.meta.glob('../../../uni_modules/stellar-ui-plus/template/*.md', { eager: true })
+=======
+  const mds: { [key: string]: MarkDown } = import.meta.glob('../../../uni_modules/stellar-plus/template/*.md', { eager: true })
+>>>>>>> 88be933 (feat(save): save)
   for (const k in mds) {
     const name = k.replace(deg, '$1')
     map[name] = mds[k].html
@@ -31,6 +41,7 @@ function assembleTemplate(html: string) {
   return result
 }
 
+<<<<<<< HEAD
 function formatHtml(html: string) {
   const doc = parser.parseFromString(html, 'text/html')
   const pres = doc.querySelectorAll('body>pre')
@@ -126,6 +137,9 @@ export function btnCopy(btn: HTMLButtonElement) {
 }
 
 export function restsFiles() {
+=======
+function restsFiles() {
+>>>>>>> 88be933 (feat(save): save)
   const deg = /\.\/(\w+)\/(\d+)?\-?(.+)\.(md|json)$/
   const groupJson: Obj = import.meta.glob('./**/*.json', { eager: true })
   const groupData: Obj = {}
@@ -133,11 +147,19 @@ export function restsFiles() {
     const groupKey = k.replace(deg, '$1')
     groupData[groupKey] = groupJson[k].default
   }
+<<<<<<< HEAD
   const markdowns: { [key: string]: Markdown } = import.meta.glob('./**/*.md', { eager: true })
 
   const map: Obj = {}
   for (const k in markdowns) {
     const html = formatHtml(assembleTemplate(markdowns[k].html))
+=======
+  const markdowns: { [key: string]: MarkDown } = import.meta.glob('./**/*.md', { eager: true })
+
+  const map: Obj = {}
+  for (const k in markdowns) {
+    const html = assembleTemplate(markdowns[k].html)
+>>>>>>> 88be933 (feat(save): save)
     const group = k.replace(deg, '$1')
     const sort = k.replace(deg, '$2')
     const name = k.replace(deg, '$3')
@@ -145,20 +167,32 @@ export function restsFiles() {
       map[group] = {}
     map[group][name] = { html, sort: sort || 100 }
   }
+<<<<<<< HEAD
   const datas: Group[] = Object.keys(map).map((group) => {
     const contents = Object.keys(map[group]).map((name) => {
       return {
         name,
         key: `${group}-${name}`,
+=======
+  const datas = Object.keys(map).map((group) => {
+    const children = Object.keys(map[group]).map((name) => {
+      return {
+        name,
+>>>>>>> 88be933 (feat(save): save)
         ...map[group][name],
       }
     })
 
+<<<<<<< HEAD
     contents.sort((a, b) => a.sort - b.sort)
+=======
+    children.sort((a, b) => a.sort - b.sort)
+>>>>>>> 88be933 (feat(save): save)
 
     return {
       key: group,
       ...groupData[group],
+<<<<<<< HEAD
       contents,
     }
   })
@@ -229,3 +263,13 @@ export function componentFiles() {
   datas.sort((a, b) => a.sort - b.sort)
   return datas
 }
+=======
+      children,
+    }
+  })
+  datas.sort((a, b) => a.sort - b.sort)
+  return datas
+}
+
+restsFiles()
+>>>>>>> 88be933 (feat(save): save)

@@ -11,7 +11,11 @@ module.exports = uni({
 const unocss = require('@unocss/eslint-plugin')
 
 module.exports = uni(
-  {},
+  {
+    rules: {
+      'no-console': 'off',
+    },
+  },
   unocss.configs.flat,
 )
 >>>>>>> f9c262a (feat(init): init)

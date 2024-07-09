@@ -30,7 +30,7 @@ function assembleTemplate(html: string) {
   return result
 }
 
-function restsFiles() {
+export function restsFiles() {
   const deg = /\.\/(\w+)\/(\d+)?\-?(.+)\.(md|json)$/
   const groupJson: Obj = import.meta.glob('./**/*.json', { eager: true })
   const groupData: Obj = {}
@@ -69,5 +69,3 @@ function restsFiles() {
   datas.sort((a, b) => a.sort - b.sort)
   return datas
 }
-
-restsFiles()

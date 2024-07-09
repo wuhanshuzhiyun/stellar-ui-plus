@@ -99,7 +99,7 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*.vue": "eslint --fix",
+    "*.vue": "prettier --write",
     "*.ts": "eslint --fix",
     "*.js": "eslint --fix"
   }

@@ -1,5 +1,5 @@
 import { computed, ref, watch } from 'vue'
-import { rests } from '../markdown/index'
+import { components, rests } from '../markdown/index'
 import type { Group, MarkdownData } from '../types'
 
 export default function useMarkdown(): MarkdownData {
@@ -9,7 +9,7 @@ export default function useMarkdown(): MarkdownData {
     active.value = value
   }
 
-  const contents = ref<Group[]>(rests)
+  const contents = ref<Group[]>(rests.concat(components))
 
   const viewMarkdown = computed(() => {
     let result = ''

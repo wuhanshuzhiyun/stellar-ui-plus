@@ -4,7 +4,7 @@ export interface Markdown {
 
 export interface Content {
   name: string
-  sort?: number | string
+  sort: number
   html: string
   key: string
 }

@@ -48,8 +48,8 @@ const load = () => {
                 let text: any = iframe.value.contentDocument.querySelector('.pc-content').getAttribute('data-markdown');
 
                 if (datas?.active.value.includes('介绍')) {
-                    text = text.replaceAll('StellarUI', 'StellarPlus');
-                    text = text.replaceAll('chain/StellarPlus', 'chain/StellarUI');
+                    text = text.replaceAll('StellarUI', 'StellarUI-Plus');
+                    text = text.replaceAll('chain/StellarUI-Plus', 'chain/StellarUI');
                     text = text.replaceAll('H5/小程序', 'H5/App/小程序');
                     text = text.replace('<td style="text-align:center">x</td>', '<td style="text-align:center">√</td>');
                 }

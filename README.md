@@ -1,7 +1,7 @@
 <p align="center">
     <img alt="logo" src="https://image.whzb.com/chain/StellarUI/logo.png" width="200">
 </p>
-<h1 align="center">StellarUI-Plus</h1>
+<h1 align="center">StellarUI-Plus/h1>
 
 <p align="center">📱 一个基于vue3构建，打造的uni-app组件库</p>
 
@@ -74,11 +74,11 @@ npm install stellar-ui-plus -S
 
 ## 周边生态
 
-| 项目                                                                                   | 描述                                                             |
-| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| [StellarUI](https://stellar-ui.intecloud.com.cn/)                                      | 一个基于vue2构建，打造的uni-app组件库                            |
-| [ste-vue-inset-loader](https://github.com/wuhanshuzhiyun/ste-vue-inset-loader)         | 常用于小程序需要全局引入组件的场景的包                           |
-| [ste-helper](https://marketplace.visualstudio.com/items?itemName=StellarUI.ste-helper) | 旨在帮助开发者更加有效率的使用 StellarPlus来开发项目的vscode插件 |
+| 项目                                                                                   | 描述                                                                |
+| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| [StellarUI](https://stellar-ui.intecloud.com.cn/)                                      | 一个基于vue2构建，打造的uni-app组件库                               |
+| [ste-vue-inset-loader](https://github.com/wuhanshuzhiyun/ste-vue-inset-loader)         | 常用于小程序需要全局引入组件的场景的包                              |
+| [ste-helper](https://marketplace.visualstudio.com/items?itemName=StellarUI.ste-helper) | 旨在帮助开发者更加有效率的使用 StellarUI-Plus来开发项目的vscode插件 |
 
 ## 核心团队
 

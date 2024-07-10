@@ -1,7 +1,7 @@
 {
     "name": "ste-helper",
     "displayName": "ste-helper",
-    "description": "StellarUI-plus组件的代码提示",
+    "description": "StellarUI-Plus组件的代码提示",
     "version": "0.0.51",
     "icon": "src/assets/logo.png",
     "engines": {
@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+http://172.16.108.253:8001/Mall/stellarui-plus.git",
+        "url": "git+http://172.16.108.253:8001/Mall/StellarUI-Plus.git",
         "directory": "plugins/ste-helper"
     },
     "categories": [

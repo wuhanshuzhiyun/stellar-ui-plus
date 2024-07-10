@@ -1,17 +1,28 @@
 <script setup lang="ts">
 // #ifdef H5
-import { rests } from "./markdown/index";
+import { provide } from "vue";
+import useMarkdown from "./composables/useMarkdown";
 import Left from "./components/Left.vue";
+import Right from "./components/Right.vue";
+import H5 from "./components/H5.vue";
 
-console.log(rests);
+const datas = useMarkdown();
+
+provide("datas", datas);
 // #endif
 </script>
 
 <template>
   <!-- #ifdef H5 -->
   <div class="pc-page-body">
-    <div class="left">
-      <Left />
+    <div class="content">
+      <div class="left">
+        <Left />
+      </div>
+      <div class="right">
+        <Right />
+        <H5 />
+      </div>
     </div>
   </div>
   <!-- #endif -->
@@ -21,14 +32,21 @@ console.log(rests);
 .pc-page-body {
   width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-direction: row;
   background-color: #fff;
   position: relative;
-  .left {
-    width: 240px;
+  .content {
+    display: flex;
     height: 100%;
-    background-color: #f5f5f5;
+    .left {
+      width: 240px;
+      height: 100%;
+      background-color: #f5f5f5;
+    }
+    .right {
+      width: calc(100% - 240px);
+      height: 100%;
+      background-color: #fff;
+    }
   }
 }
 </style>

@@ -1,10 +1,6 @@
 <script setup lang="ts">
-<<<<<<< HEAD
-import { defineProps } from "vue";
-import bg from "@/static/iPhone13.png";
-=======
 import { defineProps } from 'vue';
->>>>>>> 48a099a2696a09908e7c1480ba461a87d72f2624
+import bg from '@/static/iPhone13.png';
 
 const props = defineProps({
 	url: {
@@ -13,7 +9,7 @@ const props = defineProps({
 	},
 });
 const style = {
-  backgroundImage: `url(${bg})`,
+	backgroundImage: `url(${bg})`,
 };
 </script>
 

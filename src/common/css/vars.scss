@@ -1,0 +1,44 @@
+:root,
+:host {
+	// sizes
+	--pc-nav-width: 240px;
+	--pc-view-width: 375px;
+	--pc-view-height: 812px;
+	--pc-padding: 32px;
+}
+
+// 100%
+@media (max-width: 1920px) {
+	:root,
+	:host {
+		// sizes
+		--pc-nav-width: 240px;
+		--pc-view-width: 375px;
+		--pc-view-height: 812px;
+		--pc-padding: 32px;
+	}
+}
+
+// 80%
+@media (max-width: 1600px) {
+	:root,
+	:host {
+		// sizes
+		--pc-nav-width: 240px;
+		--pc-view-width: 300px;
+		--pc-view-height: 667px;
+		--pc-padding: 32px;
+	}
+}
+
+// 70%
+@media (max-width: 1280px) {
+	:root,
+	:host {
+		// sizes
+		--pc-nav-width: 240px;
+		--pc-view-width: 262px;
+		--pc-view-height: 568px;
+		--pc-padding: 32px;
+	}
+}

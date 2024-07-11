@@ -7,6 +7,10 @@
     {
       "path": "pages/mp/index",
       "type": "page"
+    },
+    {
+      "path": "pages/mp/price-demo/price-demo",
+      "type": "page"
     }
   ],
   "globalStyle": {

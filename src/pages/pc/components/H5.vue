@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
+import bg from "@/static/iPhone13.png";
 
 const props = defineProps({
   url: {
@@ -7,24 +8,34 @@ const props = defineProps({
     default: "#/pages/mp/index",
   },
 });
+const style = {
+  backgroundImage: `url(${bg})`,
+};
 </script>
 
 <template>
-  <div class="h5-component">
-    <iframe :src="props.url" frameborder="0" width="100%" height="100%" />
+  <div class="h5-component" :style="style">
+    <div class="h5-content">
+      <iframe :src="props.url" frameborder="0" width="100%" height="100%" />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .h5-component {
   position: fixed;
-  width: 375px;
-  height: 667px;
+  height: 720px;
   top: 50%;
   transform: translateY(-50%);
   right: 20px;
+  z-index: 100;
+  background-size: 100% 100%;
+  padding: 45px 15px 30px 15px;
+  border-radius: 60px;
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  .h5-content {
+    width: 375px;
+    height: 100%;
+  }
 }
 </style>

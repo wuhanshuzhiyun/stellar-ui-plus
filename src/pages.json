@@ -9,7 +9,15 @@
       "type": "page"
     },
     {
-      "path": "pages/mp/price-demo/price-demo",
+      "path": "pages/mp/demo-views/price/price",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/search/search",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/signature/signature",
       "type": "page"
     }
   ],

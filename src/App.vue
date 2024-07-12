@@ -3,9 +3,21 @@ onLaunch(() => {});
 </script>
 
 <style>
+/* #ifdef H5 */
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
 }
+/* #endif */
+/* #ifndef H5 */
+view,
+button,
+input,
+textarea {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+/* #endif */
 </style>

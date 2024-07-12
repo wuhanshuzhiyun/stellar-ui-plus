@@ -1,4 +1,5 @@
 import System from './System.js'
+import '../common/index.css'
 
 const utils = {
   System,

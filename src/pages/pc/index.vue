@@ -10,6 +10,12 @@ const datas = useMarkdown();
 
 provide('datas', datas);
 // #endif
+
+// #ifndef H5
+onLoad(() => {
+	uni.redirectTo({ url: '/pages/mp/index' });
+});
+// #endif
 </script>
 
 <template>

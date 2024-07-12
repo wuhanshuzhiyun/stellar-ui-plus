@@ -1,10 +1,159 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed, watch } from 'vue';
+import utils from '../../utils/utils';
+import { priceProps } from './props';
+const props = defineProps(priceProps);
+
+console.log('价格组件');
+const cmpValue = computed(() => {
+	if (props.formatter && typeof props.formatter === 'function') {
+		return props.formatter(props.value);
+	}
+
+	let value = props.value;
+	if (props.valueUnit == 'fen') {
+		value = utils.fenToYuan(props.value, -1, '', 0);
+	}
+	if (props.digits == -1) {
+		value = Number.parseFloat(String(value)).toString();
+	} else {
+		value = Number(value).toFixed(props.digits).toString();
+	}
+	return value;
+});
+
+const cmpYuanValue = computed(() => {
+	console.log('yuan value');
+	if (cmpValue.value) {
+		if (cmpValue.value.indexOf('.') > -1) {
+			return cmpValue.value.split('.')[0];
+		} else {
+			return cmpValue.value;
+		}
+	} else {
+		return utils.fenToYuan(props.value, -1, '', 1);
+	}
+});
+
+const cmpFenValue = computed(() => {
+	if (cmpValue.value) {
+		if (cmpValue.value.indexOf('.') > -1) {
+			return '.' + cmpValue.value.split('.')[1];
+		}
+		return '';
+	} else {
+		return utils.fenToYuan(props.value, -1, '', 2);
+	}
+});
+
+const cmpPriceStyle = computed(() => {
+	return {
+		lineHeight: props.lineHeight === -1 ? 0.8 : utils.formatPx(props.lineHeight),
+		color: (props.isSuggestPrice ? props.linePriceColor : props.color) + ' !important',
+		marginLeft: utils.formatPx(props.marginLeft),
+		marginRight: utils.formatPx(props.marginRight),
+		marginTop: utils.formatPx(props.marginTop),
+		marginBottom: utils.formatPx(props.marginBottom),
+		fontWeight: props.bold ? 'bold' : 'normal',
+	};
+});
+
+const cmpUnitStyle = computed(() => {
+	let style: any = {
+		textDecoration: props.isSuggestPrice ? 'line-through' : 'none',
+		color: (props.isSuggestPrice ? props.linePriceColor : props.color) + ' !important',
+	};
+
+	if (props.isSuggestPrice) {
+		style.color = props.linePriceColor;
+		style.fontSize = utils.formatPx(props.fontSize);
+	} else {
+		style.fontSize = calcFontSize();
+	}
+	return style;
+});
+
+const cmpYuanPriceStyle = computed(() => {
+	return {
+		fontSize: utils.formatPx(props.fontSize),
+		textDecoration: props.isSuggestPrice ? 'line-through' : 'none',
+	};
+});
+
+const cmpFenPriceStyle = computed(() => {
+	let fontSize = 0;
+	if (props.isSuggestPrice) {
+		fontSize = utils.formatPx(props.fontSize);
+	} else {
+		if (props.styleType == 2) {
+			fontSize = calcFontSize();
+		} else {
+			fontSize = utils.formatPx(props.fontSize);
+		}
+	}
+	console.log('fen fontSize', fontSize, props.fontSize);
+	return {
+		fontSize,
+		textDecoration: props.isSuggestPrice ? 'line-through' : 'none',
+	};
+});
+
+function calcFontSize() {
+	let size = utils.formatPx(props.fontSize);
+	if (props.styleType == 1) {
+		if (props.fontSize <= 40) {
+			size = utils.formatPx(20);
+		} else {
+			size = utils.formatPx(props.fontSize - 20);
+		}
+	} else if (props.styleType == 3) {
+		size = utils.formatPx(props.fontSize);
+	} else {
+		// 常规 - 分元不一致
+		if (props.fontSize > 28 && props.fontSize <= 40) {
+			size = utils.formatPx(20);
+		} else if (props.fontSize > 40) {
+			size = utils.formatPx(props.fontSize - 20);
+		}
+	}
+	return size;
+}
+</script>
+
+<script lang="ts">
+const componentName = `ste-price`;
+
+export default defineComponent({
+	name: componentName,
+	options: {
+		virtualHost: true,
+		addGlobalClass: true,
+		styleIsolation: 'shared',
+	},
+});
+</script>
 
 <template>
-  <div class="ste-price">ste-price</div>
+	<view class="ste-price-root">
+		<view class="content" :style="[cmpPriceStyle]">
+			<text v-if="showUnit" class="unit" :style="[cmpUnitStyle]">{{ unitSymbol }}</text>
+			<text class="yuan-price" :style="[cmpYuanPriceStyle]">{{ cmpYuanValue }}</text>
+			<text v-if="valueUnit === 'fen'" class="fen-price" :style="[cmpFenPriceStyle]">
+				{{ cmpFenValue }}
+			</text>
+		</view>
+	</view>
 </template>
 
 <style scoped lang="scss">
-.ste-price {
+.ste-price-root {
+	display: inline-flex;
+	.content {
+		display: inline-block;
+		vertical-align: bottom;
+	}
+	.unit {
+		vertical-align: baseline;
+	}
 }
 </style>

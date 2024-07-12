@@ -5,7 +5,8 @@
 
 export interface NavigateToOptions {
   url: "/pages/pc/index" |
-       "/pages/mp/index";
+       "/pages/mp/index" |
+       "/pages/mp/price-demo/price-demo";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 

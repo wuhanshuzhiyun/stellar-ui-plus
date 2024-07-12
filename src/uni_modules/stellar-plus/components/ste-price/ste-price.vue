@@ -18,7 +18,6 @@ const cmpValue = computed(() => {
 });
 
 const cmpYuanValue = computed(() => {
-    console.log('yuan value');
     if (cmpValue.value) {
         if (cmpValue.value.includes('.')) return cmpValue.value.split('.')[0];
         else return cmpValue.value;
@@ -79,7 +78,7 @@ const cmpFenPriceStyle = computed(() => {
         if (props.styleType === 2) fontSize = calcFontSize();
         else fontSize = utils.formatPx(props.fontSize);
     }
-    console.log('fen fontSize', fontSize, props.fontSize);
+
     return {
         fontSize,
         textDecoration: props.isSuggestPrice ? 'line-through' : 'none',

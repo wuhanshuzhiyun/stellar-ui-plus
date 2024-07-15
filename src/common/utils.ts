@@ -1,6 +1,16 @@
 import config from './config'
 
+let windowWidth: number = 0
+
 const utils = {
+  /** px转rpx */
+  px2rpx(px: number) {
+    if (windowWidth === 0)
+      windowWidth = uni.getSystemInfoSync().windowWidth
+
+    const rpx = (px * 750) / windowWidth
+    return rpx
+  },
   /**
    * 拼接image的src
    * val 图片地址

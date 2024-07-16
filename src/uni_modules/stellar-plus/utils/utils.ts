@@ -1,8 +1,11 @@
+import dayjs from 'dayjs'
 import System from './System.js'
+
 import '../common/index.css'
 
 const utils = {
   System,
+  dayjs,
   /**
    * 格式化像素单位为px
    * @param value {Number | String} 像素单位值

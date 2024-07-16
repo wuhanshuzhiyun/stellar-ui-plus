@@ -1,10 +1,4 @@
-<script lang="ts">
-const componentName = `page-nav`;
-
-export default defineComponent({
-  name: componentName,
-});
-</script>
+<script lang="ts"></script>
 
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -12,8 +6,15 @@ import { pageNavProps } from './props';
 import utils from '@/common/utils';
 
 const props = defineProps(pageNavProps);
+
+const componentName = `page-nav`;
+
+export default defineComponent({
+  name: componentName,
+});
+
 const pageStyle = computed(() => {
-  let style = {
+  const style = {
     zIndex: 10,
   };
 
@@ -25,8 +26,8 @@ let navbarWidth = utils.px2rpx(281);
 let navbarHeight = utils.px2rpx(26);
 
 // #ifdef MP-WEIXIN || MP-ALIPAY
-let menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-let addHeight = 16;
+const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+const addHeight = 16;
 navbarTop = utils.px2rpx(menuButtonInfo.top - uni.upx2px(addHeight));
 navbarWidth = utils.px2rpx(menuButtonInfo.left);
 navbarHeight = utils.px2rpx(menuButtonInfo.height + uni.upx2px(addHeight * 2));
@@ -34,31 +35,34 @@ navbarHeight = utils.px2rpx(menuButtonInfo.height + uni.upx2px(addHeight * 2));
 
 function navBack() {}
 </script>
+
 <template>
-  <div class="nav-box" :style="[pageStyle, { paddingTop: navbarTop + 'rpx' }]">
-    <div class="nav" :style="{ width: navbarWidth + 'rpx', height: navbarHeight + 'rpx' }">
+  <div class="nav-box" :style="[pageStyle, { paddingTop: `${navbarTop}rpx` }]">
+    <div class="nav" :style="{ width: `${navbarWidth}rpx`, height: `${navbarHeight}rpx` }">
       <!-- #ifdef MP-WEIXIN || H5 -->
       <div class="back-box">
         <div class="back" :style="{ backgroundColor: 'transparent', borderColor: 'transparent' }">
           <!-- <ste-icon v-if="isFirstPage" code="&#xe68d;" weight="bold" :size="28" :color=""></ste-icon>
                     <ste-icon v-else code="&#xe673;" weight="bold" :size="28" :color="backColor"></ste-icon> -->
         </div>
-        <div class="back-click-hot" @click="navBack"></div>
+        <div class="back-click-hot" @click="navBack" />
       </div>
 
       <!-- #endif -->
       <!-- #ifdef MP-ALIPAY -->
-      <div class="ali-back-box"></div>
+      <div class="ali-back-box" />
       <!-- #endif -->
-      <div class="slot-default"><slot name="default"></slot></div>
+      <div class="slot-default">
+        <slot name="default" />
+      </div>
     </div>
     <div
       class="title-center"
       :style="{
         color: '#181818',
-        height: navbarHeight + 'rpx',
-        lineHeight: navbarHeight + 'rpx',
-        paddingTop: navbarTop + 'rpx',
+        height: `${navbarHeight}rpx`,
+        lineHeight: `${navbarHeight}rpx`,
+        paddingTop: `${navbarTop}rpx`,
       }"
     >
       {{ title }}

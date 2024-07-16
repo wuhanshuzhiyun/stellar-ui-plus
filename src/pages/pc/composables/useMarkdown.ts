@@ -1,6 +1,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { components, rests } from '../markdown/index'
 import type { Group, MarkdownData } from '../types'
+import { btnCopy } from '../markdown/requireFiles'
 
 export default function useMarkdown(): MarkdownData {
   const active = ref<string>('handbook-介绍')
@@ -10,10 +11,18 @@ export default function useMarkdown(): MarkdownData {
     active.value = value
   }
 
+  const activeBtns = () => {
+    nextTick(() => {
+      const btns = document.querySelectorAll<HTMLButtonElement>('button.code-copy-button')
+      btns.forEach(btn => btn.onclick = () => btnCopy(btn))
+    })
+  }
+
   onMounted(() => {
     const query = uni.getLaunchOptionsSync().query
     if (query.active)
       active.value = query.active as string
+    activeBtns()
   })
 
   const h5url = ref<string>('#/pages/mp/index')
@@ -23,6 +32,8 @@ export default function useMarkdown(): MarkdownData {
       h5url.value = '#/pages/mp/index'
     else
       h5url.value = `#/pages/mp/demo-views/${value}/${value}`
+
+    activeBtns()
   })
 
   const contents = ref<Group[]>(rests.concat(components))

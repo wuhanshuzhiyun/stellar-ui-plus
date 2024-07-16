@@ -5,10 +5,11 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
-export {}
+export {};
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     PageNavPageNav: typeof import('./components/page-nav/page-nav.vue')['default']
+    PageNav: (typeof import('./components/page-nav/index.vue'))['default'];
   }
 }

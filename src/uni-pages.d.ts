@@ -6,6 +6,7 @@
 export interface NavigateToOptions {
   url: "/pages/pc/index" |
        "/pages/mp/index" |
+       "/pages/mp/demo-views/button/button" |
        "/pages/mp/demo-views/price/price" |
        "/pages/mp/demo-views/search/search" |
        "/pages/mp/demo-views/signature/signature";

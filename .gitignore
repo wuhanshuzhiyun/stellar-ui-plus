@@ -21,3 +21,6 @@ dist
 *.sw?
 .vscode/
 .github/
+src/components.d.ts
+src/pages.json
+src/uni-pages.d.ts

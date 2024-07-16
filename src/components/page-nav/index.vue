@@ -1,4 +1,10 @@
-<script lang="ts"></script>
+<script lang="ts">
+const componentName = `page-nav`;
+
+export default defineComponent({
+  name: componentName,
+});
+</script>
 
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -6,12 +12,6 @@ import { pageNavProps } from './props';
 import utils from '@/common/utils';
 
 const props = defineProps(pageNavProps);
-
-const componentName = `page-nav`;
-
-export default defineComponent({
-  name: componentName,
-});
 
 const pageStyle = computed(() => {
   const style = {

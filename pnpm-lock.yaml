@@ -132,6 +132,12 @@ importers:
       lint-staged:
         specifier: ^15.2.0
         version: 15.2.0
+      mini-types:
+        specifier: 0.1.7
+        version: 0.1.7
+      miniprogram-api-typings:
+        specifier: 3.9.0
+        version: 3.9.0
       prettier:
         specifier: ^3.3.2
         version: 3.3.2
@@ -4586,6 +4592,9 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
+  mini-types@0.1.7:
+    resolution: {integrity: sha512-aSoVvrIr/O9tbzFjSCeKr/T53Hu+un+FXkfWPfGcb/q8eAHXX1CDgSHv8l0GtFTlfHzznmn4hbRGB3UTWmZ3fA==}
+
   minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
 
@@ -4611,6 +4620,9 @@ packages:
   minipass@5.0.0:
     resolution: {integrity: sha512-3FnjYuehv9k6ovOEbyOswadCDPX1piCfhV8ncmYtHOjuPwylVWsghTLo7rabjC3Rx5xD4HDx8Wm1xnMF7S5qFQ==}
     engines: {node: '>=8'}
+
+  miniprogram-api-typings@3.9.0:
+    resolution: {integrity: sha512-QCXHHW9H4XYazb8J9EMiFyaOWHXhBG4oehkQqi+76FJpKKIlpgL0ZkXxzJ2L+6T/c5OxKm7iegovKIQGVkZDLQ==}
 
   minizlib@2.1.2:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
@@ -12231,6 +12243,8 @@ snapshots:
 
   min-indent@1.0.1: {}
 
+  mini-types@0.1.7: {}
+
   minimatch@3.1.2:
     dependencies:
       brace-expansion: 1.1.11
@@ -12254,6 +12268,8 @@ snapshots:
       yallist: 4.0.0
 
   minipass@5.0.0: {}
+
+  miniprogram-api-typings@3.9.0: {}
 
   minizlib@2.1.2:
     dependencies:

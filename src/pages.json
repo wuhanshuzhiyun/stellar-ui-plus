@@ -31,5 +31,11 @@
     "navigationBarTitleText": "Vitesse-Uni",
     "navigationStyle": "custom"
   },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^(.*)": "@/components/$1/$1.vue"
+    }
+  },
   "subPackages": []
 }

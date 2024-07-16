@@ -18,4 +18,10 @@ export default defineUniPages({
   //   color: "@tabFontColor",
   //   selectedColor: "@tabSelectedColor",
   // },
+  easycom: {
+    autoscan: true,
+    custom: {
+      '^(.*)': '@/components/$1/$1.vue',
+    },
+  },
 })

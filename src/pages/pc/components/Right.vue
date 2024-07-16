@@ -3,7 +3,6 @@ import { inject } from 'vue';
 import type { MarkdownData } from '../types';
 
 const datas = inject<MarkdownData>('datas');
-console.log('right-datas', datas);
 </script>
 
 <template>

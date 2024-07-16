@@ -58,6 +58,33 @@ function formatHtml(html: string) {
   return doc.body.innerHTML
 }
 
+export function btnCopy(btn: HTMLButtonElement) {
+  const code = btn.getAttribute('content')
+  if (!code) {
+    console.error('没有找到复制的内容')
+    return
+  }
+  if (btn.innerHTML === '复制成功')
+    return
+  console.log('copy: ', code)
+  uni.setClipboardData({
+    data: code,
+    showToast: false,
+    success: () => {
+      btn.innerHTML = '复制成功'
+      setTimeout(() => {
+        btn.innerHTML = '复制'
+      }, 2000)
+    },
+    fail: () => {
+      btn.innerHTML = '复制失败'
+      setTimeout(() => {
+        btn.innerHTML = '复制'
+      }, 1000)
+    },
+  })
+}
+
 export function restsFiles() {
   const deg = /\.\/(\w+)\/(\d+)?\-?(.+)\.(md|json)$/
   const groupJson: Obj = import.meta.glob('./**/*.json', { eager: true })

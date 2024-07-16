@@ -7,6 +7,7 @@ export interface Content {
   sort: number
   html: string
   key: string
+  icon?: string
 }
 export interface Group {
   group: string
@@ -18,8 +19,8 @@ export interface Group {
 
 export interface MarkdownData {
   contents: Ref<Group[]>
-  markdown: Ref<string>
   active: Ref<string>
   setActive: (key: string) => void
   viewMarkdown: ComputedRef<string>
+  h5url: Ref<string>
 }

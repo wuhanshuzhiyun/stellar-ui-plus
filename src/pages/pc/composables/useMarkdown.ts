@@ -1,13 +1,29 @@
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { components, rests } from '../markdown/index'
 import type { Group, MarkdownData } from '../types'
 
 export default function useMarkdown(): MarkdownData {
-  const markdown = ref<string>('')
   const active = ref<string>('handbook-介绍')
+
   const setActive = (value: string) => {
+    window.history.pushState(null, '', `#/?active=${value}`)
     active.value = value
   }
+
+  onMounted(() => {
+    const query = uni.getLaunchOptionsSync().query
+    if (query.active)
+      active.value = query.active as string
+  })
+
+  const h5url = ref<string>('#/pages/mp/index')
+
+  watch(active, (value) => {
+    if (value.includes('handbook') || value.includes('devGuide'))
+      h5url.value = '#/pages/mp/index'
+    else
+      h5url.value = `#/pages/mp/demo-views/${value}/${value}`
+  })
 
   const contents = ref<Group[]>(rests.concat(components))
 
@@ -22,15 +38,11 @@ export default function useMarkdown(): MarkdownData {
     return result
   })
 
-  watch(() => active.value, (value) => {
-    markdown.value = `# ${value}`
-  })
-
   return {
     contents,
-    markdown,
     viewMarkdown,
     active,
     setActive,
+    h5url,
   }
 }

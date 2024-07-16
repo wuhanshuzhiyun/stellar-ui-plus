@@ -1,0 +1,77 @@
+<script setup lang="ts">
+import { computed, defineComponent, ref } from 'vue';
+import { iconProps, iconEmits } from './props';
+import utils from '../../utils/utils';
+
+const props = defineProps(iconProps);
+// console.log('Received props:', props);
+// console.log('propscode is', props.code);
+const emit = defineEmits(iconEmits);
+
+let defaultFontFamily = 'ste-iconfont-1709689042473';
+
+const cmpCode = computed(() => {
+  // unicode编码转字符
+  if (!props.code) return;
+  return String.fromCharCode(props.code.replace('&#', '0').replace(';', '') as any);
+});
+
+const cmpCssVar = computed(() => {
+  return {
+    '--border': props.showBorder ? '1px' : '0px',
+    '--color': props.color,
+    '--size': utils.formatPx(props.size),
+    '--weight': props.bold ? 'bold' : 'normal',
+    '--margin-left': utils.formatPx(props.marginLeft),
+    '--margin-right': utils.formatPx(props.marginRight),
+    '--margin-top': utils.formatPx(props.marginTop),
+    '--margin-bottom': utils.formatPx(props.marginBottom),
+    '--font-family': props.fontFamily === '' ? defaultFontFamily : props.fontFamily,
+    '--display': props.inlineBlock ? 'inline-block' : 'inline-flex',
+  };
+});
+
+function handleClick(event: any) {
+  emit('click', event);
+}
+</script>
+
+<script lang="ts">
+const componentName = `ste-icon`;
+export default defineComponent({
+  name: componentName,
+  options: {
+    virtualHost: true,
+  },
+});
+</script>
+
+<template>
+  <view class="ste-icon-root" :style="[cmpCssVar]" @click="handleClick">{{ code }}</view>
+</template>
+
+<style lang="scss" scoped>
+@import './iconfont.css';
+
+.ste-icon-root {
+  display: var(--display);
+  justify-content: center;
+  align-items: center;
+  vertical-align: baseline;
+  border-width: var(--border);
+  border-color: #bbb;
+  border-style: solid;
+
+  margin-left: var(--margin-left) !important;
+  margin-right: var(--margin-right) !important;
+  transform: translateY(calc(var(--margin-bottom) - var(--margin-top))) !important ;
+
+  // height: calc(var(--size)) !important;
+  width: calc(var(--size)) !important;
+  line-height: calc(var(--size) - var(--border) * 2) !important;
+  font-family: var(--font-family) !important;
+  font-size: calc(var(--size) - var(--border) * 2) !important;
+  color: var(--color);
+  font-weight: var(--weight) !important;
+}
+</style>

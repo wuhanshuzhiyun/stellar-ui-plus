@@ -8,7 +8,7 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { pageNavProps } from './props';
 import utils from '@/common/utils';
 
@@ -34,7 +34,19 @@ navbarWidth = utils.px2rpx(menuButtonInfo.left);
 navbarHeight = utils.px2rpx(menuButtonInfo.height + uni.upx2px(addHeight * 2));
 // #endif
 
-function navBack() {}
+const isFirstPage = ref(false);
+const pages = getCurrentPages();
+isFirstPage.value = pages.length === 1;
+
+function navBack() {
+  if (pages.length > 2) {
+    uni.navigateBack();
+  } else {
+    uni.redirectTo({
+      url: '/pages/mp/index',
+    });
+  }
+}
 </script>
 
 <template>
@@ -43,8 +55,8 @@ function navBack() {}
       <!-- #ifdef MP-WEIXIN || H5 -->
       <div class="back-box">
         <div class="back" :style="{ backgroundColor: 'transparent', borderColor: 'transparent' }">
-          <!-- <ste-icon v-if="isFirstPage" code="&#xe68d;" weight="bold" :size="28" :color=""></ste-icon>
-                    <ste-icon v-else code="&#xe673;" weight="bold" :size="28" :color="backColor"></ste-icon> -->
+          <ste-icon v-if="isFirstPage" :code="'&#xe68d;'" weight="bold" :size="28" color="#000"></ste-icon>
+          <ste-icon v-else :code="'&#xe673;'" weight="bold" :size="28" color="#000"></ste-icon>
         </div>
         <div class="back-click-hot" @click="navBack" />
       </div>

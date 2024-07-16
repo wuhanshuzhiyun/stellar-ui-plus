@@ -1,4 +1,5 @@
 <script lang="ts">
+import { defineComponent } from 'vue';
 const componentName = `page-nav`;
 
 export default defineComponent({

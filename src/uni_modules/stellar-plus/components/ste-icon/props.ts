@@ -1,5 +1,6 @@
 import type { ExtractPropTypes } from 'vue'
 import { makeNumberProp, makeNumericProp, makeStringProp, truthProp } from '../../utils/props'
+import { CLICK_EVENT } from '../../common/_constants/event'
 
 // import type { DigitsType, StyleType, UnitType } from './type';
 
@@ -55,7 +56,7 @@ export const iconProps = {
 }
 
 export const iconEmits = {
-  click: (evt: MouseEvent) => evt instanceof Object,
+  [CLICK_EVENT]: (evt: MouseEvent) => evt instanceof Object,
 }
 
 export type IconProps = ExtractPropTypes<typeof iconProps>

@@ -15,8 +15,7 @@ const utils = {
         return restype ? Number(format.slice(0, -2)) : format
       else if (/^\d+rpx/i.test(format))
         format = Number(format.slice(0, -3))
-      else
-        return format
+      else return format
     }
     let px = 0
     if (format !== 0)
@@ -41,8 +40,7 @@ const utils = {
     else {
       if (digits === -1)
         newVal = val / 100
-      else
-        newVal = (val / 100).toFixed(digits)
+      else newVal = (val / 100).toFixed(digits)
     }
     newVal = String(newVal)
     // 取全部
@@ -57,9 +55,60 @@ const utils = {
     else if (part === 2) {
       if (newVal.split('.').length > 1)
         return `.${newVal.split('.')[1]}`
-      else
-        return ''
+      else return ''
     }
+  },
+  /**
+   * 对象深度合并
+   * 用source上的数据覆盖掉target上的数据，返回target
+   */
+  deepMerge(target: { [key: string]: any }, source: any) {
+    // 遍历 source 的所有属性
+    for (const prop in source) {
+      // 判断是否为自身属性
+      if (Object.prototype.hasOwnProperty.call(source, prop)) {
+        // 判断属性是否为对象，如果是则递归合并
+        if (typeof source[prop] === 'object' && !Array.isArray(source[prop]) && source[prop] !== null) {
+          // 如果 target 对应的属性不是对象，则新建一个空对象
+          if (typeof target[prop] !== 'object' || target[prop] === null)
+            target[prop] = {}
+
+          this.deepMerge(target[prop], source[prop])
+        }
+        else {
+          // 如果属性不是对象，直接赋值
+          target[prop] = source[prop]
+        }
+      }
+    }
+    return target
+  },
+  /**
+   * 背景值转样式
+   * @param {string} value
+   */
+  bg2style(value: string) {
+    const result = {} as any
+    const colorReg = /^(\#|rgba?)/i
+    const colorsReg = /^linear\-gradient/i
+    const imgReg = /^(https?\:\/\/|data\:image\/)/i
+    if (colorReg.test(value)) {
+      // 纯色
+      result.backgroundColor = value
+    }
+    else if (colorsReg.test(value)) {
+      // 渐变色
+      result.backgroundImage = value
+    }
+    else if (imgReg.test(value)) {
+      // 图片
+      result.backgroundImage = `url(${value})`
+    }
+    else {
+      // 其他原生值
+      result.background = value
+    }
+    return result
   },
 }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { iconProps, iconEmits } from './props';
+import { CLICK_EVENT } from '../../common/_constants/event';
 import utils from '../../utils/utils';
 
 const props = defineProps(iconProps);
@@ -32,7 +33,7 @@ const cmpCssVar = computed(() => {
 });
 
 function handleClick(event: any) {
-  emit('click', event);
+  emit(CLICK_EVENT, event);
 }
 </script>
 

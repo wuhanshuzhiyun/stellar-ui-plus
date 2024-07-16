@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, watch } from 'vue';
+import { computed, defineProps } from 'vue';
 import utils from '../../utils/utils';
 import { priceProps } from './props';
 

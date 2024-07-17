@@ -31,9 +31,10 @@ onLoad(() => {
       </div>
       <div class="right">
         <Right />
-        <div class="h5">
-          <H5 />
-        </div>
+        <div class="h5" />
+      </div>
+      <div class="content-h5">
+        <H5 />
       </div>
     </div>
   </div>
@@ -58,9 +59,11 @@ onLoad(() => {
       font-weight: bold;
     }
   }
+
   .content {
+    width: 100%;
+    height: 100%;
     display: flex;
-    height: calc(100% - 30px);
 
     .left {
       width: 240px;
@@ -72,16 +75,8 @@ onLoad(() => {
       width: calc(100% - 240px);
       height: 100%;
       background-color: #fff;
-      padding-right: 400px;
       overflow-y: auto;
-    }
-  }
-}
-@media screen and (max-width: 1280px) {
-  .pc-page-body .content .right {
-    padding-right: 0;
-    .h5 {
-      display: none;
+      padding-right: calc(var(--pc-view-width) + 50px);
     }
   }
 }

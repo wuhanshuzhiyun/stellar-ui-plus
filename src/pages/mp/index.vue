@@ -21,7 +21,7 @@ function toDemo(item: Content) {
           <view class="subtitle-message">uniapp快速开发的UI框架</view>
         </view>
       </view>
-      <view class="subtitle-message">Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。</view>
+      <view class="subtitle-message">Stellar Plus，全面的组件和便捷的工具会让您信手拈来，如鱼得水。</view>
       <view class="conponents">
         <view v-for="(item, index) in datas" :key="index" class="components-group">
           <view class="components-title">

@@ -21,6 +21,10 @@ onLoad(() => {
 <template>
   <!-- #ifdef H5 -->
   <div class="pc-page-body">
+    <header>
+      您正在浏览基于 Vue 3.x 的文档;
+      <a href="https://stellar-ui.intecloud.com.cn/pc/index/index" target="_blank">点击查看Vue 2.x版本。</a>
+    </header>
     <div class="content">
       <div class="left">
         <Left />
@@ -42,10 +46,21 @@ onLoad(() => {
   height: 100vh;
   background-color: #fff;
   position: relative;
-
+  header {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #eee;
+    width: 100%;
+    background-color: #409eff;
+    a {
+      color: #fff;
+      font-weight: bold;
+    }
+  }
   .content {
     display: flex;
-    height: 100%;
+    height: calc(100% - 30px);
 
     .left {
       width: 240px;

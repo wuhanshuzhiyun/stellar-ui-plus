@@ -72,6 +72,9 @@ export default defineManifestConfig({
   'h5': {
     darkmode: true,
     themeLocation: 'theme.json',
+    router: {
+      base: '/plus/',
+    },
   },
   'uniStatistics': {
     enable: false,

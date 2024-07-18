@@ -12,7 +12,6 @@ import type {
   ButtonOnOpensettingEvent,
   ButtonOnSubscribeEvent,
   ButtonOpenType,
-
 } from '@uni-helper/uni-app-types'
 import { makeNumberProp, makeNumericProp, makeStringProp, truthProp } from '../../utils/props'
 import { CLICK_EVENT } from '../../common/_constants/event'
@@ -67,7 +66,7 @@ export const buttonProps = {
    * @description 按钮样式属性
    */
   rootStyle: { type: Object, default: () => ({}) },
-}
+} as const
 
 export type ButtonProps = ExtractPropTypes<typeof buttonProps>
 

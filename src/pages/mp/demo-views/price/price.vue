@@ -41,7 +41,7 @@
         <view class="title">金额文字尺寸</view>
         <view class="item-block">
           <view>
-            <ste-price value="9527" font-size="50" />
+            <ste-price value="9527" fontSize="50" />
           </view>
         </view>
       </view>
@@ -68,9 +68,9 @@
         <view class="title">金额样式 元和角分大小相等</view>
         <view class="item-block" style="display: block">
           <view>
-            <ste-price value="9527" :style-type="1" font-size="20" margin-right="30" />
-            <ste-price value="9527" :style-type="1" font-size="40" margin-right="30" />
-            <ste-price value="9527" :style-type="1" font-size="60" />
+            <ste-price value="9527" :style-type="1" fontSize="20" margin-right="30" />
+            <ste-price value="9527" :style-type="1" fontSize="40" margin-right="30" />
+            <ste-price value="9527" :style-type="1" fontSize="60" />
           </view>
         </view>
       </view>
@@ -78,9 +78,9 @@
         <view class="title">金额样式 角分小于元</view>
         <view class="item-block" style="display: block">
           <view>
-            <ste-price value="9527" :style-type="2" font-size="28" margin-right="30" />
-            <ste-price value="9527" :style-type="2" font-size="40" margin-right="30" />
-            <ste-price value="9527" :style-type="2" font-size="60" />
+            <ste-price value="9527" :style-type="2" fontSize="28" margin-right="30" />
+            <ste-price value="9527" :style-type="2" fontSize="40" margin-right="30" />
+            <ste-price value="9527" :style-type="2" fontSize="60" />
           </view>
         </view>
       </view>
@@ -96,7 +96,7 @@
         <view class="title">粗体</view>
         <view class="item-block">
           <view>
-            <ste-price value="9527" bold font-size="50" />
+            <ste-price value="9527" bold fontSize="50" />
           </view>
         </view>
       </view>

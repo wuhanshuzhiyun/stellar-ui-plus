@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import * as dayjs from 'dayjs'
 import System from './System.js'
 
 import '../common/index.css'
@@ -112,6 +112,31 @@ const utils = {
       result.background = value
     }
     return result
+  },
+  /**
+   * 兼容css中的单位
+   * 如果值为数字，则拼接 'rpx'，否则直接返回字符串的值
+   */
+  addUnit(val) {
+    let newVal
+    if (this.isNumber(val))
+      newVal = `${val}rpx`
+    else
+      newVal = val
+
+    // #ifdef H5
+    if (newVal && newVal.includes('rpx'))
+      newVal = this.formatPx(newVal)
+
+    // #endif
+    return newVal
+  },
+  /**
+   * 字符串是否为数字
+   *@value 要判断的字符串
+   */
+  isNumber(value) {
+    return !Number.isNaN(Number.parseFloat(value)) && Number.isFinite(value)
   },
 }
 

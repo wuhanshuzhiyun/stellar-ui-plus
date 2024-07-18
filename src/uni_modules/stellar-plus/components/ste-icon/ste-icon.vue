@@ -5,8 +5,9 @@ import { CLICK_EVENT } from '../../common/_constants/event';
 import utils from '../../utils/utils';
 
 const props = defineProps(iconProps);
-// console.log('Received props:', props);
 // console.log('propscode is', props.code);
+// console.log('propscode is', /[a-zA-Z]/.test(props.code));
+
 const emit = defineEmits(iconEmits);
 
 let defaultFontFamily = 'ste-iconfont-1709689042473';
@@ -14,7 +15,11 @@ let defaultFontFamily = 'ste-iconfont-1709689042473';
 const cmpCode = computed(() => {
   // unicode编码转字符
   if (!props.code) return;
-  return String.fromCharCode(props.code.replace('&#', '0').replace(';', '') as any);
+  if (/[a-zA-Z]/.test(props.code)) {
+    return String.fromCharCode(props.code.replace('&#', '0').replace(';', '') as any);
+  } else {
+    return props.code;
+  }
 });
 
 const cmpCssVar = computed(() => {
@@ -48,7 +53,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <view class="ste-icon-root" :style="[cmpCssVar]" @click="handleClick">{{ code }}</view>
+  <view class="ste-icon-root" :style="[cmpCssVar]" @click="handleClick">{{ cmpCode }}</view>
 </template>
 
 <style lang="scss" scoped>

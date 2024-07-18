@@ -3,27 +3,32 @@ import System from './System.js'
 
 import '../common/index.css'
 
+type ReturnBasedOnBool<T extends boolean> = T extends true ? UniApp.NodeInfo[] : UniApp.NodeInfo
+
 const utils = {
   System,
   dayjs,
+  isNaN(value: number | string | null | undefined) {
+    const deg = /^-?\d+(\.\d+)?$/i
+    return !deg.test(String(value))
+  },
   /**
    * 格式化像素单位为px
    * @param value {Number | String} 像素单位值
    * @param restype {"str" | "num"} 返回值类型
    */
-  formatPx(value: number | string | any, restype = 'str') {
+  formatPx(value: number | string, restype = 'str') {
     let format = value || 0
-    if (format && Number.isNaN(format)) {
+    if (typeof format === 'string' && utils.isNaN(format)) {
       if (/^\d+px$/i.test(format))
-        return restype ? Number(format.slice(0, -2)) : format
+        return restype === 'num' ? Number(format.slice(0, -2)) : format
       else if (/^\d+rpx/i.test(format))
-        format = Number(format.slice(0, -3))
+        format = format.slice(0, -3)
       else return format
     }
     let px = 0
     if (format !== 0)
-      px = (format * System.getWindowWidth()) / 750
-
+      px = (Number(format) * System.getWindowWidth()) / 750
     return restype === 'num' ? px : `${px}px`
   },
   /**
@@ -112,6 +117,34 @@ const utils = {
       result.background = value
     }
     return result
+  },
+  /**
+   * 全局唯一标识符
+   * @param {number} len uuid的长度
+   * @param {boolean} firstU 将返回的首字母置为"u
+   */
+  guid(len = 32, firstU = true) {
+    let str = firstU ? 'u' : ''
+    for (let i = str.length; i < len; i++) str += Math.floor(Math.random() * 32).toString(32)
+    return str
+  },
+  querySelector<T extends boolean>(selectors: string, component: globalThis.ComponentPublicInstance, all?: T): Promise<ReturnBasedOnBool<T>> {
+    return new Promise((resolve, reject) => {
+      try {
+        const query = uni
+          .createSelectorQuery()
+          .in(component)
+        const func = all ? query.selectAll : query.select
+        func(selectors)
+          .boundingClientRect((data) => {
+            resolve(data as ReturnBasedOnBool<T>)
+          })
+          .exec()
+      }
+      catch (e) {
+        reject(e)
+      }
+    })
   },
 }
 

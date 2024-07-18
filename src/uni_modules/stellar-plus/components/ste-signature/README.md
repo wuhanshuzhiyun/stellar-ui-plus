@@ -9,53 +9,60 @@
 - `type` 签名保存图片类型，支持 `jpg` 和 `png`(默认) 两种格式。
 	- 此处使用 `jpg` 格式。因为媒体预览背景是黑色，画笔颜色是黑色，`png`格式图片时预览看不见
 ```html
+<script setup lang="ts">
+	import type { SteSignature } from "@/uni_modules/stellar-plus/types/components";
+	import { ref } from "vue"
+	const signature = ref<SteSignature>()
+	const save = () => {
+		signature.value?.save(res => {
+			uni.previewImage({
+				urls: [res]
+			})
+		})
+	}
+
+	const back = () => {
+		signature.value?.back()
+	}
+
+	const clear = () => {
+		signature.value?.clear()
+	}
+</script>
+
 <template>
-	<view class="signature-box">
+	<view class="signature-demo">
 		<ste-signature ref="signature" type="jpg" />
 	</view>
-	<ste-button @click="clear">清除</ste-button>
-	<ste-button @click="upstep">上一步</ste-button>
-	<ste-button @click="save">保存并预览</ste-button>
-	<ste-media-preview :show.sync="show" :urls="urls"></ste-media-preview>
+	<view class="button" @click="back">回退</view>
+	<view class="button" @click="clear">清除</view>
+	<view class="button" @click="save">保存并预览</view>
 </template>
-<script>
-export default {
-	data() {
-		return {
-			show: false,
-			urls: [],
-		};
-	},
-	methods: {
-		clear() {
-			this.$refs.signature.clear();
-		},
-		upstep() {
-			this.$refs.signature.back();
-		},
-		save() {
-			this.$refs.signature.save(
-				(base64) => {
-					this.urls = [base64];
-					this.show = true;
-				},
-				(err) => {
-					uni.showToast({
-						title: err,
-						icon: 'none',
-					});
-				}
-			);
-		},
-	},
-};
-</script>
-<style lang="scss" scoped>
-.signature-box {
+
+<style scoped lang="scss">
+.signature-demo {
 	width: 100%;
 	height: 300rpx;
 	background-color: #f5f5f5;
-	margin-bottom: 30rpx;
+}
+
+.button {
+	display: inline-block;
+	height: 64rpx;
+	line-height: 64rpx;
+	font-size: 30rpx;
+	border-radius: 32rpx;
+	background-color: red;
+	color: #fff;
+	padding: 0 20px;
+	margin-top: 10px;
+	&:active {
+		background-color: #f55;
+	}
+
+	&+.button {
+		margin-left: 8px;
+	}
 }
 </style>
 ```

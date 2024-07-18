@@ -8,9 +8,12 @@ import UnoCSS from 'unocss/vite'
 
 import mdPlugin, { Mode } from 'vite-plugin-markdown'
 
+import comTypes from './src/pages/pc/components-types-plugin.js'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    comTypes(),
     mdPlugin({ mode: [Mode.HTML] }),
     // https://github.com/uni-helper/vite-plugin-uni-manifest
     UniHelperManifest(),

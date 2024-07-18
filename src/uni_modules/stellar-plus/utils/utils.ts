@@ -5,10 +5,14 @@ import '../common/index.css'
 
 type ReturnBasedOnBool<T extends boolean> = T extends true ? UniApp.NodeInfo[] : UniApp.NodeInfo
 
+type PartType = 0 | 1 | 2
+
+type RestType = 'str' | 'num'
+
 const utils = {
   System,
   dayjs,
-  isNaN(value: number | string | null | undefined) {
+  isNaN(value: number | string | null | undefined): boolean {
     const deg = /^-?\d+(\.\d+)?$/i
     return !deg.test(String(value))
   },
@@ -17,7 +21,7 @@ const utils = {
    * @param value {Number | String} 像素单位值
    * @param restype {"str" | "num"} 返回值类型
    */
-  formatPx(value: number | string, restype = 'str') {
+  formatPx(value: number | string, restype: RestType = 'str'): string | number {
     let format = value || 0
     if (typeof format === 'string' && utils.isNaN(format)) {
       if (/^\d+px$/i.test(format))
@@ -38,7 +42,7 @@ const utils = {
    *@defaultVal 默认值
    *@part 取值部分 0 取全部值 1 取元部分 2取角分部分
    */
-  fenToYuan(val: any, digits = -1, defaultVal = '', part = 0) {
+  fenToYuan(val: any, digits: number = -1, defaultVal: string = '', part: PartType = 0): string | undefined {
     // let part1 = Math.floor(val / 100); // 元部分
     // let part2 = val % 100; // 角分部分
     let newVal: any = ''
@@ -70,7 +74,7 @@ const utils = {
    * 对象深度合并
    * 用source上的数据覆盖掉target上的数据，返回target
    */
-  deepMerge(target: { [key: string]: any }, source: any) {
+  deepMerge(target: { [key: string]: any }, source: { [key: string]: any }) {
     // 遍历 source 的所有属性
     for (const prop in source) {
       // 判断是否为自身属性
@@ -95,7 +99,7 @@ const utils = {
    * 背景值转样式
    * @param {string} value
    */
-  bg2style(value: string) {
+  bg2style(value: string): string {
     const result = {} as any
     const colorReg = /^(\#|rgba?)/i
     const colorsReg = /^linear\-gradient/i
@@ -128,12 +132,14 @@ const utils = {
     for (let i = str.length; i < len; i++) str += Math.floor(Math.random() * 32).toString(32)
     return str
   },
-  querySelector<T extends boolean>(selectors: string, component: globalThis.ComponentPublicInstance, all?: T): Promise<ReturnBasedOnBool<T>> {
+  querySelector<T extends boolean>(
+    selectors: string,
+    component: globalThis.ComponentPublicInstance,
+    all?: T,
+  ): Promise<ReturnBasedOnBool<T>> {
     return new Promise((resolve, reject) => {
       try {
-        const query = uni
-          .createSelectorQuery()
-          .in(component)
+        const query = uni.createSelectorQuery().in(component)
         const func = all ? query.selectAll : query.select
         func(selectors)
           .boundingClientRect((data) => {
@@ -146,16 +152,17 @@ const utils = {
       }
     })
   },
-  /*
+  /**
    * 兼容css中的单位
    * 如果值为数字，则拼接 'rpx'，否则直接返回字符串的值
+   * @param {number} val 数值
    */
-  addUnit(val) {
+  addUnit(val: string | number) {
+    val = String(val)
     let newVal
     if (this.isNumber(val))
       newVal = `${val}rpx`
-    else
-      newVal = val
+    else newVal = val
 
     // #ifdef H5
     if (newVal && newVal.includes('rpx'))
@@ -168,7 +175,7 @@ const utils = {
    * 字符串是否为数字
    *@value 要判断的字符串
    */
-  isNumber(value) {
+  isNumber(value: string) {
     return !Number.isNaN(Number.parseFloat(value)) && Number.isFinite(value)
   },
 }

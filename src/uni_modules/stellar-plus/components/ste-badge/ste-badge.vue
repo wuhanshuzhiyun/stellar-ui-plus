@@ -61,7 +61,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <view class="ste-badge-root" :style="[rootStyle, { display: isInline ? 'inline-block' : 'block' }]">
+  <view class="ste-badge-root" :style="[rootStyle as any, { display: isInline ? 'inline-block' : 'block' }]">
     <view
       class="ste-badge-content"
       :style="[cmpContentStyle]"

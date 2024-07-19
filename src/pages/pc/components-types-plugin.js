@@ -15,13 +15,16 @@ module.exports = function () {
   // 查找目录下所有文件夹名称
   const folders = fs.readdirSync(dir).filter(item => fs.statSync(path.join(dir, item)).isDirectory())
   let code = ''
+  let components = ''
   folders.forEach((comontent) => {
     const name = convertToCamelCase(comontent)
     const type = name.charAt(0).toUpperCase() + name.slice(1)
     code
-      += `import ${name} from "../components/${comontent}/${comontent}.vue"\nexport type ${type} = InstanceType<typeof ${name}>\n`
+      += `import ${name} from "../components/${comontent}/${comontent}.vue"\nexport type ${type.replace(/^Ste/, 'Ref')} = InstanceType<typeof ${name}>\n\n`
+    components += `\t\t${type}: typeof ${name};\n`
   })
+  const result = `import '@vue/runtime-core'\n\ndeclare module '@vue/runtime-core' {\n\texport interface GlobalComponents {\n${components}\t}\n}\n`
   // eslint-disable-next-line node/prefer-global/process
   const outfile = path.join(process.cwd(), 'src/uni_modules/stellar-plus/types/components.d.ts')
-  fs.writeFileSync(outfile, code)
+  fs.writeFileSync(outfile, code + result)
 }

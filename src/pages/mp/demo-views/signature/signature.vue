@@ -1,22 +1,23 @@
 <script setup lang="ts">
-import type { SteSignature } from '@/uni_modules/stellar-plus/types/components';
 import { ref } from 'vue';
-const signature = ref<SteSignature>();
-const save = () => {
+import type { RefSignature } from '@/uni_modules/stellar-plus/types/components';
+
+const signature = ref<RefSignature>();
+function save() {
   signature.value?.save(res => {
     uni.previewImage({
       urls: [res],
     });
   });
-};
+}
 
-const back = () => {
+function back() {
   signature.value?.back();
-};
+}
 
-const clear = () => {
+function clear() {
   signature.value?.clear();
-};
+}
 </script>
 
 <template>
@@ -35,7 +36,7 @@ const clear = () => {
       <view class="demo-item">
         <view class="title">画笔颜色和线宽</view>
         <view class="signature-demo">
-          <ste-signature strokeColor="red" :lineWidth="1" />
+          <ste-signature stroke-color="red" :line-width="1" />
         </view>
       </view>
     </view>

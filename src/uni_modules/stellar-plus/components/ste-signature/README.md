@@ -10,9 +10,9 @@
 	- 此处使用 `jpg` 格式。因为媒体预览背景是黑色，画笔颜色是黑色，`png`格式图片时预览看不见
 ```html
 <script setup lang="ts">
-	import type { SteSignature } from "@/uni_modules/stellar-plus/types/components";
+	import type { RefSignature } from "@/uni_modules/stellar-plus/types/components";
 	import { ref } from "vue"
-	const signature = ref<SteSignature>()
+	const signature = ref<RefSignature>()
 	const save = () => {
 		signature.value?.save(res => {
 			uni.previewImage({
@@ -74,7 +74,6 @@
 <ste-signature strokeColor="#f0f" lineWidth="1" />
 ```
 
-
 ### API
 #### 组件属性(Props)
 
@@ -86,7 +85,6 @@
 | `type`				| 保存图片类型	| `String`					| `png`			| `jpg`	| -				|
 | `width`				| 宽度,单位rpx	| `String`,`Number`	| `100%`		| -			| -				|
 | `height`			| 高度,单位rpx	| `String`,`Number`	| `100%`		| -			| -				|
-
 
 #### 组件事件(Events)
 
@@ -103,6 +101,5 @@
 |`clear`| 清空画布		|-													|-				|
 |`back`	| 回退				|-													|-				|
 |`save`	| 保存为图片	|(base64)=>void,(err)=>void	|-				|
-
 
 {{xuyajun}}

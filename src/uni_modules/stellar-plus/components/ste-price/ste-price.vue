@@ -71,7 +71,7 @@ const cmpYuanPriceStyle = computed(() => {
 });
 
 const cmpFenPriceStyle = computed(() => {
-  let fontSize = 0;
+  let fontSize: string | number;
   if (props.isSuggestPrice) {
     fontSize = utils.formatPx(props.fontSize);
   } else {

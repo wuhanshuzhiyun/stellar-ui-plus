@@ -52,6 +52,10 @@ export const badgeProps = {
    * @description display属性是否为inline-block 默认 false
    */
   isInline: Boolean,
+  /**
+   * @description 样式
+   */
+  rootStyle: Object,
 }
 
 export type BadgeProps = ExtractPropTypes<typeof badgeProps>

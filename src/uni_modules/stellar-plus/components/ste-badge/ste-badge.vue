@@ -12,27 +12,17 @@ const cmpContentStyle = computed(() => {
   if (props.background) {
     style = { backgroundColor: 'transparent', ...utils.bg2style(props.background) };
   }
-  if (props.offsetX != 'auto' || props.offsetY != 'auto' || props.offsetX == 0 || props.offsetY == 0) {
-    style.transform = 'translate(0,0)';
 
-    switch (props.position) {
-      case 'topLeft':
-        style.left = utils.addUnit(props.offsetX);
-        style.top = utils.addUnit(props.offsetY);
-        break;
-      case 'bottomLeft':
-        style.left = utils.addUnit(props.offsetX);
-        style.bottom = utils.addUnit(props.offsetY);
-        break;
-      case 'bottomRight':
-        style.right = utils.addUnit(props.offsetX);
-        style.bottom = utils.addUnit(props.offsetY);
-        break;
-      default:
-        style.right = utils.addUnit(props.offsetX);
-        style.top = utils.addUnit(props.offsetY);
-        break;
-    }
+  const offsetX = String(props.offsetX);
+  const offsetY = String(props.offsetY);
+  if ((offsetX !== 'auto' && offsetX !== '0') || (offsetY !== 'auto' && offsetY !== '0')) {
+    style.transform = 'translate(0, 0)';
+    style[props.position === 'topLeft' || props.position === 'bottomLeft' ? 'left' : 'right'] = utils.addUnit(
+      props[props.position.includes('Left') ? 'offsetX' : 'offsetY']
+    );
+    style[props.position === 'topRight' || props.position === 'topLeft' ? 'top' : 'bottom'] = utils.addUnit(
+      props[props.position.includes('Top') ? 'offsetX' : 'offsetY']
+    );
   }
   if (props.showBorder) {
     style.border = 'solid 1px ' + props.borderColor;
@@ -47,11 +37,15 @@ const cmpShowContent = computed(() => {
 });
 
 const cmpContent = computed(() => {
-  if (utils.isNumber(props.content) && props.content > props.max) {
+  if (utils.isNumber(String(props.content)) && Number(props.content) > props.max) {
     return `${props.max}+`;
   } else {
     return String(props.content);
   }
+});
+
+const cmpIsSmall = computed(() => {
+  return (props.content && String(props.content).length == 1) || Number(props.content) < 10;
 });
 
 function handleClick(event: any) {
@@ -75,11 +69,7 @@ export default defineComponent({
       v-if="showDot || cmpShowContent || $slots.content"
     >
       <view v-if="showDot" class="dot-box" />
-      <view
-        v-else
-        class="content-box"
-        :class="{ 'no-padding': $slots.content || (content && (content.length == 1 || content < 10)) }"
-      >
+      <view v-else class="content-box" :class="{ 'no-padding': $slots.content || cmpIsSmall }">
         <slot name="content">
           <view class="ste-badge-content-text">{{ cmpContent }}</view>
         </slot>
@@ -102,6 +92,7 @@ $default-size: 28rpx;
     background-color: #ee0a24;
     border-radius: 99999rpx;
     width: fit-content;
+    background-size: cover;
 
     .content-box {
       display: flex;

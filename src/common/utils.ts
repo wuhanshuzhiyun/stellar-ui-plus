@@ -3,7 +3,10 @@ import config from './config'
 let windowWidth: number = 0
 
 const utils = {
-  /** px转rpx */
+  /**
+   * px转rpx
+   * @param {number} px 待转换的px值
+   */
   px2rpx(px: number) {
     if (windowWidth === 0)
       windowWidth = uni.getSystemInfoSync().windowWidth
@@ -13,9 +16,9 @@ const utils = {
   },
   /**
    * 拼接image的src
-   * val 图片地址
-   * isTheme 是否包含皮肤
-   * systemThemeBaseUrl 系统皮肤路径
+   * @param {string} val 图片地址
+   * @param {boolean} isTheme 是否包含皮肤
+   * @param {string} systemTheme 系统皮肤路径
    */
   joinSrc(val: string, isTheme = false, systemTheme: string = '') {
     if (val === '' || val == null)
@@ -39,9 +42,9 @@ const utils = {
   },
   /**
    * 拼接background的url，支持 joinUrl('图片.png no-repeat cover/100% 100%')完整写法
-   * val 图片地址
-   * isTheme 是否包含皮肤
-   * systemThemeBaseUrl 系统皮肤路径
+   * @param {string} val 图片地址
+   * @param {boolean} isTheme 是否包含皮肤
+   * @param {string} systemTheme 系统皮肤路径
    */
   joinUrl(val: string, isTheme = false, systemTheme: string = '') {
     if (val === '' || val == null) {

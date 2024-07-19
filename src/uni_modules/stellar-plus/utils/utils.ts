@@ -99,7 +99,7 @@ const utils = {
    * 背景值转样式
    * @param {string} value
    */
-  bg2style(value: string): string {
+  bg2style(value: string) {
     const result = {} as any
     const colorReg = /^(\#|rgba?)/i
     const colorsReg = /^linear\-gradient/i

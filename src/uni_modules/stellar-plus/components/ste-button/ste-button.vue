@@ -73,43 +73,10 @@ const cmpBtnStyle = computed(() => {
   return utils.deepMerge(style, props.rootStyle);
 });
 
-function handleClick(e: any) {
+function handleClick(e: Event) {
   if (!props.disabled && !props.loading) {
     emit(CLICK_EVENT, e);
   }
-}
-function getuserinfo(e: any) {
-  emit('getuserinfo', e);
-}
-function contact(e: any) {
-  emit('contact', e);
-}
-function getphonenumber(e: any) {
-  emit('getphonenumber', e);
-}
-function getrealtimephonenumber(e: any) {
-  emit('getrealtimephonenumber', e);
-}
-function greeprivacyauthorization(e: any) {
-  emit('greeprivacyauthorization', e);
-}
-function error(e: any) {
-  emit('error', e);
-}
-function launchapp(e: any) {
-  emit('launchapp', e);
-}
-function opensetting(e: any) {
-  emit('opensetting', e);
-}
-function chooseavatar(e: any) {
-  emit('chooseavatar', e);
-}
-function getAuthorize(e: any) {
-  emit('getAuthorize', e);
-}
-function followLifestyle(e: any) {
-  emit('followLifestyle', e);
 }
 </script>
 
@@ -130,19 +97,17 @@ export default defineComponent({
     :style="[cmpBtnStyle]"
     :open-type="openType"
     :scope="scope"
-    @getuserinfo="getuserinfo"
-    @getUserInfo="getuserinfo"
-    @contact="contact"
-    @getphonenumber="getphonenumber"
-    @getPhoneNumber="getphonenumber"
-    @getrealtimephonenumber="getrealtimephonenumber"
-    @agreeprivacyauthorization="agreeprivacyauthorization"
-    @error="error"
-    @opensetting="opensetting"
-    @launchapp="launchapp"
-    @chooseavatar="chooseavatar"
-    @getAuthorize="getAuthorize"
-    @followLifestyle="followLifestyle"
+    @getuserinfo="emit('getuserinfo', $event)"
+    @contact="emit('contact', $event)"
+    @getphonenumber="emit('getphonenumber', $event)"
+    @getrealtimephonenumber="emit('getrealtimephonenumber', $event)"
+    @agreeprivacyauthorization="emit('agreeprivacyauthorization', $event)"
+    @error="emit('error', $event)"
+    @opensetting="emit('opensetting', $event)"
+    @launchapp="emit('launchapp', $event)"
+    @chooseavatar="emit('chooseavatar', $event)"
+    @getAuthorize="emit('getAuthorize', $event)"
+    @followLifestyle="emit('followLifestyle', $event)"
   >
     <view class="btn-box">
       <text v-if="loading">加载中.......</text>
@@ -158,19 +123,17 @@ export default defineComponent({
     :style="[cmpBtnStyle]"
     :open-type="openType"
     :scope="scope"
-    @getuserinfo="getuserinfo"
-    @getUserInfo="getuserinfo"
-    @contact="contact"
-    @getphonenumber="getphonenumber"
-    @getPhoneNumber="getphonenumber"
-    @getrealtimephonenumber="getrealtimephonenumber"
-    @agreeprivacyauthorization="agreeprivacyauthorization"
-    @error="error"
-    @opensetting="opensetting"
-    @launchapp="launchapp"
-    @chooseavatar="chooseavatar"
-    @getAuthorize="getAuthorize"
-    @followLifestyle="followLifestyle"
+    @getuserinfo="emit('getuserinfo', $event)"
+    @contact="emit('contact', $event)"
+    @getphonenumber="emit('getphonenumber', $event)"
+    @getrealtimephonenumber="emit('getrealtimephonenumber', $event)"
+    @agreeprivacyauthorization="emit('agreeprivacyauthorization', $event)"
+    @error="emit('error', $event)"
+    @opensetting="emit('opensetting', $event)"
+    @launchapp="emit('launchapp', $event)"
+    @chooseavatar="emit('chooseavatar', $event)"
+    @getAuthorize="emit('getAuthorize', $event)"
+    @followLifestyle="emit('followLifestyle', $event)"
   >
     <view class="btn-box">
       <text v-if="loading">加载中.......</text>

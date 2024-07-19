@@ -21,7 +21,7 @@ const utils = {
    * @param value {Number | String} 像素单位值
    * @param restype {"str" | "num"} 返回值类型
    */
-  formatPx(value: number | string, restype: RestType = 'str'): string | number {
+  formatPx(value: number | string, restype: RestType = 'str') {
     let format = value || 0
     if (typeof format === 'string' && utils.isNaN(format)) {
       if (/^\d+px$/i.test(format))

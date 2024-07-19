@@ -5,7 +5,6 @@ import type {
   ButtonOnChooseaddressEvent,
   ButtonOnChooseavatarEvent,
   ButtonOnChooseinvoicetitleEvent,
-  ButtonOnErrorEvent,
   ButtonOnGetphonenumberEvent,
   ButtonOnLaunchappEvent,
   ButtonOnLoginEvent,
@@ -71,10 +70,10 @@ export const buttonProps = {
 export type ButtonProps = ExtractPropTypes<typeof buttonProps>
 
 export const buttonEmits = {
-  [CLICK_EVENT]: (evt: MouseEvent) => evt instanceof Object,
+  [CLICK_EVENT]: (evt: Event) => evt instanceof Object,
   getphonenumber: (evt: ButtonOnGetphonenumberEvent) => evt instanceof Object,
   getuserinfo: (evt: any) => evt instanceof Object,
-  error: (evt: ButtonOnErrorEvent) => evt instanceof Object,
+  error: (evt: any) => evt instanceof Object,
   opensetting: (evt: ButtonOnOpensettingEvent) => evt instanceof Object,
   launchapp: (evt: ButtonOnLaunchappEvent) => evt instanceof Object,
   contact: (evt: any) => evt instanceof Object,
@@ -85,7 +84,6 @@ export const buttonEmits = {
   chooseinvoicetitle: (evt: ButtonOnChooseinvoicetitleEvent) => evt instanceof Object,
   subscribe: (evt: ButtonOnSubscribeEvent) => evt instanceof Object,
   login: (evt: ButtonOnLoginEvent) => evt instanceof Object,
-  im: (evt: any) => evt instanceof Object,
   getrealtimephonenumber: (evt: any) => evt instanceof Object,
   greeprivacyauthorization: (evt: any) => evt instanceof Object,
   getAuthorize: (evt: any) => evt instanceof Object,

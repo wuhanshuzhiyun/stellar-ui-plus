@@ -4,7 +4,7 @@ import { ref } from 'vue';
 const fontFamily = ref('ste-' + Math.round(Math.random() * 10000000000));
 const fontUrl = ref('');
 const iconCodeStr = ref('');
-const iconCodeList = ref([]);
+const iconCodeList = ref<string[]>([]);
 const show = ref(false);
 const charType = ref(0);
 
@@ -35,14 +35,13 @@ function preview() {
 
   uni.loadFontFace({
     family: fontFamily.value,
-    source: fontUrl.value,
     source: result.substr(0, result.length - 1),
     success: res => {
       show.value = true;
     },
     fail(err) {
       console.log('err', err);
-      this.showToast({ title: '加载字体失败', icon: 'none' });
+      uni.showToast({ title: '加载字体失败', icon: 'none' });
     },
   });
 }
@@ -84,32 +83,11 @@ function preview() {
           <view>文字、图标32px</view>
           <view class="preview-item" style="display: flex; align-items: center; line-height: 1">
             展
-            <ste-icon
-              size="32px"
-              :fontFamily="fontFamily"
-              :code="item"
-              color="#FF4500"
-              :marginRight="marginRight"
-              :showBorder="true"
-            ></ste-icon>
+            <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
             示2
-            <ste-icon
-              size="32px"
-              :fontFamily="fontFamily"
-              :code="item"
-              color="#FF4500"
-              :marginRight="marginRight"
-              :showBorder="true"
-            ></ste-icon>
+            <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
             3a
-            <ste-icon
-              size="32px"
-              :fontFamily="fontFamily"
-              :code="item"
-              color="#FF4500"
-              :marginRight="marginRight"
-              :showBorder="true"
-            ></ste-icon>
+            <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
             b
           </view>
           <view>弹性盒子居中</view>
@@ -117,32 +95,11 @@ function preview() {
           <view>文字32px，图标24px</view>
           <view class="preview-item" style="display: flex; align-items: center">
             展
-            <ste-icon
-              size="18px"
-              :fontFamily="fontFamily"
-              :code="item"
-              color="#FF4500"
-              :marginRight="marginRight"
-              :showBorder="true"
-            ></ste-icon>
+            <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
             示2
-            <ste-icon
-              size="18px"
-              :fontFamily="fontFamily"
-              :code="item"
-              color="#FF4500"
-              :marginRight="marginRight"
-              :showBorder="true"
-            ></ste-icon>
+            <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
             3a
-            <ste-icon
-              size="18px"
-              :fontFamily="fontFamily"
-              :code="item"
-              color="#FF4500"
-              :marginRight="marginRight"
-              :showBorder="true"
-            ></ste-icon>
+            <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
             b
           </view>
           <view>非弹性盒子</view>
@@ -154,19 +111,11 @@ function preview() {
               :fontFamily="fontFamily"
               :code="item"
               color="#FF4500"
-              :marginRight="marginRight"
               marginTop="0px"
               :showBorder="true"
             ></ste-icon>
             展示
-            <ste-icon
-              size="32px"
-              :fontFamily="fontFamily"
-              :code="item"
-              color="#FF4500"
-              :marginRight="marginRight"
-              :showBorder="true"
-            ></ste-icon>
+            <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
             展示展示展示展示23ab
           </view>
           <view class="gap"></view>
@@ -178,8 +127,6 @@ function preview() {
             :fontFamily="fontFamily"
             :code="item"
             color="#FF4500"
-            :marginRight="marginRight"
-            :showBorder="showBorder"
           ></ste-icon>
         </view>
       </view>

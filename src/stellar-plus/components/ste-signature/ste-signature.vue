@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { computed, defineProps, onMounted, getCurrentInstance, defineEmits, defineExpose } from 'vue';
+import { computed, defineEmits, defineExpose, defineProps, getCurrentInstance, onMounted } from 'vue';
 import utils from '../../utils/utils';
-import type { Stroke } from './types';
 import type { HTMLMoveEvent, TouchEvent } from '../../types/global.d';
-
-const emits = defineEmits({
-  start: () => {},
-  signing: () => {},
-  end: () => {},
-});
+import type { Stroke } from './types';
 
 const props = defineProps({
   customClass: { type: String, default: () => '' },
@@ -17,6 +11,12 @@ const props = defineProps({
   type: { type: String, default: () => 'png' },
   width: { type: [String, Number], default: () => '100%' },
   height: { type: [String, Number], default: () => '100%' },
+});
+
+const emits = defineEmits({
+  start: () => {},
+  signing: () => {},
+  end: () => {},
 });
 
 const cmpRootStyle = computed(() => ({
@@ -32,7 +32,7 @@ const strokeing = ref<Stroke[]>([]);
 const strokes = ref<Stroke[][]>([]);
 const thas = ref<globalThis.ComponentPublicInstance | null>();
 
-const initCtx = () => {
+function initCtx() {
   thas.value = getCurrentInstance()?.proxy;
   ctx.value = uni.createCanvasContext(canvasId.value, thas.value);
   ctx.value?.setLineCap('round');
@@ -40,9 +40,9 @@ const initCtx = () => {
   ctx.value?.setStrokeStyle(props.strokeColor);
   ctx.value?.setLineJoin('round');
   drawStrokes();
-};
+}
 
-const drawStrokes = () => {
+function drawStrokes() {
   ctx.value?.clearRect(0, 0, 1920, 1080);
   if (!strokes.value.length) {
     ctx.value?.stroke();
@@ -54,15 +54,15 @@ const drawStrokes = () => {
     ctx.value?.beginPath();
     ctx.value?.moveTo(stroke[0].x, stroke[0].y);
     stroke.forEach(({ x, y }, index) => {
-      if (index == 0) return;
+      if (index === 0) return;
       ctx.value?.lineTo(x, y);
     });
     ctx.value?.stroke();
     ctx.value?.draw(true);
   });
-};
+}
 
-const drawStrokeing = () => {
+function drawStrokeing() {
   const length = strokeing.value.length;
   if (!length) return;
   ctx.value?.beginPath();
@@ -72,18 +72,18 @@ const drawStrokeing = () => {
   ctx.value?.lineTo(end.x, end.y);
   ctx.value?.stroke();
   ctx.value?.draw(true);
-};
+}
 
 // #ifdef H5
-const getH5MousePosition = (e: HTMLMoveEvent) => {
+function getH5MousePosition(e: HTMLMoveEvent) {
   return {
     x: e.clientX - e.target.offsetLeft,
     y: e.clientY - e.target.offsetTop,
   };
-};
+}
 // #endif
 
-const onTouchStart = (e: TouchEvent) => {
+function onTouchStart(e: TouchEvent) {
   // #ifdef MP
   strokeing.value = [{ x: e.changedTouches[0]?.x, y: e.changedTouches[0]?.y }];
   // #endif
@@ -92,9 +92,9 @@ const onTouchStart = (e: TouchEvent) => {
   // #endif
   drawStrokeing();
   emits('start');
-};
+}
 
-const onTouchMove = (e: TouchEvent) => {
+function onTouchMove(e: TouchEvent) {
   if (!strokeing.value.length) return;
   // #ifdef MP
   strokeing.value.push({ x: e.changedTouches[0].x, y: e.changedTouches[0].y });
@@ -104,29 +104,29 @@ const onTouchMove = (e: TouchEvent) => {
   // #endif
   drawStrokeing();
   emits('signing');
-};
+}
 
-const onTouchEnd = () => {
+function onTouchEnd() {
   strokes.value.push(strokeing.value);
   strokeing.value = [];
   emits('end');
-};
+}
 
 onMounted(() => {
   initCtx();
 });
 
-const clear = () => {
+function clear() {
   strokes.value = [];
   drawStrokes();
-};
+}
 
-const back = () => {
+function back() {
   strokes.value.pop();
   drawStrokes();
-};
+}
 
-const save = async (callback: (res: string) => void, error?: (err: any) => void) => {
+async function save(callback: (res: string) => void, error?: (err: any) => void) {
   if (!strokes.value.length) {
     console.warn('没有绘制签名内容');
     if (error) error('请绘制签名');
@@ -157,7 +157,7 @@ const save = async (callback: (res: string) => void, error?: (err: any) => void)
     },
     thas.value
   );
-};
+}
 
 defineExpose({ save, clear, back });
 </script>

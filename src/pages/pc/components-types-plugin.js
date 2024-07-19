@@ -11,7 +11,7 @@ function convertToCamelCase(str) {
 
 module.exports = function () {
   // eslint-disable-next-line node/prefer-global/process
-  const dir = path.join(process.cwd(), 'src/uni_modules/stellar-plus/components')
+  const dir = path.join(process.cwd(), 'src/stellar-plus/components')
   // 查找目录下所有文件夹名称
   const folders = fs.readdirSync(dir).filter(item => fs.statSync(path.join(dir, item)).isDirectory())
   let code = ''
@@ -25,6 +25,6 @@ module.exports = function () {
   })
   const result = `import '@vue/runtime-core'\n\ndeclare module '@vue/runtime-core' {\n\texport interface GlobalComponents {\n${components}\t}\n}\n`
   // eslint-disable-next-line node/prefer-global/process
-  const outfile = path.join(process.cwd(), 'src/uni_modules/stellar-plus/types/components.d.ts')
+  const outfile = path.join(process.cwd(), 'src/stellar-plus/types/components.d.ts')
   fs.writeFileSync(outfile, code + result)
 }

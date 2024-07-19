@@ -10,7 +10,7 @@
 	- 此处使用 `jpg` 格式。因为媒体预览背景是黑色，画笔颜色是黑色，`png`格式图片时预览看不见
 ```html
 <script setup lang="ts">
-	import type { RefSignature } from "@/uni_modules/stellar-plus/types/components";
+	import type { RefSignature } from "stellar-plus/types/components";
 	import { ref } from "vue"
 	const signature = ref<RefSignature>()
 	const save = () => {

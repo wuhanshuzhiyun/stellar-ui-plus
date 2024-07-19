@@ -27,3 +27,9 @@ declare module 'markdown-it' {
 interface Obj {
   [key: string]: any
 }
+
+declare module 'vue3/jsx-runtime' {
+  namespace JSX {
+    interface IntrinsicElements { }
+  }
+}

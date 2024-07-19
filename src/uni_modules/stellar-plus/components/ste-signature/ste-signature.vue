@@ -2,7 +2,7 @@
 import { computed, defineProps, onMounted, getCurrentInstance, defineEmits, defineExpose } from 'vue';
 import utils from '../../utils/utils';
 import type { Stroke } from './types';
-import type { HTMLMoveEvent, TouchEvent } from '../../types/global.d';
+import type { HTMLMoveEvent, UniTouchEvent } from '../../types/global.d';
 
 const emits = defineEmits({
   start: () => {},
@@ -77,15 +77,18 @@ const drawStrokeing = () => {
 // #ifdef H5
 const getH5MousePosition = (e: HTMLMoveEvent) => {
   return {
-    x: e.clientX - e.target.offsetLeft,
-    y: e.clientY - e.target.offsetTop,
+    x: e.clientX - (e.target?.offsetLeft || 0),
+    y: e.clientY - (e.target?.offsetTop || 0),
   };
 };
 // #endif
 
-const onTouchStart = (e: TouchEvent) => {
+const onMousedown = (e: HTMLMoveEvent) => onTouchStart(e as unknown as UniTouchEvent);
+const onMousemove = (e: HTMLMoveEvent) => onTouchMove(e as unknown as UniTouchEvent);
+
+const onTouchStart = (e: UniTouchEvent) => {
   // #ifdef MP
-  strokeing.value = [{ x: e.changedTouches[0]?.x, y: e.changedTouches[0]?.y }];
+  strokeing.value = [{ x: e.changedTouches[0]?.x || 0, y: e.changedTouches[0]?.y || 0 }];
   // #endif
   // #ifdef H5
   strokeing.value = [getH5MousePosition(e as unknown as HTMLMoveEvent)];
@@ -94,10 +97,10 @@ const onTouchStart = (e: TouchEvent) => {
   emits('start');
 };
 
-const onTouchMove = (e: TouchEvent) => {
+const onTouchMove = (e: UniTouchEvent) => {
   if (!strokeing.value.length) return;
   // #ifdef MP
-  strokeing.value.push({ x: e.changedTouches[0].x, y: e.changedTouches[0].y });
+  strokeing.value.push({ x: e.changedTouches[0].x || 0, y: e.changedTouches[0].y || 0 });
   // #endif
   // #ifdef H5
   strokeing.value.push(getH5MousePosition(e as unknown as HTMLMoveEvent));
@@ -166,8 +169,8 @@ defineExpose({ save, clear, back });
   <view
     class="ste-signature"
     :style="cmpRootStyle"
-    @mousedown="onTouchStart"
-    @mousemove="onTouchMove"
+    @mousedown="onMousedown"
+    @mousemove="onMousemove"
     @mouseup="onTouchEnd"
     @mosueleave="onTouchEnd"
   >

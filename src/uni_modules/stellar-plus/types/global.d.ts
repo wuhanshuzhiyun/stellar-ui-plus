@@ -1,27 +1,17 @@
-export interface TouchEvent {
-  changedTouches: Touch[]
-  targetTouches: Touch[]
-  touches: Touch[]
+export interface UniTouch extends Touch {
+  x?: number
+  y?: number
+}
+export interface UniTouchList extends TouchList {
+  [index: number]: UniTouch
 }
 
-export interface Touch {
-  clientX: number
-  clientY: number
-  identifier: number
-  pageX: number
-  pageY: number
-  screenX: number
-  screenY: number
-  radiusX: number
-  radiusY: number
-  rotationAngle: number
-  force: number
-  altitudeAngle: number
-  azimuthAngle: number
-  x: number
-  y: number
+export interface UniTouchEvent extends TouchEvent {
+  changedTouches: UniTouchList
+  targetTouches: UniTouchList
+  touches: UniTouchList
 }
 
 export interface HTMLMoveEvent extends MouseEvent {
-  target: EventTarget & { offsetLeft: number, offsetTop: number }
+  target: EventTarget & { offsetLeft?: number, offsetTop?: number } | null
 }

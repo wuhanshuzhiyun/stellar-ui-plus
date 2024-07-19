@@ -22,7 +22,6 @@ export default defineUniPages({
     autoscan: true,
     custom: {
       '^(.*)': '@/components/$1/$1.vue',
-      '^ste-(.*)': 'stellar-plus/components/$1/$1.vue',
     },
   },
 })

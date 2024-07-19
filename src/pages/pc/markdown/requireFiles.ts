@@ -6,7 +6,7 @@ const parser = new DOMParser()
 function templateFiles() {
   const deg = /.+\/(\w+)\.(md|json)$/
   const map: Obj = {}
-  const mds: { [key: string]: Markdown } = import.meta.glob('../../../stellar-plus/template/*.md', { eager: true })
+  const mds: { [key: string]: Markdown } = import.meta.glob('../../../uni_modules/stellar-plus/template/*.md', { eager: true })
   for (const k in mds) {
     const name = k.replace(deg, '$1')
     map[name] = mds[k].html
@@ -129,7 +129,7 @@ export function restsFiles() {
 
 export function componentFiles() {
   const deg = /.*components\/ste-([\w\-]+)\/[\w\-]+\.(md|json)$/
-  const markdowns: { [key: string]: Markdown } = import.meta.glob('../../../stellar-plus/components/**/*.md', { eager: true })
+  const markdowns: { [key: string]: Markdown } = import.meta.glob('../../../uni_modules/stellar-plus/components/**/*.md', { eager: true })
 
   const markdownsData: Obj = {}
   for (const k in markdowns) {
@@ -140,7 +140,7 @@ export function componentFiles() {
 
   const groupData: { [key: string]: Group } = {}
 
-  const componentJson: Obj = import.meta.glob('../../../stellar-plus/components/**/*.json', { eager: true })
+  const componentJson: Obj = import.meta.glob('../../../uni_modules/stellar-plus/components/**/*.json', { eager: true })
   const componentData: Obj = {}
   for (const k in componentJson) {
     const name = k.replace(deg, '$1')

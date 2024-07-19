@@ -24,4 +24,4 @@ dist
 src/components.d.ts
 src/pages.json
 src/uni-pages.d.ts
-src/stellar-plus/types/components.d.ts
+src/uni_modules/stellar-plus/types/components.d.ts

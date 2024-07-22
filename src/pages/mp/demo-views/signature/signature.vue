@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { RefSignature } from '@/uni_modules/stellar-plus/types/components';
+import type { RefSignature } from '@/uni_modules/stellar-plus/types/refComponents';
 
 const signature = ref<RefSignature>();
 function save() {

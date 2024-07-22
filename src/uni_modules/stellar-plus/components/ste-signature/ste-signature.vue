@@ -136,7 +136,7 @@ const save = async (callback: (res: string) => void, error?: (err: any) => void)
     return;
   }
   if (!thas.value) return;
-  const canvas = await utils.querySelector<false>(`.ste-signature #${canvasId.value}`, thas.value);
+  const canvas = await utils.querySelector<false>(`.ste-signature-root #${canvasId.value}`, thas.value);
   if (!canvas) {
     console.error('找不到canvas');
     return;
@@ -167,7 +167,7 @@ defineExpose({ save, clear, back });
 
 <template>
   <view
-    class="ste-signature"
+    class="ste-signature-root"
     :style="cmpRootStyle"
     @mousedown="onMousedown"
     @mousemove="onMousemove"

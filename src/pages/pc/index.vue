@@ -47,6 +47,7 @@ onLoad(() => {
   height: 100vh;
   background-color: #fff;
   position: relative;
+
   header {
     height: 30px;
     line-height: 30px;
@@ -54,6 +55,7 @@ onLoad(() => {
     color: #eee;
     width: 100%;
     background-color: #409eff;
+
     a {
       color: #fff;
       font-weight: bold;
@@ -62,7 +64,7 @@ onLoad(() => {
 
   .content {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 30px);
     display: flex;
 
     .left {

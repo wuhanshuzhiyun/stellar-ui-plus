@@ -159,6 +159,5 @@ export function componentFiles() {
   })
 
   datas.sort((a, b) => a.sort - b.sort)
-  console.log('component-datas', datas)
   return datas
 }

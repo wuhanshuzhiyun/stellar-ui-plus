@@ -73,24 +73,12 @@ onLoad(() => {
             background-color: #f5f5f5;
         }
 
-        .content {
-            width: 100%;
+        .right {
+            width: calc(100% - 240px);
             height: 100%;
-            display: flex;
-
-            .left {
-                width: 240px;
-                height: 100%;
-                background-color: #f5f5f5;
-            }
-
-            .right {
-                width: calc(100% - 240px);
-                height: 100%;
-                background-color: #fff;
-                overflow-y: auto;
-                padding-right: calc(var(--pc-view-width) + 50px);
-            }
+            background-color: #fff;
+            overflow-y: auto;
+            padding-right: calc(var(--pc-view-width) + 50px);
         }
     }
 }

@@ -7,12 +7,13 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import { defineEmits, ref, defineProps, computed } from 'vue';
+import { defineEmits, ref, defineProps, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
 import type { BaseEvent } from '../../types/event.d';
 
 const props = defineProps(propsData);
+const thas = ref<globalThis.ComponentPublicInstance | null>();
 
 const status = ref(0); // 0:loading 1:success 2:fail
 const iconSize = ref(50);
@@ -21,7 +22,7 @@ const initializing = ref(true);
 const emits = defineEmits<{
     (e: 'click', event?: Event): void;
     (e: 'load', event?: BaseEvent): void;
-    (e: 'error', event?: Event): void;
+    (e: 'error', event?: BaseEvent): void;
 }>();
 
 const cmpStyle = computed(() => {
@@ -49,6 +50,14 @@ const cmpStyle = computed(() => {
     };
 });
 
+watch(
+    () => props.src,
+    () => {
+        status.value = 0;
+        initializing.value = true;
+    }
+);
+
 const onLoadOver = (e: BaseEvent) => {
     initializing.value = false;
     if (status.value !== 1) status.value = 1;
@@ -56,12 +65,33 @@ const onLoadOver = (e: BaseEvent) => {
 };
 
 const onFault = (e?: BaseEvent) => {
-    status.value = 2;
+    if (status.value !== 2) status.value = 2;
+    emits('error', e);
 };
 
 const click = (e: Event) => {
     emits('click', e);
 };
+
+function initIconSize() {
+    nextTick(async () => {
+        if (!thas.value) return;
+        const dom = await utils.querySelector<false>('.ste-image-root', thas.value);
+        if (!dom) return;
+        const { width = 0, height = 0 } = dom;
+        const size = width <= height ? width : height;
+        if (size <= 30) iconSize.value = 12 * 2;
+        else if (size <= 50) iconSize.value = 20 * 2;
+        else if (size <= 100) iconSize.value = 30 * 2;
+        else if (size <= 150) iconSize.value = 50 * 2;
+        else iconSize.value = 70 * 2;
+    });
+}
+
+onMounted(() => {
+    thas.value = getCurrentInstance()?.proxy;
+    initIconSize();
+});
 </script>
 <template>
     <view class="ste-image-root" :style="[cmpStyle]">
@@ -90,7 +120,31 @@ const click = (e: Event) => {
         </view>
     </view>
 </template>
-<style scoped lang="scss">
+
+<style lang="scss" scoped>
 .ste-image-root {
+    width: var(--image-root-width);
+    height: var(--image-root-height);
+    display: var(--image-root-display);
+    font-size: 24rpx;
+    color: #bbbbbb;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--image-root-background-color);
+    border-radius: var(--image-root-radius);
+    overflow: hidden;
+    line-height: 1;
+    vertical-align: top;
+    position: relative;
+
+    & > image {
+        width: var(--image-root-width);
+        height: var(--image-root-height);
+    }
+
+    .loading-icon {
+        position: absolute;
+        z-index: 2;
+    }
 }
 </style>

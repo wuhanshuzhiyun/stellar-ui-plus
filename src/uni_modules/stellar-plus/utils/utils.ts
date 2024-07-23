@@ -125,6 +125,17 @@ const utils = {
     return result
   },
   /**
+   * 延迟执行
+   * @millisecond 延迟的秒数
+   */
+  sleep(millisecond: number) {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, millisecond)
+    })
+  },
+  /**
    * 全局唯一标识符
    * @param {number} len uuid的长度
    * @param {boolean} firstU 将返回的首字母置为"u
@@ -134,17 +145,16 @@ const utils = {
     for (let i = str.length; i < len; i++) str += Math.floor(Math.random() * 32).toString(32)
     return str
   },
-  querySelector<T extends boolean>(
-    selectors: string,
-    component: globalThis.ComponentPublicInstance,
-    all?: T,
-  ): Promise<ReturnBasedOnBool<T>> {
+  querySelector<T extends boolean>(selectors: string, component: globalThis.ComponentPublicInstance, all?: T): Promise<ReturnBasedOnBool<T>> {
     return new Promise((resolve, reject) => {
       try {
         const func = all ? 'selectAll' : 'select'
-        uni.createSelectorQuery().in(component)[func](selectors).boundingClientRect((data) => {
-          resolve(data as ReturnBasedOnBool<T>)
-        })
+        uni.createSelectorQuery()
+          .in(component)
+          [func](selectors)
+          .boundingClientRect((data) => {
+            resolve(data as ReturnBasedOnBool<T>)
+          })
           .exec()
       }
       catch (e) {
@@ -173,10 +183,10 @@ const utils = {
   },
   /**
    * 字符串是否为数字
-   *@value 要判断的字符串
+   * @value 要判断的字符串
    */
   isNumber(value: string) {
-    return !Number.isNaN(Number.parseFloat(value)) && Number.isFinite(value)
+    return !Number.isNaN(Number.parseFloat(value)) && Number.isFinite(Number(value))
   },
 }
 

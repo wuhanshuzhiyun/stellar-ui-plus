@@ -141,12 +141,10 @@ const utils = {
   ): Promise<ReturnBasedOnBool<T>> {
     return new Promise((resolve, reject) => {
       try {
-        const query = uni.createSelectorQuery().in(component)
-        const func = all ? query.selectAll : query.select
-        func(selectors)
-          .boundingClientRect((data) => {
-            resolve(data as ReturnBasedOnBool<T>)
-          })
+        const func = all ? 'selectAll' : 'select'
+        uni.createSelectorQuery().in(component)[func](selectors).boundingClientRect((data) => {
+          resolve(data as ReturnBasedOnBool<T>)
+        })
           .exec()
       }
       catch (e) {

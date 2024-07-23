@@ -1,23 +1,16 @@
 <script setup lang="ts">
-import { computed, defineProps, onMounted, getCurrentInstance, defineEmits, defineExpose } from 'vue';
+import { computed, onMounted, getCurrentInstance, defineProps, defineEmits, defineExpose } from 'vue';
 import utils from '../../utils/utils';
 import type { Stroke } from './types';
 import type { HTMLMouseEvent, UniTouchEvent } from '../../types/event.d';
+import propsData from './props';
 
+const props = defineProps(propsData);
 const emits = defineEmits<{
-    start?: () => void;
-    signing?: () => void;
-    end?: () => void;
-}>({});
-
-const props = defineProps({
-    customClass: { type: String, default: () => '' },
-    lineWidth: { type: Number, default: () => 3 },
-    strokeColor: { type: String, default: () => '#000000' },
-    type: { type: String, default: () => 'png' },
-    width: { type: [String, Number], default: () => '100%' },
-    height: { type: [String, Number], default: () => '100%' },
-});
+    (e: 'start'): void;
+    (e: 'signing'): void;
+    (e: 'end'): void;
+}>();
 
 const cmpRootStyle = computed(() => ({
     width: utils.formatPx(props.width),
@@ -130,6 +123,7 @@ const back = () => {
 };
 
 const save = async (callback: (res: string) => void, error?: (err: any) => void) => {
+    console.log('save');
     if (!strokes.value.length) {
         console.warn('没有绘制签名内容');
         if (error) error('请绘制签名');
@@ -141,6 +135,7 @@ const save = async (callback: (res: string) => void, error?: (err: any) => void)
         console.error('找不到canvas');
         return;
     }
+    console.log(canvas);
     uni.canvasToTempFilePath(
         {
             canvasId: canvasId.value,

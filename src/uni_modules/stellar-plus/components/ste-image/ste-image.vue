@@ -7,20 +7,22 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import { defineEmits, ref, computed } from 'vue';
+import { defineEmits, ref, defineProps, computed } from 'vue';
 import utils from '../../utils/utils';
-import props from './props';
+import propsData from './props';
 import type { BaseEvent } from '../../types/event.d';
+
+const props = defineProps(propsData);
 
 const status = ref(0); // 0:loading 1:success 2:fail
 const iconSize = ref(50);
 const initializing = ref(true);
 
 const emits = defineEmits<{
-    click?: (e?: Event) => void;
-    load?: (e?: Event) => void;
-    error?: (e?: Event) => void;
-}>({});
+    (e: 'click', event?: Event): void;
+    (e: 'load', event?: BaseEvent): void;
+    (e: 'error', event?: Event): void;
+}>();
 
 const cmpStyle = computed(() => {
     let width = utils.formatPx(props.width);

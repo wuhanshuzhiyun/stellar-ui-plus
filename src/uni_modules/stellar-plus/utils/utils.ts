@@ -5,9 +5,11 @@ import '../common/index.css'
 
 type ReturnBasedOnBool<T extends boolean> = T extends true ? UniApp.NodeInfo[] : UniApp.NodeInfo
 
-type PartType = 0 | 1 | 2
+type PxType = 'str' | 'num'
 
-type RestType = 'str' | 'num'
+type PX<T extends PxType> = T extends 'str' ? string : number
+
+type PartType = 0 | 1 | 2
 
 const utils = {
   System,
@@ -21,19 +23,19 @@ const utils = {
    * @param value {Number | String} 像素单位值
    * @param restype {"str" | "num"} 返回值类型
    */
-  formatPx(value: number | string, restype: RestType = 'str') {
+  formatPx<T extends PxType>(value: number | string, restype?: T): PX<T> {
     let format = value || 0
     if (typeof format === 'string' && utils.isNaN(format)) {
       if (/^\d+px$/i.test(format))
-        return restype === 'num' ? Number(format.slice(0, -2)) : format
+        return (restype === 'num' ? Number(format.slice(0, -2)) : format) as PX<T>
       else if (/^\d+rpx/i.test(format))
         format = format.slice(0, -3)
-      else return format
+      else return format as PX<T>
     }
     let px = 0
     if (format !== 0)
       px = (Number(format) * System.getWindowWidth()) / 750
-    return restype === 'num' ? px : `${px}px`
+    return (restype === 'num' ? px : `${px}px`) as PX<T>
   },
   /**
    * 分转元

@@ -2,13 +2,13 @@
 import { computed, defineProps, onMounted, getCurrentInstance, defineEmits, defineExpose } from 'vue';
 import utils from '../../utils/utils';
 import type { Stroke } from './types';
-import type { HTMLMoveEvent, UniTouchEvent } from '../../types/global.d';
+import type { HTMLMouseEvent, UniTouchEvent } from '../../types/event.d';
 
-const emits = defineEmits({
-    start: () => {},
-    signing: () => {},
-    end: () => {},
-});
+const emits = defineEmits<{
+    start?: () => void;
+    signing?: () => void;
+    end?: () => void;
+}>({});
 
 const props = defineProps({
     customClass: { type: String, default: () => '' },
@@ -75,7 +75,7 @@ const drawStrokeing = () => {
 };
 
 // #ifdef H5
-const getH5MousePosition = (e: HTMLMoveEvent) => {
+const getH5MousePosition = (e: HTMLMouseEvent) => {
     return {
         x: e.clientX - (e.target?.offsetLeft || 0),
         y: e.clientY - (e.target?.offsetTop || 0),
@@ -83,15 +83,15 @@ const getH5MousePosition = (e: HTMLMoveEvent) => {
 };
 // #endif
 
-const onMousedown = (e: HTMLMoveEvent) => onTouchStart(e as unknown as UniTouchEvent);
-const onMousemove = (e: HTMLMoveEvent) => onTouchMove(e as unknown as UniTouchEvent);
+const onMousedown = (e: MouseEvent) => onTouchStart(e as unknown as UniTouchEvent);
+const onMousemove = (e: MouseEvent) => onTouchMove(e as unknown as UniTouchEvent);
 
 const onTouchStart = (e: UniTouchEvent) => {
     // #ifdef MP
     strokeing.value = [{ x: e.changedTouches[0]?.x || 0, y: e.changedTouches[0]?.y || 0 }];
     // #endif
     // #ifdef H5
-    strokeing.value = [getH5MousePosition(e as unknown as HTMLMoveEvent)];
+    strokeing.value = [getH5MousePosition(e as unknown as HTMLMouseEvent)];
     // #endif
     drawStrokeing();
     emits('start');
@@ -103,7 +103,7 @@ const onTouchMove = (e: UniTouchEvent) => {
     strokeing.value.push({ x: e.changedTouches[0].x || 0, y: e.changedTouches[0].y || 0 });
     // #endif
     // #ifdef H5
-    strokeing.value.push(getH5MousePosition(e as unknown as HTMLMoveEvent));
+    strokeing.value.push(getH5MousePosition(e as unknown as HTMLMouseEvent));
     // #endif
     drawStrokeing();
     emits('signing');

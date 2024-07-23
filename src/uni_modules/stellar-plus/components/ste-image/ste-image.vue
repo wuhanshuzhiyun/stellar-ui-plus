@@ -7,13 +7,86 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
-import propsData from './props';
+import { defineEmits, ref, computed } from 'vue';
+import utils from '../../utils/utils';
+import props from './props';
+import type { BaseEvent } from '../../types/event.d';
 
-const props = defineProps(propsData);
+const status = ref(0); // 0:loading 1:success 2:fail
+const iconSize = ref(50);
+const initializing = ref(true);
+
+const emits = defineEmits<{
+    click?: (e?: Event) => void;
+    load?: (e?: Event) => void;
+    error?: (e?: Event) => void;
+}>({});
+
+const cmpStyle = computed(() => {
+    let width = utils.formatPx(props.width);
+    let height = utils.formatPx(props.height);
+    if (props.mode === 'widthFix') {
+        if (status.value !== 1) {
+            height = width;
+        } else {
+            height = 'auto';
+        }
+    } else if (props.mode === 'heightFix') {
+        if (status.value !== 1) {
+            width = height;
+        } else {
+            width = 'auto';
+        }
+    }
+    return {
+        '--image-root-width': width,
+        '--image-root-height': height,
+        '--image-root-display': props.display,
+        '--image-root-radius': utils.formatPx(props.radius),
+        '--image-root-background-color': status.value === 1 ? 'none' : 'rgba(127,127,127,.05)',
+    };
+});
+
+const onLoadOver = (e: BaseEvent) => {
+    initializing.value = false;
+    if (status.value !== 1) status.value = 1;
+    emits('load', e);
+};
+
+const onFault = (e?: BaseEvent) => {
+    status.value = 2;
+};
+
+const click = (e: Event) => {
+    emits('click', e);
+};
 </script>
 <template>
-    <div class="ste-image-root">ste-image-root</div>
+    <view class="ste-image-root" :style="[cmpStyle]">
+        <view class="loading-icon" v-if="!props.hiddenLoading && status === 0">
+            <slot name="loading">
+                <ste-icon code="&#xe693;" :size="iconSize" />
+            </slot>
+        </view>
+
+        <image
+            class="content"
+            :style="{ opacity: status === 1 ? '1' : '0' }"
+            :src="props.src"
+            :mode="props.mode"
+            :lazy-load="props.lazyLoad"
+            :show-menu-by-longpress="props.showMenuByLongpress"
+            @load="onLoadOver"
+            @error="onFault"
+            @click="click"
+        ></image>
+
+        <view class="loading-icon" v-if="!props.hiddenError && status === 2">
+            <slot name="error">
+                <ste-icon code="&#xe692;" :size="iconSize" />
+            </slot>
+        </view>
+    </view>
 </template>
 <style scoped lang="scss">
 .ste-image-root {

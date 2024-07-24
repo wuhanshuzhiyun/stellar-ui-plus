@@ -8,7 +8,7 @@ export default {
   mode: { type: String as PropType<UniImageMode>, default: 'scaleToFill' },
   display: { type: String as PropType<DisplayType>, default: 'inline-flex' },
   hiddenLoading: { type: Boolean, default: false },
-  hiddenError: { type: Boolean, default: true },
-  showMenuByLongpress: { type: Boolean, default: true },
-  lazyLoad: { type: Boolean, default: true },
+  hiddenError: { type: Boolean, default: false },
+  showMenuByLongpress: { type: Boolean, default: false },
+  lazyLoad: { type: Boolean, default: false },
 }

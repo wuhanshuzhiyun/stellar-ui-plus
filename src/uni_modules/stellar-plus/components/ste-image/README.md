@@ -28,9 +28,20 @@
 ```
 
 #### 加载效果
-- 通过`hiddenLoading`关闭图片加载中提示
+- 通过`hiddenLoading`关闭图片加载中占位标识
 
 ```html
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+
+const errorUrl = ref<string>()
+
+onMounted(() => {
+  setTimeout(() => {
+    imgUrl.value = 'https://image.whzb.com/chain/StellarUI/图片.jpg';
+  }, 1500);
+});
+</script>
 <template>
 	<view>
 		<view class="image-box">
@@ -43,26 +54,22 @@
 		</view>
 	</view>
 </template>
-<script>
-export default {
-	data() {
-		return {
-			imgUrl: '',
-		};
-	},
-	watch: {},
-	mounted() {
-		setTimeout(() => {
-			this.imgUrl = 'https://image.whzb.com/chain/StellarUI/图片.jpg';
-		}, 1500);
-	},
-};
-</script>
 ```
 #### 加载失败
 - 通过`hiddenError`隐藏图片加载失败提示
 
 ```html
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+
+const errorUrl = ref<string>()
+
+onMounted(() => {
+  setTimeout(() => {
+    errorUrl.value = 'https://image.whzb.com/chain/StellarUI/none.png';
+  }, 1500);
+});
+</script>
 <template>
 	<view>
 		<view class="image-box">
@@ -75,26 +82,10 @@ export default {
 		</view>
 	</view>
 </template>
-<script>
-export default {
-	data() {
-		return {
-			errorUrl: '',
-		};
-	},
-	watch: {},
-	mounted() {
-		setTimeout(() => {
-			this.errorUrl = 'https://image.whzb.com/chain/StellarUI/none.png';
-		}, 1500);
-	},
-};
-</script>
 ```
 #### 具名插槽
 - 通过`loading`具名插槽可以自定义加载中内容
 - 通过`error`具名插槽可以自定义加载失败内容
-
 ```html
 <ste-image :src="errorUrl" width="200" height="200">
 	<template v-slot:loading>Loading...</template>
@@ -112,8 +103,8 @@ export default {
 | `width`								| 宽度：`Number`单位`rpx`，`String`同原生																																						| `Number/String`	| `"100%"`				| -										|-									|
 | `height`							| 高度：`Number`单位`rpx`，`String`同原生																																						| `Number/String`	| `"100%"`				| -										|-									|
 | `radius`							| 圆角：`Number`单位`rpx`，`String`同原生																																						| `Number/String`	| `0`							| -										|-									|
-| `hiddenLoading`				| 是否展示图片未加载的占位内容																																												| `Boolean`				| `false`					| -										|-									|
-| `hiddenError`					| 是否加载失败的内容																																																	| `Boolean`				| `true`					| -										|-									|
+| `hiddenLoading`				| 是否隐藏图片未加载的占位内容																																												| `Boolean`				| `false`					| -										|-									|
+| `hiddenError`					| 是否隐藏图片加载失败的占位内容																																																	| `Boolean`				| `false`					| -										|-									|
 | `showMenuByLongpress`	| 长按图片显示发送给朋友、收藏、保存图片、搜一搜、打开名片/前往群聊/打开小程序（若图片中包含对应二维码或小程序码）的菜单	| `Boolean`				| `false`					| -										|微信小程序`2.13.0`	|
 | `lazyLoad`						| 图片懒加载，在即将进入一定范围（上下三屏）时才开始加载																																| `Boolean`				| `false`					| -										|-									|
 | `display`							| 盒子模型																																																						| `String`				| `inline-flex`		|	可选属性同css同名属性值	|-									|
@@ -147,4 +138,5 @@ export default {
 
 
 {{xuyajun}}
+
 

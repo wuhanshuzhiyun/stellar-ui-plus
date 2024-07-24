@@ -88,6 +88,8 @@ function initIconSize() {
     });
 }
 
+console.log(props.hiddenError);
+
 onMounted(() => {
     thas.value = getCurrentInstance()?.proxy;
     initIconSize();

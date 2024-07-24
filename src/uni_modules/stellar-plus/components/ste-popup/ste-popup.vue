@@ -6,10 +6,10 @@ export default defineComponent({
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { popupProps } from './props';
+import propsData from './props';
 import utils from '../../utils/utils';
 const DEFAULT_BORDER_RADIUS = 32;
-const props = defineProps(popupProps);
+const props = defineProps(propsData);
 
 const animationProp: UniApp.CreateAnimationOptions = { duration: props.duration, timingFunction: 'ease-out' };
 const pageDisplay = ref('none');
@@ -156,14 +156,7 @@ function touchmove(e: TouchEvent) {
 </script>
 
 <template>
-    <view
-        class="ste-popup"
-        :class="position"
-        :style="[cmpPageStyle]"
-        @click.stop="onMaskClick"
-        @touchmove.stop.prevent="touchmove"
-        :animation="overlayAnimationData"
-    >
+    <view class="ste-popup" :class="position" :style="[cmpPageStyle]" @click.stop="onMaskClick" @touchmove.stop.prevent="touchmove" :animation="overlayAnimationData">
         <view class="content" :class="position" :style="[cmpContentStyle]" :animation="animationData" @click.stop>
             <template v-if="keepContent || showContent">
                 <scroll-view style="width: 100%; height: 100%" v-if="Number(height) > 0" :scroll-y="true">
@@ -175,11 +168,7 @@ function touchmove(e: TouchEvent) {
                 <ste-icon code="&#xe6a0;" size="40" color="#666"></ste-icon>
             </view>
         </view>
-        <view
-            class="close-icon-box-center"
-            @click="handleClose"
-            v-if="showClose && position == 'center' && showContent"
-        >
+        <view class="close-icon-box-center" @click="handleClose" v-if="showClose && position == 'center' && showContent">
             <ste-icon code="&#xe6a0;" size="40" color="#fff"></ste-icon>
         </view>
     </view>

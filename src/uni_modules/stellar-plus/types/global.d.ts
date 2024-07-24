@@ -5,3 +5,5 @@ type ImgType = 'png' | 'jpg' | 'jpeg' | 'svg' | 'webp'
 type DisplayType = 'flex' | 'block' | 'inline-flex' | 'inline-block' | 'none' | 'inherit' | 'inline'
 
 type SizeType = number | string
+
+type PositionType = 'top' | 'bottom' | 'left' | 'right' | 'center'

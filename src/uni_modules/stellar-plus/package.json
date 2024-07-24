@@ -1,15 +1,22 @@
 {
-  "name": "stellar-plus",
-  "version": "1.0.0",
-  "description": "",
-  "author": "",
-  "license": "ISC",
-  "keywords": [],
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "dayjs": "^1.11.11"
-  }
+    "name": "stellar-plus",
+    "version": "1.0.0",
+    "description": "",
+    "author": "",
+    "license": "ISC",
+    "keywords": [],
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "http://172.16.108.253:8001/Mall/stellarui-plus.git"
+    },
+    "publishConfig": {
+        "registry": "http://172.16.109.59:8010/repository/npm-hosted/"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "dayjs": "^1.11.11"
+    }
 }

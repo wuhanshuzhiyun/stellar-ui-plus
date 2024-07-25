@@ -17,6 +17,9 @@ module.exports = function () {
   let importStr = ''
   let comType = ''
   let refType = ''
+
+  let exportCom = ''
+
   folders.forEach((comontent) => {
     const name = convertToCamelCase(comontent)
     const type = name.charAt(0).toUpperCase() + name.slice(1)
@@ -24,6 +27,7 @@ module.exports = function () {
     comType += `\t\t${type}: typeof ${name};\n`
     refType
       += `export type ${type.replace(/^Ste/, 'Ref')} = InstanceType<typeof ${name}>\n`
+    exportCom += `import ${name} from "./components/${comontent}/${comontent}.vue"\nexport const ${type} = ${name}\n`
   })
   const result = `import '@vue/runtime-core'\n\ndeclare module '@vue/runtime-core' {\n\texport interface GlobalComponents {\n${comType}\t}\n}\n`
   // eslint-disable-next-line node/prefer-global/process
@@ -32,4 +36,7 @@ module.exports = function () {
   // eslint-disable-next-line node/prefer-global/process
   const refOutfile = path.join(process.cwd(), 'src/uni_modules/stellar-plus/types/refComponents.d.ts')
   fs.writeFileSync(refOutfile, importStr + refType)
+  // eslint-disable-next-line node/prefer-global/process
+  const exportfile = path.join(process.cwd(), 'src/uni_modules/stellar-plus/index.ts')
+  fs.writeFileSync(exportfile, exportCom)
 }

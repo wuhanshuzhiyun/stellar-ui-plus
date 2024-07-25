@@ -1,3 +1,6 @@
+import type { PropType } from 'vue'
+import type { PositionType, SizeType } from '../../types/index'
+
 export default {
   show: { type: Boolean, default: false },
   backgroundColor: { type: String, default: '#ffffff' },

@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { ImgType, SizeType } from '../../types/index'
 
 export default {
   customClass: { type: String, default: '' },

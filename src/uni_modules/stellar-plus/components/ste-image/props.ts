@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { DisplayType, SizeType, UniImageMode } from '../../types/index'
 
 export default {
   src: { type: String, default: '' },

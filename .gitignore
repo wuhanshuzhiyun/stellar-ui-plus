@@ -26,3 +26,4 @@ src/pages.json
 src/uni-pages.d.ts
 src/uni_modules/stellar-plus/types/components.d.ts
 src/uni_modules/stellar-plus/types/refComponents.d.ts
+src/uni_modules/stellar-plus/index.ts

@@ -1,0 +1,61 @@
+{
+    "name": "ste-signature",
+    "description": "签名组件",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-signature",
+    "attributes": [
+        {
+            "name": "customClass",
+            "description": "自定义 class",
+            "type": "string"
+        },
+        {
+            "name": "lineWidth",
+            "description": "线条的宽度",
+            "type": "number"
+        },
+        {
+            "name": "strokeColor",
+            "description": "线条颜色，支持 rgb，rgba，hex，hsl，hsla，颜色名称等格式",
+            "type": "string"
+        },
+        {
+            "name": "background",
+            "description": "图片背景色",
+            "type": "string"
+        },
+        {
+            "name": "type",
+            "description": "保存图片类型",
+            "type": "string",
+            "values": ["png", "jpg"],
+            "default": "png"
+        },
+        {
+            "name": "width",
+            "description": "宽度,单位rpx",
+            "type": "string | number"
+        },
+        {
+            "name": "height",
+            "description": "高度,单位rpx",
+            "type": "string | number"
+        }
+    ],
+    "events": [
+        {
+            "name": "start",
+            "description": "开始签名事件",
+            "type": "() => void"
+        },
+        {
+            "name": "signing",
+            "description": "正在签名事件（指某次笔画进行中）",
+            "type": "() => void"
+        },
+        {
+            "name": "end",
+            "description": "结束签名事件",
+            "type": "() => void"
+        }
+    ]
+}

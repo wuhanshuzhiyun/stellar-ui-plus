@@ -1,0 +1,71 @@
+{
+    "name": "ste-icon",
+    "description": "图标组件 基于字体的图标集，包含了大多数常见场景的图标",
+    "example": "<ste-icon></ste-icon>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-icon",
+    "attributes": [
+        {
+            "name": "code",
+            "description": "图标名称",
+            "type": "string"
+        },
+        {
+            "name": "color",
+            "description": "图标颜色",
+            "type": "string"
+        },
+        {
+            "name": "size",
+            "description": "图标大小，单位rpx",
+            "type": "string | number",
+            "default": 28
+        },
+        {
+            "name": "bold",
+            "description": "图标是否粗体",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "marginLeft",
+            "description": "左外边距，单位rpx",
+            "type": "string | number",
+            "default": 0
+        },
+        {
+            "name": "marginRight",
+            "description": "右外边距，单位rpx",
+            "type": "string | number",
+            "default": 0
+        },
+        {
+            "name": "marginTop",
+            "description": "上外边距，单位rpx",
+            "type": "string | number",
+            "default": 0
+        },
+        {
+            "name": "marginBottom",
+            "description": "下外边距，单位rpx",
+            "type": "string | number",
+            "default": 0
+        },
+        {
+            "name": "fontFamily",
+            "description": "字体名",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "inlineBlock",
+            "description": "容器对齐方式",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "[event]click",
+            "description": "图标点击回调事件",
+            "type": "() => void"
+        }
+    ]
+}

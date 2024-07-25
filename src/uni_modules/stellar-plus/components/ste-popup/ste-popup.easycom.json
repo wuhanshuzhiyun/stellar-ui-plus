@@ -1,0 +1,111 @@
+{
+    "name": "ste-popup",
+    "description": "验证码输入",
+    "example": "<ste-popup v-model:show='show'></ste-popup>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-popup",
+    "attributes": [
+        {
+            "name": "show",
+            "description": "是否显示弹出层，使用v-model修饰符来双向绑定",
+            "type": "boolean"
+        },
+        {
+            "name": "backgroundColor",
+            "description": "内容容器的背景色",
+            "type": "string"
+        },
+        {
+            "name": "isMaskClick",
+            "description": "是否可以点击遮罩层关闭",
+            "type": "boolean"
+        },
+        {
+            "name": "width",
+            "description": "内容区宽度",
+            "type": "string | number"
+        },
+
+        {
+            "name": "height",
+            "description": "内容区高度",
+            "type": "string | number"
+        },
+        {
+            "name": "position",
+            "description": "弹出位置",
+            "type": "string",
+            "values": [
+                {
+                    "name": "center",
+                    "description": "中"
+                },
+                {
+                    "name": "top",
+                    "description": "上"
+                },
+                {
+                    "name": "bottom",
+                    "description": "下"
+                },
+                {
+                    "name": "left",
+                    "description": "左"
+                },
+                {
+                    "name": "right",
+                    "description": "右"
+                }
+            ]
+        },
+        {
+            "name": "round",
+            "description": "是否圆角",
+            "type": "boolean"
+        },
+        {
+            "name": "showClose",
+            "description": "是否右上角显示关闭图标",
+            "type": "boolean"
+        },
+        {
+            "name": "offsetX",
+            "description": "根据弹出位置，设置X轴偏移量，单位px 默认 0",
+            "type": "string | number "
+        },
+        {
+            "name": "offsetY",
+            "description": "根据弹出位置，设置Y轴偏移量，单位px 默认 0",
+            "type": "string | number"
+        },
+        {
+            "name": "duration",
+            "description": "动画持续时间，单位ms",
+            "type": "number"
+        },
+        {
+            "name": "zIndex",
+            "description": "弹窗层级z-index",
+            "type": "number"
+        },
+        {
+            "name": "keepContent",
+            "description": "隐藏后是否不销毁弹窗内容元素",
+            "type": "boolean"
+        },
+        {
+            "name": "[event]close",
+            "description": "弹窗关闭动画执行完毕事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]open",
+            "description": "弹窗打开动画执行完毕事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]maskClick",
+            "description": "点击遮罩时触发",
+            "type": "() => void"
+        }
+    ]
+}

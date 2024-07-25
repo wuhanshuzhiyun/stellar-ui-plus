@@ -1,7 +1,3 @@
-import type { ExtractPropTypes } from 'vue'
-
-export const pageNavProps = {
+export default {
   title: String,
 }
-
-export type PageNavProps = ExtractPropTypes<typeof pageNavProps>

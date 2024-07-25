@@ -11,6 +11,7 @@ const emits = defineEmits<{
 let defaultFontFamily = 'ste-iconfont-1709689042473';
 
 const cmpCode = computed(() => {
+    console.log('prop code', props.code);
     // unicode编码转字符
     if (!props.code) return;
     if (/[a-zA-Z]/.test(props.code)) {
@@ -30,7 +31,7 @@ const cmpCssVar = computed(() => {
         '--margin-right': utils.formatPx(props.marginRight),
         '--margin-top': utils.formatPx(props.marginTop),
         '--margin-bottom': utils.formatPx(props.marginBottom),
-        '--font-family': props.fontFamily === '' ? defaultFontFamily : props.fontFamily,
+        '--font-family': props.fontFamily ? props.fontFamily : defaultFontFamily,
         '--display': props.inlineBlock ? 'inline-block' : 'inline-flex',
     };
 });

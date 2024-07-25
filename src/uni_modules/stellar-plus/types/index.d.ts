@@ -7,3 +7,7 @@ export type DisplayType = 'flex' | 'block' | 'inline-flex' | 'inline-block' | 'n
 export type SizeType = number | string
 
 export type PositionType = 'top' | 'bottom' | 'left' | 'right' | 'center'
+
+export type AroundPositionType = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'
+
+export type ModeType = 100 | 200 | 300 | 400

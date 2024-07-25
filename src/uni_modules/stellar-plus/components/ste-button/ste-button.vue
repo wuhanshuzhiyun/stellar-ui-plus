@@ -1,11 +1,43 @@
 <script setup lang="ts">
 import { computed, defineComponent } from 'vue';
-import { buttonEmits, buttonProps } from './props';
-import { CLICK_EVENT } from '../../common/_constants/event';
+import propsData from './props';
 import utils from '../../utils/utils';
+import type {
+    ButtonOnAddgroupappEvent,
+    ButtonOnAgreeprivacyauthorizationEvent,
+    ButtonOnChooseaddressEvent,
+    ButtonOnChooseavatarEvent,
+    ButtonOnChooseinvoicetitleEvent,
+    ButtonOnGetphonenumberEvent,
+    ButtonOnLaunchappEvent,
+    ButtonOnLoginEvent,
+    ButtonOnOpensettingEvent,
+    ButtonOnSubscribeEvent,
+    ButtonOnErrorEvent,
+} from '@uni-helper/uni-app-types';
 
-const props = defineProps(buttonProps);
-const emit = defineEmits(buttonEmits);
+const props = defineProps(propsData);
+
+const emits = defineEmits<{
+    (e: 'click', event?: Event): void;
+    (e: 'getphonenumber', event?: ButtonOnGetphonenumberEvent): void;
+    (e: 'getuserinfo', event?: Event): void;
+    (e: 'error', event?: ButtonOnErrorEvent): void;
+    (e: 'opensetting', event?: ButtonOnOpensettingEvent): void;
+    (e: 'launchapp', event?: ButtonOnLaunchappEvent): void;
+    (e: 'contact', event?: Event): void;
+    (e: 'chooseavatar', event?: ButtonOnChooseavatarEvent): void;
+    (e: 'agreeprivacyauthorization', event?: ButtonOnAgreeprivacyauthorizationEvent): void;
+    (e: 'addgroupapp', event?: ButtonOnAddgroupappEvent): void;
+    (e: 'chooseaddress', event?: ButtonOnChooseaddressEvent): void;
+    (e: 'chooseinvoicetitle', event?: ButtonOnChooseinvoicetitleEvent): void;
+    (e: 'subscribe', event?: ButtonOnSubscribeEvent): void;
+    (e: 'login', event?: ButtonOnLoginEvent): void;
+    (e: 'getrealtimephonenumber', event?: Event): void;
+    (e: 'greeprivacyauthorization', event?: Event): void;
+    (e: 'getAuthorize', event?: Event): void;
+    (e: 'followLifestyle', event?: Event): void;
+}>();
 
 const cmpBtnStyle = computed(() => {
     let style = {} as any;
@@ -75,7 +107,7 @@ const cmpBtnStyle = computed(() => {
 
 function handleClick(e: Event) {
     if (!props.disabled && !props.loading) {
-        emit(CLICK_EVENT, e);
+        emits('click', e);
     }
 }
 </script>
@@ -97,17 +129,17 @@ export default defineComponent({
         :style="[cmpBtnStyle]"
         :open-type="openType"
         :scope="scope"
-        @getuserinfo="emit('getuserinfo', $event)"
-        @contact="emit('contact', $event)"
-        @getphonenumber="emit('getphonenumber', $event)"
-        @getrealtimephonenumber="emit('getrealtimephonenumber', $event)"
-        @agreeprivacyauthorization="emit('agreeprivacyauthorization', $event)"
-        @error="emit('error', $event)"
-        @opensetting="emit('opensetting', $event)"
-        @launchapp="emit('launchapp', $event)"
-        @chooseavatar="emit('chooseavatar', $event)"
-        @getAuthorize="emit('getAuthorize', $event)"
-        @followLifestyle="emit('followLifestyle', $event)"
+        @getuserinfo="emits('getuserinfo', $event)"
+        @contact="emits('contact', $event)"
+        @getphonenumber="emits('getphonenumber', $event)"
+        @getrealtimephonenumber="emits('getrealtimephonenumber', $event)"
+        @agreeprivacyauthorization="emits('agreeprivacyauthorization', $event)"
+        @error="emits('error', $event)"
+        @opensetting="emits('opensetting', $event)"
+        @launchapp="emits('launchapp', $event)"
+        @chooseavatar="emits('chooseavatar', $event)"
+        @getAuthorize="emits('getAuthorize', $event)"
+        @followLifestyle="emits('followLifestyle', $event)"
     >
         <view class="btn-box">
             <text v-if="loading">加载中.......</text>
@@ -123,17 +155,17 @@ export default defineComponent({
         :style="[cmpBtnStyle]"
         :open-type="openType"
         :scope="scope"
-        @getuserinfo="emit('getuserinfo', $event)"
-        @contact="emit('contact', $event)"
-        @getphonenumber="emit('getphonenumber', $event)"
-        @getrealtimephonenumber="emit('getrealtimephonenumber', $event)"
-        @agreeprivacyauthorization="emit('agreeprivacyauthorization', $event)"
-        @error="emit('error', $event)"
-        @opensetting="emit('opensetting', $event)"
-        @launchapp="emit('launchapp', $event)"
-        @chooseavatar="emit('chooseavatar', $event)"
-        @getAuthorize="emit('getAuthorize', $event)"
-        @followLifestyle="emit('followLifestyle', $event)"
+        @getuserinfo="emits('getuserinfo', $event)"
+        @contact="emits('contact', $event)"
+        @getphonenumber="emits('getphonenumber', $event)"
+        @getrealtimephonenumber="emits('getrealtimephonenumber', $event)"
+        @agreeprivacyauthorization="emits('agreeprivacyauthorization', $event)"
+        @error="emits('error', $event)"
+        @opensetting="emits('opensetting', $event)"
+        @launchapp="emits('launchapp', $event)"
+        @chooseavatar="emits('chooseavatar', $event)"
+        @getAuthorize="emits('getAuthorize', $event)"
+        @followLifestyle="emits('followLifestyle', $event)"
     >
         <view class="btn-box">
             <text v-if="loading">加载中.......</text>

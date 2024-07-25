@@ -1,79 +1,23 @@
-import type { ExtractPropTypes } from 'vue'
-import { makeNumberProp, makeNumericProp, makeStringProp, truthProp } from '../../utils/props'
-import type { DigitsType, StyleType, UnitType } from './type'
+type UnitType = 'fen' | 'yuan'
+type DigitsType = -1 | 0 | 1 | 2
+type StyleType = 1 | 2 | 3
 
-export const priceProps = {
-  /**
-   * @description 金额 默认值 0
-   */
+export default {
   value: [String, Number],
-  /**
-   * @description 金额单位，fen 分(默认值){String}，yuan 元{String}
-   */
-  valueUnit: makeStringProp<UnitType>('fen'),
-  /**
-   * @description 精度 默认值 -1，-1 不处理（默认值）{Number}， 0 取整（四舍五入）{Number}，1 保留1位小数（四舍五入）{Number}，2 保留2位小数（四舍五入）{Number}
-   */
-  digits: makeNumberProp<DigitsType>(-1),
-  /**
-   * @description 是否显示符号
-   */
-  showUnit: truthProp,
-  /**
-   * @description 符号标记，默认值 ¥
-   */
-  unitSymbol: makeStringProp('¥'),
-  /**
-   * @description 金额文字尺寸 默认值 30
-   */
-  fontSize: makeNumericProp('30'),
-  /**
-   * @description 文字颜色 默认值 #ff1e19
-   */
-  color: makeStringProp('#FF1E19'),
-  /**
-   * @description 划线价文字颜色 默认值 #999999
-   */
-  linePriceColor: makeStringProp('#999999'),
-  /**
-   * @description 行高，Number，单位rpx，String，同原生 默认值 1
-   */
-  lineHeight: makeNumberProp(-1),
-  /**
-   * @description 是否划线价 默认值 false
-   */
+  valueUnit: { type: String as PropType<UnitType>, default: 'fen' },
+  digits: { type: Number as PropType<DigitsType>, default: -1 },
+  showUnit: { type: Boolean, default: true },
+  unitSymbol: { type: String, default: '¥' },
+  fontSize: { type: [String, Number], default: '30' },
+  color: { type: String, default: '#FF1E19' },
+  linePriceColor: { type: String, default: '#999999' },
+  lineHeight: { type: Number, default: -1 },
   isSuggestPrice: Boolean,
-  /**
-   * @description 左边距
-   */
-  marginLeft: makeNumericProp(0),
-  /**
-   * @description 右边距
-   */
-  marginRight: makeNumericProp(0),
-  /**
-   * @description 上边距
-   */
-  marginTop: makeNumericProp(0),
-  /**
-   * @description 下边距
-   */
-  marginBottom: makeNumericProp(0),
-  /**
-   * @description 金额样式
-   */
-  styleType: makeNumericProp<StyleType>(2),
-  /**
-   * @description 是否加粗
-   */
+  marginLeft: { type: [String, Number], default: 0 },
+  marginRight: { type: [String, Number], default: 0 },
+  marginTop: { type: [String, Number], default: 0 },
+  marginBottom: { type: [String, Number], default: 0 },
+  styleType: { type: Number as PropType<StyleType>, default: 2 },
   bold: Boolean,
-  /**
-   * @description 用来格式化内容
-   */
-  formatter: {
-    type: Function,
-    default: null,
-  },
+  formatter: { type: Function, default: null },
 }
-
-export type PriceProps = ExtractPropTypes<typeof priceProps>

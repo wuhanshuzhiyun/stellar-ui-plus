@@ -1,0 +1,215 @@
+{
+    "name": "ste-search",
+    "description": "搜索",
+    "example": "<ste-search />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=search",
+    "attributes": [
+        {
+            "name": "type",
+            "description": "组件类型",
+            "type": "string",
+            "values": [
+                {
+                    "name": "default",
+                    "description": "正常搜索"
+                },
+                {
+                    "name": "nav",
+                    "description": "导航栏"
+                }
+            ],
+            "default": "default"
+        },
+        {
+            "name": "value",
+            "description": "当前值（支持v-model双向绑定）",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "placeholder",
+            "description": "占位提示符",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "hotWords",
+            "description": "热词列表",
+            "type": "string[]",
+            "default": "[]"
+        },
+        {
+            "name": "interval",
+            "description": "热词列表自动切换时间间隔",
+            "type": "number",
+            "default": 3000
+        },
+        {
+            "name": "autoplay",
+            "description": "热词列表是否自动切换",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用状态",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "hiddenLine",
+            "description": "是否隐藏分割线",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "hiddenBtn",
+            "description": "是否隐藏搜索按钮",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "btnText",
+            "description": "搜索按钮文字",
+            "type": "string",
+            "default": "搜索"
+        },
+        {
+            "name": "hiddenInput",
+            "description": "是否隐藏输入框",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "clearable",
+            "description": "是否可清空",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "borderColor",
+            "description": "边框颜色",
+            "type": "string",
+            "default": "#dddddd"
+        },
+        {
+            "name": "background",
+            "description": "背景",
+            "type": "string",
+            "default": "#ffffff"
+        },
+        {
+            "name": "prefixIconColor",
+            "description": "前置图标颜色",
+            "type": "string",
+            "default": "#bbbbbb"
+        },
+        {
+            "name": "placeholderColor",
+            "description": "占位符字体颜色",
+            "type": "string",
+            "default": "#bbbbbb"
+        },
+        {
+            "name": "inputTextColor",
+            "description": "输入框文字颜色",
+            "type": "string",
+            "default": "#000000"
+        },
+        {
+            "name": "clearIconColor",
+            "description": "清除图标颜色",
+            "type": "string",
+            "default": "#bbbbbb"
+        },
+        {
+            "name": "btnTextColor",
+            "description": "搜索按钮文字颜色",
+            "type": "string",
+            "default": "#0090FF"
+        },
+        {
+            "name": "btnBackground",
+            "description": "搜索按钮背景",
+            "type": "string"
+        },
+        {
+            "name": "height",
+            "description": "高度，单位rpx",
+            "type": "number",
+            "default": 64
+        },
+        {
+            "name": "radius",
+            "description": "圆角弧度，单位rpx",
+            "type": "number",
+            "default": 32
+        },
+        {
+            "name": "focus",
+            "description": "是否聚焦(双向绑定)",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "[event]input",
+            "description": "输入事件",
+            "type": "(value: string) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]focus",
+            "description": "聚焦焦点事件",
+            "type": "(value: string) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]blur",
+            "description": "失去焦点事件",
+            "type": "(value: string) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]search",
+            "description": "确定搜索时触发",
+            "type": "(value: string) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]clear",
+            "description": "点击清除按钮后触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]click",
+            "description": "点击事件",
+            "type": "(value: string) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        }
+    ]
+}

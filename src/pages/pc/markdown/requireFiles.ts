@@ -129,14 +129,28 @@ export function restsFiles() {
 
 export function componentFiles() {
   const deg = /.*components\/ste-([\w\-]+)\/[\w\-]+\.(md|json)$/
-  const markdowns: { [key: string]: Markdown } = import.meta.glob('../../../uni_modules/stellar-plus/components/**/*.md', { eager: true })
+
+  const props: { [key: string]: Markdown } = import.meta.glob('../../../uni_modules/stellar-plus/components/**/ATTRIBUTES.md', { eager: true })
+
+  const propsData: Obj = {}
+  for (const k in props) {
+    const html = props[k].html
+    const name = k.replace(deg, '$1')
+    propsData[name] = html
+  }
+
+  const markdowns: { [key: string]: Markdown } = import.meta.glob('../../../uni_modules/stellar-plus/components/**/README.md', { eager: true })
 
   const markdownsData: Obj = {}
   for (const k in markdowns) {
-    const html = formatHtml(assembleTemplate(markdowns[k].html))
+    let html = markdowns[k].html
     const name = k.replace(deg, '$1')
-    markdownsData[name] = html
+    if (propsData[name] && html.includes('<!-- props -->'))
+      html = html.replace('<!-- props -->', propsData[name])
+
+    markdownsData[name] = formatHtml(assembleTemplate(html))
   }
+  console.log('markdownsData', markdownsData)
 
   const groupData: { [key: string]: Group } = {}
 

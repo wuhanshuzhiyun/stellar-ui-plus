@@ -16,7 +16,7 @@ module.exports = function (components) {
       console.error(`组件【${component}】的说明文件内容为空`)
       return
     }
-    content = content.replace('|', '/')
+    content = content.replaceAll('|', '/')
     const data = JSON.parse(content)
 
     if (data.attributes?.length) {

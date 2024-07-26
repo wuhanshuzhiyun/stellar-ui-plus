@@ -1,0 +1,84 @@
+{
+    "name": "ste-code-input",
+    "description": "验证码输入",
+    "example": "<ste-code-input></ste-code-input>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-code-input",
+    "attributes": [
+        {
+            "name": "value",
+            "description": "初始内容，支持双向绑定",
+            "type": "string | number"
+        },
+        {
+            "name": "mode",
+            "description": "输入框类型",
+            "type": "string",
+            "values": [
+                {
+                    "name": "box",
+                    "description": "盒子模式"
+                },
+                {
+                    "name": "line",
+                    "description": "底部横线模式"
+                }
+            ]
+        },
+        {
+            "name": "maxlength",
+            "description": "最大长度",
+            "type": "number"
+        },
+        {
+            "name": "space",
+            "description": "字符间的距离",
+            "type": "string | number"
+        },
+
+        {
+            "name": "fontColor",
+            "description": "字体颜色",
+            "type": "String"
+        },
+        {
+            "name": "fontSize",
+            "description": "字体大小",
+            "type": "string | number"
+        },
+        {
+            "name": "size",
+            "description": "输入框的大小，宽等于高",
+            "type": "string | number"
+        },
+        {
+            "name": "formatter",
+            "description": "替换输入值",
+            "type": "string | number"
+        },
+        {
+            "name": "focus",
+            "description": "是否自动获取焦点",
+            "type": "boolean "
+        },
+        {
+            "name": "disabledDot",
+            "description": "是否禁止输入点符号 默认 true",
+            "type": "boolean"
+        },
+        {
+            "name": "readOnly",
+            "description": "是否只读",
+            "type": "boolean"
+        },
+        {
+            "name": "[event]change",
+            "description": "改变时触发",
+            "type": "(value: string | number) => void"
+        },
+        {
+            "name": "[event]finish",
+            "description": "输入完成触发",
+            "type": "(value: string | number) => void"
+        }
+    ]
+}

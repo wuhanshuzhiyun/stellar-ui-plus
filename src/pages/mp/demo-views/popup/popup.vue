@@ -16,14 +16,14 @@ const durationShow = ref(false);
 const syncShow = ref(false);
 
 function syncClose(suspend: () => void, next: () => void, stop: () => void) {
-    // suspend();
-    // uni.showLoading({
-    //     title: '加载中...',
-    // });
-    // setTimeout(() => {
-    //     uni.hideLoading();
-    //     next();
-    // }, 2000);
+    suspend();
+    uni.showLoading({
+        title: '加载中...',
+    });
+    setTimeout(() => {
+        uni.hideLoading();
+        next();
+    }, 2000);
 }
 </script>
 

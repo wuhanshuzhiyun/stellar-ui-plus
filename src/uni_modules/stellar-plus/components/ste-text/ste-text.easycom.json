@@ -1,0 +1,28 @@
+{
+    "name": "ste-text",
+    "description": "文本",
+    "example": "<ste-text>文本</ste-text>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-text",
+    "attributes": [
+        {
+            "name": "selectable",
+            "description": "文本是否可选 默认 false",
+            "type": "boolean"
+        },
+        {
+            "name": "space",
+            "description": "以何种方式显示连续空格",
+            "type": "string"
+        },
+        {
+            "name": "decode",
+            "description": "是否解码 默认 false",
+            "type": "boolean"
+        },
+        {
+            "name": "lines",
+            "description": "文本显示的行数，如果设置，超出此行数，将会显示省略号",
+            "type": "number"
+        }
+    ]
+}

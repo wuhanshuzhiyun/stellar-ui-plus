@@ -1,0 +1,96 @@
+{
+    "name": "ste-badge",
+    "description": "徽标组件",
+    "example": "<ste-badge></ste-badge>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-badge",
+    "attributes": [
+        {
+            "name": "content",
+            "description": "徽标内容",
+            "type": "string | number"
+        },
+        {
+            "name": "background",
+            "description": "背景",
+            "type": "string",
+            "default": "#ee0a24"
+        },
+        {
+            "name": "showDot",
+            "description": "是否展示为小红点",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "offsetX",
+            "description": "根据徽标位置,设置x轴偏移量",
+            "type": "string | number",
+            "default": "auto"
+        },
+        {
+            "name": "offsetY",
+            "description": "根据徽标位置,设置y轴偏移量",
+            "type": "string | number",
+            "default": "auto"
+        },
+        {
+            "name": "showZero",
+            "description": "当 content 为数字 0，是否展示徽标",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "position",
+            "description": "徽标位置",
+            "type": "string",
+            "values": [
+                {
+                    "name": "topRight",
+                    "description": "上右"
+                },
+                {
+                    "name": "topLeft",
+                    "description": "上左"
+                },
+                {
+                    "name": "bottomLeft",
+                    "description": "下左"
+                },
+                {
+                    "name": "bottomRight",
+                    "description": "下右"
+                }
+            ],
+            "default": "topRight"
+        },
+        {
+            "name": "max",
+            "description": "徽标最大显示值",
+            "type": "number",
+            "default": 99
+        },
+        {
+            "name": "showBorder",
+            "description": "是否显示边框",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "borderColor",
+            "description": "边框颜色",
+            "type": "string"
+        },
+        {
+            "name": "zIndex",
+            "description": "层级",
+            "type": "number",
+            "default": 2
+        },
+        {
+            "name": "isInline",
+            "description": "display属性是否为inline-block",
+            "type": "boolean",
+            "default": false
+        }
+    ]
+}

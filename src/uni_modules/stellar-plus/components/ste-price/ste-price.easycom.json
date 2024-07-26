@@ -1,0 +1,93 @@
+{
+    "name": "ste-text",
+    "description": "文本",
+    "example": "<ste-text>文本</ste-text>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-text",
+    "attributes": [
+        {
+            "name": "value",
+            "description": "金额 默认值 0",
+            "type": "string | number"
+        },
+        {
+            "name": "valueUnit",
+            "description": "金额单位",
+            "type": "string",
+            "values": [
+                {
+                    "name": "fen",
+                    "description": "分"
+                },
+                {
+                    "name": "yuan",
+                    "description": "元"
+                }
+            ]
+        },
+        {
+            "name": "showUnit",
+            "description": "是否显示符号",
+            "type": "boolean"
+        },
+        {
+            "name": "unitSymbol",
+            "description": "精度",
+            "type": "number"
+        },
+        {
+            "name": "fontSize",
+            "description": "金额文字尺寸",
+            "type": "string | number"
+        },
+        {
+            "name": "color",
+            "description": "文字颜色",
+            "type": "string"
+        },
+        {
+            "name": "linePriceColor",
+            "description": "划线价文字颜色",
+            "type": "string"
+        },
+        {
+            "name": "lineHeight",
+            "description": "行高，Number，单位rpx，String，同原生 默认值 1",
+            "type": "string | number"
+        },
+        {
+            "name": "isSuggestPrice",
+            "description": "是否划线价",
+            "type": "boolean"
+        },
+        {
+            "name": "marginLeft",
+            "description": "左边距",
+            "type": "string | number"
+        },
+        {
+            "name": "marginRight",
+            "description": "右边距",
+            "type": "string | number"
+        },
+        {
+            "name": "marginTop",
+            "description": "上边距",
+            "type": "string | number"
+        },
+        {
+            "name": "marginBottom",
+            "description": "下边距",
+            "type": "string | number"
+        },
+        {
+            "name": "styleType",
+            "description": "金额样式",
+            "type": "number"
+        },
+        {
+            "name": "bold",
+            "description": "是否加粗",
+            "type": "boolean"
+        }
+    ]
+}

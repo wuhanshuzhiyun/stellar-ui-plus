@@ -123,7 +123,7 @@ export function restsFiles() {
     }
   })
   datas.sort((a, b) => a.sort - b.sort)
-  console.log('rests-datas', datas)
+
   return datas
 }
 
@@ -140,7 +140,7 @@ export function componentFiles() {
 
   const groupData: { [key: string]: Group } = {}
 
-  const componentJson: Obj = import.meta.glob('../../../uni_modules/stellar-plus/components/**/*.json', { eager: true })
+  const componentJson: Obj = import.meta.glob('../../../uni_modules/stellar-plus/components/**/config.json', { eager: true })
   const componentData: Obj = {}
   for (const k in componentJson) {
     const name = k.replace(deg, '$1')

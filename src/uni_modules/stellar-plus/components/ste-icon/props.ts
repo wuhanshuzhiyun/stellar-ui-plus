@@ -1,62 +1,14 @@
-import type { ExtractPropTypes } from 'vue'
-import { makeNumberProp, makeNumericProp, makeStringProp, truthProp } from '../../utils/props'
-import { CLICK_EVENT } from '../../common/_constants/event'
-
-// import type { DigitsType, StyleType, UnitType } from './type';
-
-export const iconProps = {
-  /**
-   * @description 图标对应的unicode
-   */
-  code: { ...makeStringProp(''), required: true },
-  /**
-   * @description 图标大小
-   */
-  size: makeNumericProp('28'),
-  /**
-   * @description 图标缩放
-   */
-  scale: makeNumberProp(1),
-  /**
-   * @description 图标颜色，默认#000000（黑色）
-   */
+export default {
+  code: { type: String, default: '', required: true },
+  size: { type: [String, Number], default: 28 },
+  scale: { type: Number, default: 1 },
   color: String,
-  /**
-   * @description 是否加粗
-   */
   bold: Boolean,
-  /**
-   * @description 左外边距
-   */
-  marginLeft: makeNumericProp(0),
-  /**
-   * @description 右外边距
-   */
-  marginRight: makeNumericProp(0),
-  /**
-   * @description 上外边距
-   */
-  marginTop: makeNumericProp(0),
-  /**
-   * @description 下外边距
-   */
-  marginBottom: makeNumericProp(0),
-  /**
-   * @description 字体fontFamily
-   */
-  fontFamily: makeStringProp(''),
-  /**
-   * @description 是否显示边框
-   */
+  marginLeft: { type: Number, default: 0 },
+  marginRight: { type: Number, default: 0 },
+  marginTop: { type: Number, default: 0 },
+  marginBottom: { type: Number, default: 0 },
+  fontFamily: String,
   showBorder: Boolean,
-  /**
-   * @description 容器对齐方式，容器对齐方式 true inline-block false inline-flex
-   */
-  inlineBlock: truthProp,
+  inlineBlock: { type: Boolean, default: true },
 }
-
-export const iconEmits = {
-  [CLICK_EVENT]: (evt: MouseEvent) => evt instanceof Object,
-}
-
-export type IconProps = ExtractPropTypes<typeof iconProps>

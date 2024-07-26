@@ -75,24 +75,7 @@
 ```
 
 ### API
-#### 组件属性(Props)
-
-| 属性名				| 说明					| 类型								| 默认值			| 可选值	| 支持版本	|
-| ---						| ---					| ---								| ---				| ---		| ---			|
-| `customClass`	| 自定义 class	| `String`					| -					| -			| -				|
-| `lineWidth`		| 线条的宽度		| `Number`					| `3`				| -			| -				|
-| `strokeColor`	| 线条的颜色		| `Number`					| `#000000`	| -			| -				|
-| `type`				| 保存图片类型	| `String`					| `png`			| `jpg`	| -				|
-| `width`				| 宽度,单位rpx	| `String`,`Number`	| `100%`		| -			| -				|
-| `height`			| 高度,单位rpx	| `String`,`Number`	| `100%`		| -			| -				|
-
-#### 组件事件(Events)
-
-|事件名		|说明					|事件参数	|支持版本	|
-|---			|---					|---			|---			|
-|`start`	| 笔画开始			| -				|-				|
-|`signing`| 正在书写中		| -				|-				|
-|`end`		| 笔画结束			|-				|-				|
+<!-- props -->
 
 #### 组件方法(Method)
 

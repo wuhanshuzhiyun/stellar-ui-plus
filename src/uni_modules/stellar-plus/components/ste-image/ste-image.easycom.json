@@ -154,17 +154,35 @@
     {
       "name": "[event]click",
       "description": "图片点击触发",
-      "type": "(event: UniEvent) => void"
+      "type": "(event: UniEvent) => void",
+      "params": [
+        {
+          "name": "event",
+          "description": "当前图片Event"
+        }
+      ]
     },
     {
       "name": "[event]load",
       "description": "图片加载成功触发",
-      "type": "(event: UniEvent) => void"
+      "type": "(event: UniEvent) => void",
+      "params": [
+        {
+          "name": "event",
+          "description": "当前图片Event"
+        }
+      ]
     },
     {
       "name": "[event]error",
       "description": "图片加载失败触发",
-      "type": "(event: UniEvent) => void"
+      "type": "(event: UniEvent) => void",
+      "params": [
+        {
+          "name": "event",
+          "description": "当前图片Event"
+        }
+      ]
     }
   ]
 }

@@ -8,7 +8,7 @@ import UnoCSS from 'unocss/vite'
 
 import mdPlugin, { Mode } from 'vite-plugin-markdown'
 
-import comTypes from './src/pages/pc/components-types-plugin.js'
+import comTypes from './src/pages/pc/stellar-plus-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({

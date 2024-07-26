@@ -7,7 +7,8 @@
         {
             "name": "selectable",
             "description": "文本是否可选 默认 false",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "space",
@@ -17,7 +18,8 @@
         {
             "name": "decode",
             "description": "是否解码 默认 false",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "lines",

@@ -22,33 +22,45 @@
                     "name": "line",
                     "description": "底部横线模式"
                 }
-            ]
+            ],
+            "default": "box"
         },
         {
             "name": "maxlength",
             "description": "最大长度",
-            "type": "number"
+            "type": "number",
+            "default": 6
         },
         {
             "name": "space",
             "description": "字符间的距离",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 16
         },
 
         {
             "name": "fontColor",
             "description": "字体颜色",
-            "type": "String"
+            "type": "String",
+            "default": "#000000"
+        },
+        {
+            "name": "borderColor",
+            "description": "边框颜色",
+            "type": "String",
+            "default": "#DDDDDD"
         },
         {
             "name": "fontSize",
             "description": "字体大小",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 28
         },
         {
             "name": "size",
             "description": "输入框的大小，宽等于高",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 64
         },
         {
             "name": "formatter",
@@ -58,17 +70,20 @@
         {
             "name": "focus",
             "description": "是否自动获取焦点",
-            "type": "boolean "
+            "type": "boolean ",
+            "default": false
         },
         {
             "name": "disabledDot",
             "description": "是否禁止输入点符号 默认 true",
-            "type": "boolean"
+            "type": "boolean",
+            "default": true
         },
         {
             "name": "readOnly",
             "description": "是否只读",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "[event]change",

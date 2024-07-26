@@ -7,28 +7,33 @@
         {
             "name": "show",
             "description": "是否显示弹出层，使用v-model修饰符来双向绑定",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "backgroundColor",
             "description": "内容容器的背景色",
-            "type": "string"
+            "type": "string",
+            "default": "#ffffff"
         },
         {
             "name": "isMaskClick",
             "description": "是否可以点击遮罩层关闭",
-            "type": "boolean"
+            "type": "boolean",
+            "default": true
         },
         {
             "name": "width",
             "description": "内容区宽度",
-            "type": "string | number"
+            "type": "string | number",
+            "default": "auto"
         },
 
         {
             "name": "height",
             "description": "内容区高度",
-            "type": "string | number"
+            "type": "string | number",
+            "default": "auto"
         },
         {
             "name": "position",
@@ -55,17 +60,20 @@
                     "name": "right",
                     "description": "右"
                 }
-            ]
+            ],
+            "default": "center"
         },
         {
             "name": "round",
             "description": "是否圆角",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "showClose",
             "description": "是否右上角显示关闭图标",
-            "type": "boolean"
+            "type": "boolean",
+            "default": true
         },
         {
             "name": "offsetX",
@@ -80,17 +88,20 @@
         {
             "name": "duration",
             "description": "动画持续时间，单位ms",
-            "type": "number"
+            "type": "number",
+            "default": 200
         },
         {
             "name": "zIndex",
             "description": "弹窗层级z-index",
-            "type": "number"
+            "type": "number",
+            "default": 998
         },
         {
             "name": "keepContent",
             "description": "隐藏后是否不销毁弹窗内容元素",
-            "type": "boolean"
+            "type": "boolean",
+            "default": true
         },
         {
             "name": "[event]close",

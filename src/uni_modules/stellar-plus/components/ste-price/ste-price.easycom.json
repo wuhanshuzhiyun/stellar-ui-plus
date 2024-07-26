@@ -7,7 +7,8 @@
         {
             "name": "value",
             "description": "金额 默认值 0",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 0
         },
         {
             "name": "valueUnit",
@@ -22,37 +23,68 @@
                     "name": "yuan",
                     "description": "元"
                 }
-            ]
+            ],
+            "default": "fen"
         },
         {
             "name": "showUnit",
             "description": "是否显示符号",
-            "type": "boolean"
+            "type": "boolean",
+            "default": true
         },
         {
             "name": "unitSymbol",
+            "description": "符号标记",
+            "type": "string",
+            "default": "¥"
+        },
+        {
+            "name": "digits",
             "description": "精度",
-            "type": "number"
+            "type": "number",
+            "values": [
+                {
+                    "name": -1,
+                    "description": "不处理"
+                },
+                {
+                    "name": 0,
+                    "description": "取整（四舍五入）"
+                },
+                {
+                    "name": 1,
+                    "description": "保留1位小数（四舍五入）"
+                },
+                {
+                    "name": 2,
+                    "description": "保留2位小数（四舍五入）"
+                }
+            ],
+            "default": -1
         },
         {
             "name": "fontSize",
             "description": "金额文字尺寸",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 30
         },
         {
             "name": "color",
             "description": "文字颜色",
-            "type": "string"
+            "type": "string",
+            "default": "#ff1e19"
         },
         {
             "name": "linePriceColor",
             "description": "划线价文字颜色",
-            "type": "string"
+            "type": "string",
+            "default": "#999999"
         },
         {
             "name": "lineHeight",
             "description": "行高，Number，单位rpx，String，同原生 默认值 1",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 1
         },
         {
             "name": "isSuggestPrice",
@@ -62,32 +94,61 @@
         {
             "name": "marginLeft",
             "description": "左边距",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 0
         },
         {
             "name": "marginRight",
             "description": "右边距",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 0
         },
         {
             "name": "marginTop",
             "description": "上边距",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 0
         },
         {
             "name": "marginBottom",
             "description": "下边距",
-            "type": "string | number"
+            "type": "string | number",
+            "default": 0
         },
         {
             "name": "styleType",
             "description": "金额样式",
-            "type": "number"
+            "type": "number",
+            "values": [
+                {
+                    "name": 1,
+                    "description": "元和角分大小相等（特殊价格）"
+                },
+                {
+                    "name": 2,
+                    "description": "角分小于元（常规价格"
+                },
+                {
+                    "name": 3,
+                    "description": "价格符号和角，分相等"
+                }
+            ],
+            "default": 2
         },
         {
             "name": "bold",
             "description": "是否加粗",
             "type": "boolean"
+        },
+        {
+            "name": "formatter",
+            "description": "格式化函数",
+            "type": "function"
+        },
+        {
+            "name": "[event]click",
+            "description": "点击事件",
+            "type": "() => void"
         }
     ]
 }

@@ -25,17 +25,20 @@
                     "name": 400,
                     "description": "超大"
                 }
-            ]
+            ],
+            "default": 200
         },
         {
             "name": "color",
             "description": "文本颜色",
-            "type": "string"
+            "type": "string",
+            "default": "#ffffff"
         },
         {
             "name": "background",
             "description": "背景",
-            "type": "string"
+            "type": "string",
+            "default": "#0091ff"
         },
         {
             "name": "borderColor",
@@ -59,27 +62,32 @@
                     "name": "{Number}",
                     "description": "自适应宽度，单位rpx"
                 }
-            ]
+            ],
+            "default": "auto"
         },
         {
             "name": "round",
             "description": "是否圆角按钮",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "disabled",
             "description": "是否禁用状态",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "loading",
             "description": "是否加载中状态",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "stopPropagation",
             "description": "是否阻止冒泡行为",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         {
             "name": "openType",

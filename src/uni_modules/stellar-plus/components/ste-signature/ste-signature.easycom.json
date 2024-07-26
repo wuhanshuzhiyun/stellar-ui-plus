@@ -1,0 +1,74 @@
+{
+  "name": "ste-signature",
+  "description": "签名",
+  "example": "<ste-signature />",
+  "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=image",
+  "attributes": [
+    {
+      "name": "customClass",
+      "description": "自定义class",
+      "type": "string"
+    },
+    {
+      "name": "lineWidth",
+      "description": "线宽",
+      "type": "string | number",
+      "default": 3
+    },
+    {
+      "name": "strokeColor",
+      "description": "线条颜色",
+      "type": "string | number",
+      "default": "#000000"
+    },
+    {
+      "name": "background",
+      "description": "图片背景",
+      "type": "string",
+      "default": "none"
+    },
+    {
+      "name": "type",
+      "description": "图片类型",
+      "type": "string",
+      "default": "png",
+      "values": [
+        {
+          "name": "png",
+          "description": "png"
+        },
+        {
+          "name": "jpg",
+          "description": "jpg"
+        }
+      ]
+    },
+    {
+      "name": "width",
+      "description": "宽度",
+      "type": "string | number",
+      "default": "100%"
+    },
+    {
+      "name": "height",
+      "description": "高度",
+      "type": "string | number",
+      "default": "100%"
+    },
+    {
+      "name": "[event]start",
+      "description": "笔画开始",
+      "type": "() => void"
+    },
+    {
+      "name": "[event]signing",
+      "description": "画图中",
+      "type": "() => void"
+    },
+    {
+      "name": "[event]end",
+      "description": "笔画结束",
+      "type": "() => void"
+    }
+  ]
+}

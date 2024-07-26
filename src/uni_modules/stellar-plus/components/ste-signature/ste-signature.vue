@@ -37,6 +37,11 @@ const initCtx = () => {
 
 const drawStrokes = () => {
     ctx.value?.clearRect(0, 0, 1920, 1080);
+    if (props.background !== 'none') {
+        ctx.value?.setFillStyle(props.background);
+        ctx.value?.fillRect(0, 0, 1920, 1080);
+    }
+    ctx.value?.draw();
     if (!strokes.value.length) {
         ctx.value?.stroke();
         ctx.value?.draw(true);
@@ -160,22 +165,7 @@ defineExpose({ save, clear, back });
 </script>
 
 <template>
-    <view
-        class="ste-signature-root"
-        :style="cmpRootStyle"
-        @mousedown="onMousedown"
-        @mousemove="onMousemove"
-        @mouseup="onTouchEnd"
-        @mosueleave="onTouchEnd"
-    >
-        <canvas
-            :id="canvasId"
-            :canvas-id="canvasId"
-            :style="cmpRootStyle"
-            disable-scroll
-            @touchstart="onTouchStart"
-            @touchmove="onTouchMove"
-            @touchend="onTouchEnd"
-        />
+    <view class="ste-signature-root" :style="cmpRootStyle" @mousedown="onMousedown" @mousemove="onMousemove" @mouseup="onTouchEnd" @mosueleave="onTouchEnd">
+        <canvas :id="canvasId" :canvas-id="canvasId" :style="cmpRootStyle" disable-scroll @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd" />
     </view>
 </template>

@@ -12,22 +12,26 @@
     {
       "name": "width",
       "description": "宽度",
-      "type": "string | number"
+      "type": "string | number",
+      "default": "100%"
     },
     {
       "name": "height",
       "description": "高度",
-      "type": "string | number"
+      "type": "string | number",
+      "default": "100%"
     },
     {
       "name": "radius",
       "description": "圆角",
-      "type": "string | number"
+      "type": "string | number",
+      "default": "0"
     },
     {
       "name": "mode",
       "description": "图片裁剪、缩放的模式",
       "type": "string",
+      "default": "scaleToFill",
       "values": [
         {
           "name": "scaleToFill",
@@ -91,6 +95,7 @@
       "name": "display",
       "description": "盒子模型",
       "type": "string",
+      "default": "inline-flex",
       "values": [
         {
           "name": "block",
@@ -125,22 +130,26 @@
     {
       "name": "hiddenLoading",
       "description": "是否隐藏图片未加载的占位内容",
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     {
       "name": "hiddenError",
       "description": "是否隐藏图片加载失败的占位内容",
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     {
       "name": "showMenuByLongpress",
       "description": "长按图片显示发送给朋友、收藏、保存图片、搜一搜、打开名片/前往群聊/打开小程序（若图片中包含对应二维码或小程序码）的菜单",
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     {
       "name": "lazyLoad",
       "description": "图片懒加载，在即将进入一定范围（上下三屏）时才开始加载",
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     {
       "name": "[event]click",

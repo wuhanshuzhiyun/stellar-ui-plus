@@ -11,3 +11,7 @@ export type PositionType = 'top' | 'bottom' | 'left' | 'right' | 'center'
 export type AroundPositionType = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'
 
 export type ModeType = 100 | 200 | 300 | 400
+
+export interface Obj {
+  [key: string]: any
+}

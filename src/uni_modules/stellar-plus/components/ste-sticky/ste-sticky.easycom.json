@@ -1,0 +1,48 @@
+{
+  "name": "ste-sticky",
+  "description": "吸顶组件",
+  "example": "<ste-sticky><view>塞下秋来风景异，衡阳雁去无留意</view></ste-sticky>",
+  "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=sticky",
+  "attributes": [
+    {
+      "name": "offsetTop",
+      "description": "吸顶时与顶部的距离，单位rpx",
+      "type": "string | number",
+      "default": 0
+    },
+    {
+      "name": "customNavHeight",
+      "description": "航栏的高度（没有导航栏时，请设置为0）",
+      "type": "string | number",
+      "default": null
+    },
+    {
+      "name": "disabled",
+      "description": "是禁用启吸顶功能",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "background",
+      "description": "组件背景",
+      "type": "string",
+      "default": "#fff"
+    },
+    {
+      "name": "zIndex",
+      "description": "吸顶时的z-index值",
+      "type": "string | number",
+      "default": 98
+    },
+    {
+      "name": "[event]fixed",
+      "description": "组件吸顶时触发",
+      "type": "() => void"
+    },
+    {
+      "name": "[event]unfixed",
+      "description": "组件取消吸顶时触发",
+      "type": "() => void"
+    }
+  ]
+}

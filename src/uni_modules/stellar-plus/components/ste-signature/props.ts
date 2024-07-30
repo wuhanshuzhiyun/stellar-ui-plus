@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import type { ImgType, SizeType } from '../../types/index'
+import type { ImgType } from '../../types/index'
 
 export default {
   customClass: { type: String, default: '' },
@@ -7,6 +7,6 @@ export default {
   strokeColor: { type: String, default: '#000000' },
   background: { type: String, default: 'none' },
   type: { type: String as PropType<ImgType>, default: 'png' },
-  width: { type: [String, Number] as PropType<SizeType>, default: '100%' },
-  height: { type: [String, Number] as PropType<SizeType>, default: '100%' },
+  width: { type: [String, Number], default: '100%' },
+  height: { type: [String, Number], default: '100%' },
 }

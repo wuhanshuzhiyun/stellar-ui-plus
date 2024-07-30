@@ -20,29 +20,14 @@ onMounted(() => {
             <view class="demo-item">
                 <view class="title">基础用法</view>
                 <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" />
-                <ste-image
-                    src="https://image.whzb.com/chain/StellarUI/图片.jpg"
-                    width="200"
-                    height="200"
-                    mode="aspectFit"
-                />
-                <ste-image
-                    src="https://image.whzb.com/chain/StellarUI/图片.jpg"
-                    width="200"
-                    height="200"
-                    mode="aspectFill"
-                />
+                <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" mode="aspectFit" />
+                <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" mode="aspectFill" />
                 <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" mode="widthFix" />
                 <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" height="200" mode="heightFix" />
             </view>
             <view class="demo-item">
                 <view class="title">圆角</view>
-                <ste-image
-                    src="https://image.whzb.com/chain/StellarUI/图片.jpg"
-                    radius="50%"
-                    width="200"
-                    height="200"
-                />
+                <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" radius="50%" width="200" height="200" />
             </view>
             <view class="demo-item">
                 <view class="title">加载效果</view>

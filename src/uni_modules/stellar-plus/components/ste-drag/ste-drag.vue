@@ -4,124 +4,19 @@ export default defineComponent({
 });
 </script>
 
-<!-- <script setup lang="ts">
-import { type ComponentInternalInstance, computed, defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue';
-import utils from '../../utils/utils';
-import propsData from './props';
-
-const props = defineProps(propsData);
-const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
-const myDrag = ref();
-
-const myDragID = `myDrag-${utils.guid()}`;
-const state: any = reactive({
-    elWidth: 0,
-    elHeight: 0,
-    screenWidth: 0,
-    screenHeight: 0,
-    startTop: 0,
-    startLeft: 0,
-    initTop: 0,
-    initLeft: 0,
-    top: 0,
-    left: 0,
-    attractTransition: false,
-    boundary: {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    } as Record<string, any>,
-});
-
-const classes = computed(() => {
-    const prefixCls = 'ste-drag-root';
-    return {
-        [prefixCls]: true,
-    };
-});
-const domElem = uni.getSystemInfoSync();
-async function getInfo() {
-    const rec = await utils.querySelector<false>('#' + myDragID, instance);
-    console.log('rec is ', rec);
-    state.elWidth = rec.width;
-    state.elHeight = rec.height;
-    state.initTop = rec.top;
-    state.initLeft = rec.left;
-
-    state.screenWidth = domElem.screenWidth;
-    state.screenHeight = domElem.screenHeight;
-
-    attractFn();
-}
-
-function touchMove(e: TouchEvent) {
-    e.preventDefault();
-    const touch = e.touches[0];
-
-    let left = touch.clientX - state.startLeft;
-    let top = touch.clientY - state.startTop;
-
-    const rightLocation = state.screenWidth - state.elWidth - state.boundary.right;
-    if (Math.abs(left + state.initLeft) > rightLocation) left = rightLocation - state.initLeft;
-    else if (left + state.initLeft <= state.boundary.left) left = state.boundary.left - state.initLeft;
-
-    if (top + state.initTop < state.boundary.top) top = state.boundary.top - state.initTop;
-    else if (top + state.initTop > state.screenHeight - state.elHeight - state.boundary.bottom) top = state.screenHeight - state.elHeight - state.boundary.bottom - state.initTop;
-
-    if (props.direction !== 'y') state.left = left;
-    if (props.direction !== 'x') state.top = top;
-}
-
-function attractFn() {
-    if (!props.attract || props.direction === 'y') return;
-    const screenCenterX = (state.screenWidth - state.boundary.right - state.boundary.left) / 2;
-    const centerX = screenCenterX - state.initLeft - state.elWidth / 2;
-    if (state.left < centerX) state.left = state.boundary.left - state.initLeft;
-    else state.left = state.screenWidth - state.elWidth - state.boundary.right - state.initLeft;
-    state.attractTransition = true;
-    setTimeout(() => {
-        state.attractTransition = false;
-    }, 400);
-}
-
-function touchEnd() {
-    attractFn();
-}
-function touchStart(e: TouchEvent) {
-    const touch = e.touches[0];
-    state.startLeft = touch.clientX - state.left;
-    state.startTop = touch.clientY - state.top;
-    state.attractTransition = false;
-}
-onMounted(() => {
-    setTimeout(() => {
-        getInfo();
-    }, 200);
-
-    state.boundary = props.boundary;
-});
-
-const getStyle = computed(() => {
-    return {
-        transform: `translate(${`${state.left}px`}, ${`${state.top}px`})`,
-        transition: state.attractTransition ? 'all ease 0.3s' : 'none',
-    };
-});
-</script>
-
-<template>
-    <view :id="myDragID" ref="myDrag" :class="classes" :style="getStyle" @touchstart="touchStart" @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
-        <slot />
-    </view>
-</template> -->
-
 <script setup lang="ts">
 import { ref, onMounted, watch, onBeforeUnmount, nextTick } from 'vue';
 import utils from '../../utils/utils';
 import type { HTMLMouseEvent, UniTouchEvent } from '../../types/event.d';
 import propsData, { DEFAULT_BOUNDARY } from './props';
+
 const props = defineProps(propsData);
+const emits = defineEmits<{
+    (e: 'start'): void;
+    (e: 'end'): void;
+}>();
+
+let isMove = false; // 标识是否正在拖动
 const rootId = 'ste-drag-root-' + utils.guid();
 const SCREEN_WIDTH = utils.System.getWindowWidth();
 const SCREEN_HEIGHT = utils.System.getWindowHeight();
@@ -150,7 +45,6 @@ const initTop = ref<number | undefined>(0);
 const initLeft = ref<number | undefined>(0);
 const elWidth = ref<number | undefined>(0);
 const elHeight = ref<number | undefined>(0);
-const canMove = ref(false);
 const boundaryData = ref(props.boundary);
 
 onMounted(() => {
@@ -191,12 +85,13 @@ function removeListenner() {
     window.removeEventListener('mouseup', touchEnd);
 }
 function touchStart(e: UniTouchEvent | HTMLMouseEvent | MouseEvent) {
+    emits('start');
+    isMove = true;
     const touch = getMoveObj(e);
     start.value = { x: touch.pageX, y: touch.pageY };
     preTranslate.value = translate.value;
 }
 function touchMove(e: UniTouchEvent | HTMLMouseEvent | MouseEvent) {
-    e.preventDefault();
     const touch = getMoveObj(e);
     let x = preTranslate.value.x + (touch.pageX - start.value.x);
     let xLeft = x + (initLeft.value ?? 0);
@@ -226,6 +121,10 @@ function touchMove(e: UniTouchEvent | HTMLMouseEvent | MouseEvent) {
 }
 function touchEnd() {
     removeListenner && removeListenner();
+    if (isMove) {
+        emits('end');
+        isMove = false;
+    }
     // 是否执行贴边
     if (!props.attract) {
         return;

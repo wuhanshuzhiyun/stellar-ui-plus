@@ -11,7 +11,6 @@ const emits = defineEmits<{
 let defaultFontFamily = 'ste-iconfont-1709689042473';
 
 const cmpCode = computed(() => {
-    console.log('prop code', props.code);
     // unicode编码转字符
     if (!props.code) return;
     if (/[a-zA-Z]/.test(props.code)) {

@@ -4,6 +4,118 @@ export default defineComponent({
 });
 </script>
 
+<!-- <script setup lang="ts">
+import { type ComponentInternalInstance, computed, defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import utils from '../../utils/utils';
+import propsData from './props';
+
+const props = defineProps(propsData);
+const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
+const myDrag = ref();
+
+const myDragID = `myDrag-${utils.guid()}`;
+const state: any = reactive({
+    elWidth: 0,
+    elHeight: 0,
+    screenWidth: 0,
+    screenHeight: 0,
+    startTop: 0,
+    startLeft: 0,
+    initTop: 0,
+    initLeft: 0,
+    top: 0,
+    left: 0,
+    attractTransition: false,
+    boundary: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    } as Record<string, any>,
+});
+
+const classes = computed(() => {
+    const prefixCls = 'ste-drag-root';
+    return {
+        [prefixCls]: true,
+    };
+});
+const domElem = uni.getSystemInfoSync();
+async function getInfo() {
+    const rec = await utils.querySelector<false>('#' + myDragID, instance);
+    console.log('rec is ', rec);
+    state.elWidth = rec.width;
+    state.elHeight = rec.height;
+    state.initTop = rec.top;
+    state.initLeft = rec.left;
+
+    state.screenWidth = domElem.screenWidth;
+    state.screenHeight = domElem.screenHeight;
+
+    attractFn();
+}
+
+function touchMove(e: TouchEvent) {
+    e.preventDefault();
+    const touch = e.touches[0];
+
+    let left = touch.clientX - state.startLeft;
+    let top = touch.clientY - state.startTop;
+
+    const rightLocation = state.screenWidth - state.elWidth - state.boundary.right;
+    if (Math.abs(left + state.initLeft) > rightLocation) left = rightLocation - state.initLeft;
+    else if (left + state.initLeft <= state.boundary.left) left = state.boundary.left - state.initLeft;
+
+    if (top + state.initTop < state.boundary.top) top = state.boundary.top - state.initTop;
+    else if (top + state.initTop > state.screenHeight - state.elHeight - state.boundary.bottom) top = state.screenHeight - state.elHeight - state.boundary.bottom - state.initTop;
+
+    if (props.direction !== 'y') state.left = left;
+    if (props.direction !== 'x') state.top = top;
+}
+
+function attractFn() {
+    if (!props.attract || props.direction === 'y') return;
+    const screenCenterX = (state.screenWidth - state.boundary.right - state.boundary.left) / 2;
+    const centerX = screenCenterX - state.initLeft - state.elWidth / 2;
+    if (state.left < centerX) state.left = state.boundary.left - state.initLeft;
+    else state.left = state.screenWidth - state.elWidth - state.boundary.right - state.initLeft;
+    state.attractTransition = true;
+    setTimeout(() => {
+        state.attractTransition = false;
+    }, 400);
+}
+
+function touchEnd() {
+    attractFn();
+}
+function touchStart(e: TouchEvent) {
+    const touch = e.touches[0];
+    state.startLeft = touch.clientX - state.left;
+    state.startTop = touch.clientY - state.top;
+    state.attractTransition = false;
+}
+onMounted(() => {
+    setTimeout(() => {
+        getInfo();
+    }, 200);
+
+    state.boundary = props.boundary;
+});
+
+const getStyle = computed(() => {
+    return {
+        transform: `translate(${`${state.left}px`}, ${`${state.top}px`})`,
+        transition: state.attractTransition ? 'all ease 0.3s' : 'none',
+    };
+});
+</script>
+
+<template>
+    <view :id="myDragID" ref="myDrag" :class="classes" :style="getStyle" @touchstart="touchStart" @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
+        <slot />
+    </view>
+</template> -->
+
 <script setup lang="ts">
 import { ref, onMounted, watch, onBeforeUnmount, nextTick } from 'vue';
 import utils from '../../utils/utils';
@@ -73,8 +185,7 @@ function mouseDown(e: HTMLMouseEvent | MouseEvent) {
     window.addEventListener('mousemove', touchMove);
     window.addEventListener('mouseup', touchEnd);
 }
-function mouseMove(e: HTMLMouseEvent | MouseEvent) {}
-function mouseUp(e: HTMLMouseEvent | MouseEvent) {}
+
 function removeListenner() {
     window.removeEventListener('mousemove', touchMove);
     window.removeEventListener('mouseup', touchEnd);
@@ -147,7 +258,6 @@ function getMoveObj(e: UniTouchEvent | HTMLMouseEvent | MouseEvent): { pageX: nu
     }
 }
 </script>
-
 <template>
     <view
         class="ste-drag-root"
@@ -156,8 +266,6 @@ function getMoveObj(e: UniTouchEvent | HTMLMouseEvent | MouseEvent): { pageX: nu
         @touchmove.stop.prevent="touchMove"
         @touchend="touchEnd"
         @mousedown="mouseDown"
-        @mousemove="mouseMove"
-        @mouseup="mouseUp"
         :style="{
             translate: translate.x + 'px ' + translate.y + 'px',
             transition: attractTransition ? 'all ease 0.3s' : 'none',

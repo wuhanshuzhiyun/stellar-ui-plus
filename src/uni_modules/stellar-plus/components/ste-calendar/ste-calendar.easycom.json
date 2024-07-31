@@ -1,0 +1,172 @@
+{
+  "name": "ste-calendar",
+  "description": "按钮组件",
+  "example": "<ste-calendar></ste-calendar>",
+  "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=calendar",
+  "attributes": [
+    {
+      "name": "title",
+      "description": "尺寸",
+      "type": "string",
+      "default": "日期选择"
+    },
+    {
+      "name": "showTitle",
+      "description": "是否显示标题",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "list",
+      "description": "选中的日期列表",
+      "type": "number | string",
+      "default": []
+    },
+    {
+      "name": "mode",
+      "description": "选项的值",
+      "type": "string",
+      "default": "single",
+      "values": [
+        {
+          "name": "single",
+          "description": "选择单个日期（默认）"
+        },
+        {
+          "name": "multiple",
+          "description": "可以选择多个日期"
+        },
+        {
+          "name": "range",
+          "description": "可以选择日期范围"
+        }
+      ]
+    },
+    {
+      "name": "startText",
+      "description": "开始日期文本",
+      "type": "string",
+      "default": "开始"
+    },
+    {
+      "name": "endText",
+      "description": "结束日期文本",
+      "type": "string",
+      "default": "结束"
+    },
+    {
+      "name": "color",
+      "description": "主题颜色（选中日期背景、周末文日期颜色和确定按钮）",
+      "type": "string",
+      "default": "#FF1A00"
+    },
+    {
+      "name": "minDate",
+      "description": "最小可选日期",
+      "type": "number | string | Date",
+      "default": 0
+    },
+    {
+      "name": "maxDate",
+      "description": "最大可选日期",
+      "type": "number | string | Date",
+      "default": 0
+    },
+    {
+      "name": "defaultMonth",
+      "description": "默认展示的月份",
+      "type": "number | string | Date",
+      "default": 0
+    },
+    {
+      "name": "maxCount",
+      "description": "mode=multiple时，最多可选多少个日期",
+      "type": "number",
+      "default": 0
+    },
+    {
+      "name": "formatter",
+      "description": "日期格式化(默认'YYYY-MM-DD')",
+      "type": "string",
+      "default": "YYYY-MM-DD"
+    },
+    {
+      "name": "showMark",
+      "description": "是否显示月份背景色",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "readonly",
+      "description": "是否为只读状态，只读状态下禁止选择日期",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "maxRange",
+      "description": "日期区间最多可选天数，默认无限制，mode = range时有效",
+      "type": "number"
+    },
+    {
+      "name": "rangePrompt",
+      "description": "范围选择超过最多可选天数时的提示文案，mode = range时有效",
+      "type": "string"
+    },
+    {
+      "name": "showRangePrompt",
+      "description": "范围选择超过最多可选天数时，是否展示提示文案，mode = range时有效",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "allowSameDay",
+      "description": "是否允许日期范围的起止时间为同一天，mode = range时有效",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "name": "showConfirm",
+      "description": "是否显示确定按钮",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "name": "width",
+      "description": "可视区域宽度",
+      "type": "number | string",
+      "default": "100%"
+    },
+    {
+      "name": "height",
+      "description": "可视区域高度",
+      "type": "number | string",
+      "default": "100%"
+    },
+    {
+      "name": "[event]select",
+      "description": "选择日期时触发",
+      "type": "(days:(number|string)[],day:number|string) => void",
+      "params": [
+        {
+          "name": "days",
+          "description": "选中的日期列表"
+        },
+        {
+          "name": "day",
+          "description": "当前选中的日期"
+        }
+      ]
+    },
+    {
+      "name": "[event]confirm",
+      "description": "点击确定按钮时触发",
+      "type": "(days:(number|string)[]) => void",
+      "params": [
+        {
+          "name": "days",
+          "description": "当前选中的日期列表"
+        }
+      ]
+    }
+  ]
+}

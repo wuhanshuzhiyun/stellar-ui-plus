@@ -7,6 +7,14 @@ onMounted(() => {
     boundary.value.right = systemInfo.windowWidth - 22 - 300;
     boundary.value.bottom = systemInfo.windowHeight - 354 - 150;
 });
+
+function handleStart() {
+    console.log('start');
+}
+
+function handleEnd() {
+    console.log('end');
+}
 </script>
 
 <template>
@@ -17,7 +25,7 @@ onMounted(() => {
                 <view class="title">基础内容</view>
                 <view class="item-block">
                     <view>
-                        <ste-drag>
+                        <ste-drag @start="handleStart" @end="handleEnd">
                             <ste-button>拖拽按钮</ste-button>
                         </ste-drag>
                     </view>
@@ -42,7 +50,7 @@ onMounted(() => {
                 <view class="title">贴边</view>
                 <view class="item-block">
                     <view>
-                        <ste-drag attract>
+                        <ste-drag attract @start="handleStart" @end="handleEnd">
                             <ste-button>贴边</ste-button>
                         </ste-drag>
                     </view>

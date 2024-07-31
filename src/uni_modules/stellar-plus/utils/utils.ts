@@ -1,5 +1,6 @@
-import * as dayjs from 'dayjs'
-import System from './System.js'
+import dayjs from 'dayjs'
+import System from './System'
+import Color from './Color'
 
 import '../common/index.css'
 
@@ -13,6 +14,7 @@ type PartType = 0 | 1 | 2
 
 const utils = {
   System,
+  Color,
   dayjs,
   isNaN(value: number | string | null | undefined): boolean {
     const deg = /^-?\d+(\.\d+)?$/i

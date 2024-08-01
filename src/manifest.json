@@ -1,5 +1,5 @@
 {
-  "name": "vitesse-uni-app",
+  "name": "StellarPlus",
   "appid": "",
   "description": "",
   "versionName": "1.0.0",
@@ -42,7 +42,7 @@
   },
   "quickapp": {},
   "mp-weixin": {
-    "appid": "",
+    "appid": "wx1c5a7b4d0aa7415e",
     "setting": {
       "urlCheck": false
     },

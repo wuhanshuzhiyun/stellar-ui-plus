@@ -28,14 +28,14 @@ const thas = ref<globalThis.ComponentPublicInstance | null>();
 const initCtx = () => {
     thas.value = getCurrentInstance()?.proxy;
     ctx.value = uni.createCanvasContext(canvasId.value, thas.value);
-    ctx.value?.setLineCap('round');
-    ctx.value?.setLineWidth(props.lineWidth);
-    ctx.value?.setStrokeStyle(props.strokeColor);
-    ctx.value?.setLineJoin('round');
     drawStrokes();
 };
 
 const drawStrokes = () => {
+    ctx.value?.setLineCap('round');
+    ctx.value?.setLineWidth(props.lineWidth);
+    ctx.value?.setStrokeStyle(props.strokeColor);
+    ctx.value?.setLineJoin('round');
     ctx.value?.clearRect(0, 0, 1920, 1080);
     if (props.background !== 'none') {
         ctx.value?.setFillStyle(props.background);

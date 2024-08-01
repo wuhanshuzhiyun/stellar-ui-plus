@@ -1,0 +1,50 @@
+{
+    "name": "ste-drag",
+    "description": "拖拽",
+    "example": "<ste-drag><view>拖拽内容</view></ste-drag>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-drag",
+    "attributes": [
+        {
+            "name": "attract",
+            "description": "是否开启自动吸边（根据 screenWidth 进行吸边）",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "direction",
+            "description": "拖拽元素的拖拽方向限制",
+            "type": "string",
+            "values": [
+                {
+                    "name": "all",
+                    "description": "不限制方向"
+                },
+                {
+                    "name": "x",
+                    "description": "横向拖拽"
+                },
+                {
+                    "name": "y",
+                    "description": "竖向拖拽"
+                }
+            ],
+            "default": "all"
+        },
+        {
+            "name": "boundary",
+            "description": "拖拽元素的拖拽边界",
+            "type": "object",
+            "default": "屏幕为边界"
+        },
+        {
+            "name": "[event]start",
+            "description": "拖拽开始",
+            "type": "(t) => void"
+        },
+        {
+            "name": "[event]end",
+            "description": "拖拽结束",
+            "type": "() => void"
+        }
+    ]
+}

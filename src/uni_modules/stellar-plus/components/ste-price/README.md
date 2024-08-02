@@ -96,27 +96,6 @@
 <ste-price value="9527" bold fontSize="50" />
 ```
 
-#### 格式化内容
-
-```html
-<template>
-    <ste-price value="9527" :formatter="formatter" />
-</template>
-<script>
-    export default {
-        data() {
-            return {};
-        },
-        methods: {
-            formatter(price) {
-                // 入参是传入的value值
-                return (price / 100).toFixed(3);
-            },
-        },
-    };
-</script>
-```
-
 ### API
 
 <!-- props -->

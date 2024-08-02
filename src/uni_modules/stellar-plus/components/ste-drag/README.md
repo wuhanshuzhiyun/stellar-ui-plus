@@ -49,21 +49,14 @@
         </ste-drag>
     </view>
 </template>
-<script>
-    export default {
-        data() {
-            return {
-                boundary: null,
-            };
-        },
-        mounted() {
-            const boundary = { left: 22, top: 354 };
-            const systemInfo = uni.getSystemInfoSync();
-            boundary.right = systemInfo.windowWidth - 22 - 300;
-            boundary.bottom = systemInfo.windowHeight - 354 - 150;
-            this.boundary = boundary;
-        },
-    };
+<script lang="ts" setup>
+    import { ref, onMounted } from 'vue';
+    const boundary = ref({ left: 22, bottom: 0, top: 354, right: 0 });
+    onMounted(() => {
+        const systemInfo = uni.getSystemInfoSync();
+        boundary.value.right = systemInfo.windowWidth - 22 - 300;
+        boundary.value.bottom = systemInfo.windowHeight - 354 - 150;
+    });
 </script>
 <style>
     .boundary-box {

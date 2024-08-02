@@ -16,7 +16,7 @@ function formatter(type: CloumnType, value: any) {
     }
     return value;
 }
-function filter(mode: any, options: any[]) {
+function filter(mode: CloumnType, options: any[]) {
     if (mode === 'year') {
         return options.filter(option => option % 5 === 0);
     }

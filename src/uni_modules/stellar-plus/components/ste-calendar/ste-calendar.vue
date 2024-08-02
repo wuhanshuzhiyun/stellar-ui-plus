@@ -1,11 +1,30 @@
 <script setup lang="ts">
-import { watch, onMounted, defineEmits } from 'vue';
+import { watch, onMounted, defineProps, defineEmits } from 'vue';
 import { formatDate, type WeekType } from './date';
 import utils from '../../utils/utils';
 import useData from './useData';
+import propsData from './props';
+import { getCalendarData } from './date';
 
-const { props, initing, setIniting, startDate, setStartDate, endDate, setEndDate, dataList, setDataList, contentScrollTop, setContentScrollTop, cmpRootStyle, cmpDates, cmpShowConfirm } = useData();
+const props = defineProps(propsData);
 
+const cmpRootStyle = computed(() => ({
+    '--calendar-width': utils.formatPx(props.width),
+    '--calendar-height': utils.formatPx(props.height),
+    '--calendar-color': props.color,
+    '--calendar-bg-color': utils.Color.formatColor(props.color, 0.1),
+    '--calendar-range-color': utils.Color.formatColor(props.color, 0.2),
+    '--calendar-disabled-color': utils.Color.formatColor(props.color, 0.3),
+    '--calendar-start-text': `"${props.startText}"`,
+    '--calendar-end-text': `"${props.endText}"`,
+}));
+
+const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, props.formatter));
+
+const cmpShowConfirm = computed(() => props.showConfirm && !props.readonly);
+
+const { initing, setIniting, startDate, setStartDate, endDate, setEndDate, dataList, setDataList, contentScrollTop, setContentScrollTop } = useData();
+console.log('props-->', props);
 const emits = defineEmits<{
     (e: 'select', days: (string | number)[], day: string | number): void;
     (e: 'confirm', days: (string | number)[]): void;
@@ -119,6 +138,8 @@ const confirm = () => {
 onMounted(() => {
     showMonth();
 });
+
+defineExpose({ showMonth });
 </script>
 <template>
     <view class="ste-calendar-root" :style="[cmpRootStyle, { opacity: initing ? 0 : 1 }]">

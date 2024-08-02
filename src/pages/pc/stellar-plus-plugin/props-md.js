@@ -34,7 +34,7 @@ module.exports = function (components) {
           event += `| \`${name}\` | ${item.description || '-'} | ${item.params?.length ? item.params.map(param => `\`${param.name}\`：${param.description}`).join('<br/>') : '-'} | ${item.version ? `\`${item.version}\`` : '-'} |\n`
         }
         else {
-          props += `| \`${item.name}\` | ${item.description || '-'} | \`${item.type}\` | ${item.default ? `\`${item.default}\`` : '-'} | ${item.values?.length ? item.values.map(value => `\`${value.name}\`：${value.description}`).join('<br/>') : '-'} | ${item.version ? `\`${item.version}\`` : '-'} |\n`
+          props += `| \`${item.name}\` | ${item.description || '-'} | \`${item.type}\` | ${typeof item.default === 'object' ? `\`${JSON.stringify(item.default)}\`` : item.default !== undefined ? `\`${item.default}\`` : '-'} | ${item.values?.length ? item.values.map(value => `\`${value.name}\`：${value.description}`).join('<br/>') : '-'} | ${item.version ? `\`${item.version}\`` : '-'} |\n`
         }
       })
       props += '\n\n'

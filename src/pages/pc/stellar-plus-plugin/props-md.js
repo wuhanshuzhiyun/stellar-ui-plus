@@ -5,9 +5,13 @@ const { getDir } = require('./utils')
 module.exports = function (components) {
   components.forEach((component) => {
     const filePath = path.join(getDir(), '/components', `${component}/${component}.easycom.json`)
-    // 判断文件是否存在
+    const configFilePath = path.join(getDir(), '/components', `${component}/config.json`)
+
+    // 组件没有easycom和config文件为内置组件，无需提示和生成
     if (!fs.existsSync(filePath)) {
-      console.error(`组件【${component}】没有定义.easycom.json说明文件`)
+      if (fs.existsSync(configFilePath))
+        console.error(`组件【${component}】没有定义.easycom.json说明文件`)
+
       return
     }
     // 读取文件内容

@@ -1,0 +1,137 @@
+{
+    "name": "ste-date-picker",
+    "description": "此选择器用于时间日期",
+    "example": "<ste-date-picker />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=date-picker",
+    "attributes": [
+        {
+            "name": "value",
+            "description": "绑定值",
+            "type": "string | number"
+        },
+        {
+            "name": "showToolbar",
+            "description": "是否显示顶部的操作栏",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "title",
+            "description": "顶部标题",
+            "type": "string"
+        },
+        {
+            "name": "mode",
+            "description": "展示格式",
+            "type": "string",
+            "values": [
+                {
+                    "name": "all",
+                    "description": "年月日时分秒"
+                },
+                {
+                    "name": "datetime",
+                    "description": "年月日时分"
+                },
+                {
+                    "name": "date",
+                    "description": "年月日"
+                },
+                {
+                    "name": "year-month",
+                    "description": "年月"
+                },
+                {
+                    "name": "month-day",
+                    "description": "月日"
+                },
+                {
+                    "name": "time",
+                    "description": "时分秒"
+                },
+                {
+                    "name": "hour-minute",
+                    "description": "时分"
+                },
+                {
+                    "name": "minute-second",
+                    "description": "分秒"
+                }
+            ],
+            "default": "all"
+        },
+        {
+            "name": "maxDate",
+            "description": "可选的最大时间",
+            "type": "number",
+            "default": "后10年"
+        },
+        {
+            "name": "minDate",
+            "description": "可选的最小时间",
+            "type": "number",
+            "default": "前10年"
+        },
+        {
+            "name": "filter",
+            "description": "选项过滤函数",
+            "type": "function"
+        },
+        {
+            "name": "formatter",
+            "description": "选项格式化函数",
+            "type": "function"
+        },
+        {
+            "name": "itemHeight",
+            "description": "各列中，单个选项的高度",
+            "type": "string | number",
+            "default": 36
+        },
+        {
+            "name": "cancelText",
+            "description": "取消按钮的文字",
+            "type": "string",
+            "default": "取消"
+        },
+        {
+            "name": "confirmText",
+            "description": "确认按钮的文字",
+            "type": "string",
+            "default": "确认"
+        },
+        {
+            "name": "cancelColor",
+            "description": "取消按钮的颜色",
+            "type": "string",
+            "default": "#909193"
+        },
+        {
+            "name": "confirmColor",
+            "description": "确认按钮的颜色",
+            "type": "string",
+            "default": "#3c9cff"
+        },
+        {
+            "name": "visibleItemCount",
+            "description": "每列中可见选项的数量",
+            "type": "string | number",
+            "default": 5
+        },
+        {
+            "name": "[event]confirm",
+            "description": "点击确定按钮，返回当前选择的值",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]change",
+            "description": "当选择值变化时触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]cancel",
+            "description": "点击取消按钮",
+            "type": "() => void"
+        }
+    ]
+}

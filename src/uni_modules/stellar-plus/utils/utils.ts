@@ -41,10 +41,10 @@ const utils = {
   },
   /**
    * 分转元
-   *@val 传入的分
-   *@digits 精度，-1 不使用精度 0 保留0位小数 1 保留1位小数 2保留2位小数
-   *@defaultVal 默认值
-   *@part 取值部分 0 取全部值 1 取元部分 2取角分部分
+   *@param val 传入的分
+   *@param digits 精度，-1 不使用精度 0 保留0位小数 1 保留1位小数 2保留2位小数
+   *@param defaultVal 默认值
+   *@param part 取值部分 0 取全部值 1 取元部分 2取角分部分
    */
   fenToYuan(val: any, digits: number = -1, defaultVal: string = '', part: PartType = 0): string | undefined {
     // let part1 = Math.floor(val / 100); // 元部分
@@ -73,6 +73,27 @@ const utils = {
         return `.${newVal.split('.')[1]}`
       else return ''
     }
+  },
+  /**
+     深拷贝
+    /* @param obj 深拷贝对象
+    /* @param keySort 是否对字段进行排序
+   */
+  deepClone<T>(obj: T, keySort = false): T {
+    if (obj === null || typeof obj !== 'object')
+      return obj
+
+    const clone: any = Array.isArray(obj) ? [] : {}
+
+    const keys = Object.keys(obj) as (keyof T)[]
+
+    if (keySort)
+      keys.sort()
+
+    for (const key of keys)
+      clone[key] = this.deepClone(obj[key], keySort)
+
+    return clone as T
   },
   /**
    * 对象深度合并

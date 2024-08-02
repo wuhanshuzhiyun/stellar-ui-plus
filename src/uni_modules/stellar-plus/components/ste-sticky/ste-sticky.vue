@@ -42,7 +42,6 @@ const relativeToViewportTop = computed(() => {
 
 const disconnectObserver = () => {
     if (observe.value) {
-        console.log('>?>??');
         observe.value.disconnect();
     }
 };

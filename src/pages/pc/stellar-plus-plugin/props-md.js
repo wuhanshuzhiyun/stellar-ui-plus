@@ -29,12 +29,20 @@ module.exports = function (components) {
       let event = `#### Events\n`
       event += `| 事件名 | 说明  | 回调参数 | 支持版本 |\n| ----- | ----- | ------- | -------- |\n`
       data.attributes.forEach((item) => {
+        const description = item.description || '-'
+        const version = item.version ? `\`${item.version}\`` : '-'
         if (item.name?.indexOf('[event]') === 0) {
           const name = item.name.replace('[event]', '')
-          event += `| \`${name}\` | ${item.description || '-'} | ${item.params?.length ? item.params.map(param => `\`${param.name}\`：${param.description}`).join('<br/>') : '-'} | ${item.version ? `\`${item.version}\`` : '-'} |\n`
+          const params = item.params?.length ? item.params.map(param => `\`${param.name}\`：${param.description}`).join('<br/>') : '-'
+
+          event += `| \`${name}\` | ${description} | ${params} | ${version} |\n`
         }
         else {
-          props += `| \`${item.name}\` | ${item.description || '-'} | \`${item.type}\` | ${typeof item.default === 'object' ? `\`${JSON.stringify(item.default)}\`` : item.default !== undefined ? `\`${item.default}\`` : '-'} | ${item.values?.length ? item.values.map(value => `\`${value.name}\`：${value.description}`).join('<br/>') : '-'} | ${item.version ? `\`${item.version}\`` : '-'} |\n`
+          const type = `\`${item.type}\``
+          const def = typeof item.default === 'object' ? `\`${JSON.stringify(item.default)}\`` : item.default !== undefined ? `\`${item.default}\`` : '-'
+          const values = item.values?.length ? item.values.map(value => `\`${value.name}\`：${value.description}`).join('<br/>') : '-'
+
+          props += `| \`${item.name}\` | ${description} | ${type} | ${def} | ${values} | ${version} |\n`
         }
       })
       props += '\n\n'

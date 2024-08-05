@@ -46,7 +46,9 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-    removeListenner();
+    // #ifndef MP
+    removeListenner && removeListenner();
+    // #endif
 });
 
 watch(
@@ -99,13 +101,16 @@ function attractFn() {
 }
 
 function touchEnd() {
+    // #ifndef MP
     removeListenner && removeListenner();
+    // #endif
     if (isMove) {
         emits('end');
         isMove = false;
     }
     attractFn();
 }
+
 function touchStart(e: TouchEvent | MouseEvent) {
     isMove = true;
     emits('start');
@@ -114,6 +119,8 @@ function touchStart(e: TouchEvent | MouseEvent) {
     state.startTop = touch.clientY - state.top;
     state.attractTransition = false;
 }
+
+// #ifdef WEB
 
 function mouseDown(e: MouseEvent) {
     touchStart(e);
@@ -125,6 +132,8 @@ function removeListenner() {
     window.removeEventListener('mousemove', touchMove);
     window.removeEventListener('mouseup', touchEnd);
 }
+// #endif
+
 function getMoveObj(e: TouchEvent | MouseEvent): { clientX: number; clientY: number } {
     if ('touches' in e) {
         // e is UniTouchEvent

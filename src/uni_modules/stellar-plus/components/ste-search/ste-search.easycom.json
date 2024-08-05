@@ -21,7 +21,7 @@
             "default": "default"
         },
         {
-            "name": "value",
+            "name": "modelValue",
             "description": "当前值（支持v-model双向绑定）",
             "type": "string",
             "default": ""

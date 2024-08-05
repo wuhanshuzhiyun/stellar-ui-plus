@@ -9,37 +9,32 @@
 **JavaScript**
 
 ```javascript
-export default {
-	data() {
-		return {
-			value: 'RTX4060Ti',
-			hotWords: ['RTX4060', 'RTX4070', 'RTX4080', '小米电视', '华为手机'],
-			focus: false,
-		};
-	},
-	watch: {
-		text(v) {
-			console.log('watch', v);
-		},
-	},
-	created() {},
-	methods: {
-		onInput(v) {
-			console.log('input', v);
-		},
-		onSearch(v) {
-			console.log('search', v);
-			this.showToast({
-				icon: 'none',
-				title: `搜索：${v}`,
-			});
-		},
-		this.showToast({
-			icon: 'none',
-			title: `点击触发：${v}`,
-		});
-	},
+<script setup lang="ts">
+import { ref } from 'vue';
+const value = ref('RTX4060Ti');
+const hotWords = ref(['RTX4060', 'RTX4070', 'RTX4080']);
+const focus = ref(false);
+
+const onInput = (v: string) => {
+    uni.showToast({
+        title: 'onInput' + v,
+        icon: 'none',
+    });
 };
+const onSearch = (v: string) => {
+    uni.showToast({
+        title: 'onSearch' + v,
+        icon: 'none',
+    });
+};
+
+const onClick = (v: string) => {
+    uni.showToast({
+        title: 'onClick' + v,
+        icon: 'none',
+    });
+};
+</script>
 ```
 
 #### 基础用法

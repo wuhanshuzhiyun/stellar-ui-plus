@@ -1,24 +1,33 @@
 html,
 body {
-	user-select: auto;
+    user-select: auto;
 }
 .pc-page-body {
-	min-width: 1100px;
-	font-size: 16px;
+    min-width: 1100px;
+    font-size: 16px;
 }
 
 ::-webkit-scrollbar {
-	width: 10px;
-	height: 10px;
+    width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-	background-color: #f1f1f1;
+    background-color: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: #ccc;
-	border-radius: 5px;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    -webkit-appearance: none;
+    background: transparent;
+    color: transparent;
 }
 
 /*
@@ -26,45 +35,45 @@ body {
 */
 
 .page {
-	height: 100vh;
-	overflow: hidden;
-	width: 100vw;
-	::-webkit-scrollbar {
-		display: none;
-		width: 0 !important;
-		height: 0 !important;
-		-webkit-appearance: none;
-		background: transparent;
-		color: transparent;
-	}
-	& > .content {
-		padding: 0 40rpx;
-		// #ifdef  H5
-		height: calc(100vh - 50px);
-		// #endif
-		// #ifdef  MP-WEIXIN
-		height: calc(100% - 220rpx);
-		// #endif
-		// #ifdef  MP-ALIPAY
-		height: calc(100% - 200rpx);
-		// #endif
-		overflow-y: auto;
+    height: 100vh;
+    overflow: hidden;
+    width: 100vw;
+    ::-webkit-scrollbar {
+        display: none;
+        width: 0 !important;
+        height: 0 !important;
+        -webkit-appearance: none;
+        background: transparent;
+        color: transparent;
+    }
+    & > .content {
+        padding: 0 40rpx;
+        // #ifdef  H5
+        height: calc(100vh - 50px);
+        // #endif
+        // #ifdef  MP-WEIXIN
+        height: calc(100% - 220rpx);
+        // #endif
+        // #ifdef  MP-ALIPAY
+        height: calc(100% - 200rpx);
+        // #endif
+        overflow-y: auto;
 
-		& > .demo-item {
-			margin-bottom: 16px;
+        & > .demo-item {
+            margin-bottom: 16px;
 
-			& > .title {
-				font-size: 14px;
-				color: #8f9ca2;
-				margin-bottom: 8px;
-			}
+            & > .title {
+                font-size: 14px;
+                color: #8f9ca2;
+                margin-bottom: 8px;
+            }
 
-			& > .item-block {
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-				align-items: center;
-			}
-		}
-	}
+            & > .item-block {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+        }
+    }
 }

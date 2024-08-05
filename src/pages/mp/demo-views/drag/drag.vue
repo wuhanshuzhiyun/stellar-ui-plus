@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-const boundary = ref({ left: 22, bottom: 0, top: 354, right: 0 });
+const boundary = ref({ left: 22, bottom: 0, top: 374, right: 0 });
 onMounted(() => {
     const systemInfo = uni.getSystemInfoSync();
     boundary.value.right = systemInfo.windowWidth - 22 - 300;
-    boundary.value.bottom = systemInfo.windowHeight - 354 - 150;
+    boundary.value.bottom = systemInfo.windowHeight - 374 - 150;
 });
 
 function handleStart() {
@@ -19,7 +19,7 @@ function handleEnd() {
 
 <template>
     <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="文本"></page-nav>
+        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="拖拽"></page-nav>
         <view class="content">
             <view class="demo-item">
                 <view class="title">基础内容</view>
@@ -86,7 +86,7 @@ function handleEnd() {
 
                     position: fixed;
                     left: 22px;
-                    top: 354px;
+                    top: 374px;
                 }
             }
         }

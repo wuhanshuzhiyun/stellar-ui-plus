@@ -45,13 +45,13 @@
 金额文字尺寸单位为`rpx`
 
 ```html
-<ste-price value="9527" fontSize="50" />
+<ste-price value="9527" :fontSize="50" />
 ```
 
 #### 金额文字颜色
 
 ```html
-<ste-price value="9527" color="green" />
+<ste-price value="9527" :color="'green" />
 ```
 
 #### 划线价 & 划线价颜色
@@ -77,13 +77,13 @@
 -   当`styleType`值为`3`时，全部字号统一
 
 ```html
-<ste-price value="9527" :styleType="1" fontSize="20" />
-<ste-price value="9527" :styleType="1" fontSize="40" />
-<ste-price value="9527" :styleType="1" fontSize="60" />
+<ste-price value="9527" :styleType="1" :fontSize="20" />
+<ste-price value="9527" :styleType="1" :fontSize="40" />
+<ste-price value="9527" :styleType="1" :fontSize="60" />
 
-<ste-price value="9527" :styleType="2" fontSize="28" />
-<ste-price value="9527" :styleType="2" fontSize="40" />
-<ste-price value="9527" :styleType="2" fontSize="60" />
+<ste-price value="9527" :styleType="2" :fontSize="28" />
+<ste-price value="9527" :styleType="2" :fontSize="40" />
+<ste-price value="9527" :styleType="2" :fontSize="60" />
 
 <ste-price value="9527" :styleType="3" />
 ```
@@ -93,7 +93,7 @@
 -   当`bold`为`true`时，金额文本为粗体字
 
 ```html
-<ste-price value="9527" bold fontSize="50" />
+<ste-price value="9527" bold :fontSize="50" />
 ```
 
 ### API

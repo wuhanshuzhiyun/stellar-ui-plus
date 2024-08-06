@@ -34,15 +34,15 @@
 #### 调整颜色
 
 ```html
-<ste-code-input  :maxlength="4" fontColor="#f56c6c"borderColor="#f56c6c"></ste-code-input>
+<ste-code-input  :maxlength="4" fontColor="#f56c6c" borderColor="#f56c6c"></ste-code-input>
 
-<ste-code-input mode="line" :maxlength="4fontColor="#0090FF" borderColor="#0090FF"></ste-code-input>
+<ste-code-input mode="line" :maxlength="4 fontColor="#0090FF" borderColor="#0090FF"></ste-code-input>
 ```
 
 #### 自定义显示
 
 ```html
-<ste-code-input formatter="·" fontSize="100" :maxlength="4" value="1"></ste-code-input>
+<ste-code-input formatter="·" :fontSize="100" :maxlength="4" value="1"></ste-code-input>
 <ste-code-input mode="line" formatter="*" :space="0" :maxlength="4" value="12"></ste-code-input>
 ```
 

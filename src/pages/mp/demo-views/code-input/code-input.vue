@@ -68,7 +68,7 @@ function finish(e: string | number) {
                 <view class="title">自定义显示</view>
                 <view class="item-block">
                     <view style="width: 100%">
-                        <ste-code-input v-model="value2" formatter="·" fontSize="100" :maxlength="4"></ste-code-input>
+                        <ste-code-input v-model="value2" formatter="·" :fontSize="100" :maxlength="4"></ste-code-input>
                     </view>
                     <view style="width: 100%">
                         <ste-code-input v-model="value3" mode="line" formatter="*" :maxlength="4"></ste-code-input>

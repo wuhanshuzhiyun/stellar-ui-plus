@@ -165,11 +165,11 @@ function touchmove(e: TouchEvent) {
                 <slot v-else name="default"></slot>
             </template>
             <view class="close-icon-box" @click="handleClose" v-if="showClose && position != 'center'">
-                <ste-icon code="&#xe6a0;" size="40" color="#666"></ste-icon>
+                <ste-icon code="&#xe6a0;" :size="40" :color="'#666'"></ste-icon>
             </view>
         </view>
         <view class="close-icon-box-center" @click="handleClose" v-if="showClose && position == 'center' && showContent">
-            <ste-icon code="&#xe6a0;" size="40" color="#fff"></ste-icon>
+            <ste-icon code="&#xe6a0;" :size="40" color="'#fff'"></ste-icon>
         </view>
     </view>
 </template>

@@ -20,8 +20,8 @@
 通过 `color` 属性来设置图标的颜色
 
 ```html
-<ste-icon code="&#xe684;" color="#1989fa" size="60" marginRight="30"></ste-icon>
-<ste-icon code="&#xe684;" color="#ee0a24" size="60"></ste-icon>
+<ste-icon code="&#xe684;" :color="'#1989fa'" :size="60" marginRight="30"></ste-icon>
+<ste-icon code="&#xe684;" :color="'#ee0a24'" :size="60"></ste-icon>
 ```
 
 ### 图标大小
@@ -30,8 +30,8 @@
 
 ```html
 <ste-icon code="&#xe671;" marginRight="30"></ste-icon>
-<ste-icon code="&#xe671;" marginRight="30" size="50"></ste-icon>
-<ste-icon code="&#xe671;" marginRight="30" size="70"></ste-icon>
+<ste-icon code="&#xe671;" marginRight="30" :size="50"></ste-icon>
+<ste-icon code="&#xe671;" marginRight="30" :size="70"></ste-icon>
 ```
 
 ### 图标是否粗体

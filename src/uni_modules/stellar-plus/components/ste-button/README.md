@@ -22,7 +22,7 @@
 通过`color`设置字体颜色
 
 ```html
-<ste-button color="#000000">文本颜色按钮</ste-button>
+<ste-button :color="'#000000'">文本颜色按钮</ste-button>
 ```
 
 #### 背景
@@ -88,7 +88,7 @@
 ```html
 <ste-button>
     <text style="display: inline-block">
-        <ste-icon code="&#xe68f;" :size="32" color="#ffffff" :marginRight="8"></ste-icon>
+        <ste-icon code="&#xe68f;" :size="32" :color="'#ffffff'" :marginRight="8"></ste-icon>
     </text>
     <text>购卡</text>
 </ste-button>

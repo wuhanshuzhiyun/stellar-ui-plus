@@ -1,0 +1,54 @@
+{
+    "name": "ste-read-more",
+    "description": "阅读更多",
+    "example": "<ste-read-more>文本文本文本文本文本文本文本文本文本</ste-read-more>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-read-more",
+    "attributes": [
+        {
+            "name": "showHeight",
+            "description": "需要折叠的高度",
+            "type": "string | number",
+            "default": 400
+        },
+        {
+            "name": "toggle",
+            "description": "展开后是否显示收起按钮",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "closeText",
+            "description": "'展开阅读'的文本",
+            "type": "string",
+            "default": "展开阅读全文"
+        },
+        {
+            "name": "openText",
+            "description": "'收起'的文本",
+            "type": "string",
+            "default": "收起"
+        },
+        {
+            "name": "fontSize",
+            "description": "字体大小",
+            "type": "string | number",
+            "default": "28"
+        },
+        {
+            "name": "color",
+            "description": "文本颜色",
+            "type": "string",
+            "default": "#666666"
+        },
+        {
+            "name": "[event]open",
+            "description": "展开时触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]click",
+            "description": "收起时触发",
+            "type": "() => void"
+        }
+    ]
+}

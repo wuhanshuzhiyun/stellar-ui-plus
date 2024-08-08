@@ -73,10 +73,12 @@ const drawStrokeing = () => {
 };
 
 // #ifdef H5
-const getH5MousePosition = (e: HTMLMouseEvent) => {
+const getH5MousePosition = async (e: HTMLMouseEvent) => {
+    const el = await utils.querySelector<false>(`.ste-signature-root #${canvasId.value}`, thas.value);
+    if (!el) return { x: 0, y: 0 };
     return {
-        x: e.clientX - (e.target?.offsetLeft || 0),
-        y: e.clientY - (e.target?.offsetTop || 0),
+        x: e.clientX - (el.left || 0),
+        y: e.clientY - (el.top || 0),
     };
 };
 // #endif
@@ -84,24 +86,24 @@ const getH5MousePosition = (e: HTMLMouseEvent) => {
 const onMousedown = (e: MouseEvent) => onTouchStart(e as unknown as UniTouchEvent);
 const onMousemove = (e: MouseEvent) => onTouchMove(e as unknown as UniTouchEvent);
 
-const onTouchStart = (e: UniTouchEvent) => {
+const onTouchStart = async (e: UniTouchEvent) => {
     // #ifdef MP
     strokeing.value = [{ x: e.changedTouches[0]?.x || 0, y: e.changedTouches[0]?.y || 0 }];
     // #endif
     // #ifdef H5
-    strokeing.value = [getH5MousePosition(e as unknown as HTMLMouseEvent)];
+    strokeing.value = [await getH5MousePosition(e as unknown as HTMLMouseEvent)];
     // #endif
     drawStrokeing();
     emits('start');
 };
 
-const onTouchMove = (e: UniTouchEvent) => {
+const onTouchMove = async (e: UniTouchEvent) => {
     if (!strokeing.value.length) return;
     // #ifdef MP
     strokeing.value.push({ x: e.changedTouches[0].x || 0, y: e.changedTouches[0].y || 0 });
     // #endif
     // #ifdef H5
-    strokeing.value.push(getH5MousePosition(e as unknown as HTMLMouseEvent));
+    strokeing.value.push(await getH5MousePosition(e as unknown as HTMLMouseEvent));
     // #endif
     drawStrokeing();
     emits('signing');
@@ -134,7 +136,6 @@ const save = async (callback: (res: string) => void, error?: (err: any) => void)
         if (error) error('请绘制签名');
         return;
     }
-    if (!thas.value) return;
     const canvas = await utils.querySelector<false>(`.ste-signature-root #${canvasId.value}`, thas.value);
     if (!canvas) {
         console.error('找不到canvas');

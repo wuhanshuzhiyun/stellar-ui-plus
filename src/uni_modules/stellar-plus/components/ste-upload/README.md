@@ -213,60 +213,6 @@ export default{
 
 
 ### API
-### Props
-
-| 参数							| 说明																																| 类型												| 默认值									| 可选值												|
-| --								| --																																| --												| --										| --													|
-| `v-model`					| 已经上传的文件列表，`File`类型见下方说明														| `Array<File>`							| `[]`									| -														|
-| `accept`					| 文件类型																														| `String`									| `'image'`							| 见下方说明										|
-| `capture`					| 图片或者视频选取模式,当`accept`为`image`/`video`/`media`类型时生效	| `Array<"album"/"camera">`	| `['album', 'camera']`	| -														|
-| `camera`					| 相机类型 当 `accept` 为 `image` / `video` / `media` 时生效					| `String`									| `back`								| `back`:后置<br/>`front`:前置	|
-| `compressed`			| 当 `accept` 为 `image` / `video` / `media` 时生效，是否压缩视频			| `String`									| `true`								| -														|
-| `maxDuration`			| 当 `accept` 为 `video`/ `media` 时生效，拍摄视频最长拍摄时间，单位秒	| `Number`									| `60`									| -														|
-| `previewWidth`		| 预览图和上传区域的宽度，单位为rpx																		| `String`/`Number`					| `200`									| -														|
-| `previewHeight`		| 预览图和上传区域的高度，单位为rpx																		| `String`/`Number`					| `200`									| -														|
-| `previewImage`		| 是否在选择完成后展示预览图																					| `Boolean`									| `true`								| -														|
-| `previewFullImage`| 是否在点击预览图后展示全屏图片预览																	| `Boolean`									| `true`								| -														|
-| `multiple`				| 是否支持多选文件，部分安卓机型不支持																| `Boolean`									| `false`								| -														|
-| `disabled`				| 是否禁用																														| `Boolean`									| `false`								| -														|
-| `showUpload`			| 是否展示文件上传按钮																								| `Boolean`									| `true`								| -														|
-| `deletable`				| 是否展示删除文件按钮																								| `Boolean`									| `true`								| -														|
-| `maxSize`					| 文件大小限制，单位为kb，0为不限制																		| `Number`									| `0`										| -														|
-| `maxCount`				| 最大上传文件数量																										| `Number`									| `9`										| -														|
-| `uploadIcon`			| 上传按钮图标,同`icon`组件`code`																		| `String`									| `'&#xe69b;'`					| -														|
-| `uploadText`			| 上传按钮文字																												| `String`									| `'点击上传'`						| -														|
-| `radius`					| 圆角弧度，单位为rpx																								| `String`/`Number`					| `9`										| -														|
-| `flexWrap`				| 超出内容是否换行																										| `String`									| `wrap`								| 同css的`flex-wrap`							|
-
-#### File对象
-| Key					| 类型			| 说明																												| 可选值															|
-| --					| --			| --																												| --																|
-| `url`				|	`String`|	文件URL																										|-																	|
-|	`type`			|	`String`|	文件类型																										|-																	|
-|	`name`			|	`String`|	文件名称																										|-																	|
-|	`status`		|	`String`|	文件状态																										|`'uploading'`/`'error'`/`'success'`|
-|	`path`			|	`String`|	文件本地路径（小程序选择时的本地路径），在没有URL时展示此字段	|-																	|
-|	`thumbPath`	|	`String`|	视频类型文件的首帧图片地址																	|-																	|
-
-#### accept 可选可选值值
-| 可选值		| 说明																												|
-| --				| --																												|
-| `'image'`	|	图片（默认）																								|
-| `'video'`	|	视频类型																										|
-| `'media'`	|	媒体类型（可选择图片和视频）																|
-| `'file'`	|	从聊天记录中选取图片视频之外的文件类型（仅微信小程序生效）		|
-| `'all'`		|	选取全部类型文件（微信小程序从聊天记录中选取，支付宝不生效）	|
-
-
-### Event
-
-| 事件名				| 说明									| 事件参数																							|
-| --------			| ------------				| -------------																				|
-| `beforeRead`	| 文件读取前触发				| 上方详细说明																					|
-| `read`				| 文件读完成触发				| `fileList`:选择的文件列表														|
-| `oversize`		| 文件大小超出限制触发	| `file`:超出限制的第一个文件,`fileList`:选择的文件列表	|
-| `beforeDelete`| 文件删除前触发				| 上方详细说明																					|
-| `delete`			| 文件删除后触发				| `index`:删除的文件下标,`fileList`:剩余文件列表				|
-
+<!-- props -->
 
 {{xuyajun}}

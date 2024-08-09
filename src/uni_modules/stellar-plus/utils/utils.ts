@@ -212,8 +212,10 @@ const utils = {
     return !Number.isNaN(Number.parseFloat(value)) && Number.isFinite(Number(value))
   },
   /** 得到媒体文件类型 */
-  getMediaFileType(filePath: string, compatible = 1) {
+  getMediaFileType(filePath: string | undefined, compatible = 1) {
     // compatible 1 安卓或者ios 2 安卓且ios 3 安卓 4 ios
+    if (!filePath)
+      return -1
     const filePathList = filePath.split('.')
     const type = filePathList[filePathList.length - 1]
     let videoType: string[] = []

@@ -24,7 +24,7 @@ const onLongpress = (i: number) => {
     });
 };
 
-const onBeforeClose = (stop, next, prevent) => {
+const onBeforeClose = (stop: () => void, next: () => void, prevent: () => void) => {
     stop();
     uni.showModal({
         title: '确定关闭弹窗吗？',

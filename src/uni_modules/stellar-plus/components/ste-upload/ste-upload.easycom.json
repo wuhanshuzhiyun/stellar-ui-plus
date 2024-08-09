@@ -1,0 +1,260 @@
+{
+    "name": "ste-text",
+    "description": "文本",
+    "example": "<ste-text>文本</ste-text>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-text",
+    "attributes": [
+        {
+            "name": "modelValue",
+            "description": "文件列表",
+            "type": "Array<UploadFileType>",
+            "default": []
+        },
+        {
+            "name": "accept",
+            "description": "选取的文件类型",
+            "type": "string",
+            "default": "image",
+            "values": [
+                {
+                    "name": "all",
+                    "description": "所有文件"
+                },
+                {
+                    "name": "media",
+                    "description": "媒体文件"
+                },
+                {
+                    "name": "image",
+                    "description": "图片"
+                },
+                {
+                    "name": "video",
+                    "description": "视频"
+                },
+                {
+                    "name": "file",
+                    "description": "文件"
+                }
+            ]
+        },
+        {
+            "name": "capture",
+            "description": "图片或者视频选取模式，当accept为image | media 类型时设置capture可选值为camera可以直接调起摄像头",
+            "type": "Array<\"album\" | \"camera\">",
+            "default": [
+                "album",
+                "camera"
+            ]
+        },
+        {
+            "name": "camera",
+            "description": "相机类型 当 accept 为 image | video | media 时生效，可选值为 back-后置 front-前置",
+            "type": "string",
+            "default": "back",
+            "values": [
+                {
+                    "name": "back",
+                    "description": "后置"
+                },
+                {
+                    "name": "front",
+                    "description": "前置"
+                }
+            ]
+        },
+        {
+            "name": "compressed",
+            "description": "当 accept 为 image | video | media 时生效，是否压缩视频、图片",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "maxDuration",
+            "description": "当 accept 为 video | media 时生效，拍摄视频最长拍摄时间，单位秒",
+            "type": "number",
+            "default": 60
+        },
+        {
+            "name": "previewWidth",
+            "description": "预览图和上传区域的宽度，默认单位为rpx",
+            "type": "number | string",
+            "default": 200
+        },
+        {
+            "name": "previewHeight",
+            "description": "览图和上传区域的高度，默认单位为rpx",
+            "type": "number | string",
+            "default": 200
+        },
+        {
+            "name": "previewImage",
+            "description": "是否在上传完成后展示预览图",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "previewFullImage",
+            "description": "是否在点击预览图后展示全屏图片预览",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "multiple",
+            "description": "是否开启图片多选，部分安卓机型不支持",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用文件上传",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "showUpload",
+            "description": "是否展示文件上传按钮",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "deletable",
+            "description": "是否展示删除按钮",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "maxSize",
+            "description": "文件大小限制，单位为kb，0为不限制",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "maxCount",
+            "description": "文件上传数量限制,0为不限制",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "uploadIcon",
+            "description": "上传区域图标，可选值见 Icon 组件",
+            "type": "string",
+            "default": "&#xe69b;"
+        },
+        {
+            "name": "uploadText",
+            "description": "上传区域文字提示",
+            "type": "string",
+            "default": "点击上传"
+        },
+        {
+            "name": "radius",
+            "description": "圆角弧度",
+            "type": "string | number",
+            "default": 9
+        },
+        {
+            "name": "flexWrap",
+            "description": "子元素是否换行",
+            "type": "string",
+            "default": "wrap",
+            "values": [
+                {
+                    "name": "wrap",
+                    "description": "换行"
+                },
+                {
+                    "name": "nowrap",
+                    "description": "不换行"
+                }
+            ]
+        },
+        {
+            "name": "[event]beforeRead",
+            "description": "文件读取前触发",
+            "type": "(fileList:Array<UploadFileType>,suspend:()=>void,next()=>void,stop:()=>void)=>void",
+            "params": [
+                {
+                    "name": "fileList",
+                    "description": "即将选择的文件列表"
+                },
+                {
+                    "name": "suspend",
+                    "description": "等待"
+                },
+                {
+                    "name": "next",
+                    "description": "继续"
+                },
+                {
+                    "name": "stop",
+                    "description": "停止"
+                }
+            ]
+        },
+        {
+            "name": "[event]read",
+            "description": "文件读完成触发",
+            "type": "(fileList:Array<UploadFileType>)=>void",
+            "params": [
+                {
+                    "name": "fileList",
+                    "description": "选择的文件列表"
+                }
+            ]
+        },
+        {
+            "name": "[event]oversize",
+            "description": "文件大小超出限制触发",
+            "type": "(file,fileList:Array<UploadFileType>)=>void",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "超出限制的第一个文件"
+                },
+                {
+                    "name": "fileList",
+                    "description": "选择的文件列表"
+                }
+            ]
+        },
+        {
+            "name": "[event]beforeDelete",
+            "description": "文件删除前触发",
+            "type": "(index:number,suspend:()=>void,next()=>void,stop:()=>void)=>void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "正在删除的文件下标"
+                },
+                {
+                    "name": "suspend",
+                    "description": "等待"
+                },
+                {
+                    "name": "next",
+                    "description": "继续"
+                },
+                {
+                    "name": "stop",
+                    "description": "停止"
+                }
+            ]
+        },
+        {
+            "name": "[event]delete",
+            "description": "文件删除后触发",
+            "type": "(index:number,fileList:Array<UploadFileType>)=>void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "删除的文件下标"
+                },
+                {
+                    "name": "fileList",
+                    "description": "删除后的文件列表"
+                }
+            ]
+        }
+    ]
+}

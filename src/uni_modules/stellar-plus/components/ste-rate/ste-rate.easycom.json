@@ -1,0 +1,85 @@
+{
+    "name": "ste-rate",
+    "description": "评分组件,用于对事物进行评级操作。",
+    "example": "<ste-rate v-model='value'></ste-rate>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-rate",
+    "attributes": [
+        {
+            "name": "value",
+            "description": "当前评分数（支持v-model双向绑定）",
+            "type": "Number",
+            "default": 0
+        },
+        {
+            "name": "count",
+            "description": "图标总数",
+            "type": "Number",
+            "default": 5
+        },
+        {
+            "name": "score",
+            "description": "每颗星星代表的分数",
+            "type": "Number",
+            "default": 1
+        },
+        {
+            "name": "disabled",
+            "description": "禁用",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "readonly",
+            "description": "只读（不置灰）",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "size",
+            "description": "评分图标的大小，单位rpx",
+            "type": "Number|String",
+            "default": 44
+        },
+        {
+            "name": "inactiveColor",
+            "description": "未选中的颜色",
+            "type": "String",
+            "default": "#dddddd"
+        },
+        {
+            "name": "activeColor",
+            "description": "选中的颜色",
+            "type": "String",
+            "default": "#fa5014"
+        },
+        {
+            "name": "inactiveCode",
+            "description": "未选中的图标code",
+            "type": "String",
+            "default": "&#xe681"
+        },
+        {
+            "name": "activeCode",
+            "description": "选中的图标code",
+            "type": "String",
+            "default": "&#xe684"
+        },
+        {
+            "name": "gutter",
+            "description": "每个图标之间的距离，单位rpx",
+            "type": "Number|String",
+            "default": 10
+        },
+        {
+            "name": "iconData",
+            "description": "每个分值对应的图标code",
+            "type": "Array",
+            "default": "() => []"
+        },
+        {
+            "name": "[event]change",
+            "description": "当前分值变化时触发的事件",
+            "type": "() => void"
+        }
+    ]
+}

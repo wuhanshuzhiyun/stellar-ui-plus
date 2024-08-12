@@ -147,12 +147,10 @@ export function componentFiles() {
     const name = k.replace(deg, '$1')
     if (propsData[name] && html.includes('<!-- props -->'))
       html = html.replace('<!-- props -->', propsData[name])
-    else
-      console.error(`组件【${name}】Props文档异常，请严格按照规范编写文档`)
+    else console.error(`组件【${name}】Props文档异常，请严格按照规范编写文档`)
 
     markdownsData[name] = formatHtml(assembleTemplate(html))
   }
-  console.log('markdownsData', markdownsData)
 
   const groupData: { [key: string]: Group } = {}
 

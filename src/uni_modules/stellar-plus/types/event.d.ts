@@ -3,6 +3,8 @@ import type { EventTarget } from '@uni-helper/uni-app-types'
 export interface UniTouch extends Touch {
   x?: number
   y?: number
+  pageX?: number
+  pageY?: number
 }
 export interface UniTouchList extends TouchList {
   [index: number]: UniTouch
@@ -12,10 +14,12 @@ export interface UniTouchEvent extends TouchEvent {
   changedTouches: UniTouchList
   targetTouches: UniTouchList
   touches: UniTouchList
+  pageX?: number
+  pageY?: number
 }
 
 export interface HTMLMouseEvent extends MouseEvent {
-  target: EventTarget & { offsetLeft?: number, offsetTop?: number } | null
+  target: (EventTarget & { offsetLeft?: number, offsetTop?: number }) | null
 }
 
 export interface ImageLoadEvent {

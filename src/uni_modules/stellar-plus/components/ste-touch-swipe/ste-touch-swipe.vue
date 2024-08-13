@@ -16,7 +16,12 @@ const props = defineProps(propsData);
 const { internalChildren } = useProvide(TOUCH_SWIPE_KEY, 'ste-touch-swipe-item')({ activeKey: props.index });
 
 const thas = ref<globalThis.ComponentPublicInstance | null>();
-onMounted(() => (thas.value = getCurrentInstance()?.proxy));
+
+onMounted(async () => {
+    thas.value = getCurrentInstance()?.proxy;
+    await getBoxSize();
+    initChildren();
+});
 
 const {
     initializing,
@@ -104,13 +109,49 @@ watch(
 );
 watch(
     () => dataIndex.value,
-    v => {
+    () => {
         if (!cmpChildrenLength.value) return;
         nextTick(async () => {
             await getBoxSize();
             setTransform();
         });
     }
+);
+
+const initChildren = () => {
+    clearTimeout(timeout.value);
+    setShowNode(false);
+    timeout.value = setTimeout(() => {
+        if (dataChildrenLength.value !== internalChildren.length) {
+            setDataChildrenLength(internalChildren.length);
+        }
+        const _disabledIndexs: number[] = [];
+        internalChildren.forEach((m, i) => {
+            if (m.props.disabled) _disabledIndexs.push(i);
+        });
+        let diff = dataDisabledIndexs.value.length !== _disabledIndexs.length;
+        if (!diff) {
+            for (let i = 0; i < dataDisabledIndexs.value.length; i++) {
+                if (dataDisabledIndexs.value[i] !== _disabledIndexs[i]) {
+                    diff = true;
+                    break;
+                }
+            }
+        }
+        if (diff) setDataDisabledIndexs(_disabledIndexs);
+        nextTick(async () => {
+            await getBoxSize();
+            setShowNode(true);
+        });
+    }, 50);
+};
+
+watch(
+    () => internalChildren.length,
+    () => {
+        initChildren();
+    },
+    { immediate: true }
 );
 
 const getBoxSize = async () => {
@@ -123,7 +164,7 @@ const setTransform = () => {
     if (props.direction === 'horizontal') {
         setTranslateX(-cmpItemLefts.value[dataIndex.value]);
     } else if (props.direction === 'vertical') {
-        setTranslateY(cmpItemTops.value[dataIndex.value]);
+        setTranslateY(-cmpItemTops.value[dataIndex.value]);
     }
     if (initializing.value) {
         setTimeout(() => setInitializing(false), 50);
@@ -197,11 +238,6 @@ const onTouchend = (e: MouseEvent | TouchEvent) => {
         return;
     }
     setDataIndex(nextIndex);
-    if (props.direction === 'horizontal') {
-        setTranslateX(-cmpItemLefts.value[dataIndex.value]);
-    } else if (props.direction === 'vertical') {
-        setTranslateY(-cmpItemTops.value[dataIndex.value]);
-    }
     emits('update:index', nextIndex);
     emits('change', nextIndex);
 };

@@ -1,0 +1,83 @@
+{
+    "name": "ste-touch-swipe",
+    "description": "手势切屏",
+    "example": "<ste-touch-swipe><ste-touch-swipe-item>111</ste-touch-swipe-item><ste-touch-swipe-item>222</ste-touch-swipe-item></ste-touch-swipe>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=touch-swipe",
+    "attributes": [
+        {
+            "name": "index",
+            "description": "当前展示的面板索引",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "direction",
+            "description": "滑动方向 (水平方向时宽度必须固定，垂直方向时高度必须固定)",
+            "type": "string",
+            "default": "horizontal",
+            "values": [
+                {
+                    "name": "horizontal",
+                    "description": "水平方向"
+                },
+                {
+                    "name": "vertical",
+                    "description": "垂直方向"
+                }
+            ]
+        },
+        {
+            "name": "width",
+            "description": "宽度",
+            "type": "number | string",
+            "default": "100%"
+        },
+        {
+            "name": "height",
+            "description": "高度",
+            "type": "number | string",
+            "default": "100%"
+        },
+        {
+            "name": "duration",
+            "description": "动画时长，单位s",
+            "type": "number",
+            "default": 0.3
+        },
+        {
+            "name": "swipeThreshold",
+            "description": "灵敏度（0-1之间的数值，数值越小越灵敏）",
+            "type": "number",
+            "default": 0.35
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "childrenLength",
+            "description": "面板数量（使用touch-swipe-item作为子元素时不需要传递，不使用touch-swipe-item作为子元素盒子时必传）",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "disabledIndexs",
+            "description": "禁用的面板索引（使用touch-swipe-item作为子元素时直接在touch-swipe-item上定义某个标签禁用即可，不使用touch-swipe-item作为子元素盒子时可传）",
+            "type": "Array<number>",
+            "default": []
+        },
+        {
+            "name": "[event]change",
+            "description": "切换触发",
+            "type": "(index:number)=>void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "当前展示的面板索引"
+                }
+            ]
+        }
+    ]
+}

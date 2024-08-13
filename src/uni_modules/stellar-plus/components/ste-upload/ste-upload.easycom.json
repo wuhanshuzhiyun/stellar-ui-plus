@@ -255,6 +255,16 @@
                     "description": "删除后的文件列表"
                 }
             ]
+        },
+        {
+            "name": "[event]open-preview",
+            "description": "打开预览时触发",
+            "type": "()=>void"
+        },
+        {
+            "name": "[event]close-preview",
+            "description": "关闭预览时触发",
+            "type": "()=>void"
         }
     ]
 }

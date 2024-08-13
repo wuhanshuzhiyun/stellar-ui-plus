@@ -78,6 +78,13 @@ const beforeDelete = (index: number, suspend: () => void, next: () => void, stop
 const onSuccessDelete = (index: number, list: UploadFileType[]) => {
     uni.showToast({ title: '删除成功', icon: 'none' });
 };
+
+const openPreview = () => {
+    console.log('openPreview');
+};
+const closePreview = () => {
+    console.log('closePreview');
+};
 </script>
 <template>
     <view class="page">
@@ -98,7 +105,7 @@ const onSuccessDelete = (index: number, list: UploadFileType[]) => {
             </view>
             <view class="demo-item">
                 <view class="title">自定义上传图标，限制上传数量2</view>
-                <ste-upload v-model="fileList2" uploadIcon="&#xe67e;" :maxCount="2" />
+                <ste-upload v-model="fileList2" uploadIcon="&#xe67e;" :maxCount="2" @open-preview="openPreview" @close-preview="closePreview" />
             </view>
             <view class="demo-item">
                 <view class="title">限制文件大小2M</view>

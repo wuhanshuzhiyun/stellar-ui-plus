@@ -13,6 +13,8 @@ const emits = defineEmits<{
     (e: 'read', list: UploadFileType[]): void;
     (e: 'beforeDelete', index: number, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'delete', index: number, list: UploadFileType[]): void;
+    (e: 'open-preview'): void;
+    (e: 'close-preview'): void;
 }>();
 
 const props = defineProps(propsData);
@@ -66,6 +68,17 @@ watch(
         setDataValue(value);
     },
     { immediate: true, deep: true }
+);
+
+watch(
+    () => previewIndex.value,
+    val => {
+        if (val === null) {
+            emits('close-preview');
+        } else {
+            emits('open-preview');
+        }
+    }
 );
 
 const toSelectFile = () => {
@@ -245,7 +258,7 @@ const onMediaType = () => {
                 </slot>
             </view>
         </view>
-        <ste-media-preview :show="Boolean(previewIndex || previewIndex === 0)" :urls="cmpPreviewList" :index.sync="previewIndex" @close="previewIndex = null" />
+        <ste-media-preview :show="Boolean(previewIndex || previewIndex === 0)" :urls="cmpPreviewList" :index.sync="previewIndex" @close="setPreviewIndex(null)" />
     </view>
 </template>
 <style lang="scss" scoped>

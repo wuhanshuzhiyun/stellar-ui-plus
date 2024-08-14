@@ -42,7 +42,7 @@ const cmpRootStyle = computed(() => ({
     '--ste-upload-item-margin': props.maxCount.toString() === '1' ? 0 : utils.formatPx(18),
 }));
 
-const cmpShowUpload = computed(() => !props.disabled && props.showUpload && (props.maxCount == 0 || dataValue.value.length < props.maxCount));
+const cmpShowUpload = computed(() => (!props.disabled || !dataValue.value.length) && props.showUpload && (props.maxCount == 0 || dataValue.value.length < props.maxCount));
 
 const cmpDeletable = computed(() => !props.disabled && props.deletable);
 

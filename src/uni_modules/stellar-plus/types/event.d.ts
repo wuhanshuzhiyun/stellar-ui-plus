@@ -1,4 +1,4 @@
-import type { EventTarget } from '@uni-helper/uni-app-types'
+import type { EventTarget, ScrollViewOnScrollEvent } from '@uni-helper/uni-app-types'
 
 export interface UniTouch extends Touch {
   x?: number
@@ -45,3 +45,5 @@ export interface BaseEvent<Mark extends _AnyRecord = _AnyRecord, CurrentTargetDa
   currentTarget?: EventTarget
   [key: string]: any
 }
+
+export interface UniScrollViewOnScrollEvent extends ScrollViewOnScrollEvent {}

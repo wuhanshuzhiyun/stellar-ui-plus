@@ -41,7 +41,7 @@
         {
             "name": "duration",
             "description": "动画时长，单位s",
-            "type": "number",
+            "type": "number | string",
             "default": 0.3
         },
         {

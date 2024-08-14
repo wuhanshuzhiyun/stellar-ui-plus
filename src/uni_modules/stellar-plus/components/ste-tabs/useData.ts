@@ -1,8 +1,11 @@
 import { ref } from 'vue'
 
 export default function useData() {
-  const dataActive = ref(0)
-  const setDataActive = (index: number) => (dataActive.value = index)
+  const thas = ref<globalThis.ComponentPublicInstance | null>()
+  const setThas = (has: globalThis.ComponentPublicInstance | null | undefined) => (thas.value = has)
+
+  const dataActive = ref<string | number>(0)
+  const setDataActive = (index: string | number) => (dataActive.value = index)
 
   const viewScrollLeft = ref(0)
   const setViewScrollLeft = (left: number) => (viewScrollLeft.value = left)
@@ -29,12 +32,20 @@ export default function useData() {
   const setPullTransform = (transform: boolean) => (pullTransform.value = transform)
 
   const updateChildrenTimeout = ref(0)
-  const setUpdateChildrenTimeout = (timeout: number) => (updateChildrenTimeout.value = timeout)
+  const setUpdateChildrenTimeout = (callback: () => void, timeout: number) => {
+    clearTimeout(updateChildrenTimeout.value)
+    updateChildrenTimeout.value = setTimeout(callback, timeout)
+  }
 
   const updateTabsTimeout = ref(0)
-  const setUpdateTabsTimeout = (timeout: number) => (updateTabsTimeout.value = timeout)
+  const setUpdateTabsTimeout = (callback: () => void, timeout: number) => {
+    clearTimeout(updateTabsTimeout.value)
+    updateTabsTimeout.value = setTimeout(callback, timeout)
+  }
 
   return {
+    thas,
+    setThas,
     dataActive,
     setDataActive,
     viewScrollLeft,
@@ -53,9 +64,7 @@ export default function useData() {
     setOpenPullDown,
     pullTransform,
     setPullTransform,
-    updateChildrenTimeout,
     setUpdateChildrenTimeout,
-    updateTabsTimeout,
     setUpdateTabsTimeout,
   }
 }

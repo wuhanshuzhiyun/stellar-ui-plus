@@ -43,7 +43,6 @@ const {
     setDataChildrenLength,
     dataDisabledIndexs,
     setDataDisabledIndexs,
-    timeout,
     set_timeout,
 } = useData();
 
@@ -119,9 +118,8 @@ watch(
 );
 
 const initChildren = () => {
-    clearTimeout(timeout.value);
     setShowNode(false);
-    timeout.value = setTimeout(() => {
+    set_timeout(() => {
         if (dataChildrenLength.value !== internalChildren.length) {
             setDataChildrenLength(internalChildren.length);
         }

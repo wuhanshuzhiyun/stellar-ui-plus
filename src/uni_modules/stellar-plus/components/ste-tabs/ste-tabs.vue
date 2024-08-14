@@ -1,14 +1,23 @@
 <script setup lang="ts">
-import { defineProps, computed, watch } from 'vue';
+import { defineProps, computed, watch, onMounted, getCurrentInstance, nextTick, defineEmits, type StyleValue } from 'vue';
 import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import { type TabProps } from '../ste-tab/props';
 import propsData, { TAB_KEY } from './props';
 import useData from './useData';
+import type { UniScrollViewOnScrollEvent } from '../../types/event';
+
+const emits = defineEmits<{
+    (e: 'click-tab', tab: TabProps): void;
+    (e: 'update:active', active: number | string): void;
+    (e: 'change', tab: TabProps): void;
+}>();
 
 const props = defineProps(propsData);
 
 const {
+    thas,
+    setThas,
     dataActive,
     setDataActive,
     viewScrollLeft,
@@ -27,9 +36,7 @@ const {
     setOpenPullDown,
     pullTransform,
     setPullTransform,
-    updateChildrenTimeout,
     setUpdateChildrenTimeout,
-    updateTabsTimeout,
     setUpdateTabsTimeout,
 } = useData();
 
@@ -185,7 +192,7 @@ const cmpPullIconTransform = computed(() => ({ transform: `rotate(${pullTransfor
 
 const cmpEllipsis = computed(() => {
     if (props.ellipsis) {
-        return { whiteSpace: 'nowrap', textOverflow: 'ellipsis' };
+        return { whiteSpace: 'nowrap', textOverflow: 'ellipsis' } as StyleValue;
     }
     return {};
 });
@@ -196,6 +203,121 @@ const cmpTitleStyle = computed(() => {
     }
     return {};
 });
+
+onMounted(() => {
+    setThas(getCurrentInstance()?.proxy);
+});
+
+const initChildren = () => {
+    setShowComponent(false);
+    setUpdateChildrenTimeout(() => {
+        nextTick(async () => {
+            setListBoxEl(await utils.querySelector<false>('.tab-list-box', thas.value));
+            setListEl(await utils.querySelector<false>('.tab-list-box .tab-list.view-list', thas.value));
+            setTabEls(await utils.querySelector('.tab-list-box .tab-list.view-list .tab-item', thas.value, true));
+            setShowComponent(true);
+        });
+    }, 100);
+};
+
+const onClickTab = (tab: TabProps, index: number) => {
+    emits('click-tab', { ...tab, index });
+    onSelect(tab, index);
+};
+
+const onSelect = async (tab: TabProps, index: number) => {
+    if (tab.disabled || props.disabled || props.lock) return false;
+    if (openPullDown.value) await onCloseDown();
+    let active = dataActive.value;
+    if (typeof active === 'string') {
+        active = tab.name;
+    } else if (typeof active === 'number') {
+        active = index;
+    }
+    setDataActive(active);
+    emits('update:active', active);
+    emits('change', { ...tab, index });
+    return true;
+};
+
+const onScroll = (e: UniScrollViewOnScrollEvent) => {
+    setViewScrollLeft(e?.detail?.scrollLeft || 0);
+};
+
+const scrollToActive = () => {
+    nextTick(async () => {
+        const activeEl = await utils.querySelector('.tab-list-box .tab-list.view-list .tab-item.active', thas.value, false);
+        if (!activeEl) return;
+        if (!tabEls.value[cmpActiveIndex.value]) {
+            setTabEls(await utils.querySelector('.tab-list-box .tab-list.view-list .tab-item', thas.value, true));
+        }
+        if (!listEl.value) {
+            setListEl(await utils.querySelector('.tab-list-box .tab-list.view-list', thas.value, false));
+        }
+        const scrollLeft = utils.scrollViewX({
+            viewLeft: activeEl.left || 0,
+            viewRight: activeEl.right || 0,
+            boxLeft: listEl.value?.left || 0,
+            boxRight: listEl.value?.right || 0,
+            prevWidth: tabEls.value[cmpActiveIndex.value - 1]?.width || 0,
+            nextWidth: tabEls.value[cmpActiveIndex.value + 1]?.width || 0,
+            scrollLeft: viewScrollLeft.value,
+        });
+        setViewScrollLeft(scrollLeft);
+        setScrollLeft(scrollLeft);
+    });
+};
+
+const onOpenDown = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            setListBoxEl(await utils.querySelector('.tab-list-box', thas.value, false));
+            setOpenPullDown(true);
+            setTimeout(() => {
+                setPullTransform(true);
+                resolve(true);
+            }, 20);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+const onCloseDown = () => {
+    setPullTransform(false);
+    setTimeout(() => {
+        setOpenPullDown(false);
+    }, 200);
+};
+
+const onSliding = (index: number) => {
+    if (props.disabled) return;
+    const tab = cmpTabList.value[index];
+    onSelect(tab, index);
+};
+
+watch(
+    () => props.active,
+    v => setDataActive(v),
+    { immediate: true }
+);
+
+watch(
+    () => cmpActiveIndex.value,
+    () => {
+        scrollToActive();
+    },
+    { immediate: true }
+);
+
+watch(
+    () => cmpRootStyle.value,
+    () => setUpdateTabsTimeout(async () => setTabEls(await utils.querySelector('.tab-list-box .tab-list.view-list .tab-item', thas.value, true)), 10)
+);
+watch(
+    () => internalChildren.length,
+    () => initChildren()
+);
 </script>
 <template>
     <view class="ste-tabs-root" :class="type" :style="[cmpRootStyle]">

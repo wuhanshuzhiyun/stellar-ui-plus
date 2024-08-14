@@ -11,7 +11,7 @@ export default {
   width: { type: [String, Number], default: () => '100%' },
   height: { type: [String, Number], default: () => '100%' },
   // 动画时长
-  duration: { type: Number, default: () => 0.3 },
+  duration: { type: [String, Number], default: () => 0.3 },
   // 灵敏度（0-1之间的数值，数值越小越灵敏）
   swipeThreshold: { type: Number, default: () => 0.35 },
   // 是否禁用

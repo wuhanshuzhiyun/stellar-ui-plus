@@ -22,7 +22,10 @@ export default function useData() {
   const dataDisabledIndexs = ref<number[]>([])
   const setDataDisabledIndexs = (val: number[]) => (dataDisabledIndexs.value = val)
   const timeout = ref<number>()
-  const set_timeout = (val: number) => (timeout.value = val)
+  const set_timeout = (callback: () => void, val: number) => {
+    clearTimeout(timeout.value)
+    timeout.value = setTimeout(callback, val)
+  }
   return {
     initializing,
     setInitializing,
@@ -43,7 +46,6 @@ export default function useData() {
     setDataChildrenLength,
     dataDisabledIndexs,
     setDataDisabledIndexs,
-    timeout,
     set_timeout,
   }
 }

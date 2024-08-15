@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, defineOptions } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
+
+const componentName = `ste-badge`;
+
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
+});
 
 const props = defineProps(propsData);
 
@@ -51,13 +60,6 @@ function handleClick(event: any) {
 }
 </script>
 
-<script lang="ts">
-const componentName = `ste-badge`;
-export default defineComponent({
-    name: componentName,
-});
-</script>
-
 <template>
     <view class="ste-badge-root" :style="[rootStyle as any, { display: isInline ? 'inline-block' : 'block' }]">
         <view class="ste-badge-content" :style="[cmpContentStyle]" :class="'ste-badge-' + position" v-if="showDot || cmpShowContent || $slots.content">
@@ -74,6 +76,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 $default-size: 28rpx;
+
 .ste-badge-root {
     position: relative;
 
@@ -135,16 +138,19 @@ $default-size: 28rpx;
             right: 0;
             transform: translate(50%, -50%);
         }
+
         &topLeft {
             top: 0;
             left: 0;
             transform: translate(-50%, -50%);
         }
+
         &bottomLeft {
             bottom: 0;
             left: 0;
             transform: translate(-50%, 50%);
         }
+
         &bottomRight {
             bottom: 0;
             right: 0;

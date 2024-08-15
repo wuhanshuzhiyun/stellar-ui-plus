@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineOptions } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
+
+const componentName = `ste-icon`;
+
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
+});
 
 const props = defineProps(propsData);
 const emits = defineEmits<{
@@ -40,16 +49,6 @@ function handleClick(event: any) {
 }
 </script>
 
-<script lang="ts">
-const componentName = `ste-icon`;
-export default defineComponent({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
-</script>
-
 <template>
     <view class="ste-icon-root" :style="[cmpCssVar]" @click="handleClick">{{ cmpCode }}</view>
 </template>
@@ -68,7 +67,7 @@ export default defineComponent({
 
     margin-left: var(--margin-left) !important;
     margin-right: var(--margin-right) !important;
-    transform: translateY(calc(var(--margin-bottom) - var(--margin-top))) !important ;
+    transform: translateY(calc(var(--margin-bottom) - var(--margin-top))) !important;
 
     // height: calc(var(--size)) !important;
     width: calc(var(--size)) !important;

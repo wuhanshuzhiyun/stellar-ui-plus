@@ -5,12 +5,12 @@ import utils from '../../utils/utils';
 
 const componentName = `ste-icon`;
 
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+// defineOptions({
+//     name: componentName,
+//     options: {
+//         virtualHost: true,
+//     },
+// });
 
 const props = defineProps(propsData);
 const emits = defineEmits<{

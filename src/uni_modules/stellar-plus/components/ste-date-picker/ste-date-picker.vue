@@ -1,4 +1,5 @@
 <script lang="ts">
+import { defineOptions } from 'vue';
 const componentName = 'ste-date-picker';
 defineOptions({
     name: componentName,

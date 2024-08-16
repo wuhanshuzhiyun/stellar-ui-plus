@@ -109,6 +109,7 @@ function calcFontSize() {
 </script>
 
 <script lang="ts">
+import { defineOptions } from 'vue';
 const componentName = `ste-price`;
 defineOptions({
     name: componentName,

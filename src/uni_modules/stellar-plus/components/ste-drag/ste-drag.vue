@@ -1,4 +1,8 @@
-<script lang="ts">
+<script setup lang="ts">
+import { watch, onMounted, reactive, defineOptions, onBeforeUnmount } from 'vue';
+import utils from '../../utils/utils';
+import propsData, { DEFAULT_BOUNDARY } from './props';
+
 const componentName = `ste-drag`;
 defineOptions({
     name: componentName,
@@ -6,12 +10,6 @@ defineOptions({
         virtualHost: true,
     },
 });
-</script>
-
-<script setup lang="ts">
-import { watch, onMounted, reactive, onBeforeUnmount } from 'vue';
-import utils from '../../utils/utils';
-import propsData, { DEFAULT_BOUNDARY } from './props';
 
 let isMove = false;
 const props = defineProps(propsData);

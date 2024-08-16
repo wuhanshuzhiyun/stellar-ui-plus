@@ -106,6 +106,6 @@ export default {
 
 ### API
 
-#### 组件属性(Props)
+<!-- props -->
 
 {{qinpengfei}}

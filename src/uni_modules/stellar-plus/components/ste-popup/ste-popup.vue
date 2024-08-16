@@ -1,4 +1,5 @@
 <script lang="ts">
+import { defineOptions } from 'vue';
 const componentName = `ste-popup`;
 defineOptions({
     name: componentName,

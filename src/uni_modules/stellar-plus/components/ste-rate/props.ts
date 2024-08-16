@@ -1,5 +1,7 @@
+import type { PropType } from 'vue'
+
 export default {
-  value: { type: Number, default: 0 },
+  modelValue: { type: Number, default: 0 },
   count: { type: Number, default: 5 },
   score: { type: Number, default: 1 },
   disabled: { type: Boolean, default: false },
@@ -10,5 +12,5 @@ export default {
   inactiveCode: { type: String, default: '&#xe681;' },
   activeCode: { type: String, default: '&#xe684;' },
   gutter: { type: [String, Number], default: 10 },
-  iconData: { type: Array, default: () => [] },
+  iconData: { type: Array as PropType<string[]>, default: () => [] },
 }

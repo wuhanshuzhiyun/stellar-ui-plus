@@ -69,11 +69,19 @@
         width: 100%;
         border-collapse: collapse;
         border-color: #ddd;
+        table-layout: fixed;
 
         th,
         td {
             padding: 5px 10px;
             text-align: left;
+        }
+        th {
+            width: auto;
+        }
+
+        th:nth-child(2) {
+            width: 35%;
         }
 
         th {

@@ -1,5 +1,4 @@
 <script lang="ts">
-import { defineOptions } from 'vue';
 const componentName = `ste-read-more`;
 defineOptions({
     name: componentName,

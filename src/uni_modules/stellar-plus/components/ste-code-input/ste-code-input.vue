@@ -1,5 +1,4 @@
 <script lang="ts">
-import { defineOptions } from 'vue';
 const componentName = `ste-code-input`;
 defineOptions({
     name: componentName,

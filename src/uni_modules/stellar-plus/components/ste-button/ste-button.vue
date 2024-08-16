@@ -119,6 +119,7 @@ defineExpose({ test });
 </script>
 
 <script lang="ts">
+import { defineOptions } from 'vue';
 const componentName = `ste-button`;
 defineOptions({
     name: componentName,

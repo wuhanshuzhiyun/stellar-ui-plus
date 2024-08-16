@@ -98,26 +98,23 @@ const utils = {
    * 对象深度合并
    * 用source上的数据覆盖掉target上的数据，返回target
    */
-  deepMerge(target: { [key: string]: any }, source: { [key: string]: any }) {
-    // 遍历 source 的所有属性
-    for (const prop in source) {
-      // 判断是否为自身属性
-      if (Object.prototype.hasOwnProperty.call(source, prop)) {
-        // 判断属性是否为对象，如果是则递归合并
-        if (typeof source[prop] === 'object' && !Array.isArray(source[prop]) && source[prop] !== null) {
-          // 如果 target 对应的属性不是对象，则新建一个空对象
-          if (typeof target[prop] !== 'object' || target[prop] === null)
-            target[prop] = {}
+  deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
+    const isObject = (obj: any): obj is object => obj && typeof obj === 'object' && !Array.isArray(obj)
+    for (const key in source) {
+      if (Object.hasOwn(source, key)) {
+        const sourceValue = source[key as keyof U]
+        if (isObject(sourceValue)) {
+          if (!isObject(target[key as unknown as keyof T]))
+            (target as any)[key] = {}
 
-          this.deepMerge(target[prop], source[prop])
+          this.deepMerge((target as any)[key], sourceValue)
         }
         else {
-          // 如果属性不是对象，直接赋值
-          target[prop] = source[prop]
+          (target as any)[key] = sourceValue
         }
       }
     }
-    return target
+    return target as T & U
   },
   /**
    * 背景值转样式
@@ -274,6 +271,38 @@ const utils = {
       return (scrollLeft += right - boxRight)
 
     return scrollLeft
+  },
+  isEmpty(value: any) {
+    return value === null || value === undefined || value === ''
+  },
+  /**
+   * 对比两个对象是否完全相等
+   * @param {object} obj1 比较的对象
+   * @param {object} obj2 比较的对象
+   * @param {Array} ignoreKeys 忽略比较的key
+   */
+  deepEqual(obj1: { [key: string]: any }, obj2: { [key: string]: any }, ignoreKeys: any[] = []): boolean {
+    if (obj1 === obj2 || (this.isEmpty(obj1) && this.isEmpty(obj2)))
+      return true // 简单类型相等或引用相等
+
+    if (obj1 == null || obj2 == null || typeof obj1 !== 'object' || typeof obj2 !== 'object')
+      return false // 其中一个为 null，或者不是对象
+
+    const keys1 = Object.keys(obj1).filter(key => !ignoreKeys.includes(key))
+    const keys2 = Object.keys(obj2).filter(key => !ignoreKeys.includes(key))
+
+    if (keys1.length !== keys2.length)
+      return false // 忽略指定 key 后，对象属性数量不相等
+
+    for (const key of keys1) {
+      if (!Object.hasOwn(obj2, key))
+        return false // obj2 没有 obj1 的属性
+
+      if (!this.deepEqual(obj1[key], obj2[key], ignoreKeys))
+        return false // 递归比较子对象，忽略指定 key
+    }
+
+    return true
   },
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineOptions } from 'vue';
+import { computed, defineOptions, type CSSProperties } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
 
@@ -19,7 +19,7 @@ const emits = defineEmits<{
 }>();
 
 const cmpContentStyle = computed(() => {
-    let style = {} as any;
+    let style = {} as CSSProperties;
     if (props.background) {
         style = { backgroundColor: 'transparent', ...utils.bg2style(props.background) };
     }

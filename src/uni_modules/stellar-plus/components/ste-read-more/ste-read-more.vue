@@ -1,6 +1,11 @@
 <script lang="ts">
-export default defineComponent({
-    name: 'ste-read-more',
+import { defineOptions } from 'vue';
+const componentName = `ste-read-more`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
 });
 </script>
 

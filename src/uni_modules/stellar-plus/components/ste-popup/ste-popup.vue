@@ -1,11 +1,16 @@
 <script lang="ts">
-export default defineComponent({
-    name: 'ste-popup',
+import { defineOptions } from 'vue';
+const componentName = `ste-popup`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
 });
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, type CSSProperties } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
 const DEFAULT_BORDER_RADIUS = 32;
@@ -40,7 +45,7 @@ const cmpPageStyle = computed(() => {
     };
 });
 const cmpContentStyle = computed(() => {
-    let style = {
+    let style: CSSProperties = {
         width: utils.addUnit(props.width),
         height: utils.addUnit(props.height),
         backgroundColor: props.backgroundColor,

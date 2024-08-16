@@ -1,6 +1,8 @@
 <script lang="ts">
-export default defineComponent({
-    name: 'ste-date-picker',
+import { defineOptions } from 'vue';
+const componentName = 'ste-date-picker';
+defineOptions({
+    name: componentName,
 });
 </script>
 

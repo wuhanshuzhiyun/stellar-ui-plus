@@ -1,0 +1,122 @@
+{
+    "name": "ste-table",
+    "description": "表格。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-table",
+    "attributes": [
+        {
+            "name": "data",
+            "description": "表格数据",
+            "type": "array",
+            "default": "[]"
+        },
+        {
+            "name": "fixed",
+            "description": "表头是否定位为fixed",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "offsetTop",
+            "description": "定位fixed时top的距离",
+            "type": "number | string",
+            "default": "0"
+        },
+        {
+            "name": "border",
+            "description": "是否带有纵向边框",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "stripe",
+            "description": "是否斑马纹",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "emptyText",
+            "description": "空数据时显示的文本内容，也可以通过 slot=\"empty\" 设置",
+            "type": "string",
+            "default": "'暂无数据'"
+        },
+        {
+            "name": "showSummary",
+            "description": "是否在表尾显示合计行",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "sumText",
+            "description": "合计行第一列的文本",
+            "type": "string",
+            "default": "'合计'"
+        },
+        {
+            "name": "summaryMethod",
+            "description": "自定义的合计计算方法",
+            "type": "function",
+            "default": "null"
+        },
+        {
+            "name": "selectable",
+            "description": "仅对 type=selection 的列有效，类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选",
+            "type": "function",
+            "default": "null"
+        },
+        {
+            "name": "readable",
+            "description": "仅对 type=selection 的列有效，类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选",
+            "type": "function",
+            "default": "null"
+        },
+        {
+            "name": "height",
+            "description": "表格高度，设置该值可以让表格体开启滚动",
+            "type": "number | string",
+            "vresion": "v1.18.9"
+        },
+        {
+            "name": "formatter",
+            "description": "格式化单元格方法，需要配合TableColumn中的customKey属性",
+            "type": "function",
+            "version": "v1.7.3"
+        },
+        {
+            "name": "header",
+            "description": "格式化表头内容的方法，同formatter属性，需要定义customKey属性",
+            "type": "function",
+            "version": "v1.20.2"
+        },
+        {
+            "name": "[event]select",
+            "description": "当用户手动勾选数据行的 Checkbox 时触发的事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]selectAll",
+            "description": "当用户手动勾选全选 Checkbox 时触发的事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]cellClick",
+            "description": "当某个单元格被点击时会触发该事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]rowClick",
+            "description": "当某一行被点击时会触发该事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]headerClick",
+            "description": "当某一列的表头被点击时会触发该事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]scrollToLower",
+            "description": "表格体滚动到底事件",
+            "type": "() => void",
+            "version": "v1.18.9"
+        }
+    ]
+}

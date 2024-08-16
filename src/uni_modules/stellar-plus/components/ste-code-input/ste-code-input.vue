@@ -1,7 +1,11 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
-    name: 'ste-code-input',
+import { defineOptions } from 'vue';
+const componentName = `ste-code-input`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
 });
 </script>
 

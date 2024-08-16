@@ -1,6 +1,10 @@
 <script lang="ts">
-export default defineComponent({
-    name: 'ste-drag',
+const componentName = `ste-drag`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
 });
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, type CSSProperties } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
 import type {
@@ -40,7 +40,7 @@ const emits = defineEmits<{
 }>();
 
 const cmpBtnStyle = computed(() => {
-    let style = {} as any;
+    let style = {} as CSSProperties;
     // 为解决支付宝动态类名时不兼容，尽量使用内联样式
 
     // 圆角 round
@@ -110,12 +110,22 @@ function handleClick(e: Event) {
         emits('click', e);
     }
 }
+
+function test() {
+    console.log('button console');
+}
+
+defineExpose({ test });
 </script>
 
 <script lang="ts">
+import { defineOptions } from 'vue';
 const componentName = `ste-button`;
-export default defineComponent({
+defineOptions({
     name: componentName,
+    options: {
+        virtualHost: true,
+    },
 });
 </script>
 

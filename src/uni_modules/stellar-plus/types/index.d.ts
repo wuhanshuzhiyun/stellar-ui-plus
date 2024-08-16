@@ -1,18 +1,4 @@
-export type UniImageMode =
-  | 'scaleToFill'
-  | 'aspectFit'
-  | 'aspectFill'
-  | 'widthFix'
-  | 'heightFix'
-  | 'top'
-  | 'bottom'
-  | 'center'
-  | 'left'
-  | 'right'
-  | 'top left'
-  | 'top right'
-  | 'bottom left'
-  | 'bottom right'
+export type UniImageMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | 'heightFix' | 'top' | 'bottom' | 'center' | 'left' | 'right' | 'top left' | 'top right' | 'bottom left' | 'bottom right'
 
 export type ImgType = 'png' | 'jpg' | 'jpeg' | 'svg' | 'webp'
 
@@ -65,3 +51,5 @@ export type InputCapture = 'back' | 'front'
 export type WxInputAccept = 'image' | 'video' | 'mix'
 
 export type DirectionType = 'horizontal' | 'vertical'
+
+export type AlignType = 'left' | 'right' | 'center'

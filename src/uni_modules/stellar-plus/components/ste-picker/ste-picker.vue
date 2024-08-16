@@ -1,6 +1,11 @@
 <script lang="ts">
-export default defineComponent({
-    name: 'ste-picker',
+import { defineOptions } from 'vue';
+const componentName = `ste-picker`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
 });
 </script>
 

@@ -55,7 +55,7 @@ export default {
   activeSubColor: { type: String, default: () => '#fff' },
   // 子标题高度
   subTitleHeight: { type: [Number, String], default: () => 42 },
-  // 子标题高度
+  // 子标题圆角
   subTitleRadius: { type: [Number, String], default: () => 21 },
   // 图片宽度，默认80，单位rpx
   imageWidth: { type: [Number, String], default: () => 80 },

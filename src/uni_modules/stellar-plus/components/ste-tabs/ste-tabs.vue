@@ -41,12 +41,6 @@ const {
 } = useData();
 
 const { internalChildren } = useProvide(TAB_KEY, 'ste-tab')({ activeKey: computed(() => props.active || 0) });
-watch(
-    () => internalChildren.length,
-    v => {
-        console.log('???????????', v);
-    }
-);
 
 const cmpShowLine = computed(() => props.type === 'line' && props.showLine && !props.showSubtitle);
 

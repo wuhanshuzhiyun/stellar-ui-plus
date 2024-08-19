@@ -1,0 +1,56 @@
+{
+    "name": "ste-tabs",
+    "description": "标签页",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=tabs",
+    "attributes": [
+        {
+            "name": "title",
+            "description": "当前标签标题",
+            "type": "string"
+        },
+        {
+            "name": "subTitle",
+            "description": "当前标签子标题",
+            "type": "string"
+        },
+        {
+            "name": "image",
+            "description": "当前标签图片",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "description": "当前标签name",
+            "type": "string"
+        },
+        {
+            "name": "index",
+            "description": "当前标签index",
+            "type": "number"
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用当前标签",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "showDot",
+            "description": "是否显示徽标",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "badge",
+            "description": "显示的徽标数量",
+            "type": "number | string",
+            "default": 0
+        },
+        {
+            "name": "showZeroBadge",
+            "description": "徽标数量为0时是否展示",
+            "type": "boolean",
+            "default": false
+        }
+    ]
+}

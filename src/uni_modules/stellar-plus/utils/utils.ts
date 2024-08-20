@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import type { ComponentInternalInstance } from 'vue'
 import System from './System'
 import Color from './Color'
 
@@ -164,7 +165,7 @@ const utils = {
     for (let i = str.length; i < len; i++) str += Math.floor(Math.random() * 32).toString(32)
     return str
   },
-  querySelector<T extends boolean>(selectors: string, component?: globalThis.ComponentPublicInstance | null, all?: T): Promise<ReturnBasedOnBool<T>> {
+  querySelector<T extends boolean>(selectors: string, component?: globalThis.ComponentPublicInstance | null | ComponentInternalInstance, all?: T): Promise<ReturnBasedOnBool<T>> {
     return new Promise((resolve, reject) => {
       try {
         const func = all ? 'selectAll' : 'select'
@@ -303,6 +304,10 @@ const utils = {
     }
 
     return true
+  },
+  isNum(num: number | string) {
+    const reg = /^\d+\.?\d*$/
+    return reg.test(String(num))
   },
 }
 

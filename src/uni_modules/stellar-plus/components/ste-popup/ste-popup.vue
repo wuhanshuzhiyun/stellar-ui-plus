@@ -1,5 +1,10 @@
-<script lang="ts">
-import { defineOptions } from 'vue';
+<script setup lang="ts">
+import { ref, computed, watch, defineOptions, type CSSProperties } from 'vue';
+import propsData from './props';
+import utils from '../../utils/utils';
+const DEFAULT_BORDER_RADIUS = 32;
+const props = defineProps(propsData);
+
 const componentName = `ste-popup`;
 defineOptions({
     name: componentName,
@@ -7,14 +12,6 @@ defineOptions({
         virtualHost: true,
     },
 });
-</script>
-
-<script setup lang="ts">
-import { ref, computed, watch, type CSSProperties } from 'vue';
-import propsData from './props';
-import utils from '../../utils/utils';
-const DEFAULT_BORDER_RADIUS = 32;
-const props = defineProps(propsData);
 
 const animationProp: UniApp.CreateAnimationOptions = { duration: props.duration, timingFunction: 'ease-out' };
 const pageDisplay = ref('none');
@@ -207,17 +204,20 @@ function touchmove(e: TouchEvent) {
     opacity: 1;
     overflow-y: auto;
     position: absolute;
+
     .close-icon-box {
         position: absolute;
         right: 24rpx;
         top: 24rpx;
         display: flex;
     }
+
     &.center {
         // position: relative;
         transform: scale(0);
         border-radius: var(--content-border-radius);
     }
+
     &.bottom {
         transform: translateY(100%);
         left: 0;
@@ -225,6 +225,7 @@ function touchmove(e: TouchEvent) {
         border-top-left-radius: var(--content-border-radius);
         border-top-right-radius: var(--content-border-radius);
     }
+
     &.top {
         transform: translateY(-100%);
         left: 0;
@@ -232,6 +233,7 @@ function touchmove(e: TouchEvent) {
         border-bottom-left-radius: var(--content-border-radius);
         border-bottom-right-radius: var(--content-border-radius);
     }
+
     &.left {
         transform: translateX(-100%);
         left: 0;
@@ -239,6 +241,7 @@ function touchmove(e: TouchEvent) {
         border-top-right-radius: var(--content-border-radius);
         border-bottom-right-radius: var(--content-border-radius);
     }
+
     &.right {
         transform: translateX(100%);
         right: 0;

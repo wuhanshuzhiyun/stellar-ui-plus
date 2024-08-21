@@ -1,0 +1,20 @@
+{
+    "name": "ste-scroll-to",
+    "description": "ScrollTo滚动锚点",
+    "example": "<ste-scroll-to><ste-scroll-to-item>节点1</ste-scroll-to-item></ste-scroll-to>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=scroll-to",
+    "attributes": [
+        {
+            "name": "active",
+            "description": "当前激活的节点",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "height",
+            "description": "滚动区域高度",
+            "type": "number | string",
+            "default": "100%"
+        }
+    ]
+}

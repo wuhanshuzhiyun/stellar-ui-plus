@@ -1,5 +1,7 @@
-<script lang="ts">
-import { defineOptions } from 'vue';
+<script setup lang="ts">
+import { computed, defineOptions } from 'vue';
+import propsData from './props';
+
 const componentName = `ste-text`;
 defineOptions({
     name: componentName,
@@ -7,12 +9,6 @@ defineOptions({
         virtualHost: true,
     },
 });
-</script>
-
-<script setup lang="ts">
-import { computed } from 'vue';
-import propsData from './props';
-
 const props = defineProps(propsData);
 
 const cmpRootCssVar = computed(() => {
@@ -22,7 +18,16 @@ const cmpRootCssVar = computed(() => {
 "
 
 <template>
-    <text :style="[cmpRootCssVar]" class="ste-text-root" :class="{ 'ste-text-lines': Number(lines) > 0 }" :selectable="selectable" :user-select="selectable" :space="space" :decode="decode" :number-of-lines="lines">
+    <text
+        :style="[cmpRootCssVar]"
+        class="ste-text-root"
+        :class="{ 'ste-text-lines': Number(lines) > 0 }"
+        :selectable="selectable"
+        :user-select="selectable"
+        :space="space"
+        :decode="decode"
+        :number-of-lines="lines"
+    >
         <slot></slot>
     </text>
 </template>

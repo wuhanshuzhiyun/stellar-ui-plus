@@ -13,6 +13,9 @@ export default function useData({
   props: { active: number, height: number | string }
   children: ComponentInternalInstance[]
 }) {
+  let boxHeight = 0
+  let initEnd = false
+
   const dataActive = ref(0)
   const setDataActive = (index: number) => {
     if (dataActive.value === index)
@@ -40,7 +43,7 @@ export default function useData({
       return
     setScrollTypeTimeout(() => {
       scrollType.value = 'init'
-    }, 150)
+    }, 200)
   }
 
   const scrollTop = ref(0)
@@ -73,21 +76,20 @@ export default function useData({
     }, timeout)
   }
 
-  watch(
-    () => props.active,
-    (v) => {
-      if (dataActive.value !== v)
-        setDataActive(v)
-    },
-    { immediate: true },
-  )
-
-  const initChildren = () => {
+  const initChildren = (init?: boolean) => {
+    if (init)
+      initEnd = false
+    if (initEnd)
+      return
     setChildrenTimeout(async () => {
       const view = await utils.querySelector<false>('.ste-scroll-to-root', thas)
       const box = await utils.querySelector<false>('.ste-scroll-to-content', thas)
       if (!view || !box)
         return
+      if (box.height === boxHeight)
+        initEnd = true
+      else boxHeight = Number(box.height)
+
       let max = Number(box.height) - Number(view.height) // 最大滚动距离
       if (max < 0)
         max = 0
@@ -114,7 +116,9 @@ export default function useData({
 
   watch(
     () => children,
-    () => initChildren(),
+    () => {
+      initChildren(true)
+    },
     { immediate: true },
   )
 
@@ -139,7 +143,15 @@ export default function useData({
       setScrollTop_(top)
     }, 50)
   }
-
+  watch(
+    () => props.active,
+    (v) => {
+      if (dataActive.value !== v)
+        setDataActive(v)
+      initChildren()
+    },
+    { immediate: true },
+  )
   watch(
     () => dataActive.value,
     (v) => {
@@ -185,14 +197,15 @@ export default function useData({
   }
 
   const onScroll = ({ detail }: ScrollViewOnScrollEvent) => {
+    initChildren()
     setScrollTop_(detail.scrollTop)
     if (scrollType.value === 'active')
       return
+    setScrollType('scroll')
     setActiveByTop(detail.scrollTop)
-    setScrollTop(detail.scrollTop)
   }
 
   const cmpRootStyle = computed(() => ({ height: utils.formatPx(props.height) }))
 
-  return { scrollTop, cmpRootStyle, onScroll }
+  return { scrollTop, cmpRootStyle, onScroll, initChildren }
 }

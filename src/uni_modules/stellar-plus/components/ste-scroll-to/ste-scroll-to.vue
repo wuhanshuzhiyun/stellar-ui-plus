@@ -14,7 +14,9 @@ const { internalChildren } = useProvide(SCROLL_TO_KEY, 'ste-tab')({ activeKey: c
 const thas = ref<globalThis.ComponentPublicInstance | null | undefined>();
 thas.value = getCurrentInstance()?.proxy;
 
-const { scrollTop, cmpRootStyle, onScroll } = useData({ thas: thas.value, emits, props, children: internalChildren });
+const { scrollTop, cmpRootStyle, onScroll, initChildren } = useData({ thas: thas.value, emits, props, children: internalChildren });
+
+defineExpose({ init: () => initChildren(true) });
 </script>
 <template>
     <scroll-view class="ste-scroll-to-root" scroll-y scroll-anchoring :scroll-top="scrollTop" :style="[cmpRootStyle]" @scroll="onScroll">

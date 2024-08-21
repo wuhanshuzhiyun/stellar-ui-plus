@@ -1,5 +1,8 @@
-<script lang="ts">
-import { defineOptions } from 'vue';
+<script setup lang="ts">
+import { computed, ref, onMounted, type CSSProperties, defineOptions } from 'vue';
+import propsData from './props';
+import utils from '../../utils/utils';
+
 const componentName = `ste-read-more`;
 defineOptions({
     name: componentName,
@@ -7,12 +10,6 @@ defineOptions({
         virtualHost: true,
     },
 });
-</script>
-
-<script setup lang="ts">
-import { computed, ref, onMounted, type CSSProperties } from 'vue';
-import propsData from './props';
-import utils from '../../utils/utils';
 const props = defineProps(propsData);
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 

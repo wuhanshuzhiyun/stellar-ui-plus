@@ -1,5 +1,11 @@
-<script lang="ts">
-import { defineOptions } from 'vue';
+<script setup lang="ts">
+import { ref, computed, watch, nextTick, defineOptions } from 'vue';
+import utils from '../../utils/utils';
+import propsData from './props';
+
+const props = defineProps(propsData);
+const inputValue = ref('');
+const isFocus = ref(props.focus);
 const componentName = `ste-code-input`;
 defineOptions({
     name: componentName,
@@ -7,16 +13,6 @@ defineOptions({
         virtualHost: true,
     },
 });
-</script>
-
-<script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue';
-import utils from '../../utils/utils';
-import propsData from './props';
-
-const props = defineProps(propsData);
-const inputValue = ref('');
-const isFocus = ref(props.focus);
 
 const emits = defineEmits<{
     (e: 'change', value: string | number): void;
@@ -149,12 +145,14 @@ function inputHandler(e: any) {
         position: relative;
         overflow: hidden;
     }
+
     &-item {
         // display: flex;
         // justify-content: center;
         // align-items: center;
         // position: relative;
         position: relative;
+
         &-text {
             font-size: var(--font-size);
             color: var(--font-color);
@@ -185,6 +183,7 @@ function inputHandler(e: any) {
             width: var(--line-width);
             background-color: var(--line-background-color);
         }
+
         &-cursor {
             position: absolute;
             top: 50%;
@@ -210,9 +209,11 @@ function inputHandler(e: any) {
         0% {
             opacity: 0;
         }
+
         50% {
             opacity: 1;
         }
+
         100% {
             opacity: 0;
         }

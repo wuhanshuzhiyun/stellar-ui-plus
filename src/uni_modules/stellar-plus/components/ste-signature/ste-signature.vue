@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, getCurrentInstance, defineProps, defineEmits, defineExpose } from 'vue';
+import { computed, onMounted, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import type { Stroke } from './types';
 import type { HTMLMouseEvent, UniTouchEvent } from '../../types/event.d';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineProps, onMounted, onBeforeUnmount, defineEmits, getCurrentInstance } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
 import type { Obj } from '../../types';
 import utils from '../../utils/utils';
 import propsData from './props';

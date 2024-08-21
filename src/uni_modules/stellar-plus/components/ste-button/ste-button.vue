@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineComponent, type CSSProperties } from 'vue';
+import { computed, defineComponent, defineOptions, type CSSProperties } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
 import type {
@@ -15,6 +15,14 @@ import type {
     ButtonOnSubscribeEvent,
     ButtonOnErrorEvent,
 } from '@uni-helper/uni-app-types';
+
+const componentName = `ste-button`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
+});
 
 const props = defineProps(propsData);
 
@@ -118,17 +126,6 @@ function test() {
 defineExpose({ test });
 </script>
 
-<script lang="ts">
-import { defineOptions } from 'vue';
-const componentName = `ste-button`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
-</script>
-
 <template>
     <button
         v-if="stopPropagation"
@@ -196,6 +193,7 @@ defineOptions({
     background-size: cover;
     border-radius: 10rpx;
     margin: 0;
+
     .btn-box {
         width: 100%;
         white-space: nowrap;

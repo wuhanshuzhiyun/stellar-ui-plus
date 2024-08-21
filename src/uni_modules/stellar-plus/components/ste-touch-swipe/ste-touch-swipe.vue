@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, onMounted, getCurrentInstance, computed, nextTick, watch } from 'vue';
+import { onMounted, getCurrentInstance, computed, nextTick, watch } from 'vue';
 import utils from '../../utils/utils';
 import propsData, { TOUCH_SWIPE_KEY } from './props';
 import { useProvide } from '../../utils/mixin';
@@ -239,6 +239,8 @@ const onTouchend = (e: MouseEvent | TouchEvent) => {
     emits('update:index', nextIndex);
     emits('change', nextIndex);
 };
+
+defineExpose({ init: initChildren });
 </script>
 <template>
     <view class="ste-touch-swipe-root" :style="[cmpRootStyle]">

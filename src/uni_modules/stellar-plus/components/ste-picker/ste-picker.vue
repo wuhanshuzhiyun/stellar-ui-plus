@@ -1,14 +1,3 @@
-<script lang="ts">
-import { defineOptions } from 'vue';
-const componentName = `ste-picker`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
-</script>
-
 <template>
     <view class="ste-picker-root" :class="[rootClass]">
         <view class="ste-picker-toolbar" v-if="showToolbar">
@@ -27,9 +16,17 @@ defineOptions({
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, defineOptions } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils.js';
+
+const componentName = `ste-picker`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
+});
 
 interface ChangeEventDetail {
     value: number[];
@@ -147,6 +144,7 @@ watch(
 
     &.ste-date-picker-view {
         padding: 0 38rpx;
+
         .ste-picker-toolbar {
             padding-left: 0;
             padding-right: 0;
@@ -156,19 +154,23 @@ watch(
     .ste-picker-view {
         width: 100%;
         border-radius: var(--border-radius);
+
         :deep(.uni-picker-view-wrapper) {
             border-radius: var(--border-radius);
         }
+
         :deep(.ste-picker-column) {
             border-radius: var(--border-radius);
         }
     }
+
     .ste-picker-toolbar {
         padding: 30rpx 40rpx;
         display: flex;
         align-items: center;
         justify-content: space-between;
         font-size: 28rpx;
+
         .cancel {
             cursor: pointer;
         }
@@ -181,6 +183,7 @@ watch(
             cursor: pointer;
         }
     }
+
     .item {
         font-size: 26rpx;
         display: flex;

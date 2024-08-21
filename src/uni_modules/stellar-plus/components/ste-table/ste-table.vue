@@ -1,5 +1,11 @@
-<script lang="ts">
-import { defineOptions } from 'vue';
+<script lang="ts" setup>
+import { computed, watch, ref, defineOptions, type CSSProperties } from 'vue';
+import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG } from './props';
+import utils from '../../utils/utils';
+import { useProvide } from '../../utils/mixin';
+import useData from './useData';
+import type { TableColumnProps } from '../ste-table-column/props';
+
 const componentName = `ste-table`;
 defineOptions({
     name: componentName,
@@ -7,15 +13,6 @@ defineOptions({
         virtualHost: true,
     },
 });
-</script>
-
-<script lang="ts" setup>
-import { computed, watch, ref, type CSSProperties } from 'vue';
-import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG } from './props';
-import utils from '../../utils/utils';
-import { useProvide } from '../../utils/mixin';
-import useData from './useData';
-import type { TableColumnProps } from '../ste-table-column/props';
 
 const emits = defineEmits(tableEmits);
 
@@ -168,7 +165,13 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
                         <ste-icon code="&#xe6ae;" :color="selectionIconColor.disabled || SELECTION_COLOR_CONFIG.disabled" size="32" v-if="canCheckStates.length === 0" />
                         <template v-else>
                             <ste-icon code="&#xe6ac;" :color="selectionIconColor.main || SELECTION_COLOR_CONFIG.main" :size="CHECK_ICON_SIZE" v-if="checkAllState == 'all'" @click="changeCheckAll" />
-                            <ste-icon code="&#xe6ad;" :color="selectionIconColor.main || SELECTION_COLOR_CONFIG.main" :size="CHECK_ICON_SIZE" v-else-if="checkAllState == 'indeterminate'" @click="changeCheckAll" />
+                            <ste-icon
+                                code="&#xe6ad;"
+                                :color="selectionIconColor.main || SELECTION_COLOR_CONFIG.main"
+                                :size="CHECK_ICON_SIZE"
+                                v-else-if="checkAllState == 'indeterminate'"
+                                @click="changeCheckAll"
+                            />
                             <ste-icon code="&#xe6af;" :color="selectionIconColor.unSelected || SELECTION_COLOR_CONFIG.unSelected" :size="CHECK_ICON_SIZE" v-else @click="changeCheckAll" />
                         </template>
                     </view>
@@ -180,7 +183,14 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
             <template v-if="height || Number(height) > 0">
                 <scroll-view scroll-y class="ste-table-scroll" @scrolltolower="handleScrollToLower">
                     <view class="ste-table-body">
-                        <view class="ste-table-row" :class="[getRowClass(row, rowIndex)]" :style="[getRowStyle(row, rowIndex) as CSSProperties]" v-for="(row, rowIndex) in tableData" :key="rowIndex" @click="rowClick(row, $event)">
+                        <view
+                            class="ste-table-row"
+                            :class="[getRowClass(row, rowIndex)]"
+                            :style="[getRowStyle(row, rowIndex) as CSSProperties]"
+                            v-for="(row, rowIndex) in tableData"
+                            :key="rowIndex"
+                            @click="rowClick(row, $event)"
+                        >
                             <slot :row="row"></slot>
                         </view>
                         <view class="ste-table-row sum" v-if="showSummary">
@@ -198,7 +208,14 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
             </template>
             <template v-else>
                 <view class="ste-table-body">
-                    <view class="ste-table-row" :class="[getRowClass(row, rowIndex)]" :style="[getRowStyle(row, rowIndex) as CSSProperties]" v-for="(row, rowIndex) in tableData" :key="rowIndex" @click="rowClick(row, $event)">
+                    <view
+                        class="ste-table-row"
+                        :class="[getRowClass(row, rowIndex)]"
+                        :style="[getRowStyle(row, rowIndex) as CSSProperties]"
+                        v-for="(row, rowIndex) in tableData"
+                        :key="rowIndex"
+                        @click="rowClick(row, $event)"
+                    >
                         <slot :row="row"></slot>
                     </view>
                     <view class="ste-table-row sum" v-if="showSummary">
@@ -231,6 +248,7 @@ $default-border: 2rpx solid #ebebeb;
                 position: absolute;
                 top: 0;
             }
+
             .ste-table-scroll {
                 height: calc(var(--table-height) - 80rpx);
                 max-height: calc(var(--table-max-height) - 80rpx);
@@ -247,6 +265,7 @@ $default-border: 2rpx solid #ebebeb;
             }
         }
     }
+
     &.border {
         .ste-table-cell {
             border-right: $default-border;
@@ -260,7 +279,8 @@ $default-border: 2rpx solid #ebebeb;
     &.stripe {
         .ste-table-body {
             .ste-table-row:nth-child(even) {
-                background-color: #f8f8f8; /* 偶数行背景颜色 */
+                background-color: #f8f8f8;
+                /* 偶数行背景颜色 */
             }
         }
     }
@@ -268,12 +288,14 @@ $default-border: 2rpx solid #ebebeb;
     .ste-table-content {
         width: 100%;
         display: table;
+
         // border-collapse: collapse;
         // table-layout: fixed;
         .fixed-placeholder {
             width: 100%;
             height: 80rpx;
         }
+
         .ste-table-header {
             width: 100%;
             display: table-row;
@@ -322,11 +344,14 @@ $default-border: 2rpx solid #ebebeb;
         .ste-table-body {
             display: table-row-group;
             width: 100%;
+
             .ste-table-row {
                 display: table-row;
+
                 &.current-row {
                     background-color: #ecf5ff;
                 }
+
                 &.selection-row {
                     background-color: #ecf5ff;
                 }

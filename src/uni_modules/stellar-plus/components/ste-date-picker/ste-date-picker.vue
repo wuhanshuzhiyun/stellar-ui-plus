@@ -1,11 +1,3 @@
-<script lang="ts">
-import { defineOptions } from 'vue';
-const componentName = 'ste-date-picker';
-defineOptions({
-    name: componentName,
-});
-</script>
-
 <template>
     <view class="ste-date-picker-root">
         <ste-picker
@@ -28,10 +20,15 @@ defineOptions({
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, defineComponent } from 'vue';
+import { ref, onMounted, defineComponent, defineOptions } from 'vue';
 import propsData from './props';
 import type { CloumnType } from './types';
 import dayjs from 'dayjs';
+
+const componentName = 'ste-date-picker';
+defineOptions({
+    name: componentName,
+});
 
 const DEFAULT_DATE = dayjs(new Date(1970, 1, 1, 0, 0, 0));
 const padZero = (value: string | number) => `00${value}`.slice(-2);

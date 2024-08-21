@@ -1,16 +1,5 @@
-<script lang="ts">
-import { defineOptions } from 'vue';
-const componentName = `ste-table-column`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
-</script>
-
 <script lang="ts" setup>
-import { computed, ref, type CSSProperties } from 'vue';
+import { computed, ref, type CSSProperties, defineOptions } from 'vue';
 import type { Obj } from '../../types';
 import propsData from './props';
 import utils from '../../utils/utils';
@@ -19,6 +8,14 @@ import { useInject } from '../../utils/mixin';
 import { TABLE_KEY, SELECTION_COLOR_CONFIG } from '../ste-table/props';
 import CheckBoxIcon from './checkbox-icon.vue';
 import RadioIcon from './radio-icon.vue';
+
+const componentName = `ste-table-column`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
+});
 
 const props = defineProps(propsData);
 
@@ -157,6 +154,7 @@ function cellClick(this: any, event: Event) {
 
 <style lang="scss" scoped>
 $default-border: 2rpx solid #ebebeb;
+
 .ste-table-cell {
     display: table-cell;
     padding: 24rpx 32rpx;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, computed, watch, onMounted, getCurrentInstance, nextTick, defineEmits, type StyleValue } from 'vue';
+import { computed, watch, onMounted, getCurrentInstance, nextTick, type StyleValue } from 'vue';
 import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import { type TabProps } from '../ste-tab/props';

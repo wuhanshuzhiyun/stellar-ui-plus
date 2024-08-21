@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, defineOptions } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
+
+const componentName = `ste-price`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
+});
 
 const props = defineProps(propsData);
 
@@ -108,17 +116,6 @@ function calcFontSize() {
 }
 </script>
 
-<script lang="ts">
-import { defineOptions } from 'vue';
-const componentName = `ste-price`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
-</script>
-
 <template>
     <view class="ste-price-root">
         <view class="content" :style="[cmpPriceStyle]">
@@ -138,10 +135,12 @@ defineOptions({
 <style scoped lang="scss">
 .ste-price-root {
     display: inline-flex;
+
     .content {
         display: inline-block;
         vertical-align: bottom;
     }
+
     .unit {
         vertical-align: baseline;
     }

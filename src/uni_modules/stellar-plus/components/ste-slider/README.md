@@ -62,26 +62,22 @@
 当同时配置了`showStops`属性和`marks`属性时，会显示自定义节点
 
 ```html
-<ste-slider showStops :marks="marks" value="30"></ste-slider>
-<script>
-    export default {
-        data() {
-            return {
-                marks: {
-                    10: '0°C',
-                    20: '8°C',
-                    37: '37°C',
-                    80: {
-                        style: {
-                            color: '#1989FA',
-                        },
-                        label: '合格',
-                    },
-                },
-            };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const marks = ref({
+        10: '0°C',
+        20: '8°C',
+        37: '37°C',
+        80: {
+            style: {
+                color: '#1989FA',
+            },
+            label: '合格',
         },
-    };
+    });
 </script>
+
+<ste-slider showStops :marks="marks" value="30"></ste-slider>
 ```
 
 #### 自定义滑块

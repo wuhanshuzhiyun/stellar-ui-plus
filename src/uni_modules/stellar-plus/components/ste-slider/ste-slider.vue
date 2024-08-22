@@ -164,7 +164,6 @@ function onTouchEnd(e: UniTouchEvent | MouseEvent) {
 }
 
 function updateWidth(value: number, drag: boolean) {
-    console.log('update');
     let realValue;
     isDrag.value = drag;
     if (drag) {
@@ -242,7 +241,10 @@ function removeListenner() {
                 top: vertical ? `${realPercentage}%` : '50%',
             }"
         >
-            <slot :name="range ? 'leftButton' : 'button'">
+            <slot v-if="range" name="leftButton">
+                <view class="slider-bar"></view>
+            </slot>
+            <slot v-else name="button">
                 <view class="slider-bar"></view>
             </slot>
         </view>

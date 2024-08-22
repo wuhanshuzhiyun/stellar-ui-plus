@@ -19,19 +19,14 @@
 配置`resolution`后会在全屏时显示清晰度选择选项，数据结构如下
 
 ```html
-<ste-video title="视频标题视频标题" :resolution="resolutionConfigArr"></ste-video>
-<script>
-    export default {
-        data() {
-            return {
-                resolutionConfigArr: [
-                    { text: '流畅', url: 'https://image.whzb.com/chain/StellarUI/video/demo1.mp4' },
-                    { text: '高清', url: 'https://image.whzb.com/chain/StellarUI/video/demo2.mp4' },
-                ],
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const resolutionConfigArr = ref([
+        { text: '流畅', url: 'https://image.whzb.com/chain/StellarUI/video/demo1.mp4' },
+        { text: '高清', url: 'https://image.whzb.com/chain/StellarUI/video/demo2.mp4' },
+    ]);
 </script>
+<ste-video title="视频标题视频标题" :resolution="resolutionConfigArr"></ste-video>
 ```
 
 ### API

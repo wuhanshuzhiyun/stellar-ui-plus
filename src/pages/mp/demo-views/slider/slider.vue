@@ -23,19 +23,6 @@ const marks2 = ref({
         label: '合格',
     },
 });
-
-function onInput(e) {
-    console.log('input  ', e);
-}
-function onChange(e) {
-    console.log('change  ', e);
-}
-function onStart(e) {
-    console.log('start  ', e);
-}
-function onEnd(e) {
-    console.log('end  ', e);
-}
 </script>
 
 <template>
@@ -107,7 +94,7 @@ function onEnd(e) {
                 <view class="title">自定义滑块</view>
                 <view class="item-block" style="margin-bottom: 30rpx">
                     <ste-slider :step="10" showStops value="30" activeColor="#ff0000">
-                        <template #button>
+                        <template v-slot:button>
                             <view class="c-slider-1">
                                 <view class="content">
                                     <text>滑块</text>
@@ -118,14 +105,14 @@ function onEnd(e) {
                 </view>
                 <view class="item-block">
                     <ste-slider :step="10" showStops :value="[10, 40]" range>
-                        <template #leftButton>
+                        <template v-slot:leftButton>
                             <view class="c-slider-2">
                                 <view class="content">
                                     <ste-icon code="&#xe673;" color="#fff"></ste-icon>
                                 </view>
                             </view>
                         </template>
-                        <template #rightButton>
+                        <template v-slot:rightButton>
                             <view class="c-slider-2">
                                 <view class="content">
                                     <ste-icon code="&#xe674;" color="#fff"></ste-icon>

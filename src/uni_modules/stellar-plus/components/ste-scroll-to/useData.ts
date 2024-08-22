@@ -43,7 +43,7 @@ export default function useData({
       return
     setScrollTypeTimeout(() => {
       scrollType.value = 'init'
-    }, 200)
+    }, 150)
   }
 
   const scrollTop = ref(0)

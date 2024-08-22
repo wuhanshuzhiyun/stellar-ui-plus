@@ -11,6 +11,8 @@ export interface UniTouchList extends TouchList {
 }
 
 export interface UniTouchEvent extends TouchEvent {
+  clientX?: number
+  clientY?: number
   changedTouches: UniTouchList
   targetTouches: UniTouchList
   touches: UniTouchList

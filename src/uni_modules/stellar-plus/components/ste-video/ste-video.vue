@@ -347,5 +347,5 @@ function fullscreenchange(e: BaseEvent) {
     </view>
 </template>
 <style lang="scss" scoped>
-@import './ste-video.scss';
+@import './ste-video';
 </style>

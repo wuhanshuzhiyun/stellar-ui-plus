@@ -70,22 +70,88 @@
             "default": "null"
         },
         {
-            "name": "height",
-            "description": "表格高度，设置该值可以让表格体开启滚动",
-            "type": "number | string",
-            "vresion": "v1.18.9"
-        },
-        {
             "name": "formatter",
             "description": "格式化单元格方法，需要配合TableColumn中的customKey属性",
-            "type": "function",
-            "version": "v1.7.3"
+            "type": "function"
         },
         {
             "name": "header",
             "description": "格式化表头内容的方法，同formatter属性，需要定义customKey属性",
-            "type": "function",
-            "version": "v1.20.2"
+            "type": "function"
+        },
+
+        {
+            "name": "headerRowClassName",
+            "description": "表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className",
+            "type": "function | string"
+        },
+        {
+            "name": "headerRowStyle",
+            "description": "表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style",
+            "type": "function | string"
+        },
+        {
+            "name": "headerCellClassName",
+            "description": "表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className",
+            "type": "function | string"
+        },
+        {
+            "name": "headerCellStyle",
+            "description": "表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style",
+            "type": "function | string"
+        },
+        {
+            "name": "rowClassName",
+            "description": "行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className",
+            "type": "function | string"
+        },
+        {
+            "name": "rowStyle",
+            "description": "行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style",
+            "type": "function | string"
+        },
+        {
+            "name": "cellClassName",
+            "description": "单元格的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className",
+            "type": "function | string"
+        },
+        {
+            "name": "cellStyle",
+            "description": "单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style",
+            "type": "function | string"
+        },
+        {
+            "name": "highlightCurrentRow",
+            "description": "是否要高亮当前行",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "highlightSelectionRow",
+            "description": "是否要高亮复选框选中行（仅针对开启 checkbox 有效）",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "showHeader",
+            "description": "是否显示表头",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "height",
+            "description": "表格高度",
+            "type": "number | string"
+        },
+        {
+            "name": "maxHeight",
+            "description": "表格最大高度",
+            "type": "number | string"
+        },
+        {
+            "name": "selectionIconColor",
+            "description": "配置选择项图标色",
+            "type": "object"
         },
         {
             "name": "[event]select",

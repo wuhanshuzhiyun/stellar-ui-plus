@@ -66,7 +66,9 @@ function allowStop() {
 
 <template>
     <view class="ste-switch-root" :style="[cmpStyle]" @click="click">
-        <view class="switch-node" :style="[cmpNodeStyle]"></view>
+        <view class="switch-node" :style="[cmpNodeStyle]">
+            <ste-loading v-if="loading" :type="2" :color="modelValue ? activeColor : inactiveColor" :size="Number(size) / 2"></ste-loading>
+        </view>
     </view>
 </template>
 

@@ -20,6 +20,19 @@
 -   内层使用`ste-swiper-item`子标签描述每一项
 
 ```html
+<script setup lang="ts">
+    const list1 = ['https://image.whzb.com/chain/StellarUI/image/banner1.png', 'https://image.whzb.com/chain/StellarUI/image/banner2.png'];
+    const list2 = [
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+    ];
+
+    const onChange = (index: number, source: 'touch' | 'autoplay') => {
+        console.log(index, source);
+    };
+</script>
 <view class="swiper-box">
     <ste-swiper>
         <ste-swiper-item v-for="(m, index) in list1" :key="index">
@@ -27,28 +40,6 @@
         </ste-swiper-item>
     </ste-swiper>
 </view>
-
-<script>
-    export default {
-        data() {
-            return {
-                list1: ['1111', '2222'],
-            };
-        },
-    };
-</script>
-
-<style>
-    .swiper-box {
-        width: 690rpx;
-        .item {
-            padding: 30rpx;
-            height: 300rpx;
-            color: #fff;
-            background-image: linear-gradient(45deg, #f55, #5f5, #55f);
-        }
-    }
-</style>
 ```
 
 #### 纵向轮播

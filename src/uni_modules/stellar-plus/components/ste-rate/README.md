@@ -9,23 +9,13 @@
 JavaScript后面的演示代码中涉及到的变量和方法都使用本javasaript代码
 
 ```javascript
-export default {
-    data() {
-        return {
-            value: 2,
-            value1: 2,
-            value2: 3,
-            value3: 2.6,
-            value4: 2.5,
-        };
-    },
-    created() {},
-    methods: {
-        change(value) {
-            console.log('value', value);
-        },
-    },
-};
+import { ref } from 'vue';
+let value = ref(2);
+let value1 = ref(2);
+let value2 = ref(2);
+let value3 = ref(2.6);
+let value4 = ref(2.5);
+let value5 = ref(2);
 ```
 
 #### 基础用法
@@ -93,15 +83,8 @@ export default {
 
 ```
 <ste-rate v-model="value5" :iconData="iconData"></ste-rate>
-<script>
-export default {
-	data() {
-		return {
-			iconData: ['&#xe686;', '', '&#xe671;', '&#xe66a;', '&#xe66b;']
-		}
-	}
-}
-</script>
+
+let iconData = ref(['&#xe686;', '', '&#xe671;', '&#xe66a;', '&#xe66b;']);
 ```
 
 ### API

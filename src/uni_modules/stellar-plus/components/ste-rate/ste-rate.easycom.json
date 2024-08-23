@@ -2,7 +2,7 @@
     "name": "ste-rate",
     "description": "评分组件,用于对事物进行评级操作。",
     "example": "<ste-rate v-model='value'></ste-rate>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-rate",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=rate",
     "attributes": [
         {
             "name": "modelValue",

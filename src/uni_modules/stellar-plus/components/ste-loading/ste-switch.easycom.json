@@ -1,8 +1,8 @@
 {
-    "name": "ste-switch",
+    "name": "ste-loading",
     "description": "开关组件,表示两种相互对立的状态间的切换，多用于触发「开/关」。",
     "example": "<ste-switch v-model='value1'></ste-switch>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=switch",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=loading",
     "attributes": [
         {
             "name": "modelValue",

@@ -2,7 +2,7 @@
     "name": "ste-video",
     "description": "视频",
     "example": "<ste-video />",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-video",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=video",
     "attributes": [
         {
             "name": "title",

@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import type { ComponentInternalInstance } from 'vue'
 import System from './System'
 import Color from './Color'
 
@@ -165,7 +164,7 @@ const utils = {
     for (let i = str.length; i < len; i++) str += Math.floor(Math.random() * 32).toString(32)
     return str
   },
-  querySelector<T extends boolean>(selectors: string, component?: globalThis.ComponentPublicInstance | null | ComponentInternalInstance, all?: T): Promise<ReturnBasedOnBool<T>> {
+  querySelector<T extends boolean>(selectors: string, component?: globalThis.ComponentPublicInstance | null, all?: T): Promise<ReturnBasedOnBool<T>> {
     return new Promise((resolve, reject) => {
       try {
         const func = all ? 'selectAll' : 'select'
@@ -248,12 +247,12 @@ const utils = {
 
   scrollViewX({
     viewLeft, // 要显示的元素左侧位置
-        viewRight, // 要显示的元素右侧位置
-        boxLeft = 0, // 视图区域左侧位置
-        boxRight = System.getWindowWidth(), // 视图区域右侧位置
-        prevWidth = 0, // 前一个元素的宽度
-        nextWidth = 0, // 后一个元素的宽度
-        scrollLeft = 0, // 当前已经滑动的距离
+    viewRight, // 要显示的元素右侧位置
+    boxLeft = 0, // 视图区域左侧位置
+    boxRight = System.getWindowWidth(), // 视图区域右侧位置
+    prevWidth = 0, // 前一个元素的宽度
+    nextWidth = 0, // 后一个元素的宽度
+    scrollLeft = 0, // 当前已经滑动的距离
   }: {
     viewLeft: number
     viewRight: number

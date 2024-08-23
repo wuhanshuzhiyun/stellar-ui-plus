@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, getCurrentInstance } from 'vue';
+import { computed, onMounted, getCurrentInstance, defineOptions } from 'vue';
 import utils from '../../utils/utils';
 import type { Stroke } from './types';
 import type { HTMLMouseEvent, UniTouchEvent } from '../../types/event.d';
 import propsData from './props';
+
+defineOptions({
+    name: 'ste-signature',
+    options: {
+        virtualHost: true,
+    },
+});
 
 const props = defineProps(propsData);
 const emits = defineEmits<{

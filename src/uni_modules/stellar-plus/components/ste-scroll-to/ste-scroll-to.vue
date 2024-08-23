@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, getCurrentInstance } from 'vue';
+import { ref, computed, getCurrentInstance, defineOptions } from 'vue';
 import propsData, { SCROLL_TO_KEY } from './props';
 import useData from './useData';
 import { useProvide } from '../../utils/mixin';
+
+defineOptions({
+    name: 'ste-search',
+    options: {
+        virtualHost: true,
+    },
+});
 
 const emits = defineEmits<{
     (e: 'change', index: number): void;
@@ -10,9 +17,8 @@ const emits = defineEmits<{
 }>();
 
 const props = defineProps(propsData);
-const { internalChildren } = useProvide(SCROLL_TO_KEY, 'ste-tab')({ activeKey: computed(() => props.active || 0) });
-const thas = ref<globalThis.ComponentPublicInstance | null | undefined>();
-thas.value = getCurrentInstance()?.proxy;
+const { internalChildren } = useProvide(SCROLL_TO_KEY, 'ste-scroll-to-item')({ activeKey: computed(() => props.active || 0) });
+const thas = ref<globalThis.ComponentPublicInstance | null | undefined>(getCurrentInstance()?.proxy);
 
 const { scrollTop, cmpRootStyle, onScroll, initChildren } = useData({ thas: thas.value, emits, props, children: internalChildren });
 

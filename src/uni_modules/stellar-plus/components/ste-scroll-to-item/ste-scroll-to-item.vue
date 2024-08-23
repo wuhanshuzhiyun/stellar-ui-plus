@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import { defineOptions } from 'vue';
 import { useInject } from '../../utils/mixin';
 import { SCROLL_TO_KEY } from '../ste-scroll-to/props';
+
+defineOptions({
+    name: 'ste-scroll-to-item',
+    options: {
+        virtualHost: true,
+    },
+});
 
 const { parent } = useInject(SCROLL_TO_KEY);
 </script>

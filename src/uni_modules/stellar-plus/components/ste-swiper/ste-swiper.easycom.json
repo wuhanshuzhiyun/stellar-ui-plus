@@ -1,0 +1,123 @@
+{
+    "name": "ste-swiper",
+    "description": "Swiper 轮播组件",
+    "example": "<ste-swiper><ste-swiper-item>塞下秋来风景异，衡阳雁去无留意</ste-swiper-item></ste-swiper>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=swiper",
+    "attributes": [
+        {
+            "name": "current",
+            "description": "当前显示滑块的 index",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "direction",
+            "description": "滑动方向",
+            "type": "string",
+            "default": "horizontal",
+            "values": [
+                {
+                    "name": "horizontal",
+                    "description": "水平滑动(默认)"
+                },
+                {
+                    "name": "vertical",
+                    "description": "垂直滑动"
+                }
+            ]
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "width",
+            "description": "宽度,单位RPX",
+            "type": "number | string",
+            "default": "100%"
+        },
+        {
+            "name": "height",
+            "description": "高度,单位RPX",
+            "type": "number | string",
+            "default": "100%"
+        },
+        {
+            "name": "duration",
+            "description": "切换动画时常，单位ms",
+            "type": "number",
+            "default": 300
+        },
+        {
+            "name": "swipeThreshold",
+            "description": "滑动灵敏度（0-1之间的小数，数值越小越灵敏）",
+            "type": "number",
+            "default": 0.35
+        },
+        {
+            "name": "indicatorDots",
+            "description": "是否显示面板指示点",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "indicatorColor",
+            "description": "指示点颜色",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
+            "name": "indicatorActiveColor",
+            "description": "当前选中的指示点颜色",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
+            "name": "autoplay",
+            "description": "自动切换",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "interval",
+            "description": "自动切换时间间隔，单位ms",
+            "type": "number",
+            "default": 3000
+        },
+        {
+            "name": "circular",
+            "description": "首尾衔接滑动",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "previousMargin",
+            "description": "前边距，可用于露出前一项的一小部分，单位rpx",
+            "type": "number | string",
+            "default": 0
+        },
+        {
+            "name": "nextMargin",
+            "description": "后边距，可用于露出后一项的一小部分，单位rpx",
+            "type": "number | string",
+            "default": 0
+        },
+        {
+            "name": "[event]change",
+            "description": "监听item切换",
+            "type": "(index:number,source:'autoplay'| 'touch')=>void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "当前显示滑块的 index"
+                },
+                {
+                    "name": "source",
+                    "description": "触发切换的来源"
+                }
+            ]
+        }
+    ]
+}

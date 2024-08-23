@@ -1,6 +1,7 @@
 import { type ComponentInternalInstance, computed, ref, watch } from 'vue'
 import type { ScrollViewOnScrollEvent } from '@uni-helper/uni-app-types'
 import utils from '../../utils/utils'
+import type { ScrollToProps } from './props'
 
 export default function useData({
   thas,
@@ -10,7 +11,7 @@ export default function useData({
 }: {
   thas: globalThis.ComponentPublicInstance | null | undefined
   emits: { (event: 'change', index: number): void, (event: 'update:active', top: number): void }
-  props: { active: number, height: number | string }
+  props: ScrollToProps
   children: ComponentInternalInstance[]
 }) {
   let boxHeight = 0
@@ -96,7 +97,7 @@ export default function useData({
       const tops: number[] = []
       for (let i = 0; i < children.length; i++) {
         const comp = children[i]
-        const child = await utils.querySelector<false>('.ste-scroll-to-item-root', comp)
+        const child = await utils.querySelector<false>('.ste-scroll-to-item-root', comp.proxy)
         const top = Number(child.top) - Number(box.top)
         tops.push(top > max + 10 ? max + 10 : top)
       }

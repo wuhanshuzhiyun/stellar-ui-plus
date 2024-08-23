@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, getCurrentInstance, defineOptions } from 'vue';
 import type { Obj } from '../../types';
 import utils from '../../utils/utils';
 import propsData from './props';
+
+defineOptions({
+    name: 'ste-sticky',
+    options: {
+        virtualHost: true,
+    },
+});
+
 const elId = utils.guid(8);
 const props = defineProps(propsData);
 const observe = ref<UniApp.IntersectionObserver>();

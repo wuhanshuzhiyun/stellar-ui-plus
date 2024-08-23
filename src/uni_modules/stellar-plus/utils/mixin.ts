@@ -21,12 +21,14 @@ export function useInject<T>(key: InjectionKey<ParentProvide<T>>) {
     return {
       parent,
       index,
+      instance,
     }
   }
 
   return {
     parent: null,
     index: ref(-1),
+    instance: null,
   }
 }
 

@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { onMounted, getCurrentInstance, computed, nextTick, watch } from 'vue';
+import { onMounted, defineOptions, getCurrentInstance, computed, nextTick, watch } from 'vue';
 import utils from '../../utils/utils';
 import propsData, { TOUCH_SWIPE_KEY } from './props';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
 import type { Obj } from '../../types';
+
+defineOptions({
+    name: 'ste-touch-swipe',
+});
 
 const emits = defineEmits<{
     (e: 'update:index', index: number): void;

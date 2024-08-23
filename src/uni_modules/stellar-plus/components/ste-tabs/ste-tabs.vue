@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { computed, watch, onMounted, getCurrentInstance, nextTick, type StyleValue } from 'vue';
+import { defineOptions, computed, watch, onMounted, getCurrentInstance, nextTick, type StyleValue } from 'vue';
 import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import { type TabProps } from '../ste-tab/props';
 import propsData, { TAB_KEY } from './props';
 import useData from './useData';
 import type { UniScrollViewOnScrollEvent } from '../../types/event';
+
+defineOptions({
+    name: 'ste-tabs',
+});
 
 const emits = defineEmits<{
     (e: 'click-tab', tab: TabProps): void;

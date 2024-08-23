@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, watch, defineOptions } from 'vue';
 import type { UploadFileType, WxInputAccept } from '../../types';
 import { readMediaFile, readFile } from './ReadFile';
 import utils from '../../utils/utils';
 import propsData from './props';
 import useData from './useData';
+
+defineOptions({
+    name: 'ste-upload',
+});
 
 const emits = defineEmits<{
     (e: 'beforeRead', list: UploadFileType[], suspend: () => void, next: () => void, stop: () => void): void;

@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, watch, defineOptions } from 'vue';
 import type { SwiperOnChangeEvent } from '@uni-helper/uni-app-types';
 import utils from '../../utils/utils';
 import type { Obj } from '../../types/index.d';
 import useData from './useData';
 import propsData from './props';
+
+defineOptions({
+    name: 'ste-search',
+    options: {
+        virtualHost: true,
+    },
+});
 
 const props = defineProps(propsData);
 const { dataValue, setDataValue, switchIndex, setSwitchIndex } = useData();

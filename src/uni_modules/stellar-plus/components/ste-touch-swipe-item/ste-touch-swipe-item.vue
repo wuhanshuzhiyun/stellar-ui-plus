@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import { defineOptions } from 'vue';
 import { useInject } from '../../utils/mixin';
 import { TOUCH_SWIPE_KEY } from '../ste-touch-swipe/props';
+
+defineOptions({
+    name: 'ste-touch-swipe-item',
+    options: {
+        virtualHost: true,
+    },
+});
+
 const props = defineProps({
     disabled: {
         type: Boolean,

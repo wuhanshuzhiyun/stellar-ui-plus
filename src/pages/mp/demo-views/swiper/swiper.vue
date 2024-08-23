@@ -92,6 +92,7 @@ const onChange = (index: number, source: 'touch' | 'autoplay') => {
 .page {
     .content {
         .item {
+            width: 100%;
             height: 300rpx;
         }
     }

@@ -542,7 +542,15 @@
     }
 </script>
 <template>
-    <ste-table :data="rows" :header-row-class-name="headerRowClassName" :header-row-style="headerRowStyle" :header-cell-class-name="headerCellClassName" :header-cell-style="headerCellStyle" :row-class-name="rowClassName" :row-style="rowStyle">
+    <ste-table
+        :data="rows"
+        :header-row-class-name="headerRowClassName"
+        :header-row-style="headerRowStyle"
+        :header-cell-class-name="headerCellClassName"
+        :header-cell-style="headerCellStyle"
+        :row-class-name="rowClassName"
+        :row-style="rowStyle"
+    >
         <template v-slot="{ row }">
             <ste-table-column label="姓名" prop="name"></ste-table-column>
             <ste-table-column label="生日" prop="birth"></ste-table-column>
@@ -583,7 +591,7 @@
 
 ### API
 
-#### Table Props
+<!-- #### Table Props
 
 | 属性名                  | 说明                                                                                                  | 类型                                       | 默认值     | 可选值 | 支持版本 |
 | ----------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------ | ---------- | ------ | -------- |
@@ -621,7 +629,8 @@
 | `cellClick`     | 当某个单元格被点击时会触发该事件             | `row`：当前行的数据<br/>`column`：当前列的数据<br/>`event`：Event对象 | -        |
 | `rowClick`      | 当某一行被点击时会触发该事件                 | `row`：当前行的数据<br/>`event`：Event对象                            | -        |
 | `headerClick`   | 当某一列的表头被点击时会触发该事件           | `column`：当前列的数据<br/>`event`：Event对象                         | -        |
-| `scrollToLower` | 表格体滚动到底事件                           | -                                                                     | -        |
+| `scrollToLower` | 表格体滚动到底事件                           | -                                                                     | -        | -->
+<!-- props -->
 
 #### Table Method
 

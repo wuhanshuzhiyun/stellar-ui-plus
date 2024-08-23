@@ -1,0 +1,60 @@
+{
+    "name": "ste-switch",
+    "description": "开关组件,表示两种相互对立的状态间的切换，多用于触发「开/关」。",
+    "example": "<ste-switch v-model='value1'></ste-switch>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=switch",
+    "attributes": [
+        {
+            "name": "modelValue",
+            "description": "开关状态（支持v-model双向绑定）",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "disabled",
+            "description": "禁用",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "readonly",
+            "description": "只读（不置灰）",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "size",
+            "description": "开关大小，单位rpx",
+            "type": "Number|String",
+            "default": 52
+        },
+        {
+            "name": "activeColor",
+            "description": "激活时颜色",
+            "type": "String",
+            "default": "#0090FF"
+        },
+        {
+            "name": "inactiveColor",
+            "description": "未激活颜色",
+            "type": "String",
+            "default": "#bbbbbb"
+        },
+        {
+            "name": "loading",
+            "description": "加载中",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "[event]click",
+            "description": "点击开关时触发的事件（可拦截change事件）`value`：改变后的绑定值,`allowStop`：允许阻止后续的事件触发,：`resolve`：后续的事件执行",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]change",
+            "description": "当绑定值变化时触发的事件",
+            "type": "() => void"
+        }
+    ]
+}

@@ -1,0 +1,226 @@
+{
+    "name": "ste-video",
+    "description": "视频",
+    "example": "<ste-video />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=video",
+    "attributes": [
+        {
+            "name": "title",
+            "description": "视频的标题，全屏时在顶部展示",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "autoHeight",
+            "description": "是否视频高度跟随父容器",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "resolution",
+            "description": "清晰度",
+            "type": "array",
+            "default": "[]"
+        },
+        {
+            "name": "src",
+            "description": "要播放视频的资源地址",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "autoplay",
+            "description": "是否自动播放",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "loop",
+            "description": "是否循环播放",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "muted",
+            "description": "是否静音播放",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "initialTime",
+            "description": "指定视频初始播放位置，单位为秒（s）。",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "duration",
+            "description": "指定视频时长，单位为秒（s）。",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "pageGesture",
+            "description": "在非全屏模式下，是否开启亮度与音量调节手势",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "direction",
+            "description": "设置全屏时视频的方向，不指定则根据宽高比自动判断。有效值为 0（正常竖向）, 90（屏幕逆时针90度）, -90（屏幕顺时针90度）",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "showFullscreenBtn",
+            "description": "是否显示全屏按钮",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "showPlayBtn",
+            "description": "是否显示视频底部控制栏的播放按钮",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "enableProgressGesture",
+            "description": "是否开启控制进度的手势",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "objectFit",
+            "description": "当视频大小与 video 容器大小不一致时，视频的表现形式。contain：包含，fill：填充，cover：覆盖",
+            "type": "string",
+            "default": "contain",
+            "values": [
+                {
+                    "name": "contain",
+                    "description": "包含"
+                },
+                {
+                    "name": "fill",
+                    "description": "填充"
+                },
+                {
+                    "name": "cover",
+                    "description": "覆盖"
+                }
+            ]
+        },
+        {
+            "name": "poster",
+            "description": "视频封面的图片网络资源地址，如果 controls 属性值为 false 则设置 poster 无效",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "mobileNetHintType",
+            "description": "移动网络提醒样式：0是不提醒，1是提醒，默认值为1",
+            "type": "number",
+            "default": 1,
+            "values": [
+                {
+                    "name": "0",
+                    "description": "不提醒"
+                },
+                {
+                    "name": "1",
+                    "description": "提醒"
+                }
+            ]
+        },
+        {
+            "name": "enablePlayGesture",
+            "description": "是否开启手势播放",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "autoPauseIfNavigate",
+            "description": "当跳转到其它小程序页面时，是否自动暂停本页面的视频",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "autoPauseIfOpenNative",
+            "description": "当跳转到其它微信原生页面时，是否自动暂停本页面的视频",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "vslideGesture",
+            "description": "在非全屏模式下，是否开启亮度与音量调节手势（同 page-gesture）",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "vslideGestureInFullscreen",
+            "description": "在全屏模式下，是否开启亮度与音量调节手势",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "adUnitId",
+            "description": "视频前贴广告单元ID，更多详情可参考开放能力视频前贴广告",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "posterForCrawler",
+            "description": "用于给搜索等场景作为视频封面展示，建议使用无播放 icon 的视频封面图，只支持网络地址",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "codec",
+            "description": "解码器选择，hardware：硬解码（硬解码可以增加解码算力，提高视频清晰度。少部分老旧硬件可能存在兼容性问题）；software：ffmpeg 软解码",
+            "type": "string",
+            "default": "hardware",
+            "values": [
+                {
+                    "name": "hardware",
+                    "description": "硬解码（硬解码可以增加解码算力，提高视频清晰度。少部分老旧硬件可能存在兼容性问题）"
+                },
+                {
+                    "name": "software",
+                    "description": "ffmpeg 软解码"
+                }
+            ]
+        },
+        {
+            "name": "httpCache",
+            "description": "是否对 http、https 视频源开启本地缓存。缓存策略:开启了此开关的视频源，在视频播放时会在本地保存缓存文件，如果本地缓存池已超过100M，在进行缓存前会清空之前的缓存（不适用于m3u8等流媒体协议）",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "playStrategy",
+            "description": "播放策略，0：普通模式，适合绝大部分视频播放场景；1：平滑播放模式（降级），增加缓冲区大小，采用open sl解码音频，避免音视频脱轨的问题，可能会降低首屏展现速度、视频帧率，出现开屏音频延迟等。 适用于高码率视频的极端场景；2： M3U8优化模式，增加缓冲区大小，提升视频加载速度和流畅度，可能会降低首屏展现速度。 适用于M3U8在线播放的场景",
+            "type": "number",
+            "default": 0,
+            "values": [
+                {
+                    "name": "0",
+                    "description": "普通模式，适合绝大部分视频播放场景"
+                },
+                {
+                    "name": "1",
+                    "description": "平滑播放模式（降级），增加缓冲区大小，采用open sl解码音频，避免音视频脱轨的问题，可能会降低首屏展现速度、视频帧率，出现开屏音频延迟等。 适用于高码率视频的极端场景；2： M3U8优化模式，增加缓冲区大小，提升视频加载速度和流畅度，可能会降低首屏展现速度。 适用于M3U8在线播放的场景"
+                }
+            ]
+        },
+        {
+            "name": "header",
+            "description": "HTTP 请求 Header",
+            "type": "object",
+            "default": "{}"
+        },
+        {
+            "name": "isLive",
+            "description": "是否为直播源",
+            "type": "boolean",
+            "default": "false"
+        }
+    ]
+}

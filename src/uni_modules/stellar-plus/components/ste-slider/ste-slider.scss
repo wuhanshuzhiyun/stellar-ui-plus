@@ -1,0 +1,150 @@
+.ste-slider-root {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: var(--progress-height);
+    border-radius: 24rpx;
+
+    &.ste-slider-disabled {
+        .active-box {
+            background-color: #cccccc;
+        }
+
+        .inactive-box {
+            background-color: #eeeeee;
+        }
+
+        .slider-bar-box {
+            .slider-bar {
+                border-color: #cccccc;
+            }
+        }
+    }
+
+    &.ste-slider-drag {
+        .active-box {
+            transition: none !important;
+        }
+        .slider-bar-box {
+            transition: none !important;
+        }
+    }
+    &.ste-slider-vertical {
+        display: inline-block;
+        margin: 0 16rpx;
+        width: var(--progress-height);
+        height: 100%;
+
+        .inactive-box {
+            height: 100%;
+            width: var(--progress-height);
+        }
+        .active-box {
+            align-items: flex-end;
+            justify-content: center;
+            width: 100%;
+            transition: height 0.3s ease;
+        }
+
+        .slider-bar-box {
+            transition: top 0.3s ease;
+            left: 50%;
+            top: 0;
+        }
+
+        .mark-box {
+            display: flex;
+            align-items: center;
+            transform: translateY(-50%);
+            .dot {
+                margin-right: 20rpx;
+            }
+        }
+    }
+    &.ste-slider-horizontal {
+        margin: 16rpx 0;
+        .mark-box {
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .dot {
+                margin-bottom: 20rpx;
+            }
+        }
+        .slider-bar-box {
+        }
+    }
+
+    .inactive-box {
+        width: 100%;
+        height: var(--progress-height);
+        border-radius: 24rpx;
+    }
+
+    .active-box {
+        width: 100%;
+        height: var(--progress-height);
+        border-radius: 24rpx;
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        transition: width 0.3s ease;
+        z-index: 2;
+    }
+
+    .slider-bar-box {
+        cursor: grab;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9;
+        padding: 12rpx;
+
+        transition: left 0.3s ease;
+        white-space: nowrap;
+        /* 其他样式 */
+        view {
+            white-space: nowrap;
+        }
+        text {
+            white-space: nowrap;
+        }
+        .slider-bar {
+            min-width: var(--bar-size);
+            height: var(--bar-size);
+            width: var(--bar-size);
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 2rpx solid var(--active-color);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .mark-box {
+        position: absolute;
+        z-index: 3;
+        .dot {
+            height: var(--progress-height);
+            width: var(--progress-height);
+            border-radius: 100%;
+            background-color: #fff;
+        }
+
+        .marks-label {
+            white-space: nowrap;
+
+            font-size: 24rpx;
+        }
+    }
+}

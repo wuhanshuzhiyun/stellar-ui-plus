@@ -2,7 +2,7 @@
     "name": "ste-read-more",
     "description": "阅读更多",
     "example": "<ste-read-more>文本文本文本文本文本文本文本文本文本</ste-read-more>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ste-read-more",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=read-more",
     "attributes": [
         {
             "name": "showHeight",

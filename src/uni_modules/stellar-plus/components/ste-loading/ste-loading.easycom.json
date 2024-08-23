@@ -1,0 +1,54 @@
+{
+    "name": "ste-loading",
+    "description": "加载组件，用于表示加载中的过渡状态。",
+    "example": "<ste-loading></ste-loading>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=loading",
+    "attributes": [
+        {
+            "name": "color",
+            "description": "图标颜色",
+            "type": "String",
+            "default": "#999999"
+        },
+        {
+            "name": "textColor",
+            "description": "提示文本颜色，默认和图标颜色同步",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "textSize",
+            "description": "文本大小，单位rpx",
+            "type": "Number",
+            "default": 28
+        },
+        {
+            "name": "type",
+            "description": "类型",
+            "type": "Number",
+            "default": 1,
+            "values": [
+                {
+                    "name": 1,
+                    "description": "逐渐减淡的颜色为主色的透明度变化 透明度以10%的差距逐渐递减"
+                },
+                {
+                    "name": 2,
+                    "description": "动态转圈展示"
+                }
+            ]
+        },
+        {
+            "name": "size",
+            "description": "图标大小，单位rpx",
+            "type": "Number",
+            "default": 60
+        },
+        {
+            "name": "vertical",
+            "description": "是否垂直排列图标和文字内容",
+            "type": "Boolean",
+            "default": false
+        }
+    ]
+}

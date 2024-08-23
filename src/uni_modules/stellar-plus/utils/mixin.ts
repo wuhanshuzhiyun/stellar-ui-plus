@@ -1,5 +1,6 @@
 import { computed, getCurrentInstance, inject, markRaw, onUnmounted, provide, ref, shallowReactive } from 'vue'
 import type { ComponentInternalInstance, ConcreteComponent, InjectionKey, VNode, VNodeNormalizedChildren } from 'vue'
+import type { Obj } from '../types'
 
 type ParentProvide<T> = T & {
   add(child: ComponentInternalInstance): void
@@ -7,11 +8,14 @@ type ParentProvide<T> = T & {
   internalChildren: ComponentInternalInstance[]
 }
 
-export function useInject<T>(key: InjectionKey<ParentProvide<T>>) {
+export function useInject<T>(key: InjectionKey<ParentProvide<T>>, selfValue?: Obj) {
   const parent = inject(key, null)
   if (parent) {
     const instance = getCurrentInstance()!
     const { add, remove, internalChildren } = parent
+
+    if (instance && selfValue)
+      (instance as any).selfValue = selfValue
 
     add(instance)
     onUnmounted(() => remove(instance))

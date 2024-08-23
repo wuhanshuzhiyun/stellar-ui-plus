@@ -10,13 +10,13 @@ defineOptions({
     },
 });
 
-const props = defineProps({
+defineProps({
     disabled: {
         type: Boolean,
         default: false,
     },
 });
-const { parent } = useInject(TOUCH_SWIPE_KEY);
+useInject(TOUCH_SWIPE_KEY);
 </script>
 <template>
     <view class="ste-touch-swipe-item-root">

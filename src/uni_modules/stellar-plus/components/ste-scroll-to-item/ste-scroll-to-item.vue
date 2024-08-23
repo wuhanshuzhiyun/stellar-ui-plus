@@ -10,7 +10,7 @@ defineOptions({
     },
 });
 
-const { parent } = useInject(SCROLL_TO_KEY);
+useInject(SCROLL_TO_KEY);
 </script>
 <template>
     <view class="ste-scroll-to-item-root">

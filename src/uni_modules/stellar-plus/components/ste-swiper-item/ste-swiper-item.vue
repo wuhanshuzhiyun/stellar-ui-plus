@@ -26,7 +26,7 @@ const setTransform = ({ x = 0, y = 0, z = 0 }) => {
     if (transformZ.value !== z) transformZ.value = z;
 };
 
-const { parent, instance } = useInject(SWIPER_KEY);
+useInject(SWIPER_KEY, { setTransform });
 </script>
 <template>
     <view class="ste-swiper-item-root" :style="[cmpStyle]">

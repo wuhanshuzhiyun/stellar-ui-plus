@@ -11,8 +11,8 @@ defineOptions({
     },
 });
 
-const props = defineProps(propsData);
-const { parent } = useInject(TAB_KEY);
+defineProps(propsData);
+useInject(TAB_KEY);
 </script>
 <template>
     <view class="ste-tab-root">

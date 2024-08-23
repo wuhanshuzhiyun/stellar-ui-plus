@@ -122,9 +122,9 @@ export default function useData({ props, children, thas, emits }:
     return { transform, transitionDuration: duration }
   })
 
-  const cmpStartComponent = computed(() => children[0]?.proxy)
+  const cmpStartComponent = computed(() => children[0])
 
-  const cmpEndComponent = computed(() => children[children.length - 1]?.proxy)
+  const cmpEndComponent = computed(() => children[children.length - 1])
 
   const getBoxSize = async () => {
     if (Number(boxWidth.value) > 0 || Number(boxHeight.value) > 0)
@@ -163,18 +163,18 @@ export default function useData({ props, children, thas, emits }:
     const width = boxWidth.value
     const height = boxHeight.value
     if (dataIndex.value <= 0) {
-      startComponent.setTransform({})
+      startComponent.selfValue.setTransform({})
       if (props.direction === 'horizontal' && moveX > 0)
-        endComponent.setTransform({ x: -length * Number(width) })
+        endComponent.selfValue.setTransform({ x: -length * Number(width) })
       else if (props.direction === 'vertical' && moveY > 0)
-        endComponent.setTransform({ y: -length * Number(height) })
+        endComponent.selfValue.setTransform({ y: -length * Number(height) })
     }
     else if (dataIndex.value >= length - 1) {
-      endComponent.setTransform({})
+      endComponent.selfValue.setTransform({})
       if (props.direction === 'horizontal' && moveX < 0)
-        startComponent.setTransform({ x: length * Number(width) })
+        startComponent.selfValue.setTransform({ x: length * Number(width) })
       else if (props.direction === 'vertical' && moveY < 0)
-        startComponent.setTransform({ y: length * Number(height) })
+        startComponent.selfValue.setTransform({ y: length * Number(height) })
     }
   }
 
@@ -233,7 +233,7 @@ export default function useData({ props, children, thas, emits }:
             y = props.direction === 'vertical' ? length * Number(boxHeight.value) : 0
           }
         }
-        component.proxy?.setTransform({ x, y })
+        component.selfValue.setTransform({ x, y })
       })
       setTimeout(() => {
         setReseting(false)

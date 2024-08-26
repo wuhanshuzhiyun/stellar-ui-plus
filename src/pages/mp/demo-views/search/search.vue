@@ -146,7 +146,7 @@ const onClick = (v: string) => {
             <view class="demo-item">
                 <view class="title">聚焦</view>
                 <view class="item-block">
-                    <ste-search @click="onClick" :focus.sync="focus" />
+                    <ste-search @click="onClick" v-model:focus="focus" />
                     <view style="margin: 10px auto 0 auto">
                         <ste-button @click="focus = true" width="100%">聚焦</ste-button>
                     </view>

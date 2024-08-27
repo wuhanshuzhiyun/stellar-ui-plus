@@ -91,7 +91,6 @@ export default function useData({ props, emits }: {
     const node = findNode(viewOptions.value, nodeValue)
     if (!node)
       return null
-    node.open = open
     if (props.accordion) {
       const sibling = viewList.value.filter(
         s => s.open && s.parentNode === node.parentNode && s[props.valueKey] !== node[props.valueKey],
@@ -104,6 +103,7 @@ export default function useData({ props, emits }: {
       if (_node)
         _node.open = open
     }
+    node.open = open
     return node
   }
 

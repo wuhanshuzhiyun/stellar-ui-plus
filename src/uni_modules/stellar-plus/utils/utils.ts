@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import type { TreeNode } from '../types'
 import System from './System'
 import Color from './Color'
 
@@ -11,6 +12,14 @@ type PxType = 'str' | 'num'
 type PX<T extends PxType> = T extends 'str' ? string : number
 
 type PartType = 0 | 1 | 2
+
+interface FormatTreeOptions<T> {
+  valueKey?: string
+  childrenKey?: string
+  otherAttributes?: Record<string, any> | ((node: T) => Record<string, any>)
+  parentNode?: string | number
+  depth?: number
+}
 
 const utils = {
   System,
@@ -307,6 +316,128 @@ const utils = {
   isNum(num: number | string) {
     const reg = /^\d+\.?\d*$/
     return reg.test(String(num))
+  },
+
+  formatTree<T extends Record<string, any>>(
+    tree: TreeNode<T>[],
+    options: FormatTreeOptions<T> = {},
+  ): TreeNode<T>[] {
+    const {
+      valueKey = 'value',
+      childrenKey = 'children',
+      otherAttributes = {},
+      parentNode = '__root__',
+      depth = 0,
+    } = options
+
+    const _formatTree = (tree: TreeNode<T>[], parentNode: string | number, depth: number): TreeNode<T>[] => {
+      return tree.map((item) => {
+        if (item[childrenKey] && item[childrenKey].length)
+          Object.assign(item, { [childrenKey]: _formatTree(item[childrenKey], item[valueKey], depth + 1) })
+
+        let _otherAttributes: Record<string, any>
+        if (typeof otherAttributes === 'function')
+          _otherAttributes = otherAttributes(item)
+        else
+          _otherAttributes = otherAttributes
+
+        return Object.assign(
+          {
+            parentNode,
+            depth,
+          },
+          _otherAttributes,
+          item,
+        )
+      })
+    }
+
+    return _formatTree(tree, parentNode, depth)
+  },
+
+  /**
+   * 扁平化树形结构
+   * @param {Array}  tree 树形数组
+   * @param {string} childrenKey 下级数组键
+   * @param {Function} filterFunc 回调函数，返回true或false判断是否将当前节点的下级扁平化
+   */
+  flattenTree<T extends Record<string, any>>(tree: TreeNode<T>[], childrenKey = 'children', filterFunc: (node?: TreeNode<T>) => boolean = () => true) {
+    function _flatten(tree: TreeNode<T>[]) {
+      const result: TreeNode<T>[] = []
+      tree.forEach((node) => {
+        result.push(node)
+        if (node[childrenKey] && node[childrenKey].length > 0 && filterFunc(node)) {
+          const nodes = _flatten(node[childrenKey])
+          nodes.forEach(n => result.push(n))
+        }
+      })
+      return result
+    }
+    return _flatten(tree)
+  },
+
+  findTreeNode<T extends Record<string, any>>(tree: TreeNode<T>[], value: string | number, valueKey = 'value', childrenKey = 'children') {
+    const _findTreeNode: (tree: TreeNode<T>[]) => TreeNode<T> | null = (tree: TreeNode<T>[]) => {
+      for (let i = 0; i < tree.length; i++) {
+        const item = tree[i]
+        if (item[valueKey] === value)
+          return item
+
+        if (item[childrenKey] && item[childrenKey].length) {
+          const result = _findTreeNode(item[childrenKey])
+          if (result)
+            return result
+        }
+      }
+      return null
+    }
+    return _findTreeNode(tree)
+  },
+
+  getParentNodes<T extends Record<string, any>>(tree: TreeNode<T>[], filterFunc: (node: TreeNode<T>) => boolean, valueKey = 'value', childrenKey = 'children') {
+    const flatten = this.flattenTree(this.formatTree(tree, { valueKey, childrenKey }), childrenKey)
+    const nodes = flatten.filter(filterFunc)
+    const findNode = (arr: TreeNode<T>[], value: string | number) => arr.find(n => n[valueKey] === value)
+
+    const result: TreeNode<T>[] = []
+    nodes.forEach((node) => {
+      const isAdd = findNode(result, node[valueKey])
+      if (isAdd)
+        return
+      const datas = [node]
+      if (node.parentNode === '__root__')
+        return
+      let parent = findNode(flatten, node.parentNode)
+      while (parent) {
+        const isAdd = findNode(result, parent[valueKey])
+        if (!isAdd)
+          datas.unshift(parent)
+        parent = findNode(flatten, parent.parentNode)
+      }
+      result.push(...datas)
+    })
+    return result
+  },
+
+  filterTree<T extends Record<string, any>>(tree: TreeNode<T>[], filterFunc: (node: TreeNode<T>) => boolean, valueKey = 'value', childrenKey = 'children') {
+    // 先找到所有的节点包括上级节点
+    const nodes = this.getParentNodes(tree, filterFunc, valueKey, childrenKey)
+    const nodeValues = nodes.map(n => n[valueKey])
+    const _flatten = (tree: TreeNode<T>[]) => {
+      const result: TreeNode<T>[] = []
+      tree.forEach((n) => {
+        const node = {
+          ...n,
+        }
+        if (nodeValues.includes(node[valueKey]))
+          result.push(node)
+
+        if (node[childrenKey] && node[childrenKey].length)
+          Object.assign(node, { [childrenKey]: _flatten(node[childrenKey]) })
+      })
+      return result
+    }
+    return _flatten(tree)
   },
 }
 

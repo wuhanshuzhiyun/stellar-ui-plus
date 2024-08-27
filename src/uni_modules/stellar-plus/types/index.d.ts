@@ -53,3 +53,9 @@ export type WxInputAccept = 'image' | 'video' | 'mix'
 export type DirectionType = 'horizontal' | 'vertical'
 
 export type AlignType = 'left' | 'right' | 'center'
+
+export type TreeNode<T> = T & {
+  [tiileKey: string]: string
+  [valueKey: string]: string | number
+  [childrenKey: string]: TreeNode<T>[]
+}

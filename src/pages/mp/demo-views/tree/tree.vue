@@ -62,20 +62,15 @@ const closeNode = () => {
     accordion.value?.close('2');
 };
 
-const beforeOpen = (node: TreeNode, suspend: () => void, next: (tree?: TreeNode[]) => void, stop: () => void) => {
+const beforeOpen = (node: TreeNode, suspend: () => void, next: (tree?: TreeNode[]) => void) => {
     // 开启等待
     suspend();
     setTimeout(() => {
-        if (Math.random() > 0.5) {
-            // 停止等待
-            stop();
-        } else {
-            // 继续后续操作，并将结果传递给next
-            next([
-                { title: `${node.title}-1`, value: `${node.value}-1` },
-                { title: `${node.title}-2`, value: `${node.value}-2`, hasChildren: true },
-            ]);
-        }
+        // 继续后续操作，并将结果传递给next
+        next([
+            { title: `${node.title}-1`, value: `${node.value}-1` },
+            { title: `${node.title}-2`, value: `${node.value}-2`, hasChildren: true },
+        ]);
     }, 2000);
 };
 </script>

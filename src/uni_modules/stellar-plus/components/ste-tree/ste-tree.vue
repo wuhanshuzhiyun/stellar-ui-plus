@@ -7,17 +7,17 @@ import useData from './useData';
 const props = defineProps(propsData);
 
 const emits = defineEmits<{
-    (e: 'click', node: TreeNode<Record<string, any>>): void;
-    (e: 'beforeOpen', node: TreeNode<Record<string, any>>, suspend: () => void, next: () => void, stop: () => void): void;
-    (e: 'open', node: TreeNode<Record<string, any>>): void;
-    (e: 'close', node: TreeNode<Record<string, any>>): void;
+    (e: 'click', node: TreeNode): void;
+    (e: 'beforeOpen', node: TreeNode, suspend: () => void, next: (tree?: TreeNode[]) => void, stop: () => void): void;
+    (e: 'open', node: TreeNode): void;
+    (e: 'close', node: TreeNode): void;
 }>();
 
-const { init, viewList, cmpPaddingLeft, onClick, openNode, closeNode, onOpen, setDataSearchTitle } = useData({ props, emits });
+const { init, viewList, cmpPaddingLeft, onClick, open, closeNode, onOpen, setDataSearchTitle } = useData({ props, emits });
 
 defineExpose({
     init,
-    open: openNode,
+    open,
     close: closeNode,
     search: setDataSearchTitle,
 });

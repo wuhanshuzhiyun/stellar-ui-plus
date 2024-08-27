@@ -54,8 +54,9 @@ export type DirectionType = 'horizontal' | 'vertical'
 
 export type AlignType = 'left' | 'right' | 'center'
 
-export type TreeNode<T> = T & {
+export interface TreeNode {
+  [key: string]: any
   [tiileKey: string]: string
   [valueKey: string]: string | number
-  [childrenKey: string]: TreeNode<T>[]
+  [childrenKey: string]: TreeNode[]
 }

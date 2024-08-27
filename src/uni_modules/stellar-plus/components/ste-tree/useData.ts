@@ -6,24 +6,24 @@ import type { SteTreeProps } from './props'
 export default function useData({ props, emits }: {
   props: SteTreeProps
   emits: {
-    (e: 'click', node: TreeNode<Record<string, any>>): void
-    (e: 'beforeOpen', node: TreeNode<Record<string, any>>, suspend: () => void, next: () => void, stop: () => void): void
-    (e: 'open', node: TreeNode<Record<string, any>>): void
-    (e: 'close', node: TreeNode<Record<string, any>>): void
+    (e: 'click', node: TreeNode): void
+    (e: 'beforeOpen', node: TreeNode, suspend: () => void, next: (tree?: TreeNode[]) => void, stop: () => void): void
+    (e: 'open', node: TreeNode): void
+    (e: 'close', node: TreeNode): void
   }
 }) {
   const dataOptions = ref(props.options)
-  const setDataOptions = (options: TreeNode<Record<string, any>>[]) => {
+  const setDataOptions = (options: TreeNode[]) => {
     dataOptions.value = options
   }
 
-  const viewOptions = ref<TreeNode<Record<string, any>>[]>([])
-  const setViewOptions = (options: TreeNode<Record<string, any>>[]) => {
+  const viewOptions = ref<TreeNode[]>([])
+  const setViewOptions = (options: TreeNode[]) => {
     viewOptions.value = options
   }
 
-  const viewList = ref<TreeNode<Record<string, any>>[]>([])
-  const setViewList = (options: TreeNode<Record<string, any>>[]) => {
+  const viewList = ref<TreeNode[]>([])
+  const setViewList = (options: TreeNode[]) => {
     viewList.value = options
   }
 
@@ -34,7 +34,7 @@ export default function useData({ props, emits }: {
 
   const cmpPaddingLeft = computed(() => utils.formatPx(props.childrenPadding, 'num'))
 
-  const formatTree = (tree: TreeNode<Record<string, any>>[], parentNode?: number | string, depth?: number) => {
+  const formatTree = (tree: TreeNode[], parentNode?: number | string, depth?: number) => {
     return utils.formatTree(
       tree,
       {
@@ -59,11 +59,11 @@ export default function useData({ props, emits }: {
     })
   }
 
-  const findNode = (tree: TreeNode<Record<string, any>>[], value: string | number) => {
+  const findNode = (tree: TreeNode[], value: string | number) => {
     return utils.findTreeNode(tree, value, props.valueKey, props.childrenKey)
   }
 
-  const beforeOpen = async (node: TreeNode<Record<string, any>>) => {
+  const beforeOpen = async (node: TreeNode) => {
     let is_next = true
     const _beforeOpen = new Promise((resolve, reject) => {
       emits('beforeOpen', node, () => {
@@ -71,7 +71,6 @@ export default function useData({ props, emits }: {
         node.loading = true
       }, (children = []) => {
         const _children = formatTree(children, node[props.valueKey], node.depth + 1)
-
         resolve(_children)
       }, () => reject(new Error('beforeOpen stop')))
     })
@@ -117,8 +116,8 @@ export default function useData({ props, emits }: {
 
     setNodeOpen(node[props.valueKey], true)
     if (node.parentNode !== '__root__') {
-      const getParents = (_node: TreeNode<Record<string, any>>) => {
-        const parents: TreeNode<Record<string, any>>[] = []
+      const getParents = (_node: TreeNode) => {
+        const parents: TreeNode[] = []
         const parent = findNode(viewOptions.value, _node.parentNode)
         if (parent) {
           parents.push(parent)
@@ -178,7 +177,7 @@ export default function useData({ props, emits }: {
 
   watch(() => dataSearchTitle.value, onSearch, { immediate: true })
 
-  const onClick = (node: TreeNode<Record<string, any>>) => {
+  const onClick = (node: TreeNode) => {
     emits('click', node)
   }
 
@@ -190,7 +189,7 @@ export default function useData({ props, emits }: {
     rende()
   }
 
-  const openNode = async (node: TreeNode<Record<string, any>>) => {
+  const openNode = async (node: TreeNode) => {
     try {
       await open(node[props.valueKey])
       emits('open', node)
@@ -201,7 +200,7 @@ export default function useData({ props, emits }: {
     }
   }
 
-  const onOpen = (node: TreeNode<Record<string, any>>) => {
+  const onOpen = (node: TreeNode) => {
     if (node.open)
       closeNode(node[props.valueKey])
     else openNode(node)
@@ -212,7 +211,7 @@ export default function useData({ props, emits }: {
     viewList,
     cmpPaddingLeft,
     onClick,
-    openNode,
+    open,
     closeNode,
     onOpen,
     setDataSearchTitle,

@@ -5,7 +5,7 @@ export interface SteTreeProps {
   valueKey: string
   titleKey: string
   childrenKey: string
-  options: TreeNode<Record<string, any>>[]
+  options: TreeNode[]
   accordion: boolean
   childrenPadding: number | string
   openNodes: (string | number)[]
@@ -16,7 +16,7 @@ export default {
   valueKey: { type: String, default: () => 'value' },
   titleKey: { type: String, default: () => 'title' },
   childrenKey: { type: String, default: () => 'children' },
-  options: { type: Array as PropType<TreeNode<Record<string, any>>[]>, default: () => [] },
+  options: { type: Array as PropType<TreeNode[]>, default: () => [] },
   accordion: { type: Boolean, default: () => true },
   childrenPadding: { type: [Number, String], default: () => 40 },
   openNodes: { type: Array as PropType<(string | number)[]>, default: () => [] },

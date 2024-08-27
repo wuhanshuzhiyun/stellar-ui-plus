@@ -1,0 +1,106 @@
+{
+    "name": "ste-tree",
+    "description": "Tree 树形控件",
+    "example": "<ste-tree></ste-tree>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=tree",
+    "attributes": [
+        {
+            "name": "options",
+            "description": "树形结构数组（Node结构见基础用法详情 ），若组件渲染完成后修此属性，请手动调用init方法",
+            "type": "Array<TreeNode>",
+            "default": []
+        },
+        {
+            "name": "valueKey",
+            "description": "节点的值字段名",
+            "type": "string",
+            "default": "value"
+        },
+        {
+            "name": "titleKey",
+            "description": "节点的标题字段名",
+            "type": "string",
+            "default": "title"
+        },
+        {
+            "name": "childrenKey",
+            "description": "节点的子节点字段名",
+            "type": "string",
+            "default": "children"
+        },
+        {
+            "name": "accordion",
+            "description": "是否手风琴模式",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "childrenPadding",
+            "description": "子节点缩进,单位rpx",
+            "type": "number | string",
+            "default": 40
+        },
+        {
+            "name": "openNodes",
+            "description": "默认展开的节点数组",
+            "type": "Array<number | string>",
+            "default": []
+        },
+        {
+            "name": "[event]click",
+            "description": "点击节点时触发",
+            "type": "(node:TreeNode)=>void",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "当前点击的节点"
+                }
+            ]
+        },
+        {
+            "name": "[event]open",
+            "description": "打开节点时出发",
+            "type": "(node:TreeNode)=>void",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "当前打开的节点"
+                }
+            ]
+        },
+        {
+            "name": "[event]close",
+            "description": "关闭节点时出发",
+            "type": "(node:TreeNode)=>void",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "当前关闭的节点"
+                }
+            ]
+        },
+        {
+            "name": "[event]beforeOpen",
+            "description": "打开节点前触发",
+            "type": "(node:TreeNode,suspend:()=>void,next:(tree:TreeNode[])=>void,stop:()=>void)=>void",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "当前即将打开的节点"
+                },
+                {
+                    "name": "suspend",
+                    "description": "调用该函数等待后续操作"
+                },
+                {
+                    "name": "next",
+                    "description": "调用该函数继续执行后续代码，可接收一个对象数组，该数组会替换当前节点的children"
+                },
+                {
+                    "name": "stop",
+                    "description": "调用该函数阻止后续代码执行"
+                }
+            ]
+        }
+    ]
+}

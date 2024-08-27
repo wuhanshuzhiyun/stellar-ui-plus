@@ -55,11 +55,11 @@ const onClose = (node: TreeNode) => {
 const accordion = ref<RefTree>();
 
 const openNode = () => {
-    accordion.value?.open('1-2');
+    accordion.value?.open('2');
 };
 
 const closeNode = () => {
-    accordion.value?.close('1-2');
+    accordion.value?.close('2');
 };
 
 const beforeOpen = (node: TreeNode, suspend: () => void, next: (tree?: TreeNode[]) => void, stop: () => void) => {
@@ -85,26 +85,26 @@ const beforeOpen = (node: TreeNode, suspend: () => void, next: (tree?: TreeNode[
         <view class="content">
             <view class="demo-item">
                 <view class="title">基础使用</view>
-                <ste-tree :options="options" @open="onOpen" @close="onClose"></ste-tree>
+                <ste-tree :options="options" @open="onOpen" @close="onClose" />
             </view>
             <view class="demo-item">
                 <view class="title">默认展开节点，打开/关闭指定节点</view>
-                <ste-tree ref="accordion" :options="options" :openNodes="['1-2-2']"></ste-tree>
+                <ste-tree ref="accordion" :options="options" :openNodes="['1-2-2']" />
                 <ste-button @click="openNode" :mode="100">打开标题2</ste-button>
                 <ste-button @click="closeNode" :mode="100">关闭标题2</ste-button>
             </view>
             <view class="demo-item">
                 <view class="title">节点搜索</view>
-                <ste-input placeholder="请输入标题内容" v-model="searchTitle"></ste-input>
-                <ste-tree :options="options" :searchTitle="searchTitle"></ste-tree>
+                <input placeholder="请输入标题内容" v-model="searchTitle" />
+                <ste-tree :options="options" :searchTitle="searchTitle" />
             </view>
             <view class="demo-item">
                 <view class="title">非手风琴模式（展开时不关闭兄弟节点）</view>
-                <ste-tree :options="options" :accordion="false"></ste-tree>
+                <ste-tree :options="options" :accordion="false" />
             </view>
             <view class="demo-item">
                 <view class="title">懒加载</view>
-                <ste-tree :options="options1" @beforeOpen="beforeOpen"></ste-tree>
+                <ste-tree :options="options1" @beforeOpen="beforeOpen" />
             </view>
             <view class="demo-item">
                 <view class="title">自定义内容</view>

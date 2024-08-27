@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import {} from 'vue';
-import propsData, { type SteTreeProps } from './props';
-import { type TreeNode } from '../../types/index';
+import propsData from './props';
+import { type TreeNode } from '../../types/index.d';
 import useData from './useData';
 
 const props = defineProps(propsData);

@@ -2,7 +2,7 @@
     "name": "ste-button",
     "description": "按钮组件",
     "example": "<ste-button></ste-button>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn//pc/index/index?name=ste-button",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=button",
     "attributes": [
         {
             "name": "mode",

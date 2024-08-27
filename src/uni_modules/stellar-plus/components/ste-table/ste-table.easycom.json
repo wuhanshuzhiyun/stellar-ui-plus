@@ -1,7 +1,7 @@
 {
     "name": "ste-table",
     "description": "表格。",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-table",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=table",
     "attributes": [
         {
             "name": "data",

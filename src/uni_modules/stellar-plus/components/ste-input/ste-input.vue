@@ -1,0 +1,206 @@
+<script lang="ts" setup>
+import { computed, ref, watch, type CSSProperties } from 'vue';
+import utils from '../../utils/utils';
+import propsData, { inputEmits } from './props';
+import type { BaseEvent } from '../../types/event';
+import type { InputType } from '@uni-helper/uni-app-types';
+const componentName = `ste-input`;
+defineOptions({
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
+});
+
+const props = defineProps(propsData);
+const emits = defineEmits(inputEmits);
+
+const focused = ref(props.focus);
+const dataValue = ref<string | number>('');
+const tmpDataValue = ref<string | number>('');
+
+const cmpRootClass = computed(() => {
+    let classStr = '';
+    if (props.disabled) {
+        classStr += 'ste-input-disabled ';
+    }
+    if (props.readonly) {
+        classStr += 'ste-input-readonly ';
+    }
+
+    classStr += `ste-input-${props.shape} `;
+
+    if (props.rootClass) {
+        classStr += `${props.rootClass} `;
+    }
+
+    if (props.type == 'textarea') {
+        classStr += 'textarea-type ';
+    }
+
+    return classStr;
+});
+
+const cmpRootStyle = computed(() => {
+    let style = utils.bg2style(props.background) as CSSProperties;
+
+    switch (props.shape) {
+        case 'circle':
+            style.borderRadius = utils.addUnit(40);
+            break;
+        case 'square':
+            style.borderRadius = utils.addUnit(16);
+            break;
+        default:
+            break;
+    }
+    return style;
+});
+
+const cmpRootCssVar = computed(() => {
+    return {
+        '--input-font-size': utils.addUnit(props.fontSize),
+        '--input-font-color': props.fontColor,
+        '--input-text-align': props.inputAlign,
+        '--input-line-color': props.borderColor || '#eeeeee',
+        '--input-border-color': props.border ? props.borderColor : 'transparent',
+    };
+});
+
+const cmpShowClear = computed(() => {
+    return !props.disabled && !props.readonly && props.clearable && dataValue.value && focused.value;
+});
+
+watch(
+    () => props.value,
+    val => {
+        dataValue.value = val;
+        tmpDataValue.value = val;
+    },
+    { immediate: true }
+);
+
+watch(
+    () => props.focus,
+    val => {
+        focused.value = val;
+    }
+);
+
+function onInput(e: BaseEvent) {
+    if (!props.disabled && !props.readonly) {
+        if (!props.allowSpace) {
+            e.detail.value = e.detail.value.replace(/\s*/g, '');
+        }
+        if (props.maxlength > 0) {
+            e.detail.value = e.detail.value.substring(0, props.maxlength);
+        }
+        tmpDataValue.value = e.detail.value;
+        dataValue.value = e.detail.value;
+        emits('input', e.detail.value);
+    }
+}
+
+function onClear() {
+    if (props.disabled && !props.readonly) return;
+
+    dataValue.value = '';
+    emits('input', dataValue.value);
+    emits('clear');
+}
+
+function onFocus() {
+    if (props.disabled && !props.readonly) return;
+    focused.value = true;
+    emits('update:focus', true);
+}
+
+function onBlur() {
+    setTimeout(() => {
+        emits('update:focus', false);
+        focused.value = false;
+        emits('blur', dataValue.value);
+    }, 200);
+}
+
+function onConfirm() {
+    emits('confirm', dataValue.value);
+}
+
+function inputClick() {
+    onFocus();
+}
+</script>
+
+<template>
+    <view class="ste-input-root" :class="cmpRootClass" :style="[cmpRootStyle, cmpRootCssVar]" @click="inputClick">
+        <view class="content">
+            <view class="prefix-box">
+                <slot name="prefix"></slot>
+            </view>
+            <view class="input-box">
+                <template v-if="type == 'textarea'">
+                    <textarea
+                        class="ste-input-input textarea"
+                        :type="type"
+                        :focus="focus"
+                        :value="dataValue"
+                        :disabled="disabled || readonly"
+                        :maxlength="maxlength"
+                        :placeholder="placeholder"
+                        :placeholder-style="placeholderStyle"
+                        :placeholder-class="placeholderClass"
+                        :confirm-type="confirmType"
+                        :cursor-spacing="cursorSpacing"
+                        @input="onInput"
+                        @focus="onFocus"
+                        @blur="onBlur"
+                        @confirm="onConfirm"
+                    />
+                    <!-- #ifdef H5 || MP-WEIXIN -->
+                    <text
+                        class="count-text"
+                        :style="{
+                            'background-color': 'transparent',
+                        }"
+                        v-if="showWordLimit && maxlength > 0"
+                    >
+                        {{ tmpDataValue.length }}/{{ maxlength }}
+                    </text>
+                    <!-- #endif -->
+                </template>
+                <template v-else>
+                    <input
+                        class="ste-input-input"
+                        :type="type as InputType"
+                        :focus="focused"
+                        :value="dataValue"
+                        :disabled="disabled || readonly"
+                        :maxlength="maxlength"
+                        :placeholder="placeholder"
+                        :placeholder-style="placeholderStyle"
+                        :placeholder-class="placeholderClass"
+                        :confirm-type="confirmType"
+                        @input="onInput"
+                        @focus="onFocus"
+                        @blur="onBlur"
+                        @confirm="onConfirm"
+                        :style="[{ width: cmpShowClear ? 'calc(100% - 48rpx)' : 'calc(100% - 8rpx)' }]"
+                        :cursor-spacing="cursorSpacing"
+                    />
+                    <view v-if="cmpShowClear" class="clear-icon" @click="onClear">
+                        <ste-icon code="&#xe694;" color="#bbbbbb" size="34" />
+                    </view>
+                </template>
+            </view>
+            <view class="suffix-box">
+                <slot name="suffix"></slot>
+            </view>
+        </view>
+        <view class="line" v-if="shape == 'line'" />
+    </view>
+</template>
+
+<style scoped lang="scss">
+@import './ste-input.scss';
+</style>

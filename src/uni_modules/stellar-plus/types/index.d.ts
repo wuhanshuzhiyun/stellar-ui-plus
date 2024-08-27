@@ -1,4 +1,20 @@
-export type UniImageMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | 'heightFix' | 'top' | 'bottom' | 'center' | 'left' | 'right' | 'top left' | 'top right' | 'bottom left' | 'bottom right'
+import type { InputType } from '@uni-helper/uni-app-types'
+
+export type UniImageMode =
+  | 'scaleToFill'
+  | 'aspectFit'
+  | 'aspectFill'
+  | 'widthFix'
+  | 'heightFix'
+  | 'top'
+  | 'bottom'
+  | 'center'
+  | 'left'
+  | 'right'
+  | 'top left'
+  | 'top right'
+  | 'bottom left'
+  | 'bottom right'
 
 export type ImgType = 'png' | 'jpg' | 'jpeg' | 'svg' | 'webp'
 
@@ -54,9 +70,12 @@ export type DirectionType = 'horizontal' | 'vertical'
 
 export type AlignType = 'left' | 'right' | 'center'
 
+export type SteInputType = InputType | 'password' | 'textarea'
+
 export interface TreeNode {
   [key: string]: any
   [tiileKey: string]: string
   [valueKey: string]: string | number
   [childrenKey: string]: TreeNode[]
 }
+export type inputConfirmType = 'done' | 'go' | 'next' | 'search' | 'send'

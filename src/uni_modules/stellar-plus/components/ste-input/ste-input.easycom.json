@@ -1,0 +1,270 @@
+{
+    "name": "ste-input",
+    "description": "输入框组件。",
+    "example": "<ste-input />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=input",
+    "attributes": [
+        {
+            "name": "value",
+            "description": "初始内容，支持双向绑定",
+            "type": "number | string"
+        },
+        {
+            "name": "type",
+            "description": "输入框类型",
+            "type": "string",
+            "values": [
+                {
+                    "name": "text",
+                    "description": "纯文本输入"
+                },
+                {
+                    "name": "textarea",
+                    "description": "文本域"
+                },
+                {
+                    "name": "tel",
+                    "description": "电话输入"
+                },
+                {
+                    "name": "number",
+                    "description": "数字输入"
+                },
+                {
+                    "name": "idcard",
+                    "description": "身份证输入键盘"
+                },
+                {
+                    "name": "digit",
+                    "description": "小数点的数字键盘"
+                },
+                {
+                    "name": "password",
+                    "description": "密码类型"
+                },
+                {
+                    "name": "nickname",
+                    "description": "昵称输入(微信小程序)"
+                },
+                {
+                    "name": "numberpad",
+                    "description": "仅支付宝小程序"
+                },
+                {
+                    "name": "digitpad",
+                    "description": "仅支付宝小程序"
+                },
+                {
+                    "name": "idcardpad",
+                    "description": "仅支付宝小程序"
+                }
+            ]
+        },
+        {
+            "name": "placeholder",
+            "description": "占位符",
+            "type": "string"
+        },
+        {
+            "name": "placeholderStyle",
+            "description": "指定placeholder的样式",
+            "type": "string | object"
+        },
+        {
+            "name": "placeholderClass",
+            "description": "指定placeholder的类",
+            "type": "string"
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "clearable",
+            "description": "是否有清空按钮",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "maxlength",
+            "description": "最大长度",
+            "type": "number"
+        },
+        {
+            "name": "showWordLimit",
+            "description": "是否显示字数统计",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "confirmType",
+            "description": "设置右下角按钮的文字",
+            "type": "string",
+            "values": [
+                {
+                    "name": "send",
+                    "description": "右下角按钮为'发送'"
+                },
+                {
+                    "name": "search",
+                    "description": "右下角按钮为'搜索'"
+                },
+                {
+                    "name": "next",
+                    "description": "右下角按钮为'下一个'"
+                },
+                {
+                    "name": "go",
+                    "description": "右下角按钮为'前往'"
+                },
+                {
+                    "name": "done",
+                    "description": "右下角按钮为'完成'"
+                }
+            ]
+        },
+        {
+            "name": "focus",
+            "description": "是否聚焦，支持双向绑定",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "inputAlign",
+            "description": "对齐方式",
+            "type": "string",
+            "values": [
+                {
+                    "name": "left",
+                    "description": "向左对齐"
+                },
+                {
+                    "name": "center",
+                    "description": "居中对齐"
+                },
+                {
+                    "name": "right",
+                    "description": "向右对齐"
+                }
+            ]
+        },
+        {
+            "name": "fontSize",
+            "description": "输入框字体大小，单位rpx",
+            "type": "number | string"
+        },
+        {
+            "name": "fontColor",
+            "description": "输入框字体颜色",
+            "type": "string"
+        },
+        {
+            "name": "readonly",
+            "description": "是否只读，与禁用不同，只读不会置灰",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "shape",
+            "description": "输入框形状",
+            "type": "string",
+            "values": [
+                {
+                    "name": "square",
+                    "description": "方形"
+                },
+                {
+                    "name": "circle",
+                    "description": "圆形"
+                },
+                {
+                    "name": "line",
+                    "description": "线形"
+                }
+            ]
+        },
+        {
+            "name": "border",
+            "description": "是否有边框",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "borderColor",
+            "description": "边框颜色",
+            "type": "string"
+        },
+        {
+            "name": "background",
+            "description": "输入框背景色",
+            "type": "string"
+        },
+        {
+            "name": "rootClass",
+            "description": "自定义输入框类名",
+            "type": "string"
+        },
+        {
+            "name": "cursorSpacing",
+            "description": "指定光标与键盘的距离",
+            "type": "number"
+        },
+        {
+            "name": "allowSpace",
+            "description": "是否允许输入空格",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "blur",
+            "description": "输入框失去焦点事件",
+            "type": "(value: string | number) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]focus",
+            "description": "聚焦事件",
+            "type": "(value: string | number) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]confirm",
+            "description": "输入框输入键盘右下角点击事件",
+            "type": "(value: string | number) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]clear",
+            "description": "清除输入框事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]input",
+            "description": "输入事件",
+            "type": "(value: string | number) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        }
+    ]
+}

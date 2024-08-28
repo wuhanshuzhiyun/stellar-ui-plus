@@ -1,0 +1,124 @@
+.ste-input-root {
+    box-sizing: border-box;
+
+    border-width: 1rpx;
+    border-style: solid;
+    border-color: var(--input-border-color);
+    background-color: #ffffff;
+    .content {
+        display: flex;
+        align-items: center;
+        padding: 0 24rpx;
+        .suffix-box,
+        .prefix-box {
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            flex-grow: 0;
+            flex-basis: auto;
+            align-items: stretch;
+
+            font-size: var(--input-font-size);
+        }
+        .input-box {
+            position: relative;
+            width: 100%;
+
+            .clear-icon {
+                width: 48rpx;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                position: absolute;
+                right: 8rpx;
+                top: 50%;
+                z-index: 2;
+                transform: translateY(-50%);
+            }
+
+            .ste-input-input {
+                outline: none;
+                border: none;
+                padding: 0;
+                margin: 0;
+                height: calc(var(--input-font-size) * 2.8);
+                width: 100%;
+
+                font-size: var(--input-font-size);
+                color: var(--input-font-color);
+
+                text-align: var(--input-text-align);
+
+                background-color: transparent;
+
+                // letter-spacing: 10rpx;
+
+                &.textarea {
+                    height: 160rpx;
+                }
+            }
+
+            .count-text {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                font-size: 24rpx;
+                color: #bbbbbb;
+            }
+        }
+    }
+
+    &.ste-input-readonly {
+        cursor: not-allowed;
+        .ste-input-input {
+            cursor: not-allowed;
+        }
+    }
+    &.ste-input-disabled {
+        cursor: not-allowed;
+        .ste-input-input {
+            cursor: not-allowed;
+            color: #cccccc !important;
+        }
+    }
+
+    &.ste-input-line {
+        background-color: transparent;
+        border: none;
+        border-color: transparent;
+
+        .content {
+            padding: 0 0;
+        }
+
+        .line {
+            border-bottom: 2rpx solid var(--input-line-color);
+        }
+    }
+
+    &.ste-search-input {
+        height: 100%;
+
+        // #ifdef MP-ALIPAY
+        background-color: rgba(0, 0, 0, 0);
+        // #endif
+
+        .content {
+            padding: 0;
+            height: 100%;
+        }
+    }
+
+    &.textarea-type {
+        height: 100%;
+        .content {
+            padding: 20rpx 24rpx;
+            height: 100%;
+
+            .input-box {
+                height: 100%;
+            }
+        }
+    }
+}

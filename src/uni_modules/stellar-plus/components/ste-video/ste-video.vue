@@ -8,7 +8,6 @@ const props = defineProps(propsData);
 const emits = defineEmits(videoEmits);
 
 const {
-    reRenderFlag,
     videoSrc,
     playState,
     isFull,
@@ -46,7 +45,7 @@ defineOptions({
         virtualHost: true,
     },
 });
-let video = null as unknown as UniApp.VideoContext;
+let videoContext = null as unknown as UniApp.VideoContext;
 
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 const id = 'video-' + utils.guid();
@@ -94,40 +93,30 @@ const cmpRootStyleVar = computed(() => {
 });
 
 onMounted(() => {
-    video = uni.createVideoContext(id, instance);
+    videoContext = uni.createVideoContext(id, instance);
 });
 
 function handlePlay(state: boolean) {
     if (state) {
         // 播放
-        video.play();
+        videoContext.play();
     } else {
-        video.pause();
+        videoContext.pause();
     }
 }
 
 function handleFull(state: boolean) {
     if (state) {
-        video.requestFullScreen({ direction: 90 });
+        videoContext.requestFullScreen({ direction: 90 });
     } else {
         firstFullDone.value = true;
-        video.exitFullScreen();
+        videoContext.exitFullScreen();
     }
-
-    reRenderFlag.value = false;
-    setTimeout(() => {
-        reRenderFlag.value = true;
-    }, 200);
 }
 
 function exitFullScreen() {
     showPopup.value = false;
-    video.exitFullScreen();
-
-    reRenderFlag.value = false;
-    setTimeout(() => {
-        reRenderFlag.value = true;
-    }, 200);
+    videoContext.exitFullScreen();
 }
 
 function handleProgressChange(v: number | number[]) {
@@ -139,7 +128,7 @@ function handleProgressChange(v: number | number[]) {
         val = v;
     }
     videoCurrent.value = videoDuration.value * (val / 100);
-    video.seek(videoCurrent.value);
+    videoContext.seek(videoCurrent.value);
 }
 
 function handleClick() {
@@ -181,14 +170,14 @@ function handleChooseItem(_e: any, index: number) {
     if (popupState.value == 1) {
         if (speedIndex.value == index) return;
         speedIndex.value = index;
-        video.playbackRate(speedConfigArr.value[speedIndex.value]);
+        videoContext.playbackRate(speedConfigArr.value[speedIndex.value]);
     } else {
         if (resolutionIndex.value == index) return;
         resolutionIndex.value = index;
         handlePlay(false);
         videoSrc.value = props.resolution[resolutionIndex.value].url;
         setTimeout(() => {
-            video.seek(videoCurrent.value);
+            videoContext.seek(videoCurrent.value);
             handlePlay(true);
         }, 200);
     }
@@ -204,11 +193,12 @@ function timeupdate(e: BaseEvent) {
     playProgress.value = (videoCurrent.value / videoDuration.value) * 100;
 }
 function fullscreenchange(e: BaseEvent) {
+    console.log('****** fullscreenchange ***', e);
     isFull.value = e.detail.fullScreen;
     if (isFull.value) {
-        (video as Obj).hideStatusBar();
+        (videoContext as Obj).hideStatusBar();
     } else {
-        (video as Obj).showStatusBar();
+        (videoContext as Obj).showStatusBar();
     }
 }
 </script>
@@ -294,7 +284,7 @@ function fullscreenchange(e: BaseEvent) {
                     <view class="time right">{{ formatTime(videoDuration) }}</view>
                 </view>
                 <!-- 进度条 -->
-                <view class="progress-box" v-if="reRenderFlag">
+                <view class="progress-box">
                     <ste-slider :value="playProgress" @change="handleProgressChange" barHeight="4" buttonSize="26">
                         <view class="progress-bar" slot="button" />
                     </ste-slider>

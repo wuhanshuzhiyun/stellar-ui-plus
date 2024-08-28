@@ -1,7 +1,7 @@
 {
     "name": "ste-tabs",
     "description": "标签页",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=tabs",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=tabs",
     "attributes": [
         {
             "name": "title",

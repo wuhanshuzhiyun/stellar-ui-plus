@@ -163,6 +163,9 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
             </slot>
         </view>
         <view class="text">
+            <!-- #ifdef MP -->
+            <slot></slot>
+            <!-- #endif -->
             <slot :slotProps="cmpSlotProps"></slot>
         </view>
     </view>
@@ -178,7 +181,7 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
     .input-icon {
         display: flex;
         justify-content: center;
-        align-items: flex-end;
+        align-items: center;
     }
     .icon {
         pointer-events: all;

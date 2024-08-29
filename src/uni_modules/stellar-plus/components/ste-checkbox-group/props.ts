@@ -15,7 +15,7 @@ export const checkboxGroupProps = {
   textPosition: { type: [String, undefined] as PropType<TextPositionType>, default: undefined },
   textSize: { type: [Number, String] as PropType<string | number | undefined>, default: undefined },
   textInactiveColor: { type: String as PropType<string | undefined>, default: undefined },
-  textActiveColor: { type: Boolean as PropType<boolean | undefined>, default: undefined },
+  textActiveColor: { type: String as PropType<string | undefined>, default: undefined },
   textDisabled: { type: Boolean as PropType<boolean | undefined>, default: undefined },
   marginLeft: { type: [Number, String] as PropType<string | number | undefined>, default: undefined },
   marginRight: { type: [Number, String] as PropType<string | number | undefined>, default: undefined },
@@ -27,8 +27,8 @@ export default checkboxGroupProps
 export type CheckboxGroupProps = ExtractPropTypes<typeof checkboxGroupProps>
 
 export const checkboxGroupEmits = {
-  change: (value: any[]) => Array.isArray(value),
-  input: (value: any[]) => Array.isArray(value),
+  'change': (value: any[]) => Array.isArray(value),
+  'update:value': (value: any[]) => Array.isArray(value),
 }
 
 export type CheckboxGroupEmits = typeof checkboxGroupEmits

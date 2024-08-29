@@ -87,7 +87,6 @@ const cmpInputStyle = computed(() => {
 
 const cmpChecked = computed(() => {
     let v = parentProps ? parentProps.value.includes(props.name) : props.value;
-    // console.log('v 变了', v);
     return v;
 });
 
@@ -95,7 +94,7 @@ const cmpDisabled = computed(() => {
     let disabled = getDefaultData('disabled', false);
     // 限制最大可选数
     if (parentProps && parentProps.max) {
-        if (!cmpChecked && parentProps.value.length >= parentProps.max) {
+        if (!cmpChecked.value && parentProps.value.length >= parentProps.max) {
             disabled = true;
         }
     }
@@ -133,7 +132,6 @@ async function click() {
             Parent.parent?.updateValue(value);
         } else {
             value = !cmpChecked.value;
-            console.log('抛出事件');
             emits('update:value', !cmpChecked.value);
         }
         emits('change', value);

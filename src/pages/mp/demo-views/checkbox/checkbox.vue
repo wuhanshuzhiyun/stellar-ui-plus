@@ -24,7 +24,7 @@ const val = reactive({
     value21: [],
     value22: [],
 });
-function click1(value: any, suspend: () => {}, next: () => {}) {
+function click1(value: any, suspend: () => void, next: () => void) {
     uni.showToast({
         icon: 'none',
         title: `点击：${value} 复选框的值`,
@@ -35,7 +35,7 @@ function click1(value: any, suspend: () => {}, next: () => {}) {
         next(); // 异步操作后，执行操作
     }, 1500);
 }
-function click2(value: any, suspend: () => {}, _next: any, stop: () => {}) {
+function click2(value: any, suspend: () => void, _next: any, stop: () => void) {
     uni.showToast({
         icon: 'none',
         title: `点击：${value} 复选框的值`,

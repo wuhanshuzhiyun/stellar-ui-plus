@@ -14,7 +14,7 @@ const checkboxProps = {
   textPosition: { type: [String, undefined] as PropType<TextPositionType>, default: undefined },
   textSize: { type: [Number, String] as PropType<string | number | undefined>, default: undefined },
   textInactiveColor: { type: String as PropType<string | undefined>, default: undefined },
-  textActiveColor: { type: Boolean as PropType<boolean | undefined>, default: undefined },
+  textActiveColor: { type: String as PropType<string | undefined>, default: undefined },
   textDisabled: { type: Boolean as PropType<boolean | undefined>, default: undefined },
   marginLeft: { type: [Number, String] as PropType<string | number | undefined>, default: undefined },
   marginRight: { type: [Number, String] as PropType<string | number | undefined>, default: undefined },

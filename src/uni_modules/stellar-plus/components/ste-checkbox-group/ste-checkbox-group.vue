@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, type CSSProperties } from 'vue';
+import { computed, watch, type CSSProperties } from 'vue';
 import propsData, { checkboxGroupEmits } from './props';
 import { useProvide } from '../../utils/mixin';
 import { CHECKBOX_KEY } from '../ste-checkbox/props';
@@ -16,7 +16,7 @@ const cmpRootStyle = computed(() => {
 
 function updateValue(value: any[]) {
     emits('change', value);
-    emits('input', value);
+    emits('update:value', value);
 }
 </script>
 

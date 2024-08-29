@@ -144,7 +144,7 @@ function inputClick() {
                         class="ste-input-input textarea"
                         :type="type"
                         :focus="focus"
-                        :value="dataValue"
+                        :value="String(dataValue)"
                         :disabled="disabled || readonly"
                         :maxlength="maxlength"
                         :placeholder="placeholder"
@@ -165,7 +165,7 @@ function inputClick() {
                         }"
                         v-if="showWordLimit && maxlength > 0"
                     >
-                        {{ tmpDataValue.length }}/{{ maxlength }}
+                        {{ String(tmpDataValue).length }}/{{ maxlength }}
                     </text>
                     <!-- #endif -->
                 </template>
@@ -174,7 +174,7 @@ function inputClick() {
                         class="ste-input-input"
                         :type="type as InputType"
                         :focus="focused"
-                        :value="dataValue"
+                        :value="String(dataValue)"
                         :disabled="disabled || readonly"
                         :maxlength="maxlength"
                         :placeholder="placeholder"

@@ -1,8 +1,8 @@
 {
-    "name": "ste-text",
-    "description": "文本",
-    "example": "<ste-text>文本</ste-text>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=text",
+    "name": "ste-price",
+    "description": "价格",
+    "example": "<ste-price value='123456.78'/>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=price",
     "attributes": [
         {
             "name": "value",

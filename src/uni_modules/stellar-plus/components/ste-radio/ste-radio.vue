@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { useSlots, computed, type CSSProperties } from 'vue';
 import utils from '../../utils/utils';
-import propsData, { CHECKBOX_KEY, checkboxEmits } from './props';
-import type { CheckboxGroupProps } from '../ste-checkbox-group/props';
+import propsData, { RADIO_KEY, radioEmits } from './props';
+import type { RadioGroupProps } from '../ste-radio-group/props';
 import { useInject } from '../../utils/mixin';
-const componentName = `ste-checkbox`;
+const componentName = `ste-radio`;
 defineOptions({
     name: componentName,
     options: {
@@ -12,10 +12,10 @@ defineOptions({
     },
 });
 const props = defineProps(propsData);
-const emits = defineEmits(checkboxEmits);
+const emits = defineEmits(radioEmits);
 const slots = useSlots();
 
-const Parent = useInject<{ props: Required<CheckboxGroupProps>; updateValue: (value: any[]) => void }>(CHECKBOX_KEY);
+const Parent = useInject<{ props: Required<RadioGroupProps>; updateValue: (value: string) => void }>(RADIO_KEY);
 
 const parentProps = Parent?.parent?.props;
 
@@ -31,7 +31,7 @@ const cmpTextDisabled = computed(() => getDefaultData('textDisabled', false));
 const cmpMarginLeft = computed(() => getDefaultData('marginLeft', '0'));
 const cmpMarginRight = computed(() => getDefaultData('marginRight', '0'));
 const cmpColumnGap = computed(() => getDefaultData('columnGap', '16'));
-
+const cmpDisabled = computed(() => getDefaultData('disabled', false));
 const cmpSlotProps = computed(() => ({ checked: cmpChecked.value, disabled: cmpDisabled.value, readonly: cmpReadonly.value }));
 
 const cmpRootStyle = computed(() => {
@@ -86,19 +86,7 @@ const cmpInputStyle = computed(() => {
 });
 
 const cmpChecked = computed(() => {
-    let v = parentProps ? parentProps.value.includes(props.name) : props.value;
-    return v;
-});
-
-const cmpDisabled = computed(() => {
-    let disabled = getDefaultData('disabled', false);
-    // 限制最大可选数
-    if (parentProps && parentProps.max) {
-        if (!cmpChecked.value && parentProps.value.length >= parentProps.max) {
-            disabled = true;
-        }
-    }
-    return disabled;
+    return parentProps ? parentProps.value == props.name : props.value == props.name;
 });
 
 async function click() {
@@ -121,20 +109,30 @@ async function click() {
             }
         }
 
-        let value: boolean | any[];
-        if (parentProps) {
-            value = parentProps.value;
-            if (cmpChecked.value) {
-                value = value.filter(value => value != props.name);
+        // let value: string;
+        // if (parentProps) {
+        //     value = parentProps.value;
+        //     if (cmpChecked.value) {
+        //         value = value.filter(value => value != props.name);
+        //     } else {
+        //         value.push(props.name);
+        //     }
+        //     Parent.parent?.updateValue(value);
+        // } else {
+        //     value = !cmpChecked.value;
+        //     emits('update:value', !cmpChecked.value);
+        // }
+        // emits('change', value);
+
+        if (!cmpChecked.value) {
+            let value = String(props.name);
+            if (parentProps) {
+                Parent.parent?.updateValue(value);
             } else {
-                value.push(props.name);
+                emits('update:value', value);
             }
-            Parent.parent?.updateValue(value);
-        } else {
-            value = !cmpChecked.value;
-            emits('update:value', !cmpChecked.value);
+            emits('change', value);
         }
-        emits('change', value);
     }
 }
 
@@ -156,7 +154,7 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
 </script>
 
 <template>
-    <view class="ste-checkbox--root" :style="[cmpRootStyle]" @click="click">
+    <view class="ste-radio-root" :style="[cmpRootStyle]" @click="click">
         <view class="icon">
             <slot name="icon" :slotProps="cmpSlotProps">
                 <view class="input-icon" :style="[cmpInputStyle]">
@@ -171,10 +169,11 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
 </template>
 
 <style lang="scss" scoped>
-.ste-checkbox--root {
+.ste-radio-root {
     width: auto;
     height: 100%;
     display: flex;
+    column-gap: 16rpx;
     align-items: center;
     .input-icon {
         display: flex;

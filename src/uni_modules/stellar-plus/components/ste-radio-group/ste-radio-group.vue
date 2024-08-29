@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { computed, type CSSProperties } from 'vue';
-import propsData, { checkboxGroupEmits } from './props';
+import propsData, { radioGroupEmits } from './props';
 import { useProvide } from '../../utils/mixin';
-import { CHECKBOX_KEY } from '../ste-checkbox/props';
+import { RADIO_KEY } from '../ste-radio/props';
 const props = defineProps(propsData);
-const emits = defineEmits(checkboxGroupEmits);
+const emits = defineEmits(radioGroupEmits);
 
-useProvide(CHECKBOX_KEY, 'ste-checkbox')({ props, updateValue });
+useProvide(RADIO_KEY, 'ste-radio')({ props, updateValue });
 
 const cmpRootStyle = computed(() => {
     return {
@@ -14,20 +14,20 @@ const cmpRootStyle = computed(() => {
     } as CSSProperties;
 });
 
-function updateValue(value: any[]) {
+function updateValue(value: string) {
     emits('change', value);
     emits('update:value', value);
 }
 </script>
 
 <template>
-    <view class="ste-checkbox-group-root" :style="[cmpRootStyle]">
+    <view class="ste-radio-group-root" :style="[cmpRootStyle]">
         <slot></slot>
     </view>
 </template>
 
 <style lang="scss" scoped>
-.ste-checkbox-group-root {
+.ste-radio-group-root {
     display: flex;
     column-gap: 16rpx;
     row-gap: 16rpx;

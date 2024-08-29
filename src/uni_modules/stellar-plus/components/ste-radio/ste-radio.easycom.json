@@ -1,0 +1,149 @@
+{
+    "name": "ste-radio",
+    "description": "单选框组件, 在一组备选项中进行单选。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=radio",
+    "attributes": [
+        {
+            "name": "value",
+            "description": "当前选中值（支持v-model双向绑定）",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "description": "选项的值",
+            "type": "number | string"
+        },
+        {
+            "name": "disabled",
+            "description": "禁用",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "readonly",
+            "description": "只读（不置灰）",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "shape",
+            "description": "形状",
+            "type": "string",
+            "default": "circle",
+            "values": [
+                {
+                    "name": "circle",
+                    "description": "圆形"
+                },
+                {
+                    "name": "square",
+                    "description": "方形"
+                }
+            ]
+        },
+        {
+            "name": "iconSize",
+            "description": "图标大小，单位rpx",
+            "type": "number | string",
+            "default": "36"
+        },
+        {
+            "name": "checkedColor",
+            "description": "选中状态的图标颜色",
+            "type": "string",
+            "default": "#0090FF0"
+        },
+        {
+            "name": "textPosition",
+            "description": "文本的位置",
+            "type": "string",
+            "default": "right",
+            "values": [
+                {
+                    "name": "right",
+                    "description": "右"
+                },
+                {
+                    "name": "left",
+                    "description": "左"
+                }
+            ]
+        },
+        {
+            "name": "textSize",
+            "description": "文本字体大小，单位rpx",
+            "type": "number | string",
+            "default": "28"
+        },
+        {
+            "name": "textInactiveColor",
+            "description": "未选中的文本颜色",
+            "type": "string",
+            "default": "#000000"
+        },
+        {
+            "name": "textActiveColor",
+            "description": "选中的文本颜色",
+            "type": "string",
+            "default": "#000000"
+        },
+        {
+            "name": "textDisabled",
+            "description": "禁用文本点击",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "marginLeft",
+            "description": "左边距，单位rpx",
+            "type": "number | string",
+            "default": "0"
+        },
+        {
+            "name": "marginRight",
+            "description": "右边距，单位rpx",
+            "type": "number | string",
+            "default": "0"
+        },
+        {
+            "name": "columnGap",
+            "description": "单选框和文本间距，单位rpx",
+            "type": "number | string",
+            "default": "16"
+        },
+        {
+            "name": "[event]click",
+            "description": "点击复选框时触发的事件",
+            "type": "(value:string | number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "当前复选框的绑定值"
+                },
+                {
+                    "name": "suspend",
+                    "description": "等待"
+                },
+                {
+                    "name": "next",
+                    "description": "继续"
+                },
+                {
+                    "name": "stop",
+                    "description": "停止"
+                }
+            ]
+        },
+        {
+            "name": "[event]change",
+            "description": "当绑定值变化时触发的事件",
+            "type": "(value: string | number) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "当前复选框的绑定值"
+                }
+            ]
+        }
+    ]
+}

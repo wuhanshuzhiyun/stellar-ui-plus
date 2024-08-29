@@ -2,7 +2,7 @@
     "name": "ste-drag",
     "description": "拖拽",
     "example": "<ste-drag><view>拖拽内容</view></ste-drag>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-drag",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=drag",
     "attributes": [
         {
             "name": "attract",

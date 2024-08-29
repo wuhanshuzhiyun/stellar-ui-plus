@@ -2,7 +2,7 @@
     "name": "ste-badge",
     "description": "徽标组件",
     "example": "<ste-badge></ste-badge>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-badge",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=badge",
     "attributes": [
         {
             "name": "content",

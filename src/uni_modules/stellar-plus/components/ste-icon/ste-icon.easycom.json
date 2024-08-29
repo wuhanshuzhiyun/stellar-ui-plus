@@ -2,7 +2,7 @@
     "name": "ste-icon",
     "description": "图标组件 基于字体的图标集，包含了大多数常见场景的图标",
     "example": "<ste-icon></ste-icon>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-icon",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=icon",
     "attributes": [
         {
             "name": "code",

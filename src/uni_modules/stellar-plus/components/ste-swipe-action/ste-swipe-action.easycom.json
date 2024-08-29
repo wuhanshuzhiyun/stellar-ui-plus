@@ -1,0 +1,74 @@
+{
+    "name": "ste-swipe-action",
+    "description": "滑动单元格",
+    "example": "<ste-swipe-action><view>塞下秋来风景异，衡阳雁去无留意</view></ste-swipe-action>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=swipe-action",
+    "attributes": [
+        {
+            "name": "mode",
+            "description": "模式",
+            "type": "string",
+            "default": "right",
+            "values": [
+                {
+                    "name": "right",
+                    "description": "右滑(默认)"
+                },
+                {
+                    "name": "left",
+                    "description": "左滑"
+                },
+                {
+                    "name": "all",
+                    "description": "左右滑"
+                }
+            ]
+        },
+        {
+            "name": "disabled",
+            "description": "禁用",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "swipeThreshold",
+            "description": "灵敏度（0-1之间的小数，数值越小灵敏度越高）",
+            "type": "number",
+            "default": 0.35
+        },
+        {
+            "name": "duration",
+            "description": "动画时长，单位ms",
+            "type": "number | string",
+            "default": 300
+        },
+        {
+            "name": "leftIcon",
+            "description": "是否显示左侧图标",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "rightIcon",
+            "description": "是否显示右侧图标",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "[event]open",
+            "description": "打开滑块时触发，参数为方向",
+            "type": "(d:string)=>void",
+            "params": [
+                {
+                    "name": "direction",
+                    "description": "方向（值为left或right）"
+                }
+            ]
+        },
+        {
+            "name": "[event]close",
+            "description": "关闭滑块时触发",
+            "type": "()=>void"
+        }
+    ]
+}

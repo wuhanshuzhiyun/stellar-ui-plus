@@ -9,7 +9,7 @@ export default function useData({
   props,
   children,
 }: {
-  thas: globalThis.ComponentPublicInstance | null | undefined
+  thas: globalThis.Ref<globalThis.ComponentPublicInstance | null | undefined>
   emits: { (event: 'change', index: number): void, (event: 'update:active', top: number): void }
   props: ScrollToProps
   children: ComponentInternalInstance[]
@@ -78,13 +78,14 @@ export default function useData({
   }
 
   const initChildren = (init?: boolean) => {
+    return
     if (init)
       initEnd = false
     if (initEnd)
       return
     setChildrenTimeout(async () => {
-      const view = await utils.querySelector<false>('.ste-scroll-to-root', thas)
-      const box = await utils.querySelector<false>('.ste-scroll-to-content', thas)
+      const view = await utils.querySelector<false>('.ste-scroll-to-root', thas.value)
+      const box = await utils.querySelector<false>('.ste-scroll-to-content', thas.value)
       if (!view || !box)
         return
       if (box.height === boxHeight)

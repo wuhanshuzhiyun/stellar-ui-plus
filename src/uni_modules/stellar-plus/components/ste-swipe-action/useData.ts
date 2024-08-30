@@ -6,7 +6,7 @@ import type { ModeType, SteSwipeActionProps } from './props'
 export default function useData({ props, parent, thas, emits }: {
   props: SteSwipeActionProps
   parent: any
-  thas?: globalThis.ComponentPublicInstance | null
+  thas: globalThis.Ref<globalThis.ComponentPublicInstance | null | undefined>
   emits: {
     (e: 'close'): void
     (e: 'open', direction: 'left' | 'right'): void
@@ -78,17 +78,20 @@ export default function useData({ props, parent, thas, emits }: {
   }
 
   const open = (direction = cmpMode.value) => {
+    console.log('???????????????????', thas.value)
     setTimeout(async () => {
       if (direction === 'left') {
-        const l = await utils.querySelector<false>('.swipe-action-left', thas)
+        const l = await utils.querySelector<false>('.swipe-action-left', thas.value)
         if (!l)
           return
+        console.log(l)
         setTransform(Number(l.width))
       }
       else {
-        const r = await utils.querySelector<false>('.swipe-action-right', thas)
+        const r = await utils.querySelector<false>('.swipe-action-right', thas.value)
         if (!r)
           return
+        console.log(r)
         setTransform(-Number(r.width))
       }
     }, 30)
@@ -99,7 +102,7 @@ export default function useData({ props, parent, thas, emits }: {
   const iconOpen = (direction: ModeType) => {
     if (cmpDisabled.value)
       return
-    if (dataTranslateX.value === 0)
+    if (dataTranslateX.value)
       close()
     else open(direction)
   }
@@ -110,7 +113,7 @@ export default function useData({ props, parent, thas, emits }: {
     setMoveing(true)
     touch.touchStart(e)
     if (cmpLeft.value) {
-      const l = await utils.querySelector<false>('.swipe-action-left', thas)
+      const l = await utils.querySelector<false>('.swipe-action-left', thas.value)
       if (l)
         setLeftWidth(Number(l.width))
     }
@@ -118,7 +121,7 @@ export default function useData({ props, parent, thas, emits }: {
       setLeftWidth(0)
     }
     if (cmpRight.value) {
-      const r = await utils.querySelector<false>('.swipe-action-right', thas)
+      const r = await utils.querySelector<false>('.swipe-action-right', thas.value)
       if (r)
         setRightWidth(Number(r.width))
     }

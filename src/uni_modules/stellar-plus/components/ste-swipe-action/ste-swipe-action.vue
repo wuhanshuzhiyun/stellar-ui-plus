@@ -1,21 +1,29 @@
 <script setup lang="ts">
-import {} from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 import propsData, { STE_SWIPE_ACTION_KEY } from './props';
 import { useInject } from '../../utils/mixin';
 import useData from './useData';
 
-const { instance, parent } = useInject(STE_SWIPE_ACTION_KEY);
+const selfValue: Object = {};
+
+const thas = ref<globalThis.ComponentPublicInstance | null>();
+
+const { parent } = useInject(STE_SWIPE_ACTION_KEY, selfValue);
 
 const props = defineProps(propsData);
+
+onMounted(() => {
+    thas.value = getCurrentInstance()?.proxy;
+});
 
 const emits = defineEmits<{
     (e: 'close'): void;
     (e: 'open', direction: 'left' | 'right'): void;
 }>();
 
-const { dataTranslateX, onTouchstart, onTouchmove, onTouchend, onchange, iconOpen, open, close, cmpLeftIcon, cmpRightIcon, cmpTransform } = useData({ props, thas: instance?.proxy, parent, emits });
-
-defineExpose({ onchange, open, close });
+const { dataTranslateX, onTouchstart, onTouchmove, onTouchend, onchange, iconOpen, open, close, cmpLeftIcon, cmpRightIcon, cmpTransform } = useData({ props, thas, parent, emits });
+Object.assign(selfValue, { onchange, open, close });
+defineExpose({ open, close });
 </script>
 <template>
     <view class="ste-swipe-action-root">

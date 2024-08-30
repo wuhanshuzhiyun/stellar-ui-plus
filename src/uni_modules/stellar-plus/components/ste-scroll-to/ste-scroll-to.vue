@@ -18,9 +18,13 @@ const emits = defineEmits<{
 
 const props = defineProps(propsData);
 const { internalChildren } = useProvide(SCROLL_TO_KEY, 'ste-scroll-to-item')({ activeKey: computed(() => props.active || 0) });
-const thas = ref<globalThis.ComponentPublicInstance | null | undefined>(getCurrentInstance()?.proxy);
+const thas = ref<globalThis.ComponentPublicInstance | null | undefined>();
 
-const { scrollTop, cmpRootStyle, onScroll, initChildren } = useData({ thas: thas.value, emits, props, children: internalChildren });
+onMounted(() => {
+    thas.value = getCurrentInstance()?.proxy;
+});
+
+const { scrollTop, cmpRootStyle, onScroll, initChildren } = useData({ thas, emits, props, children: internalChildren });
 
 defineExpose({ init: () => initChildren(true) });
 </script>

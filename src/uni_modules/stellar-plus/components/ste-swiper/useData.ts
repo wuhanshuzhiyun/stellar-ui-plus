@@ -1,13 +1,14 @@
-import { type CSSProperties, type ComponentInternalInstance, computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { type CSSProperties, computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import TouchEvent from '../ste-touch-swipe/TouchEvent'
 import type { UniTouchEvent } from '../../types/event'
+import type { SelfComponentInternalInstance } from '../../utils/mixin'
 import utils from './../../utils/utils'
 import type { SwiperProps } from './props'
 
 export default function useData({ props, children, thas, emits }:
 {
   props: SwiperProps
-  children: ComponentInternalInstance[]
+  children: SelfComponentInternalInstance[]
   thas: globalThis.ComponentPublicInstance | null | undefined
   emits: { (e: 'change', index: number, source: 'autoplay' | 'touch'): void }
 }) {
@@ -157,24 +158,24 @@ export default function useData({ props, children, thas, emits }:
   const setBoundary = (moveX = 0, moveY = 0) => {
     if (!props.circular)
       return
-    const startComponent: any = cmpStartComponent.value
-    const endComponent: any = cmpEndComponent.value
+    const startComponent = cmpStartComponent.value
+    const endComponent = cmpEndComponent.value
     const length = children.length
     const width = boxWidth.value
     const height = boxHeight.value
     if (dataIndex.value <= 0) {
-      startComponent.selfValue.setTransform({})
+      startComponent.selfValue?.setTransform({})
       if (props.direction === 'horizontal' && moveX > 0)
-        endComponent.selfValue.setTransform({ x: -length * Number(width) })
+        endComponent.selfValue?.setTransform({ x: -length * Number(width) })
       else if (props.direction === 'vertical' && moveY > 0)
-        endComponent.selfValue.setTransform({ y: -length * Number(height) })
+        endComponent.selfValue?.setTransform({ y: -length * Number(height) })
     }
     else if (dataIndex.value >= length - 1) {
-      endComponent.selfValue.setTransform({})
+      endComponent.selfValue?.setTransform({})
       if (props.direction === 'horizontal' && moveX < 0)
-        startComponent.selfValue.setTransform({ x: length * Number(width) })
+        startComponent.selfValue?.setTransform({ x: length * Number(width) })
       else if (props.direction === 'vertical' && moveY < 0)
-        startComponent.selfValue.setTransform({ y: length * Number(height) })
+        startComponent.selfValue?.setTransform({ y: length * Number(height) })
     }
   }
 
@@ -220,7 +221,7 @@ export default function useData({ props, children, thas, emits }:
         emits('change', dataIndex.value, source.value)
 
       const length = children.length
-      children.forEach((component: any, index) => {
+      children.forEach((component, index) => {
         let x = 0
         let y = 0
         if (props.circular) {
@@ -233,7 +234,7 @@ export default function useData({ props, children, thas, emits }:
             y = props.direction === 'vertical' ? length * Number(boxHeight.value) : 0
           }
         }
-        component.selfValue.setTransform({ x, y })
+        component.selfValue?.setTransform({ x, y })
       })
       setTimeout(() => {
         setReseting(false)

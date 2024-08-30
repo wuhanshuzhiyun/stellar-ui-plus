@@ -2,20 +2,24 @@ import { computed, getCurrentInstance, inject, markRaw, onUnmounted, provide, re
 import type { ComponentInternalInstance, ConcreteComponent, InjectionKey, VNode, VNodeNormalizedChildren } from 'vue'
 import type { Obj } from '../types'
 
-type ParentProvide<T> = T & {
-  add(child: ComponentInternalInstance): void
-  remove(child: ComponentInternalInstance): void
-  internalChildren: ComponentInternalInstance[]
+export interface SelfComponentInternalInstance extends ComponentInternalInstance {
+  selfValue?: Obj
 }
 
-export function useInject<T>(key: InjectionKey<ParentProvide<T>>, selfValue?: Obj) {
+type ParentProvide<T> = T & {
+  add(child: SelfComponentInternalInstance): void
+  remove(child: SelfComponentInternalInstance): void
+  internalChildren: SelfComponentInternalInstance[]
+}
+
+export function useInject<T>(key: InjectionKey<ParentProvide<T>>, selfValue: Obj = {}) {
   const parent = inject(key, null)
   if (parent) {
-    const instance = getCurrentInstance()!
+    const instance: SelfComponentInternalInstance = getCurrentInstance()!
     const { add, remove, internalChildren } = parent
 
-    if (instance && selfValue)
-      (instance as any).selfValue = selfValue
+    if (instance)
+      instance.selfValue = selfValue
 
     add(instance)
     onUnmounted(() => remove(instance))
@@ -74,7 +78,7 @@ export function flattenVNodes(shouldTraverseChildren: VNodeNormalizedChildren, c
   return result
 }
 
-export function sortChildren(parent: ComponentInternalInstance, internalChildren: ComponentInternalInstance[], childName?: string) {
+export function sortChildren(parent: SelfComponentInternalInstance, internalChildren: SelfComponentInternalInstance[], childName?: string) {
   const vnodes = flattenVNodes(parent && parent.subTree && parent.subTree.children, childName)
   internalChildren.sort((a, b) => {
     return vnodes.indexOf(a.vnode) - vnodes.indexOf(b.vnode)
@@ -83,11 +87,11 @@ export function sortChildren(parent: ComponentInternalInstance, internalChildren
 
 // 如果指定组件名称，则只查找此组件并且查到后结束。也就是不关心此组件下的内容，在大部分场景下节省查找消耗。
 export function useProvide<ProvideValue>(key: InjectionKey<ProvideValue>, childName?: string) {
-  const internalChildren: ComponentInternalInstance[] = shallowReactive([])
+  const internalChildren: SelfComponentInternalInstance[] = shallowReactive([])
   const publicChildren = shallowReactive<any[]>([])
   const parent = getCurrentInstance()!
 
-  const add = (child: ComponentInternalInstance) => {
+  const add = (child: SelfComponentInternalInstance) => {
     if (!child.proxy)
       return
     internalChildren.push(markRaw(child))
@@ -95,7 +99,7 @@ export function useProvide<ProvideValue>(key: InjectionKey<ProvideValue>, childN
     sortChildren(parent, internalChildren, childName)
   }
 
-  const remove = (child: ComponentInternalInstance) => {
+  const remove = (child: SelfComponentInternalInstance) => {
     if (child.proxy) {
       internalChildren.splice(internalChildren.indexOf(markRaw(child)), 1)
       publicChildren.splice(publicChildren.indexOf(markRaw(child.proxy)), 1)

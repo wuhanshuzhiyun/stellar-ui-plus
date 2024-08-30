@@ -63,18 +63,28 @@
         {
             "name": "[event]open",
             "description": "打开滑块时触发，参数为方向",
-            "type": "(d:string)=>void",
+            "type": "(d:string,index:number)=>void",
             "params": [
                 {
                     "name": "direction",
                     "description": "方向（值为left或right）"
+                },
+                {
+                    "name": "index",
+                    "description": "当前单元格索引"
                 }
             ]
         },
         {
             "name": "[event]close",
             "description": "关闭滑块时触发",
-            "type": "()=>void"
+            "type": "(index:number)=>void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "当前单元格索引"
+                }
+            ]
         }
     ]
 }

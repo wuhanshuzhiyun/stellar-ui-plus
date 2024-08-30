@@ -6,72 +6,24 @@
 
 ### 使用方法
 
-1. 安装 `ste-vue-inset-loader` 插件
+#### Ref用法
+
+父组件引入组件 绑定ref 通过ref调用showToast方法，打开轻提示
 
 ```
-npm install ste-vue-inset-loader --save-dev
+<template>
+<ste-toast ref="toast"></ste-toast>
+
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+let toast = ref();
+toast.value.showToast({
+        title: '提示内容',
+});
+</script>
 ```
-
-2. 配置 `pages.json` 信息
-
-```
-"insetLoader": {
-	"config": {
-		"toast": "<root-portal><ste-toast id='steToast'></ste-toast></root-portal>"
-	},
-	// 全局配置
-	"label": ["toast"],
-	"rootEle": "view"
-},
-```
-
-3. 配置 `vue.config.js` 信息
-
-```
-chainWebpack: (config) => {
-	config.module
-	.rule('vue')
-	.test(/\.vue$/)
-	.use()
-	.loader(path.resolve(__dirname, './node_modules/ste-vue-inset-loader'))
-	.end();
-},
-```
-
-4. 在`main.js`里引入混淆文件`app-mixin.js`
-
-```
-import mixin from './app-mixin.js';
-Vue.mixin(mixin);
-```
-
-5. 在混淆文件`app-mixin.js`里引入组件的`js`文件,将`showToast`和`hideToast`方法混入全局，每个页面通过 `this.` 来使用对应的方法
-
-```
-import useSteToast from '@/node_modules/stellar-ui/components/ste-toast/ste-toast.js';
-let steToast = useSteToast();
-export default {
-	methods: {
-		showToast(params) {
-			// 是否开启提示跨页面功能配置 true为开启 false为关闭
-			params.enableCrossPagePrompt = false;
-			steToast.showToast(params);
-		},
-		hideToast: steToast.hideToast,
-	},
-};
-
-```
-
-6. js文件中使用
-
-```
-import useSteToast from '@/node_modules/stellar-ui/components/ste-toast/ste-toast.js';
-let steToast = useSteToast();
-steToast.showToast()
-```
-
-### 代码演示
 
 #### 文字提示
 

@@ -103,8 +103,8 @@ const onClick = () => {
                 <ste-icon code="&#xe695;" :color="prefixIconColor" size="44" />
             </view>
             <view class="input-box" v-if="!hiddenInput">
-                <input
-                    class="ste-search-input"
+                <ste-input
+                    rootClass="ste-search-input"
                     placeholder-class="search-input-placeholder"
                     :disabled="props.disabled"
                     :placeholder="cmpPlaceholder"
@@ -185,7 +185,7 @@ const onClick = () => {
 
             .ste-search-input {
                 height: 100%;
-
+                border-style: none;
                 font-size: 28rpx;
                 color: var(--search-input-color);
                 // #ifdef MP-ALIPAY

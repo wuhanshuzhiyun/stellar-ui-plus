@@ -9,8 +9,8 @@ const emits = defineEmits<{
     (e: 'open', direction: 'left' | 'right', index: number): void;
 }>();
 
-const { internalChildren } = useProvide(STE_SWIPE_ACTION_KEY, 'ste-swipe-action')();
 const props = defineProps(propsData);
+const { internalChildren } = useProvide(STE_SWIPE_ACTION_KEY, 'ste-swipe-action')(props);
 
 const closeRestsChildren = (index: number) => {
     if (!props.autoClose) return;
@@ -34,7 +34,7 @@ const onchangeChildren = () => {
     });
 };
 
-watch(() => internalChildren, onchangeChildren, { immediate: true });
+watch(() => internalChildren.length, onchangeChildren, { immediate: true });
 
 const open = (direction: 'left' | 'right', index: number) => {
     const child = internalChildren[index];

@@ -78,20 +78,17 @@ export default function useData({ props, parent, thas, emits }: {
   }
 
   const open = (direction = cmpMode.value) => {
-    console.log('???????????????????', thas.value)
     setTimeout(async () => {
       if (direction === 'left') {
         const l = await utils.querySelector<false>('.swipe-action-left', thas.value)
         if (!l)
           return
-        console.log(l)
         setTransform(Number(l.width))
       }
       else {
         const r = await utils.querySelector<false>('.swipe-action-right', thas.value)
         if (!r)
           return
-        console.log(r)
         setTransform(-Number(r.width))
       }
     }, 30)

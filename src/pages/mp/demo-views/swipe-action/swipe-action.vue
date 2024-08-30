@@ -36,7 +36,7 @@ const onClose = (index?: number) => {
     <view class="page">
         <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="滑动单元格"></page-nav>
         <view class="content">
-            <!-- <view class="demo-item">
+            <view class="demo-item">
                 <view class="title">基础用法</view>
                 <view class="item-block">
                     <ste-swipe-action @open="onOpen" @close="onClose">
@@ -61,7 +61,7 @@ const onClose = (index?: number) => {
                         <ste-button :mode="200" @click="closeSwipe">关闭</ste-button>
                     </view>
                 </view>
-            </view> -->
+            </view>
             <view class="demo-item">
                 <view class="title">滑动方向,滑动按钮</view>
                 <view class="item-block">
@@ -76,7 +76,7 @@ const onClose = (index?: number) => {
                     </ste-swipe-action>
                 </view>
             </view>
-            <!-- <view class="demo-item">
+            <view class="demo-item">
                 <view class="title">单元格组</view>
                 <view class="item-block">
                     <ste-swipe-action-group @open="onOpen" @close="onClose" ref="swipeGroup">
@@ -94,7 +94,7 @@ const onClose = (index?: number) => {
                         <ste-button :mode="200" @click="closeSwipeGroup(1)">关闭第2行</ste-button>
                     </view>
                 </view>
-            </view> -->
+            </view>
         </view>
     </view>
 </template>

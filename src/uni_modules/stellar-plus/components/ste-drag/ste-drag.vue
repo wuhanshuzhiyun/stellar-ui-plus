@@ -143,7 +143,7 @@ function getMoveObj(e: TouchEvent | MouseEvent): { clientX: number; clientY: num
         return { clientX: touch.pageX, clientY: touch.pageY };
     } else {
         // e is HTMLMouseEvent
-        return { clientX: e.clientX, clientY: e.clientY };
+        return { clientX: e.pageX, clientY: e.pageY };
     }
 }
 </script>

@@ -1,0 +1,40 @@
+{
+    "name": "ste-rich-text",
+    "description": "阅读更多",
+    "example": "<ste-rich-text>文本文本文本文本文本文本文本文本文本</ste-rich-text>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=rich-text",
+    "attributes": [
+        {
+            "name": "text",
+            "description": "富文本值",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "space",
+            "description": "显示连续空格",
+            "type": "string",
+            "default": "nbsp",
+            "values": [
+                {
+                    "name": "ensp",
+                    "description": "中文字符空格一半大小"
+                },
+                {
+                    "name": "emsp",
+                    "description": "中文字符空格大小"
+                },
+                {
+                    "name": "nbsp",
+                    "description": "根据字体设置的空格大小"
+                }
+            ]
+        },
+        {
+            "name": "userSelect",
+            "description": "文本是否可选",
+            "type": "boolean",
+            "default": false
+        }
+    ]
+}

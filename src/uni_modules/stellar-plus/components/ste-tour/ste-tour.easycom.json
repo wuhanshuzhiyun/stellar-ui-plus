@@ -1,0 +1,120 @@
+{
+    "name": "ste-tour",
+    "description": "指引",
+    "example": "<ste-tour></ste-tour>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=tour",
+    "attributes": [
+        {
+            "name": "show",
+            "description": "是否显示，支持v-model:show双向绑定",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "current",
+            "description": "当前步骤，多个步骤时有效,支持v-model:current双向绑定",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "steps",
+            "description": "步骤数组，Step对象描述见基础用法说明",
+            "type": "Array<TourStepType>",
+            "default": []
+        },
+        {
+            "name": "offset",
+            "description": "位置偏移量，格式为：[x, y]",
+            "type": "[number, number]",
+            "default": [0, 0]
+        },
+        {
+            "name": "showTitleBar",
+            "description": "是否显示标题栏",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "showFooter",
+            "description": "是否显示底部按钮栏（仅多步骤时生效）",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "mask",
+            "description": "是否显示遮罩层",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "maskColse",
+            "description": "是否点击遮罩层关闭",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "showPrevStep",
+            "description": "是否显示上一步按钮",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "background",
+            "description": "遮罩层背景色",
+            "type": "string",
+            "default": "rgba(0,0,0,.5)"
+        },
+        {
+            "name": "radius",
+            "description": "提示框圆角，单位rpx",
+            "type": "number | string",
+            "default": 18
+        },
+        {
+            "name": "messageBg",
+            "description": "提示框背景色",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
+            "name": "messageColor",
+            "description": "提示框文字颜色",
+            "type": "string",
+            "default": "#000"
+        },
+        {
+            "name": "nextStepTxt",
+            "description": "下一步按钮文字",
+            "type": "string",
+            "default": "下一步"
+        },
+        {
+            "name": "prevStepTxt",
+            "description": "上一步按钮文字",
+            "type": "string",
+            "default": "上一步"
+        },
+        {
+            "name": "completeTxt",
+            "description": "完成按钮文字",
+            "type": "string",
+            "default": "完成"
+        },
+        {
+            "name": "[event]change",
+            "description": "步骤切换时触发",
+            "type": "(current:number)=>void",
+            "params": [
+                {
+                    "name": "current",
+                    "description": "当前步骤"
+                }
+            ]
+        },
+        {
+            "name": "[event]close",
+            "description": "关闭时触发",
+            "type": "()=>void"
+        }
+    ]
+}

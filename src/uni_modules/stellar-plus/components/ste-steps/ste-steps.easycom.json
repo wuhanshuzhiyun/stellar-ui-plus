@@ -1,0 +1,46 @@
+{
+    "name": "ste-steps",
+    "description": "步骤条组件, 拆分展示某项流程的步骤，引导用户按流程完成任务或向用户展示当前状态。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-steps",
+    "attributes": [
+        {
+            "name": "active",
+            "description": "步骤进度",
+            "type": "number",
+            "default": "0"
+        },
+        {
+            "name": "direction",
+            "description": "步骤条方向",
+            "type": "boolean",
+            "default": "row",
+            "values": [
+                {
+                    "name": "row",
+                    "description": "横向"
+                },
+                {
+                    "name": "column",
+                    "description": "竖向"
+                }
+            ]
+        },
+        {
+            "name": "dot",
+            "description": "点状步骤条",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "[event]clickStep",
+            "description": "点击步骤的标题或图标时触发",
+            "type": "(index: number) => void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "点击的步骤序号"
+                }
+            ]
+        }
+    ]
+}

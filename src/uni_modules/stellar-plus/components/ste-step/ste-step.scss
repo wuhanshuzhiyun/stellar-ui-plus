@@ -1,0 +1,104 @@
+.ste-step-row {
+    display: block;
+}
+
+.ste-step-column {
+    display: flex;
+
+    .ste-step-line {
+        height: calc(4rpx + 100%) !important;
+        width: 2rpx !important;
+    }
+
+    .ste-step-content {
+        padding-left: 6% !important;
+        text-align: left !important;
+    }
+}
+.ste-step {
+    flex: 1;
+    font-size: 0;
+    text-align: center;
+
+    .head-is-dot {
+        top: 12rpx;
+        margin-bottom: 0 !important;
+        margin-top: 14rpx !important;
+
+        .ste-step-line {
+            top: 14rpx !important;
+            left: auto !important;
+            right: auto !important;
+        }
+
+        .ste-step-icon {
+            box-sizing: content-box;
+            height: 16rpx !important;
+            width: 16rpx !important;
+            line-height: 16rpx !important;
+            background-color: var(---dot-color);
+            border-radius: 50%;
+        }
+    }
+    .ste-step-head {
+        border-color: var(---color);
+        color: var(---num-color);
+        display: flex;
+        justify-content: center;
+        margin-bottom: 22rpx;
+        position: relative;
+
+        .ste-step-line {
+            background: var(---line-color);
+            display: inline-block;
+            position: absolute;
+            height: 2rpx;
+            left: 50%;
+            right: -50%;
+            top: 20rpx;
+        }
+        .ste-step-icon.is-icon {
+            border-radius: 50%;
+            border-style: solid;
+            border-width: 2rpx;
+            border-color: var(---color);
+            background-color: #ffffff;
+        }
+        .ste-step-icon.is-text {
+            border-radius: 50%;
+            border-style: solid;
+            border-width: 2rpx;
+            background-color: var(---bg-color);
+        }
+        .ste-step-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-size: 24rpx;
+            height: 40rpx;
+            line-height: 40rpx;
+            width: 40rpx;
+        }
+        .ste-step-icon-inner {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+    }
+    .ste-step-content {
+        display: inline-block;
+        text-align: center;
+        .ste-step-title {
+            font-size: 32rpx;
+            color: var(---color);
+            line-height: 44rpx;
+        }
+        .ste-step-desc {
+            line-height: 44rpx;
+            font-size: 28rpx;
+            color: var(---desc-color);
+            margin-top: 8rpx;
+        }
+    }
+}

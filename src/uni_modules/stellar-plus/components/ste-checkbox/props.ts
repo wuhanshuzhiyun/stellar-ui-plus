@@ -4,7 +4,7 @@ import type { ShapeType, TextPositionType } from './type'
 export const CHECKBOX_KEY = Symbol('ste-checkbox')
 
 const checkboxProps = {
-  value: Boolean,
+  modelValue: Boolean,
   name: { type: [Number, String], default: '' },
   disabled: { type: Boolean as PropType<boolean | undefined>, default: undefined },
   readonly: { type: Boolean as PropType<boolean | undefined>, default: undefined },
@@ -29,5 +29,5 @@ export const checkboxEmits = {
   'click': (value: boolean, suspend: () => void, next: () => void, stop: () => void) => value && suspend instanceof Function && next instanceof Function && stop instanceof Function,
   'change': (value: boolean | any[]) => typeof value === 'boolean' || Array.isArray(value),
   'input': (value: boolean) => typeof value === 'boolean',
-  'update:value': (value: boolean) => typeof value === 'boolean',
+  'update:modelValue': (value: boolean) => typeof value === 'boolean',
 }

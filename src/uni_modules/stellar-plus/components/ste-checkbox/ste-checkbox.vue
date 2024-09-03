@@ -86,7 +86,7 @@ const cmpInputStyle = computed(() => {
 });
 
 const cmpChecked = computed(() => {
-    let v = parentProps ? parentProps.value.includes(props.name) : props.value;
+    let v = parentProps ? parentProps.value.includes(props.name) : props.modelValue;
     return v;
 });
 
@@ -107,9 +107,9 @@ async function click() {
         const stop = new Promise((resolve, reject) => {
             emits(
                 'click',
-                props.value,
+                props.modelValue,
                 () => (next = false),
-                () => resolve(props.value),
+                () => resolve(props.modelValue),
                 () => reject()
             );
         });
@@ -132,7 +132,7 @@ async function click() {
             Parent.parent?.updateValue(value);
         } else {
             value = !cmpChecked.value;
-            emits('update:value', !cmpChecked.value);
+            emits('update:modelValue', !cmpChecked.value);
         }
         emits('change', value);
     }

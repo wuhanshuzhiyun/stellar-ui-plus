@@ -5,8 +5,8 @@
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=checkbox",
     "attributes": [
         {
-            "name": "value",
-            "description": "当前选中值（支持v-model双向绑定）",
+            "name": "v-model",
+            "description": "当前值",
             "type": "boolean",
             "default": "false"
         },

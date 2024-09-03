@@ -4,7 +4,7 @@ import type { ShapeType, TextPositionType } from './type'
 export const RADIO_KEY = Symbol('ste-radio')
 
 const radioProps = {
-  value: { type: String, default: '' },
+  modelValue: { type: String, default: '' },
   name: { type: [Number, String], default: '' },
   disabled: { type: Boolean as PropType<boolean | undefined>, default: undefined },
   readonly: { type: Boolean as PropType<boolean | undefined>, default: undefined },
@@ -29,5 +29,5 @@ export const radioEmits = {
   'click': (value: string, suspend: () => void, next: () => void, stop: () => void) => value && suspend instanceof Function && next instanceof Function && stop instanceof Function,
   'change': (value: string) => typeof value === 'string',
   'input': (value: string) => typeof value === 'string',
-  'update:value': (value: string) => typeof value === 'string',
+  'update:modelValue': (value: string) => typeof value === 'string',
 }

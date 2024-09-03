@@ -1,11 +1,12 @@
 {
     "name": "ste-radio",
     "description": "单选框组件, 在一组备选项中进行单选。",
+    "example": "<ste-checkbox>单选框</ste-checkbox>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=radio",
     "attributes": [
         {
-            "name": "value",
-            "description": "当前选中值（支持v-model双向绑定）",
+            "name": "v-model",
+            "description": "当前值",
             "type": "string"
         },
         {

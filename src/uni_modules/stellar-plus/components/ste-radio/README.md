@@ -6,7 +6,7 @@
 
 ### 代码演示
 
-JavaScript后面的演示代码中涉及到的变量和方法都使用本javasaript代码
+后面的演示代码中涉及到的变量和方法都使用该代码
 
 ```html
 <script lang="ts" setup>
@@ -64,11 +64,11 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 
 #### 基础用法
 
-通过`value`绑定值当前选中项的 name 。
+通过`v-model`绑定值当前选中项的 name 。
 
 ```html
-<ste-radio v-model:value="value1" name="a">单选框a</ste-radio>
-<ste-radio v-model:value="value1" name="b">单选框b</ste-radio>
+<ste-radio v-model="value1" name="a">单选框a</ste-radio>
+<ste-radio v-model="value1" name="b">单选框b</ste-radio>
 ```
 
 #### 禁用
@@ -76,8 +76,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置 `disabled` 属性可以禁用单选框， 默认`false`。
 
 ```html
-<ste-radio v-model:value="value2" name="a" disabled>单选框a</ste-radio>
-<ste-radio v-model:value="value2" name="b" disabled>单选框b</ste-radio>
+<ste-radio v-model="value2" name="a" disabled>单选框a</ste-radio>
+<ste-radio v-model="value2" name="b" disabled>单选框b</ste-radio>
 ```
 
 #### 只读
@@ -85,8 +85,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置 `readonly` 属性可以禁用单选框，样式不置灰， 默认`false`。
 
 ```html
-<ste-radio v-model:value="value3" name="a" readonly>单选框a</ste-radio>
-<ste-radio v-model:value="value3" name="b" readonly>单选框b</ste-radio>
+<ste-radio v-model="value3" name="a" readonly>单选框a</ste-radio>
+<ste-radio v-model="value3" name="b" readonly>单选框b</ste-radio>
 ```
 
 #### 自定义形状
@@ -94,8 +94,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置`shape`为`square`或者`circle`，将单选框设置为方形或者圆形，默认`circle`。
 
 ```html
-<ste-radio v-model:value="value4" name="a">圆形</ste-radio>
-<ste-radio v-model:value="value4" name="b" shape="square">方形</ste-radio>
+<ste-radio v-model="value4" name="a">圆形</ste-radio>
+<ste-radio v-model="value4" name="b" shape="square">方形</ste-radio>
 ```
 
 #### 自定义图标大小
@@ -103,8 +103,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置 `iconSize` 属性可以自定义图标的大小，单位`rpx`，默认`36`。
 
 ```html
-<ste-radio v-model:value="value5" name="a" iconSize="60">60rpx</ste-radio>
-<ste-radio v-model:value="value5" name="b" iconSize="60">60rpx</ste-radio>
+<ste-radio v-model="value5" name="a" iconSize="60">60rpx</ste-radio>
+<ste-radio v-model="value5" name="b" iconSize="60">60rpx</ste-radio>
 ```
 
 #### 自定义图标颜色
@@ -112,8 +112,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置 `checkedColor` 属性可以自定义图标的颜色（填充色和边框色），默认`#0090FF`。
 
 ```html
-<ste-radio v-model:value="value6" name="a" checkedColor="#ee0a24">红色</ste-radio>
-<ste-radio v-model:value="value6" name="b" checkedColor="#ee0a24">红色</ste-radio>
+<ste-radio v-model="value6" name="a" checkedColor="#ee0a24">红色</ste-radio>
+<ste-radio v-model="value6" name="b" checkedColor="#ee0a24">红色</ste-radio>
 ```
 
 #### 自定义图标
@@ -121,25 +121,25 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过 `icon` 插槽自定义图标，可以通过 `slotProps`下`checked`判断是否为选中状态，`disabled`判断是否为禁止状态，`readonly`判断是否为只读状态。
 
 ```html
-<ste-radio v-model:value="value7" name="a">
+<ste-radio v-model="value7" name="a">
     <template #icon="{ slotProps }">
         <ste-icon code="&#xe677;" size="50" :color="slotProps.checked ? '#ee0a24' : '#000000'"></ste-icon>
     </template>
     <template #default="{ slotProps }">{{ slotProps.checked ? '已选中' : '未选中' }}</template>
 </ste-radio>
-<ste-radio v-model:value="value7" name="b">
+<ste-radio v-model="value7" name="b">
     <template #icon="{ slotProps }">
         <ste-icon code="&#xe677;" size="50" :color="slotProps.checked ? '#ee0a24' : '#000000'"></ste-icon>
     </template>
     <template #default="{ slotProps }">{{ slotProps.checked ? '已选中' : '未选中' }}</template>
 </ste-radio>
-<ste-radio v-model:value="value7" name="c" disabled>
+<ste-radio v-model="value7" name="c" disabled>
     <template #icon="{ slotProps }">
         <ste-icon code="&#xe677;" size="50" :color="slotProps.disabled ? '#eeeeee' : '#000000'"></ste-icon>
     </template>
     <template #default="{ slotProps }">{{ slotProps.disabled ? '禁止' : '未禁止' }}</template>
 </ste-radio>
-<ste-radio v-model:value="value7" name="d" readonly>
+<ste-radio v-model="value7" name="d" readonly>
     <template #icon="{ slotProps }">
         <ste-icon code="&#xe677;" size="50" :color="slotProps.readonly ? 'green' : '#000000'"></ste-icon>
     </template>
@@ -152,8 +152,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 将 `textPosition` 属性设置为 `left`，可以将文本位置调整到单选框左侧。
 
 ```html
-<ste-radio v-model:value="value8" name="a">右边</ste-radio>
-<ste-radio v-model:value="value8" name="b" textPosition="left">左边</ste-radio>
+<ste-radio v-model="value8" name="a">右边</ste-radio>
+<ste-radio v-model="value8" name="b" textPosition="left">左边</ste-radio>
 ```
 
 #### 自定义文本
@@ -163,8 +163,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 -   通过设置 `textActiveColor` 属性可以自定义文本选中颜色，默认`#000000`。
 
 ```html
-<ste-radio v-model:value="value9" name="a" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">单选框</ste-radio>
-<ste-radio v-model:value="value9" name="b" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">单选框</ste-radio>
+<ste-radio v-model="value9" name="a" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">单选框</ste-radio>
+<ste-radio v-model="value9" name="b" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">单选框</ste-radio>
 ```
 
 #### 回调事件
@@ -173,11 +173,11 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 -   `change` 当绑定值变化时触发的事件，`value`:改变后的分值。
 
 ```html
-<ste-radio v-model:value="value11" name="a" @click="click1" @change="change">单选框</ste-radio>
-<ste-radio v-model:value="value11" name="b" @click="click1" @change="change">单选框</ste-radio>
+<ste-radio v-model="value11" name="a" @click="click1" @change="change">单选框</ste-radio>
+<ste-radio v-model="value11" name="b" @click="click1" @change="change">单选框</ste-radio>
 <text>在click事件后，执行change事件</text>
-<ste-radio v-model:value="value12" name="a" @click="click2" @change="change">单选框</ste-radio>
-<ste-radio v-model:value="value12" name="b" @click="click2" @change="change">单选框</ste-radio>
+<ste-radio v-model="value12" name="a" @click="click2" @change="change">单选框</ste-radio>
+<ste-radio v-model="value12" name="b" @click="click2" @change="change">单选框</ste-radio>
 <text>在click事件后，阻止change事件</text>
 ```
 
@@ -186,7 +186,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 需要与`ste-radio-group`一起使用，通过`value`绑定在`ste-radio-group`，`value`即为选中的`ste-radio`的`name`属性设置的值。
 
 ```html
-<ste-radio-group v-model:value="value12">
+<ste-radio-group v-model="value12">
     <ste-radio name="a">单选框a</ste-radio>
     <ste-radio name="b">单选框b</ste-radio>
     <ste-radio name="c">单选框c</ste-radio>
@@ -198,7 +198,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 属性优先级：`ste-radio`组件上配置的属性 > `ste-radio-group`组件上配置的属性 > `ste-radio`组件默认属性
 
 ```html
-<ste-radio-group v-model:value="value13" shape="square" textPosition="left">
+<ste-radio-group v-model="value13" shape="square" textPosition="left">
     <ste-radio name="a">单选框a</ste-radio>
     <ste-radio name="b" disabled>单选框b</ste-radio>
     <ste-radio name="c" shape="circle">单选框c</ste-radio>
@@ -210,7 +210,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 将 `direction` 属性设置为 `row` 后，单选框组会变成水平排列。
 
 ```html
-<ste-radio-group v-model:value="value14" direction="row">
+<ste-radio-group v-model="value14" direction="row">
     <ste-radio name="a">单选框a</ste-radio>
     <ste-radio name="b">单选框b</ste-radio>
     <ste-radio name="c">单选框c</ste-radio>
@@ -223,23 +223,23 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 
 #### RadioGroup 组件属性(Props)
 
-| 参数                | 说明                                    | 类型            | 默认值    | 可选值                            | 支持版本  |
-| ------------------- | --------------------------------------- | --------------- | --------- | --------------------------------- | --------- |
-| `value`             | 当前选中值（支持v-model:value双向绑定） | `String`        | ``        | -                                 | -         |
-| `direction`         | 排列方式                                | `String`        | `row`     | `column`：横向 <br/>`row`：纵向   | -         |
-| `disabled`          | 是否禁用                                | `Boolean`       | `false`   | -                                 | -         |
-| `readonly`          | 只读 (不置灰)                           | `Boolean`       | `false`   | -                                 | -         |
-| `shape`             | 形状                                    | `String`        | `circle`  | `circle`：圆形 <br/>`squar`：方形 | -         |
-| `iconSize`          | 图标大小，单位rpx                       | `Number/String` | `36`      | -                                 | -         |
-| `checkedColor`      | 选中状态的图标颜色                      | `String`        | `#0090FF` | -                                 | -         |
-| `textPosition`      | 文本的位置                              | `String`        | `right`   | `right`：右 <br/>`left`：左       | -         |
-| `textSize`          | 文本字体大小，单位rpx                   | `Number/String` | `25`      | -                                 | -         |
-| `textlnactiveColor` | 未选中文本颜色                          | `String`        | `#000000` | -                                 | -         |
-| `textActiveColor`   | 选中文本颜色                            | `String`        | `#000000` | -                                 | -         |
-| `textDisabled`      | 禁用文本点击                            | `Boolean`       | `false`   | -                                 | -         |
-| `marginLeft`        | 左边距,单位rpx                          | `Number/String` | `0`       | -                                 | `v1.10.0` |
-| `marginRight`       | 右边距,单位rpx                          | `Number/String` | `0`       | -                                 | `v1.10.0` |
-| `columnGap`         | 单选框和文本间距，单位rpx               | `Number/String` | `16`      | -                                 | `v1.10.0` |
+| 参数                | 说明                              | 类型            | 默认值    | 可选值                            | 支持版本  |
+| ------------------- | --------------------------------- | --------------- | --------- | --------------------------------- | --------- |
+| `value`             | 当前选中值（支持v-model双向绑定） | `String`        | ``        | -                                 | -         |
+| `direction`         | 排列方式                          | `String`        | `row`     | `column`：横向 <br/>`row`：纵向   | -         |
+| `disabled`          | 是否禁用                          | `Boolean`       | `false`   | -                                 | -         |
+| `readonly`          | 只读 (不置灰)                     | `Boolean`       | `false`   | -                                 | -         |
+| `shape`             | 形状                              | `String`        | `circle`  | `circle`：圆形 <br/>`squar`：方形 | -         |
+| `iconSize`          | 图标大小，单位rpx                 | `Number/String` | `36`      | -                                 | -         |
+| `checkedColor`      | 选中状态的图标颜色                | `String`        | `#0090FF` | -                                 | -         |
+| `textPosition`      | 文本的位置                        | `String`        | `right`   | `right`：右 <br/>`left`：左       | -         |
+| `textSize`          | 文本字体大小，单位rpx             | `Number/String` | `25`      | -                                 | -         |
+| `textlnactiveColor` | 未选中文本颜色                    | `String`        | `#000000` | -                                 | -         |
+| `textActiveColor`   | 选中文本颜色                      | `String`        | `#000000` | -                                 | -         |
+| `textDisabled`      | 禁用文本点击                      | `Boolean`       | `false`   | -                                 | -         |
+| `marginLeft`        | 左边距,单位rpx                    | `Number/String` | `0`       | -                                 | `v1.10.0` |
+| `marginRight`       | 右边距,单位rpx                    | `Number/String` | `0`       | -                                 | `v1.10.0` |
+| `columnGap`         | 单选框和文本间距，单位rpx         | `Number/String` | `16`      | -                                 | `v1.10.0` |
 
 #### RadioGroup Events
 

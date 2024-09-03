@@ -6,7 +6,7 @@
 
 ### 代码演示
 
-JavaScript后面的演示代码中涉及到的变量和方法都使用本javasaript代码
+后面的演示代码中涉及到的变量和方法都使用该代码
 
 ```html
 <script lang="ts" setup>
@@ -71,10 +71,10 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 
 #### 基础用法
 
-通过`value`属性，双向绑定复选框的勾选状态，单一的checkbox中，默认绑定变量的值会是Boolean，选中为true
+单一的checkbox中，默认绑定变量的值会是Boolean，选中为true
 
 ```
-<ste-checkbox v-model:value="value">复选框</ste-checkbox>
+<ste-checkbox v-model="val.value">复选框</ste-checkbox>
 ```
 
 #### 禁用
@@ -82,8 +82,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置 `disabled` 属性可以禁用复选框， 默认`false`。
 
 ```
-<ste-checkbox v-model:value="value2" disabled>复选框1</ste-checkbox>
-<ste-checkbox v-model:value="value3" disabled>复选框2</ste-checkbox>
+<ste-checkbox v-model="val.value2" disabled>复选框1</ste-checkbox>
+<ste-checkbox v-model="val.value3" disabled>复选框2</ste-checkbox>
 ```
 
 #### 只读
@@ -91,8 +91,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置 `readonly` 属性可以禁用复选框，样式不置灰， 默认`false`。
 
 ```
-<ste-checkbox v-model:value="value4" readonly>复选框1</ste-checkbox>
-<ste-checkbox v-model:value="value5" readonly>复选框2</ste-checkbox>
+<ste-checkbox v-model="val.value4" readonly>复选框1</ste-checkbox>
+<ste-checkbox v-model="val.value5" readonly>复选框2</ste-checkbox>
 ```
 
 #### 自定义形状
@@ -100,8 +100,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置`shape`为`square`或者`circle`，将复选框设置为方形或者圆形，默认`circle`。
 
 ```
-<ste-checkbox v-model:value="value6">圆形</ste-checkbox>
-<ste-checkbox v-model:value="value7" shape="square">方形</ste-checkbox>
+<ste-checkbox v-model="val.value6">圆形</ste-checkbox>
+<ste-checkbox v-model="val.value7" shape="square">方形</ste-checkbox>
 ```
 
 #### 自定义图标大小
@@ -109,7 +109,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置 `iconSize` 属性可以自定义图标的大小，单位`rpx`，默认`36`。
 
 ```
-<ste-checkbox v-model:value="value11" iconSize="60">60rpx</ste-checkbox>
+<ste-checkbox v-model="val.value11" iconSize="60">60rpx</ste-checkbox>
 ```
 
 #### 自定义图标颜色
@@ -117,7 +117,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过设置 `checkedColor` 属性可以自定义图标的颜色（填充色和边框色），默认`#0090FF`。
 
 ```
-<ste-checkbox v-model:value="value12" checkedColor="#ee0a24">红色</ste-checkbox>
+<ste-checkbox v-model="val.value12" checkedColor="#ee0a24">红色</ste-checkbox>
 ```
 
 #### 自定义图标
@@ -125,7 +125,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过 `icon` 插槽自定义图标，可以通过 `slotProps`下`checked`判断是否为选中状态，`disabled`判断是否为禁止状态，`readonly`判断是否为只读状态。
 
 ```
-<ste-checkbox-group v-model:value="value13">
+<ste-checkbox-group v-model="val.value13">
 	<ste-checkbox name="a">
 		<template #icon="{ slotProps }">
 			<ste-icon
@@ -181,8 +181,8 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 将 `textPosition` 属性设置为 `left`，可以将文本位置调整到复选框左侧。
 
 ```
-<ste-checkbox v-model:value="value6">右边</ste-checkbox>
-<ste-checkbox v-model:value="value7" textPosition="left">左边</ste-checkbox>
+<ste-checkbox v-model="val.value6">右边</ste-checkbox>
+<ste-checkbox v-model="val.value7" textPosition="left">左边</ste-checkbox>
 ```
 
 #### 自定义文本
@@ -192,7 +192,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 -   通过设置 `textActiveColor` 属性可以自定义文本选中颜色，默认`#000000`。
 
 ```
-<ste-checkbox v-model:value="value14" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">
+<ste-checkbox v-model="val.value14" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">
 	复选框
 </ste-checkbox>
 ```
@@ -203,9 +203,9 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 -   `change` 当绑定值变化时触发的事件，`value`:改变后的分值。
 
 ```
-<ste-checkbox v-model:value="value16" @click="click1" @change="change">复选框</ste-checkbox>
+<ste-checkbox v-model="val.value16" @click="click1" @change="change">复选框</ste-checkbox>
 <text>在click事件后，执行change事件</text>
-<ste-checkbox v-model:value="value17" @click="click2" @change="change">复选框</ste-checkbox>
+<ste-checkbox v-model="val.value17" @click="click2" @change="change">复选框</ste-checkbox>
 <text>在click事件后，阻止change事件</text>
 ```
 
@@ -214,7 +214,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 需要与`ste-checkbox-group`一起使用，选中值是一个数组，通过`value`绑定在`ste-checkbox-group`上，数组中的项即为选中的`ste-checkbox`的`name`属性设置的值。
 
 ```
-<ste-checkbox-group v-model:value="value18">
+<ste-checkbox-group v-model="val.value18">
 	<ste-checkbox name="a">复选框a</ste-checkbox>
 	<ste-checkbox name="b">复选框b</ste-checkbox>
 	<ste-checkbox name="c">复选框c</ste-checkbox>
@@ -226,7 +226,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 属性优先级：`ste-checkbox`组件上配置的属性 > `ste-checkbox-group`组件上配置的属性 > `ste-checkbox`组件默认属性
 
 ```
-<ste-checkbox-group v-model:value="value19" shape="square" textPosition="left">
+<ste-checkbox-group v-model="val.value19" shape="square" textPosition="left">
 	<ste-checkbox name="a">复选框a</ste-checkbox>
 	<ste-checkbox name="b" disabled>复选框b</ste-checkbox>
 	<ste-checkbox name="c" shape="circle">复选框c</ste-checkbox>
@@ -238,7 +238,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 将 `direction` 属性设置为 `row` 后，复选框组会变成水平排列。
 
 ```
-<ste-checkbox-group v-model:value="value20" direction="row">
+<ste-checkbox-group v-model="val.value20" direction="row">
 	<ste-checkbox name="a">复选框a</ste-checkbox>
 	<ste-checkbox name="b">复选框b</ste-checkbox>
 	<ste-checkbox name="c">复选框c</ste-checkbox>
@@ -250,7 +250,7 @@ JavaScript后面的演示代码中涉及到的变量和方法都使用本javasar
 通过 `max` 属性可以限制复选框组的最大可选数,为`0`则不限制,默认0。
 
 ```
-<ste-checkbox-group v-model:value="value21" :max="2">
+<ste-checkbox-group v-model="val.value21" :max="2">
 	<ste-checkbox name="a">复选框a</ste-checkbox>
 	<ste-checkbox name="b">复选框b</ste-checkbox>
 	<ste-checkbox name="c">复选框c</ste-checkbox>

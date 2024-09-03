@@ -86,7 +86,7 @@ const cmpInputStyle = computed(() => {
 });
 
 const cmpChecked = computed(() => {
-    return parentProps ? parentProps.value == props.name : props.value == props.name;
+    return parentProps ? parentProps.value == props.name : props.modelValue == props.name;
 });
 
 async function click() {
@@ -95,9 +95,9 @@ async function click() {
         const stop = new Promise((resolve, reject) => {
             emits(
                 'click',
-                props.value,
+                props.modelValue,
                 () => (next = false),
-                () => resolve(props.value),
+                () => resolve(props.modelValue),
                 () => reject()
             );
         });
@@ -109,27 +109,12 @@ async function click() {
             }
         }
 
-        // let value: string;
-        // if (parentProps) {
-        //     value = parentProps.value;
-        //     if (cmpChecked.value) {
-        //         value = value.filter(value => value != props.name);
-        //     } else {
-        //         value.push(props.name);
-        //     }
-        //     Parent.parent?.updateValue(value);
-        // } else {
-        //     value = !cmpChecked.value;
-        //     emits('update:value', !cmpChecked.value);
-        // }
-        // emits('change', value);
-
         if (!cmpChecked.value) {
             let value = String(props.name);
             if (parentProps) {
                 Parent.parent?.updateValue(value);
             } else {
-                emits('update:value', value);
+                emits('update:modelValue', value);
             }
             emits('change', value);
         }

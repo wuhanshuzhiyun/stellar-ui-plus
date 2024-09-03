@@ -1,0 +1,220 @@
+{
+    "name": "ste-stepper",
+    "description": "步进器组件, 步进器由增加按钮、减少按钮和输入框组成，用于在一定范围内输入、调整数字。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=stepper",
+    "attributes": [
+        {
+            "name": "v-model",
+            "description": "当前输入的值",
+            "type": "number",
+            "default": "1"
+        },
+        {
+            "name": "min",
+            "description": "最小值",
+            "type": "number",
+            "default": "0"
+        },
+        {
+            "name": "max",
+            "description": "最大值",
+            "type": "number",
+            "default": "Infinity"
+        },
+        {
+            "name": "step",
+            "description": "步长，每次加或减的值",
+            "type": "number",
+            "default": "1"
+        },
+        {
+            "name": "inputWidth",
+            "description": "输入框宽度，默认单位为rpx",
+            "type": "number | string",
+            "default": "64"
+        },
+        {
+            "name": "btnSize",
+            "description": "按钮大小以及输入框高度，默认单位为`rpx`,`theme`为`line`时 高为宽的80%",
+            "type": "number | string",
+            "default": "48"
+        },
+        {
+            "name": "precision",
+            "description": "数值精度",
+            "type": "number",
+            "default": "0"
+        },
+        {
+            "name": "theme",
+            "description": "样式风格",
+            "type": "string",
+            "default": "card",
+            "values": [
+                {
+                    "name": "card",
+                    "description": "面型"
+                },
+                {
+                    "name": "line",
+                    "description": "线型"
+                },
+                {
+                    "name": "add",
+                    "description": "纯加购按钮"
+                }
+            ]
+        },
+        {
+            "name": "mainColor",
+            "description": "主色，对`theme`为`line`时无效",
+            "type": "string",
+            "default": "#0090FF"
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用步进器",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "disablePlus",
+            "description": "是否禁用增加按钮",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "disableMinus",
+            "description": "是否禁用减少按钮",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "disableInput",
+            "description": "是否禁用输入框",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "background",
+            "description": "徽标：背景",
+            "type": "string",
+            "default": "#ee0a24"
+        },
+        {
+            "name": "showDot",
+            "description": "徽标：是否展示为小红点",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "offsetX",
+            "description": "徽标：根据徽标位置,设置x轴偏移量",
+            "type": "number | string",
+            "default": "auto"
+        },
+        {
+            "name": "offsetY",
+            "description": "徽标：根据徽标位置,设置y轴偏移量",
+            "type": "number | string",
+            "default": "auto"
+        },
+        {
+            "name": "showZero",
+            "description": "徽标：当 content 为数字 0，是否展示徽标",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "position",
+            "description": "徽标：徽标位置",
+            "type": "string",
+            "default": "topRight",
+            "values": [
+                {
+                    "name": "topRight",
+                    "description": "上右"
+                },
+                {
+                    "name": "topLeft",
+                    "description": "上左"
+                },
+                {
+                    "name": "bottomLeft",
+                    "description": "下左"
+                },
+                {
+                    "name": "bottomRight",
+                    "description": "下右"
+                }
+            ]
+        },
+        {
+            "name": "badgeMax",
+            "description": "徽标：徽标最大显示值",
+            "type": "number",
+            "default": "99"
+        },
+        {
+            "name": "[event]change",
+            "description": "当绑定值变化时触发的事件 `value`: 改变后的绑定值",
+            "type": "(value: number) => void"
+        },
+        {
+            "name": "[event]plus",
+            "description": "点击增加按钮时触发（可拦截change事件）",
+            "type": "(value: number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "改变后的绑定值"
+                },
+                {
+                    "name": "suspend",
+                    "description": "等待"
+                },
+                {
+                    "name": "next",
+                    "description": "继续"
+                },
+                {
+                    "name": "stop",
+                    "description": "停止"
+                }
+            ]
+        },
+        {
+            "name": "[event]minus",
+            "description": "点击减少按钮时触发（可拦截change事件）",
+            "type": "(value:string | number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "改变后的绑定值"
+                },
+                {
+                    "name": "suspend",
+                    "description": "等待"
+                },
+                {
+                    "name": "next",
+                    "description": "继续"
+                },
+                {
+                    "name": "stop",
+                    "description": "停止"
+                }
+            ]
+        },
+        {
+            "name": "[event]focus",
+            "description": "输入框聚焦时触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]blur",
+            "description": "输入框失焦时触发",
+            "type": "() => void"
+        }
+    ]
+}

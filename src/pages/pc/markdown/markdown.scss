@@ -5,6 +5,12 @@
 }
 
 .right-component {
+
+    &,
+    * {
+        box-sizing: border-box;
+    }
+
     img {
         width: 100%;
     }
@@ -89,6 +95,7 @@
         td {
             padding: 5px 10px;
             text-align: left;
+            overflow: hidden;
         }
 
         th {

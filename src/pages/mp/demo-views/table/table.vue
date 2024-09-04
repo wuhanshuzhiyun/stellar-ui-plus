@@ -184,7 +184,9 @@ function cellStyle(data: { column: any; columnIndex: number; row: any; rowIndex:
                         <ste-table :data="rows2" :stripe="false" emptyText="--">
                             <template v-slot="{ row }">
                                 <ste-table-column label="姓名" prop="name">
-                                    <span slot="empty">***</span>
+                                    <template #empty>
+                                        <span>***</span>
+                                    </template>
                                 </ste-table-column>
                                 <ste-table-column label="生日" prop="birth"></ste-table-column>
                                 <ste-table-column label="性别" prop="sex"></ste-table-column>

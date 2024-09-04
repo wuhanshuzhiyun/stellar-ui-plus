@@ -5,7 +5,7 @@ import propsData from './props';
 import utils from '../../utils/utils';
 import { getStyleOrClass } from '../ste-table/utils';
 import { useInject } from '../../utils/mixin';
-import { TABLE_KEY, SELECTION_COLOR_CONFIG } from '../ste-table/props';
+import { TABLE_KEY, SELECTION_COLOR_CONFIG, type TableProps } from '../ste-table/props';
 import CheckBoxIcon from './checkbox-icon.vue';
 import RadioIcon from './radio-icon.vue';
 
@@ -19,12 +19,12 @@ defineOptions({
 
 const props = defineProps(propsData);
 
-type ParentType = ReturnType<typeof useInject>[keyof ReturnType<typeof useInject>];
-// 将 ParentType 中的属性变为可选的
-const parent = useInject(TABLE_KEY).parent as Partial<ParentType> & Record<string, any>;
+const Parent = useInject<{ props: Required<TableProps>; checkStates: globalThis.Ref<number[]>; handleCheck: (...args: any[]) => void; cellClick: (...args: any[]) => void }>(TABLE_KEY);
+const parent = Parent.parent;
+const parentProps = Parent.parent?.props as TableProps;
 
 const row = ref<Obj>({});
-const selectionIconColor = ref<typeof SELECTION_COLOR_CONFIG>(parent.selectionIconColor);
+const selectionIconColor = ref<typeof SELECTION_COLOR_CONFIG>(parentProps.selectionIconColor);
 
 defineExpose({ row });
 
@@ -46,7 +46,7 @@ const cmpCellStyle = computed(() => {
         row: row.value.row,
         rowIndex: row.value.rowIndex,
     };
-    return getStyleOrClass<object>(parent.cellStyle, cellClassParam);
+    return getStyleOrClass<object>(parentProps.cellStyle, cellClassParam);
 });
 
 const cmpRootClass = computed(() => {
@@ -57,7 +57,7 @@ const cmpRootClass = computed(() => {
         classArr.push('align-' + props.align);
     }
 
-    if (parent.border) {
+    if (parentProps.border) {
         classArr.push('border');
     }
 
@@ -67,13 +67,13 @@ const cmpRootClass = computed(() => {
         row: row.value.row,
         rowIndex: row.value.rowIndex,
     };
-    classArr.push(getStyleOrClass<string>(parent.cellClassName, cellClassParam));
+    classArr.push(getStyleOrClass<string>(parentProps.cellClassName as any, cellClassParam));
 
     return classArr.join(' ');
 });
 
 const cmpShowCheck = computed(() => {
-    if (!parent.checkStates.value || parent.checkStates.value.length == 0) return false;
+    if (!parent?.checkStates.value || parent.checkStates.value.length == 0) return false;
     let item = parent.checkStates.value.find((e: number) => e == row.value.rowIndex);
     if (item != undefined) {
         return true;
@@ -82,28 +82,28 @@ const cmpShowCheck = computed(() => {
 });
 
 const cmpDisableCheck = computed(() => {
-    if (parent.selectable && props.type) {
-        return !parent.selectable(row.value, row.value.rowIndex);
+    if (parentProps.selectable && props.type) {
+        return !parentProps.selectable(row.value, row.value.rowIndex);
     }
     return false;
 });
 
 const cmpReadonlyCheck = computed(() => {
-    if (parent.readable && props.type) {
-        return parent.readable(row.value, row.value.rowIndex);
+    if (parentProps.readable && props.type) {
+        return parentProps.readable(row.value, row.value.rowIndex);
     }
     return false;
 });
 
 function changeCheck(this: any) {
     if (!cmpDisableCheck.value && !cmpReadonlyCheck.value) {
-        parent.handleCheck(row.value);
+        parent?.handleCheck(row.value);
     }
 }
 
 function cellText(this: any) {
-    if (parent.formatter) {
-        let text = parent.formatter(row.value, props.customKey);
+    if (parentProps.formatter) {
+        let text = parentProps.formatter(row.value, props.customKey);
         if (!text) {
             text = row.value[props.prop];
         }
@@ -112,13 +112,13 @@ function cellText(this: any) {
         if (row.value[props.prop]) {
             return row.value[props.prop];
         } else {
-            return parent.emptyText || '-';
+            return parentProps.emptyText || '-';
         }
     }
 }
 
 function cellClick(this: any, event: Event) {
-    parent.cellClick(row.value, props, event);
+    parent?.cellClick(row.value, props, event);
     // 扩大选中热区
     if (props.type == 'checkbox' || props.type == 'radio') {
         changeCheck();
@@ -153,39 +153,14 @@ function cellClick(this: any, event: Event) {
 </template>
 
 <style lang="scss" scoped>
-$default-border: 2rpx solid #ebebeb;
-
 .ste-table-cell {
-    display: table-cell;
-    padding: 24rpx 32rpx;
-    border-bottom: $default-border;
-    text-align: left;
-    min-height: 80rpx;
-    font-size: 24rpx;
-    vertical-align: middle;
+    @import './var.scss';
+    @import './common.scss';
+    @include cell;
 
-    .cell-box {
-        display: flex;
-        align-items: center;
-    }
-
-    &.border {
-        border-right: $default-border;
-    }
-
-    &.selection {
-    }
-
-    &.align-center {
-        .cell-box {
-            justify-content: center;
-        }
-    }
-
-    &.align-right {
-        .cell-box {
-            justify-content: flex-end;
-        }
+    &.row-span {
+        padding-top: 0;
+        padding-bottom: 0;
     }
 }
 </style>

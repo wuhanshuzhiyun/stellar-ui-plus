@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, watch, ref, defineOptions, type CSSProperties } from 'vue';
-import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG } from './props';
+import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG, type TableProps } from './props';
 import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
@@ -50,16 +50,10 @@ const { internalChildren } = useProvide(
     TABLE_KEY,
     'ste-table-column'
 )({
+    props,
     checkStates,
-    selectable: props.selectable,
-    readable: props.readable,
     handleCheck,
-    formatter: props.formatter,
-    emptyText: props.emptyText,
     cellClick,
-    cellStyle: props.cellStyle,
-    cellClassName: props.cellClassName,
-    selectionIconColor: props.selectionIconColor,
 });
 
 const refChilds = ref(internalChildren);
@@ -234,7 +228,7 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
     </view>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $default-border: 2rpx solid #ebebeb;
 
 .ste-table-root {
@@ -248,7 +242,6 @@ $default-border: 2rpx solid #ebebeb;
                 position: absolute;
                 top: 0;
             }
-
             .ste-table-scroll {
                 height: calc(var(--table-height) - 80rpx);
                 max-height: calc(var(--table-max-height) - 80rpx);
@@ -265,7 +258,6 @@ $default-border: 2rpx solid #ebebeb;
             }
         }
     }
-
     &.border {
         .ste-table-cell {
             border-right: $default-border;
@@ -279,32 +271,34 @@ $default-border: 2rpx solid #ebebeb;
     &.stripe {
         .ste-table-body {
             .ste-table-row:nth-child(even) {
-                background-color: #f8f8f8;
-                /* 偶数行背景颜色 */
+                background-color: #f8f8f8; /* 偶数行背景颜色 */
             }
         }
     }
 
     .ste-table-content {
         width: 100%;
-        display: table;
-
+        // display: table;
         // border-collapse: collapse;
         // table-layout: fixed;
         .fixed-placeholder {
             width: 100%;
             height: 80rpx;
         }
-
         .ste-table-header {
             width: 100%;
-            display: table-row;
+            // display: table-row;
+            display: flex;
+            justify-content: space-between;
+            background-color: #e8f7ff;
 
             .ste-table-cell {
                 background-color: #e8f7ff;
                 font-weight: bold;
                 font-size: 28rpx;
                 border-top: $default-border;
+                // flex: 1;
+                // box-sizing: border-box;
 
                 .cell-box.no-value {
                     color: transparent;
@@ -313,8 +307,9 @@ $default-border: 2rpx solid #ebebeb;
         }
 
         .ste-table-cell {
-            display: table-cell;
-
+            // display: table-cell;
+            flex: 1;
+            // box-sizing: border-box;
             border-bottom: $default-border;
 
             padding: 0 32rpx;
@@ -342,21 +337,30 @@ $default-border: 2rpx solid #ebebeb;
         }
 
         .ste-table-body {
-            display: table-row-group;
+            // display: table-row-group;
             width: 100%;
-
             .ste-table-row {
-                display: table-row;
+                // display: table-row;
+                display: flex;
+                justify-content: space-between;
 
+                > view {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                }
                 &.current-row {
                     background-color: #ecf5ff;
                 }
-
                 &.selection-row {
                     background-color: #ecf5ff;
                 }
             }
         }
+    }
+
+    scoped-slots-default {
+        display: contents;
     }
 }
 </style>

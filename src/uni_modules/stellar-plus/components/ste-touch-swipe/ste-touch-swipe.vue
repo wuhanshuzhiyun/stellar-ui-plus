@@ -21,12 +21,6 @@ const { internalChildren } = useProvide(TOUCH_SWIPE_KEY, 'ste-touch-swipe-item')
 
 const thas = ref<globalThis.ComponentPublicInstance | null>();
 
-onMounted(async () => {
-    thas.value = getCurrentInstance()?.proxy;
-    await getBoxSize();
-    initChildren();
-});
-
 const {
     initializing,
     setInitializing,
@@ -102,24 +96,11 @@ const cmpItemTops = computed(() => {
     return list;
 });
 
-watch(
-    () => props.index,
-    v => {
-        if (v === dataIndex.value) return;
-        setDataIndex(v);
-    },
-    { immediate: true }
-);
-watch(
-    () => dataIndex.value,
-    () => {
-        if (!cmpChildrenLength.value) return;
-        nextTick(async () => {
-            await getBoxSize();
-            setTransform();
-        });
-    }
-);
+const getBoxSize = async () => {
+    if (!thas.value) return;
+    if (boxEl.value && (boxEl.value.width || 0) > 0 && (boxEl.value.height || 0) > 0) return;
+    setBoxEl(await utils.querySelector<false>('.ste-touch-swipe-root', thas.value));
+};
 
 const initChildren = () => {
     setShowNode(false);
@@ -148,6 +129,28 @@ const initChildren = () => {
     }, 50);
 };
 
+onMounted(async () => {
+    thas.value = getCurrentInstance()?.proxy;
+    await getBoxSize();
+    initChildren();
+});
+
+watch(
+    () => props.index,
+    v => {
+        if (v === dataIndex.value) return;
+        setDataIndex(v);
+    },
+    { immediate: true }
+);
+watch([() => dataIndex.value, () => thas.value], () => {
+    if (!cmpChildrenLength.value) return;
+    nextTick(async () => {
+        await getBoxSize();
+        setTransform();
+    });
+});
+
 watch(
     () => internalChildren.length,
     () => {
@@ -155,11 +158,6 @@ watch(
     },
     { immediate: true }
 );
-
-const getBoxSize = async () => {
-    if (boxEl.value && (boxEl.value.width || 0) > 0 && (boxEl.value.height || 0) > 0) return;
-    setBoxEl(await utils.querySelector<false>('.ste-touch-swipe-root', thas.value));
-};
 
 const setTransform = () => {
     if (!cmpItemLefts.value?.length) return;

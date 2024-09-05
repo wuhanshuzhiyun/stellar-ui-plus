@@ -24,6 +24,10 @@ export default function useData(_props: VideoProps, emits: SetupContext<VideoEmi
 
   const speedConfigArr = ref([0.5, 0.8, 1.0, 1.25, 1.5])
 
+  const showTip = ref(false)
+  const msg = ref('')
+  const reRenderFlag = ref(true) // 由于视频进度条在全屏切换时由于uniapp的像素计算导致进度条拖动异常，所以加个变量用于重新渲染
+
   function play() {
     playState.value = true
   }
@@ -81,6 +85,16 @@ export default function useData(_props: VideoProps, emits: SetupContext<VideoEmi
     else return `${formattedMinutes}:${formattedSeconds}`
   }
 
+  function tip(v: string) {
+    if (!v)
+      return
+    msg.value = v
+    showTip.value = true
+    setTimeout(() => {
+      showTip.value = false
+    }, 1500)
+  }
+
   return {
     videoSrc,
     playState,
@@ -110,5 +124,9 @@ export default function useData(_props: VideoProps, emits: SetupContext<VideoEmi
     pause,
     loadedMetaData,
     formatTime,
+    tip,
+    showTip,
+    msg,
+    reRenderFlag,
   }
 }

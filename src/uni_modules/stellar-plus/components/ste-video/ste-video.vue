@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineOptions, type CSSProperties, onMounted, ref } from 'vue';
+import { computed, defineOptions, type CSSProperties, onMounted, nextTick } from 'vue';
 import type { BaseEvent } from '../../types/event';
 import useData from './useData';
 import utils from '../../utils/utils';
@@ -36,6 +36,10 @@ const {
     pause,
     loadedMetaData,
     formatTime,
+    tip,
+    showTip,
+    msg,
+    reRenderFlag,
 } = useData(props, emits);
 
 const componentName = `ste-video`;
@@ -112,11 +116,21 @@ function handleFull(state: boolean) {
         firstFullDone.value = true;
         videoContext.exitFullScreen();
     }
+
+    reRenderFlag.value = false;
+    nextTick(() => {
+        reRenderFlag.value = true;
+    });
 }
 
 function exitFullScreen() {
     showPopup.value = false;
     videoContext.exitFullScreen();
+
+    reRenderFlag.value = false;
+    nextTick(() => {
+        reRenderFlag.value = true;
+    });
 }
 
 function handleProgressChange(v: number | number[]) {
@@ -166,34 +180,44 @@ function handlePopupClick() {
     isClickControl.value = true;
 }
 
-function handleChooseItem(_e: any, index: number) {
+function handleChooseItem(e: any, index: number) {
+    let tipMsg = '';
     if (popupState.value == 1) {
         if (speedIndex.value == index) return;
         speedIndex.value = index;
         videoContext.playbackRate(speedConfigArr.value[speedIndex.value]);
+        tipMsg = e + 'X';
     } else {
         if (resolutionIndex.value == index) return;
         resolutionIndex.value = index;
         handlePlay(false);
         videoSrc.value = props.resolution[resolutionIndex.value].url;
-        setTimeout(() => {
+        // setTimeout(() => {
+
+        // }, 200);
+        nextTick(() => {
             videoContext.seek(videoCurrent.value);
             handlePlay(true);
-        }, 200);
+            tipMsg = `切换${e.text}成功`;
+        });
     }
-
-    setTimeout(() => {
+    nextTick(() => {
         showPopup.value = false;
-    }, 20);
+        tip(tipMsg);
+    });
+    // setTimeout(() => {
+
+    // }, 20);
 }
 
 function timeupdate(e: BaseEvent) {
     videoDuration.value = e.detail.duration;
-    videoCurrent.value = e.detail.currentTime;
+    if (!isNaN(videoDuration.value)) {
+        videoCurrent.value = e.detail.currentTime;
+    }
     playProgress.value = (videoCurrent.value / videoDuration.value) * 100;
 }
 function fullscreenchange(e: BaseEvent) {
-    console.log('****** fullscreenchange ***', e);
     isFull.value = e.detail.fullScreen;
     if (isFull.value) {
         (videoContext as Obj).hideStatusBar();
@@ -284,9 +308,11 @@ function fullscreenchange(e: BaseEvent) {
                     <view class="time right">{{ formatTime(videoDuration) }}</view>
                 </view>
                 <!-- 进度条 -->
-                <view class="progress-box">
+                <view class="progress-box" v-if="reRenderFlag">
                     <ste-slider :value="playProgress" @change="handleProgressChange" barHeight="4" buttonSize="26">
-                        <view class="progress-bar" slot="button" />
+                        <template #button>
+                            <view class="progress-bar" />
+                        </template>
                     </ste-slider>
                 </view>
                 <!-- 时间进度 -->
@@ -327,6 +353,10 @@ function fullscreenchange(e: BaseEvent) {
                         </view>
                     </view>
                 </view>
+            </view>
+            <!-- 操作提示 -->
+            <view class="tip-toast" :class="[{ show: showTip }]">
+                <view class="tip-text">{{ msg }}</view>
             </view>
             <!-- </view> -->
         </video>

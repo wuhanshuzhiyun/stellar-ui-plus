@@ -162,4 +162,28 @@
             }
         }
     }
+
+    .tip-toast {
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 8px;
+        padding: 10px;
+
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate(-50%, -50%);
+        transition: all 0.2s;
+        visibility: hidden;
+        &.show {
+            visibility: visible;
+        }
+        .tip-text {
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 1;
+        }
+    }
 }

@@ -1,5 +1,50 @@
 export const TAB_KEY = Symbol('ste-tabs')
 
+export interface SteTabsProps {
+  active: number | string
+  type: string
+  showImage: boolean
+  showTitle: boolean
+  showSubtitle: boolean
+  color: string
+  background: string
+  radius: number | string
+  duration: number | string
+  showLine: boolean
+  lineWidth: number | string
+  lineHeight: number | string
+  border: boolean
+  ellipsis: boolean
+  tabWidth: number | string
+  tabPadding: number | string
+  tabSpace: number | string
+  divideNum: number
+  sticky: boolean
+  offsetTop: number | string
+  swipeable: boolean
+  titleColor: string
+  activeTitleColor: string
+  titleHeight: number | string
+  subColor: string
+  activeSubColor: string
+  subTitleHeight: number | string
+  subTitleRadius: number | string
+  imageWidth: number | string
+  imageHeight: number | string
+  imageRadius: number | string
+  imageBorderWidth: number | string
+  showGapLine: boolean
+  lock: boolean
+  disabled: boolean
+  pullDown: boolean
+  placeholder: string
+  maskTop: number | string
+  maskRight: number | string
+  maskBottom: number | string
+  maskLeft: number | string
+  maskZindex: number | string
+}
+
 export default {
   // 当前激活的选项支持sync双向绑定（类型为number时绑定index，类型为string时绑定name）
   active: { type: [Number, String], default: () => 0 },

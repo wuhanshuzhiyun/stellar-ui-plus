@@ -78,7 +78,6 @@ export default function useData({
   }
 
   const initChildren = (init?: boolean) => {
-    return
     if (init)
       initEnd = false
     if (initEnd)

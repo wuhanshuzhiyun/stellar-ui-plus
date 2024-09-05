@@ -78,6 +78,8 @@ export default function useData({
   }
 
   const initChildren = (init?: boolean) => {
+    if (!thas.value)
+      return
     if (init)
       initEnd = false
     if (initEnd)
@@ -145,10 +147,10 @@ export default function useData({
     }, 50)
   }
   watch(
-    () => props.active,
-    (v) => {
-      if (dataActive.value !== v)
-        setDataActive(v)
+    [() => props.active, () => thas.value],
+    () => {
+      if (dataActive.value !== props.active)
+        setDataActive(props.active)
       initChildren()
     },
     { immediate: true },

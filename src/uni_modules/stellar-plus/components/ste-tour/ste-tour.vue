@@ -37,7 +37,7 @@ const { dataShow, cmpRootStyle, clickRoot, dataStyle, messageStyle, arrowsStyle,
                     </view>
                 </view>
                 <view class="message-content-text">
-                    <slot :item="cmpStep">
+                    <slot>
                         <view class="message-text" @click.stop="true">
                             {{ cmpStep.message }}
                         </view>
@@ -59,7 +59,7 @@ const { dataShow, cmpRootStyle, clickRoot, dataStyle, messageStyle, arrowsStyle,
                         >
                             {{ prevStepTxt }}
                         </ste-button>
-                        <ste-button :round="false" :rootStyle="{ padding: '0 10px' }" :mode="100" @click="onNext">
+                        <ste-button :round="false" :rootStyle="{ padding: '0 10px', marginLeft: '10px' }" :mode="100" @click="onNext">
                             {{ dataCurrent < steps.length - 1 ? nextStepTxt : completeTxt }}
                         </ste-button>
                     </view>

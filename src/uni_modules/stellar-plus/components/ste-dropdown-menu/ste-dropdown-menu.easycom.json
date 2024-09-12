@@ -1,0 +1,111 @@
+{
+    "name": "ste-dropdown-menu",
+    "description": "下拉菜单",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=dropdown-menu",
+    "attributes": [
+        {
+            "name": "title",
+            "description": "菜单标题，未设置时会显示选中项的值",
+            "type": "string"
+        },
+        {
+            "name": "value",
+            "description": "下拉菜单选中的值",
+            "type": "string | array"
+        },
+        {
+            "name": "inactiveColor",
+            "description": "未选中颜色",
+            "type": "string",
+            "default": "#000000"
+        },
+        {
+            "name": "activeColor",
+            "description": "选中色",
+            "type": "string",
+            "default": "#0090FF"
+        },
+        {
+            "name": "direction",
+            "description": "展开方向",
+            "type": "string",
+            "default": "down",
+            "values": [
+                {
+                    "name": "up",
+                    "description": "向上展开"
+                },
+                {
+                    "name": "down",
+                    "description": "向下展开"
+                }
+            ]
+        },
+        {
+            "name": "duration",
+            "description": "展开动画执行时间",
+            "type": "number",
+            "default": "0.2"
+        },
+        {
+            "name": "showMask",
+            "description": "是否展示遮罩",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "isMaskClick",
+            "description": "是否点击遮罩关闭",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "zIndex",
+            "description": "弹窗层级z-index",
+            "type": "number"
+        },
+        {
+            "name": "type",
+            "description": "下拉选项的形状",
+            "type": "string",
+            "default": "block",
+            "values": [
+                {
+                    "name": "round",
+                    "description": "圆形"
+                },
+                {
+                    "name": "block",
+                    "description": "块状"
+                }
+            ]
+        },
+        {
+            "name": "max",
+            "description": "可选数量",
+            "type": "number",
+            "default": "1"
+        },
+        {
+            "name": "[event]change",
+            "description": "选项改变时触发",
+            "type": "(value: any[]) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "选中的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]open",
+            "description": "菜单打开",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]close",
+            "description": "菜单收起",
+            "type": "() => void"
+        }
+    ]
+}

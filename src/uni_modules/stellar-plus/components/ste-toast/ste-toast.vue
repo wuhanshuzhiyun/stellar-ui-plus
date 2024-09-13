@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import utils from '../../utils/utils.js';
-import propsData from './props';
-import { computed, defineOptions } from 'vue';
+import { computed, defineOptions, inject, watch } from 'vue';
+import { toastDefaultOptionsKey } from './ste-toast';
 defineOptions({
     name: 'ste-toast',
 });
-
-// const props = defineProps(propsData);
 
 let show = ref(false);
 let title = ref('');
@@ -30,7 +27,6 @@ const cmpIcon = computed(() => {
 
 // 打开弹窗
 function showToast(params: any) {
-    console.log('params', params);
     // 关闭前面的弹窗
     show.value = false;
     // 关闭系统的弹窗
@@ -70,6 +66,18 @@ function hideToast() {
     show.value = false;
     close.value();
 }
+
+// 组合函数
+const injectToastOptions = ref(inject(toastDefaultOptionsKey));
+watch(injectToastOptions, (value: any) => {
+    console.log('value', value);
+    if (value.show) {
+        showToast(value);
+    } else {
+        hideToast();
+    }
+});
+
 defineExpose({
     showToast,
     hideToast,

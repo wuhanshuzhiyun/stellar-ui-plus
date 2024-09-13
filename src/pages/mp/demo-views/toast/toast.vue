@@ -46,11 +46,12 @@
 </template>
 
 <script setup lang="ts">
+import { useToast } from '@/uni_modules/stellar-plus/composables';
 import { ref } from 'vue';
 let toast = ref();
-
+const toast1 = useToast();
 function click1() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
     });
 }

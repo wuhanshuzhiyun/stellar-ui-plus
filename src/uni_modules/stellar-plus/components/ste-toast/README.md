@@ -6,6 +6,28 @@
 
 ### 使用方法
 
+#### 组合函数使用方法
+
+ps：注意 目前 useToast 只能在 setup 作用域下使用
+
+```js
+import { useToast } from 'stellar-plus/composables";
+const toast = useToast();
+
+function click1() {
+    toast.showToast({
+        title: '提示内容',
+    });
+}
+```
+
+```html
+<template>
+    <ste-toast></ste-toast>
+    <ste-button @click="click1" :width="400">提示内容</ste-button>
+</template>
+```
+
 #### Ref用法
 
 父组件引入组件 绑定ref 通过ref调用showToast方法，打开轻提示
@@ -169,6 +191,25 @@ click13() {
 
 ### API
 
-<!-- props -->
+#### Props
+
+| 属性名     | 说明                                                                                       | 类型      | 默认值    | 可选值 | 支持版本 |
+| ---------- | ------------------------------------------------------------------------------------------ | --------- | --------- | ------ | -------- |
+| `title`    | 提示的内容                                                                                 | `String`  | ``        | -      | -        |
+| `icon`     | 图标                                                                                       | `String`  | `success` | -      | -        |
+| `image`    | 自定义图标的路径，image的优先级高于icon                                                    | `String`  | ``        | -      | -        |
+| `duration` | 提示的延迟时间，单位ms 默认值：1500，值为 0 时，toast 不会自动消失（loading 类型默认为 0） | `Number`  | `1500`    | -      | -        |
+| `mask`     | 是否显示透明蒙层，防止触摸穿透                                                             | `Boolean` | `false`   | -      | -        |
+| `success`  | 提示打开成功的回调函数                                                                     | -         | -         |
+| `fail`     | 提示打开失败的回调函数                                                                     | -         | -         |
+| `complete` | 提示结束的回调函数（提示打开、失败都会执行）                                               | -         | -         |
+| `close`    | 提示关闭的的回调函数                                                                       | -         | -         |
+
+#### Methods
+
+| 方法名      | 说明         | 方法参数 | 支持版本 |
+| ----------- | ------------ | -------- | -------- |
+| `showToast` | 提示打开函数 | -        | -        |
+| `hideToast` | 关闭提示函数 | -        | -        |
 
 {{qinpengfei}}

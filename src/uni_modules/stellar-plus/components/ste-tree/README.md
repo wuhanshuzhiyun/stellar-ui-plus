@@ -62,11 +62,11 @@
     import type { TreeNode } from '/uni_modules/stellar-plus/types/index';
 
     const onOpen = (node: TreeNode) => {
-        uni.showToast({ title: `打开节点：${node.title}`, icon: 'none' });
+        toast.showToast({ title: `打开节点：${node.title}`, icon: 'none' });
     };
 
     const onClose = (node: TreeNode) => {
-        uni.showToast({ title: `关闭节点：${node.title}`, icon: 'none' });
+        toast.showToast({ title: `关闭节点：${node.title}`, icon: 'none' });
     };
 </script>
 <template>

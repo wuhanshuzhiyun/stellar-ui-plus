@@ -24,7 +24,7 @@
         active.value++;
     }
     function toToast(index: number) {
-        uni.showToast({
+        toast.showToast({
             title: `进度：${index}`,
         });
     }

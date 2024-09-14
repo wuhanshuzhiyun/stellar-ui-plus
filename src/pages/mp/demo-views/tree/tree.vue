@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import type { TreeNode } from '.././../../../uni_modules/stellar-plus/types/index';
 import type { RefTree } from '.././../../../uni_modules/stellar-plus/types/refComponents';
-
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const searchTitle = ref('');
 
 const options = [
@@ -45,11 +46,11 @@ const options1 = [
 ];
 
 const onOpen = (node: TreeNode) => {
-    uni.showToast({ title: `打开节点：${node.title}`, icon: 'none' });
+    toast.showToast({ title: `打开节点：${node.title}`, icon: 'none' });
 };
 
 const onClose = (node: TreeNode) => {
-    uni.showToast({ title: `关闭节点：${node.title}`, icon: 'none' });
+    toast.showToast({ title: `关闭节点：${node.title}`, icon: 'none' });
 };
 
 const accordion = ref<RefTree>();

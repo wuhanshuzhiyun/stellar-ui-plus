@@ -3,7 +3,8 @@ import { ref } from 'vue';
 // import type { Obj } from '@/uni_modules/stellar-plus/types';
 import type { RefTable } from '@/uni_modules/stellar-plus/types/refComponents';
 import type { RefSignature } from '@/uni_modules/stellar-plus/types/refComponents';
-
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const signature = ref<RefSignature>();
 
 const methodTable = ref<RefTable>();
@@ -39,7 +40,7 @@ const rows3 = ref([
 ]);
 
 function scrollToLower() {
-    uni.showToast({
+    toast.showToast({
         title: '到底了',
     });
 }

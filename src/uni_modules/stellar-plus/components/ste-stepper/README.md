@@ -35,25 +35,25 @@
     });
 
     function blur(_event: number) {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `失焦事件`,
         });
     }
     function focus() {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `聚焦事件`,
         });
     }
     function click1(value: number, suspend: () => void, next: () => void, _stop: () => void) {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `点击按钮：${value} 输入值`,
         });
         suspend();
         setTimeout(() => {
-            uni.showToast({
+            toast.showToast({
                 icon: 'none',
                 title: `执行成功`,
             });
@@ -61,14 +61,14 @@
         }, 1500);
     }
     function click2(value: number, suspend: () => void, _next: () => void, stop: () => void) {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `点击按钮：${value} 输入值`,
         });
         // 阻止change事件
         suspend();
         setTimeout(() => {
-            uni.showToast({
+            toast.showToast({
                 icon: 'none',
                 title: `执行成功`,
             });
@@ -77,7 +77,7 @@
     }
     function change(value: number) {
         setTimeout(() => {
-            uni.showToast({
+            toast.showToast({
                 icon: 'none',
                 title: `改变：${value} 输入值`,
             });

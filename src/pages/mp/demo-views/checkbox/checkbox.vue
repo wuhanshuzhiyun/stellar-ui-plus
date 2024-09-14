@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const val = reactive({
     value1: false,
     value2: true,
@@ -25,7 +27,7 @@ const val = reactive({
     value22: [],
 });
 function click1(value: any, suspend: () => void, next: () => void) {
-    uni.showToast({
+    toast.showToast({
         icon: 'none',
         title: `点击：${value} 复选框的值`,
     });
@@ -36,7 +38,7 @@ function click1(value: any, suspend: () => void, next: () => void) {
     }, 1500);
 }
 function click2(value: any, suspend: () => void, _next: any, stop: () => void) {
-    uni.showToast({
+    toast.showToast({
         icon: 'none',
         title: `点击：${value} 复选框的值`,
     });
@@ -49,7 +51,7 @@ function click2(value: any, suspend: () => void, _next: any, stop: () => void) {
 
 function change(value: any) {
     setTimeout(() => {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `改变：${value} 复选框的值`,
         });

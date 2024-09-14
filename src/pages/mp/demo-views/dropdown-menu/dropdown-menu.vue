@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import type { RefDropdownMenu } from '@/uni_modules/stellar-plus/types/refComponents';
-
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const menu1 = ref(1);
 const customMenuData = ref([
     { name: '服务台业务', child: ['雨伞租借', '礼品包装', '电费代收', '便民药箱', '赠品发放'] },
@@ -23,11 +24,12 @@ function change() {
 
 function itemClick(stop: () => void, next: () => void, _reject: () => void) {
     stop();
-    uni.showLoading({
+    toast.showToast({
         title: '加载...',
+        icon: 'loading',
     });
     setTimeout(() => {
-        uni.hideLoading();
+        toast.hideToast();
         next();
     }, 500);
 }

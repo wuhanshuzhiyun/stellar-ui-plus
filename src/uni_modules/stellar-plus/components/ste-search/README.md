@@ -16,20 +16,20 @@ const hotWords = ref(['RTX4060', 'RTX4070', 'RTX4080']);
 const focus = ref(false);
 
 const onInput = (v: string) => {
-    uni.showToast({
+    toast.showToast({
         title: 'onInput' + v,
         icon: 'none',
     });
 };
 const onSearch = (v: string) => {
-    uni.showToast({
+    toast.showToast({
         title: 'onSearch' + v,
         icon: 'none',
     });
 };
 
 const onClick = (v: string) => {
-    uni.showToast({
+    toast.showToast({
         title: 'onClick' + v,
         icon: 'none',
     });

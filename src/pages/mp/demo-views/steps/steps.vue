@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const active = ref(0);
 
 function goToPrev() {
@@ -13,7 +14,7 @@ function goToNext() {
     active.value++;
 }
 function toToast(index: number) {
-    uni.showToast({
+    toast.showToast({
         title: `进度：${index}`,
     });
 }

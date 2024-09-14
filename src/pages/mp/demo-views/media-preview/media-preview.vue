@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const medias = ref([
     'https://image.whzb.com/chain/StellarUI/image/banner1.png',
     'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
@@ -18,7 +20,7 @@ const show6 = ref(false);
 const show7 = ref(false);
 
 const onLongpress = (i: number) => {
-    uni.showToast({
+    toast.showToast({
         title: `长按了第【${i + 1}】个媒体资源`,
         icon: 'none',
     });
@@ -45,7 +47,7 @@ const onBeforeClose = (stop: () => void, next: () => void, prevent: () => void) 
 };
 
 const onClose = () => {
-    uni.showToast({
+    toast.showToast({
         title: '弹窗关闭了',
         icon: 'none',
     });

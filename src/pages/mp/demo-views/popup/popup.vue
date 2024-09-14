@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const show = ref(false);
 const bgShow = ref(false);
 const maskShow1 = ref(false);
@@ -17,11 +19,12 @@ const syncShow = ref(false);
 
 function syncClose(suspend: () => void, next: () => void, stop: () => void) {
     suspend();
-    uni.showLoading({
+    toast.showToast({
         title: '加载中...',
+        icon: 'loading',
     });
     setTimeout(() => {
-        uni.hideLoading();
+        toast.hideToast();
         next();
     }, 2000);
 }

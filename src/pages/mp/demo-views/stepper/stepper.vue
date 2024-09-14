@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const val = ref({
     value1: 10,
     value2: 7,
@@ -24,25 +25,25 @@ const val = ref({
 });
 
 function blur(_event: number) {
-    uni.showToast({
+    toast.showToast({
         icon: 'none',
         title: `失焦事件`,
     });
 }
 function focus() {
-    uni.showToast({
+    toast.showToast({
         icon: 'none',
         title: `聚焦事件`,
     });
 }
 function click1(value: number, suspend: () => void, next: () => void, _stop: () => void) {
-    uni.showToast({
+    toast.showToast({
         icon: 'none',
         title: `点击按钮：${value} 输入值`,
     });
     suspend();
     setTimeout(() => {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `执行成功`,
         });
@@ -50,14 +51,14 @@ function click1(value: number, suspend: () => void, next: () => void, _stop: () 
     }, 1500);
 }
 function click2(value: number, suspend: () => void, _next: () => void, stop: () => void) {
-    uni.showToast({
+    toast.showToast({
         icon: 'none',
         title: `点击按钮：${value} 输入值`,
     });
     // 阻止change事件
     suspend();
     setTimeout(() => {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `执行成功`,
         });
@@ -66,7 +67,7 @@ function click2(value: number, suspend: () => void, _next: () => void, stop: () 
 }
 function change(value: number) {
     setTimeout(() => {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `改变：${value} 输入值`,
         });

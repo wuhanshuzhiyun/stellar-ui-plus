@@ -160,7 +160,10 @@ function onTouchEnd(e: UniTouchEvent | MouseEvent) {
     // this.isSecondSlider = false;
     emits('dragEnd', e);
     emits('change', props.range ? [realPercentage.value, realPercentage2.value] : realPercentage.value);
+
+    // #ifdef WEB
     removeListenner && removeListenner();
+    // #endif
 }
 
 function updateWidth(value: number, drag: boolean) {

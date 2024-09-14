@@ -225,7 +225,7 @@ function confirm() {
                             </ste-dropdown-menu>
                         </view>
                         <view>
-                            <ste-dropdown-menu title="可选三项" :max="3">
+                            <ste-dropdown-menu title="可选三项" :max="3" direction="up">
                                 <ste-dropdown-menu-item value="1" title="选项1" />
                                 <ste-dropdown-menu-item value="2" title="选项2" />
                                 <ste-dropdown-menu-item value="3" title="选项3" />

@@ -27,7 +27,7 @@ const utils = {
 
     // 如果图片地址包含http https前缀，则不拼接全局图片前缀
     let baseUrl = ''
-    systemTheme = systemTheme ?? config.IMAGE_SYSTEM_THENE
+    systemTheme = systemTheme || config.IMAGE_SYSTEM_THENE
     if (/^(data:image|wxfile:)/g.test(val)) {
       return val
     }
@@ -53,7 +53,7 @@ const utils = {
     }
     // 如果图片地址包含http https前缀，则不拼接全局图片前缀
     let baseUrl = ''
-    systemTheme = systemTheme ?? config.IMAGE_SYSTEM_THENE
+    systemTheme = systemTheme || config.IMAGE_SYSTEM_THENE
     if (/^(http:|https:)/g.test(val) === false) {
       baseUrl = config.IMAGE_BASE_URL
       baseUrl += isTheme ? systemTheme : config.IMAGE_COMMON

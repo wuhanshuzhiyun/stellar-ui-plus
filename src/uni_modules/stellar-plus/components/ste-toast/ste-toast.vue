@@ -22,7 +22,7 @@ const cmpIcon = computed(() => {
         success: '&#xe67a;',
         error: '&#xe67b;',
     };
-    return iconObj[icon.value] ?? '';
+    return iconObj[icon.value] || '';
 });
 
 // 打开弹窗
@@ -35,18 +35,18 @@ function showToast(params: any) {
         try {
             clearTimeout(timer.value);
             show.value = true;
-            title.value = params.title ?? '';
-            icon.value = params.icon ?? 'success';
-            image.value = params.image ?? '';
-            duration.value = params.duration ?? 1500;
+            title.value = params.title || '';
+            icon.value = params.icon || 'success';
+            image.value = params.image || '';
+            duration.value = params.duration || 1500;
             if (icon.value == 'loading') {
                 duration.value = 0;
             }
-            mask.value = params.mask ?? false;
-            success.value = params.success ?? function () {};
-            fail.value = params.fail ?? function () {};
-            complete.value = params.complete ?? function () {};
-            close.value = params.close ?? function () {};
+            mask.value = params.mask || false;
+            success.value = params.success || function () {};
+            fail.value = params.fail || function () {};
+            complete.value = params.complete || function () {};
+            close.value = params.close || function () {};
             if (duration.value) {
                 timer.value = setTimeout(() => {
                     hideToast();

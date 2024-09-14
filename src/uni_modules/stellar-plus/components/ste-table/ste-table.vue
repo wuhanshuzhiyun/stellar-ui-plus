@@ -344,11 +344,26 @@ $default-border: 2rpx solid #ebebeb;
                 display: flex;
                 justify-content: space-between;
 
+                .a-view {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
                 > view {
                     width: 100%;
                     display: flex;
                     justify-content: space-between;
                 }
+
+                /* #ifdef MP-ALIPAY */
+                > * {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                /* #endif */
+
                 &.current-row {
                     background-color: #ecf5ff;
                 }

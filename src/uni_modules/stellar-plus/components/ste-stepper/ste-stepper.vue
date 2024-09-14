@@ -121,7 +121,7 @@ function handleValue(value: number) {
     return Number(Number(value).toFixed(props.precision));
 }
 function blur(event: BaseEvent) {
-    let { value } = event.detail ?? 0;
+    let { value } = event.detail ? event.detail : 0;
     // 解决实际值没有变化 显示值不刷新的问题
 
     emits('update:modelValue', value);

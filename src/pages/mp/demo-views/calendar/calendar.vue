@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useToast } from '@/uni_modules/stellar-plus/composables';
 import type { RefCalendar } from '@/uni_modules/stellar-plus/types/refComponents';
 const show1 = ref(false);
 const show2 = ref(false);
@@ -14,9 +15,9 @@ const show10 = ref(false);
 const show11 = ref(false);
 const show12 = ref(false);
 const show13 = ref(false);
-
+let taost = useToast();
 const handleConfirm = (v: (string | number)[]) => {
-    uni.showToast({
+    taost.showToast({
         title: '确定选择：' + v.join(' '),
         icon: 'none',
         duration: 1500,

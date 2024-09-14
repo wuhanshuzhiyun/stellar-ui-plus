@@ -1,6 +1,14 @@
 import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
 
 export default defineUniPages({
+  insetLoader: {
+    config: {
+      toast: '<ste-toast ref=\'toast\'></ste-toast>',
+    },
+    // 全局配置
+    label: ['toast'],
+    rootEle: '.*',
+  },
   pages: [],
   globalStyle: {
     'backgroundColor': '@bgColor',

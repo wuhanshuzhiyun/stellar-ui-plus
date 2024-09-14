@@ -6,12 +6,14 @@ import UniHelperComponents from '@uni-helper/vite-plugin-uni-components'
 import AutoImport from 'unplugin-auto-import/vite'
 
 import mdPlugin, { Mode } from 'vite-plugin-markdown'
+import vue3InsetLoaderPlugin from './plugins/vue3-inset-loader'
 
 import comTypes from './src/pages/pc/stellar-plus-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    vue3InsetLoaderPlugin,
     comTypes(),
     mdPlugin({ mode: [Mode.HTML] }),
     // https://github.com/uni-helper/vite-plugin-uni-manifest

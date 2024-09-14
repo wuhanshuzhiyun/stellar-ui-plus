@@ -44,22 +44,22 @@
             "default": false
         },
         {
-            "name": "[event]success",
+            "name": "success",
             "description": "提示打开成功的回调函数",
             "type": "() => void"
         },
         {
-            "name": "[event]fail",
+            "name": "fail",
             "description": "提示打开失败的回调函数",
             "type": "() => void"
         },
         {
-            "name": "[event]complete",
+            "name": "complete",
             "description": "提示结束的回调函数（提示打开、失败都会执行）",
             "type": "() => void"
         },
         {
-            "name": "[event]close",
+            "name": "close",
             "description": "提示关闭的的回调函数",
             "type": "() => void"
         }

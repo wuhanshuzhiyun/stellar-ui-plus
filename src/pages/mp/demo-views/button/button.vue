@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 function handleClick(v: any) {
-    uni.showToast({
+    toast.showToast({
         title: '点击按钮' + ' ' + v,
         icon: 'none',
         duration: 1500,

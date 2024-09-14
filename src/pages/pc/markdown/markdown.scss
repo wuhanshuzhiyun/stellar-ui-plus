@@ -5,7 +5,6 @@
 }
 
 .right-component {
-
     &,
     * {
         box-sizing: border-box;
@@ -74,10 +73,14 @@
         code {
             padding: 10px;
             border-radius: 5px;
-
-            &.language-html {
-                background-color: #f7f8fa;
-            }
+        }
+        [class^='language'] {
+            background-color: #f7f8fa;
+        }
+    }
+    .code-body-box {
+        code {
+            background-color: #f7f8fa;
         }
     }
 
@@ -153,7 +156,7 @@
             }
         }
 
-        &>.code-copy-button {
+        & > .code-copy-button {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -174,7 +177,7 @@ code span {
         monospace;
 }
 
-pre+p {
+pre + p {
     margin-top: 20px;
 }
 
@@ -254,7 +257,7 @@ pre+p {
     text-decoration: underline;
 }
 
-*:not(.code-body-box)>code {
+*:not(.code-body-box) > code {
     color: #a626a4;
     border-radius: 3px;
     white-space: nowrap;

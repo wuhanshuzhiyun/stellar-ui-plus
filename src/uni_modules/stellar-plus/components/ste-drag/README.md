@@ -73,8 +73,6 @@
 
 ### API
 
-#### Props
-
 <!-- props -->
 
 #### Slots

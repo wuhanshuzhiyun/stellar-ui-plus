@@ -1,0 +1,240 @@
+@charset "UTF-8";
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.right-component,
+.right-component * {
+  box-sizing: border-box;
+}
+.right-component img {
+  width: 100%;
+}
+.right-component h1 {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  font-size: 30px;
+  cursor: default;
+  font-weight: 400;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  background-color: #fff;
+}
+.right-component h1 a {
+  display: none;
+}
+.right-component h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  top: 56px;
+}
+.right-component h3 {
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 20px;
+}
+.right-component h4 {
+  margin-bottom: 14px;
+  font-weight: 600;
+  font-size: 18px;
+}
+.right-component h5 {
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.right-component h6 {
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.right-component p,
+.right-component table,
+.right-component ul,
+.right-component ol,
+.right-component pre {
+  padding: 0;
+  margin-bottom: 28px;
+  line-height: 1.8;
+}
+.right-component p code,
+.right-component table code,
+.right-component ul code,
+.right-component ol code,
+.right-component pre code {
+  padding: 10px;
+  border-radius: 5px;
+}
+.right-component p [class^=language],
+.right-component table [class^=language],
+.right-component ul [class^=language],
+.right-component ol [class^=language],
+.right-component pre [class^=language] {
+  background-color: #f7f8fa;
+}
+.right-component .code-body-box code {
+  background-color: #f7f8fa;
+}
+.right-component p {
+  margin-bottom: 16px;
+}
+.right-component table {
+  width: 100%;
+  border-collapse: collapse;
+  border-color: #ddd;
+  table-layout: fixed;
+}
+.right-component table th,
+.right-component table td {
+  padding: 5px 10px;
+  text-align: left;
+  overflow: hidden;
+}
+.right-component table th {
+  width: auto;
+}
+.right-component table th:nth-child(2) {
+  width: 35%;
+}
+.right-component table th {
+  background-color: #f7f7f7;
+}
+.right-component ol,
+.right-component ul {
+  padding-left: 40px;
+}
+.right-component ol li,
+.right-component ul li {
+  line-height: 30px;
+}
+.right-component pre {
+  position: relative;
+  border-radius: 0;
+  display: block;
+  overflow-x: auto;
+  color: #58727e;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: Source Code Pro, Monaco, Inconsolata, monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  -webkit-font-smoothing: auto;
+}
+.right-component pre div.code-body-box {
+  max-height: 400px;
+  overflow: auto;
+}
+.right-component pre div.code-body-box code {
+  tab-size: 4;
+  /* 这可能不起作用，取决于浏览器支持 */
+  -moz-tab-size: 4;
+  /* Firefox */
+  -o-tab-size: 4;
+  /* Opera */
+  display: block;
+}
+.right-component pre > .code-copy-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  color: #888;
+}
+
+code span {
+  font-family: Source Code Pro, Monaco, Inconsolata, monospace;
+}
+
+pre + p {
+  margin-top: 20px;
+}
+
+.hljs {
+  display: block;
+  padding: 30px;
+  overflow-x: auto;
+  background: #f7f8fa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-formula,
+.hljs-keyword {
+  color: #a626a4;
+}
+
+.hljs-deletion,
+.hljs-name,
+.hljs-section,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string,
+.hljs-regexp,
+.hljs-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-pseudo,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable {
+  color: #986801;
+}
+
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-symbol,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}
+
+*:not(.code-body-box) > code {
+  color: #a626a4;
+  border-radius: 3px;
+  white-space: nowrap;
+}/*# sourceMappingURL=markdown.css.map */

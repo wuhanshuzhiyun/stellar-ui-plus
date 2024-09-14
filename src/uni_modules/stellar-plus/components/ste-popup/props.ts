@@ -10,7 +10,7 @@ export default {
   height: { type: [String, Number] as PropType<SizeType>, default: 'auto' },
   position: { type: String as PropType<PositionType>, default: 'center' },
   round: { type: Boolean, default: false },
-  showClose: { type: Boolean, default: false },
+  showClose: { type: Boolean, default: true },
   offsetX: { type: [String, Number], default: 0 },
   offsetY: { type: [String, Number], default: 0 },
   duration: { type: Number, default: 200 },

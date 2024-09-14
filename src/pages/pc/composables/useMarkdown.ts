@@ -9,12 +9,13 @@ export default function useMarkdown(): MarkdownData {
   const setActive = (value: string) => {
     window.history.pushState(null, '', `#/?active=${value}`)
     active.value = value
+    document.getElementsByClassName('right')[0].scrollTop = 0
   }
 
   const activeBtns = () => {
     nextTick(() => {
       const btns = document.querySelectorAll<HTMLButtonElement>('button.code-copy-button')
-      btns.forEach(btn => btn.onclick = () => btnCopy(btn))
+      btns.forEach(btn => (btn.onclick = () => btnCopy(btn)))
     })
   }
 
@@ -30,8 +31,7 @@ export default function useMarkdown(): MarkdownData {
   watch(active, (value) => {
     if (value.includes('handbook') || value.includes('devGuide'))
       h5url.value = '#/pages/mp/index'
-    else
-      h5url.value = `#/pages/mp/demo-views/${value}/${value}`
+    else h5url.value = `#/pages/mp/demo-views/${value}/${value}`
 
     activeBtns()
   })

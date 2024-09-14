@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const iconUrl = ref('https://at.alicdn.com/t/c/font_4457057_f7j9wsh9d4h.json?spm=a313x.manage_type_myprojects.i1.11.2ba93a81on7sxn&file=font_4457057_f7j9wsh9d4h.json');
 const glyphs = ref<Array<any>>([]);
 const tabIndex = ref(0);
@@ -54,7 +55,7 @@ function copy(data: string) {
         data,
         showToast: false,
         success: function () {
-            uni.showToast({
+            toast.showToast({
                 icon: 'none',
                 title: `code：${data} 已复制到剪切板`,
             });

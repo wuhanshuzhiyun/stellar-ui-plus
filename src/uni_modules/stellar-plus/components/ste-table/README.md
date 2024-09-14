@@ -286,7 +286,7 @@
         { name: '王七', birth: '2024.01.01', sex: '男' },
     ]);
     function scrollToLower() {
-        uni.showToast({
+        toast.showToast({
             title: '到底了',
         });
     }

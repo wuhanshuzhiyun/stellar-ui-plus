@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { RefSwipeAction, RefSwipeActionGroup } from '../../../../uni_modules/stellar-plus/types/refComponents';
-
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const datas = ['1111111111', '22222222222', '3333333333333333', '444444444444444444444'];
 
 const swipe = ref<RefSwipeAction>();
@@ -20,13 +21,13 @@ const closeSwipeGroup = (index: number) => {
     swipeGroup.value?.close(index);
 };
 const onOpen = (direction: 'left' | 'right', index?: number) => {
-    uni.showToast({
+    toast.showToast({
         title: index || index === 0 ? `第${index + 1}条的打开方向:${direction}` : `打开方向：${direction}`,
         icon: 'none',
     });
 };
 const onClose = (index?: number) => {
-    uni.showToast({
+    toast.showToast({
         title: index || index === 0 ? `关闭第${index + 1}条` : '关闭',
         icon: 'none',
     });

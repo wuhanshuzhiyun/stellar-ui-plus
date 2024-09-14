@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import type { UploadFileType } from '../../../../uni_modules/stellar-plus/types';
-
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 const fileList = ref<UploadFileType[]>([]);
 const fileList1 = ref<UploadFileType[]>([]);
 const fileList2 = ref<UploadFileType[]>([{ url: 'https://image.whzb.com/chain/StellarUI/bg1.jpg' }]);
@@ -57,7 +58,7 @@ const beforeRead = (list: UploadFileType[], suspend: () => void, next: () => voi
 };
 
 const onSuccessRead = (list: UploadFileType[]) => {
-    uni.showToast({ title: '读取成功，请自行处理上传逻辑', icon: 'none' });
+    toast.showToast({ title: '读取成功，请自行处理上传逻辑', icon: 'none' });
 };
 
 const beforeDelete = (index: number, suspend: () => void, next: () => void, stop: () => void) => {
@@ -76,7 +77,7 @@ const beforeDelete = (index: number, suspend: () => void, next: () => void, stop
 };
 
 const onSuccessDelete = (index: number, list: UploadFileType[]) => {
-    uni.showToast({ title: '删除成功', icon: 'none' });
+    toast.showToast({ title: '删除成功', icon: 'none' });
 };
 
 const openPreview = () => {

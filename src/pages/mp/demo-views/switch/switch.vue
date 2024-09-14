@@ -54,6 +54,8 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useToast } from '@/uni_modules/stellar-plus/composables';
+let toast = useToast();
 let value1 = ref(false);
 let value2 = ref(true);
 let value3 = ref(false);
@@ -63,14 +65,14 @@ let value6 = ref(false);
 let value7 = ref(false);
 
 function click1(value: any) {
-    uni.showToast({
+    toast.showToast({
         icon: 'none',
         title: `点击：${value} 开关的值`,
     });
 }
 
 function click2(value: any, allowStop: any, resolve: any) {
-    uni.showToast({
+    toast.showToast({
         icon: 'none',
         title: `点击：${value} 开关的值`,
     });
@@ -79,7 +81,7 @@ function click2(value: any, allowStop: any, resolve: any) {
 }
 function change(value: any) {
     setTimeout(() => {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `改变：${value} 开关的值`,
         });

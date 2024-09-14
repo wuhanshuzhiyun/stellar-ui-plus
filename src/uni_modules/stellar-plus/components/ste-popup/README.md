@@ -107,11 +107,12 @@
 <script setup lang="ts">
     function syncClose(suspend: () => void, next: () => void, stop: () => void) {
         suspend();
-        uni.showLoading({
+        toast.showToast({
             title: '加载中...',
+            icon: 'loading',
         });
         setTimeout(() => {
-            uni.hideLoading();
+            toast.hideToast();
             next();
         }, 2000);
     }

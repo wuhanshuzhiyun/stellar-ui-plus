@@ -36,7 +36,7 @@
         value22: [],
     });
     function click1(value: any, suspend: () => {}, next: () => {}) {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `点击：${value} 复选框的值`,
         });
@@ -47,7 +47,7 @@
         }, 1500);
     }
     function click2(value: any, suspend: () => {}, _next: any, stop: () => {}) {
-        uni.showToast({
+        toast.showToast({
             icon: 'none',
             title: `点击：${value} 复选框的值`,
         });
@@ -60,7 +60,7 @@
 
     function change(value: any) {
         setTimeout(() => {
-            uni.showToast({
+            toast.showToast({
                 icon: 'none',
                 title: `改变：${value} 复选框的值`,
             });

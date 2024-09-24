@@ -17,9 +17,32 @@
             "default": "100%"
         },
         {
+            "name": "sticky",
+            "description": "默认标题是否粘性布局",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "inactiveColor",
+            "description": "右边锚点状态非激活时的颜色",
+            "type": "string",
+            "default": "#666"
+        },
+        {
+            "name": "activeColor",
+            "description": "右边锚点状态激活时的颜色",
+            "type": "string",
+            "default": "#FF1A00"
+        },
+        {
             "name": "[event]change",
             "description": "激活节点改变时触发",
             "type": "(index:number)=>void"
+        },
+        {
+            "name": "[event]clickItem",
+            "description": "点击右边锚点时触发",
+            "type": "(title:string,text:string)=>void"
         }
     ]
 }

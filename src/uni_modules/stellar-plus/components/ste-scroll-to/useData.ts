@@ -208,7 +208,7 @@ export default function useData({
     setActiveByTop(detail.scrollTop)
   }
 
-  const cmpRootStyle = computed(() => ({ height: utils.formatPx(props.height) }))
+  const cmpRootStyle = computed(() => ({ 'height': utils.formatPx(props.height), '--index-list-height': utils.formatPx(props.height) }))
 
-  return { scrollTop, cmpRootStyle, onScroll, initChildren }
+  return { dataActive, setDataActive, scrollTop, cmpRootStyle, onScroll, initChildren }
 }

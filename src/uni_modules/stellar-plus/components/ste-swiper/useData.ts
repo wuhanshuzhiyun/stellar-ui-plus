@@ -158,6 +158,8 @@ export default function useData({ props, children, thas, emits }:
   const setBoundary = (moveX = 0, moveY = 0) => {
     if (!props.circular)
       return
+    if (children.length < 2)
+      return
     const startComponent = cmpStartComponent.value
     const endComponent = cmpEndComponent.value
     const length = children.length

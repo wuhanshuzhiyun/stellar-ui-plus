@@ -1,0 +1,177 @@
+{
+    "name": "ste-media-preview",
+    "description": "媒体预览",
+    "example": "<ste-media-preview />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=media-preview",
+    "attributes": [
+        {
+            "name": "mode",
+            "description": "键盘模式",
+            "type": "string",
+            "default": "popup",
+            "values": [
+                {
+                    "name": "popup",
+                    "description": "弹出式"
+                },
+                {
+                    "name": "page",
+                    "description": "页面式"
+                }
+            ]
+        },
+        {
+            "name": "value",
+            "description": "输入值，支持v-model双向绑定",
+            "type": "string"
+        },
+        {
+            "name": "maxlength",
+            "description": "value最大长度",
+            "type": "number"
+        },
+        {
+            "name": "show",
+            "description": "是否显示键盘，支持v-model:show绑定，mode='popup'时生效",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "rightKeys",
+            "description": "是否显示右侧功能键",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "randomKeys",
+            "description": "按键是否随机排列",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "confirmText",
+            "description": "右侧确定按钮文本",
+            "type": "string",
+            "default": "确定"
+        },
+        {
+            "name": "confirmDisabled",
+            "description": "右侧确认是否禁用",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "customKeys",
+            "description": "自定义按键，建议数量不大于2",
+            "type": "string[]",
+            "default": []
+        },
+        {
+            "name": "showClear",
+            "description": "是否显示清空按钮",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "textColor",
+            "description": "按键文字颜色",
+            "type": "string",
+            "default": "#000000"
+        },
+        {
+            "name": "textSize",
+            "description": "按键文字大小",
+            "type": "number | string",
+            "default": 48
+        },
+        {
+            "name": "confirmBg",
+            "description": "确定按钮背景颜色",
+            "type": "string",
+            "default": "#0090FF"
+        },
+        {
+            "name": "confirmColor",
+            "description": "确定按钮文字颜色",
+            "type": "string",
+            "default": "#ffffff"
+        },
+        {
+            "name": "[event]change",
+            "description": "输入值value改变时触发",
+            "type": "(value: string) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入值"
+                }
+            ]
+        },
+        {
+            "name": "[event]clear",
+            "description": "清空按钮点击事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]backspace",
+            "description": "删除按钮点击事件",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]confirm",
+            "description": "确认按钮点击事件",
+            "type": "(value:string) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入值"
+                }
+            ]
+        },
+        {
+            "name": "[event]click",
+            "description": "点击功能键(确认/删除/清除)之外的键盘触发",
+            "type": "(key:string) => void",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "当前点击的按钮"
+                }
+            ]
+        },
+        {
+            "name": "[event]beforeinput",
+            "description": "输入之前触发，功能键之外的键盘点击时为输入",
+            "type": "(key: string, suspend: () => void, next: () => void, stop: () => void) => void",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "当前点击的按钮"
+                },
+                {
+                    "name": "suspend",
+                    "description": "开启等待的回调函数"
+                },
+                {
+                    "name": "next",
+                    "description": "执行后续操作的回调函数"
+                },
+                {
+                    "name": "stop",
+                    "description": "阻止后续执行的回调函数"
+                }
+            ]
+        },
+        {
+            "name": "[event]open",
+            "description": "打开弹窗键盘触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]close",
+            "description": "关闭弹窗键盘触发",
+            "type": "() => void"
+        },
+        {}
+    ]
+}

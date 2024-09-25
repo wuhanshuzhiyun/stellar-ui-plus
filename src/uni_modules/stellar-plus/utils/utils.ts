@@ -490,7 +490,23 @@ const utils = {
     // 返回替换后的HTML文本
     return html
   },
-
+  /**
+   * 随机打乱数组
+   */
+  randomArray<T>(arr: T[]) {
+    const indexs: number[] = []
+    arr.forEach(() => {
+      indexs.push(Math.floor(Math.random() * arr.length))
+    })
+    for (let i = 0; i < arr.length; i++) {
+      if (i === indexs[i])
+        continue
+      const m = arr[i]
+      arr[i] = arr[indexs[i]]
+      arr[indexs[i]] = m
+    }
+    return arr
+  },
 }
 
 export default utils

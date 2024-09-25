@@ -262,7 +262,7 @@ const onMediaType = () => {
                 </slot>
             </view>
         </view>
-        <ste-media-preview :show="Boolean(previewIndex || previewIndex === 0)" :urls="cmpPreviewList" :index.sync="previewIndex" @close="setPreviewIndex(null)" />
+        <ste-media-preview :show="Boolean(previewIndex || previewIndex === 0)" :urls="cmpPreviewList" v-model:index="previewIndex" @close="setPreviewIndex(null)" />
     </view>
 </template>
 <style lang="scss" scoped>

@@ -8,7 +8,7 @@ const props: NumberKeyboardProps = defineProps(porpsData);
 const emits = defineEmits<{
     (e: 'change', value: string): void;
     (e: 'input', value: string): void;
-    (e: 'update:value', value: string): void;
+    (e: 'update:modelValue', value: string): void;
     (e: 'clear'): void;
     (e: 'backspace'): void;
     (e: 'confirm', value: string): void;

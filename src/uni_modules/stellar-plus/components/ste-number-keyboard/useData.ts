@@ -7,7 +7,7 @@ export default function useData({ props, emits }: {
   emits: {
     (e: 'change', value: string): void
     (e: 'input', value: string): void
-    (e: 'update:value', value: string): void
+    (e: 'update:modelValue', value: string): void
     (e: 'clear'): void
     (e: 'backspace'): void
     (e: 'confirm', value: string): void
@@ -74,7 +74,7 @@ export default function useData({ props, emits }: {
     }
   })
 
-  watch(() => props.value, setDataValue, { immediate: true })
+  watch(() => props.modelValue, setDataValue, { immediate: true })
   watch(() => props.show, setDataShow, { immediate: true })
 
   const onClose = () => {
@@ -126,7 +126,7 @@ export default function useData({ props, emits }: {
       }
       emits('input', dataValue.value)
       emits('change', dataValue.value)
-      emits('update:value', dataValue.value)
+      emits('update:modelValue', dataValue.value)
     }
     catch (e) {
       if (e)

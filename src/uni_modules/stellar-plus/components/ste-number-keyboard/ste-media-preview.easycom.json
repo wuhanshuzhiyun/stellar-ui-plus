@@ -21,7 +21,7 @@
             ]
         },
         {
-            "name": "value",
+            "name": "modelValue",
             "description": "输入值，支持v-model双向绑定",
             "type": "string"
         },

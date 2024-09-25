@@ -2,7 +2,7 @@ import type { PropType } from 'vue'
 
 export interface NumberKeyboardProps {
   mode: string
-  value: string
+  modelValue: string
   maxlength: number | string
   show: boolean
   rightKeys: boolean
@@ -19,7 +19,7 @@ export interface NumberKeyboardProps {
 
 export default {
   mode: { type: String, default: () => 'popup' },
-  value: { type: String, default: () => '' },
+  modelValue: { type: String, default: () => '' },
   maxlength: { type: [Number, String], default: () => null },
   show: { type: Boolean, default: () => false },
   rightKeys: { type: Boolean, default: () => true },

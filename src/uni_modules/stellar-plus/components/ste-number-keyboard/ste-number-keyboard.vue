@@ -2,6 +2,8 @@
 import useData from './useData';
 import porpsData, { type NumberKeyboardProps } from './props';
 
+import KeyboardVue from './KeyboardVue.vue';
+
 const props: NumberKeyboardProps = defineProps(porpsData);
 const emits = defineEmits<{
     (e: 'change', value: string): void;
@@ -34,7 +36,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useDat
                             <ste-icon code="&#xe676;" size="36" />
                         </view>
                     </view>
-                    <keyboard
+                    <KeyboardVue
                         :list="cmpNumbers"
                         :confirmText="confirmText"
                         :disabled="confirmDisabled"
@@ -48,7 +50,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useDat
             </ste-popup>
         </block>
         <block v-else>
-            <keyboard
+            <KeyboardVue
                 :list="cmpNumbers"
                 :confirmText="confirmText"
                 :disabled="confirmDisabled"

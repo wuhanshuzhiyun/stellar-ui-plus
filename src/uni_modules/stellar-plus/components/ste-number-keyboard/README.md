@@ -31,7 +31,7 @@
     <text v-if="value1">{{ value1 }}</text>
     <text v-else class="placeholder">请输入</text>
 </view>
-<ste-number-keyboard v-model="value1" :show.sync="show1" />
+<ste-number-keyboard v-model="value1" v-model:show="show1" />
 
 <script>
     export default {
@@ -54,7 +54,7 @@
     <text v-if="value2">{{ value2 }}</text>
     <text v-else class="placeholder">请输入</text>
 </view>
-<ste-number-keyboard :rightKeys="false" v-model="value2" :show.sync="show2" />
+<ste-number-keyboard :rightKeys="false" v-model="value2" v-model:show="show2" />
 
 <script>
     export default {
@@ -78,7 +78,7 @@
     <text v-if="value3">{{ value3 }}</text>
     <text v-else class="placeholder">请输入</text>
 </view>
-<ste-number-keyboard :showClear="false" v-model="value3" :show.sync="show3" maxlength="6" />
+<ste-number-keyboard :showClear="false" v-model="value3" v-model:show="show3" maxlength="6" />
 
 <script>
     export default {
@@ -101,7 +101,7 @@
     <text v-if="value4">{{ value4 }}</text>
     <text v-else class="placeholder">请输入</text>
 </view>
-<ste-number-keyboard :customKeys="['00', '.']" v-model="value4" :show.sync="show4" />
+<ste-number-keyboard :customKeys="['00', '.']" v-model="value4" v-model:show="show4" />
 
 <script>
     export default {
@@ -128,7 +128,7 @@
     <text v-if="value5">{{ value5 }}</text>
     <text v-else class="placeholder">请输入</text>
 </view>
-<ste-number-keyboard v-model="value5" :show.sync="show5" textColor="#f00" textSize="40" confirmBg="#f00" confirmColor="#0f0" confirmText="完成" />
+<ste-number-keyboard v-model="value5" v-model:show="show5" textColor="#f00" textSize="40" confirmBg="#f00" confirmColor="#0f0" confirmText="完成" />
 
 <script>
     export default {
@@ -157,7 +157,7 @@
     <text v-if="value6">{{ value6 }}</text>
     <text v-else class="placeholder">请输入</text>
 </view>
-<ste-number-keyboard :customKeys="['返回']" v-model="value6" :show.sync="show6" @beforeinput="beforeinput" />
+<ste-number-keyboard :customKeys="['返回']" v-model="value6" v-model:show="show6" @beforeinput="beforeinput" />
 
 <script>
     export default {

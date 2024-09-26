@@ -1,0 +1,247 @@
+// 横向抖动动画
+@keyframes shakeX {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+
+	10% {
+		transform: translateX(-9px);
+	}
+
+	20% {
+		transform: translateX(8px);
+	}
+
+	30% {
+		transform: translateX(-7px);
+	}
+
+	40% {
+		transform: translateX(6px);
+	}
+
+	50% {
+		transform: translateX(-5px);
+	}
+
+	60% {
+		transform: translateX(4px);
+	}
+
+	70% {
+		transform: translateX(-3px);
+	}
+
+	80% {
+		transform: translateX(2px);
+	}
+
+	90% {
+		transform: translateX(-1px);
+	}
+}
+
+// 竖向抖动动画
+@keyframes shakeY {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	10% {
+		transform: translateY(-9px);
+	}
+
+	20% {
+		transform: translateY(8px);
+	}
+
+	30% {
+		transform: translateY(-7px);
+	}
+
+	40% {
+		transform: translateY(6px);
+	}
+
+	50% {
+		transform: translateY(-5px);
+	}
+
+	60% {
+		transform: translateY(4px);
+	}
+
+	70% {
+		transform: translateY(-3px);
+	}
+
+	80% {
+		transform: translateY(2px);
+	}
+
+	90% {
+		transform: translateY(-1px);
+	}
+}
+
+// 心跳
+@keyframes ripple {
+	0% {
+		// box-shadow: 0 0.5em 0.5em rgba(0, 0, 0, 0.4);
+
+		transform: scale(1);
+	}
+
+	50% {
+		// box-shadow: 0 1em 1em rgba(0, 0, 0, 0.4);
+		transform: scale(1.1);
+	}
+}
+
+// 呼吸
+@keyframes breath {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+// 右侧向左侧划入
+@keyframes slide-right {
+	0% {
+		opacity: 0;
+		transform: translateX(100%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+// 左侧向右侧划入
+@keyframes slide-left {
+	0% {
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+// 上面向下面划入
+@keyframes slide-top {
+	0% {
+		opacity: 0;
+		transform: translateY(-100%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+// 下面向上面划入
+@keyframes slide-bottom {
+	0% {
+		opacity: 0;
+		transform: translateY(100%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+// 漂浮 float
+@keyframes floatPop {
+	0% {
+		top: 0;
+	}
+
+	25% {
+		top: 1px;
+	}
+
+	50% {
+		top: 4px;
+	}
+
+	75% {
+		top: 1px;
+	}
+
+	100% {
+		top: 0;
+	}
+}
+
+// 跳跃
+@keyframes jump {
+	0% {
+		transform: rotate(0deg) translateY(0);
+		animation-timing-function: ease-in;
+	}
+
+	25% {
+		transform: rotate(10deg) translateY(20 * 1px);
+		animation-timing-function: ease-out;
+	}
+
+	50% {
+		transform: rotate(0deg) translateY(-10 * 1px);
+		animation-timing-function: ease-in;
+	}
+
+	75% {
+		transform: rotate(-10deg) translateY(20 * 1px);
+		animation-timing-function: ease-out;
+	}
+
+	100% {
+		transform: rotate(0deg) translateY(0);
+		animation-timing-function: ease-in;
+	}
+}
+
+// 水波
+@keyframes twinkle {
+	0% {
+		transform: scale(0);
+	}
+
+	20% {
+		opacity: 1;
+	}
+
+	50%,
+	100% {
+		opacity: 0;
+		transform: scale(1.4);
+	}
+}
+
+@keyframes flicker {
+	0% {
+		transform: translateX(-100 * 1px) skewX(-20deg);
+	}
+
+	40%,
+	100% {
+		transform: translateX(150 * 1px) skewX(-20deg);
+	}
+}

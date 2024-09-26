@@ -148,10 +148,9 @@ function doPause() {
 function doRun() {
     touch.value = false;
 }
-function handleClose() {
+function handleClose(e: Event) {
     closeShow.value = false;
-    console.log('closeShow', closeShow.value);
-    // emits('close', e);
+    emits('close', e);
 }
 function handleClick() {
     emits('click', index.value);

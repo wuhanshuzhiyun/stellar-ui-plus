@@ -59,31 +59,27 @@
 可通过属性`show`来自定义触发动画执行
 
 ```html
-<view>
-    <ste-animate type="shakeY" :show="show">
-        <ste-button :stopPropagation="false">动画</ste-button>
-    </ste-animate>
-</view>
-<view>
-    <ste-button @click="click">触发</ste-button>
-</view>
-<script>
-    export default {
-        data() {
-            return {
-                show: false,
-            };
-        },
-        methods: {
-            click() {
-                this.show = false;
-                setTimeout(() => {
-                    this.show = true;
-                }, 50);
-            },
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const show = ref(false);
+
+    function click() {
+        show.value = false;
+        setTimeout(() => {
+            show.value = true;
+        }, 50);
+    }
 </script>
+<template>
+    <view>
+        <ste-animate type="shakeY" :show="show">
+            <ste-button :stopPropagation="false">动画</ste-button>
+        </ste-animate>
+    </view>
+    <view>
+        <ste-button @click="click">触发</ste-button>
+    </view>
+</template>
 ```
 
 ### API

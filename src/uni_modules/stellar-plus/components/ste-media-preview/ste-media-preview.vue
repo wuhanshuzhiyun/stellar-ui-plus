@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, onMounted, watch, computed } from 'vue';
+import { onMounted, watch, computed } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
 import useData from './useData';

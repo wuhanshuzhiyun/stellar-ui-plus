@@ -6,7 +6,7 @@
 
 ### 代码演示
 
-JavaScript后面的演示代码中涉及到的变量和方法都使用本javasaript代码
+JavaScript后面的演示代码中涉及到的变量和方法都使用本`javascript`代码
 
 ```javascript
 import { ref } from 'vue';

@@ -1,0 +1,247 @@
+{
+    "name": "ste-select",
+    "description": "下拉选",
+    "example": "<ste-select />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=select",
+    "attributes": [
+        {
+            "name": "modelValue",
+            "description": "绑定的值，支持v-model双向绑定",
+            "type": "number | string | Array<number | string>"
+        },
+        {
+            "name": "list",
+            "description": "选项数据",
+            "type": "SelectOption[] | SelectOption[][]",
+            "default": []
+        },
+        {
+            "name": "mode",
+            "description": "选择模式",
+            "type": "string",
+            "default": "default",
+            "values": [
+                {
+                    "name": "default",
+                    "description": "默认模式"
+                },
+                {
+                    "name": "filterable",
+                    "description": "可搜索选择器"
+                },
+                {
+                    "name": "tree",
+                    "description": "树形选择器"
+                },
+                {
+                    "name": "date",
+                    "description": "日期时间选择器模式：日期选择器（该模式下list属性无效）"
+                },
+                {
+                    "name": "datetime",
+                    "description": "日期时间选择器模式：日期时间选择器（该模式下list属性无效）"
+                },
+                {
+                    "name": "time",
+                    "description": "日期时间选择器模式：时间选择器（该模式下list属性无效）"
+                },
+                {
+                    "name": "month",
+                    "description": "日期时间选择器模式：年月选择器（该模式下list属性无效）"
+                },
+                {
+                    "name": "minute",
+                    "description": "日期时间选择器模式：时分选择器（该模式下list属性无效）"
+                }
+            ]
+        },
+        {
+            "name": "minDate",
+            "description": "最小日期,mode为日期时间选择器时生效",
+            "type": "number | string | Date"
+        },
+        {
+            "name": "maxDate",
+            "description": "最大日期,mode为日期时间选择器时生效",
+            "type": "number | string | Date"
+        },
+        {
+            "name": "dateUnit",
+            "description": "选项是否显示时间单位,mode为日期时间选择器时生效",
+            "type": "boolean"
+        },
+        {
+            "name": "width",
+            "description": "宽度，单位rpx",
+            "type": "number | string",
+            "default": "100%"
+        },
+        {
+            "name": "height",
+            "description": "高度，单位rpx",
+            "type": "number | string",
+            "default": 64
+        },
+        {
+            "name": "fontSize",
+            "description": "字体大小，单位rpx",
+            "type": "number | string",
+            "default": 28
+        },
+        {
+            "name": "background",
+            "description": "背景",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
+            "name": "maskClose",
+            "description": "点击遮罩层是否关闭",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "optionsWidth",
+            "description": "选项框宽度，默认跟随width",
+            "type": "number | string",
+            "default": "auto"
+        },
+        {
+            "name": "placeholder",
+            "description": "占位符",
+            "type": "string",
+            "default": "请选择"
+        },
+        {
+            "name": "labelKey",
+            "description": "选项标签Key",
+            "type": "string",
+            "default": "label"
+        },
+        {
+            "name": "valueKey",
+            "description": "选项值Key",
+            "type": "string",
+            "default": "value"
+        },
+        {
+            "name": "childrenKey",
+            "description": "数据列表中显示的键名（mode为tree时生效）",
+            "type": "string",
+            "default": "children"
+        },
+        {
+            "name": "multiple",
+            "description": "是否多选（list为一维数组时生效）",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "allowCreate",
+            "description": "是否允许创建（mode为filterable时生效）",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "borderColor",
+            "description": "边框颜色，若不要边框可设置为透明色",
+            "type": "string",
+            "default": "#ebebeb"
+        },
+        {
+            "name": "borderRadius",
+            "description": "圆角大小，单位RPX",
+            "type": "number | string",
+            "default": 8
+        },
+        {
+            "name": "optionsPosition",
+            "description": "选项框位置",
+            "type": "string",
+            "default": "auto",
+            "values": [
+                {
+                    "name": "auto",
+                    "description": "自动展示位置，默认"
+                },
+                {
+                    "name": "auto-start",
+                    "description": "上下自适应，左侧对其"
+                },
+                {
+                    "name": "auto-end",
+                    "description": "上下自适应，右侧对其"
+                },
+                {
+                    "name": "bottom",
+                    "description": "在下方展示，左右自适应"
+                },
+                {
+                    "name": "bottom-auto",
+                    "description": "同bottom"
+                },
+                {
+                    "name": "bottom-start",
+                    "description": "在下方展示，左侧对其"
+                },
+                {
+                    "name": "bottom-end",
+                    "description": "在下方展示，右侧对其"
+                },
+                {
+                    "name": "top",
+                    "description": "在上方展示，左右自适应"
+                },
+                {
+                    "name": "top-auto",
+                    "description": "同top"
+                },
+                {
+                    "name": "top-start",
+                    "description": "在上方展示，左侧对其"
+                },
+                {
+                    "name": "top-end",
+                    "description": "在上方展示，右侧对其"
+                }
+            ]
+        },
+        {
+            "name": "disabled",
+            "description": "禁用（所有功能失效）",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "[event]change",
+            "description": "选择时触发",
+            "type": "(value: string | number,option: SelectOption | SelectOption[])=>void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "选中的值或选中值列表"
+                },
+                {
+                    "name": "option",
+                    "description": "选中的选项或选中项列表"
+                }
+            ]
+        },
+        {
+            "name": "[event]cancel",
+            "description": "取消选择时触发",
+            "type": "()=>void"
+        },
+        {
+            "name": "[event]confirm",
+            "description": "确定选择时触发",
+            "type": "(value: string | number | (string | number)[])=>void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "选中的值或选中值列表"
+                }
+            ]
+        }
+    ]
+}

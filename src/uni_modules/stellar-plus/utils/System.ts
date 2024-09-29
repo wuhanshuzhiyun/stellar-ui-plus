@@ -1,45 +1,31 @@
 export default class System {
-  static systemInfo = uni.getSystemInfoSync()
-  static navbarBottom: number
-  static windowWidth: number
-  static windowHeight: number
-
   /**
    * 获取屏幕宽度
    */
   static getWindowWidth() {
-    if (System.windowWidth === undefined)
-      System.windowWidth = System.systemInfo.windowWidth
-
-    return System.windowWidth
+    return uni.getSystemInfoSync().windowWidth
   }
 
   /**
    * 获取屏幕高度
    */
   static getWindowHeight() {
-    if (System.windowHeight === undefined)
-      System.windowHeight = System.systemInfo.windowHeight
-
-    return System.windowHeight
+    return uni.getSystemInfoSync().windowHeight
   }
 
   /**
    * 获取手机顶部安全区域距离顶部的距离（状态栏高度）
    */
   static getStatusBarHeight() {
-    return System.systemInfo.statusBarHeight
+    return uni.getSystemInfoSync().statusBarHeight
   }
 
   /**
    * 获取导航栏底部安全区域距离底部的距离（底部安全区距离状态栏的距离）
    */
   static getNavbarBottom() {
-    if (System.navbarBottom === undefined) {
-      const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
-      System.navbarBottom = menuButtonInfo.bottom + 8
-    }
-    return System.navbarBottom
+    const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+    return menuButtonInfo.bottom + 8
   }
 
   static getElementBoundary(el: any) {

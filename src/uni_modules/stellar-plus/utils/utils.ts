@@ -507,6 +507,24 @@ const utils = {
     }
     return arr
   },
+
+  /**
+   * 将树形结构转换为多列二维数组
+   */
+  treeToTable(tree: TreeNode[], values: (number | string)[] = [], valueKey = 'value', childrenKey = 'children') {
+    const _flatten = (tree: TreeNode[], depth = 0) => {
+      const result: any[] = []
+      result.push(tree)
+      const value = values[depth]
+      let item = tree.find(item => item[valueKey] === value)
+      item = item || tree[0]
+      if (item && item[childrenKey])
+        result.push(..._flatten(item[childrenKey], depth + 1))
+
+      return result
+    }
+    return _flatten(tree)
+  },
 }
 
 export default utils

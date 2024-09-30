@@ -93,6 +93,10 @@
             display: flex;
             justify-content: space-between;
 
+            .muted-box {
+                padding-left: var(--rpx-to-px-16);
+            }
+
             .progress-box {
                 flex: 1;
                 padding: 0 var(--rpx-to-px-32);

@@ -1,0 +1,39 @@
+{
+    "name": "ste-animate",
+    "description": "动画组件",
+    "example": "<ste-animate></ste-animate>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=animate",
+    "attributes": [
+        {
+            "name": "show",
+            "description": "控制动画，当值从`false`变为`true`时会触发一次动画",
+            "type": "boolean",
+
+            "default": false
+        },
+        {
+            "name": "type",
+            "description": "动画类型，见下方`type`值说明",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "loop",
+            "description": "是否循环执行。",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "duration",
+            "description": "动画时长，单位 ms",
+            "type": "number",
+            "default": 200
+        },
+        {
+            "name": "action",
+            "description": "不能与 show 同时使用）触发方式，`initial`初始化执行; `click`点击执行",
+            "type": "string",
+            "default": ""
+        }
+    ]
+}

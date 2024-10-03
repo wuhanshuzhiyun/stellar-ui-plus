@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineOptions, type CSSProperties, onMounted, nextTick } from 'vue';
+import { computed, defineOptions, type CSSProperties, onMounted, nextTick, watch } from 'vue';
 import type { BaseEvent } from '../../types/event';
 import useData from './useData';
 import utils from '../../utils/utils';
@@ -40,6 +40,8 @@ const {
     showTip,
     msg,
     reRenderFlag,
+    isMuted,
+    triggerMuted,
 } = useData(props, emits);
 
 const componentName = `ste-video`;
@@ -59,6 +61,14 @@ if (props.src) {
 } else {
     videoSrc.value = props.resolution[resolutionIndex.value] ? props.resolution[resolutionIndex.value].url : '';
 }
+
+watch(
+    () => props.muted,
+    val => {
+        isMuted.value = val;
+    },
+    { immediate: true }
+);
 
 const cmpRootClass = computed(() => {
     let classArr = [];
@@ -239,7 +249,7 @@ function fullscreenchange(e: BaseEvent) {
             :poster="poster"
             :autoplay="autoplay"
             :loop="loop"
-            :muted="muted"
+            :muted="isMuted"
             :initialTime="initialTime"
             :duration="duration"
             :enable-play-gesture="enablePlayGesture"
@@ -300,6 +310,11 @@ function fullscreenchange(e: BaseEvent) {
                 <view v-if="showPlayBtn">
                     <ste-icon code="&#xe6a8;" size="36" color="#ffffff" v-if="!playState" @click="handlePlay(true)"></ste-icon>
                     <ste-icon code="&#xe6ab;" size="36" color="#ffffff" v-else @click="handlePlay(false)"></ste-icon>
+                </view>
+                <!-- 静音按钮 -->
+                <view class="muted-box">
+                    <ste-icon code="&#xe6c3;" size="38" color="#ffffff" v-if="!isMuted" @click="triggerMuted"></ste-icon>
+                    <ste-icon code="&#xe6c2;" size="38" color="#ffffff" v-else @click="triggerMuted"></ste-icon>
                 </view>
                 <!-- 时间进度 -->
                 <view class="time-box" v-if="isFull">

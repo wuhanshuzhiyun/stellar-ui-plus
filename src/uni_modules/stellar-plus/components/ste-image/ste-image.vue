@@ -7,7 +7,7 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import { defineEmits, ref, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue';
+import { ref, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
 import type { BaseEvent } from '../../types/event.d';

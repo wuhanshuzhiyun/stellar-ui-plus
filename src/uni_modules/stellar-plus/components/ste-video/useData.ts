@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import type { BaseEvent } from '../../types/event'
 import type { VideoEmits, VideoProps } from './props'
 
-export default function useData(_props: VideoProps, emits: SetupContext<VideoEmits>['emit']) {
+export default function useData(props: VideoProps, emits: SetupContext<VideoEmits>['emit']) {
   const videoSrc = ref('')
   const playState = ref(false)
   const isFull = ref(false)
@@ -27,6 +27,8 @@ export default function useData(_props: VideoProps, emits: SetupContext<VideoEmi
   const showTip = ref(false)
   const msg = ref('')
   const reRenderFlag = ref(true) // 由于视频进度条在全屏切换时由于uniapp的像素计算导致进度条拖动异常，所以加个变量用于重新渲染
+
+  const isMuted = ref(props.muted)
 
   function play() {
     playState.value = true
@@ -95,6 +97,10 @@ export default function useData(_props: VideoProps, emits: SetupContext<VideoEmi
     }, 1500)
   }
 
+  function triggerMuted() {
+    isMuted.value = !isMuted.value
+  }
+
   return {
     videoSrc,
     playState,
@@ -128,5 +134,7 @@ export default function useData(_props: VideoProps, emits: SetupContext<VideoEmi
     showTip,
     msg,
     reRenderFlag,
+    isMuted,
+    triggerMuted,
   }
 }

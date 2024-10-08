@@ -31,6 +31,24 @@ function showToast(params: any) {
     show.value = false;
     // 关闭系统的弹窗
     uni.hideToast();
+    // 默认持续时间
+    let defaultDuration = 1500;
+    // 提示队列
+    let time = 0;
+    if (params.order) {
+        // 先取上一次存的值 如果为空 则为第一个值
+        let toastLastParams = uni.getStorageSync('toastLastParams');
+        // 等待的时间 第一个没有等待时间 后面的都是前面的持续时间的合
+        if (typeof toastLastParams == 'object') {
+            time = toastLastParams.time;
+        }
+        // 存当前的等待时间 加100ms 以防没有打开中间的提示
+        params.time = time + (params.duration ?? defaultDuration) + 100;
+        uni.setStorageSync('toastLastParams', params);
+    } else {
+        // 遇到非队列数据 则清空队列时间
+        uni.removeStorageSync('toastLastParams');
+    }
     setTimeout(() => {
         try {
             clearTimeout(timer.value);
@@ -38,7 +56,7 @@ function showToast(params: any) {
             title.value = params.title || '';
             icon.value = params.icon || 'success';
             image.value = params.image || '';
-            duration.value = params.duration || 1500;
+            duration.value = params.duration || defaultDuration;
             if (icon.value == 'loading') {
                 duration.value = 0;
             }
@@ -58,19 +76,20 @@ function showToast(params: any) {
             fail.value();
         }
         complete.value();
-    });
+    }, time);
 }
 
 // 关闭弹窗
 function hideToast() {
     show.value = false;
+    // 遇到非队列数据 则清空队列时间
+    uni.removeStorageSync('toastLastParams');
     close.value();
 }
 
 // 组合函数
 const injectToastOptions = ref(inject(toastDefaultOptionsKey));
 watch(injectToastOptions, (value: any) => {
-    console.log('value', value);
     if (value.show) {
         showToast(value);
     } else {

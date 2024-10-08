@@ -6,11 +6,7 @@ import { btnCopy } from '../markdown/requireFiles'
 export default function useMarkdown(): MarkdownData {
   const active = ref<string>('handbook-介绍')
 
-  const setActive = (value: string) => {
-    window.history.pushState(null, '', `#/?active=${value}`)
-    active.value = value
-    document.getElementsByClassName('right')[0].scrollTop = 0
-  }
+  const isComponent = computed(() => !active.value.includes('handbook') && !active.value.includes('devGuide'))
 
   const activeBtns = () => {
     nextTick(() => {
@@ -19,21 +15,28 @@ export default function useMarkdown(): MarkdownData {
     })
   }
 
+  const setActive = (value: string) => {
+    window.history.pushState(null, '', `#/?active=${value}`)
+    active.value = value
+    const d = document.querySelector('.pc-page-body>.content>.right')
+    if (d)
+      d.scrollTop = 0
+    activeBtns()
+  }
+
+  watch(() => uni.getLaunchOptionsSync().query, (v) => {
+    if (v.active)
+      setActive(v.active as string)
+  }, { immediate: true })
+
   onMounted(() => {
-    const query = uni.getLaunchOptionsSync().query
-    if (query.active)
-      active.value = query.active as string
     activeBtns()
   })
 
-  const h5url = ref<string>('#/pages/mp/index')
-
-  watch(active, (value) => {
-    if (value.includes('handbook') || value.includes('devGuide'))
-      h5url.value = '#/pages/mp/index'
-    else h5url.value = `#/pages/mp/demo-views/${value}/${value}`
-
-    activeBtns()
+  const h5url = computed(() => {
+    if (active.value.includes('handbook') || active.value.includes('devGuide'))
+      return '#/pages/mp/index'
+    else return `#/pages/mp/demo-views/${active.value}/${active.value}`
   })
 
   const contents = ref<Group[]>(rests.concat(components))
@@ -52,6 +55,7 @@ export default function useMarkdown(): MarkdownData {
   return {
     contents,
     viewMarkdown,
+    isComponent,
     active,
     setActive,
     h5url,

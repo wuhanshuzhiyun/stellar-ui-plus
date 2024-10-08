@@ -75,6 +75,21 @@ const utils = {
     }
     return str
   },
+
+  /**
+   * 获取URL传参
+   */
+  getUrlParam(key: string) {
+    // #ifdef H5
+    const url = window.location.href
+    const reg = new RegExp(`(^|&)${key}=([^&]*)(&|$)`)
+    const r = url.substr(url.indexOf('?') + 1).match(reg)
+    if (r != null)
+      return decodeURIComponent(r[2])
+    // #endif
+    return null
+  },
+
 }
 
 export default utils

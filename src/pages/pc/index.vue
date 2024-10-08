@@ -31,7 +31,6 @@ onLoad(() => {
             </div>
             <div class="right">
                 <Right />
-                <div class="h5" />
             </div>
             <div class="content-h5">
                 <H5 />

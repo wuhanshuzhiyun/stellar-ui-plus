@@ -23,4 +23,5 @@ export interface MarkdownData {
   setActive: (key: string) => void
   viewMarkdown: ComputedRef<string>
   h5url: Ref<string>
+  isComponent: Ref<boolean>
 }

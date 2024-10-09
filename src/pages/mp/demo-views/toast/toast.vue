@@ -33,6 +33,12 @@
                 </view>
             </view>
             <view class="demo-item">
+                <view class="title">提示队列</view>
+                <view class="item-block item-rate">
+                    <ste-button @click="click14" :width="400">提示队列</ste-button>
+                </view>
+            </view>
+            <view class="demo-item">
                 <view class="title">回调事件</view>
                 <view class="item-block item-rate">
                     <ste-button @click="click11" :width="400">成功</ste-button>
@@ -145,6 +151,22 @@ function click13() {
                 icon: 'none',
             });
         },
+    });
+}
+
+function click14() {
+    toast.value.showToast({
+        title: '队列1',
+        order: true,
+    });
+    toast.value.showToast({
+        title: '队列2',
+        duration: 4000,
+        order: true,
+    });
+    toast.value.showToast({
+        title: '队列3',
+        order: true,
     });
 }
 </script>

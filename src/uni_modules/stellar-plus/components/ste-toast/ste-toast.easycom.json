@@ -44,6 +44,12 @@
             "default": false
         },
         {
+            "name": "order",
+            "description": "是否是队列提示",
+            "type": "Boolean",
+            "default": false
+        },
+        {
             "name": "success",
             "description": "提示打开成功的回调函数",
             "type": "() => void"

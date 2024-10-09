@@ -1,0 +1,14 @@
+{
+    "name": "ste-message-box",
+    "description": "模拟系统的消息提示框而实现的一套模态对话框组件，用于消息提示、确认消息和提交内容。",
+    "example": "<ste-message-box></ste-message-box>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=message-box",
+    "attributes": [
+        {
+            "name": "selector",
+            "description": "用于自定义插槽时的选择器",
+            "type": "String",
+            "default": ""
+        }
+    ]
+}

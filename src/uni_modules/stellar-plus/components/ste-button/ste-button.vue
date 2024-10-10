@@ -97,33 +97,22 @@ const cmpBtnStyle = computed(() => {
     style = { ...style, ...utils.bg2style(props.background) };
     style.color = props.color;
 
-    // 禁用 disabled
-    if (props.disabled) {
-        if (props.background == '#0091FF') {
-            style.backgroundColor = '#666666';
-        }
-        style.color = '#ffffff';
+    // 禁用 disabled | 加载 loading
+    // #ifdef H5
+    if (props.disabled || props.loading) {
         style.cursor = 'not-allowed';
     }
-
-    // 加载 loading
-    if (props.loading) {
-        style.cursor = 'not-allowed';
+    // #endif
+    if (props.disabled) {
+        style.opacity = 0.5;
     }
     return utils.deepMerge(style, props.rootStyle);
 });
 
 function handleClick(e: Event) {
-    if (!props.disabled && !props.loading) {
-        emits('click', e);
-    }
+    if (props.disabled || props.loading) return;
+    emits('click', e);
 }
-
-function test() {
-    console.log('button console');
-}
-
-defineExpose({ test });
 </script>
 
 <template>

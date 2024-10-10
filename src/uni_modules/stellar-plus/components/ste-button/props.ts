@@ -4,11 +4,6 @@ import type { ButtonOpenType } from '@uni-helper/uni-app-types'
 import type { ModeType, SizeType } from '../../types'
 
 export default {
-  /**
-   *  配置按钮的大小
-   *
-   *  可选值：'100' | '200' | '300'
-   */
   mode: { type: Number as PropType<ModeType>, default: 200 },
   color: { type: String, default: '#ffffff' },
   background: { type: String, default: '#0091ff' },

@@ -6,6 +6,10 @@ import type { BaseEvent } from '../../types/event';
 import utils from '../../utils/utils';
 import { ICON_OBJ, ANIMATION_PROP, DURATION, type MessageBoxOptions } from './constants';
 
+defineOptions({
+    name: 'ste-message-box',
+});
+
 const slots = useSlots();
 
 const props = defineProps<{

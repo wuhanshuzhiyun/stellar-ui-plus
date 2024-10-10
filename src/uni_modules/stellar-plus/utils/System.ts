@@ -1,44 +1,98 @@
 export default class System {
-  static getSystemInfoSync() {
+  /**
+   * 获取设备设置
+   */
+  static getSystemSetting() {
+    let res: any = {}
     // #ifdef MP-WEIXIN
-    const systemSetting = wx.getSystemSetting()
-    const appAuthorizeSetting = wx.getAppAuthorizeSetting()
-    const deviceInfo = wx.getDeviceInfo()
-    const windowInfo = wx.getWindowInfo()
-    const appBaseInfo = wx.getAppBaseInfo()
-    return {
-      ...systemSetting,
-      ...appAuthorizeSetting,
-      ...deviceInfo,
-      ...windowInfo,
-      ...appBaseInfo,
-    }
+    res = wx.getSystemSetting()
     // #endif
 
     // #ifndef MP-WEIXIN
-    return uni.getSystemInfoSync()
+    res = uni.getSystemInfoSync()
     // #endif
+    return res
+  }
+
+  /**
+   * 获取微信APP授权设置
+   */
+  static getAppAuthorizeSetting() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getAppAuthorizeSetting()
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
+  }
+
+  /**
+   * 获取设备基础信息
+   */
+  static getDeviceInfo() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getDeviceInfo()
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
+  }
+
+  /**
+   * 获取窗口信息
+   */
+  static getWindowInfo() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getWindowInfo()
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
+  }
+
+  /**
+   * 获取微信APP基础信息
+   */
+  static getAppBaseInfo() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getAppBaseInfo()
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
   }
 
   /**
    * 获取屏幕宽度
    */
   static getWindowWidth() {
-    return System.getSystemInfoSync().windowWidth
+    return System.getWindowInfo().windowWidth
   }
 
   /**
    * 获取屏幕高度
    */
   static getWindowHeight() {
-    return System.getSystemInfoSync().windowHeight
+    return System.getWindowInfo().windowHeight
   }
 
   /**
    * 获取手机顶部安全区域距离顶部的距离（状态栏高度）
    */
   static getStatusBarHeight() {
-    return System.getSystemInfoSync().statusBarHeight
+    return System.getWindowInfo().statusBarHeight
   }
 
   /**

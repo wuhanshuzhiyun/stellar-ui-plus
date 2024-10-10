@@ -256,12 +256,12 @@ const utils = {
 
   scrollViewX({
     viewLeft, // 要显示的元素左侧位置
-    viewRight, // 要显示的元素右侧位置
-    boxLeft = 0, // 视图区域左侧位置
-    boxRight = System.getWindowWidth(), // 视图区域右侧位置
-    prevWidth = 0, // 前一个元素的宽度
-    nextWidth = 0, // 后一个元素的宽度
-    scrollLeft = 0, // 当前已经滑动的距离
+        viewRight, // 要显示的元素右侧位置
+        boxLeft = 0, // 视图区域左侧位置
+        boxRight = System.getWindowWidth(), // 视图区域右侧位置
+        prevWidth = 0, // 前一个元素的宽度
+        nextWidth = 0, // 后一个元素的宽度
+        scrollLeft = 0, // 当前已经滑动的距离
   }: {
     viewLeft: number
     viewRight: number
@@ -318,17 +318,8 @@ const utils = {
     return reg.test(String(num))
   },
 
-  formatTree(
-    tree: TreeNode[],
-    options: FormatTreeOptions = {},
-  ): TreeNode[] {
-    const {
-      valueKey = 'value',
-      childrenKey = 'children',
-      otherAttributes = {},
-      parentNode = '__root__',
-      depth = 0,
-    } = options
+  formatTree(tree: TreeNode[], options: FormatTreeOptions = {}): TreeNode[] {
+    const { valueKey = 'value', childrenKey = 'children', otherAttributes = {}, parentNode = '__root__', depth = 0 } = options
 
     const _formatTree = (tree: TreeNode[], parentNode: string | number, depth: number): TreeNode[] => {
       return tree.map((item) => {
@@ -338,8 +329,7 @@ const utils = {
         let _otherAttributes: Record<string, any>
         if (typeof otherAttributes === 'function')
           _otherAttributes = otherAttributes(item)
-        else
-          _otherAttributes = otherAttributes
+        else _otherAttributes = otherAttributes
 
         return Object.assign(
           {
@@ -525,7 +515,6 @@ const utils = {
     }
     return _flatten(tree)
   },
-  getSystemInfoSync: System.getSystemInfoSync,
 }
 
 export default utils

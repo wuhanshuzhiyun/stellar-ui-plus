@@ -24,7 +24,7 @@ const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, pr
 const cmpShowConfirm = computed(() => props.showConfirm && !props.readonly);
 
 const { initing, setIniting, startDate, setStartDate, endDate, setEndDate, dataList, setDataList, contentScrollTop, setContentScrollTop } = useData();
-console.log('props-->', props);
+
 const emits = defineEmits<{
     (e: 'select', days: (string | number)[], day: string | number): void;
     (e: 'confirm', days: (string | number)[]): void;
@@ -48,7 +48,6 @@ const showMonth = (date = props.defaultMonth) => {
     if (!height || !show) return setIniting(false);
     setContentScrollTop(0);
     setTimeout(() => {
-        console.log('contentScrollTop-->', height);
         setContentScrollTop(height);
         setIniting(false);
     }, 25);

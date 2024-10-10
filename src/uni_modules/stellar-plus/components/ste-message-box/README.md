@@ -79,8 +79,7 @@ insetLoader: {
 ```javascript
 function click() {
     msg.showMsgBox({
-        title: '提示',
-        content: '确认删除订单吗？',
+        title: '确认删除订单吗？',
     });
 }
 ```

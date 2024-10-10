@@ -54,10 +54,6 @@ const cmpContent = computed(() => {
 const cmpIsSmall = computed(() => {
     return (props.content && String(props.content).length == 1) || Number(props.content) < 10;
 });
-
-function handleClick(event: any) {
-    emits('click', event);
-}
 </script>
 
 <template>

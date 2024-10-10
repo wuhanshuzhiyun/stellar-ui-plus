@@ -1,23 +1,44 @@
 export default class System {
+  static getSystemInfoSync() {
+    // #ifdef MP-WEIXIN
+    const systemSetting = wx.getSystemSetting()
+    const appAuthorizeSetting = wx.getAppAuthorizeSetting()
+    const deviceInfo = wx.getDeviceInfo()
+    const windowInfo = wx.getWindowInfo()
+    const appBaseInfo = wx.getAppBaseInfo()
+    return {
+      ...systemSetting,
+      ...appAuthorizeSetting,
+      ...deviceInfo,
+      ...windowInfo,
+      ...appBaseInfo,
+    }
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    return uni.getSystemInfoSync()
+    // #endif
+  }
+
   /**
    * 获取屏幕宽度
    */
   static getWindowWidth() {
-    return uni.getSystemInfoSync().windowWidth
+    return System.getSystemInfoSync().windowWidth
   }
 
   /**
    * 获取屏幕高度
    */
   static getWindowHeight() {
-    return uni.getSystemInfoSync().windowHeight
+    return System.getSystemInfoSync().windowHeight
   }
 
   /**
    * 获取手机顶部安全区域距离顶部的距离（状态栏高度）
    */
   static getStatusBarHeight() {
-    return uni.getSystemInfoSync().statusBarHeight
+    return System.getSystemInfoSync().statusBarHeight
   }
 
   /**

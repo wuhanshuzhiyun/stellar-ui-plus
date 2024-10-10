@@ -525,6 +525,7 @@ const utils = {
     }
     return _flatten(tree)
   },
+  getSystemInfoSync: System.getSystemInfoSync,
 }
 
 export default utils

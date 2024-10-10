@@ -66,6 +66,10 @@ export default function useData({ props, children, thas, emits }:
   const setAutoplayTimeout = (callback: () => void, time: number) => {
     clearInterval(autoplayTimeout)
     autoplayTimeout = setInterval(() => {
+      if (!props.autoplay || children?.length < 2) {
+        clearInterval(autoplayTimeout)
+        return
+      }
       callback()
     }, time)
   }
@@ -245,15 +249,10 @@ export default function useData({ props, children, thas, emits }:
   }
 
   const setAutoplay = () => {
-    if (!props.autoplay)
-      return
-    if (children?.length < 2)
-      return
     setAutoplayTimeout(() => {
       let next = dataIndex.value + 1 <= children.length - 1 ? dataIndex.value + 1 : 0
       if (props.circular)
         next = dataIndex.value + 1
-
       setBoundary(-1, -1)
       setSource('autoplay')
       setDataIndex(next)

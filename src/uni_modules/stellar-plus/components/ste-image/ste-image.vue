@@ -1,11 +1,3 @@
-<!-- <script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-    name: 'ste-image',
-});
-</script> -->
-
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';

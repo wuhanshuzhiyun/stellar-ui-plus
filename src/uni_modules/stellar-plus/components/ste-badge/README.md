@@ -6,29 +6,31 @@
 
 ### 代码演示
 
+-   以下代码公共样式
+
+```css
+.avator {
+    height: 80rpx;
+    width: 80rpx;
+    border-radius: 8rpx;
+    background-color: #f2f3f5;
+}
+```
+
 #### 徽标内容
 
 通过`content`属性，设置子元素的右上角的徽标
 
 ```html
 <ste-badge content="1">
-    <view class="child"></view>
+    <view class="avator"></view>
 </ste-badge>
 <ste-badge content="99+">
-    <view class="child"></view>
+    <view class="avator"></view>
 </ste-badge>
 <ste-badge content="hot">
-    <view class="child"></view>
+    <view class="avator"></view>
 </ste-badge>
-
-<style>
-    .child {
-        height: 80rpx;
-        width: 80rpx;
-        border-radius: 8rpx;
-        background-color: #f2f3f5;
-    }
-</style>
 ```
 
 #### 背景
@@ -38,24 +40,15 @@
 -   支持纯色、渐变色、背景图
 
 ```html
-<ste-badge content="1" background="rgb(25, 137, 250)">
+<ste-badge content="1" background="rgb(19, 183, 22)">
     <view class="avator"></view>
 </ste-badge>
 <ste-badge content="99+" background="linear-gradient(to right, rgb(66, 83, 216), rgb(213, 51, 186))">
     <view class="avator"></view>
 </ste-badge>
-<ste-badge background="https://img95.699pic.com/xsj/0a/5y/dc.jpg%21/fw/700/watermark/url/L3hzai93YXRlcl9kZXRhaWwyLnBuZw/align/southeast">
+<ste-badge content="" showZero background="https://image.whzb.com/chain/StellarUI/image/fire.png">
     <view class="avator"></view>
 </ste-badge>
-
-<style>
-    .child {
-        height: 80rpx;
-        width: 80rpx;
-        border-radius: 8rpx;
-        background-color: #f2f3f5;
-    }
-</style>
 ```
 
 #### 小红点
@@ -66,18 +59,9 @@
 <ste-badge showDot>
     <view class="avator"></view>
 </ste-badge>
-<ste-badge showDot background="rgb(25, 137, 250)">
+<ste-badge showDot background="rgb(19, 183, 22)">
     <view class="avator"></view>
 </ste-badge>
-
-<style>
-    .child {
-        height: 80rpx;
-        width: 80rpx;
-        border-radius: 8rpx;
-        background-color: #f2f3f5;
-    }
-</style>
 ```
 
 #### 徽标位置
@@ -97,15 +81,6 @@
 <ste-badge content="1" position="bottomRight">
     <view class="avator"></view>
 </ste-badge>
-
-<style>
-    .child {
-        height: 80rpx;
-        width: 80rpx;
-        border-radius: 8rpx;
-        background-color: #f2f3f5;
-    }
-</style>
 ```
 
 #### 偏移
@@ -125,15 +100,6 @@
 <ste-badge content="1" position="bottomRight" :offsetX="5" :offsetY="5">
     <view class="avator"></view>
 </ste-badge>
-
-<style>
-    .child {
-        height: 80rpx;
-        width: 80rpx;
-        border-radius: 8rpx;
-        background-color: #f2f3f5;
-    }
-</style>
 ```
 
 #### 为0时是否显示徽标
@@ -144,15 +110,6 @@
 <ste-badge :content="0" showZero>
     <view class="avator"></view>
 </ste-badge>
-
-<style>
-    .child {
-        height: 80rpx;
-        width: 80rpx;
-        border-radius: 8rpx;
-        background-color: #f2f3f5;
-    }
-</style>
 ```
 
 #### 最大值
@@ -166,15 +123,6 @@
 <ste-badge :content="99">
     <view class="avator"></view>
 </ste-badge>
-
-<style>
-    .child {
-        height: 80rpx;
-        width: 80rpx;
-        border-radius: 8rpx;
-        background-color: #f2f3f5;
-    }
-</style>
 ```
 
 #### 自定义内容
@@ -194,15 +142,6 @@
     </template>
     <view class="avator"></view>
 </ste-badge>
-
-<style>
-    .child {
-        height: 80rpx;
-        width: 80rpx;
-        border-radius: 8rpx;
-        background-color: #f2f3f5;
-    }
-</style>
 ```
 
 ### API

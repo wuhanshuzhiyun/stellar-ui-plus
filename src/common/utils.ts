@@ -9,7 +9,7 @@ const utils = {
    */
   px2rpx(px: number) {
     if (windowWidth === 0)
-      windowWidth = uni.getSystemInfoSync().windowWidth
+      windowWidth = this.getWindowInfo().windowWidth
 
     const rpx = (px * 750) / windowWidth
     return rpx
@@ -77,19 +77,78 @@ const utils = {
   },
 
   /**
-   * 获取URL传参
+   * 获取设备设置
    */
-  getUrlParam(key: string) {
-    // #ifdef H5
-    const url = window.location.href
-    const reg = new RegExp(`(^|&)${key}=([^&]*)(&|$)`)
-    const r = url.substr(url.indexOf('?') + 1).match(reg)
-    if (r != null)
-      return decodeURIComponent(r[2])
+  getSystemSetting() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getSystemSetting()
     // #endif
-    return null
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
+  },
+  /**
+   * 获取微信APP授权设置
+   */
+  getAppAuthorizeSetting() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getAppAuthorizeSetting()
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
   },
 
+  /**
+   * 获取设备基础信息
+   */
+  getDeviceInfo() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getDeviceInfo()
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
+  },
+
+  /**
+   * 获取窗口信息
+   */
+  getWindowInfo() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getWindowInfo()
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
+  },
+
+  /**
+   * 获取微信APP基础信息
+   */
+  getAppBaseInfo() {
+    let res: any = {}
+    // #ifdef MP-WEIXIN
+    res = wx.getAppBaseInfo()
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    res = uni.getSystemInfoSync()
+    // #endif
+    return res
+  },
 }
 
 export default utils

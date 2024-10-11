@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-
+import utils from '@/common/utils.js';
 const boundary = ref({ left: 22, bottom: 0, top: 374, right: 0 });
 onMounted(() => {
-    const systemInfo = uni.getSystemInfoSync();
+    const systemInfo = utils.getWindowInfo();
     boundary.value.right = systemInfo.windowWidth - 22 - 300;
     boundary.value.bottom = systemInfo.windowHeight - 374 - 150;
 });

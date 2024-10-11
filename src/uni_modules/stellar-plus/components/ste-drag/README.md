@@ -50,10 +50,11 @@
     </view>
 </template>
 <script lang="ts" setup>
+    import utils from '@/common/utils.js';
     import { ref, onMounted } from 'vue';
     const boundary = ref({ left: 22, bottom: 0, top: 354, right: 0 });
     onMounted(() => {
-        const systemInfo = uni.getSystemInfoSync();
+        const systemInfo = utils.getWindowInfo();
         boundary.value.right = systemInfo.windowWidth - 22 - 300;
         boundary.value.bottom = systemInfo.windowHeight - 354 - 150;
     });

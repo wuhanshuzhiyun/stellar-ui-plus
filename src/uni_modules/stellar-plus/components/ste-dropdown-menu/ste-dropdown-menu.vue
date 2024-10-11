@@ -6,6 +6,7 @@ import propsData, { DEOP_DOWN_MENU_KEY, dropDownMenuEmits } from './props';
 import type { DropdownItem } from '../ste-dropdown-menu-item/type';
 import { type DropdownMenuItemProps } from '../ste-dropdown-menu-item/props';
 import utils from '../../utils/utils';
+import System from '../../utils/System.js';
 
 const props = defineProps(propsData);
 const emits = defineEmits(dropDownMenuEmits);
@@ -53,7 +54,7 @@ const cmpMenuPlaceholderStyle = computed(() => {
         if (props.direction == 'down') {
             style.height = addPx(menuRootQuery.value.top + menuRootQuery.value.height);
         } else {
-            let windowHeight = uni.getSystemInfoSync().windowHeight;
+            let windowHeight = System.getWindowInfo().windowHeight;
             style.height = addPx(windowHeight - menuRootQuery.value.bottom + menuRootQuery.value.height);
         }
     }
@@ -124,7 +125,7 @@ function touchmove(e: TouchEvent) {
     e.stopPropagation();
 }
 async function getContentHeight() {
-    let windowHeight = uni.getSystemInfoSync().windowHeight;
+    let windowHeight = System.getWindowInfo().windowHeight;
 
     const res = await utils.querySelector<false>('.ste-dropdown-menu-root', instance);
     menuRootQuery.value = { height: res.height || 0, top: res.top || 0, bottom: res.bottom || 0, left: res.left || 0 };

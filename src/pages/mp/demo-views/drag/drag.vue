@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import utils from '@/common/utils.js';
+import utils from '@/common/utils';
+
 const boundary = ref({ left: 22, bottom: 0, top: 374, right: 0 });
 onMounted(() => {
     const systemInfo = utils.getWindowInfo();

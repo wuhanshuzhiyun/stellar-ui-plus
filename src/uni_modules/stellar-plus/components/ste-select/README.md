@@ -232,66 +232,7 @@
 #### Props
 
 背景之外的颜色属性只支持`16进制`、`RGB`、`RGBA`格式
-| 属性名 | 说明 | 类型 | 默认值 | 可选值 | 支持版本 |
-| ----- | ----- | ----- | ----- | ----- | ----- |
-| `value` | 绑定的值，支持v-model双向绑定 | `Number`,`String`,`Array` | - | - | - |
-| `list` | 选项数据 | `Object[]`,`Object[][]`,`Tree`| `[]` | - | - |
-| `mode` | 选择模式 | `String` | `default` | 见下方详细说明 | - |
-| `minDate` | 最小日期,`mode`为日期时间选择器时生效 | `String` | - | - | - |
-| `maxDate` | 最大日期,`mode`为日期时间选择器时生效 | `String` | - | - | - |
-| `dateUnit` | 选项是否显示时间单位,`mode`为日期时间选择器时生效 | `Boolean` | `true` | - | - |
-| `width` | 宽度，单位rpx | `String`,`Number` | `100%` | - | - |
-| `height` | 高度，单位rpx | `String`,`Number` | `64` | - | - |
-| `fontSize` | 字体大小，单位rpx | `String`,`Number` | `28` | - | - |
-| `background` | 背景 | `String` | `#fff` | - | - |
-| `maskClose` | 点击遮罩层是否关闭 | `Boolean` | `true` | - | - |
-| `optionsWidth` | 选项框宽度，默认跟随`width` | `String`,`Number` | `auto` | - | - |
-| `placeholder` | 占位符 | `String` | `请选择` | - | - |
-| `labelKey` | 选项的标签 | `String` | `label` | - | - |
-| `valueKey` | 选项的值 | `String` | `value` | - | - |
-| `childrenKey` | 数据列表中显示的键名（`mode`为`tree`时生效） | `String` | `children` | - | - |
-| `multiple` | 是否多选（`list`为一维数组时生效） | `Boolean` | `false` | - | - |
-| `allowCreate` | 是否允许创建（`mode`为`filterable`时生效） | `Boolean` | `false` | - | - |
-| `borderColor` | 边框颜色，若不要边框可设置为透明色 | `String` | `#ebebeb` | - | - |
-| `borderRadius` | 圆角大小，单位RPX | `Number`,`String` | `8` | - | - |
-| `optionsPosition` | 选项框位置 | `String` | `auto` | 见下方详细说明 | - |
-| `disabled` | 禁用（所有功能失效） | `Boolean` | `false` | - | - |
 
-##### Mode可选值
-
-| 值           | 说明                                                         | 支持版本 |
-| ------------ | ------------------------------------------------------------ | -------- |
-| `default`    | 默认选择器                                                   | -        |
-| `filterable` | 可搜索选择器                                                 | -        |
-| `tree`       | 树形选择器                                                   | -        |
-| `date`       | 日期时间选择器模式：日期选择器（该模式下`list`属性无效）     | -        |
-| `datetime`   | 日期时间选择器模式：日期时间选择器（该模式下`list`属性无效） | -        |
-| `time`       | 日期时间选择器模式：时间选择器（该模式下`list`属性无效）     | -        |
-| `month`      | 日期时间选择器模式：年月选择器（该模式下`list`属性无效）     | -        |
-| `minute`     | 日期时间选择器模式：时分选择器（该模式下`list`属性无效）     | -        |
-
-##### OptionsPosition可选值
-
-| 值             | 说明                   | 支持版本 |
-| -------------- | ---------------------- | -------- |
-| `auto`         | 自动展示位置，默认     | -        |
-| `auto-start`   | 上下自适应，左侧对其   | -        |
-| `auto-end`     | 上下自适应，右侧对其   | -        |
-| `bottom`       | 在下方展示，左右自适应 | -        |
-| `bottom-auto`  | 同`bottom`             | -        |
-| `bottom-start` | 下方展示，左侧对其     | -        |
-| `bottom-end`   | 下方展示，右侧对其     | -        |
-| `top`          | 在上方展示，左右自适应 | -        |
-| `top-auto`     | 同`top`                | -        |
-| `top-start`    | 上方展示，左侧对其     | -        |
-| `top-end`      | 上方展示，右侧对其     | -        |
-
-#### Events
-
-| 事件名    | 说明           | 事件参数                                        | 支持版本 |
-| --------- | -------------- | ----------------------------------------------- | -------- |
-| `change`  | 选择时触发     | 参数1：`value`/`value[]`,参数2：`item`/`item[]` | -        |
-| `cancel`  | 取消选择时触发 | -                                               | -        |
-| `confirm` | 确定选择时触发 | `value`/`value[]`                               | -        |
+<!-- props -->
 
 {{xuyajun}}

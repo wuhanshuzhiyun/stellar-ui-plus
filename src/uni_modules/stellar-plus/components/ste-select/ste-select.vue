@@ -48,7 +48,7 @@ const stop = () => {};
 <template>
     <view class="ste-select-root" :class="{ open: showOptions, disabled }" :style="[cmpRootStyle]">
         <view class="select-mask" @click="clickMask" @touchmove.stop="stop">
-            <view class="select-content" :style="[contentStyle]" @click.stop="stop" @click="openOptions">
+            <view class="select-content" :style="[contentStyle]" @click.stop="openOptions">
                 <slot>
                     <scroll-view scroll-x class="content-text" :class="{ multiple: cmpMultiple }">
                         <block v-if="cmpFilterable">

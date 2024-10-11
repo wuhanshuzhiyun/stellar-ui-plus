@@ -76,7 +76,7 @@ export default function useData({ props, emits, thas }: {
     viewOptions.value = value
   }
 
-  const cmpInputPlaceholder = computed(() => confirmValue.value.length > 0 ? '' : inputPlaceholder.value)
+  const cmpInputPlaceholder = computed(() => confirmValue.value.length > 0 ? '' : props.placeholder)
 
   const cmpShowDate = computed(() => ['date', 'datetime', 'time', 'month', 'minute'].includes(props.mode))
 

@@ -83,8 +83,8 @@ function copy(data: string) {
                 <view class="demo-item">
                     <view class="title">图标颜色</view>
                     <view class="item-block" style="justify-content: flex-start">
-                        <ste-icon code="&#xe684;" :color="'#1989fa'" :size="60" marginRight="30"></ste-icon>
-                        <ste-icon code="&#xe684;" :color="'#ee0a24'" :size="60"></ste-icon>
+                        <ste-icon code="&#xe684;" color="#1989fa" :size="60" marginRight="30"></ste-icon>
+                        <ste-icon code="&#xe684;" color="#ee0a24" :size="60"></ste-icon>
                     </view>
                 </view>
                 <view class="demo-item">

@@ -249,6 +249,10 @@ const change = (e: { indexs: number[]; values: string[][] }) => {
         }
     });
 
+    // 此月份的最大天数
+    const maxDay = dayjs(`${dateArr[0]}-${dateArr[1]}`).daysInMonth();
+    dateArr[2] = Math.min(maxDay, dateArr[2]) || 1;
+
     selectValue = dayjs(`${dateArr[0]}/${padZero(dateArr[1])}/${padZero(dateArr[2])} ${padZero(dateArr[3])}:${padZero(dateArr[4])}:${padZero(dateArr[5])}`).valueOf();
 
     updateColumnValue(selectValue);

@@ -17,7 +17,7 @@ const slots = useSlots();
 
 const Parent = useInject<{ props: Required<RadioGroupProps>; updateValue: (value: string) => void }>(RADIO_KEY);
 
-const parentProps = Parent?.parent?.props;
+const parentProps = computed(() => Parent?.parent?.props);
 
 const cmpReadonly = computed(() => getDefaultData('readonly', false));
 const cmpShape = computed(() => getDefaultData('shape', 'circle'));
@@ -86,7 +86,7 @@ const cmpInputStyle = computed(() => {
 });
 
 const cmpChecked = computed(() => {
-    return parentProps ? parentProps.value == props.name : props.modelValue == props.name;
+    return parentProps.value ? parentProps.value.modelValue == props.name : props.modelValue == props.name;
 });
 
 async function click() {
@@ -111,7 +111,7 @@ async function click() {
 
         if (!cmpChecked.value) {
             let value = String(props.name);
-            if (parentProps) {
+            if (parentProps.value) {
                 Parent.parent?.updateValue(value);
             } else {
                 emits('update:modelValue', value);

@@ -16,7 +16,7 @@ const cmpRootStyle = computed(() => {
 
 function updateValue(value: string) {
     emits('change', value);
-    emits('update:value', value);
+    emits('update:modelValue', value);
 }
 </script>
 

@@ -4,7 +4,7 @@ import type { ShapeType, TextPositionType } from '../ste-radio/type'
 type DirectionType = 'row' | 'column'
 
 export const radioGroupProps = {
-  value: String,
+  modelValue: String,
   direction: { type: String as PropType<DirectionType>, default: 'column' },
   disabled: { type: Boolean as PropType<boolean | undefined>, default: undefined },
   readonly: { type: Boolean as PropType<boolean | undefined>, default: undefined },
@@ -27,7 +27,7 @@ export type RadioGroupProps = ExtractPropTypes<typeof radioGroupProps>
 
 export const radioGroupEmits = {
   'change': (value: string) => typeof value === 'string',
-  'update:value': (value: string) => typeof value === 'string',
+  'update:modelValue': (value: string) => typeof value === 'string',
 }
 
 export type RadioGroupEmits = typeof radioGroupEmits

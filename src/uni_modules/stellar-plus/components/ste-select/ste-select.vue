@@ -3,6 +3,13 @@ import propsData, { type SelectOption, type SelectValue } from './props';
 import useData from './useData';
 import DateTime from './datetime.vue';
 
+defineOptions({
+    name: 'ste-select',
+    options: {
+        virtualHost: true,
+    },
+});
+
 const props = defineProps(propsData);
 const emits = defineEmits<{
     (e: 'update:modelValue', value: SelectValue): void;

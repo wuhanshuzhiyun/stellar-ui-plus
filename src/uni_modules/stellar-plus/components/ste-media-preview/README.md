@@ -15,26 +15,18 @@
 <template>
     <ste-button @click="show = true">基础预览</ste-button>
     <view style="width: 100%">
-        <ste-media-preview :urls="medias" :show.sync="show" />
+        <ste-media-preview :urls="medias" v-model:show="show" />
     </view>
 </template>
-
-<script>
-    export default {
-        data() {
-            return {
-                medias: [
-                    'https://image.whzb.com/chain/StellarUI/图片.jpg',
-                    'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
-                    'https://image.whzb.com/chain/StellarUI/验证码背景.png',
-                    'https://image.whzb.com/chain/StellarUI/bg4.jpg',
-                    'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
-                    'https://image.whzb.com/chain/StellarUI/bg3.jpg',
-                ],
-                show: false,
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const medias = ref([
+        'https://image.whzb.com/chain/StellarUI/图片.jpg',
+        'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
+        'https://image.whzb.com/chain/StellarUI/验证码背景.png',
+        'https://image.whzb.com/chain/StellarUI/bg4.jpg',
+        'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
+    ]);
 </script>
 ```
 
@@ -46,18 +38,19 @@
 <template>
     <ste-button @click="show1 = true">自动轮播</ste-button>
     <view style="width: 100%">
-        <ste-media-preview :urls="medias" :show.sync="show1" :autoplay="3000" />
+        <ste-media-preview :urls="medias" v-model:show="show1" :autoplay="3000" />
     </view>
 </template>
-
-<script>
-    export default {
-        data() {
-            return {
-                show1: false,
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const medias = ref([
+        'https://image.whzb.com/chain/StellarUI/图片.jpg',
+        'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
+        'https://image.whzb.com/chain/StellarUI/验证码背景.png',
+        'https://image.whzb.com/chain/StellarUI/bg4.jpg',
+        'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
+    ]);
+    const show1 = ref(false);
 </script>
 ```
 
@@ -67,20 +60,22 @@
 
 ```html
 <template>
-    <ste-button @click="show2 = true">自动轮播</ste-button>
+    <ste-button @click="show2 = true">前后衔接循环播放</ste-button>
     <view style="width: 100%">
-        <ste-media-preview :urls="medias" :show.sync="show2" loop />
+        <ste-media-preview :urls="medias" v-model:show="show2" loop />
     </view>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                show2: false,
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const medias = ref([
+        'https://image.whzb.com/chain/StellarUI/图片.jpg',
+        'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
+        'https://image.whzb.com/chain/StellarUI/验证码背景.png',
+        'https://image.whzb.com/chain/StellarUI/bg4.jpg',
+        'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
+    ]);
+    const show2 = ref(false);
 </script>
 ```
 
@@ -90,20 +85,22 @@
 
 ```html
 <template>
-    <ste-button @click="show3 = true">自动轮播</ste-button>
+    <ste-button @click="show3 = true">默认展示下标为2的媒体资源</ste-button>
     <view style="width: 100%">
-        <ste-media-preview :urls="medias" :show.sync="show3" :index="2" />
+        <ste-media-preview :urls="medias" v-model:show="show3" :index="2" />
     </view>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                show3: false,
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const medias = ref([
+        'https://image.whzb.com/chain/StellarUI/图片.jpg',
+        'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
+        'https://image.whzb.com/chain/StellarUI/验证码背景.png',
+        'https://image.whzb.com/chain/StellarUI/bg4.jpg',
+        'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
+    ]);
+    const show3 = ref(false);
 </script>
 ```
 
@@ -113,20 +110,22 @@
 
 ```html
 <template>
-    <ste-button @click="show4 = true">自动轮播</ste-button>
+    <ste-button @click="show4 = true">隐藏左下角索引标签</ste-button>
     <view style="width: 100%">
-        <ste-media-preview :urls="medias" :show.sync="show4" :showIndex="false" />
+        <ste-media-preview :urls="medias" v-model:show="show4" :showIndex="false" />
     </view>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                show4: false,
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const medias = ref([
+        'https://image.whzb.com/chain/StellarUI/图片.jpg',
+        'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
+        'https://image.whzb.com/chain/StellarUI/验证码背景.png',
+        'https://image.whzb.com/chain/StellarUI/bg4.jpg',
+        'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
+    ]);
+    const show4 = ref(false);
 </script>
 ```
 
@@ -136,20 +135,22 @@
 
 ```html
 <template>
-    <ste-button @click="show5 = true">自动轮播</ste-button>
+    <ste-button @click="show5 = true">双指缩放</ste-button>
     <view style="width: 100%">
-        <ste-media-preview :urls="medias" :show.sync="show5" scale />
+        <ste-media-preview :urls="medias" v-model:show="show5" scale />
     </view>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                show5: false,
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const medias = ref([
+        'https://image.whzb.com/chain/StellarUI/图片.jpg',
+        'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
+        'https://image.whzb.com/chain/StellarUI/验证码背景.png',
+        'https://image.whzb.com/chain/StellarUI/bg4.jpg',
+        'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
+    ]);
+    const show5 = ref(false);
 </script>
 ```
 
@@ -159,28 +160,28 @@
 
 ```html
 <template>
-    <ste-button @click="show6 = true">自动轮播</ste-button>
+    <ste-button @click="show6 = true">长按触发事件</ste-button>
     <view style="width: 100%">
         <ste-media-preview :urls="medias" :show.sync="show6" @longpress="onLongpress" />
     </view>
 </template>
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const medias = ref([
+        'https://image.whzb.com/chain/StellarUI/图片.jpg',
+        'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
+        'https://image.whzb.com/chain/StellarUI/验证码背景.png',
+        'https://image.whzb.com/chain/StellarUI/bg4.jpg',
+        'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
+    ]);
+    const show6 = ref(false);
 
-<script>
-    export default {
-        data() {
-            return {
-                show6: false,
-            };
-        },
-        methods: {
-            onLongpress(index) {
-                this.showToast({
-                    title: `长按了第【${index + 1}】个媒体资源`,
-                    icon: 'none',
-                });
-            },
-        },
-    };
+    function onLongpress(index) {
+        this.showToast({
+            title: `长按了第【${index + 1}】个媒体资源`,
+            icon: 'none',
+        });
+    }
 </script>
 ```
 
@@ -191,47 +192,48 @@
 
 ```html
 <template>
-    <ste-button @click="show7 = true">自动轮播</ste-button>
+    <ste-button @click="show7 = true">关闭前/后事件</ste-button>
     <view style="width: 100%">
         <ste-media-preview :urls="medias" :show.sync="show7" @beforeClose="onBeforeClose" @close="onClose" />
     </view>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                show7: false,
-            };
-        },
-        methods: {
-            onBeforeClose(stop, next, prevent) {
-                stop();
-                toast.showModal({
-                    title: '确定关闭弹窗吗？',
-                    success({ cancel, confirm }) {
-                        if (confirm) {
-                            console.log('点了确定');
-                            next();
-                        }
-                        if (cancel) {
-                            console.log('点了取消');
-                            prevent();
-                        }
-                    },
-                    fail() {
-                        prevent();
-                    },
-                });
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const medias = ref([
+        'https://image.whzb.com/chain/StellarUI/图片.jpg',
+        'https://image.whzb.com/chain/StellarUI/竖屏1.mp4',
+        'https://image.whzb.com/chain/StellarUI/验证码背景.png',
+        'https://image.whzb.com/chain/StellarUI/bg4.jpg',
+        'https://image.whzb.com/chain/StellarUI/横屏2.mp4',
+    ]);
+    const show7 = ref(false);
+
+    function onBeforeClose(stop, next, prevent) {
+        stop();
+        toast.showModal({
+            title: '确定关闭弹窗吗？',
+            success({ cancel, confirm }) {
+                if (confirm) {
+                    console.log('点了确定');
+                    next();
+                }
+                if (cancel) {
+                    console.log('点了取消');
+                    prevent();
+                }
             },
-            onClose() {
-                this.showToast({
-                    title: '弹窗关闭了',
-                    icon: 'none',
-                });
+            fail() {
+                prevent();
             },
-        },
-    };
+        });
+    }
+    function onClose() {
+        this.showToast({
+            title: '弹窗关闭了',
+            icon: 'none',
+        });
+    }
 </script>
 ```
 

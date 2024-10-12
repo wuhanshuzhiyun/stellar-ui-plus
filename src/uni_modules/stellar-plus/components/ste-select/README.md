@@ -18,30 +18,24 @@
 <template>
     <ste-select :list="list" v-model="value" @change="onChange"></ste-select>
 </template>
-<script>
-    export default {
-        data() {
-            return {
-                value: null,
-                list: [
-                    { label: '选项2011', value: 2011 },
-                    { label: '选项2012', value: 2012 },
-                    { label: '选项2013', value: 2013 },
-                    { label: '选项2014', value: 2014 },
-                    { label: '选项2015', value: 2015 },
-                    { label: '选项2016', value: 2016 },
-                    { label: '选项2017', value: 2017 },
-                    { label: '选项2018', value: 2018 },
-                    { label: '选项2019', value: 2019 },
-                ],
-            };
-        },
-        methods: {
-            onChange(v) {
-                console.log(v);
-            },
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const value = ref(null);
+    const list = ref([
+        { label: '选项2011', value: 2011 },
+        { label: '选项2012', value: 2012 },
+        { label: '选项2013', value: 2013 },
+        { label: '选项2014', value: 2014 },
+        { label: '选项2015', value: 2015 },
+        { label: '选项2016', value: 2016 },
+        { label: '选项2017', value: 2017 },
+        { label: '选项2018', value: 2018 },
+        { label: '选项2019', value: 2019 },
+    ]);
+
+    function onChange() {
+        console.log(v);
+    }
 </script>
 ```
 
@@ -54,25 +48,20 @@
 <template>
     <ste-select :list="list" v-model="value" multiple></ste-select>
 </template>
-<script>
-    export default {
-        data() {
-            return {
-                value: [],
-                list: [
-                    { label: '选项2011', value: 2011 },
-                    { label: '选项2012', value: 2012 },
-                    { label: '选项2013', value: 2013 },
-                    { label: '选项2014', value: 2014 },
-                    { label: '选项2015', value: 2015 },
-                    { label: '选项2016', value: 2016 },
-                    { label: '选项2017', value: 2017 },
-                    { label: '选项2018', value: 2018 },
-                    { label: '选项2019', value: 2019 },
-                ],
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const value = ref([]);
+    const list = ref([
+        { label: '选项2011', value: 2011 },
+        { label: '选项2012', value: 2012 },
+        { label: '选项2013', value: 2013 },
+        { label: '选项2014', value: 2014 },
+        { label: '选项2015', value: 2015 },
+        { label: '选项2016', value: 2016 },
+        { label: '选项2017', value: 2017 },
+        { label: '选项2018', value: 2018 },
+        { label: '选项2019', value: 2019 },
+    ]);
 </script>
 ```
 
@@ -85,24 +74,19 @@
 <template>
     <ste-select :list="list" v-model="value"></ste-select>
 </template>
-<script>
-    export default {
-        data() {
-            return {
-                value: [],
-                list: [
-                    [
-                        { label: '选项1-1', value: 11 },
-                        { label: '选项1-2', value: 22 },
-                    ],
-                    [
-                        { label: '选项2-1', value: 21 },
-                        { label: '选项2-2', value: 22 },
-                    ],
-                ],
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const value = ref([]);
+    const list = ref([
+        [
+            { label: '选项1-1', value: 11 },
+            { label: '选项1-2', value: 22 },
+        ],
+        [
+            { label: '选项2-1', value: 21 },
+            { label: '选项2-2', value: 22 },
+        ],
+    ]);
 </script>
 ```
 
@@ -117,32 +101,27 @@
 <template>
     <ste-select mode="tree" :list="list" v-model="value"></ste-select>
 </template>
-<script>
-    export default {
-        data() {
-            return {
-                value: [],
-                list: [
-                    {
-                        label: '湖北',
-                        value: 1,
-                        children: [
-                            { label: '武汉', value: 11 },
-                            { label: '荆州', value: 12 },
-                        ],
-                    },
-                    {
-                        label: '湖南',
-                        value: 2,
-                        children: [
-                            { label: '长沙', value: 21 },
-                            { label: '株洲', value: 22 },
-                        ],
-                    },
-                ],
-            };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const value = ref([]);
+    const list = ref([
+        {
+            label: '湖北',
+            value: 1,
+            children: [
+                { label: '武汉', value: 11 },
+                { label: '荆州', value: 12 },
+            ],
         },
-    };
+        {
+            label: '湖南',
+            value: 2,
+            children: [
+                { label: '长沙', value: 21 },
+                { label: '株洲', value: 22 },
+            ],
+        },
+    ]);
 </script>
 ```
 
@@ -177,24 +156,18 @@
 <template>
     <ste-select mode="filterable" :list="list"></ste-select>
 </template>
-<script>
-    export default {
-        data() {
-            return {
-                list: [
-                    { label: '选项2011', value: 2011 },
-                    { label: '选项2012', value: 2012 },
-                    { label: '选项2013', value: 2013 },
-                    { label: '选项2014', value: 2014 },
-                    { label: '选项2015', value: 2015 },
-                    { label: '选项2016', value: 2016 },
-                    { label: '选项2017', value: 2017 },
-                    { label: '选项2018', value: 2018 },
-                    { label: '选项2019', value: 2019 },
-                ],
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const list = ref([
+        { label: '选项2011', value: 2011 },
+        { label: '选项2012', value: 2012 },
+        { label: '选项2013', value: 2013 },
+        { label: '选项2014', value: 2014 },
+        { label: '选项2015', value: 2015 },
+        { label: '选项2016', value: 2016 },
+        { label: '选项2017', value: 2017 },
+        { label: '选项2018', value: 2018 },
+    ]);
 </script>
 ```
 
@@ -206,24 +179,19 @@
 <template>
     <ste-select mode="filterable" allowCreate :list="list"></ste-select>
 </template>
-<script>
-    export default {
-        data() {
-            return {
-                list: [
-                    { label: '选项2011', value: 2011 },
-                    { label: '选项2012', value: 2012 },
-                    { label: '选项2013', value: 2013 },
-                    { label: '选项2014', value: 2014 },
-                    { label: '选项2015', value: 2015 },
-                    { label: '选项2016', value: 2016 },
-                    { label: '选项2017', value: 2017 },
-                    { label: '选项2018', value: 2018 },
-                    { label: '选项2019', value: 2019 },
-                ],
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const list = ref(
+        { label: '选项2011', value: 2011 },
+        { label: '选项2012', value: 2012 },
+        { label: '选项2013', value: 2013 },
+        { label: '选项2014', value: 2014 },
+        { label: '选项2015', value: 2015 },
+        { label: '选项2016', value: 2016 },
+        { label: '选项2017', value: 2017 },
+        { label: '选项2018', value: 2018 },
+        { label: '选项2019', value: 2019 }
+    );
 </script>
 ```
 

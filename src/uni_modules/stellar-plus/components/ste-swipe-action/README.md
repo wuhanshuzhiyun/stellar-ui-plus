@@ -54,16 +54,14 @@
 </ste-swipe-action>
 <ste-button mode="200" @click="openSwipe">打开</ste-button>
 <ste-button mode="200" @click="closeSwipe">关闭</ste-button>
-<script>
-    export default {
-        methods: {
-            openSwipe() {
-                this.$refs.swipe.open();
-            },
-            closeSwipe() {
-                this.$refs.swipe.close();
-            },
-        },
+<script lang="ts" setup>
+    import type { RefSwipeAction } from '../../../../uni_modules/stellar-plus/types/refComponents';
+    const swipe = ref<RefSwipeAction>();
+    const openSwipe = () => {
+        swipe.value?.open();
+    };
+    const closeSwipe = () => {
+        swipe.value?.close();
     };
 </script>
 ```
@@ -86,22 +84,20 @@
         <div class="test-btn">删除</div>
     </template>
 </ste-swipe-action>
-<script>
-    export default {
-        methods: {
-            onOpen(direction) {
-                this.showToast({
-                    title: `打开方向：${direction}`,
-                    icon: 'none',
-                });
-            },
-            onClose() {
-                this.showToast({
-                    title: '关闭',
-                    icon: 'none',
-                });
-            },
-        },
+<script lang="ts" setup>
+    import { useToast } from '@/uni_modules/stellar-plus/composables';
+    let toast = useToast();
+    const onOpen = (direction: 'left' | 'right', index?: number) => {
+        toast.showToast({
+            title: index || index === 0 ? `第${index + 1}条的打开方向:${direction}` : `打开方向：${direction}`,
+            icon: 'none',
+        });
+    };
+    const onClose = (index?: number) => {
+        toast.showToast({
+            title: index || index === 0 ? `关闭第${index + 1}条` : '关闭',
+            icon: 'none',
+        });
     };
 </script>
 ```
@@ -141,17 +137,15 @@
     <ste-button mode="200" @click="openSwipeGroup(1)">打开第2行</ste-button>
     <ste-button mode="200" @click="closeSwipeGroup(1)">关闭第2行</ste-button>
 </view>
-
-<script>
-    export default {
-        methods: {
-            openSwipeGroup(index) {
-                this.$refs.swipeGroup.open('right', index);
-            },
-            closeSwipeGroup(index) {
-                this.$refs.swipeGroup.close(index);
-            },
-        },
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    import type { RefSwipeAction, RefSwipeActionGroup } from '../../../../uni_modules/stellar-plus/types/refComponents';
+    const swipeGroup = ref<RefSwipeActionGroup>();
+    const openSwipeGroup = (index: number) => {
+        swipeGroup.value?.open('right', index);
+    };
+    const closeSwipeGroup = (index: number) => {
+        swipeGroup.value?.close(index);
     };
 </script>
 ```

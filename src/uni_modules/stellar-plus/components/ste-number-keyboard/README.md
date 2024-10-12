@@ -32,16 +32,10 @@
     <text v-else class="placeholder">请输入</text>
 </view>
 <ste-number-keyboard v-model="value1" v-model:show="show1" />
-
-<script>
-    export default {
-        data() {
-            return {
-                value1: '',
-                show1: false,
-            };
-        },
-    };
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value1 = ref('');
+    const show1 = ref(false);
 </script>
 ```
 
@@ -55,16 +49,10 @@
     <text v-else class="placeholder">请输入</text>
 </view>
 <ste-number-keyboard :rightKeys="false" v-model="value2" v-model:show="show2" />
-
-<script>
-    export default {
-        data() {
-            return {
-                value2: '',
-                show2: false,
-            };
-        },
-    };
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value2 = ref('');
+    const show2 = ref(false);
 </script>
 ```
 
@@ -80,15 +68,10 @@
 </view>
 <ste-number-keyboard :showClear="false" v-model="value3" v-model:show="show3" maxlength="6" />
 
-<script>
-    export default {
-        data() {
-            return {
-                value3: '',
-                show3: false,
-            };
-        },
-    };
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value3 = ref('');
+    const show3 = ref(false);
 </script>
 ```
 
@@ -103,15 +86,10 @@
 </view>
 <ste-number-keyboard :customKeys="['00', '.']" v-model="value4" v-model:show="show4" />
 
-<script>
-    export default {
-        data() {
-            return {
-                value4: '',
-                show4: false,
-            };
-        },
-    };
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value4 = ref('');
+    const show4 = ref(false);
 </script>
 ```
 
@@ -130,15 +108,10 @@
 </view>
 <ste-number-keyboard v-model="value5" v-model:show="show5" textColor="#f00" textSize="40" confirmBg="#f00" confirmColor="#0f0" confirmText="完成" />
 
-<script>
-    export default {
-        data() {
-            return {
-                value5: '',
-                show5: false,
-            };
-        },
-    };
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value5 = ref('');
+    const show5 = ref(false);
 </script>
 ```
 
@@ -158,34 +131,27 @@
     <text v-else class="placeholder">请输入</text>
 </view>
 <ste-number-keyboard :customKeys="['返回']" v-model="value6" v-model:show="show6" @beforeinput="beforeinput" />
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value6 = ref('');
+    const show6 = ref(false);
 
-<script>
-    export default {
-        data() {
-            return {
-                value6: '',
-                show6: false,
-            };
-        },
-        methods: {
-            beforeinput(v, suspend, next, stop) {
-                // 等待后续操作
-                suspend();
-                // 执行自定义操作
-                if (v === '返回') {
-                    // 阻止默认后续操作
-                    stop();
-                    this.showToast({
-                        title: '点击了返回',
-                        icon: 'none',
-                    });
-                } else {
-                    // 继续默认后续操作
-                    next();
-                }
-            },
-        },
-    };
+    function beforeinput(v, suspend, next, stop) {
+        // 等待后续操作
+        suspend();
+        // 执行自定义操作
+        if (v === '返回') {
+            // 阻止默认后续操作
+            stop();
+            this.showToast({
+                title: '点击了返回',
+                icon: 'none',
+            });
+        } else {
+            // 继续默认后续操作
+            next();
+        }
+    }
 </script>
 ```
 
@@ -204,14 +170,9 @@
     <ste-number-keyboard mode="page" v-model="value7" />
 </view>
 
-<script>
-    export default {
-        data() {
-            return {
-                value7: '',
-            };
-        },
-    };
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value7 = ref('');
 </script>
 ```
 

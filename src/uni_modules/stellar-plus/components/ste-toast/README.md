@@ -65,7 +65,7 @@ insetLoader: {
 
 `title`为提示内容，提示弹窗根据内容自动撑开，最大宽度为260px，超过自动换行，也可手动插入换行符`\n`
 
-```
+```javascript
 click1() {
 	this.showToast({
 		title: '提示内容',
@@ -92,7 +92,7 @@ click3() {
 -   `loading`：显示加载图标
 -   `none`：无图标
 
-```
+```javascript
 click4() {
 	this.showToast({
 		title: '提示内容',
@@ -120,7 +120,7 @@ click7() {
 
 `image`为自定义图标的路径，image 的优先级高于 icon
 
-```
+```javascript
 click8() {
 	this.showToast({
 		title: '提示内容',
@@ -133,7 +133,7 @@ click8() {
 
 `mask`为是否显示透明蒙层，防止触摸穿透，默认为`false`
 
-```
+```javascript
 click9() {
 	this.showToast({
 		title: '提示内容',
@@ -147,7 +147,7 @@ click9() {
 
 `duration`为提示的延迟时间，单位ms 值为 0 时，toast 不会自动消失（loading 类型默认为 0）
 
-```
+```javascript
 click10() {
 	this.showToast({
 		title: '提示内容',
@@ -163,7 +163,7 @@ click10() {
 -   `complete`：提示结束的回调函数（提示打开、失败都会执行）
 -   `close`：提示关闭的的回调函数
 
-```
+```javascript
 click11() {
 	this.showToast({
 		title: '提示内容',

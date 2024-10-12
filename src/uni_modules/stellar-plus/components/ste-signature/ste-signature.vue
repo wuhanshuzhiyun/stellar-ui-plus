@@ -137,7 +137,6 @@ const back = () => {
 };
 
 const save = async (callback: (res: string) => void, error?: (err: any) => void) => {
-    console.log('save');
     if (!strokes.value.length) {
         console.warn('没有绘制签名内容');
         if (error) error('请绘制签名');
@@ -148,7 +147,6 @@ const save = async (callback: (res: string) => void, error?: (err: any) => void)
         console.error('找不到canvas');
         return;
     }
-    console.log(canvas);
     uni.canvasToTempFilePath(
         {
             canvasId: canvasId.value,

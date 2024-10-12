@@ -35,7 +35,8 @@ export const inputEmits = {
   'input': (value: string | number) => value,
   'clear': () => true,
   'update:focus': (v: boolean) => typeof v === 'boolean',
-  'blur': (value: string | number) => value,
+  'blur': () => true,
+
   'confirm': (value: string | number) => value,
 }
 export type InputEmits = typeof inputEmits

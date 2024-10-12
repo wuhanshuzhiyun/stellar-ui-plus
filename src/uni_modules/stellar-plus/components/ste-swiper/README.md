@@ -94,15 +94,9 @@
         <view class="item">{{ m }}</view>
     </ste-swiper-item>
 </ste-swiper>
-
-<script>
-    export default {
-        data() {
-            return {
-                list2: ['1111', '2222', '3333', '4444'],
-            };
-        },
-    };
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const list2 = ref(['1111', '2222', '3333', '4444']);
 </script>
 ```
 

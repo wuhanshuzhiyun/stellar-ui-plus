@@ -4,9 +4,10 @@ export default defineUniPages({
   insetLoader: {
     config: {
       toast: '<ste-toast ref=\'toast\'></ste-toast>',
+      messageBox: '<ste-message-box ref=\'messageBox\'></ste-message-box>',
     },
     // 全局配置
-    label: ['toast'],
+    label: ['toast', 'messageBox'],
     rootEle: '.*',
   },
   pages: [],

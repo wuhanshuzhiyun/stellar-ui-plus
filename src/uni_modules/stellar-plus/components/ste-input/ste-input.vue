@@ -83,7 +83,11 @@ watch(
 watch(
     () => props.focus,
     val => {
-        focused.value = val;
+        // focused.value = val;
+
+        setTimeout(() => {
+            focused.value = val;
+        }, 50);
     }
 );
 
@@ -119,7 +123,7 @@ function onBlur() {
     setTimeout(() => {
         emits('update:focus', false);
         focused.value = false;
-        emits('blur', dataValue.value);
+        emits('blur');
     }, 200);
 }
 

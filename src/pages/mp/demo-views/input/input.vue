@@ -1,13 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-// const v = ref('123123');
 const inputFocus = ref(false);
 const count = ref(0);
 let codeTimer: any;
-
-function blur() {
-    inputFocus.value = false;
-}
 
 function focus() {
     inputFocus.value = !inputFocus.value;
@@ -95,7 +90,7 @@ function getCode() {
                 <view class="title">焦点</view>
                 <view class="item-block">
                     <view style="width: 100%">
-                        <ste-input :focus.sync="inputFocus" />
+                        <ste-input v-model:focus="inputFocus" />
                     </view>
 
                     <view style="width: 100%; text-align: center">

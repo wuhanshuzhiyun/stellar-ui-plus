@@ -16,8 +16,7 @@ const emits = defineEmits(checkboxEmits);
 const slots = useSlots();
 
 const Parent = useInject<{ props: Required<CheckboxGroupProps>; updateValue: (value: any[]) => void }>(CHECKBOX_KEY);
-
-const parentProps = Parent?.parent?.props;
+const parentProps = computed(() => Parent?.parent?.props);
 
 const cmpReadonly = computed(() => getDefaultData('readonly', false));
 const cmpShape = computed(() => getDefaultData('shape', 'circle'));
@@ -86,21 +85,22 @@ const cmpInputStyle = computed(() => {
 });
 
 const cmpChecked = computed(() => {
-    let v = parentProps ? parentProps.value.includes(props.name) : props.modelValue;
+    let v = num.value && parentProps.value ? parentProps.value.modelValue.includes(props.name) : props.modelValue;
     return v;
 });
 
 const cmpDisabled = computed(() => {
     let disabled = getDefaultData('disabled', false);
     // 限制最大可选数
-    if (parentProps && parentProps.max) {
-        if (!cmpChecked.value && parentProps.value.length >= parentProps.max) {
+    if (parentProps.value && parentProps.value.max) {
+        if (!cmpChecked.value && parentProps.value.modelValue.length >= parentProps.value.max) {
             disabled = true;
         }
     }
     return disabled;
 });
-
+// 强制更新选中状态
+let num = ref(1);
 async function click() {
     if (!cmpDisabled.value && !cmpReadonly.value) {
         let next = true;
@@ -122,14 +122,15 @@ async function click() {
         }
 
         let value: boolean | any[];
-        if (parentProps) {
-            value = parentProps.value;
+        if (parentProps.value) {
+            value = parentProps.value.modelValue;
             if (cmpChecked.value) {
                 value = value.filter(value => value != props.name);
             } else {
                 value.push(props.name);
             }
             Parent.parent?.updateValue(value);
+            num.value++;
         } else {
             value = !cmpChecked.value;
             emits('update:modelValue', !cmpChecked.value);
@@ -145,7 +146,6 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
             if (props[key]) {
                 return props[key];
             } else {
-                // return parent[key] ? parent[key] : value
                 return value;
             }
         }

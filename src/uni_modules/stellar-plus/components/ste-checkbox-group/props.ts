@@ -4,7 +4,7 @@ import type { ShapeType, TextPositionType } from '../ste-checkbox/type'
 type DirectionType = 'row' | 'column'
 
 export const checkboxGroupProps = {
-  value: { type: Array, default: [] },
+  modelValue: { type: Array, default: [] },
   direction: { type: String as PropType<DirectionType>, default: 'column' },
   max: { type: Number, default: 0 },
   disabled: { type: Boolean as PropType<boolean | undefined>, default: undefined },
@@ -28,7 +28,7 @@ export type CheckboxGroupProps = ExtractPropTypes<typeof checkboxGroupProps>
 
 export const checkboxGroupEmits = {
   'change': (value: any[]) => Array.isArray(value),
-  'update:value': (value: any[]) => Array.isArray(value),
+  'update:modelValue': (value: any[]) => Array.isArray(value),
 }
 
 export type CheckboxGroupEmits = typeof checkboxGroupEmits

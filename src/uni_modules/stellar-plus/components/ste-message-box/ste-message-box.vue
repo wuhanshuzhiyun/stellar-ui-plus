@@ -81,7 +81,11 @@ async function showBox() {
     maskAnimationData.value = maskAnimation.export();
 }
 function closeBox() {
+    // 清除上次的值
     inputValue.value = '';
+    cancelColor.value = '';
+    confirmColor.value = '';
+
     let animation = uni.createAnimation(ANIMATION_PROP);
     let maskAnimation = uni.createAnimation(ANIMATION_PROP);
     maskAnimation.opacity(0).step({ duration: DURATION });

@@ -149,6 +149,13 @@ const utils = {
     // #endif
     return res
   },
+
+  getUrlParam(key: string) {
+    const url = window.location.href
+    const reg = new RegExp(`(^|&)${key}=([^&]*)(&|$)`)
+    const r = url.substr(url.indexOf('?') + 1).match(reg)
+    return r ? decodeURIComponent(r[2]) : null
+  },
 }
 
 export default utils

@@ -25,6 +25,16 @@ const qrImage = computed(() => {
     return `${config.BASE_URL}/wxcode?uuid=${uuid.value}`;
 });
 
+const toHome = () => {
+    nextTick(() => {
+        const back = utils.getUrlParam('back');
+        console.log('back', back);
+        uni.redirectTo({
+            url: `/pages/pc/index?active=${back}`,
+        });
+    });
+};
+
 const initSSE = () => {
     sse.value = new SSE();
     sse.value.onmessage(data => {
@@ -35,11 +45,7 @@ const initSSE = () => {
             // 微信已确认登录
             setToken(data);
             sse.value?.close();
-            nextTick(() => {
-                uni.redirectTo({
-                    url: `/pages/pc/index?active=${utils.getUrlParam('back')}`,
-                });
-            });
+            toHome();
         }
     });
 };
@@ -49,11 +55,7 @@ onMounted(async () => {
     if (token) {
         console.log('已登录');
         // 跳转到首页
-        nextTick(() => {
-            uni.redirectTo({
-                url: '/pages/pc/index',
-            });
-        });
+        toHome();
         return;
     }
     uuid.value = initUUID();

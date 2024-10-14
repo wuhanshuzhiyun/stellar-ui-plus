@@ -27,6 +27,8 @@ export default function useData() {
   const open = ref(false)
   const tmpMsg = ref(null)
 
+  const showInputPlaceholder = ref(true)
+
   return {
     title,
     content,
@@ -49,5 +51,6 @@ export default function useData() {
     maskAnimationData,
     open,
     tmpMsg,
+    showInputPlaceholder,
   }
 }

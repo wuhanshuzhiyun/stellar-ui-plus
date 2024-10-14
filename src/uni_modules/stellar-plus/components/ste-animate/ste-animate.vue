@@ -53,9 +53,6 @@ function animated() {
     nextTick(() => {
         animationFlag.value = true;
     });
-    // setTimeout(() => {
-    // 	this.animationFlag = true;
-    // }, 10);
 }
 </script>
 

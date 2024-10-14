@@ -34,10 +34,22 @@ const {
     confirm,
     cancel,
     complete,
+    showInputPlaceholder,
 } = useData();
 
 const injectKey = props.selector ? props.selector : messageBoxDefaultOptionsKey;
 const injectMessageBoxOption = ref<MessageBoxOptions>(inject(injectKey) || {});
+
+// 用input自带占位符时，由于动画原因导致最终显示会有一个下降的效果
+function handleInputFocus() {
+    showInputPlaceholder.value = false;
+}
+
+function handleInputBlur() {
+    if (!inputValue.value) {
+        showInputPlaceholder.value = true;
+    }
+}
 
 const cmpRootStyle = computed(() => {
     return {
@@ -85,6 +97,8 @@ function closeBox() {
     inputValue.value = '';
     cancelColor.value = '';
     confirmColor.value = '';
+
+    showInputPlaceholder.value = true;
 
     let animation = uni.createAnimation(ANIMATION_PROP);
     let maskAnimation = uni.createAnimation(ANIMATION_PROP);
@@ -163,8 +177,11 @@ defineExpose({
                 <view class="msg" v-if="!icon">
                     <slot>
                         <view class="text" v-if="!editable">{{ content }}</view>
-                        <view v-else>
-                            <input :value="inputValue" class="ste-message-box-input" :placeholder="placeholderText" @input="handleInput" />
+                        <view v-else class="input-box">
+                            <text class="placeholder-text" v-show="showInputPlaceholder">
+                                {{ placeholderText }}
+                            </text>
+                            <input :value="inputValue" class="ste-message-box-input" @input="handleInput" @focus="handleInputFocus" @blur="handleInputBlur" />
                         </view>
                     </slot>
                 </view>
@@ -262,10 +279,23 @@ defineExpose({
                     text-align: center;
                 }
 
+                .input-box {
+                    position: relative;
+                }
+
+                .placeholder-text {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    color: #999999;
+                }
+
                 .ste-message-box-input {
                     height: 80rpx;
                     width: 548rpx;
                     background: #f5f5f5;
+
                     border-radius: 8px 8px 8px 8px;
                     text-align: center;
                     padding: 0 24rpx;

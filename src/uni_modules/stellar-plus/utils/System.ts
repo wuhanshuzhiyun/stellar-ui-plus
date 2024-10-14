@@ -43,6 +43,10 @@ export default class System {
    */
   static getWindowInfo() {
     // #ifdef MP-WEIXIN
+    const res: any = wx.getWindowInfo()
+    res.safeAreaInsets = {
+      bottom: res.screenHeight - res.safeArea.bottom,
+    }
     return wx.getWindowInfo()
     // #endif
 
@@ -96,12 +100,7 @@ export default class System {
   static getElementBoundary(el: UniApp.NodeInfo) {
     const vw = System.getWindowWidth() // 计算vw单位
     const vh = System.getWindowHeight() // 计算vh单位
-    const {
-      top = 0,
-      left = 0,
-      bottom = 0,
-      right = 0,
-    } = el
+    const { top = 0, left = 0, bottom = 0, right = 0 } = el
     return {
       top,
       left,

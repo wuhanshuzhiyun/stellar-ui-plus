@@ -127,6 +127,9 @@ const utils = {
     let res: any = {}
     // #ifdef MP-WEIXIN
     res = wx.getWindowInfo()
+    res.safeAreaInsets = {
+      bottom: res.screenHeight - res.safeArea.bottom,
+    }
     // #endif
 
     // #ifndef MP-WEIXIN

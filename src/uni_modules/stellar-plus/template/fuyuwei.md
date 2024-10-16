@@ -1,5 +1,7 @@
 ### 开发者
+
 以下是该组件的开发者们：
+
 <style>
 .con-box{
 	display: flex;
@@ -34,9 +36,9 @@
 </style>
 <div class="con-box">
 	<div class="con-item">
-		<a target="_blank" href="/pages/gitlab/gitlab?name=fuyuwei">
+		<a target="_blank" href="https://stellar-ui.intecloud.com.cn/pages/gitlab/gitlab?name=fuyuwei&type=vue3">
 			<image class="con-image" src="https://image.whzb.com/chain/StellarUI/头像/付宇威.png"></image>
 		</a>
-		<a target="_blank" href="/pages/gitlab/gitlab?name=fuyuwei"><div class="name">付宇威</div></a>
+		<a target="_blank" href="https://stellar-ui.intecloud.com.cn/pages/gitlab/gitlab?name=fuyuwei&type=vue3"><div class="name">付宇威</div></a>
 	</div>
 </div>

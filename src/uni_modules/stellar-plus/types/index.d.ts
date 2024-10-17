@@ -78,4 +78,10 @@ export interface TreeNode {
   [valueKey: string]: string | number
   [childrenKey: string]: TreeNode[]
 }
+
 export type inputConfirmType = 'done' | 'go' | 'next' | 'search' | 'send'
+
+export interface SearchSuggestion {
+  label: string
+  value?: any
+}

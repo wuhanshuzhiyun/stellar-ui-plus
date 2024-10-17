@@ -11,10 +11,24 @@ export default function useData() {
     switchIndex.value = index
   }
 
+  const cursorNumber = ref(0)
+  const setCursorNumber = (num: number) => {
+    cursorNumber.value = num
+  }
+
+  const showSuggestionsBox = ref<null | boolean>(null)
+  const setShowSuggestionsBox = (value: boolean) => {
+    showSuggestionsBox.value = value
+  }
+
   return {
     dataValue,
     setDataValue,
     switchIndex,
     setSwitchIndex,
+    cursorNumber,
+    setCursorNumber,
+    showSuggestionsBox,
+    setShowSuggestionsBox,
   }
 }

@@ -52,6 +52,47 @@ const onClick = (v: string) => {
 <ste-search disabled />
 ```
 
+#### 搜索建议
+
+-   给`suggestionsList`属性赋值时，会在输入框下方显示，数据结构见下方示例
+-   点击某条建议后会触发搜索的`selectSuggestion`事件，参数为搜索建议对象
+
+```html
+<ste-search :suggestion-list="suggestionList" @input="input1" @selectSuggestion="selectSuggestion" />
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    import type { SearchSuggestion } from '@/uni_modules/stellar-plus/types/index';
+    const data = [
+        { label: '三全鲜食（北新泾店）', value: '1全' },
+        { label: 'Hot honey 首尔炸鸡（仙霞路）', value: '2全' },
+        { label: '三贡茶', value: '3全' },
+        { label: '三浮生若茶（凌空soho店', value: '4全' },
+        { label: '三枪会山', value: '5全' },
+        { label: '三爱茜茜里(西郊百联)', value: '6全' },
+        { label: '三港式小铺', value: '7全' },
+        { label: '三蜀香源麻辣香锅', value: '8全' },
+        { label: '饭典*新简餐', value: '9全' },
+        { label: '浏阳蒸菜', value: '10全' },
+    ];
+    const suggestionList = ref<SearchSuggestion[]>([]);
+    function input1(v: string) {
+        if (v) {
+            setTimeout(() => {
+                suggestionList.value = data.filter(e => e.label.indexOf(v) > -1);
+            }, 450);
+        } else {
+            suggestionList.value = [];
+        }
+    }
+    function selectSuggestion(v: SearchSuggestion) {
+        toast.showToast({
+            icon: 'none',
+            title: `选了：${v.label}`,
+        });
+    }
+</script>
+```
+
 #### 热词列表
 
 -   可以通过`hotWords`属性传入热词列表
@@ -110,7 +151,18 @@ const onClick = (v: string) => {
 -   可以通过`btnTextColor`属性设置搜索按钮文字颜色
 
 ```html
-<ste-search placeholder="全部颜色" borderColor="#F00" background="#000" prefixIconColor="#a55" placeholderColor="#a55" inputTextColor="#fff" clearIconColor="#a55" btnBackground="#fff" btnTextColor="#000" @search="onSearch" />
+<ste-search
+    placeholder="全部颜色"
+    borderColor="#F00"
+    background="#000"
+    prefixIconColor="#a55"
+    placeholderColor="#a55"
+    inputTextColor="#fff"
+    clearIconColor="#a55"
+    btnBackground="#fff"
+    btnTextColor="#000"
+    @search="onSearch"
+/>
 
 <ste-search
     placeholder="背景渐变和按钮背景渐变"
@@ -175,4 +227,3 @@ const onClick = (v: string) => {
 <!-- props -->
 
 {{xuyajun}}
-

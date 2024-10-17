@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useToast } from '@/uni_modules/stellar-plus/composables';
+import type { SearchSuggestion } from '@/uni_modules/stellar-plus/types/index';
 let toast = useToast();
+
+const data = [
+    { label: '三全鲜食（北新泾店）', value: '1全' },
+    { label: 'Hot honey 首尔炸鸡（仙霞路）', value: '2全' },
+    { label: '三贡茶', value: '3全' },
+    { label: '三浮生若茶（凌空soho店', value: '4全' },
+    { label: '三枪会山', value: '5全' },
+    { label: '三爱茜茜里(西郊百联)', value: '6全' },
+    { label: '三港式小铺', value: '7全' },
+    { label: '三蜀香源麻辣香锅', value: '8全' },
+    { label: '饭典*新简餐', value: '9全' },
+    { label: '浏阳蒸菜', value: '10全' },
+];
 const value = ref('RTX4060Ti');
 const hotWords = ref(['RTX4060', 'RTX4070', 'RTX4080']);
 const focus = ref(false);
+
+const suggestionList = ref<SearchSuggestion[]>([]);
 
 const onInput = (v: string) => {
     toast.showToast({
@@ -25,6 +41,22 @@ const onClick = (v: string) => {
         icon: 'none',
     });
 };
+
+function input1(v: string) {
+    if (v) {
+        setTimeout(() => {
+            suggestionList.value = data.filter(e => e.label.indexOf(v) > -1);
+        }, 450);
+    } else {
+        suggestionList.value = [];
+    }
+}
+function selectSuggestion(v: SearchSuggestion) {
+    toast.showToast({
+        icon: 'none',
+        title: `选了：${v.label}`,
+    });
+}
 </script>
 
 <template>
@@ -46,6 +78,14 @@ const onClick = (v: string) => {
                     <ste-search disabled placeholder="禁用" />
                 </view>
             </view>
+
+            <view class="demo-item">
+                <view class="title">搜索建议</view>
+                <view class="item-block">
+                    <ste-search :suggestion-list="suggestionList" @input="input1" @selectSuggestion="selectSuggestion" />
+                </view>
+            </view>
+
             <view class="demo-item">
                 <view class="title">热词列表</view>
                 <view class="item-block">

@@ -1,4 +1,5 @@
 import type { PropType } from 'vue'
+import type { SearchSuggestion } from '../../types'
 
 export default {
   // 组件类型,"default"：正常搜索，"nav":导航栏
@@ -114,5 +115,10 @@ export default {
   focus: {
     type: Boolean,
     default: () => false,
+  },
+  // 搜索建议
+  suggestionList: {
+    type: Array as PropType<SearchSuggestion[]>,
+    default: () => [],
   },
 }

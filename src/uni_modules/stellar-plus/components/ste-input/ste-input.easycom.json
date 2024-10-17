@@ -218,6 +218,12 @@
             "default": "true"
         },
         {
+            "name": "cursor",
+            "description": "指定focus时光标的位置",
+            "type": "number",
+            "default": "0"
+        },
+        {
             "name": "blur",
             "description": "输入框失去焦点事件",
             "type": "(value: string | number) => void",

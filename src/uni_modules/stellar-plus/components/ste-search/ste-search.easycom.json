@@ -152,6 +152,12 @@
             "default": "false"
         },
         {
+            "name": "suggestionsList",
+            "description": "搜索建议对应的数据",
+            "type": "array",
+            "default": "[]"
+        },
+        {
             "name": "[event]input",
             "description": "输入事件",
             "type": "(value: string) => void",
@@ -208,6 +214,17 @@
                 {
                     "name": "value",
                     "description": "输入框的值"
+                }
+            ]
+        },
+        {
+            "name": "[event]selectSuggestion",
+            "description": "点击搜索建议触发",
+            "type": "(item: object) => void",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "热词列表对象"
                 }
             ]
         }

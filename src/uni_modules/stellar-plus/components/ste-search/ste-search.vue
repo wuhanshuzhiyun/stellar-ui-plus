@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, watch, defineOptions } from 'vue';
+import { computed, watch, defineOptions, nextTick } from 'vue';
 import type { SwiperOnChangeEvent } from '@uni-helper/uni-app-types';
 import utils from '../../utils/utils';
-import type { Obj } from '../../types/index.d';
+import type { SearchSuggestion, Obj } from '../../types';
 import useData from './useData';
 import propsData from './props';
 
@@ -14,7 +14,7 @@ defineOptions({
 });
 
 const props = defineProps(propsData);
-const { dataValue, setDataValue, switchIndex, setSwitchIndex } = useData();
+const { dataValue, setDataValue, switchIndex, setSwitchIndex, cursorNumber, setCursorNumber, setShowSuggestionsBox, showSuggestionsBox } = useData();
 
 const cmpRootStyle = computed(() => {
     const style: Obj = {
@@ -52,12 +52,15 @@ const emits = defineEmits<{
     (e: 'search', value: string): void;
     (e: 'click', value: string): void;
     (e: 'clear'): void;
+    (e: 'selectSuggestion', item: SearchSuggestion): void;
 }>();
 
 const onInput = () => {
     if (props.disabled) return;
-    emits('input', dataValue.value);
-    emits('update:modelValue', dataValue.value);
+    nextTick(() => {
+        emits('input', dataValue.value);
+        emits('update:modelValue', dataValue.value);
+    });
 };
 const onSearch = () => {
     if (props.disabled) return;
@@ -71,6 +74,7 @@ const onFocus = () => {
     if (props.disabled) return;
     emits('focus', dataValue.value);
     emits('update:focus', true);
+    setShowSuggestionsBox(true);
 };
 const onBlur = () => {
     if (props.disabled) return;
@@ -95,6 +99,17 @@ const onClick = () => {
     }
     emits('click', searchValue);
 };
+
+const handleSuggestionClick = (item: SearchSuggestion) => {
+    setDataValue(item.label);
+    emits('input', item.label);
+    emits('selectSuggestion', item);
+    setShowSuggestionsBox(false);
+
+    setTimeout(() => {
+        setCursorNumber(item.label.length);
+    }, 50);
+};
 </script>
 <template>
     <view class="ste-search-root" :class="{ disabled: props.disabled }" :style="[cmpRootStyle]" @click="onClick">
@@ -118,6 +133,7 @@ const onClick = () => {
                     :clearable="clearable"
                     :fontColor="inputTextColor"
                     background="transparent"
+                    :cursor="cursorNumber"
                 />
                 <swiper v-if="cmpShowSwitch" class="placeholder-list" :current="switchIndex" :autoplay="autoplay" :interval="interval" circular vertical @change="onSwitchChange">
                     <swiper-item class="placeholder-item" v-for="(item, i) in hotWords" :key="i">
@@ -131,6 +147,14 @@ const onClick = () => {
             </view>
         </view>
         <view class="nav-box" v-if="type === 'nav'" />
+        <!-- 输入建议 -->
+        <view v-if="suggestionList.length > 0" class="suggestions-box" :class="showSuggestionsBox == null ? 'asdf' : showSuggestionsBox ? 'show' : 'hide'">
+            <scroll-view scroll-y class="scroll-box">
+                <view class="item" @click="handleSuggestionClick(item)" v-for="(item, key) in suggestionList" :key="key">
+                    {{ item.label }}
+                </view>
+            </scroll-view>
+        </view>
     </view>
 </template>
 
@@ -281,6 +305,76 @@ const onClick = () => {
         top: 0;
         left: 0;
         z-index: 2;
+    }
+
+    .suggestions-box {
+        z-index: 999;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        overflow-y: hidden;
+        opacity: 0;
+        max-height: 0;
+
+        margin: 20rpx 0;
+        width: 100%;
+
+        background-color: #ffffff;
+        box-shadow: 0 4rpx 24rpx 0 rgba(0, 0, 0, 0.1);
+        border-radius: 8rpx;
+        padding: 16rpx 0;
+
+        .scroll-box {
+            width: 100%;
+            max-height: calc(400rpx - 32rpx);
+        }
+
+        .item {
+            padding-left: 16rpx;
+            width: 100%;
+            height: 60rpx;
+            display: flex;
+            align-items: center;
+            font-size: 28rpx;
+            color: #bbbbbb;
+
+            &:focus {
+                background-color: red;
+            }
+        }
+
+        &.show {
+            opacity: 1;
+            max-height: 400rpx;
+            animation: suggestions-show 0.2s ease-out;
+        }
+
+        &.hide {
+            animation: suggestions-hide 0.2s ease-out;
+        }
+    }
+
+    @keyframes suggestions-show {
+        0% {
+            opacity: 0;
+            max-height: 0;
+        }
+
+        100% {
+            opacity: 1;
+            max-height: 400rpx;
+        }
+    }
+    @keyframes suggestions-hide {
+        0% {
+            opacity: 1;
+            max-height: 400rpx;
+        }
+
+        100% {
+            opacity: 0;
+            max-height: 0;
+        }
     }
 }
 </style>

@@ -72,6 +72,15 @@ const cmpShowClear = computed(() => {
 });
 
 watch(
+    () => props.modelValue,
+    val => {
+        dataValue.value = val;
+        tmpDataValue.value = val;
+    },
+    { immediate: true }
+);
+
+watch(
     () => props.value,
     val => {
         dataValue.value = val;
@@ -102,6 +111,7 @@ function onInput(e: BaseEvent) {
         tmpDataValue.value = e.detail.value;
         dataValue.value = e.detail.value;
         emits('input', e.detail.value);
+        emits('update:modelValue', e.detail.value);
     }
 }
 
@@ -117,6 +127,7 @@ function onFocus() {
     if (props.disabled && !props.readonly) return;
     focused.value = true;
     emits('update:focus', true);
+    emits('focus', dataValue.value);
 }
 
 function onBlur() {
@@ -191,6 +202,7 @@ function inputClick() {
                         @confirm="onConfirm"
                         :style="[{ width: cmpShowClear ? 'calc(100% - 48rpx)' : 'calc(100% - 8rpx)' }]"
                         :cursor-spacing="cursorSpacing"
+                        :cursor="cursor"
                     />
                     <view v-if="cmpShowClear" class="clear-icon" @click="onClear">
                         <ste-icon code="&#xe694;" color="#bbbbbb" size="34" />

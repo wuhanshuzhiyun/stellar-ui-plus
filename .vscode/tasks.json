@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+            "type": "npm",
+            "script": "watch",
+            "path": "plugins/ste-helper",
+            "isBackground": true,
+            "group": "build",
+            "problemMatcher": ["$tsc-watch"],
+            "label": "npm: watch - plugins/ste-helper",
+            "detail": "tsc -watch -p ./"
+        }
+    ]
+}

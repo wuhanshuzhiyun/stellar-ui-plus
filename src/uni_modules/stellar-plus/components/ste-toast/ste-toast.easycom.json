@@ -15,7 +15,7 @@
             "description": "图标",
             "type": "String",
             "default": "success",
-            "value": [
+            "values": [
                 {
                     "name": "success",
                     "description": "显示成功图标"

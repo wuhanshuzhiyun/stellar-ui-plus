@@ -1,0 +1,43 @@
+{
+    "name": "ste-helper",
+    "displayName": "ste-helper",
+    "description": "StellarUI-plus组件的代码提示",
+    "version": "0.0.1",
+    "icon": "src/assets/logo.png",
+    "engines": {
+        "vscode": "^1.94.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+http://172.16.108.253:8001/Mall/stellarui-plus.git",
+        "directory": "plugins/ste-helper"
+    },
+    "categories": [
+        "Other"
+    ],
+    "publisher": "StellarUI",
+    "activationEvents": [
+        "onLanguage:vue",
+        "onLanguage:javascript",
+        "onLanguage:typescript"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": []
+    },
+    "scripts": {
+        "vscode:prepublish": "pnpm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "gen": "node ./scripts/createComponentMap.js",
+        "package": "vsce package",
+        "login": "vsce login StellarUI",
+        "publish": "vsce publish"
+    },
+    "devDependencies": {
+        "@types/node": "20.x",
+        "@types/vscode": "^1.94.0",
+        "@vscode/vsce": "^3.2.0",
+        "typescript": "^5.6.2"
+    }
+}

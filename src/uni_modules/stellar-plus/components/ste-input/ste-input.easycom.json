@@ -224,7 +224,7 @@
             "default": "0"
         },
         {
-            "name": "blur",
+            "name": "[event]blur",
             "description": "输入框失去焦点事件",
             "type": "(value: string | number) => void",
             "params": [

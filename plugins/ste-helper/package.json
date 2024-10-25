@@ -5,7 +5,7 @@
     "version": "0.0.2",
     "icon": "src/assets/logo.png",
     "engines": {
-        "vscode": "^1.75.0"
+        "vscode": "^1.56.0"
     },
     "repository": {
         "type": "git",
@@ -30,15 +30,16 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "gen": "node ./src/scripts/createComponentMap.js",
-        "package": "vsce package",
+        "package": "vsce package --no-dependencies",
+        "check-login": "node ./src/scripts/checkLogin.js",
         "login": "vsce login StellarUI",
-        "publish": "vsce publish",
-        "version": "standard-version"
+        "add-version": "standard-version",
+        "publish": "pnpm run check-login & pnpm run add-version & vsce publish --no-dependencies"
     },
     "devDependencies": {
         "@types/node": "20.x",
-        "@types/vscode": "^1.94.0",
-        "@vscode/vsce": "^3.2.0",
+        "@types/vscode": "^1.56.0",
+        "@vscode/vsce": "^2.22.0",
         "standard-version": "^9.5.0",
         "typescript": "^5.6.2"
     }

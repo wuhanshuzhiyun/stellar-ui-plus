@@ -1,5 +1,5 @@
 export const files = ['vue', 'typescript', 'javascript', 'javascriptreact', 'typescriptreact']
-export const DOC_URL = 'https://stellar-ui.intecloud.com.cn/pc/index/index?name='
+export const DOC_URL = 'https://stellar-ui.intecloud.com.cn/plus/#/?active='
 
 export const LINK_REG = /(?<=<ste-)([\w-]+)/g
 export const BIG_LINK_REG = /(?<=<Ste-)([\w-])+/g

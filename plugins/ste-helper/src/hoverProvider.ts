@@ -1,5 +1,5 @@
 import { Hover, MarkdownString, languages } from 'vscode'
-import type { type ExtensionContext, Position, TextDocument } from 'vscode'
+import type { ExtensionContext, Position, TextDocument } from 'vscode'
 
 import { bigCamelize, kebabCase } from './utils'
 import { componentMap } from './componentMap'
@@ -51,8 +51,8 @@ export function registerHover(context: ExtensionContext) {
       const text = components
         .filter((item: string) => componentMap[item])
         .map((item: string) => {
-          const { site, props, events } = componentMap[item]
-          const docString = `#### StellarUI -> ${bigCamelize(item)} 组件文档 [[地址]](${DOC_URL}${site})\n`
+          const { props, events } = componentMap[item]
+          const docString = `#### StellarUI -> ${bigCamelize(item)} 组件文档 [[地址]](${DOC_URL}${item})\n`
           let subString = ''
           // 鼠标hover在属性或者方法上会显示描述，否则显示当前组件的整体描述
           const propValue = props?.find(e => e.name === word) || events?.find(e => e.name === word)

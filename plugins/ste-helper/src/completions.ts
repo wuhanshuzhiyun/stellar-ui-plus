@@ -1,5 +1,5 @@
 import { CompletionItem, CompletionItemKind, MarkdownString, Position, Range, languages } from 'vscode'
-import type { type CompletionItemProvider, type ExtensionContext, TextDocument } from 'vscode'
+import type { CompletionItemProvider, ExtensionContext, TextDocument } from 'vscode'
 
 import { bigCamelize, kebabCase } from './utils'
 import { componentMap } from './componentMap'

@@ -3,8 +3,8 @@ import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
 export default defineUniPages({
   insetLoader: {
     config: {
-      toast: '<ste-toast ref=\'toast\'></ste-toast>',
-      messageBox: '<ste-message-box ref=\'messageBox\'></ste-message-box>',
+      toast: '<ste-toast ref=\'steToast\'></ste-toast>',
+      messageBox: '<ste-message-box ref=\'steMessageBox\'></ste-message-box>',
     },
     // 全局配置
     label: ['toast', 'messageBox'],

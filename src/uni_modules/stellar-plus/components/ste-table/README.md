@@ -239,32 +239,7 @@
         <ste-button :mode="100" @click="toggleRowSelection(1)">选中第二行</ste-button>
         <ste-button :mode="100" @click="toggleRowSelection(0)">选中第一行</ste-button>
     </template>
-    <script>
-        export default {
-        	data() {
-        		return {
-        			rows: [
-        				{ name: '张三', birth: '2023.12.31', sex: '男' },
-        				{ name: '李四', birth: '2024.01.01', sex: '女' },
-        				{ name: '王五', birth: '2024.11.01', sex: '女' },
-        				{ name: '赵六', birth: '2024.11.01', sex: '女' },
-        				{ name: '王七', birth: '2024.01.01', sex: '男' },
-        			],
-        		}
-        	}
-        	methods: {
-        		clearSelect() {
-        			this.$refs.steTable.clearSelection();
-        		},
-        		toggleAllSelection() {
-        			this.$refs.steTable.toggleAllSelection();
-        		},
-        		toggleRowSelection(i) {
-        			this.$refs.steTable.toggleRowSelection(this.rows[i]);
-        		},
-        	}
-        }
-</script>
+
 ```
 
 #### 表格滚动

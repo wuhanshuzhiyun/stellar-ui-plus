@@ -32,15 +32,15 @@ ps：注意 目前 useMessageBox 只能在 setup 作用域下使用
 
 ```html
 <template>
-    <ste-message-box ref="msg"></ste-message-box>
+    <ste-message-box ref="steMessageBox"></ste-message-box>
 </template>
 ```
 
 ```html
 <script setup lang="ts">
     import { ref } from 'vue';
-    let msg = ref();
-    msg.value.showMsgBox({
+    let steMessageBox = ref();
+    steMessageBox.value.showMsgBox({
         title: '提示内容',
     });
 </script>

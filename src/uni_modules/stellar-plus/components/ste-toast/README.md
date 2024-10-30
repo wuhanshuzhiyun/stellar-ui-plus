@@ -32,15 +32,15 @@ ps：注意 目前 useToast 只能在 setup 作用域下使用
 
 ```html
 <template>
-    <ste-toast ref="toast"></ste-toast>
+    <ste-toast ref="steToast"></ste-toast>
 </template>
 ```
 
 ```html
 <script setup lang="ts">
     import { ref } from 'vue';
-    let toast = ref();
-    toast.value.showToast({
+    let steToast = ref();
+    steToast.value.showToast({
         title: '提示内容',
     });
 </script>
@@ -53,7 +53,7 @@ ps：注意 目前 useToast 只能在 setup 作用域下使用
 ```json
 insetLoader: {
         config: {
-            toast: "<ste-toast ref='toast'></ste-toast>",
+            toast: "<ste-toast ref='steToast'></ste-toast>",
         },
         // 全局配置
         label: ['toast'],

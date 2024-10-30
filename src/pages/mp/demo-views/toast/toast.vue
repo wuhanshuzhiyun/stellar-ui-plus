@@ -61,8 +61,7 @@ function click1() {
     });
 }
 function click2() {
-    console.log('toast', toast.value);
-    toast.value.showToast({
+    toast1.value.showToast({
         title: '多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，',
     });
 }

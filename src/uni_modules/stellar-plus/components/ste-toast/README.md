@@ -67,17 +67,17 @@ insetLoader: {
 
 ```javascript
 click1() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 	});
 },
 click2() {
-	this.showToast({
+	toast.showToast({
 		title: '多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，',
 	});
 },
 click3() {
-	this.showToast({
+	toast.showToast({
 		title: '换行\n内容',
 	});
 },
@@ -94,24 +94,24 @@ click3() {
 
 ```javascript
 click4() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 	});
 },
 click5() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		icon: 'error',
 	});
 },
 click6() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		icon: 'loading',
 	});
 },
 click7() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		icon: 'none',
 	});
@@ -122,7 +122,7 @@ click7() {
 
 ```javascript
 click8() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		image: 'https://image.whzb.com/chain/StellarUI/组件图标/loading.png',
 	});
@@ -135,7 +135,7 @@ click8() {
 
 ```javascript
 click9() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		mask: true,
 		duration: 5000,
@@ -149,7 +149,7 @@ click9() {
 
 ```javascript
 click10() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		duration: 5000,
 	});
@@ -165,11 +165,11 @@ click10() {
 
 ```javascript
 click11() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		success() {
 			setTimeout(() => {
-				this.showToast({
+				toast.showToast({
 					title: '成功',
 					icon: 'none',
 				});
@@ -178,11 +178,11 @@ click11() {
 	});
 },
 click12() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		complete() {
 			setTimeout(() => {
-				this.showToast({
+				toast.showToast({
 					title: '结束',
 					icon: 'none',
 				});
@@ -191,10 +191,10 @@ click12() {
 	});
 },
 click13() {
-	this.showToast({
+	toast.showToast({
 		title: '提示内容',
 		close() {
-			this.showToast({
+			toast.showToast({
 				title: '关闭',
 				icon: 'none',
 			});

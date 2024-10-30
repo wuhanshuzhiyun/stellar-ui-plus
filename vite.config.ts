@@ -40,4 +40,8 @@ export default defineConfig({
     // https://github.com/antfu/unocss
     // see unocss.config.ts for config
   ],
+  build: {
+    // 开启sourcemap
+    sourcemap: true,
+  },
 })

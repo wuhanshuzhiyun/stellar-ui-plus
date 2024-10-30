@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, defineOptions } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
 

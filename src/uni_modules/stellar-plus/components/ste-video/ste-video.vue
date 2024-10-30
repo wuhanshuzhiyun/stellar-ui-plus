@@ -7,6 +7,8 @@ import propsData, { videoEmits } from './props';
 const props = defineProps(propsData);
 const emits = defineEmits(videoEmits);
 
+console.log('视频组件e-video');
+
 const {
     videoSrc,
     playState,
@@ -86,7 +88,7 @@ const cmpRootStyleVar = computed(() => {
     let style = {
         '--control-height': isFull.value ? utils.formatPx(128) : utils.formatPx(88),
         // #ifndef H5 || WEB
-        '--control-bottom-bar': utils.System.getNavbarBottom(),
+        // '--control-bottom-bar': utils.System.getNavbarBottom(),
         // #endif
         '--text-box-width': utils.formatPx(80),
         '--progress-bar-width': utils.formatPx(28),
@@ -239,7 +241,7 @@ function fullscreenchange(e: BaseEvent) {
 
 <template>
     <view class="ste-video-root" :class="cmpRootClass" :style="[cmpRootStyleVar]">
-        <!-- #ifndef MP-ALIPAY -->
+        <!-- #ifndef MP-ALIPAY || APP -->
         <video
             class="ste-video"
             :id="id"
@@ -305,51 +307,54 @@ function fullscreenchange(e: BaseEvent) {
                 <text class="title">{{ title }}</text>
             </view>
             <!-- 底部操作栏 -->
-            <view class="cover bottom" :style="{ transform: showControl ? 'translateY(0)' : 'translateY(100%)' }" @click="isClickControl = true">
-                <!-- 播放/暂停按钮 -->
-                <view v-if="showPlayBtn">
-                    <ste-icon code="&#xe6a8;" size="36" color="#ffffff" v-if="!playState" @click="handlePlay(true)"></ste-icon>
-                    <ste-icon code="&#xe6ab;" size="36" color="#ffffff" v-else @click="handlePlay(false)"></ste-icon>
-                </view>
-                <!-- 静音按钮 -->
-                <view class="muted-box">
-                    <ste-icon code="&#xe6c3;" size="38" color="#ffffff" v-if="!isMuted" @click="triggerMuted"></ste-icon>
-                    <ste-icon code="&#xe6c2;" size="38" color="#ffffff" v-else @click="triggerMuted"></ste-icon>
-                </view>
-                <!-- 时间进度 -->
-                <view class="time-box" v-if="isFull">
-                    <view class="time left">{{ formatTime(videoCurrent) }}</view>
-                    <view>/</view>
-                    <view class="time right">{{ formatTime(videoDuration) }}</view>
-                </view>
-                <!-- 进度条 -->
-                <view class="progress-box" v-if="reRenderFlag">
-                    <ste-slider :value="playProgress" @change="handleProgressChange" barHeight="4" buttonSize="26">
-                        <template #button>
-                            <view class="progress-bar" />
-                        </template>
-                    </ste-slider>
-                </view>
-                <!-- 时间进度 -->
-                <view class="time-box" v-if="!isFull">
-                    <view class="time left">{{ formatTime(videoCurrent) }}</view>
-                    <view>/</view>
-                    <view class="time right">{{ formatTime(videoDuration) }}</view>
-                </view>
-                <template v-if="isFull">
-                    <view class="text-box resolution" @click="handleResolutionClick" v-if="resolution && resolution.length > 0">
-                        {{ resolution[resolutionIndex].text }}
+            <cover-view>
+                <view class="cover bottom" :style="{ transform: showControl ? 'translateY(0)' : 'translateY(100%)' }" @click="isClickControl = true">
+                    <!-- 播放/暂停按钮 -->
+                    <view v-if="showPlayBtn">
+                        <ste-icon code="&#xe6a8;" size="36" color="#ffffff" v-if="!playState" @click="handlePlay(true)"></ste-icon>
+                        <ste-icon code="&#xe6ab;" size="36" color="#ffffff" v-else @click="handlePlay(false)"></ste-icon>
                     </view>
-                    <view class="text-box speed" @click="handleSpeedClick">
-                        {{ speedConfigArr[speedIndex] + 'X' }}
+                    <!-- 静音按钮 -->
+                    <view class="muted-box">
+                        <ste-icon code="&#xe6c3;" size="38" color="#ffffff" v-if="!isMuted" @click="triggerMuted"></ste-icon>
+                        <ste-icon code="&#xe6c2;" size="38" color="#ffffff" v-else @click="triggerMuted"></ste-icon>
                     </view>
-                </template>
-                <!-- 全屏按钮 -->
-                <view v-if="showFullscreenBtn">
-                    <ste-icon code="&#xe6a9;" size="36" color="#ffffff" v-if="!isFull" @click="handleFull(true)"></ste-icon>
-                    <ste-icon code="&#xe6aa;" size="36" color="#ffffff" v-else @click="handleFull(false)"></ste-icon>
+                    <!-- 时间进度 -->
+                    <view class="time-box" v-if="isFull">
+                        <view class="time left">{{ formatTime(videoCurrent) }}</view>
+                        <view>/</view>
+                        <view class="time right">{{ formatTime(videoDuration) }}</view>
+                    </view>
+                    <!-- 进度条 -->
+                    <view class="progress-box" v-if="reRenderFlag">
+                        <ste-slider :value="playProgress" @change="handleProgressChange" barHeight="4" buttonSize="26">
+                            <template #button>
+                                <view class="progress-bar" />
+                            </template>
+                        </ste-slider>
+                    </view>
+                    <!-- 时间进度 -->
+                    <view class="time-box" v-if="!isFull">
+                        <view class="time left">{{ formatTime(videoCurrent) }}</view>
+                        <view>/</view>
+                        <view class="time right">{{ formatTime(videoDuration) }}</view>
+                    </view>
+                    <template v-if="isFull">
+                        <view class="text-box resolution" @click="handleResolutionClick" v-if="resolution && resolution.length > 0">
+                            {{ resolution[resolutionIndex].text }}
+                        </view>
+                        <view class="text-box speed" @click="handleSpeedClick">
+                            {{ speedConfigArr[speedIndex] + 'X' }}
+                        </view>
+                    </template>
+                    <!-- 全屏按钮 -->
+                    <view v-if="showFullscreenBtn">
+                        <ste-icon code="&#xe6a9;" size="36" color="#ffffff" v-if="!isFull" @click="handleFull(true)"></ste-icon>
+                        <ste-icon code="&#xe6aa;" size="36" color="#ffffff" v-else @click="handleFull(false)"></ste-icon>
+                    </view>
                 </view>
-            </view>
+            </cover-view>
+
             <!-- 倍速、清晰度弹窗 -->
             <view class="popup-box" :style="{ transform: showPopup ? 'translateX(0)' : 'translateX(100%)' }" @click="handlePopupClick">
                 <view class="item-box" :style="{ display: popupState == 1 ? 'flex' : 'none' }">
@@ -376,7 +381,7 @@ function fullscreenchange(e: BaseEvent) {
             <!-- </view> -->
         </video>
         <!-- #endif -->
-        <!-- #ifdef MP-ALIPAY -->
+        <!-- #ifdef MP-ALIPAY || APP -->
         <video class="ste-video" :id="id" :src="src" />
         <!-- #endif -->
     </view>

@@ -2,6 +2,11 @@ html,
 body {
     user-select: auto;
 }
+
+* {
+    touch-action: pan-y;
+}
+
 .pc-page-body {
     min-width: 1100px;
     font-size: 16px;
@@ -48,7 +53,7 @@ body {
     }
     & > .content {
         padding: 0 40rpx;
-        // #ifdef  H5
+        // #ifdef  H5 || APP
         height: calc(100vh - 50px);
         // #endif
         // #ifdef  MP-WEIXIN

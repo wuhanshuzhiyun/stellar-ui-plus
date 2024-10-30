@@ -48,7 +48,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-    // #ifndef MP
+    // #ifndef MP || APP
     removeListenner && removeListenner();
     // #endif
 });
@@ -103,7 +103,7 @@ function attractFn() {
 }
 
 function touchEnd() {
-    // #ifndef MP
+    // #ifndef MP || APP
     removeListenner && removeListenner();
     // #endif
     if (isMove) {

@@ -94,11 +94,14 @@ const onMousedown = (e: MouseEvent) => onTouchStart(e as unknown as UniTouchEven
 const onMousemove = (e: MouseEvent) => onTouchMove(e as unknown as UniTouchEvent);
 
 const onTouchStart = async (e: UniTouchEvent) => {
+    // #ifdef H5
+    strokeing.value = [await getH5MousePosition(e as unknown as HTMLMouseEvent)];
+    // #endif
     // #ifdef MP
     strokeing.value = [{ x: e.changedTouches[0]?.x || 0, y: e.changedTouches[0]?.y || 0 }];
     // #endif
-    // #ifdef H5
-    strokeing.value = [await getH5MousePosition(e as unknown as HTMLMouseEvent)];
+    // #ifdef APP
+    strokeing.value = [{ x: e.touches[0]?.x || 0, y: e.touches[0]?.y || 0 }];
     // #endif
     drawStrokeing();
     emits('start');
@@ -106,11 +109,14 @@ const onTouchStart = async (e: UniTouchEvent) => {
 
 const onTouchMove = async (e: UniTouchEvent) => {
     if (!strokeing.value.length) return;
+    // #ifdef H5
+    strokeing.value.push(await getH5MousePosition(e as unknown as HTMLMouseEvent));
+    // #endif
     // #ifdef MP
     strokeing.value.push({ x: e.changedTouches[0].x || 0, y: e.changedTouches[0].y || 0 });
     // #endif
-    // #ifdef H5
-    strokeing.value.push(await getH5MousePosition(e as unknown as HTMLMouseEvent));
+    // #ifdef APP
+    strokeing.value.push({ x: e.touches[0]?.x || 0, y: e.touches[0]?.y || 0 });
     // #endif
     drawStrokeing();
     emits('signing');

@@ -24,6 +24,7 @@ const setSelectValue = (value: number[]) => {
 const selectedIndex = ref<number[]>([]);
 const setSelectIndex = (index: number[]) => {
     selectedIndex.value = index;
+    console.log('111111111111111111111', selectedIndex.value);
 };
 
 const emits = defineEmits<{
@@ -82,10 +83,8 @@ watch([() => props.minDate, () => props.maxDate], () => {
     initSelectIndex();
 });
 
-onMounted(() => {
-    initOptions();
-    initSelectIndex();
-});
+initOptions();
+initSelectIndex();
 </script>
 <template>
     <picker-view style="height: 450rpx; width: 100%" indicator-style="height: 43px" immediate-change :value="selectedIndex" @change="onChange">

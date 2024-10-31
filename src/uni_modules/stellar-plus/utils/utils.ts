@@ -110,7 +110,7 @@ const utils = {
   deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
     const isObject = (obj: any): obj is object => obj && typeof obj === 'object' && !Array.isArray(obj)
     for (const key in source) {
-      if (Object.hasOwn(source, key)) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
         const sourceValue = source[key as keyof U]
         if (isObject(sourceValue)) {
           if (!isObject(target[key as unknown as keyof T]))

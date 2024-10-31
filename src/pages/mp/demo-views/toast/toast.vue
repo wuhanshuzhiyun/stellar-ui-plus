@@ -33,12 +33,6 @@
                 </view>
             </view>
             <view class="demo-item">
-                <view class="title">提示队列</view>
-                <view class="item-block item-rate">
-                    <ste-button @click="click14" :width="400">提示队列</ste-button>
-                </view>
-            </view>
-            <view class="demo-item">
                 <view class="title">回调事件</view>
                 <view class="item-block item-rate">
                     <ste-button @click="click11" :width="400">成功</ste-button>
@@ -61,66 +55,66 @@ function click1() {
     });
 }
 function click2() {
-    toast1.value.showToast({
+    toast1.showToast({
         title: '多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，多行内容，',
     });
 }
 function click3() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '换行\n内容',
     });
 }
 function click4() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
     });
 }
 function click5() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         icon: 'error',
     });
 }
 function click6() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         icon: 'loading',
     });
     setTimeout(() => {
-        toast.value.hideToast();
+        toast1.hideToast();
     }, 4000);
 }
 function click7() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         icon: 'none',
     });
 }
 function click8() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         image: 'https://image.whzb.com/chain/StellarUI/组件图标/loading.png',
     });
 }
 function click9() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         mask: true,
         duration: 5000,
     });
 }
 function click10() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         duration: 5000,
     });
 }
 function click11() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         success() {
             setTimeout(() => {
-                toast.value.showToast({
+                toast1.showToast({
                     title: '成功',
                     icon: 'none',
                 });
@@ -129,11 +123,11 @@ function click11() {
     });
 }
 function click12() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         complete() {
             setTimeout(() => {
-                toast.value.showToast({
+                toast1.showToast({
                     title: '结束',
                     icon: 'none',
                 });
@@ -142,10 +136,10 @@ function click12() {
     });
 }
 function click13() {
-    toast.value.showToast({
+    toast1.showToast({
         title: '提示内容',
         close() {
-            toast.value.showToast({
+            toast1.showToast({
                 title: '关闭',
                 icon: 'none',
             });
@@ -154,18 +148,26 @@ function click13() {
 }
 
 function click14() {
-    toast.value.showToast({
-        title: '队列1',
-        order: true,
+    setTimeout(() => {
+        console.log('111111');
+        toast1.showToast({
+            title: '队列1',
+            order: true,
+        });
     });
-    toast.value.showToast({
-        title: '队列2',
-        duration: 4000,
-        order: true,
+    setTimeout(() => {
+        console.log('222222');
+        toast1.showToast({
+            title: '队列2',
+            duration: 4000,
+            order: true,
+        });
     });
-    toast.value.showToast({
-        title: '队列3',
-        order: true,
+    setTimeout(() => {
+        toast1.showToast({
+            title: '队列3',
+            order: true,
+        });
     });
 }
 </script>

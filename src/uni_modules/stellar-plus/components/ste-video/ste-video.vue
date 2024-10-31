@@ -7,8 +7,6 @@ import propsData, { videoEmits } from './props';
 const props = defineProps(propsData);
 const emits = defineEmits(videoEmits);
 
-console.log('视频组件e-video');
-
 const {
     videoSrc,
     playState,

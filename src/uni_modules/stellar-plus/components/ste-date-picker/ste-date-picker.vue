@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, defineComponent, defineOptions } from 'vue';
+import { ref, onMounted, defineOptions } from 'vue';
 import propsData from './props';
 import type { CloumnType } from './types';
 import dayjs from 'dayjs';
@@ -41,11 +41,6 @@ const times = (n: number, iteratee: (index: number) => string): string[] => {
     }
     return result;
 };
-
-interface ChangeObj {
-    value: string | number;
-    index: number[];
-}
 
 const props = defineProps(propsData);
 const emits = defineEmits<{

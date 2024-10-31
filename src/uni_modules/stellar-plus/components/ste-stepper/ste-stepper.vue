@@ -198,7 +198,7 @@ async function minus() {
             </view>
         </ste-button>
         <view v-if="theme != 'add'" class="input" :style="[cmpInputStyle]">
-            <input :type="precision ? 'digit' : 'number'" :value="Number(modelValue).toFixed(precision)" @blur="blur" @focus="focus" :disabled="disabled || disableInput" />
+            <input :type="precision ? 'digit' : 'number'" :value="modelValue" @blur="blur" @focus="focus" :disabled="disabled || disableInput" />
         </view>
         <ste-button v-if="theme != 'add'" :rootStyle="cmpRightButtonStyle" @click="plus" :disabled="cmpDisablePlus">
             <view class="button-icon">

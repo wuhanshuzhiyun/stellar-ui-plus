@@ -1,0 +1,240 @@
+{
+  "insetLoader": {
+    "config": {
+      "toast": "<ste-toast ref='steToast'></ste-toast>",
+      "messageBox": "<ste-message-box ref='steMessageBox'></ste-message-box>"
+    },
+    "label": [
+      "toast",
+      "messageBox"
+    ],
+    "rootEle": ".*"
+  },
+  "pages": [
+    {
+      "path": "pages/pc/index",
+      "type": "home"
+    },
+    {
+      "path": "pages/mp/index",
+      "type": "page"
+    },
+    {
+      "path": "pages/pc/login",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/animate/animate",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/badge/badge",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/button/button",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/calendar/calendar",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/checkbox/checkbox",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/code-input/code-input",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/date-picker/date-picker",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/drag/drag",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/dropdown-menu/dropdown-menu",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/icon/icon",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/icon-vertical-align/icon-vertical-align",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/image/image",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/index-list/index-list",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/input/input",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/loading/loading",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/media-preview/media-preview",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/message-box/message-box",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/notice-bar/notice-bar",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/number-keyboard/number-keyboard",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/popup/popup",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/price/price",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/progress/progress",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/radio/radio",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/rate/rate",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/read-more/read-more",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/rich-text/rich-text",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/scroll-to/scroll-to",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/search/search",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/select/select",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/signature/signature",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/slider/slider",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/stepper/stepper",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/steps/steps",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/sticky/sticky",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/swipe-action/swipe-action",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/swiper/swiper",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/switch/switch",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/table/table",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/tabs/tabs",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/test/test",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/text/text",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/toast/toast",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/touch-swipe/touch-swipe",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/tour/tour",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/tree/tree",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/upload/upload",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/video/video",
+      "type": "page"
+    }
+  ],
+  "globalStyle": {
+    "backgroundColor": "@bgColor",
+    "backgroundColorBottom": "@bgColorBottom",
+    "backgroundColorTop": "@bgColorTop",
+    "backgroundTextStyle": "@bgTxtStyle",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTextStyle": "@navTxtStyle",
+    "navigationBarTitleText": "",
+    "navigationStyle": "custom",
+    "disableScroll": true,
+    "mp-alipay": {
+      "transparentTitle": "always",
+      "titlePenetrate": "YES",
+      "allowsBounceVertical": "NO",
+      "navigationBarTitleText": " "
+    }
+  },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^(.*)": "@/components/$1/$1.vue",
+      "^ste-(.*)": "@/uni_modules/stellar-plus/components/ste-$1/ste-$1.vue"
+    }
+  },
+  "subPackages": []
+}

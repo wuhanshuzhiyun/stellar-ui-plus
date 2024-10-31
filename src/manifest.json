@@ -38,6 +38,9 @@
       },
       "ios": {},
       "sdkConfigs": {}
+    },
+    "compatible": {
+      "ignoreVersion": true
     }
   },
   "quickapp": {},

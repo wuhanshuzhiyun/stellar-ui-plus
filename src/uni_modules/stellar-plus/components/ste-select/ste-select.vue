@@ -105,7 +105,7 @@ const stop = () => {};
                     <block v-else-if="dataOptions.length > 1">
                         <picker-view style="height: 450rpx" indicator-style="height: 43px" :value="cmpMultiseriateValue" @change="onMultiseriateChange">
                             <picker-view-column v-for="(col, index) in viewOptions" :key="index">
-                                <view class="time-item" style="height: 43px" v-for="(item, i) in col" :key="i">
+                                <view class="time-item" style="height: 43px" v-for="item in col" :key="item[valueKey]">
                                     {{ item[labelKey] }}
                                 </view>
                             </picker-view-column>

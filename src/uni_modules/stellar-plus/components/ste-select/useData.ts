@@ -103,10 +103,11 @@ export default function useData({ props, emits, thas }: {
       return []
 
     const value = [...selected.value]
-    return dataOptions.value.map((item, i) => {
+    const values = dataOptions.value.map((item, i) => {
       const index = item.findIndex(v => v[props.valueKey] === value[i])
       return index !== -1 ? index : 0
     })
+    return values
   })
 
   const cmpViewValue = computed(() => {
@@ -244,7 +245,7 @@ export default function useData({ props, emits, thas }: {
   const initSelected = (values: Array<string | number>) => {
     const result: Array<string | number> = []
     dataOptions.value.forEach((item, i) => {
-      const v = isData(values[i]) ? values[i] : item[0][props.valueKey]
+      const v = isData(values[i]) && item.find(m => m[props.valueKey] === values[i]) ? values[i] : item[0][props.valueKey]
       result.push(v)
     })
     return result
@@ -334,6 +335,8 @@ export default function useData({ props, emits, thas }: {
     const result: Array<string | number> = []
     value.forEach((i, index) => {
       const value = dataOptions.value[index][i]
+      if (!value)
+        return
       result.push(value[props.valueKey])
     })
     setSelected(result)

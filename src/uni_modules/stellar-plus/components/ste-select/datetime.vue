@@ -24,7 +24,6 @@ const setSelectValue = (value: number[]) => {
 const selectedIndex = ref<number[]>([]);
 const setSelectIndex = (index: number[]) => {
     selectedIndex.value = index;
-    console.log('111111111111111111111', selectedIndex.value);
 };
 
 const emits = defineEmits<{

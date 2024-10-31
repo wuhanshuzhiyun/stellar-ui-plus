@@ -126,8 +126,14 @@ const getTransfrom = (i: number) => (dataIndex.value === i ? cmpTransform.value 
                         @longpress="onLongpress"
                         :style="[dataIndex === index ? cmpTransform : {}]"
                     >
+                        <!-- #ifndef APP -->
                         <video class="video" object-fit="contain" v-if="item.type === 'video'" :src="item.url || item.path" @click.stop="1" />
-                        <ste-image v-else class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit"></ste-image>
+                        <ste-image v-else class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit" />
+                        <!-- #endif -->
+                        <!-- #ifdef APP -->
+                        <video class="video" object-fit="contain" v-if="item.type === 'video' && cmpUrls.length <= 1" :src="item.url || item.path" @click.stop="1" />
+                        <ste-image class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit" />
+                        <!-- #endif -->
                     </view>
                 </swiper-item>
             </swiper>

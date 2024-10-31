@@ -103,6 +103,14 @@ export function readMediaFile(options: ReadFileOptions = {}): Promise<UploadFile
       .then(res => resolve(res))
       .catch(e => reject(e))
     // #endif
+    // #ifdef APP
+    appReadFile({
+      count,
+      sourceType: capture,
+      sizeType: [compressed ? 'compressed' : 'original'],
+    }).then(res => resolve(res))
+      .catch(e => reject(e))
+    // #endif
   })
 }
 
@@ -136,6 +144,10 @@ export function readFile(accept: 'all' | 'file' = 'all', count = 9, multiple = f
       multiple,
     })
       .then(res => resolve(res))
+      .catch(e => reject(e))
+    // #endif
+    // #ifdef APP
+    appReadFile({ count }).then(res => resolve(res))
       .catch(e => reject(e))
     // #endif
   })
@@ -273,5 +285,21 @@ function getVideoFirstFrame(path: string) {
   })
 }
 // #endif
-
+// #ifdef APP
+function appReadFile({ count, sizeType, sourceType }: { count: number, sizeType?: string[], sourceType?: string[] }): Promise<UploadFileType[]> {
+  return new Promise((resolve, reject) => {
+    uni.chooseImage({
+      count,
+      sizeType,
+      sourceType,
+      success: ({ tempFiles }) => {
+        resolve(tempFiles as any as UploadFileType[])
+      },
+      fail: (err) => {
+        reject(err)
+      },
+    })
+  })
+}
+// #endif
 export default {}

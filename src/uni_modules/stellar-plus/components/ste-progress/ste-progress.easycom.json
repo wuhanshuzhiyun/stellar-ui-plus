@@ -1,0 +1,80 @@
+{
+    "name": "ste-progress",
+    "description": "价格",
+    "example": "<ste-progress percentage='40'></ste-progress>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=progress",
+    "attributes": [
+        {
+            "name": "activeBg",
+            "description": "激活状态下的背景色",
+            "type": "string",
+            "default": "#0090ff"
+        },
+        {
+            "name": "inactiveBg",
+            "description": "非激活状态下的背景色",
+            "type": "string",
+            "default": "#eeeeee"
+        },
+        {
+            "name": "percentage",
+            "description": "百分比值",
+            "type": "number",
+            "default": "0"
+        },
+        {
+            "name": "strokeWidth",
+            "description": "描边宽度",
+            "type": "string | number",
+            "default": "24"
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "width",
+            "description": "宽度",
+            "type": "string | number",
+            "default": "'100%'"
+        },
+        {
+            "name": "duration",
+            "description": "动画持续时间（秒）",
+            "type": "number",
+            "default": "0.3"
+        },
+        {
+            "name": "pivotText",
+            "description": "中心文字内容",
+            "type": "string",
+            "default": "''"
+        },
+        {
+            "name": "textColor",
+            "description": "文字颜色",
+            "type": "string",
+            "default": "#ffffff"
+        },
+        {
+            "name": "textAlign",
+            "description": "文字对齐方式",
+            "type": "string",
+            "default": "'right'"
+        },
+        {
+            "name": "textSize",
+            "description": "文字大小",
+            "type": "string | number",
+            "default": "16"
+        },
+        {
+            "name": "displayTextThreshold",
+            "description": "显示文本的阈值",
+            "type": "number",
+            "default": "0"
+        }
+    ]
+}

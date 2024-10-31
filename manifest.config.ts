@@ -18,6 +18,10 @@ export default defineManifestConfig({
       autoclose: true,
       delay: 0,
     },
+    compatible: {
+      /* 表示忽略版本检查提示框，HBuilderX1.9.0及以上版本支持   */
+      ignoreVersion: true,
+    },
     /* 模块配置 */
     modules: {},
     /* 应用发布信息 */

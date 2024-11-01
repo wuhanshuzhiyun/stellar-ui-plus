@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch, type CSSProperties } from 'vue';
+import { computed, ref, watch, nextTick, type CSSProperties } from 'vue';
 import utils from '../../utils/utils';
 import propsData, { inputEmits } from './props';
 import type { BaseEvent } from '../../types/event';
@@ -105,13 +105,17 @@ function onInput(e: BaseEvent) {
         if (!props.allowSpace) {
             e.detail.value = e.detail.value.replace(/\s*/g, '');
         }
+
         if (props.maxlength > 0) {
             e.detail.value = e.detail.value.substring(0, props.maxlength);
         }
-        tmpDataValue.value = e.detail.value;
-        dataValue.value = e.detail.value;
-        emits('input', e.detail.value);
-        emits('update:modelValue', e.detail.value);
+
+        nextTick(() => {
+            dataValue.value = e.detail.value;
+            tmpDataValue.value = dataValue.value;
+            emits('input', dataValue.value);
+            emits('update:modelValue', dataValue.value);
+        });
     }
 }
 
@@ -159,9 +163,8 @@ function inputClick() {
                         class="ste-input-input textarea"
                         :type="type"
                         :focus="focus"
-                        :value="String(dataValue)"
+                        v-model="dataValue"
                         :disabled="disabled || readonly"
-                        :maxlength="maxlength"
                         :placeholder="placeholder"
                         :placeholder-style="placeholderStyle"
                         :placeholder-class="placeholderClass"
@@ -189,9 +192,8 @@ function inputClick() {
                         class="ste-input-input"
                         :type="type as InputType"
                         :focus="focused"
-                        :value="String(dataValue)"
+                        v-model="dataValue"
                         :disabled="disabled || readonly"
-                        :maxlength="maxlength"
                         :placeholder="placeholder"
                         :placeholder-style="placeholderStyle"
                         :placeholder-class="placeholderClass"

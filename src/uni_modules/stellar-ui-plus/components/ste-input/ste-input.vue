@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref, watch, nextTick, type CSSProperties } from 'vue';
+
 import utils from '../../utils/utils';
 import propsData, { inputEmits } from './props';
 import type { BaseEvent } from '../../types/event';
@@ -100,18 +101,19 @@ watch(
     }
 );
 
-function onInput(e: BaseEvent) {
+function onInput(e: Event) {
+    const baseEvent = e as unknown as BaseEvent;
     if (!props.disabled && !props.readonly) {
         if (!props.allowSpace) {
-            e.detail.value = e.detail.value.replace(/\s*/g, '');
+            baseEvent.detail.value = baseEvent.detail.value.replace(/\s*/g, '');
         }
 
         if (props.maxlength > 0) {
-            e.detail.value = e.detail.value.substring(0, props.maxlength);
+            baseEvent.detail.value = baseEvent.detail.value.substring(0, props.maxlength);
         }
 
         nextTick(() => {
-            dataValue.value = e.detail.value;
+            dataValue.value = baseEvent.detail.value;
             tmpDataValue.value = dataValue.value;
             emits('input', dataValue.value);
             emits('update:modelValue', dataValue.value);

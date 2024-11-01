@@ -110,8 +110,9 @@ function closeBox() {
         show.value = false;
     }, DURATION);
 }
-function handleInput(e: BaseEvent) {
-    inputValue.value = e.detail.value;
+function handleInput(e: Event) {
+    const baseEvent = e as unknown as BaseEvent;
+    inputValue.value = baseEvent.detail.value;
 }
 function handleConfirm() {
     confirm.value(inputValue.value);

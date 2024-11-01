@@ -40,7 +40,7 @@ const cmpRootCssVar = computed(() => {
         '--active-transition-duration': `${props.duration}s`,
     };
 
-    // #ifdef MP-WEIXIN || MP-ALIPAY
+    // #ifdef MP-WEIXIN || MP-ALIPAY || APP
     style['--progress-padding'] = slots.default ? '0' : '0 16rpx';
     // #endif
 

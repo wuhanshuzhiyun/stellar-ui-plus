@@ -36,12 +36,7 @@ const cmpRootStyle = computed(() => {
 const relativeToViewportTop = computed(() => {
     let customNavHeight = 0;
     if (props.customNavHeight === null) {
-        // #ifdef H5
-        customNavHeight = 44;
-        // #endif
-        // #ifndef H5
         customNavHeight = utils.System.getNavbarBottom();
-        // #endif
     } else {
         customNavHeight = utils.formatPx(props.customNavHeight, 'num');
     }

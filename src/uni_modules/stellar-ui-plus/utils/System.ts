@@ -93,6 +93,9 @@ export default class System {
    * 获取导航栏底部安全区域距离底部的距离（底部安全区距离状态栏的距离）
    */
   static getNavbarBottom() {
+    // #ifdef H5 || APP
+    return 44
+    // #endif
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
     return menuButtonInfo.bottom + 8
   }

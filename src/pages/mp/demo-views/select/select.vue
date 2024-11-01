@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { SelectOption, SelectValue } from '@/uni_modules/stellar-plus/components/ste-select/props';
+import type { SelectOption, SelectValue } from '@/uni_modules/stellar-ui-plus/components/ste-select/props';
 
 const value1 = ref(null);
 const value2 = ref([]);

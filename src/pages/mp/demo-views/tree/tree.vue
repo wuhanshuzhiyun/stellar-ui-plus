@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { TreeNode } from '.././../../../uni_modules/stellar-plus/types/index';
-import type { RefTree } from '.././../../../uni_modules/stellar-plus/types/refComponents';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import type { TreeNode } from '.././../../../uni_modules/stellar-ui-plus/types/index';
+import type { RefTree } from '.././../../../uni_modules/stellar-ui-plus/types/refComponents';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const searchTitle = ref('');
 

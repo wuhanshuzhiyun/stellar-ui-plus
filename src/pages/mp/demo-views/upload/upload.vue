@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { UploadFileType } from '../../../../uni_modules/stellar-plus/types';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import type { UploadFileType } from '../../../../uni_modules/stellar-ui-plus/types';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const fileList = ref<UploadFileType[]>([]);
 const fileList1 = ref<UploadFileType[]>([]);

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const val = reactive({
     value1: 'a',

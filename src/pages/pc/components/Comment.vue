@@ -2,7 +2,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import { getInfo } from '@/common/account';
 import request from '@/common/request';
-import utils from '@/uni_modules/stellar-plus/utils/utils';
+import utils from '@/uni_modules/stellar-ui-plus/utils/utils';
 import { type MarkdownData } from '../types.d';
 
 const datas = inject<MarkdownData>('datas');

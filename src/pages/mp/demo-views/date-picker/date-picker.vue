@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { CloumnType } from '@/uni_modules/stellar-plus/components/ste-date-picker/types';
+import type { CloumnType } from '@/uni_modules/stellar-ui-plus/components/ste-date-picker/types';
 
 function change(e: string) {
     // console.log('datetime change', e)

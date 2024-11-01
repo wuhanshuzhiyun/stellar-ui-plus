@@ -202,7 +202,7 @@
 
 ```html
 <script lang="ts" setup>
-        import type { RefTable } from '@/uni_modules/stellar-plus/types/refComponents';
+        import type { RefTable } from '@/uni_modules/stellar-ui-plus/types/refComponents';
 
         const methodTable = ref<RefTable>();
         const rows = ref([

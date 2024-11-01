@@ -38,7 +38,7 @@ export default defineUniPages({
     autoscan: true,
     custom: {
       '^(.*)': '@/components/$1/$1.vue',
-      '^ste-(.*)': '@/uni_modules/stellar-plus/components/ste-$1/ste-$1.vue',
+      '^ste-(.*)': '@/uni_modules/stellar-ui-plus/components/ste-$1/ste-$1.vue',
     },
   },
 })

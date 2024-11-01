@@ -13,7 +13,7 @@ ps：注意 目前 useMessageBox 只能在 setup 作用域下使用
 
 ```html
 <script setup lang="ts">
-    import { useMessageBox } from 'stellar-plus/composables";
+    import { useMessageBox } from 'stellar-ui-plus/composables";
     const msg = useMessageBox();
     function click() { msg.showMsgBox({ title: '提示', }); }
 </script>
@@ -67,7 +67,7 @@ insetLoader: {
 
 ```html
 <script setup lang="ts">
-    import { useMessageBox } from 'stellar-plus/composables";
+    import { useMessageBox } from 'stellar-ui-plus/composables";
     const msg = useMessageBox();
 </script>
 ```

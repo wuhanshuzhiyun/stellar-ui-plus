@@ -55,7 +55,7 @@
 <ste-button mode="200" @click="openSwipe">打开</ste-button>
 <ste-button mode="200" @click="closeSwipe">关闭</ste-button>
 <script lang="ts" setup>
-    import type { RefSwipeAction } from '../../../../uni_modules/stellar-plus/types/refComponents';
+    import type { RefSwipeAction } from '../../../../uni_modules/stellar-ui-plus/types/refComponents';
     const swipe = ref<RefSwipeAction>();
     const openSwipe = () => {
         swipe.value?.open();
@@ -85,7 +85,7 @@
     </template>
 </ste-swipe-action>
 <script lang="ts" setup>
-    import { useToast } from '@/uni_modules/stellar-plus/composables';
+    import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
     let toast = useToast();
     const onOpen = (direction: 'left' | 'right', index?: number) => {
         toast.showToast({
@@ -139,7 +139,7 @@
 </view>
 <script lang="ts" setup>
     import { ref } from 'vue';
-    import type { RefSwipeAction, RefSwipeActionGroup } from '../../../../uni_modules/stellar-plus/types/refComponents';
+    import type { RefSwipeAction, RefSwipeActionGroup } from '../../../../uni_modules/stellar-ui-plus/types/refComponents';
     const swipeGroup = ref<RefSwipeActionGroup>();
     const openSwipeGroup = (index: number) => {
         swipeGroup.value?.open('right', index);

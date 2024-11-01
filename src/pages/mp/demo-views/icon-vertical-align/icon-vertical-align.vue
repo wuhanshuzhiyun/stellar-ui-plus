@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const fontFamily = ref('ste-' + Math.round(Math.random() * 10000000000));
 const fontUrl = ref('');

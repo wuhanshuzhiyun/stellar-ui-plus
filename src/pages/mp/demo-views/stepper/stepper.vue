@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const val = ref({
     value1: 10,

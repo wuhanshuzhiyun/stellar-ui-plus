@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const medias = ref([
     'https://image.whzb.com/chain/StellarUI/image/banner1.png',

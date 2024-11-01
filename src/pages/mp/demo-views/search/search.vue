@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
-import type { SearchSuggestion } from '@/uni_modules/stellar-plus/types/index';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
+import type { SearchSuggestion } from '@/uni_modules/stellar-ui-plus/types/index';
 let toast = useToast();
 
 const data = [

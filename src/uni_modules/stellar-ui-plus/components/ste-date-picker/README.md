@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts" setup>
-    import type { CloumnType } from '@/uni_modules/stellar-plus/components/ste-date-picker/types';
+    import type { CloumnType } from '@/uni_modules/stellar-ui-plus/components/ste-date-picker/types';
     function filter(mode: CloumnType, options: any[]) {
         if (mode === 'year') {
             return options.filter(option => option % 5 === 0);
@@ -81,7 +81,7 @@
     <ste-date-picker :formatter="formatter" mode="date" title="格式化"></ste-date-picker>
 </template>
 <script lang="ts" setup>
-    import type { CloumnType } from '@/uni_modules/stellar-plus/components/ste-date-picker/types';
+    import type { CloumnType } from '@/uni_modules/stellar-ui-plus/components/ste-date-picker/types';
     function formatter(type: CloumnType, value: any) {
         if (type === 'year') {
             return `${value}年`;

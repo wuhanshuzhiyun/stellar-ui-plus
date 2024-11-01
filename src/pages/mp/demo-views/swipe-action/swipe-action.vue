@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { RefSwipeAction, RefSwipeActionGroup } from '../../../../uni_modules/stellar-plus/types/refComponents';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import type { RefSwipeAction, RefSwipeActionGroup } from '../../../../uni_modules/stellar-ui-plus/types/refComponents';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const datas = ['1111111111', '22222222222', '3333333333333333', '444444444444444444444'];
 

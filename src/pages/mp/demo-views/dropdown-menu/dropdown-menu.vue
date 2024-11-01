@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import type { RefDropdownMenu } from '@/uni_modules/stellar-plus/types/refComponents';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import type { RefDropdownMenu } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const menu1 = ref(1);
 const customMenuData = ref([

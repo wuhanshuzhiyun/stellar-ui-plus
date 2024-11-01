@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Content } from '../pc/types';
 import useComponents from './composables/useComponents';
-import config from '@/uni_modules/stellar-plus/package.json';
+import config from '@/uni_modules/stellar-ui-plus/package.json';
 
 const datas = useComponents();
 function toDemo(item: Content) {

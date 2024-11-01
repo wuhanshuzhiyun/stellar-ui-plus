@@ -79,8 +79,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useMessageBox } from '@/uni_modules/stellar-plus/composables';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import { useMessageBox } from '@/uni_modules/stellar-ui-plus/composables';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 const toast = useToast();
 const msg = useMessageBox();
 const msg2 = useMessageBox('myMsgBox');

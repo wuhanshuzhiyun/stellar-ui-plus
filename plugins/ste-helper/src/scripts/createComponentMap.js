@@ -1,7 +1,7 @@
 const path = require('node:path')
 const fs = require('node:fs')
 
-const basePath = path.resolve(__dirname, './../../../../src/uni_modules/stellar-plus/components')
+const basePath = path.resolve(__dirname, './../../../../src/uni_modules/stellar-ui-plus/components')
 const componentDirs = fs.readdirSync(basePath, 'utf8')
 
 function genaratorComponentMap() {

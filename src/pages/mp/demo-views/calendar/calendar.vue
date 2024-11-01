@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
-import type { RefCalendar } from '@/uni_modules/stellar-plus/types/refComponents';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
+import type { RefCalendar } from '@/uni_modules/stellar-ui-plus/types/refComponents';
 const show1 = ref(false);
 const show2 = ref(false);
 const show3 = ref(false);

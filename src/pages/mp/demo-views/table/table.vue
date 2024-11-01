@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-// import type { Obj } from '@/uni_modules/stellar-plus/types';
-import type { RefTable } from '@/uni_modules/stellar-plus/types/refComponents';
-import type { RefSignature } from '@/uni_modules/stellar-plus/types/refComponents';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+// import type { Obj } from '@/uni_modules/stellar-ui-plus/types';
+import type { RefTable } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+import type { RefSignature } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const signature = ref<RefSignature>();
 

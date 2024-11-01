@@ -54,7 +54,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useToast } from '@/uni_modules/stellar-plus/composables';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 let value1 = ref(false);
 let value2 = ref(true);

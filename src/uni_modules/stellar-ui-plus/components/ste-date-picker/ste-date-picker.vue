@@ -23,7 +23,8 @@
 import { ref, onMounted, defineOptions } from 'vue';
 import propsData from './props';
 import type { CloumnType } from './types';
-import dayjs from 'dayjs';
+import utils from '../../utils/utils';
+const dayjs = utils.dayjs;
 
 const componentName = 'ste-date-picker';
 defineOptions({

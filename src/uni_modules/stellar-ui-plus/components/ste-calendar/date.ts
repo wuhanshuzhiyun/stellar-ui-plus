@@ -1,5 +1,6 @@
-import type dayjs from 'dayjs'
 import utils from '../../utils/utils'
+
+type Dayjs = typeof utils.dayjs.Dayjs
 
 export interface WeekType {
   dayText: string | number
@@ -9,14 +10,14 @@ export interface WeekType {
 }
 
 export interface MonthType {
-  date: dayjs.Dayjs
+  date: Dayjs
   monthText: string
   key: string
   month: number
   weeks: WeekType[][]
 }
 
-export type DateType = string | number | dayjs.Dayjs | Date
+export type DateType = string | number | Dayjs | Date
 
 /**
  * 获取从当前月份开始的12个月

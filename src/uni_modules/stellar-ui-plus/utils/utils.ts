@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import * as dayjs from 'dayjs'
 import type { TreeNode } from '../types'
 import System from './System'
 import Color from './Color'
@@ -256,12 +256,12 @@ const utils = {
 
   scrollViewX({
     viewLeft, // 要显示的元素左侧位置
-        viewRight, // 要显示的元素右侧位置
-        boxLeft = 0, // 视图区域左侧位置
-        boxRight = System.getWindowWidth(), // 视图区域右侧位置
-        prevWidth = 0, // 前一个元素的宽度
-        nextWidth = 0, // 后一个元素的宽度
-        scrollLeft = 0, // 当前已经滑动的距离
+    viewRight, // 要显示的元素右侧位置
+    boxLeft = 0, // 视图区域左侧位置
+    boxRight = System.getWindowWidth(), // 视图区域右侧位置
+    prevWidth = 0, // 前一个元素的宽度
+    nextWidth = 0, // 后一个元素的宽度
+    scrollLeft = 0, // 当前已经滑动的距离
   }: {
     viewLeft: number
     viewRight: number

@@ -24,7 +24,7 @@ interface FormatTreeOptions {
 const utils = {
   System,
   Color,
-  dayjs,
+  dayjs: dayjs.default,
   isNaN(value: number | string | null | undefined): boolean {
     const deg = /^-?\d+(\.\d+)?$/i
     return !deg.test(String(value))

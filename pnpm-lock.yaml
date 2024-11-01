@@ -56,6 +56,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.7.2
         version: 10.7.2(vue@3.4.38(typescript@5.3.3))
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       vue:
         specifier: ^3.4.38
         version: 3.4.38(typescript@5.3.3)
@@ -2925,6 +2928,9 @@ packages:
   data-urls@2.0.0:
     resolution: {integrity: sha512-X5eWTSXO/BJmpdIKCRuKUgSCgAN0OwliVK3yPKbwIWU1Tdw5BRajxlzMidvh+gwko9AfQ9zIj52pzF91Q3YAvQ==}
     engines: {node: '>=10'}
+
+  dayjs@1.11.13:
+    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
@@ -9961,6 +9967,8 @@ snapshots:
       abab: 2.0.6
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.7.0
+
+  dayjs@1.11.13: {}
 
   de-indent@1.0.2: {}
 

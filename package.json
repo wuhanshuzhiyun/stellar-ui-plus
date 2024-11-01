@@ -65,6 +65,7 @@
         "@dcloudio/uni-mp-xhs": "3.0.0-alpha-4020320240703001",
         "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-4020320240703001",
         "@vueuse/core": "^10.7.2",
+        "dayjs": "^1.11.13",
         "vue": "^3.4.38",
         "vue-i18n": "^9.6.5"
     },

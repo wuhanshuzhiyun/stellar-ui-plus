@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useSlots, computed, type CSSProperties } from 'vue';
+import { useSlots, computed, ref, type CSSProperties } from 'vue';
 import utils from '../../utils/utils';
 import propsData, { CHECKBOX_KEY, checkboxEmits } from './props';
 import type { CheckboxGroupProps } from '../ste-checkbox-group/props';

@@ -233,7 +233,7 @@ onMounted(() => {
                     height: var(--tabs-title-height);
                     line-height: var(--tabs-title-height);
                     overflow: hidden;
-                    font-size: 28rpx;
+                    font-size: var(--font-size-28, 28rpx);
                     color: var(--tabs-title-color);
                     word-break: break-all;
                     margin: 0 auto;
@@ -250,7 +250,7 @@ onMounted(() => {
                     border-radius: var(--tabs-sub-title-radius);
                     max-width: 100%;
                     overflow: hidden;
-                    font-size: 28rpx;
+                    font-size: var(--font-size-28, 28rpx);
                     text-align: center;
                     margin: 0 auto;
                     color: var(--tabs-sub-color);
@@ -358,7 +358,7 @@ onMounted(() => {
                         align-items: center;
                         padding: 0 24rpx;
                         color: var(--tabs-title-color);
-                        font-size: 28rpx;
+                        font-size: var(--font-size-28, 28rpx);
                     }
                 }
 

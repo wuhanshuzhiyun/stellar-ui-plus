@@ -87,7 +87,7 @@ export default function useData({ props, emits, thas }: {
   const cmpAllowCreate = computed(() => props.allowCreate && cmpFilterable.value)
 
   const cmpRootStyle = computed(() => ({
-    '--ste-select-font-size': utils.formatPx(props.fontSize),
+    '--ste-select-font-size': `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`,
     '--ste-select-width': utils.formatPx(props.width),
     '--ste-select-height': utils.formatPx(props.height),
     '--ste-select-line-height': `${utils.formatPx(props.height, 'num') - 2}px`,

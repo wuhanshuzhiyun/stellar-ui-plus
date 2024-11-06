@@ -62,12 +62,11 @@ export default function useData({ props, emits }: {
   })
 
   const cmpRootStyle = computed(() => {
-    const fontsize = utils.formatPx(props.textSize, 'num')
     return {
       '--ste-number-keyboard-text-color': props.textColor,
-      '--ste-number-keyboard-text-size': utils.formatPx(props.textSize),
-      '--ste-number-keyboard-clear-text-size': utils.isNaN(fontsize) ? fontsize : `${fontsize - 8}px`,
-      '--ste-number-keyboard-confirm-text-size': utils.isNaN(fontsize) ? fontsize : `${fontsize - 3}px`,
+      '--ste-number-keyboard-text-size': `var(--font-size-${props.textSize},${utils.formatPx(props.textSize)})`,
+      '--ste-number-keyboard-clear-text-size': `var(--font-size-${props.textSize},${utils.formatPx(Number(props.textSize) - 8)})`,
+      '--ste-number-keyboard-confirm-text-size': `var(--font-size-${props.textSize},${utils.formatPx(Number(props.textSize) - 3)})`,
       '--ste-number-keyboard-confirm-bg': props.confirmBg,
       '--ste-number-keyboard-confirm-bg-active': utils.Color.formatColor(props.confirmBg, 0.8),
       '--ste-number-keyboard-confirm-color': props.confirmColor,

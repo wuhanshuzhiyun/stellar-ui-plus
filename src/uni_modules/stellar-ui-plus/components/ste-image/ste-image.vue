@@ -122,7 +122,7 @@ onMounted(() => {
     width: var(--image-root-width);
     height: var(--image-root-height);
     display: var(--image-root-display);
-    font-size: 24rpx;
+    font-size: var(--font-size-24, 24rpx);
     color: #bbbbbb;
     justify-content: center;
     align-items: center;

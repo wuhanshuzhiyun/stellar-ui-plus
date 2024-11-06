@@ -106,7 +106,7 @@ const { dataShow, cmpRootStyle, clickRoot, dataStyle, messageStyle, arrowsStyle,
         }
         .message-content {
             color: var(--ste-tour-message-color);
-            font-size: 24rpx;
+            font-size: var(--font-size-24, 24rpx);
 
             .message-head {
                 display: flex;
@@ -117,7 +117,7 @@ const { dataShow, cmpRootStyle, clickRoot, dataStyle, messageStyle, arrowsStyle,
                 .head-title {
                     height: 60rpx;
                     line-height: 60rpx;
-                    font-size: 30rpx;
+                    font-size: var(--font-size-30, 30rpx);
                     margin-right: 30rpx;
                 }
 
@@ -141,7 +141,7 @@ const { dataShow, cmpRootStyle, clickRoot, dataStyle, messageStyle, arrowsStyle,
                 padding: 20rpx 24rpx;
                 min-width: 360rpx;
                 .step-num {
-                    font-size: 24rpx;
+                    font-size: var(--font-size-24, 24rpx);
                     color: var(--ste-tour-message-color);
                     margin-right: 30rpx;
                 }

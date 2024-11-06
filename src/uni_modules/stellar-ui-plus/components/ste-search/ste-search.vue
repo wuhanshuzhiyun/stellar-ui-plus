@@ -210,7 +210,7 @@ const handleSuggestionClick = (item: SearchSuggestion) => {
             .ste-search-input {
                 height: 100%;
                 border-style: none;
-                font-size: 28rpx;
+                font-size: var(--font-size-28, 28rpx);
                 color: var(--search-input-color);
                 // #ifdef MP-ALIPAY
                 background-color: rgba(0, 0, 0, 0);
@@ -239,7 +239,7 @@ const handleSuggestionClick = (item: SearchSuggestion) => {
                 left: 0;
 
                 .placeholder-item {
-                    font-size: 28rpx;
+                    font-size: var(--font-size-28, 28rpx);
                     color: var(--search-placeholder-color);
                     font-family:
                         Alibaba PuHuiTi 2,
@@ -279,7 +279,7 @@ const handleSuggestionClick = (item: SearchSuggestion) => {
         .search-button {
             padding: 0 16rpx;
             height: 40rpx;
-            font-size: 28rpx;
+            font-size: var(--font-size-28, 28rpx);
             line-height: 40rpx;
             flex-shrink: 0;
             text-align: center;
@@ -335,7 +335,7 @@ const handleSuggestionClick = (item: SearchSuggestion) => {
             height: 60rpx;
             display: flex;
             align-items: center;
-            font-size: 28rpx;
+            font-size: var(--font-size-28, 28rpx);
             color: #bbbbbb;
 
             &:focus {

@@ -195,6 +195,7 @@ const getTransfrom = (i: number) => (dataIndex.value === i ? cmpTransform.value 
         display: flex;
         align-items: center;
         justify-content: space-between;
+        font-size: var(--font-size-28, 28rpx);
     }
 }
 </style>

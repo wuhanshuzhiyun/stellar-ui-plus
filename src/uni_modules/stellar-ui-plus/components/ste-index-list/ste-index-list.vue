@@ -93,7 +93,7 @@ defineExpose({ init: () => initChildren(true) });
             margin: 0 auto;
             height: 44rpx;
             line-height: 44rpx;
-            font-size: 24rpx;
+            font-size: var(--font-size-24, 24rpx);
             color: var(--ste-index-list-inactive-color);
             &.active {
                 color: var(--ste-index-list-active-color);

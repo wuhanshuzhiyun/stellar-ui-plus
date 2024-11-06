@@ -211,7 +211,7 @@ defineExpose({ showMonth });
 
     .calendar-title {
         height: 90rpx;
-        font-size: 32rpx;
+        font-size: var(--font-size-32, 32rpx);
         line-height: 44rpx;
         padding-top: 30rpx;
 
@@ -222,7 +222,7 @@ defineExpose({ showMonth });
         width: 100%;
         height: 80rpx;
         line-height: 80rpx;
-        font-size: 32rpx;
+        font-size: var(--font-size-32, 32rpx);
         border-bottom: 1px solid #ddd;
         box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
@@ -272,7 +272,7 @@ defineExpose({ showMonth });
                 text-align: center;
                 height: 44rpx;
                 line-height: 44rpx;
-                font-size: 32rpx;
+                font-size: var(--font-size-32, 32rpx);
             }
 
             .day-item {
@@ -340,14 +340,14 @@ defineExpose({ showMonth });
                     width: 100%;
                     height: 20rpx;
                     line-height: 20rpx;
-                    font-size: 24rpx;
+                    font-size: var(--font-size-24, 24rpx);
                 }
 
                 .day-content {
                     width: 100%;
                     height: 48rpx;
                     line-height: 48rpx;
-                    font-size: 32rpx;
+                    font-size: var(--font-size-32, 32rpx);
                 }
             }
         }
@@ -361,6 +361,7 @@ defineExpose({ showMonth });
         background-color: var(--calendar-color);
         color: #fff;
         text-align: center;
+        font-size: var(--font-size-32, 32rpx);
         // #ifdef H5
         cursor: pointer;
 

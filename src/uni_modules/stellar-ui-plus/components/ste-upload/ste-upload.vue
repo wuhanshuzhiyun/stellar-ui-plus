@@ -312,7 +312,7 @@ const onMediaType = () => {
 
                     .upload-text {
                         color: #ccc;
-                        font-size: 24rpx;
+                        font-size: var(--font-size-24, 24rpx);
                     }
                 }
 
@@ -350,7 +350,7 @@ const onMediaType = () => {
 
                 .text {
                     margin-top: 16rpx;
-                    font-size: 28rpx;
+                    font-size: var(--font-size-28, 28rpx);
                     line-height: 40rpx;
                 }
             }
@@ -366,7 +366,7 @@ const onMediaType = () => {
                 height: 90rpx;
                 background-color: rgba(0, 0, 0, 0.7);
                 color: #fff;
-                font-size: 12rpx;
+                font-size: var(--font-size-24, 24rpx);
                 top: -45rpx;
                 right: -45rpx;
                 border-radius: 50%;

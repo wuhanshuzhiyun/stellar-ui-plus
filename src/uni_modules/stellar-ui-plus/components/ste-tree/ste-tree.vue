@@ -106,7 +106,7 @@ defineExpose({
                     PingFang SC,
                     PingFang SC;
                 font-weight: 500;
-                font-size: 28rpx;
+                font-size: var(--font-size-28, 28rpx);
                 color: #000000;
 
                 .tree-item-right {

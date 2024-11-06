@@ -192,7 +192,7 @@ const stop = () => {};
                     border-radius: 6rpx;
                     border: 1px solid #eee;
                     margin-right: 8px;
-                    font-size: 24rpx; // 设置字体大小
+                    font-size: var(--font-size-24, 24rpx);
                     text-overflow: ellipsis;
                     white-space: nowrap; // 文本不换行，防止文字溢出
                     overflow: hidden; // 隐藏溢出内容，并显示省略号

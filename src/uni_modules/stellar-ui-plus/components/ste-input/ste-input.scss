@@ -63,7 +63,7 @@
                 position: absolute;
                 bottom: 0;
                 right: 0;
-                font-size: 24rpx;
+                font-size: var(--font-size-24, 24rpx);
                 color: #bbbbbb;
             }
         }

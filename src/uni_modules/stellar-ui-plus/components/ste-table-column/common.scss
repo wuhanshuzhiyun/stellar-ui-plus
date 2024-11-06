@@ -1,52 +1,52 @@
 @mixin cell {
-	flex: 1;
-	// padding: 24rpx 32rpx;
-	border-bottom: $default-border;
-	text-align: left;
-	min-height: 80rpx;
-	font-size: 24rpx;
-	// vertical-align: middle;
-	display: flex;
-	align-items: center;
+    flex: 1;
+    // padding: 24rpx 32rpx;
+    border-bottom: $default-border;
+    text-align: left;
+    min-height: 80rpx;
+    font-size: var(--font-size-24, 24rpx);
+    // vertical-align: middle;
+    display: flex;
+    align-items: center;
 }
 
 .cell-box {
-	display: flex;
-	align-items: center;
-	padding: 24rpx 32rpx;
+    display: flex;
+    align-items: center;
+    padding: 24rpx 32rpx;
 }
 
 &.border {
-	border-right: $default-border;
+    border-right: $default-border;
 }
 
 &.selection {
 }
 
 &.align-text-center {
-	text-align: center;
-	.cell-box {
-		text-align: center;
-	}
+    text-align: center;
+    .cell-box {
+        text-align: center;
+    }
 }
 
 &.align-text-right {
-	text-align: right;
-	.cell-box {
-		text-align: right;
-	}
+    text-align: right;
+    .cell-box {
+        text-align: right;
+    }
 }
 
 &.align-center {
-	justify-content: center;
-	.cell-box {
-		justify-content: center;
-	}
+    justify-content: center;
+    .cell-box {
+        justify-content: center;
+    }
 }
 
 &.align-right {
-	justify-content: flex-end;
-	.cell-box {
-		justify-content: flex-end;
-	}
+    justify-content: flex-end;
+    .cell-box {
+        justify-content: flex-end;
+    }
 }

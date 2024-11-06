@@ -79,7 +79,7 @@ $default-size: 28rpx;
     .ste-badge-content {
         display: inline-block;
         position: absolute;
-        font-size: 24rpx;
+        font-size: var(--font-size-24, 24rpx);
         color: #ffffff;
         background-color: #ee0a24;
         border-radius: 99999rpx;
@@ -111,7 +111,7 @@ $default-size: 28rpx;
         }
 
         &-text {
-            font-size: 22rpx;
+            font-size: var(--font-size-22, 22rpx);
             color: #ffffff;
             line-height: $default-size;
             vertical-align: middle;

@@ -36,7 +36,7 @@ const cmpRootCssVar = computed(() => {
         '--active-width': realPercentage.value + '%',
         '--active-text-align': props.textAlign == 'right' ? 'flex-end' : props.textAlign,
         '--active-text-color': props.textColor,
-        '--active-text-font-size': utils.addUnit(props.textSize),
+        '--active-text-font-size': `var(--font-size-${props.textSize},${utils.addUnit(props.textSize)})`,
         '--active-transition-duration': `${props.duration}s`,
     };
 

@@ -30,7 +30,7 @@ const cmpCodeArray = computed(() => {
 
 const cmpRootStyle = computed(() => {
     const style = {
-        '--font-size': utils.addUnit(props.fontSize),
+        '--font-size': `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`,
         '--font-color': props.fontColor,
         '--line-width': utils.addUnit(props.size),
         '--line-background-color': props.borderColor,

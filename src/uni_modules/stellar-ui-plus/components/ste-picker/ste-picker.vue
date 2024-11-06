@@ -169,14 +169,14 @@ watch(
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 28rpx;
+        font-size: var(--font-size-28, 28rpx);
 
         .cancel {
             cursor: pointer;
         }
 
         .title {
-            font-size: 32rpx;
+            font-size: var(--font-size-32, 32rpx);
         }
 
         .confirm {
@@ -185,7 +185,7 @@ watch(
     }
 
     .item {
-        font-size: 26rpx;
+        font-size: var(--font-size-26, 26rpx);
         display: flex;
         align-items: center;
         justify-content: center;

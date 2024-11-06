@@ -267,7 +267,7 @@ defineExpose({
                 padding-top: 48rpx;
                 padding-bottom: 24rpx;
                 font-weight: bold;
-                font-size: 32rpx;
+                font-size: var(--font-size-32, 32rpx);
                 text-align: center;
             }
 
@@ -276,7 +276,7 @@ defineExpose({
                 text-align: center;
                 .text {
                     width: 100%;
-                    font-size: 28rpx;
+                    font-size: var(--font-size-28, 28rpx);
                     text-align: center;
                 }
 
@@ -300,7 +300,7 @@ defineExpose({
                     border-radius: 8px 8px 8px 8px;
                     text-align: center;
                     padding: 0 24rpx;
-                    font-size: 28rpx;
+                    font-size: var(--font-size-28, 28rpx);
                 }
             }
         }
@@ -317,7 +317,7 @@ defineExpose({
                 align-items: center;
                 justify-content: center;
                 font-weight: bold;
-                font-size: 32rpx;
+                font-size: var(--font-size-32, 32rpx);
 
                 /* #ifdef H5 || WEB */
                 cursor: pointer;

@@ -60,7 +60,7 @@ const cmpRootStyle = computed(() => {
 
 const cmpRootCssVar = computed(() => {
     return {
-        '--input-font-size': utils.addUnit(props.fontSize),
+        '--input-font-size': `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`,
         '--input-font-color': props.fontColor,
         '--input-text-align': props.inputAlign,
         '--input-line-color': props.borderColor || '#eeeeee',

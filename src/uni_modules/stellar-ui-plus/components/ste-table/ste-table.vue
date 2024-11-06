@@ -295,7 +295,7 @@ $default-border: 2rpx solid #ebebeb;
             .ste-table-cell {
                 background-color: #e8f7ff;
                 font-weight: bold;
-                font-size: 28rpx;
+                font-size: var(--font-size-28, 28rpx);
                 border-top: $default-border;
                 // flex: 1;
                 // box-sizing: border-box;
@@ -314,7 +314,7 @@ $default-border: 2rpx solid #ebebeb;
 
             padding: 0 32rpx;
             height: 80rpx;
-            font-size: 24rpx;
+            font-size: var(--font-size-24, 24rpx);
 
             .cell-box {
                 height: 100%;

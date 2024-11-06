@@ -64,9 +64,9 @@ const cmpUnitStyle = computed(() => {
 
     if (props.isSuggestPrice) {
         style.color = props.linePriceColor;
-        style.fontSize = utils.formatPx(props.fontSize);
+        style.fontSize = `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`;
     } else {
-        style.fontSize = calcFontSize();
+        style.fontSize = `var(--font-size-${calcFontSize()},${calcFontSize()})`;
     }
     return style;
 });
@@ -81,10 +81,10 @@ const cmpYuanPriceStyle = computed(() => {
 const cmpFenPriceStyle = computed(() => {
     let fontSize: string | number;
     if (props.isSuggestPrice) {
-        fontSize = utils.formatPx(props.fontSize);
+        fontSize = `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`;
     } else {
         if (props.styleType === 2) fontSize = calcFontSize();
-        else fontSize = utils.formatPx(props.fontSize);
+        else fontSize = `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`;
     }
 
     return {

@@ -31,7 +31,7 @@ const cmpContentStyle = computed(() => {
 
 const cmpActionStyle = computed(() => ({
     color: props.color,
-    fontSize: utils.addUnit(props.fontSize),
+    fontSize: `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`,
     background: open.value ? '' : 'linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 80%)',
 }));
 
@@ -104,7 +104,7 @@ defineExpose({ init });
 
         text {
             cursor: pointer;
-            font-size: 28rpx;
+            font-size: var(--font-size-28, 28rpx);
             margin-right: 16rpx;
         }
     }

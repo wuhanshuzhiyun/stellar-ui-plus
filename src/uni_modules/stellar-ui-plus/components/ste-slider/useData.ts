@@ -14,6 +14,11 @@ export default function useData(props: SliderProps, _emits: SetupContext<SliderE
 
   const markList = ref<Obj[]>([])
 
+  function getValueFromPercentage(percentage: number) {
+    const value = Number(props.min) + ((Number(props.max) - Number(props.min)) * percentage) / 100
+    return Math.round(value / Number(props.step)) * Number(props.step)
+  }
+
   // 根据传入的最大最小值来计算传入的值是否在范围内，并给出范围内的值
   function getRealValue(value = 0, max = props.max, min = props.min) {
     return Math.max(Math.min(value, Number(max)), Number(min))
@@ -69,5 +74,6 @@ export default function useData(props: SliderProps, _emits: SetupContext<SliderE
     getRealValue,
     calculateStepMarks,
     getPosition,
+    getValueFromPercentage,
   }
 }

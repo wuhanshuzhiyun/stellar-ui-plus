@@ -12,6 +12,9 @@ defineOptions({
     },
 });
 
+const default_max = 100;
+const default_min = 0;
+
 const props = defineProps(propsData);
 const emits = defineEmits(sliderEmits);
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
@@ -22,7 +25,7 @@ let isSecondSlider = false;
 
 let elRoot: UniApp.NodeInfo;
 
-let { markList, isDrag, realPercentage, realPercentage2, getRealValue, calculateStepMarks, startPosition, getPosition, startPercentage } = useData(props, emits, instance);
+let { markList, isDrag, realPercentage, realPercentage2, getRealValue, calculateStepMarks, startPosition, getPosition, startPercentage, getValueFromPercentage } = useData(props, emits, instance);
 
 const cmpRootClass = computed(() => {
     let classStr = '';
@@ -136,7 +139,7 @@ function handleClick(e: MouseEvent | BaseEvent) {
         offsetValue = ((clientX - left) / width) * 100;
     }
     updateWidth(offsetValue, false);
-    emits('change', props.range ? [realPercentage.value, realPercentage2.value] : realPercentage.value);
+    emits('change', props.range ? [realPercentage.value, realPercentage2.value] : getValueFromPercentage(realPercentage.value));
 }
 
 function onTouchStart(e: UniTouchEvent | MouseEvent, isSecond: Boolean = false) {
@@ -159,7 +162,7 @@ function onTouchEnd(e: UniTouchEvent | MouseEvent) {
     isDrag.value = false;
     // this.isSecondSlider = false;
     emits('dragEnd', e);
-    emits('change', props.range ? [realPercentage.value, realPercentage2.value] : realPercentage.value);
+    emits('change', props.range ? [realPercentage.value, realPercentage2.value] : getValueFromPercentage(realPercentage.value));
 
     // #ifdef WEB
     removeListenner && removeListenner();
@@ -186,8 +189,8 @@ function updateWidth(value: number, drag: boolean) {
 // 根据步长和最大最小值来计算每次的滑动
 function calculateValue(value: number) {
     let step = hasMarks ? 1 : Number(props.step);
-    let min = Number(props.min);
-    let max = Number(props.max);
+    let min = Number(default_min);
+    let max = Number(default_max);
 
     /**
      *当范围模式下时，两个滑块不允许交替,

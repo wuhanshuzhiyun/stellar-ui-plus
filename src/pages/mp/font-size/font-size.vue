@@ -2,27 +2,12 @@
 import { ref, watch, computed } from 'vue';
 import config from '../../../uni_modules/stellar-ui-plus/config';
 
-const fontSize = ref(String(config.options.fontScale));
-
-const fontsizes = [
-    {
-        value: '0.8',
-        label: '0.8倍字体',
-    },
-    {
-        value: '1',
-        label: '标准字体',
-    },
-    {
-        value: '1.2',
-        label: '1.2倍字体',
-    },
-];
+const fontSize = ref(config.options.fontScale);
 
 watch(
     () => fontSize.value,
     v => {
-        config.setConfig({ fontScale: Number(v) });
+        config.setConfig({ fontScale: v });
     }
 );
 
@@ -46,15 +31,22 @@ const list1 = [
     { label: '选项2018', value: 2018 },
     { label: '选项2019', value: 2019 },
 ];
+
+const fontSizeChange = (v: number | number[]) => {
+    console.log(v);
+    if (Array.isArray(v)) {
+        fontSize.value = v[0] / 10;
+    } else {
+        fontSize.value = v / 10;
+    }
+};
 </script>
 <template>
     <view :style="[rootStyle]">
         <ste-sticky>
             <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="字体大小配置"></page-nav>
-            <view style="background-color: #fff; padding-bottom: 24rpx; display: flex; justify-content: center; border-bottom: 1px solid #eee">
-                <ste-radio-group v-model="fontSize" direction="row">
-                    <ste-radio v-for="item in fontsizes" :key="item.value" :name="item.value">{{ item.label }}</ste-radio>
-                </ste-radio-group>
+            <view style="background-color: #fff; padding: 24rpx; display: flex; justify-content: center; border-bottom: 1px solid #eee">
+                <ste-slider :value="fontSize * 10" :min="5" :max="20" :step="1" @change="fontSizeChange" />
             </view>
         </ste-sticky>
         <view class="demo-content">

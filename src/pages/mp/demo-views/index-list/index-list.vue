@@ -39,56 +39,48 @@ const onClickItem = (title: string, text: string) => {
 };
 </script>
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="索引列表"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">基础用法</view>
-                <view style="width: 100%; height: 750rpx">
-                    <ste-index-list @clickItem="onClickItem">
-                        <ste-index-item v-for="(item, index) in data" :key="index" :title="item.title" :list="item.list" />
-                    </ste-index-list>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义颜色、标题、列表</view>
-                <view style="width: 100%; height: 750rpx">
-                    <ste-index-list inactiveColor="#0f0" activeColor="#f0f">
-                        <ste-index-item v-for="item in data" :key="item.title" :title="item.title">
-                            <template v-slot:title>
-                                <view class="custom-title" v-show="item.title">{{ item.title }}</view>
-                            </template>
-                            <view class="row-item" v-for="(m, i) in item.list" :key="i">
-                                <ste-icon code="&#xe677;" />
-                                {{ m }}
-                            </view>
-                        </ste-index-item>
-                    </ste-index-list>
-                </view>
+    <page-layout title="索引列表">
+        <view class="demo-item">
+            <view class="title">基础用法</view>
+            <view style="width: 100%; height: 750rpx">
+                <ste-index-list @clickItem="onClickItem">
+                    <ste-index-item v-for="(item, index) in data" :key="index" :title="item.title" :list="item.list" />
+                </ste-index-list>
             </view>
         </view>
-    </view>
+        <view class="demo-item">
+            <view class="title">自定义颜色、标题、列表</view>
+            <view style="width: 100%; height: 750rpx">
+                <ste-index-list inactiveColor="#0f0" activeColor="#f0f">
+                    <ste-index-item v-for="item in data" :key="item.title" :title="item.title">
+                        <template v-slot:title>
+                            <view class="custom-title" v-show="item.title">{{ item.title }}</view>
+                        </template>
+                        <view class="row-item" v-for="(m, i) in item.list" :key="i">
+                            <ste-icon code="&#xe677;" />
+                            {{ m }}
+                        </view>
+                    </ste-index-item>
+                </ste-index-list>
+            </view>
+        </view>
+    </page-layout>
 </template>
 <style lang="scss" scoped>
-.page {
-    .content {
-        background: #fff;
-        .custom-title {
-            height: 60rpx;
-            line-height: 60rpx;
-            padding: 0 32rpx;
-            background-color: #f00;
-            color: #fff;
-        }
-        .row-item {
-            height: 92rpx;
-            line-height: 92rpx;
-            padding: 0 32rpx;
+.custom-title {
+    height: 60rpx;
+    line-height: 60rpx;
+    padding: 0 32rpx;
+    background-color: #f00;
+    color: #fff;
+}
+.row-item {
+    height: 92rpx;
+    line-height: 92rpx;
+    padding: 0 32rpx;
 
-            & + .row-item {
-                border-top: 1px solid #ddd;
-            }
-        }
+    & + .row-item {
+        border-top: 1px solid #ddd;
     }
 }
 </style>

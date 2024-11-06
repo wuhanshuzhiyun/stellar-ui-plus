@@ -12,25 +12,18 @@ const contents = [
 ];
 </script>
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="滚动锚点"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">基础使用</view>
-                <ste-tabs v-model:active="active" sticky>
-                    <ste-tab v-for="(m, i) in contents" :key="i" :title="`标签${i + 1}`" />
-                </ste-tabs>
-                <ste-scroll-to v-model:active="active" height="1200">
-                    <ste-scroll-to-item v-for="(m, i) in contents" :key="i">
-                        <view>内容{{ i + 1 }}</view>
-                        <image :src="m" mode="widthFix" style="width: 100%"></image>
-                    </ste-scroll-to-item>
-                </ste-scroll-to>
-            </view>
+    <page-layout title="滚动锚点">
+        <view class="demo-item">
+            <view class="title">基础使用</view>
+            <ste-tabs v-model:active="active" sticky>
+                <ste-tab v-for="(m, i) in contents" :key="i" :title="`标签${i + 1}`" />
+            </ste-tabs>
+            <ste-scroll-to v-model:active="active" height="1200">
+                <ste-scroll-to-item v-for="(m, i) in contents" :key="i">
+                    <view>内容{{ i + 1 }}</view>
+                    <image :src="m" mode="widthFix" style="width: 100%"></image>
+                </ste-scroll-to-item>
+            </ste-scroll-to>
         </view>
-    </view>
+    </page-layout>
 </template>
-<style scoped lang="scss">
-.page {
-}
-</style>

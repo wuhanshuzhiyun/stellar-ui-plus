@@ -55,63 +55,50 @@ const onChange = (val: SelectValue, option: SelectOption) => {
 };
 </script>
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="选择框"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">基础用法</view>
-                <ste-select :list="list1" v-model="value1" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">多选</view>
-                <ste-select :list="list1" multiple v-model="value2" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">多列选择</view>
-                <ste-select :list="list3" v-model="value3" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">树形选择</view>
-                <ste-select mode="tree" :list="list4" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">日期选择</view>
-                <ste-select mode="date" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">时间选择</view>
-                <ste-select mode="time" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">年月选择</view>
-                <ste-select mode="month" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">时分选择</view>
-                <ste-select mode="minute" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">日期时间选择</view>
-                <ste-select mode="datetime" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">搜索</view>
-                <ste-select :list="list1" mode="filterable" @change="onChange"></ste-select>
-            </view>
-            <view class="demo-item">
-                <view class="title">创建条目</view>
-                <ste-select :list="list1" mode="filterable" allowCreate @change="onChange"></ste-select>
-            </view>
+    <page-layout title="选择框">
+        <view class="demo-item">
+            <view class="title">基础用法</view>
+            <ste-select :list="list1" v-model="value1" @change="onChange"></ste-select>
         </view>
-    </view>
+        <view class="demo-item">
+            <view class="title">多选</view>
+            <ste-select :list="list1" multiple v-model="value2" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">多列选择</view>
+            <ste-select :list="list3" v-model="value3" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">树形选择</view>
+            <ste-select mode="tree" :list="list4" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">日期选择</view>
+            <ste-select mode="date" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">时间选择</view>
+            <ste-select mode="time" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">年月选择</view>
+            <ste-select mode="month" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">时分选择</view>
+            <ste-select mode="minute" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">日期时间选择</view>
+            <ste-select mode="datetime" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">搜索</view>
+            <ste-select :list="list1" mode="filterable" @change="onChange"></ste-select>
+        </view>
+        <view class="demo-item">
+            <view class="title">创建条目</view>
+            <ste-select :list="list1" mode="filterable" allowCreate @change="onChange"></ste-select>
+        </view>
+    </page-layout>
 </template>
-<style lang="scss" scoped>
-.page {
-    .content {
-        .demo-item {
-            .item-block {
-            }
-        }
-    }
-}
-</style>

@@ -126,6 +126,7 @@ function onClear() {
 
     dataValue.value = '';
     emits('input', dataValue.value);
+    emits('update:modelValue', dataValue.value);
     emits('clear');
 }
 

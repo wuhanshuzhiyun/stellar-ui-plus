@@ -21,95 +21,86 @@ setTimeout(() => {
 </script>
 
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="阅读更多"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">基础使用</view>
-                <view class="item-block">
-                    <view class="more-block">
-                        <view class="title">演示效果</view>
-                        <ste-read-more>
-                            <text>{{ moreStr }}</text>
-                        </ste-read-more>
-                    </view>
-                    <view class="more-block">
-                        <view class="title">间距和字号</view>
-                        <ste-read-more>
-                            <text style="font-size: 35rpx; letter-spacing: 6rpx">{{ moreStr }}</text>
-                        </ste-read-more>
-                    </view>
-                    <view class="more-block">
-                        <view class="title">演示效果</view>
-                        <ste-read-more>{{ moreStr2 }}</ste-read-more>
-                    </view>
+    <page-layout title="阅读更多" contentStyle="padding: 0 20rpx; background: #fcfcfc;">
+        <view class="demo-item">
+            <view class="title">基础使用</view>
+            <view class="item-block">
+                <view class="more-block">
+                    <view class="title">演示效果</view>
+                    <ste-read-more>
+                        <text>{{ moreStr }}</text>
+                    </ste-read-more>
                 </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">收起后展示按钮</view>
-                <view class="item-block">
-                    <view class="more-block">
-                        <view class="title">演示效果</view>
-                        <ste-read-more toggle>{{ moreStr }}</ste-read-more>
-                    </view>
+                <view class="more-block">
+                    <view class="title">间距和字号</view>
+                    <ste-read-more>
+                        <text style="font-size: 35rpx; letter-spacing: 6rpx">{{ moreStr }}</text>
+                    </ste-read-more>
                 </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">提示文字</view>
-                <view class="item-block">
-                    <view class="more-block">
-                        <view class="title">演示效果</view>
-                        <ste-read-more toggle openText="收起吧" closeText="展开吧" color="#f1f" fontSize="32">
-                            {{ moreStr }}
-                        </ste-read-more>
-                    </view>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">异步初始化</view>
-                <view class="item-block">
-                    <view class="more-block" v-if="moreStr3">
-                        <ste-read-more ref="readMoreRef">{{ moreStr3 }}</ste-read-more>
-                    </view>
+                <view class="more-block">
+                    <view class="title">演示效果</view>
+                    <ste-read-more>{{ moreStr2 }}</ste-read-more>
                 </view>
             </view>
         </view>
-    </view>
+        <view class="demo-item">
+            <view class="title">收起后展示按钮</view>
+            <view class="item-block">
+                <view class="more-block">
+                    <view class="title">演示效果</view>
+                    <ste-read-more toggle>{{ moreStr }}</ste-read-more>
+                </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">提示文字</view>
+            <view class="item-block">
+                <view class="more-block">
+                    <view class="title">演示效果</view>
+                    <ste-read-more toggle openText="收起吧" closeText="展开吧" color="#f1f" fontSize="32">
+                        {{ moreStr }}
+                    </ste-read-more>
+                </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">异步初始化</view>
+            <view class="item-block">
+                <view class="more-block" v-if="moreStr3">
+                    <ste-read-more ref="readMoreRef">{{ moreStr3 }}</ste-read-more>
+                </view>
+            </view>
+        </view>
+    </page-layout>
 </template>
 
 <style lang="scss" scoped>
-.page {
-    background-color: #f5f5f5;
-    .content {
-        padding: 0 20rpx;
-        .demo-item {
-            .item-block {
-                // > view {
-                // 	// margin: 0 36px 36px 0;
-                // 	margin-bottom: 36rpx;
-                // }
+.demo-item {
+    .item-block {
+        // > view {
+        // 	// margin: 0 36px 36px 0;
+        // 	margin-bottom: 36rpx;
+        // }
 
-                .more-block {
-                    background-color: #fff;
-                    border-radius: 16rpx;
-                    padding: 24rpx 24rpx 20rpx 24rpx;
+        .more-block {
+            background-color: #fff;
+            border-radius: 16rpx;
+            padding: 24rpx 24rpx 20rpx 24rpx;
 
-                    color: #666666;
+            color: #666666;
 
-                    &:not(:last-child) {
-                        margin-bottom: 80rpx;
-                    }
+            &:not(:last-child) {
+                margin-bottom: 80rpx;
+            }
 
-                    .title {
-                        font-size: 32rpx;
-                        font-weight: bold;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
+            .title {
+                font-size: 32rpx;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-                        margin-bottom: 16rpx;
-                    }
-                }
+                margin-bottom: 16rpx;
             }
         }
     }

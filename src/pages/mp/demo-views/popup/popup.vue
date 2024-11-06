@@ -31,81 +31,79 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
 </script>
 
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="弹出层"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">基础使用</view>
-                <view class="item-block">
-                    <ste-button @click="show = true" :mode="100">显示弹窗</ste-button>
-                </view>
+    <page-layout title="弹出层">
+        <view class="demo-item">
+            <view class="title">基础使用</view>
+            <view class="item-block">
+                <ste-button @click="show = true" :mode="100">显示弹窗</ste-button>
             </view>
-            <view class="demo-item">
-                <view class="title">背景色</view>
-                <view class="item-block">
-                    <ste-button @click="bgShow = true" :mode="100">背景色弹窗</ste-button>
-                </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">背景色</view>
+            <view class="item-block">
+                <ste-button @click="bgShow = true" :mode="100">背景色弹窗</ste-button>
             </view>
-            <view class="demo-item">
-                <view class="title">是否遮罩关闭</view>
-                <view class="item-block">
-                    <view>
-                        <ste-button @click="maskShow1 = true" :mode="100">遮罩可关闭</ste-button>
-                    </view>
-                    <view><ste-button @click="maskShow2 = true" :mode="100">遮罩不可关闭</ste-button></view>
+        </view>
+        <view class="demo-item">
+            <view class="title">是否遮罩关闭</view>
+            <view class="item-block">
+                <view>
+                    <ste-button @click="maskShow1 = true" :mode="100">遮罩可关闭</ste-button>
                 </view>
+                <view><ste-button @click="maskShow2 = true" :mode="100">遮罩不可关闭</ste-button></view>
             </view>
-            <view class="demo-item">
-                <view class="title">大小</view>
-                <view class="item-block">
-                    <view>
-                        <ste-button @click="sizeShow1 = true" :mode="100">宽: 300 高：500</ste-button>
-                    </view>
-                    <view><ste-button @click="sizeShow2 = true" :mode="100">宽: '100vw' 高：300</ste-button></view>
+        </view>
+        <view class="demo-item">
+            <view class="title">大小</view>
+            <view class="item-block">
+                <view>
+                    <ste-button @click="sizeShow1 = true" :mode="100">宽: 300 高：500</ste-button>
                 </view>
+                <view><ste-button @click="sizeShow2 = true" :mode="100">宽: '100vw' 高：300</ste-button></view>
             </view>
-            <view class="demo-item">
-                <view class="title">位置</view>
-                <view class="item-block">
-                    <view>
-                        <ste-button @click="showTop = true" :mode="100">上</ste-button>
-                    </view>
-                    <view>
-                        <ste-button @click="showBottom = true" :mode="100">下</ste-button>
-                    </view>
-                    <view>
-                        <ste-button @click="showLeft = true" :mode="100">左</ste-button>
-                    </view>
-                    <view>
-                        <ste-button @click="showRight = true" :mode="100">右</ste-button>
-                    </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">位置</view>
+            <view class="item-block">
+                <view>
+                    <ste-button @click="showTop = true" :mode="100">上</ste-button>
                 </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">圆角</view>
-                <view class="item-block">
-                    <ste-button @click="roundShow = true" :mode="100">圆角弹窗</ste-button>
+                <view>
+                    <ste-button @click="showBottom = true" :mode="100">下</ste-button>
                 </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">偏移</view>
-                <view class="item-block">
-                    <ste-button @click="offsetShow = true" :mode="100">偏移</ste-button>
+                <view>
+                    <ste-button @click="showLeft = true" :mode="100">左</ste-button>
                 </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">动画执行时间</view>
-                <view class="item-block">
-                    <ste-button @click="durationShow = true" :mode="100">动画执行时间</ste-button>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">异步关闭</view>
-                <view class="item-block">
-                    <ste-button @click="syncShow = true" :mode="100">异步关闭</ste-button>
+                <view>
+                    <ste-button @click="showRight = true" :mode="100">右</ste-button>
                 </view>
             </view>
         </view>
+        <view class="demo-item">
+            <view class="title">圆角</view>
+            <view class="item-block">
+                <ste-button @click="roundShow = true" :mode="100">圆角弹窗</ste-button>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">偏移</view>
+            <view class="item-block">
+                <ste-button @click="offsetShow = true" :mode="100">偏移</ste-button>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">动画执行时间</view>
+            <view class="item-block">
+                <ste-button @click="durationShow = true" :mode="100">动画执行时间</ste-button>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">异步关闭</view>
+            <view class="item-block">
+                <ste-button @click="syncShow = true" :mode="100">异步关闭</ste-button>
+            </view>
+        </view>
+
         <!-- ******************** -->
         <!-- 弹窗 -->
         <ste-popup v-model:show="show" width="300" height="300">
@@ -158,26 +156,22 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
         <ste-popup v-model:show="syncShow" width="100vw" height="300" @close="syncClose" position="bottom">
             <view class="popup-content">异步关闭</view>
         </ste-popup>
-    </view>
+    </page-layout>
 </template>
 
 <style lang="scss" scoped>
-.page {
-    .popup-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+.popup-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        height: 100%;
-        width: 100%;
-    }
-    .content {
-        .demo-item {
-            .item-block {
-                > view {
-                    margin: 0 8px 8px 0;
-                }
-            }
+    height: 100%;
+    width: 100%;
+}
+.demo-item {
+    .item-block {
+        > view {
+            margin: 0 8px 8px 0;
         }
     }
 }

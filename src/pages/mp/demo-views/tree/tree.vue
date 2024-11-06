@@ -76,71 +76,62 @@ const beforeOpen = (node: TreeNode, suspend: () => void, next: (tree?: TreeNode[
 };
 </script>
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="树形控件"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">基础使用</view>
-                <ste-tree :options="options" @open="onOpen" @close="onClose" />
-            </view>
-            <view class="demo-item">
-                <view class="title">默认展开节点，打开/关闭指定节点</view>
-                <ste-tree ref="accordion" :options="options" :openNodes="['1-2-2']" />
-                <ste-button @click="openNode" :mode="100">打开标题2</ste-button>
-                <ste-button @click="closeNode" :mode="100">关闭标题2</ste-button>
-            </view>
-            <view class="demo-item">
-                <view class="title">节点搜索</view>
-                <input placeholder="请输入标题内容" v-model="searchTitle" />
-                <ste-tree :options="options" :searchTitle="searchTitle" />
-            </view>
-            <view class="demo-item">
-                <view class="title">非手风琴模式（展开时不关闭兄弟节点）</view>
-                <ste-tree :options="options" :accordion="false" />
-            </view>
-            <view class="demo-item">
-                <view class="title">懒加载</view>
-                <ste-tree :options="options1" @beforeOpen="beforeOpen" />
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义内容</view>
-                <ste-tree :options="options">
-                    <template v-slot="{ node, depth }">
-                        <view class="item-title">
-                            <image v-if="depth === 0" class="title-image" src="https://image.whzb.com/chain/StellarUI/component-icons/ste-tree.png"></image>
-                            <image v-if="depth === 1" class="title-image" src="https://image.whzb.com/chain/StellarUI/component-icons/ste-tree-children.png"></image>
-                            <view class="item-text">{{ node.title }}</view>
-                        </view>
-                    </template>
-                    <template v-slot:open="{ open }">
-                        <view class="slef-open-icon">
-                            {{ open ? '-' : '+' }}
-                        </view>
-                    </template>
-                </ste-tree>
-            </view>
+    <page-layout title="树形结构" contentStyle="background-color: #fcfcfc">
+        <view class="demo-item">
+            <view class="title">基础使用</view>
+            <ste-tree :options="options" @open="onOpen" @close="onClose" />
         </view>
-    </view>
+        <view class="demo-item">
+            <view class="title">默认展开节点，打开/关闭指定节点</view>
+            <ste-tree ref="accordion" :options="options" :openNodes="['1-2-2']" />
+            <ste-button @click="openNode" :mode="100">打开标题2</ste-button>
+            <ste-button @click="closeNode" :mode="100">关闭标题2</ste-button>
+        </view>
+        <view class="demo-item">
+            <view class="title">节点搜索</view>
+            <input placeholder="请输入标题内容" v-model="searchTitle" />
+            <ste-tree :options="options" :searchTitle="searchTitle" />
+        </view>
+        <view class="demo-item">
+            <view class="title">非手风琴模式（展开时不关闭兄弟节点）</view>
+            <ste-tree :options="options" :accordion="false" />
+        </view>
+        <view class="demo-item">
+            <view class="title">懒加载</view>
+            <ste-tree :options="options1" @beforeOpen="beforeOpen" />
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义内容</view>
+            <ste-tree :options="options">
+                <template v-slot="{ node, depth }">
+                    <view class="item-title">
+                        <image v-if="depth === 0" class="title-image" src="https://image.whzb.com/chain/StellarUI/component-icons/ste-tree.png"></image>
+                        <image v-if="depth === 1" class="title-image" src="https://image.whzb.com/chain/StellarUI/component-icons/ste-tree-children.png"></image>
+                        <view class="item-text">{{ node.title }}</view>
+                    </view>
+                </template>
+                <template v-slot:open="{ open }">
+                    <view class="slef-open-icon">
+                        {{ open ? '-' : '+' }}
+                    </view>
+                </template>
+            </ste-tree>
+        </view>
+    </page-layout>
 </template>
 <style scoped lang="scss">
-.page {
-    background-color: #f5f5f5;
+.item-title {
+    width: 100%;
+    height: 80rpx;
+    line-height: 80rpx;
+    display: flex;
+    padding-left: 20rpx;
+    align-items: center;
 
-    .content {
-        .item-title {
-            width: 100%;
-            height: 80rpx;
-            line-height: 80rpx;
-            display: flex;
-            padding-left: 20rpx;
-            align-items: center;
-
-            .title-image {
-                width: 48rpx;
-                height: 48rpx;
-                margin-right: 16rpx;
-            }
-        }
+    .title-image {
+        width: 48rpx;
+        height: 48rpx;
+        margin-right: 16rpx;
     }
 }
 </style>

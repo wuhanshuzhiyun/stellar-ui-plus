@@ -65,65 +65,62 @@ function copy(data: string) {
 </script>
 
 <template>
-    <view class="page">
-        <page-nav title="图标"></page-nav>
-        <view class="content">
-            <view class="tabs">
-                <view class="tab1-title" :class="{ actived: tabIndex === 0 }" @click="tabIndex = 0">用法示例</view>
-                <view class="tab2-title" :class="{ actived: tabIndex === 1 }" @click="tabIndex = 1">图标库</view>
-                <view class="tab3-title" @click="nav">图标对齐预览</view>
-            </view>
-            <view v-if="tabIndex === 0" class="tab1-content">
-                <view class="demo-item">
-                    <view class="title">基础用法</view>
-                    <view class="item-block" style="justify-content: flex-start">
-                        <ste-icon code="&#xe689;" :size="60"></ste-icon>
-                    </view>
-                </view>
-                <view class="demo-item">
-                    <view class="title">图标颜色</view>
-                    <view class="item-block" style="justify-content: flex-start">
-                        <ste-icon code="&#xe684;" color="#1989fa" :size="60" marginRight="30"></ste-icon>
-                        <ste-icon code="&#xe684;" color="#ee0a24" :size="60"></ste-icon>
-                    </view>
-                </view>
-                <view class="demo-item">
-                    <view class="title">图标大小</view>
-                    <view class="item-block" style="justify-content: flex-start">
-                        <ste-icon code="&#xe671;" marginRight="30"></ste-icon>
-                        <ste-icon code="&#xe671;" marginRight="30" :size="50"></ste-icon>
-                        <ste-icon code="&#xe671;" marginRight="30" :size="70"></ste-icon>
-                    </view>
-                </view>
-                <view class="demo-item">
-                    <view class="title">图标是否加粗</view>
-                    <view class="item-block" style="justify-content: flex-start">
-                        <ste-icon code="&#xe673;" marginRight="30"></ste-icon>
-                        <ste-icon code="&#xe673;" bold></ste-icon>
-                    </view>
+    <page-layout title="图标">
+        <view class="tabs">
+            <view class="tab1-title" :class="{ actived: tabIndex === 0 }" @click="tabIndex = 0">用法示例</view>
+            <view class="tab2-title" :class="{ actived: tabIndex === 1 }" @click="tabIndex = 1">图标库</view>
+            <view class="tab3-title" @click="nav">图标对齐预览</view>
+        </view>
+        <view v-if="tabIndex === 0" class="tab1-content">
+            <view class="demo-item">
+                <view class="title">基础用法</view>
+                <view class="item-block" style="justify-content: flex-start">
+                    <ste-icon code="&#xe689;" :size="60"></ste-icon>
                 </view>
             </view>
-            <view v-if="tabIndex === 1" class="tab2-content">
-                <view class="demo-item">
-                    <view class="item-block">
-                        <view class="icon-condition">
-                            <ste-icon code="&#xe68a;" :size="48" v-if="isShowUnicode" :marginLeft="40" :marginBottom="8" @click="isShowUnicode = false"></ste-icon>
-                            <ste-icon code="&#xe691;" :size="48" v-if="!isShowUnicode" :marginLeft="40" :marginBottom="8" @click="isShowUnicode = true"></ste-icon>
-                            &nbsp;&nbsp;&nbsp;{{ isShowUnicode ? '隐藏unicode' : '展示unicode' }}（点击对应icon可复制其code）
+            <view class="demo-item">
+                <view class="title">图标颜色</view>
+                <view class="item-block" style="justify-content: flex-start">
+                    <ste-icon code="&#xe684;" color="#1989fa" :size="60" marginRight="30"></ste-icon>
+                    <ste-icon code="&#xe684;" color="#ee0a24" :size="60"></ste-icon>
+                </view>
+            </view>
+            <view class="demo-item">
+                <view class="title">图标大小</view>
+                <view class="item-block" style="justify-content: flex-start">
+                    <ste-icon code="&#xe671;" marginRight="30"></ste-icon>
+                    <ste-icon code="&#xe671;" marginRight="30" :size="50"></ste-icon>
+                    <ste-icon code="&#xe671;" marginRight="30" :size="70"></ste-icon>
+                </view>
+            </view>
+            <view class="demo-item">
+                <view class="title">图标是否加粗</view>
+                <view class="item-block" style="justify-content: flex-start">
+                    <ste-icon code="&#xe673;" marginRight="30"></ste-icon>
+                    <ste-icon code="&#xe673;" bold></ste-icon>
+                </view>
+            </view>
+        </view>
+        <view v-if="tabIndex === 1" class="tab2-content">
+            <view class="demo-item">
+                <view class="item-block">
+                    <view class="icon-condition">
+                        <ste-icon code="&#xe68a;" :size="48" v-if="isShowUnicode" :marginLeft="40" :marginBottom="8" @click="isShowUnicode = false"></ste-icon>
+                        <ste-icon code="&#xe691;" :size="48" v-if="!isShowUnicode" :marginLeft="40" :marginBottom="8" @click="isShowUnicode = true"></ste-icon>
+                        &nbsp;&nbsp;&nbsp;{{ isShowUnicode ? '隐藏unicode' : '展示unicode' }}（点击对应icon可复制其code）
+                    </view>
+                    <view v-for="(item, index) in glyphs" class="icon-item" @click="copy(item.unicode)" :key="index">
+                        <view class="icon-content">
+                            <ste-icon :code="item.unicode" :size="40"></ste-icon>
                         </view>
-                        <view v-for="(item, index) in glyphs" class="icon-item" @click="copy(item.unicode)" :key="index">
-                            <view class="icon-content">
-                                <ste-icon :code="item.unicode" :size="40"></ste-icon>
-                            </view>
-                            <view class="icon-name">{{ item.name }}</view>
-                            <view class="icon-unicode" v-if="isShowUnicode">{{ item.unicode }}</view>
-                            <view class="icon-class">{{ item.font_class }}</view>
-                        </view>
+                        <view class="icon-name">{{ item.name }}</view>
+                        <view class="icon-unicode" v-if="isShowUnicode">{{ item.unicode }}</view>
+                        <view class="icon-class">{{ item.font_class }}</view>
                     </view>
                 </view>
             </view>
         </view>
-    </view>
+    </page-layout>
 </template>
 
 <style lang="scss" scoped>

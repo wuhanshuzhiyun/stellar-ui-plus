@@ -1,56 +1,53 @@
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="开关"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">基础用法</view>
-                <view class="item-block">
-                    <ste-switch v-model="value1"></ste-switch>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">只读</view>
-                <view class="item-block">
-                    <ste-switch v-model="value2" readonly></ste-switch>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">禁用</view>
-                <view class="item-block">
-                    <ste-switch v-model="value2" disabled></ste-switch>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义大小</view>
-                <view class="item-block">
-                    <ste-switch v-model="value3" size="100"></ste-switch>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义颜色</view>
-                <view class="item-block">
-                    <ste-switch v-model="value4" activeColor="#13CE66" inactiveColor="#FF4949"></ste-switch>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">加载状态</view>
-                <view class="item-block">
-                    <ste-switch v-model="value2" loading></ste-switch>
-                    <view style="margin: 0 20rpx"></view>
-                    <ste-switch v-model="value5" loading></ste-switch>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">回调事件</view>
-                <view class="item-block switch-box">
-                    <ste-switch v-model="value6" @click="click1" @change="change"></ste-switch>
-                    <text>在click事件后，执行change事件</text>
-                    <ste-switch v-model="value7" @click="click2" @change="change"></ste-switch>
-                    <text>在click事件后，阻止change事件</text>
-                </view>
+    <page-layout>
+        <view class="demo-item" title="开关">
+            <view class="title">基础用法</view>
+            <view class="item-block">
+                <ste-switch v-model="value1"></ste-switch>
             </view>
         </view>
-    </view>
+        <view class="demo-item">
+            <view class="title">只读</view>
+            <view class="item-block">
+                <ste-switch v-model="value2" readonly></ste-switch>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">禁用</view>
+            <view class="item-block">
+                <ste-switch v-model="value2" disabled></ste-switch>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义大小</view>
+            <view class="item-block">
+                <ste-switch v-model="value3" size="100"></ste-switch>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义颜色</view>
+            <view class="item-block">
+                <ste-switch v-model="value4" activeColor="#13CE66" inactiveColor="#FF4949"></ste-switch>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">加载状态</view>
+            <view class="item-block">
+                <ste-switch v-model="value2" loading></ste-switch>
+                <view style="margin: 0 20rpx"></view>
+                <ste-switch v-model="value5" loading></ste-switch>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">回调事件</view>
+            <view class="item-block switch-box">
+                <ste-switch v-model="value6" @click="click1" @change="change"></ste-switch>
+                <text>在click事件后，执行change事件</text>
+                <ste-switch v-model="value7" @click="click2" @change="change"></ste-switch>
+                <text>在click事件后，阻止change事件</text>
+            </view>
+        </view>
+    </page-layout>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -90,12 +87,10 @@ function change(value: any) {
 </script>
 
 <style lang="scss" scoped>
-.page {
-    .switch-box {
-        flex-direction: column !important;
-        row-gap: 20rpx;
-        align-items: flex-start !important;
-        justify-content: center;
-    }
+.switch-box {
+    flex-direction: column !important;
+    row-gap: 20rpx;
+    align-items: flex-start !important;
+    justify-content: center;
 }
 </style>

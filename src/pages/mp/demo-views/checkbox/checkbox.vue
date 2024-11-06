@@ -60,165 +60,160 @@ function change(value: any) {
 </script>
 
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="复选框"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">基础用法</view>
-                <view class="item-block">
-                    <ste-checkbox v-model="val.value1">复选框</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">禁用</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value2" disabled>复选框1</ste-checkbox>
-                    <ste-checkbox v-model="val.value3" disabled>复选框2</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">只读</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value4" readonly>复选框1</ste-checkbox>
-                    <ste-checkbox v-model="val.value5" readonly>复选框2</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义形状</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value6">圆形</ste-checkbox>
-                    <ste-checkbox v-model="val.value7" shape="square">方形</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义图标大小</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value11" iconSize="60">60rpx</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义图标颜色</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value12" checkedColor="#ee0a24">红色</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义图标</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox-group v-model="val.value13">
-                        <ste-checkbox name="a">
-                            <template #icon="{ slotProps }">
-                                <ste-icon code="&#xe677;" size="50" :color="slotProps.checked ? '#ee0a24' : '#000000'"></ste-icon>
-                            </template>
-                            <template #default="{ slotProps }">
-                                {{ slotProps.checked ? '已选中' : '未选中' }}
-                            </template>
-                        </ste-checkbox>
-                        <ste-checkbox name="b">
-                            <template #icon="{ slotProps }">
-                                <ste-icon code="&#xe677;" size="50" :color="slotProps.checked ? '#ee0a24' : '#000000'"></ste-icon>
-                            </template>
-                            <template #default="{ slotProps }">
-                                {{ slotProps.checked ? '已选中' : '未选中' }}
-                            </template>
-                        </ste-checkbox>
-                        <ste-checkbox name="c" disabled>
-                            <template #icon="{ slotProps }">
-                                <ste-icon code="&#xe677;" size="50" :color="slotProps.disabled ? '#eeeeee' : '#000000'"></ste-icon>
-                            </template>
-                            <template #default="{ slotProps }">
-                                {{ slotProps.disabled ? '禁止' : '未禁止' }}
-                            </template>
-                        </ste-checkbox>
-                        <ste-checkbox name="d" readonly>
-                            <template #icon="{ slotProps }">
-                                <ste-icon code="&#xe677;" size="50" :color="slotProps.readonly ? 'green' : '#000000'"></ste-icon>
-                            </template>
-                            <template #default="{ slotProps }">
-                                {{ slotProps.readonly ? '只读' : '未只读' }}
-                            </template>
-                        </ste-checkbox>
-                    </ste-checkbox-group>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">左侧文本</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value8">右边</ste-checkbox>
-                    <ste-checkbox v-model="val.value9" textPosition="left">左边</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">自定义文本</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value14" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">复选框</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">禁用文本点击</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value15" textDisabled>复选框</ste-checkbox>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">回调事件</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox v-model="val.value16" @click="click1" @change="change">复选框</ste-checkbox>
-                    <text>在click事件后，执行change事件</text>
-                    <ste-checkbox v-model="val.value17" @click="click2" @change="change">复选框</ste-checkbox>
-                    <text>在click事件后，阻止change事件</text>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">复选框组</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox-group v-model="val.value18">
-                        <ste-checkbox name="a">复选框a</ste-checkbox>
-                        <ste-checkbox name="b">复选框b</ste-checkbox>
-                        <ste-checkbox name="c">复选框c</ste-checkbox>
-                    </ste-checkbox-group>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">复选框组属性和复选框属性</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox-group v-model="val.value19" shape="square" textPosition="left">
-                        <ste-checkbox name="a">复选框a</ste-checkbox>
-                        <ste-checkbox name="b" disabled>复选框b</ste-checkbox>
-                        <ste-checkbox name="c" shape="circle">复选框c</ste-checkbox>
-                    </ste-checkbox-group>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">水平排列</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox-group v-model="val.value20" direction="row">
-                        <ste-checkbox name="a">复选框a</ste-checkbox>
-                        <ste-checkbox name="b">复选框b</ste-checkbox>
-                        <ste-checkbox name="c">复选框c</ste-checkbox>
-                    </ste-checkbox-group>
-                </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">限制最大可选数</view>
-                <view class="item-block checkbox-box">
-                    <ste-checkbox-group v-model="val.value21" :max="2">
-                        <ste-checkbox name="a">复选框a</ste-checkbox>
-                        <ste-checkbox name="b">复选框b</ste-checkbox>
-                        <ste-checkbox name="c">复选框c</ste-checkbox>
-                    </ste-checkbox-group>
-                </view>
+    <page-layout title="复选框">
+        <view class="demo-item">
+            <view class="title">基础用法</view>
+            <view class="item-block">
+                <ste-checkbox v-model="val.value1">复选框</ste-checkbox>
             </view>
         </view>
-    </view>
+        <view class="demo-item">
+            <view class="title">禁用</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value2" disabled>复选框1</ste-checkbox>
+                <ste-checkbox v-model="val.value3" disabled>复选框2</ste-checkbox>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">只读</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value4" readonly>复选框1</ste-checkbox>
+                <ste-checkbox v-model="val.value5" readonly>复选框2</ste-checkbox>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义形状</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value6">圆形</ste-checkbox>
+                <ste-checkbox v-model="val.value7" shape="square">方形</ste-checkbox>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义图标大小</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value11" iconSize="60">60rpx</ste-checkbox>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义图标颜色</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value12" checkedColor="#ee0a24">红色</ste-checkbox>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义图标</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox-group v-model="val.value13">
+                    <ste-checkbox name="a">
+                        <template #icon="{ slotProps }">
+                            <ste-icon code="&#xe677;" size="50" :color="slotProps.checked ? '#ee0a24' : '#000000'"></ste-icon>
+                        </template>
+                        <template #default="{ slotProps }">
+                            {{ slotProps.checked ? '已选中' : '未选中' }}
+                        </template>
+                    </ste-checkbox>
+                    <ste-checkbox name="b">
+                        <template #icon="{ slotProps }">
+                            <ste-icon code="&#xe677;" size="50" :color="slotProps.checked ? '#ee0a24' : '#000000'"></ste-icon>
+                        </template>
+                        <template #default="{ slotProps }">
+                            {{ slotProps.checked ? '已选中' : '未选中' }}
+                        </template>
+                    </ste-checkbox>
+                    <ste-checkbox name="c" disabled>
+                        <template #icon="{ slotProps }">
+                            <ste-icon code="&#xe677;" size="50" :color="slotProps.disabled ? '#eeeeee' : '#000000'"></ste-icon>
+                        </template>
+                        <template #default="{ slotProps }">
+                            {{ slotProps.disabled ? '禁止' : '未禁止' }}
+                        </template>
+                    </ste-checkbox>
+                    <ste-checkbox name="d" readonly>
+                        <template #icon="{ slotProps }">
+                            <ste-icon code="&#xe677;" size="50" :color="slotProps.readonly ? 'green' : '#000000'"></ste-icon>
+                        </template>
+                        <template #default="{ slotProps }">
+                            {{ slotProps.readonly ? '只读' : '未只读' }}
+                        </template>
+                    </ste-checkbox>
+                </ste-checkbox-group>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">左侧文本</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value8">右边</ste-checkbox>
+                <ste-checkbox v-model="val.value9" textPosition="left">左边</ste-checkbox>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义文本</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value14" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">复选框</ste-checkbox>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">禁用文本点击</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value15" textDisabled>复选框</ste-checkbox>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">回调事件</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox v-model="val.value16" @click="click1" @change="change">复选框</ste-checkbox>
+                <text>在click事件后，执行change事件</text>
+                <ste-checkbox v-model="val.value17" @click="click2" @change="change">复选框</ste-checkbox>
+                <text>在click事件后，阻止change事件</text>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">复选框组</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox-group v-model="val.value18">
+                    <ste-checkbox name="a">复选框a</ste-checkbox>
+                    <ste-checkbox name="b">复选框b</ste-checkbox>
+                    <ste-checkbox name="c">复选框c</ste-checkbox>
+                </ste-checkbox-group>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">复选框组属性和复选框属性</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox-group v-model="val.value19" shape="square" textPosition="left">
+                    <ste-checkbox name="a">复选框a</ste-checkbox>
+                    <ste-checkbox name="b" disabled>复选框b</ste-checkbox>
+                    <ste-checkbox name="c" shape="circle">复选框c</ste-checkbox>
+                </ste-checkbox-group>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">水平排列</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox-group v-model="val.value20" direction="row">
+                    <ste-checkbox name="a">复选框a</ste-checkbox>
+                    <ste-checkbox name="b">复选框b</ste-checkbox>
+                    <ste-checkbox name="c">复选框c</ste-checkbox>
+                </ste-checkbox-group>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">限制最大可选数</view>
+            <view class="item-block checkbox-box">
+                <ste-checkbox-group v-model="val.value21" :max="2">
+                    <ste-checkbox name="a">复选框a</ste-checkbox>
+                    <ste-checkbox name="b">复选框b</ste-checkbox>
+                    <ste-checkbox name="c">复选框c</ste-checkbox>
+                </ste-checkbox-group>
+            </view>
+        </view>
+    </page-layout>
 </template>
 <style lang="scss" scoped>
-.page {
-    .checkbox-box {
-        flex-direction: column !important;
-        row-gap: 20rpx;
-        align-items: flex-start !important;
-        justify-content: center;
-    }
+.checkbox-box {
+    flex-direction: column !important;
+    row-gap: 20rpx;
+    align-items: flex-start !important;
+    justify-content: center;
 }
 </style>

@@ -28,60 +28,53 @@ function vNext() {
 }
 </script>
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="手势滑动"></page-nav>
-        <view class="content">
-            <view class="demo-item">
-                <view class="title">水平切换-固定宽度</view>
-                <view class="item-block">
-                    <view class="buttons">
-                        <button size="mini" @click="hUp">上一页</button>
-                        <text>{{ hIndex + 1 }}/{{ imgs.length }}</text>
-                        <button size="mini" @click="hNext">下一页</button>
-                    </view>
-                    <ste-touch-swipe width="690" v-model:index="hIndex">
-                        <ste-touch-swipe-item v-for="(img, index) in imgs" :key="index">
-                            <image :src="img" mode="widthFix" style="width: 100%" />
-                        </ste-touch-swipe-item>
-                    </ste-touch-swipe>
+    <page-layout title="手势滑动">
+        <view class="demo-item">
+            <view class="title">水平切换-固定宽度</view>
+            <view class="item-block">
+                <view class="buttons">
+                    <button size="mini" @click="hUp">上一页</button>
+                    <text>{{ hIndex + 1 }}/{{ imgs.length }}</text>
+                    <button size="mini" @click="hNext">下一页</button>
                 </view>
-            </view>
-            <view class="demo-item">
-                <view class="title">垂直切换-固定高度</view>
-                <view class="item-block">
-                    <view class="buttons">
-                        <button size="mini" @click="vUp">上一页</button>
-                        <text>{{ vIndex + 1 }}/{{ imgs.length }}</text>
-                        <button size="mini" @click="vNext">下一页</button>
-                    </view>
-                    <ste-touch-swipe height="600" direction="vertical" v-model:index="vIndex">
-                        <ste-touch-swipe-item v-for="(img, index) in imgs" :key="index">
-                            <image :src="img" mode="heightFix" style="height: 100%" />
-                        </ste-touch-swipe-item>
-                    </ste-touch-swipe>
-                </view>
+                <ste-touch-swipe width="690" v-model:index="hIndex">
+                    <ste-touch-swipe-item v-for="(img, index) in imgs" :key="index">
+                        <image :src="img" mode="widthFix" style="width: 100%" />
+                    </ste-touch-swipe-item>
+                </ste-touch-swipe>
             </view>
         </view>
-    </view>
+        <view class="demo-item">
+            <view class="title">垂直切换-固定高度</view>
+            <view class="item-block">
+                <view class="buttons">
+                    <button size="mini" @click="vUp">上一页</button>
+                    <text>{{ vIndex + 1 }}/{{ imgs.length }}</text>
+                    <button size="mini" @click="vNext">下一页</button>
+                </view>
+                <ste-touch-swipe height="600" direction="vertical" v-model:index="vIndex">
+                    <ste-touch-swipe-item v-for="(img, index) in imgs" :key="index">
+                        <image :src="img" mode="heightFix" style="height: 100%" />
+                    </ste-touch-swipe-item>
+                </ste-touch-swipe>
+            </view>
+        </view>
+    </page-layout>
 </template>
 <style lang="scss" scoped>
-.page {
-    .content {
-        .demo-item {
-            .item-block {
-                display: block;
-                margin-bottom: 12rpx;
+.demo-item {
+    .item-block {
+        display: block;
+        margin-bottom: 12rpx;
 
-                .buttons {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-bottom: 12rpx;
+        .buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12rpx;
 
-                    text {
-                        margin: 0 12rpx;
-                    }
-                }
+            text {
+                margin: 0 12rpx;
             }
         }
     }

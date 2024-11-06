@@ -12,8 +12,12 @@ import utils from '@/common/utils';
 const props = defineProps(propsData);
 
 const pageStyle = computed(() => {
+    const { safeArea } = utils.getWindowInfo();
     const style = {
         zIndex: 10,
+        // #ifdef APP
+        marginTop: safeArea.top ? safeArea.top + 'px' : 0,
+        // #endif
     };
 
     return style;

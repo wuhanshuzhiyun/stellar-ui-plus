@@ -49,75 +49,72 @@ function preview() {
 </script>
 
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="图标对齐预览"></page-nav>
-        <view class="content">
-            <view class="font-title">字体地址</view>
-            <view class="font-sample">
-                <view>例子：</view>
-                <view>
-                    /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */ @font-face { font-family: 'iconfont'; /* Project id 4041637 */ src:
-                    url('//at.alicdn.com/t/c/font_4041637_mw0hzcz34fq.woff2?t=1710296259155') format('woff2'), url('//at.alicdn.com/t/c/font_4041637_mw0hzcz34fq.woff?t=1710296259155') format('woff'),
-                    url('//at.alicdn.com/t/c/font_4041637_mw0hzcz34fq.ttf?t=1710296259155') format('truetype'), url('//at.alicdn.com/t/c/font_4041637_mw0hzcz34fq.svg?t=1710296259155#iconfont')
-                    format('svg'); }
-                </view>
-            </view>
-            <textarea class="font-text-area" v-model="fontUrl" :maxlength="4000" style="height: 1000rpx" />
-            <view class="icon-code-title">图标unicode编码</view>
-            <view class="icon-code-sample">
-                <view>例子：</view>
-                <label>&</label>
-                <label>#xe901;</label>
-                <label>&</label>
-                <label>#xea05;</label>
-                <label>&</label>
-                <label>#xeaffa;</label>
-            </view>
-            <textarea class="icon-code-text-area" v-model="iconCodeStr" :maxlength="4000" style="height: 200rpx" />
-            <button @click="preview">预览</button>
-            <view v-if="show" class="preview-box">
-                <template v-for="item in iconCodeList">
-                    <view>弹性盒子居中</view>
-                    <view>盒子行高1</view>
-                    <view>文字、图标32px</view>
-                    <view class="preview-item" style="display: flex; align-items: center; line-height: 1">
-                        展
-                        <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
-                        示2
-                        <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
-                        3a
-                        <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
-                        b
-                    </view>
-                    <view>弹性盒子居中</view>
-                    <view>盒子行高(默认)</view>
-                    <view>文字32px，图标24px</view>
-                    <view class="preview-item" style="display: flex; align-items: center">
-                        展
-                        <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
-                        示2
-                        <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
-                        3a
-                        <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
-                        b
-                    </view>
-                    <view>非弹性盒子</view>
-                    <view>盒子行高（默认）</view>
-                    <view>文字32px，图标一16px，图标二32px</view>
-                    <view class="preview-item">
-                        <ste-icon size="16px" :fontFamily="fontFamily" :code="item" color="#FF4500" marginTop="0px" :showBorder="true"></ste-icon>
-                        展示
-                        <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
-                        展示展示展示展示23ab
-                    </view>
-                    <view class="gap"></view>
-                </template>
-                <view>
-                    <ste-icon v-for="item in iconCodeList" :size="48" :fontFamily="fontFamily" :code="item" color="#FF4500"></ste-icon>
-                </view>
+    <page-layout title="图标对齐预览">
+        <view class="font-title">字体地址</view>
+        <view class="font-sample">
+            <view>例子：</view>
+            <view>
+                /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */ @font-face { font-family: 'iconfont'; /* Project id 4041637 */ src:
+                url('//at.alicdn.com/t/c/font_4041637_mw0hzcz34fq.woff2?t=1710296259155') format('woff2'), url('//at.alicdn.com/t/c/font_4041637_mw0hzcz34fq.woff?t=1710296259155') format('woff'),
+                url('//at.alicdn.com/t/c/font_4041637_mw0hzcz34fq.ttf?t=1710296259155') format('truetype'), url('//at.alicdn.com/t/c/font_4041637_mw0hzcz34fq.svg?t=1710296259155#iconfont')
+                format('svg'); }
             </view>
         </view>
-    </view>
+        <textarea class="font-text-area" v-model="fontUrl" :maxlength="4000" style="height: 1000rpx" />
+        <view class="icon-code-title">图标unicode编码</view>
+        <view class="icon-code-sample">
+            <view>例子：</view>
+            <label>&</label>
+            <label>#xe901;</label>
+            <label>&</label>
+            <label>#xea05;</label>
+            <label>&</label>
+            <label>#xeaffa;</label>
+        </view>
+        <textarea class="icon-code-text-area" v-model="iconCodeStr" :maxlength="4000" style="height: 200rpx" />
+        <button @click="preview">预览</button>
+        <view v-if="show" class="preview-box">
+            <template v-for="item in iconCodeList">
+                <view>弹性盒子居中</view>
+                <view>盒子行高1</view>
+                <view>文字、图标32px</view>
+                <view class="preview-item" style="display: flex; align-items: center; line-height: 1">
+                    展
+                    <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
+                    示2
+                    <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
+                    3a
+                    <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
+                    b
+                </view>
+                <view>弹性盒子居中</view>
+                <view>盒子行高(默认)</view>
+                <view>文字32px，图标24px</view>
+                <view class="preview-item" style="display: flex; align-items: center">
+                    展
+                    <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
+                    示2
+                    <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
+                    3a
+                    <ste-icon size="18px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
+                    b
+                </view>
+                <view>非弹性盒子</view>
+                <view>盒子行高（默认）</view>
+                <view>文字32px，图标一16px，图标二32px</view>
+                <view class="preview-item">
+                    <ste-icon size="16px" :fontFamily="fontFamily" :code="item" color="#FF4500" marginTop="0px" :showBorder="true"></ste-icon>
+                    展示
+                    <ste-icon size="32px" :fontFamily="fontFamily" :code="item" color="#FF4500" :showBorder="true"></ste-icon>
+                    展示展示展示展示23ab
+                </view>
+                <view class="gap"></view>
+            </template>
+            <view>
+                <ste-icon v-for="item in iconCodeList" :size="48" :fontFamily="fontFamily" :code="item" color="#FF4500"></ste-icon>
+            </view>
+        </view>
+    </page-layout>
 </template>
 
 <style lang="scss" scoped>

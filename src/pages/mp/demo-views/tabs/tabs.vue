@@ -81,8 +81,7 @@ const showType = ref('line');
 const setShowType = (v: SwitchOnChangeEvent) => (showType.value = v.detail.value ? 'card' : 'line');
 </script>
 <template>
-    <view class="page">
-        <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="标签页"></page-nav>
+    <page-layout title="标签页">
         <ste-tabs :showImage="showImage" :showSubtitle="showSubTitle" :showTitle="showTitle" :swipeable="swipeable" :type="showType">
             <ste-tab v-for="item in datas" :key="item.title" :title="item.title" :image="item.image" :badge="showBadge ? item.badge : 0" :subTitle="item.subTitle">
                 <view>{{ item.title }} Content</view>
@@ -120,36 +119,34 @@ const setShowType = (v: SwitchOnChangeEvent) => (showType.value = v.detail.value
             </view>
         </view>
         <view class="message">--更多预览效果请参考V2文档--</view>
-    </view>
+    </page-layout>
 </template>
 <style scoped lang="scss">
-.page {
-    image {
+image {
+    width: 100%;
+}
+
+.method-list {
+    padding: 30rpx;
+
+    view {
         width: 100%;
-    }
+        display: flex;
+        align-items: center;
+        margin-bottom: 24rpx;
 
-    .method-list {
-        padding: 30rpx;
-
-        view {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            margin-bottom: 24rpx;
-
-            switch {
-                margin-left: 12rpx;
-                transform: scale(0.7);
-            }
+        switch {
+            margin-left: 12rpx;
+            transform: scale(0.7);
         }
     }
+}
 
-    .message {
-        width: 100%;
-        text-align: center;
-        margin-top: 24rpx;
-        color: #999;
-        font-size: 24rpx;
-    }
+.message {
+    width: 100%;
+    text-align: center;
+    margin-top: 24rpx;
+    color: #999;
+    font-size: 24rpx;
 }
 </style>

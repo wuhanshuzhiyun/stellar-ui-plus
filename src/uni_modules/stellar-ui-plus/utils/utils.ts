@@ -1,8 +1,8 @@
 import * as dayjs from 'dayjs'
 import type { TreeNode } from '../types'
+import config from '../config'
 import System from './System'
 import Color from './Color'
-
 import '../common/index.css'
 
 type ReturnBasedOnBool<T extends boolean> = T extends true ? UniApp.NodeInfo[] : UniApp.NodeInfo
@@ -25,6 +25,7 @@ const utils = {
   System,
   Color,
   dayjs: dayjs.default,
+  config,
   isNaN(value: number | string | null | undefined): boolean {
     const deg = /^-?\d+(\.\d+)?$/i
     return !deg.test(String(value))

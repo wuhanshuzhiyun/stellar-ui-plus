@@ -24,6 +24,10 @@
       "type": "page"
     },
     {
+      "path": "pages/mp/font-size/font-size",
+      "type": "page"
+    },
+    {
       "path": "pages/mp/demo-views/animate/animate",
       "type": "page"
     },

@@ -8,6 +8,9 @@ function toDemo(item: Content) {
     const url = `/pages/mp/demo-views/${item.key}/${item.key}`;
     uni.navigateTo({ url });
 }
+function toConfig(url: string) {
+    uni.navigateTo({ url });
+}
 </script>
 
 <template>
@@ -23,6 +26,20 @@ function toDemo(item: Content) {
             </view>
             <view class="subtitle-message">Stellar Plus，全面的组件和便捷的工具会让您信手拈来，如鱼得水。</view>
             <view class="conponents">
+                <view class="components-group">
+                    <view class="components-title">个性化</view>
+                    <view class="components-content">
+                        <view class="components-item" @click="toConfig('/pages/mp/font-size/font-size')">
+                            <view class="item-title">
+                                <image src="https://image.whzb.com/chain/StellarUI/组件图标/字体.png" mode="widthFix" />
+                                <text>字体大小</text>
+                            </view>
+                            <view class="item-icon">
+                                <image class="icon-image" src="https://image.whzb.com/chain/StellarUI/%E7%BB%84%E4%BB%B6%E5%9B%BE%E6%A0%87/r-arrow.png" />
+                            </view>
+                        </view>
+                    </view>
+                </view>
                 <view v-for="(item, index) in datas" :key="index" class="components-group">
                     <view class="components-title">
                         {{ item.group }}

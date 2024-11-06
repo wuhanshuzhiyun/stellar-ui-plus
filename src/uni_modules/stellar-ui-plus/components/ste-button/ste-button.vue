@@ -68,28 +68,27 @@ const cmpBtnStyle = computed(() => {
         style.border = `solid ${utils.formatPx(2)}`;
         style.borderColor = props.borderColor;
     }
-
     // 类型 mode
     switch (props.mode) {
         case 100:
             style.padding = `0 ${utils.formatPx(30)}`;
             style.height = utils.formatPx(48);
-            style.fontSize = '24rpx';
+            style.fontSize = 'var(--font-size-24, 24rpx)';
             break;
         case 300:
             style.padding = `0 ${utils.formatPx(72)}`;
             style.height = utils.formatPx(80);
-            style.fontSize = '32rpx';
+            style.fontSize = 'var(--font-size-32, 32rpx)';
             break;
         case 400:
             style.padding = `0 ${utils.formatPx(72)}`;
             style.height = utils.formatPx(96);
-            style.fontSize = '36rpx';
+            style.fontSize = 'var(--font-size-36, 36rpx)';
             break;
         default:
             style.padding = `0 ${utils.formatPx(40)}`;
             style.height = utils.formatPx(68);
-            style.fontSize = '28rpx';
+            style.fontSize = 'var(--font-size-28, 28rpx)';
             break;
     }
 
@@ -231,25 +230,25 @@ function handleClick(e: Event) {
     &-100 {
         padding: 0 30rpx;
         height: 48rpx;
-        font-size: 24rpx;
+        font-size: var(--font-size-24, 24rpx);
     }
 
     &-200 {
         padding: 0 40rpx;
         height: 68rpx;
-        font-size: 28rpx;
+        font-size: var(--font-size-28, 28rpx);
     }
 
     &-300 {
         padding: 0 72rpx;
         height: 80rpx;
-        font-size: 32rpx;
+        font-size: var(--font-size-32, 32rpx);
     }
 
     &-400 {
         padding: 0 72rpx;
         height: 96rpx;
-        font-size: 36rpx;
+        font-size: var(--font-size-36, 36rpx);
     }
 }
 </style>

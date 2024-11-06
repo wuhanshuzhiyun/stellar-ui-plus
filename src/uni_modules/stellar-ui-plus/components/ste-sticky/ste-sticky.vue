@@ -62,7 +62,6 @@ onBeforeUnmount(() => {
 const observeContent = () => {
     disconnectObserver();
     observe.value = uni.createIntersectionObserver(thas.value, { thresholds: [0.8, 1] });
-    console.log(observe.value);
     observe.value.relativeToViewport({ top: -(relativeToViewportTop.value + 1) });
     observe.value.observe(`#${elId}`, res => {
         setFixed(res.boundingClientRect.top);

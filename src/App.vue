@@ -7,9 +7,7 @@ onLaunch(() => {});
 watch(
     () => config.rootStyle,
     style => {
-        console.log(style);
         nextTick(() => {
-            console.log(style);
             Object.keys(style).forEach((key: string) => {
                 document.documentElement.style.setProperty(key, style[key]);
             });

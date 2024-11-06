@@ -3,6 +3,8 @@ import System from '../utils/System'
 
 class Config {
   private _options = {
+    minSize: 12, // 最小字体
+    maxSize: 80, // 最大字体
     fontScale: 1, // 字体缩放比例
   }
 
@@ -31,7 +33,7 @@ class Config {
     const style: { [key: string]: string } = {}
     const vw = System.getWindowWidth()
     const scale = this.options.fontScale
-    for (let i = 12; i <= 120; i += 2)
+    for (let i = this.options.minSize; i <= this.options.maxSize; i += 2)
       style[`--font-size-${i}`] = `${Number(((vw * i * scale) / 750).toFixed(4))}px`
 
     this._fontSize = style

@@ -73,7 +73,7 @@ const cmpUnitStyle = computed(() => {
 
 const cmpYuanPriceStyle = computed(() => {
     return {
-        fontSize: utils.formatPx(props.fontSize),
+        fontSize: `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`,
         textDecoration: props.isSuggestPrice ? 'line-through' : 'none',
     };
 });

@@ -218,7 +218,7 @@ function handleClick() {
         overflow: hidden;
 
         > view {
-            font-size: 24rpx;
+            font-size: var(--font-size-24, 24rpx);
             display: inline-block;
             width: auto;
             white-space: nowrap;

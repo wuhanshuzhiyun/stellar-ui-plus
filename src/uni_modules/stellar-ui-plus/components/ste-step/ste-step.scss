@@ -75,7 +75,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            font-size: 24rpx;
+            font-size: var(--font-size-24, 24rpx);
             height: 40rpx;
             line-height: 40rpx;
             width: 40rpx;
@@ -90,13 +90,13 @@
         display: inline-block;
         text-align: center;
         .ste-step-title {
-            font-size: 32rpx;
+            font-size: var(--font-size-32, 32rpx);
             color: var(---color);
             line-height: 44rpx;
         }
         .ste-step-desc {
             line-height: 44rpx;
-            font-size: 28rpx;
+            font-size: var(--font-size-28, 28rpx);
             color: var(---desc-color);
             margin-top: 8rpx;
         }

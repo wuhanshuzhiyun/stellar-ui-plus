@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import config from '../../../uni_modules/stellar-ui-plus/config';
+import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 
 const fontSize = ref(config.options.fontScale);
 
@@ -40,6 +41,29 @@ const fontSizeChange = (v: number | number[]) => {
         fontSize.value = v / 10;
     }
 };
+
+let checkBox = ref(false);
+
+let radioBox = ref(false);
+
+let rateBox = ref(2);
+
+let stepperBox = ref(1);
+
+let list = ref(['第一条:1111111111111111111111111111', '第二条:2222222222222222222222', '第三条:3333333333333']);
+
+const active = ref(0);
+
+function goToPrev() {
+    if (active.value <= 0) return;
+    active.value--;
+}
+const toast = useToast();
+const showToast = () => {
+    toast.showToast({
+        title: '提示内容',
+    });
+};
 </script>
 <template>
     <view :style="[rootStyle]">
@@ -50,7 +74,35 @@ const fontSizeChange = (v: number | number[]) => {
             </view>
         </ste-sticky>
         <view class="demo-content">
+            <ste-icon code="&#xe684;" color="#ee0a24" :size="60"></ste-icon>
+            <br />
+            <br />
             <ste-button>按钮</ste-button>
+            <br />
+            <br />
+            <ste-checkbox v-model="checkBox">复选框</ste-checkbox>
+            <br />
+            <br />
+            <ste-radio v-model="radioBox">单选框</ste-radio>
+            <br />
+            <br />
+            <ste-rate v-model="rateBox"></ste-rate>
+            <br />
+            <br />
+            <ste-stepper v-model="stepperBox"></ste-stepper>
+            <br />
+            <br />
+            <ste-notice-bar :list="list" direstte-notictical></ste-notice-bar>
+            <br />
+            <br />
+            <ste-steps :active="active" @clickStep="toToast">
+                <ste-step></ste-step>
+                <ste-step></ste-step>
+                <ste-step></ste-step>
+            </ste-steps>
+            <br />
+            <br />
+            <ste-button @click="showToast">展示轻提示</ste-button>
             <br />
             <br />
             <ste-image src="1111" width="200" height="200">

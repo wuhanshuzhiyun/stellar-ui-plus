@@ -33,7 +33,7 @@ const cmpCssVar = computed(() => {
     return {
         '--border': props.showBorder ? '1px' : '0px',
         '--color': props.color,
-        '--size': utils.formatPx(props.size),
+        '--size': `var(--font-size-${props.size},${utils.formatPx(props.size)})`,
         '--weight': props.bold ? 'bold' : 'normal',
         '--margin-left': utils.formatPx(props.marginLeft),
         '--margin-right': utils.formatPx(props.marginRight),

@@ -229,7 +229,7 @@ async function minus() {
         text-align: center;
         input {
             height: 100%;
-            font-size: 28rpx;
+            font-size: var(--font-size-28, 28rpx);
         }
     }
 

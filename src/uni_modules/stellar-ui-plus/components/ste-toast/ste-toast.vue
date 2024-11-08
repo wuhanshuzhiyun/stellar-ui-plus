@@ -138,7 +138,7 @@ defineExpose({
         max-width: 520rpx;
         background-color: rgba(0, 0, 0, 0.7);
         border-radius: 16rpx;
-        font-size: 32rpx;
+        font-size: var(--font-size-32, 32rpx);
         font-weight: bold;
         color: #ffffff;
         line-height: 44rpx;

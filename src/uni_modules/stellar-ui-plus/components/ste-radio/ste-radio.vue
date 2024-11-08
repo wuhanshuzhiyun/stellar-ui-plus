@@ -36,7 +36,7 @@ const cmpSlotProps = computed(() => ({ checked: cmpChecked.value, disabled: cmpD
 
 const cmpRootStyle = computed(() => {
     let style: CSSProperties = {};
-    style['fontSize'] = utils.formatPx(cmpTextSize.value);
+    style['fontSize'] = `var(--font-size-${cmpTextSize.value},${utils.formatPx(cmpTextSize.value)})`;
     style['color'] = cmpChecked.value ? cmpTextActiveColor.value : cmpTextInactiveColor.value;
     style['flexDirection'] = cmpTextPosition.value == 'right' ? 'row' : 'row-reverse';
     style['columnGap'] = utils.formatPx(cmpColumnGap.value);
@@ -63,9 +63,9 @@ const cmpInputStyle = computed(() => {
     style['borderRadius'] = cmpShape.value == 'circle' ? '50%' : '0';
     style['border'] = `${utils.formatPx(2)} solid ${cmpChecked.value ? cmpCheckedColor.value : '#BBBBBB'}`;
     style['background'] = cmpChecked.value ? cmpCheckedColor.value : '#FFFFFF';
-    style['width'] = utils.formatPx(cmpIconSize.value);
-    style['height'] = utils.formatPx(cmpIconSize.value);
-    style['lineHeight'] = utils.formatPx(cmpIconSize.value);
+    style['width'] = `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`;
+    style['height'] = `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`;
+    style['lineHeight'] = `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`;
     // #ifdef H5
     if (cmpDisabled.value || cmpReadonly.value) {
         style['cursor'] = 'not-allowed';

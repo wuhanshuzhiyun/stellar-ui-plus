@@ -178,7 +178,7 @@ function inputClick() {
                         @blur="onBlur"
                         @confirm="onConfirm"
                     />
-                    <!-- #ifdef H5 || MP-WEIXIN -->
+                    <!-- #ifdef H5 || MP-WEIXIN || APP -->
                     <text
                         class="count-text"
                         :style="{

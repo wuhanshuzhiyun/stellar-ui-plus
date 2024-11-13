@@ -15,12 +15,13 @@
             @cancel="cancel"
             @confirm="confirm"
             rootClass="ste-date-picker-view"
+            v-if="show"
         ></ste-picker>
     </view>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, defineOptions } from 'vue';
+import { ref, onMounted, defineOptions, nextTick } from 'vue';
 import propsData from './props';
 import type { CloumnType } from './types';
 import utils from '../../utils/utils';
@@ -53,6 +54,8 @@ const emits = defineEmits<{
 const columns = ref<string[][]>([]);
 const innerValue = ref<string | number>('');
 const innerDefaultIndex = ref<number[]>([]);
+
+const show = ref(false);
 const innerFormatter = (type: string, value: string) => value;
 
 const init = () => {
@@ -70,6 +73,9 @@ const updateColumns = () => {
     const formatter = props.formatter || innerFormatter;
     const result = getOriginColumns().map(column => column.values.map(value => formatter(column.type, value)));
     columns.value = result;
+    nextTick(() => {
+        show.value = true;
+    });
 };
 
 const updateIndexs = () => {

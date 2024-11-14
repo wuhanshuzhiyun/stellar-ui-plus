@@ -28,3 +28,4 @@ src/uni_modules/stellar-ui-plus/types/refComponents.d.ts
 src/uni_modules/stellar-ui-plus/index.ts
 src/uni_modules/stellar-ui-plus/components/**/ATTRIBUTES.md
 .hbuilderx/
+.history

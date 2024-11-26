@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, watch, ref, computed, useSlots } from 'vue';
+import { inject, watch, ref, computed, useSlots, defineProps, defineOptions } from 'vue';
 import { messageBoxDefaultOptionsKey } from './ste-message-box';
 import useData from './useData';
 import type { BaseEvent } from '../../types/event';

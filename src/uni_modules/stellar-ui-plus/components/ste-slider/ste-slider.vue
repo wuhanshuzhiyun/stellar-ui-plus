@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineOptions, getCurrentInstance, type CSSProperties, type ComponentPublicInstance, onMounted, watch, onBeforeUnmount } from 'vue';
+import { computed, defineEmits, defineProps, defineOptions, getCurrentInstance, type CSSProperties, type ComponentPublicInstance, onMounted, watch, onBeforeUnmount } from 'vue';
 import type { UniTouchEvent, BaseEvent } from '../../types/event';
 import utils from '../../utils/utils';
 import propsData, { sliderEmits } from './props';

@@ -8,6 +8,10 @@ const text3 = ref('是你   是你');
 
 <template>
     <page-layout title="文本">
+        <view class="description">
+            <view class="cmp-name">Text 文本</view>
+            <view class="cmp-desc">显示文本文字的组件</view>
+        </view>
         <view class="demo-item">
             <view class="title">可选</view>
             <view class="item-block">

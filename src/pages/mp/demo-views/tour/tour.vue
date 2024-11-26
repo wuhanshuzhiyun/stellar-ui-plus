@@ -17,6 +17,10 @@ const steps5 = ref([{ message: '点这里', target: 'button-5' }]);
 </script>
 <template>
     <page-layout title="指引">
+        <view class="description">
+            <view class="cmp-name">Tour 指引</view>
+            <view class="cmp-desc">用于创建一个带有步骤的指引</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view id="button" class="button-box">

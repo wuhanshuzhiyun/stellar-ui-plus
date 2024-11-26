@@ -32,128 +32,143 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
 
 <template>
     <page-layout title="弹出层">
+        <view class="description">
+            <view class="cmp-name">Popup 弹窗层</view>
+            <view class="cmp-desc">由其他控件触发，屏幕滑出或弹出一块自定义内容区域</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础使用</view>
-            <view class="item-block">
-                <ste-button @click="show = true" :mode="100">显示弹窗</ste-button>
+            <view class="item-block block">
+                <view>
+                    <ste-button @click="showTop = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">顶部弹出</ste-button>
+                </view>
+                <view>
+                    <ste-button @click="showBottom = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">底部弹出</ste-button>
+                </view>
+                <view>
+                    <ste-button @click="show = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">中间弹出</ste-button>
+                </view>
+                <view>
+                    <ste-button @click="showLeft = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">左侧弹出</ste-button>
+                </view>
+                <view>
+                    <ste-button @click="showRight = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">右侧弹出</ste-button>
+                </view>
             </view>
+        </view>
+        <view class="type-block">
+            <view>02 组件样式</view>
         </view>
         <view class="demo-item">
             <view class="title">背景色</view>
             <view class="item-block">
-                <ste-button @click="bgShow = true" :mode="100">背景色弹窗</ste-button>
-            </view>
-        </view>
-        <view class="demo-item">
-            <view class="title">是否遮罩关闭</view>
-            <view class="item-block">
-                <view>
-                    <ste-button @click="maskShow1 = true" :mode="100">遮罩可关闭</ste-button>
-                </view>
-                <view><ste-button @click="maskShow2 = true" :mode="100">遮罩不可关闭</ste-button></view>
+                <ste-button @click="bgShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">背景色弹窗</ste-button>
             </view>
         </view>
         <view class="demo-item">
             <view class="title">大小</view>
             <view class="item-block">
                 <view>
-                    <ste-button @click="sizeShow1 = true" :mode="100">宽: 300 高：500</ste-button>
-                </view>
-                <view><ste-button @click="sizeShow2 = true" :mode="100">宽: '100vw' 高：300</ste-button></view>
-            </view>
-        </view>
-        <view class="demo-item">
-            <view class="title">位置</view>
-            <view class="item-block">
-                <view>
-                    <ste-button @click="showTop = true" :mode="100">上</ste-button>
+                    <ste-button @click="sizeShow1 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">宽: 300 高：500</ste-button>
                 </view>
                 <view>
-                    <ste-button @click="showBottom = true" :mode="100">下</ste-button>
-                </view>
-                <view>
-                    <ste-button @click="showLeft = true" :mode="100">左</ste-button>
-                </view>
-                <view>
-                    <ste-button @click="showRight = true" :mode="100">右</ste-button>
+                    <ste-button @click="sizeShow2 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">宽: '100vw' 高：300</ste-button>
                 </view>
             </view>
         </view>
         <view class="demo-item">
             <view class="title">圆角</view>
             <view class="item-block">
-                <ste-button @click="roundShow = true" :mode="100">圆角弹窗</ste-button>
+                <ste-button @click="roundShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">圆角弹窗</ste-button>
             </view>
         </view>
         <view class="demo-item">
             <view class="title">偏移</view>
             <view class="item-block">
-                <ste-button @click="offsetShow = true" :mode="100">偏移</ste-button>
+                <ste-button @click="offsetShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">偏移</ste-button>
             </view>
         </view>
+        <view class="type-block">
+            <view>03 组件状态</view>
+        </view>
+        <view class="demo-item">
+            <view class="title">是否遮罩关闭</view>
+            <view class="item-block">
+                <view>
+                    <ste-button @click="maskShow1 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">遮罩可关闭</ste-button>
+                </view>
+                <view>
+                    <ste-button @click="maskShow2 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">遮罩不可关闭</ste-button>
+                </view>
+            </view>
+        </view>
+
         <view class="demo-item">
             <view class="title">动画执行时间</view>
             <view class="item-block">
-                <ste-button @click="durationShow = true" :mode="100">动画执行时间</ste-button>
+                <ste-button @click="durationShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">动画执行时间</ste-button>
             </view>
         </view>
         <view class="demo-item">
             <view class="title">异步关闭</view>
             <view class="item-block">
-                <ste-button @click="syncShow = true" :mode="100">异步关闭</ste-button>
+                <ste-button @click="syncShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">异步关闭</ste-button>
             </view>
         </view>
 
         <!-- ******************** -->
         <!-- 弹窗 -->
-        <ste-popup v-model:show="show" width="300" height="300">
-            <view class="popup-content">正文</view>
+        <ste-popup :show.sync="show" width="300" height="300">
+            <view class="popup-content"></view>
         </ste-popup>
         <!-- 背景色 -->
-        <ste-popup v-model:show="bgShow" width="300" height="300" backgroundColor="#eff3dd">
+        <ste-popup :show.sync="bgShow" width="300" height="300" backgroundColor="#eff3dd">
             <view class="popup-content">背景色</view>
         </ste-popup>
         <!-- 遮罩 -->
-        <ste-popup v-model:show="maskShow1" width="300" height="300">
+        <ste-popup :show.sync="maskShow1" width="300" height="300">
             <view class="popup-content">遮罩可关闭</view>
         </ste-popup>
-        <ste-popup v-model:show="maskShow2" width="300" height="300" :isMaskClick="false">
+        <ste-popup :show.sync="maskShow2" width="300" height="300" :isMaskClick="false">
             <view class="popup-content">遮罩不可关闭</view>
         </ste-popup>
         <!-- 大小 -->
-        <ste-popup v-model:show="sizeShow1" width="300" height="500">
+        <ste-popup :show.sync="sizeShow1" width="300" height="500">
             <view class="popup-content">300*500</view>
         </ste-popup>
-        <ste-popup v-model:show="sizeShow2" width="100vw" height="300">
+        <ste-popup :show.sync="sizeShow2" width="100vw" height="300">
             <view class="popup-content">100vw*300</view>
         </ste-popup>
         <!-- 位置 -->
-        <ste-popup v-model:show="showTop" height="300" width="100vw" position="top">
-            <view class="popup-content">上</view>
+        <ste-popup :show.sync="showTop" height="300" width="100vw" position="top">
+            <view class="popup-content"></view>
         </ste-popup>
-        <ste-popup v-model:show="showBottom" height="300" width="100vw" position="bottom" round>
-            <view class="popup-content">下</view>
+        <ste-popup :show.sync="showBottom" height="300" width="100vw" position="bottom" round>
+            <view class="popup-content"></view>
         </ste-popup>
-        <ste-popup v-model:show="showLeft" width="300" height="100vh" position="left">
-            <view class="popup-content">左</view>
+        <ste-popup :show.sync="showLeft" width="300" height="100vh" position="left">
+            <view class="popup-content"></view>
         </ste-popup>
-        <ste-popup v-model:show="showRight" width="300" height="100vh" position="right">
-            <view class="popup-content">右</view>
+        <ste-popup :show.sync="showRight" width="300" height="100vh" position="right">
+            <view class="popup-content"></view>
         </ste-popup>
         <!-- 圆角 -->
-        <ste-popup v-model:show="roundShow" width="300" height="300" round>
+        <ste-popup :show.sync="roundShow" width="300" height="300" round>
             <view class="popup-content">圆角</view>
         </ste-popup>
         <!-- 偏移 -->
-        <ste-popup v-model:show="offsetShow" width="300" height="300" offsetX="50" offsetY="-50">
+        <ste-popup :show.sync="offsetShow" width="300" height="300" offsetX="50" offsetY="-50">
             <view class="popup-content">偏移</view>
         </ste-popup>
         <!-- 动画执行时间 -->
-        <ste-popup v-model:show="durationShow" width="300" height="300" :duration="800" :keepContent="false">
+        <ste-popup :show.sync="durationShow" width="300" height="300" :duration="800" :keepContent="false">
             <view class="popup-content">动画执行时间</view>
         </ste-popup>
         <!-- 异步关闭 -->
-        <ste-popup v-model:show="syncShow" width="100vw" height="300" @close="syncClose" position="bottom">
+        <ste-popup :show.sync="syncShow" width="100vw" height="300" @close="syncClose" position="bottom">
             <view class="popup-content">异步关闭</view>
         </ste-popup>
     </page-layout>
@@ -168,10 +183,16 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
     height: 100%;
     width: 100%;
 }
-.demo-item {
-    .item-block {
-        > view {
-            margin: 0 8px 8px 0;
+.content {
+    .demo-item {
+        .item-block {
+            display: block;
+            &.block {
+                display: block;
+            }
+            > view {
+                margin: 0 16rpx 16rpx 0;
+            }
         }
     }
 }

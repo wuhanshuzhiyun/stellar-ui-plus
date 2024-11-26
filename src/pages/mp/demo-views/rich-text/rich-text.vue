@@ -10,6 +10,10 @@ const node3 =
 </script>
 <template>
     <page-layout title="富文本">
+        <view class="description">
+            <view class="cmp-name">RichText 富文本</view>
+            <view class="cmp-desc">富文本，增加文本换行功能，解决两张图片中间有空隙的问题。</view>
+        </view>
         <view class="demo-item">
             <view class="title">一张图片</view>
             <view class="item-block">

@@ -53,13 +53,36 @@ function change(value: any) {
 </script>
 
 <template>
-    <page-layout title="单选框">
+    <page-layout title="单选框" contentStyle="padding: 0;background-color: #f5f5f5;color: #0009;">
+        <view class="description">
+            <view class="cmp-name">Radio 单选框</view>
+            <view class="cmp-desc">用于在预设的一组选项中执行单项选择，并呈现选择结果。</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
-            <view class="title">基础用法</view>
+            <view class="title">纵向排列</view>
             <view class="item-block radio-box">
-                <ste-radio v-model="val.value1" name="a">单选框a</ste-radio>
-                <ste-radio v-model="val.value1" name="b">单选框b</ste-radio>
+                <ste-radio-group v-model="val.value15">
+                    <ste-radio name="a">单选框a</ste-radio>
+                    <ste-radio name="b">单选框b</ste-radio>
+                    <ste-radio name="c">单选框c</ste-radio>
+                </ste-radio-group>
             </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">横向排列</view>
+            <view class="item-block radio-box">
+                <ste-radio-group v-model="val.value15" direction="row">
+                    <ste-radio name="a">单选框a</ste-radio>
+                    <ste-radio name="b">单选框b</ste-radio>
+                    <ste-radio name="c">单选框c</ste-radio>
+                </ste-radio-group>
+            </view>
+        </view>
+        <view class="type-block">
+            <view>02 组件状态</view>
         </view>
         <view class="demo-item">
             <view class="title">禁用</view>
@@ -74,6 +97,9 @@ function change(value: any) {
                 <ste-radio v-model="val.value3" name="a" readonly>单选框a</ste-radio>
                 <ste-radio v-model="val.value3" name="b" readonly>单选框b</ste-radio>
             </view>
+        </view>
+        <view class="type-block">
+            <view>03 组件样式</view>
         </view>
         <view class="demo-item">
             <view class="title">自定义形状</view>
@@ -133,6 +159,9 @@ function change(value: any) {
                 </ste-radio>
             </view>
         </view>
+        <view class="type-block">
+            <view>04 组件自定义</view>
+        </view>
         <view class="demo-item">
             <view class="title">左侧文本</view>
             <view class="item-block radio-box">
@@ -185,26 +214,30 @@ function change(value: any) {
                 </ste-radio-group>
             </view>
         </view>
-        <view class="demo-item">
-            <view class="title">水平排列</view>
-            <view class="item-block radio-box">
-                <ste-radio-group v-model="val.value15" direction="row">
-                    <ste-radio name="a">单选框a</ste-radio>
-                    <ste-radio name="b">单选框b</ste-radio>
-                    <ste-radio name="c">单选框c</ste-radio>
-                </ste-radio-group>
-            </view>
-        </view>
     </page-layout>
 </template>
 <style lang="scss" scoped>
+.content {
+    .description,
+    .type-block {
+        padding: 0 40rpx;
+    }
+}
 .radio-box {
     flex-direction: column !important;
     row-gap: 20rpx;
     align-items: flex-start !important;
     justify-content: center;
 }
+// color: #0009;
+
+.title {
+    margin: 0;
+    padding: 0 40rpx;
+}
 .item-block {
     column-gap: 16rpx;
+    background-color: #ffffff;
+    padding: 18rpx 40rpx;
 }
 </style>

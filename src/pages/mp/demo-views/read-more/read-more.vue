@@ -22,14 +22,16 @@ setTimeout(() => {
 
 <template>
     <page-layout title="阅读更多" contentStyle="padding: 0 20rpx; background: #fcfcfc;">
+        <view class="description">
+            <view class="cmp-name">ReadMore 阅读更多</view>
+            <view class="cmp-desc">用于多行文本展示需要折叠的场景</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础使用</view>
             <view class="item-block">
                 <view class="more-block">
                     <view class="title">演示效果</view>
-                    <ste-read-more>
-                        <text>{{ moreStr }}</text>
-                    </ste-read-more>
+                    <ste-read-more>{{ moreStr }}</ste-read-more>
                 </view>
                 <view class="more-block">
                     <view class="title">间距和字号</view>
@@ -67,7 +69,7 @@ setTimeout(() => {
             <view class="title">异步初始化</view>
             <view class="item-block">
                 <view class="more-block" v-if="moreStr3">
-                    <ste-read-more ref="readMoreRef">{{ moreStr3 }}</ste-read-more>
+                    <ste-read-more ref="steReadMore">{{ moreStr3 }}</ste-read-more>
                 </view>
             </view>
         </view>

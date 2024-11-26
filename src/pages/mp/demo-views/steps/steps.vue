@@ -13,6 +13,7 @@ function goToNext() {
     if (active.value >= 3) return;
     active.value++;
 }
+
 function toToast(index: number) {
     toast.showToast({
         title: `进度：${index}`,
@@ -22,8 +23,12 @@ function toToast(index: number) {
 
 <template>
     <page-layout title="步骤条">
+        <view class="description">
+            <view class="cmp-name">Steps 步骤条</view>
+            <view class="cmp-desc">用于任务步骤展示或任务进度展示。</view>
+        </view>
         <view style="text-align: center; margin-top: 30rpx; position: sticky; top: 30rpx; z-index: 100">
-            <ste-button @click="goToPrev">上一步</ste-button>
+            <ste-button @click="goToPrev" style="margin-right: 16rpx">上一步</ste-button>
             <ste-button @click="goToNext">下一步</ste-button>
         </view>
         <view class="demo-item">

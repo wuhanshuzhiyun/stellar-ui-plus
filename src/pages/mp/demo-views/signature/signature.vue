@@ -22,6 +22,10 @@ function clear() {
 
 <template>
     <page-layout title="签名">
+        <view class="description">
+            <view class="cmp-name">Signature 签名</view>
+            <view class="cmp-desc">签名组件用于在页面上显示签名。</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view class="signature-demo">

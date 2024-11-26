@@ -13,6 +13,13 @@ const onChange = (index: number, source: 'touch' | 'autoplay') => {
 </script>
 <template>
     <page-layout title="轮播组件">
+        <view class="description">
+            <view class="cmp-name">Swiper 轮播组件</view>
+            <view class="cmp-desc">用于循环轮播一组图片或内容，也可以滑动进行切换，轮播动效时间可以设置。</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法（必须固定宽度，默认100%）</view>
             <view class="item-view">
@@ -52,6 +59,9 @@ const onChange = (index: number, source: 'touch' | 'autoplay') => {
                     </ste-swiper-item>
                 </ste-swiper>
             </view>
+        </view>
+        <view class="type-block">
+            <view>02 组件样式</view>
         </view>
         <view class="demo-item">
             <view class="title">显示指示器</view>

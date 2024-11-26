@@ -77,6 +77,10 @@ function change(value: number) {
 
 <template>
     <page-layout title="步进器">
+        <view class="description">
+            <view class="cmp-name">Stepper 步进器</view>
+            <view class="cmp-desc">用户通过调整“+”按钮、“-”按钮、数字输入框来调整具体需要的数值，可设置最大值和最小值</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view class="item-block">

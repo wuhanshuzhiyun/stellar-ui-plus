@@ -61,6 +61,10 @@ function selectSuggestion(v: SearchSuggestion) {
 
 <template>
     <page-layout title="搜索">
+        <view class="description">
+            <view class="cmp-name">Search 搜索</view>
+            <view class="cmp-desc">用于用户输入搜索信息，并进行页面内容搜索。</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view class="item-block">
@@ -73,7 +77,7 @@ function selectSuggestion(v: SearchSuggestion) {
                 <ste-search placeholder="搜索商品" @search="onSearch" />
             </view>
             <view class="item-block">
-                <ste-search disabled placeholder="禁用" />
+                <ste-search disabled />
             </view>
         </view>
 
@@ -83,7 +87,6 @@ function selectSuggestion(v: SearchSuggestion) {
                 <ste-search :suggestion-list="suggestionList" @input="input1" @selectSuggestion="selectSuggestion" />
             </view>
         </view>
-
         <view class="demo-item">
             <view class="title">热词列表</view>
             <view class="item-block">
@@ -161,12 +164,12 @@ function selectSuggestion(v: SearchSuggestion) {
                     hiddenLine
                     borderColor="#F00"
                     background="https://image.whzb.com/chain/StellarUI/背景1.png"
-                    prefixIconColor="#f00"
-                    placeholderColor="#faa"
-                    inputTextColor="#f00"
+                    prefixIconColor="#fff"
+                    placeholderColor="#fff"
+                    inputTextColor="#fff"
                     clearIconColor="#a55"
                     btnBackground="https://image.whzb.com/chain/StellarUI/背景2.png"
-                    btnTextColor="#f00"
+                    btnTextColor="#fff"
                     @search="onSearch"
                 />
             </view>
@@ -186,7 +189,8 @@ function selectSuggestion(v: SearchSuggestion) {
         <view class="demo-item">
             <view class="title">聚焦</view>
             <view class="item-block">
-                <ste-search @click="onClick" v-model:focus="focus" />
+                <ste-search @click="onClick" :focus.sync="focus" />
+                <!--聚焦按钮-->
                 <view style="margin: 10px auto 0 auto">
                     <ste-button @click="focus = true" width="100%">聚焦</ste-button>
                 </view>

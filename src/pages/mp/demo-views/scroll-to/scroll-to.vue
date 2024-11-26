@@ -13,6 +13,10 @@ const contents = [
 </script>
 <template>
     <page-layout title="滚动锚点">
+        <view class="description">
+            <view class="cmp-name">ScrollTo 滚动锚点</view>
+            <view class="cmp-desc">滚动锚点，可以滚动到指定锚点。</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础使用</view>
             <ste-tabs v-model:active="active" sticky>
@@ -27,3 +31,18 @@ const contents = [
         </view>
     </page-layout>
 </template>
+<style lang="scss" scoped>
+.page {
+    .content {
+        .demo-item {
+            .item-block {
+                display: block;
+                margin-bottom: 12rpx;
+                & > .ste-search {
+                    margin: 0 16rpx 16rpx 0;
+                }
+            }
+        }
+    }
+}
+</style>

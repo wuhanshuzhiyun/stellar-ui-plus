@@ -66,6 +66,10 @@ function copy(data: string) {
 
 <template>
     <page-layout title="图标">
+        <view class="description">
+            <view class="cmp-name">Icon 图标</view>
+            <view class="cmp-desc">基于字体的图标集，包含了大多数常见场景的图标。</view>
+        </view>
         <view class="tabs">
             <view class="tab1-title" :class="{ actived: tabIndex === 0 }" @click="tabIndex = 0">用法示例</view>
             <view class="tab2-title" :class="{ actived: tabIndex === 1 }" @click="tabIndex = 1">图标库</view>
@@ -75,22 +79,22 @@ function copy(data: string) {
             <view class="demo-item">
                 <view class="title">基础用法</view>
                 <view class="item-block" style="justify-content: flex-start">
-                    <ste-icon code="&#xe689;" :size="60"></ste-icon>
+                    <ste-icon code="&#xe689;" size="60"></ste-icon>
                 </view>
             </view>
             <view class="demo-item">
                 <view class="title">图标颜色</view>
                 <view class="item-block" style="justify-content: flex-start">
-                    <ste-icon code="&#xe684;" color="#1989fa" :size="60" marginRight="30"></ste-icon>
-                    <ste-icon code="&#xe684;" color="#ee0a24" :size="60"></ste-icon>
+                    <ste-icon code="&#xe684;" color="#1989fa" size="60" marginRight="30"></ste-icon>
+                    <ste-icon code="&#xe684;" color="#ee0a24" size="60"></ste-icon>
                 </view>
             </view>
             <view class="demo-item">
                 <view class="title">图标大小</view>
                 <view class="item-block" style="justify-content: flex-start">
                     <ste-icon code="&#xe671;" marginRight="30"></ste-icon>
-                    <ste-icon code="&#xe671;" marginRight="30" :size="50"></ste-icon>
-                    <ste-icon code="&#xe671;" marginRight="30" :size="70"></ste-icon>
+                    <ste-icon code="&#xe671;" marginRight="30" size="50"></ste-icon>
+                    <ste-icon code="&#xe671;" marginRight="30" size="70"></ste-icon>
                 </view>
             </view>
             <view class="demo-item">
@@ -109,7 +113,7 @@ function copy(data: string) {
                         <ste-icon code="&#xe691;" :size="48" v-if="!isShowUnicode" :marginLeft="40" :marginBottom="8" @click="isShowUnicode = true"></ste-icon>
                         &nbsp;&nbsp;&nbsp;{{ isShowUnicode ? '隐藏unicode' : '展示unicode' }}（点击对应icon可复制其code）
                     </view>
-                    <view v-for="(item, index) in glyphs" class="icon-item" @click="copy(item.unicode)" :key="index">
+                    <view v-for="item in glyphs" class="icon-item" @click="copy(item.unicode)">
                         <view class="icon-content">
                             <ste-icon :code="item.unicode" :size="40"></ste-icon>
                         </view>

@@ -1,6 +1,10 @@
 <template>
     <page-layout>
-        <view class="demo-item" title="开关">
+        <view class="description">
+            <view class="cmp-name">Switch 开关</view>
+            <view class="cmp-desc">用于控制某个功能的开启和关闭。</view>
+        </view>
+        <view class="demo-item">
             <view class="title">基础用法</view>
             <view class="item-block">
                 <ste-switch v-model="value1"></ste-switch>

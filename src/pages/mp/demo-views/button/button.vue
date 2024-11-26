@@ -12,6 +12,13 @@ function handleClick(v: any) {
 
 <template>
     <page-layout title="按钮">
+        <view class="description">
+            <view class="cmp-name">Button 按钮</view>
+            <view class="cmp-desc">基础按钮组件</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">按钮大小</view>
             <view class="item-block">
@@ -26,36 +33,6 @@ function handleClick(v: any) {
                 </view>
                 <view>
                     <ste-button :mode="100" @click="handleClick('小按钮')">小按钮</ste-button>
-                </view>
-            </view>
-        </view>
-        <view class="demo-item">
-            <view class="title">文本颜色</view>
-            <view class="item-block">
-                <view style="width: 40%">
-                    <ste-button :color="'#000000'" @click="handleClick('文本颜色按钮')">文本颜色按钮</ste-button>
-                </view>
-            </view>
-        </view>
-        <view class="demo-item">
-            <view class="title">背景</view>
-            <view class="item-block">
-                <view>
-                    <ste-button background="#FF1E19" @click="handleClick('领取')">领取</ste-button>
-                </view>
-                <view>
-                    <ste-button background="https://image.whzb.com/chain/StellarUI/image/精选会员瓷片.png" @click="handleClick('背景图')">背景图</ste-button>
-                </view>
-                <view>
-                    <ste-button background="linear-gradient(to right, rgb(66, 83, 216), rgb(213, 51, 186))" @click="handleClick('渐变色')">渐变色</ste-button>
-                </view>
-            </view>
-        </view>
-        <view class="demo-item">
-            <view class="title">边框颜色</view>
-            <view class="item-block">
-                <view style="width: 40%">
-                    <ste-button borderColor="#FF1E19" @click="handleClick('边框颜色按钮')">边框颜色按钮</ste-button>
                 </view>
             </view>
         </view>
@@ -84,6 +61,9 @@ function handleClick(v: any) {
                 </view>
             </view>
         </view>
+        <view class="type-block">
+            <view>02 组件状态</view>
+        </view>
         <view class="demo-item">
             <view class="title">禁止按钮</view>
             <view class="item-block">
@@ -91,6 +71,44 @@ function handleClick(v: any) {
                     <ste-button disabled @click="handleClick('禁止按钮')">禁止按钮</ste-button>
                 </view>
             </view>
+        </view>
+        <view class="type-block">
+            <view>02 组件样式</view>
+        </view>
+        <view class="demo-item">
+            <view class="title">文本颜色</view>
+            <view class="item-block">
+                <view style="width: 40%">
+                    <ste-button color="#000000" @click="handleClick('文本颜色按钮')">文本颜色按钮</ste-button>
+                </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">背景</view>
+            <view class="item-block">
+                <view>
+                    <ste-button background="#FF1E19" @click="handleClick('领取')">领取</ste-button>
+                </view>
+                <view>
+                    <ste-button background="https://image.whzb.com/chain/StellarUI/image/精选会员瓷片.png" @click="handleClick('背景图')">背景图</ste-button>
+                </view>
+                <view>
+                    <ste-button background="linear-gradient(to right, rgb(66, 83, 216), rgb(213, 51, 186))" @click="handleClick('渐变色')">渐变色</ste-button>
+                </view>
+            </view>
+        </view>
+
+        <view class="demo-item">
+            <view class="title">边框颜色</view>
+            <view class="item-block">
+                <view style="width: 40%">
+                    <ste-button borderColor="#FF1E19" @click="handleClick('边框颜色按钮')">边框颜色按钮</ste-button>
+                </view>
+            </view>
+        </view>
+
+        <view class="type-block">
+            <view>04 组件自定义</view>
         </view>
         <view class="demo-item">
             <view class="title">加载中</view>
@@ -106,7 +124,7 @@ function handleClick(v: any) {
                 <view>
                     <ste-button @click="handleClick('按钮')">
                         <view class="btn-box-1">
-                            <ste-icon code="&#xe68f;" :size="32" :color="'#FFFFFF'" :marginRight="8"></ste-icon>
+                            <ste-icon code="&#xe68f;" :size="32" color="#FFFFFF" :marginRight="8"></ste-icon>
                             <text>购卡</text>
                         </view>
                     </ste-button>

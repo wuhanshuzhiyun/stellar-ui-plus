@@ -56,6 +56,13 @@ const onChange = (val: SelectValue, option: SelectOption) => {
 </script>
 <template>
     <page-layout title="选择框">
+        <view class="description">
+            <view class="cmp-name">Select 下拉选</view>
+            <view class="cmp-desc">当选项过多时，使用下拉菜单展示并选择内容。</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <ste-select :list="list1" v-model="value1" @change="onChange"></ste-select>
@@ -100,5 +107,26 @@ const onChange = (val: SelectValue, option: SelectOption) => {
             <view class="title">创建条目</view>
             <ste-select :list="list1" mode="filterable" allowCreate @change="onChange"></ste-select>
         </view>
+        <view class="type-block">
+            <view>02 组件自定义</view>
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义图标</view>
+            <ste-select :list="list1">
+                <template v-slot:icon>
+                    <ste-icon code="&#xe699;"></ste-icon>
+                </template>
+            </ste-select>
+        </view>
     </page-layout>
 </template>
+<style lang="scss" scoped>
+.page {
+    .content {
+        .demo-item {
+            .item-block {
+            }
+        }
+    }
+}
+</style>

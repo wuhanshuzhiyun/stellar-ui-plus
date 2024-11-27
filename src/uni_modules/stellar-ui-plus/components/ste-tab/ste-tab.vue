@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, defineProps } from 'vue';
+import { defineOptions } from 'vue';
 import { useInject } from '../../utils/mixin';
 import propsData from './props';
 import { TAB_KEY } from '../ste-tabs/props';

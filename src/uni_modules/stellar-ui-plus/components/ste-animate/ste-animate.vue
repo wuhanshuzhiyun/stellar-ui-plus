@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, type CSSProperties, nextTick, watch, defineProps, defineOptions } from 'vue';
+import { computed, ref, type CSSProperties, nextTick, watch, defineOptions } from 'vue';
 import propsData from './props';
 
 const props = defineProps(propsData);

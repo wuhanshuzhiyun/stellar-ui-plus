@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, defineExpose, defineProps } from 'vue';
+import { defineExpose } from 'vue';
 import propsData from './props';
 import { type TreeNode } from '../../types/index.d';
 import useData from './useData';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted, computed, defineProps, defineEmits, defineExpose } from 'vue';
+import { watch, onMounted, computed, defineExpose } from 'vue';
 import { formatDate, type WeekType } from './date';
 import utils from '../../utils/utils';
 import useData from './useData';

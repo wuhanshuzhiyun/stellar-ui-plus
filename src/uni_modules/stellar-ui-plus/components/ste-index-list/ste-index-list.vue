@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, getCurrentInstance, defineOptions, defineEmits, defineProps, onMounted, defineExpose } from 'vue';
+import { ref, computed, watch, nextTick, getCurrentInstance, defineOptions, onMounted, defineExpose } from 'vue';
 import propsData, { INDEX_LIST_KEY } from './props';
 import useData from '../ste-scroll-to/useData';
 import { useProvide } from '../../utils/mixin';

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineEmits, defineProps, defineOptions, type CSSProperties, onMounted, nextTick, watch } from 'vue';
+import { computed, defineOptions, type CSSProperties, onMounted, nextTick, watch } from 'vue';
 import type { BaseEvent } from '../../types/event';
 import useData from './useData';
 import utils from '../../utils/utils';

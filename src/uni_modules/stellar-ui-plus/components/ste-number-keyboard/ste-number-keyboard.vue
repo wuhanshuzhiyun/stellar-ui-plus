@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineEmits, defineProps } from 'vue';
 import useData from './useData';
 import porpsData, { type NumberKeyboardProps } from './props';
 

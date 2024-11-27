@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch, nextTick, type CSSProperties, defineEmits, defineProps, defineOptions } from 'vue';
+import { computed, ref, watch, nextTick, type CSSProperties, defineOptions } from 'vue';
 
 import utils from '../../utils/utils';
 import propsData, { inputEmits } from './props';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, getCurrentInstance, defineOptions, defineEmits, defineProps, onMounted, defineExpose } from 'vue';
+import { ref, computed, getCurrentInstance, defineOptions, onMounted, defineExpose } from 'vue';
 import propsData, { SCROLL_TO_KEY } from './props';
 import useData from './useData';
 import { useProvide } from '../../utils/mixin';

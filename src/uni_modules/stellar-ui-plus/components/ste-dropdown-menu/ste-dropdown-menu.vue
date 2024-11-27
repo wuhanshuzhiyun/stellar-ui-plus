@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch, computed, ref, type CSSProperties, getCurrentInstance, defineEmits, defineProps, defineOptions } from 'vue';
+import { watch, computed, ref, type CSSProperties, getCurrentInstance, defineOptions } from 'vue';
 import { useProvide } from '../../utils/mixin';
 import { DEFAULT_DURATION, MAX_DURATION, MIN_DURATION, DEFAULT_ROOT_QUERY } from './constans';
 import propsData, { DEOP_DOWN_MENU_KEY, dropDownMenuEmits } from './props';

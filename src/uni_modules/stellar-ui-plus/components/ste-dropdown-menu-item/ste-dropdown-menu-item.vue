@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed, type ComputedRef, onMounted, defineEmits, defineProps } from 'vue';
+import { ref, computed, type ComputedRef, onMounted } from 'vue';
 import propsData, { dropdownMenuItemEmits } from './props';
 import { type DropDownMenuProps, DEOP_DOWN_MENU_KEY } from '../ste-dropdown-menu/props';
 import type { DropdownItem } from './type';

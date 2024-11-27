@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineProps, defineEmits, watch, onMounted, nextTick, getCurrentInstance } from 'vue';
+import { ref, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
 import type { BaseEvent } from '../../types/event.d';

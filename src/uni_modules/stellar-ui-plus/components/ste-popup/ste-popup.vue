@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, defineEmits, defineProps, defineOptions, type CSSProperties } from 'vue';
+import { ref, computed, watch, defineOptions, type CSSProperties } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
 const DEFAULT_BORDER_RADIUS = 32;

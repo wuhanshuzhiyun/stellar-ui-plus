@@ -1,11 +1,16 @@
-import { type CSSProperties, computed, ref } from 'vue'
+import { type CSSProperties, computed, ref, watch } from 'vue'
 import utils from '../../utils/utils'
 import type { TabProps } from '../ste-tab/props'
 import type { SelfComponentInternalInstance } from '../../utils/mixin'
 import type { UniScrollViewOnScrollEvent } from '../../types/event'
 import type { SteTabsProps } from './props'
 
-export default function useData({ thas, props, emits, internalChildren }: {
+export default function useData({
+  thas,
+  props,
+  emits,
+  internalChildren,
+}: {
   thas: globalThis.Ref<globalThis.ComponentPublicInstance | null | undefined>
   props: SteTabsProps
   internalChildren: SelfComponentInternalInstance[]
@@ -322,18 +327,12 @@ export default function useData({ thas, props, emits, internalChildren }: {
     { immediate: true },
   )
 
-  watch(
-    [() => cmpRootStyle.value, () => thas.value],
-    () => {
-      if (!thas.value)
-        return
-      setUpdateTabsTimeout(async () => setTabEls(await utils.querySelector('.tab-list-box .tab-list.view-list .tab-item', thas.value, true)), 10)
-    },
-  )
-  watch(
-    [() => internalChildren.length, () => thas.value],
-    () => initChildren(),
-  )
+  watch([() => cmpRootStyle.value, () => thas.value], () => {
+    if (!thas.value)
+      return
+    setUpdateTabsTimeout(async () => setTabEls(await utils.querySelector('.tab-list-box .tab-list.view-list .tab-item', thas.value, true)), 10)
+  })
+  watch([() => internalChildren.length, () => thas.value], () => initChildren())
 
   return {
     cmpRootStyle,

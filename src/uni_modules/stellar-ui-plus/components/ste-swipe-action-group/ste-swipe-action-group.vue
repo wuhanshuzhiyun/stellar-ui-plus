@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watch, defineEmits, defineProps, defineExpose } from 'vue';
 import propsData from './props';
 import { STE_SWIPE_ACTION_KEY } from '../ste-swipe-action/props';
 import { useProvide } from '../../utils/mixin';

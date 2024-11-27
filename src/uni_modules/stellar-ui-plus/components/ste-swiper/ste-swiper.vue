@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, getCurrentInstance } from 'vue';
+import { defineOptions, defineEmits, getCurrentInstance, ref, defineProps } from 'vue';
 import propsData, { SWIPER_KEY } from './props';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
@@ -20,6 +20,7 @@ const props = defineProps(propsData);
 
 const { initializing, dataIndex, cmpRootStyle, cmpBoxStyle, cmpBoxTransform, onTouchstart, onTouchmove, onTouchend } = useData({ props, children: internalChildren, thas: thas.value, emits });
 </script>
+
 <template>
     <view class="ste-swiper-root" :style="[cmpRootStyle, { opacity: initializing ? 0 : 1 }]">
         <view

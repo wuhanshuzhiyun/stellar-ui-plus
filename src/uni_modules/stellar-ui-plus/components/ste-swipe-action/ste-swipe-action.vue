@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, getCurrentInstance } from 'vue';
+import { ref, getCurrentInstance, defineProps, onMounted, defineEmits, defineExpose } from 'vue';
 import propsData, { STE_SWIPE_ACTION_KEY } from './props';
 import { useInject } from '../../utils/mixin';
 import useData from './useData';

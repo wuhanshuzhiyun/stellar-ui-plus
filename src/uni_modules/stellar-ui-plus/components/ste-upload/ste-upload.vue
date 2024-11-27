@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch, defineOptions } from 'vue';
+import { computed, watch, defineOptions, defineEmits, defineProps } from 'vue';
 import type { UploadFileType, WxInputAccept } from '../../types';
 import { readMediaFile, readFile } from './ReadFile';
 import utils from '../../utils/utils';

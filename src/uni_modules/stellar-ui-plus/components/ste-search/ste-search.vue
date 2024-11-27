@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch, defineOptions, nextTick } from 'vue';
+import { computed, watch, defineOptions, defineProps, nextTick, defineEmits } from 'vue';
 import type { SwiperOnChangeEvent } from '@uni-helper/uni-app-types';
 import utils from '../../utils/utils';
 import type { SearchSuggestion, Obj } from '../../types';

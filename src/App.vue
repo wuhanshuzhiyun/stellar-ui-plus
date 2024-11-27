@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { nextTick, watch } from 'vue';
 import config from '@/uni_modules/stellar-ui-plus/config';
-onLaunch(() => {});
 
 // #ifdef H5
 watch(

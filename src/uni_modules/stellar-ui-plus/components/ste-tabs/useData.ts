@@ -1,4 +1,4 @@
-import { type CSSProperties, computed, ref, watch } from 'vue'
+import { type CSSProperties, computed, nextTick, ref, watch } from 'vue'
 import utils from '../../utils/utils'
 import type { TabProps } from '../ste-tab/props'
 import type { SelfComponentInternalInstance } from '../../utils/mixin'

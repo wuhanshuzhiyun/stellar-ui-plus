@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, type PropType } from 'vue';
+import { defineOptions, computed, type PropType } from 'vue';
 defineOptions({
     name: 'KeyboardVue',
     options: {

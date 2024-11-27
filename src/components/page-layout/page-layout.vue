@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed, defineProps } from 'vue';
 import utils from '@/common/utils';
 
 const props = defineProps({

@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { components, rests } from '../markdown/index'
 import type { Group, MarkdownData } from '../types'
 import { btnCopy } from '../markdown/requireFiles'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, inject } from 'vue';
 import { getInfo } from '@/common/account';
 import request from '@/common/request';
 import utils from '@/uni_modules/stellar-ui-plus/utils/utils';

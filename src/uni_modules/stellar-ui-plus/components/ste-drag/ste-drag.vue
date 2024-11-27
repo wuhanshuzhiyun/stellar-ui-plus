@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted, reactive, defineOptions, onBeforeUnmount } from 'vue';
+import { watch, onMounted, reactive, defineOptions, onBeforeUnmount, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import propsData, { DEFAULT_BOUNDARY } from './props';
 

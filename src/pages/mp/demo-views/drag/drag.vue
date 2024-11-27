@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 import utils from '@/common/utils';
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 const boundary = ref({ left: 22, bottom: 0, top: 374, right: 0 });

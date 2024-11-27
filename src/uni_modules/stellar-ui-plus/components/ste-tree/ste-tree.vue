@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineExpose } from 'vue';
 import propsData from './props';
 import { type TreeNode } from '../../types/index.d';
 import useData from './useData';

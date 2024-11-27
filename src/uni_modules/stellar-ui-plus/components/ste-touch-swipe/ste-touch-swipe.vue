@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, defineOptions, getCurrentInstance, computed, nextTick, watch, ref, defineExpose } from 'vue';
+import { onMounted, defineOptions, getCurrentInstance, computed, nextTick, watch, ref } from 'vue';
 import utils from '../../utils/utils';
 import propsData, { TOUCH_SWIPE_KEY } from './props';
 import { useProvide } from '../../utils/mixin';

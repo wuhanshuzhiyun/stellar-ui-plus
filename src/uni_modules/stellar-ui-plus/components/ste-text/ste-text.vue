@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineOptions } from 'vue';
+import { computed, defineProps, defineOptions } from 'vue';
 import propsData from './props';
 
 const componentName = `ste-text`;

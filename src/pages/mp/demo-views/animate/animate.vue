@@ -13,6 +13,13 @@ function click() {
 
 <template>
     <page-layout title="动画">
+        <view class="description">
+            <view class="cmp-name">Animate 动画</view>
+            <view class="cmp-desc">给子元素添加动画效果</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础使用</view>
             <view class="item-block">
@@ -57,6 +64,9 @@ function click() {
                     </ste-animate>
                 </view>
             </view>
+        </view>
+        <view class="type-block">
+            <view>02 组件状态</view>
         </view>
         <view class="demo-item">
             <view class="title">点击触发</view>

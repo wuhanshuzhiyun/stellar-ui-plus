@@ -9,6 +9,10 @@ const resolutionConfigArr = ref([
 
 <template>
     <page-layout title="视频">
+        <view class="description">
+            <view class="cmp-name">Video 视频</view>
+            <view class="cmp-desc">用于播放视频</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础使用</view>
             <view class="item-block">

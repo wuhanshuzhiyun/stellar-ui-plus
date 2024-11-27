@@ -89,6 +89,13 @@ const closePreview = () => {
 </script>
 <template>
     <page-layout title="上传">
+        <view class="description">
+            <view class="cmp-name">Upload 上传</view>
+            <view class="cmp-desc">用于相册读取或拉起拍照的图片上传功能。</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <ste-upload v-model="fileList" @read="onRead" />
@@ -110,10 +117,13 @@ const closePreview = () => {
             <view class="title">限制文件大小2M</view>
             <ste-upload v-model="fileList3" :maxSize="2048" />
         </view>
+        <view class="type-block">
+            <view>01 组件状态</view>
+        </view>
         <view class="demo-item">
             <view class="title">自定义上传样式</view>
             <ste-upload v-model="fileList4">
-                <ste-button mode="100" :round="false">上传文件</ste-button>
+                <button size="mini" style="padding: 0 10px">上传文件</button>
             </ste-upload>
         </view>
         <view class="demo-item">

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { BaseEvent } from '@uni-helper/uni-app-types';
-import { computed, type CSSProperties, nextTick, defineModel } from 'vue';
+import { computed, type CSSProperties, nextTick, defineEmits, defineProps, defineOptions } from 'vue';
 import propsData, { stepperEmits } from './props';
 import utils from '../../utils/utils';
 

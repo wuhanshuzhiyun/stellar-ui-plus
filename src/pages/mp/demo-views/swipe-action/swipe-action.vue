@@ -34,7 +34,11 @@ const onClose = (index?: number) => {
 };
 </script>
 <template>
-    <page-layout title="滑动单元格">
+    <page-layout title="滑动单元格" contentStyle="background-color: #f5f5f5;">
+        <view class="description">
+            <view class="cmp-name">SwipeAction 滑动单元格</view>
+            <view class="cmp-desc">用来承载列表中的更多操作，通过左右滑动来展示.</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view class="item-block">
@@ -55,9 +59,13 @@ const onClose = (index?: number) => {
                         <div class="test-btn">删除</div>
                     </template>
                 </ste-swipe-action>
-                <view style="margin-top: 12rpx">
-                    <ste-button :mode="200" @click="openSwipe">打开</ste-button>
-                    <ste-button :mode="200" @click="closeSwipe">关闭</ste-button>
+                <view class="btn-box">
+                    <view class="btn-item-box">
+                        <ste-button mode="200" @click="openSwipe" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">打开</ste-button>
+                    </view>
+                    <view class="btn-item-box">
+                        <ste-button mode="200" @click="closeSwipe" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">关闭</ste-button>
+                    </view>
                 </view>
             </view>
         </view>
@@ -77,7 +85,7 @@ const onClose = (index?: number) => {
         </view>
         <view class="demo-item">
             <view class="title">单元格组</view>
-            <view class="item-block">
+            <view class="item-block group">
                 <ste-swipe-action-group @open="onOpen" @close="onClose" ref="swipeGroup">
                     <ste-swipe-action v-for="(m, i) in datas" :key="m">
                         <view class="content-view">{{ m }}</view>
@@ -86,32 +94,63 @@ const onClose = (index?: number) => {
                         </template>
                     </ste-swipe-action>
                 </ste-swipe-action-group>
-                <view style="margin-top: 12rpx">
-                    <ste-button :mode="200" @click="openSwipeGroup(0)">打开第1行</ste-button>
-                    <ste-button :mode="200" @click="closeSwipeGroup(0)">关闭第1行</ste-button>
-                    <ste-button :mode="200" @click="openSwipeGroup(1)">打开第2行</ste-button>
-                    <ste-button :mode="200" @click="closeSwipeGroup(1)">关闭第2行</ste-button>
+                <view class="btn-box">
+                    <view class="btn-item-box">
+                        <ste-button mode="200" @click="openSwipeGroup(0)" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">打开第1行</ste-button>
+                    </view>
+                    <view class="btn-item-box">
+                        <ste-button mode="200" @click="closeSwipeGroup(0)" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">关闭第1行</ste-button>
+                    </view>
+                    <view class="btn-item-box">
+                        <ste-button mode="200" @click="openSwipeGroup(1)" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">打开第2行</ste-button>
+                    </view>
+                    <view class="btn-item-box">
+                        <ste-button mode="200" @click="closeSwipeGroup(1)" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">关闭第2行</ste-button>
+                    </view>
                 </view>
             </view>
         </view>
     </page-layout>
 </template>
 <style lang="scss" scoped>
-.demo-item {
-    .item-block {
-        display: block;
-        .content-view {
-            height: 90rpx;
-            border-bottom: 1px solid #fff;
-            background-color: #f5f5f5;
-        }
-        .test-btn {
-            background-color: #dd524d;
-            color: #fff;
-            line-height: 90rpx;
-            text-align: center;
-            width: 100rpx;
-            height: 100%;
+.page {
+    .content {
+        .demo-item {
+            .item-block {
+                display: block;
+                .content-view {
+                    display: flex;
+                    align-items: center;
+                    height: 90rpx;
+                    border-bottom: 1rpx solid #fff;
+                    background-color: #ffffff;
+                    padding-left: 36rpx;
+                }
+                &.group {
+                    .content-view {
+                        border: 1rpx solid #f5f5f5;
+                    }
+                }
+                .test-btn {
+                    background-color: #dd524d;
+                    color: #fff;
+                    line-height: 90rpx;
+                    text-align: center;
+                    width: 100rpx;
+                    height: 100%;
+                }
+                .btn-box {
+                    margin-top: 18rpx;
+                    // display: flex;
+                    // flex-wrap: wrap;
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr); /* 两列，每列占用父元素宽度的一半 */
+                    gap: 8px; /* 行间距和列间距都为8px */
+                }
+                .btn-item-box {
+                    flex-basis: 50%;
+                }
+            }
         }
     }
 }

@@ -29,6 +29,10 @@ function vNext() {
 </script>
 <template>
     <page-layout title="手势滑动">
+        <view class="description">
+            <view class="cmp-name">TouchSwipe 手势切屏</view>
+            <view class="cmp-desc">手势切屏组件，支持水平手势切换和垂直手势切换。</view>
+        </view>
         <view class="demo-item">
             <view class="title">水平切换-固定宽度</view>
             <view class="item-block">

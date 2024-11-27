@@ -1,5 +1,9 @@
 <template>
     <page-layout title="轻提示">
+        <view class="description">
+            <view class="cmp-name">Toast 轻提示</view>
+            <view class="cmp-desc">用于轻量级反馈或提示，不会打断用户操作。</view>
+        </view>
         <view class="demo-item">
             <view class="title">文字提示</view>
             <view class="item-block item-rate">
@@ -28,6 +32,12 @@
             <view class="title">延迟时间</view>
             <view class="item-block item-rate">
                 <ste-button @click="click10" :width="400">延迟时间</ste-button>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">提示队列</view>
+            <view class="item-block item-rate">
+                <ste-button @click="click14" :width="400">提示队列</ste-button>
             </view>
         </view>
         <view class="demo-item">

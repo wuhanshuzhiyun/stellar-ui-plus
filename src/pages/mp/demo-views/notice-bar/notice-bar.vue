@@ -1,5 +1,9 @@
 <template>
     <page-layout title="公告栏" contentStyle="background: #fcfcfc;">
+        <view class="description">
+            <view class="cmp-name">NoticeBar 公告栏</view>
+            <view class="cmp-desc">在导航栏下方，用于给用户显示提示消息。</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view class="item-block">

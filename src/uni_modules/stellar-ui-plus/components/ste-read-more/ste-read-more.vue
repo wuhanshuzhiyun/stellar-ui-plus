@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, type CSSProperties, defineOptions } from 'vue';
+import { computed, ref, onMounted, type CSSProperties, defineEmits, defineProps, defineOptions } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
 

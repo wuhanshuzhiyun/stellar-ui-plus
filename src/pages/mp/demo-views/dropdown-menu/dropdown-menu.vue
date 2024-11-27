@@ -50,6 +50,13 @@ function confirm() {
 
 <template>
     <page-layout title="下拉菜单" contentStyle="padding: 0;">
+        <view class="description">
+            <view class="cmp-name">DropdownMenu 下拉菜单</view>
+            <view class="cmp-desc">菜单呈现数个并列的选项类目，用于整个页面的内容筛选，由菜单面板和菜单选项组成。</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础使用</view>
             <view class="item-block">
@@ -100,6 +107,9 @@ function confirm() {
                 </view>
             </view>
         </view>
+        <view class="type-block">
+            <view>02 组件自定义</view>
+        </view>
         <view class="demo-item">
             <view class="title">自定义下拉内容</view>
             <view class="item-block">
@@ -109,12 +119,12 @@ function confirm() {
                             <view class="custom-menu-box">
                                 <view class="menu-box">
                                     <view class="left">
-                                        <view v-for="(m, i) in customMenuData" :class="i == m1 ? 'active' : ''" @click="choose('1', i)">
+                                        <view v-for="(m, i) in customMenuData" :key="i" :class="i == m1 ? 'active' : ''" @click="choose('1', i)">
                                             {{ m.name }}
                                         </view>
                                     </view>
                                     <view class="right">
-                                        <view v-for="(m, i) in customMenuData[m1].child" :class="i == m2 ? 'active' : ''" @click="choose('2', i)">
+                                        <view v-for="(m, i) in customMenuData[m1].child" :key="i" :class="i == m2 ? 'active' : ''" @click="choose('2', i)">
                                             {{ m }}
                                         </view>
                                     </view>
@@ -128,6 +138,9 @@ function confirm() {
                     </view>
                 </view>
             </view>
+        </view>
+        <view class="type-block">
+            <view>03 组件样式</view>
         </view>
         <view class="demo-item">
             <view class="title">选中颜色 & 未选中颜色</view>
@@ -223,7 +236,7 @@ function confirm() {
                         </ste-dropdown-menu>
                     </view>
                     <view>
-                        <ste-dropdown-menu title="可选三项" :max="3" direction="up">
+                        <ste-dropdown-menu title="可选三项" :max="3">
                             <ste-dropdown-menu-item value="1" title="选项1" />
                             <ste-dropdown-menu-item value="2" title="选项2" />
                             <ste-dropdown-menu-item value="3" title="选项3" />
@@ -249,77 +262,88 @@ function confirm() {
     </page-layout>
 </template>
 <style lang="scss" scoped>
-.demo-item {
-    .title {
-        padding-left: 20rpx;
-    }
-    .item-block {
-        .menu-item {
-            display: flex;
-            padding: 0 20rpx;
-            width: 100%;
-            box-shadow: 0 0 10px #ddd;
-            > view {
-                flex: 1;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+.page {
+    .content {
+        padding: 0;
+        .description {
+            padding: 0 40rpx;
+        }
+        .type-block {
+            padding: 0 40rpx;
+        }
+        .demo-item {
+            .title {
+                padding-left: 40rpx;
             }
-
-            .custom-menu-box {
-                background-color: #fff;
-                padding-top: 24rpx;
-                border-top: solid 4rpx #f5f5f5;
-                .menu-box {
-                    width: 100%;
+            .item-block {
+                .menu-item {
                     display: flex;
-                    margin-bottom: 56rpx;
-                    font-size: 28rpx;
-                    .left {
-                        width: 236rpx;
-                        background-color: #f9f9f9;
-
-                        > view {
-                            height: 90rpx;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-
-                            &.active {
-                                background-color: #fff;
-                                color: #0090ff;
-                            }
-                        }
-                    }
-
-                    .right {
-                        flex: 1;
-                        margin-left: 26rpx;
-                        margin-right: 18rpx;
-                        background-color: #fff;
-                        > view {
-                            height: 90rpx;
-                            display: flex;
-                            align-items: center;
-
-                            &:not(:last-child) {
-                                border-bottom: 2rpx solid #f9f9f9;
-                            }
-
-                            &.active {
-                                color: #0090ff;
-                                font-weight: bold;
-                            }
-                        }
-                    }
-                }
-
-                .action-box {
                     padding: 0 40rpx;
-                    display: flex;
-                    justify-content: space-between;
+                    width: 100%;
+                    box-shadow: 0 0 10px #ddd;
+                    > view {
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
 
-                    padding-bottom: 20rpx;
+                    .custom-menu-box {
+                        background-color: #fff;
+                        padding-top: 24rpx;
+                        border-top: solid 4rpx #f5f5f5;
+                        .menu-box {
+                            width: 100%;
+                            display: flex;
+                            margin-bottom: 56rpx;
+                            font-size: 28rpx;
+                            .left {
+                                width: 236rpx;
+                                background-color: #f9f9f9;
+
+                                > view {
+                                    height: 90rpx;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+
+                                    &.active {
+                                        background-color: #fff;
+                                        color: #0090ff;
+                                    }
+                                }
+                            }
+
+                            .right {
+                                flex: 1;
+                                margin-left: 26rpx;
+                                margin-right: 18rpx;
+                                background-color: #fff;
+                                > view {
+                                    height: 90rpx;
+                                    display: flex;
+                                    align-items: center;
+
+                                    &:not(:last-child) {
+                                        border-bottom: 2rpx solid #f9f9f9;
+                                    }
+
+                                    &.active {
+                                        color: #0090ff;
+                                        font-weight: bold;
+                                    }
+                                }
+                            }
+                        }
+
+                        .action-box {
+                            padding: 0 40rpx;
+                            display: flex;
+                            justify-content: space-between;
+
+                            padding-bottom: 20rpx;
+                        }
+                    }
                 }
             }
         }

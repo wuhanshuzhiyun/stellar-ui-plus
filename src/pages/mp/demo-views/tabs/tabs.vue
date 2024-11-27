@@ -82,6 +82,10 @@ const setShowType = (v: SwitchOnChangeEvent) => (showType.value = v.detail.value
 </script>
 <template>
     <page-layout title="标签页">
+        <view class="description">
+            <view class="cmp-name">Tabs 标签页</view>
+            <view class="cmp-desc">用于内容分类后的展示切换。</view>
+        </view>
         <ste-tabs :showImage="showImage" :showSubtitle="showSubTitle" :showTitle="showTitle" :swipeable="swipeable" :type="showType">
             <ste-tab v-for="item in datas" :key="item.title" :title="item.title" :image="item.image" :badge="showBadge ? item.badge : 0" :subTitle="item.subTitle">
                 <view>{{ item.title }} Content</view>

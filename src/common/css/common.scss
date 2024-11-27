@@ -45,6 +45,9 @@ body {
     height: 100vh;
     overflow: hidden;
     width: 100vw;
+
+    display: flex;
+    flex-direction: column;
     ::-webkit-scrollbar {
         display: none;
         width: 0 !important;
@@ -53,18 +56,31 @@ body {
         background: transparent;
         color: transparent;
     }
-    & > .content {
+    > .content {
         padding: 0 40rpx;
-        // #ifdef  H5 || APP
-        height: calc(100vh - 50px);
-        // #endif
-        // #ifdef  MP-WEIXIN
-        height: calc(100% - 220rpx);
-        // #endif
-        // #ifdef  MP-ALIPAY
-        height: calc(100% - 200rpx);
-        // #endif
+        flex: 1;
         overflow-y: auto;
+
+        .description {
+            .cmp-name {
+                font-size: 48rpx;
+                font-weight: bold;
+                padding-top: 48rpx;
+                color: #000000;
+            }
+            .cmp-desc {
+                color: #0009;
+                margin-top: 8rpx;
+                margin-bottom: 32rpx;
+            }
+        }
+
+        .type-block {
+            font-size: 36rpx;
+            font-weight: bold;
+            margin: 16rpx 0;
+            color: #000000;
+        }
 
         & > .demo-item {
             margin-bottom: 16px;

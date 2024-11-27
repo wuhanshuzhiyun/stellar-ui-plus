@@ -1,5 +1,10 @@
 <template>
     <page-layout title="加载动画">
+        <view class="description">
+            <view class="cmp-name">Loading 加载</view>
+            <view class="cmp-desc">加载动画，用于表示加载中的过渡状态。</view>
+        </view>
+
         <view class="demo-item">
             <view class="title">加载类型</view>
             <view class="item-block">
@@ -7,6 +12,7 @@
                 <ste-loading :type="2"></ste-loading>
             </view>
         </view>
+
         <view class="demo-item">
             <view class="title">自定义图标颜色</view>
             <view class="item-block">

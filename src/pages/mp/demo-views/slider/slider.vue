@@ -27,6 +27,13 @@ const marks2 = ref({
 
 <template>
     <page-layout title="滑块">
+        <view class="description">
+            <view class="cmp-name">Slider 滑动选择器</view>
+            <view class="cmp-desc">用于选择横轴或者竖轴上的数值、区间、档位。</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view class="item-block">
@@ -34,6 +41,16 @@ const marks2 = ref({
                     <ste-slider value="30"></ste-slider>
                 </view>
             </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">竖向</view>
+            <view class="item-block" style="padding-left: 30rpx; height: 300rpx">
+                <ste-slider vertical value="30"></ste-slider>
+            </view>
+        </view>
+        、
+        <view class="type-block">
+            <view>02 组件样式</view>
         </view>
         <view class="demo-item">
             <view class="title">滑块条高度 & 滑块大小</view>
@@ -58,11 +75,8 @@ const marks2 = ref({
                 <ste-slider :value="[10, 20]" range></ste-slider>
             </view>
         </view>
-        <view class="demo-item">
-            <view class="title">竖向</view>
-            <view class="item-block" style="padding-left: 30rpx; height: 300rpx">
-                <ste-slider vertical value="30"></ste-slider>
-            </view>
+        <view class="type-block">
+            <view>03 组件状态</view>
         </view>
         <view class="demo-item">
             <view class="title">禁用</view>
@@ -87,6 +101,9 @@ const marks2 = ref({
             <view class="item-block" style="margin-bottom: 50rpx">
                 <ste-slider showStops :marks="marks" value="30"></ste-slider>
             </view>
+        </view>
+        <view class="type-block">
+            <view>03 组件自定义</view>
         </view>
         <view class="demo-item">
             <view class="title">自定义滑块</view>

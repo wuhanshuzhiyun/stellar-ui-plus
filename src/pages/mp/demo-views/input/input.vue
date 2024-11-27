@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 const inputFocus = ref(false);
 const count = ref(0);
+const v = ref('');
 let codeTimer: any;
 
 function focus() {
@@ -21,11 +22,18 @@ function getCode() {
 
 <template>
     <page-layout title="输入框" contentStyle="background: #fbfbfc;">
+        <view class="description">
+            <view class="cmp-name">Input 输入框</view>
+            <view class="cmp-desc">用于单行文本信息输入。</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">文本输入框</view>
             <view class="item-block">
                 <view style="width: 100%">
-                    <ste-input value="输入" rootClass="my-input" />
+                    <ste-input v-model="v" rootClass="my-input" />
                 </view>
             </view>
         </view>
@@ -55,6 +63,9 @@ function getCode() {
                     <ste-input placeholder="请输入" placeholderStyle="color: #f00" />
                 </view>
             </view>
+        </view>
+        <view class="type-block">
+            <view>02 组件状态</view>
         </view>
         <view class="demo-item">
             <view class="title">禁用&只读</view>
@@ -88,13 +99,16 @@ function getCode() {
             <view class="title">焦点</view>
             <view class="item-block">
                 <view style="width: 100%">
-                    <ste-input v-model:focus="inputFocus" />
+                    <ste-input :focus.sync="inputFocus" />
                 </view>
 
                 <view style="width: 100%; text-align: center">
                     <ste-button width="100%" style="margin-right: 50rpx" @click="focus">焦点</ste-button>
                 </view>
             </view>
+        </view>
+        <view class="type-block">
+            <view>03 组件样式</view>
         </view>
         <view class="demo-item">
             <view class="title">对齐方式</view>
@@ -154,32 +168,26 @@ function getCode() {
         <view class="demo-item">
             <view class="title">前后插槽</view>
             <view class="item-block">
-                <view style="width: 100%">
+                <view style="width: 80%">
                     <ste-input placeholder="请输入内容" confirmType="next" rootClass="root-my-input" shape="line">
-                        <template v-slot:prefix>
-                            <view style="margin-right: 28rpx">
-                                <ste-icon code="&#xe68c;" size="28" />
-                                <text>文本</text>
-                            </view>
-                        </template>
-                        <template v-slot:suffix>
-                            <view>
-                                <ste-icon code="&#xe672;" size="28" />
-                            </view>
-                        </template>
+                        <view slot="prefix" style="margin-right: 28rpx">
+                            <ste-icon code="&#xe68c;" size="28" />
+                            <text>文本</text>
+                        </view>
+                        <view slot="suffix">
+                            <ste-icon code="&#xe672;" size="28" />
+                        </view>
                     </ste-input>
                 </view>
             </view>
             <view class="item-block">
-                <view style="width: 100%">
+                <view style="width: 80%">
                     <ste-input placeholder="请输入验证码" confirmType="next" rootClass="root-my-input" shape="line">
-                        <template v-slot:suffix>
-                            <view>
-                                <ste-button :mode="100" :round="false" @click="getCode" :disabled="count > 0">
-                                    {{ count <= 0 ? '获取验证码' : count + '秒后获取' }}
-                                </ste-button>
-                            </view>
-                        </template>
+                        <view slot="suffix">
+                            <ste-button :mode="100" :round="false" @click="getCode" :disabled="count > 0">
+                                {{ count <= 0 ? '获取验证码' : count + '秒后获取' }}
+                            </ste-button>
+                        </view>
                     </ste-input>
                 </view>
             </view>

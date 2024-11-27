@@ -1,5 +1,12 @@
 <template>
     <page-layout title="徽标">
+        <view class="description">
+            <view class="cmp-name">Badge 徽标</view>
+            <view class="cmp-desc">用于告知用户，该区域的状态变化或者待处理任务的数量。</view>
+        </view>
+        <view class="type-block">
+            <view>01 组件类型</view>
+        </view>
         <view class="demo-item">
             <view class="title">徽标内容</view>
             <view class="item-block">
@@ -21,6 +28,24 @@
             </view>
         </view>
         <view class="demo-item">
+            <view class="title">小红点</view>
+            <view class="item-block">
+                <view>
+                    <ste-badge showDot>
+                        <view class="avator"></view>
+                    </ste-badge>
+                </view>
+                <view>
+                    <ste-badge showDot background="rgb(19, 183, 22)">
+                        <view class="avator"></view>
+                    </ste-badge>
+                </view>
+            </view>
+        </view>
+        <view class="type-block">
+            <view>02 组件样式</view>
+        </view>
+        <view class="demo-item">
             <view class="title">背景</view>
             <view class="item-block">
                 <view>
@@ -40,21 +65,7 @@
                 </view>
             </view>
         </view>
-        <view class="demo-item">
-            <view class="title">小红点</view>
-            <view class="item-block">
-                <view>
-                    <ste-badge showDot>
-                        <view class="avator"></view>
-                    </ste-badge>
-                </view>
-                <view>
-                    <ste-badge showDot background="rgb(19, 183, 22)">
-                        <view class="avator"></view>
-                    </ste-badge>
-                </view>
-            </view>
-        </view>
+
         <view class="demo-item">
             <view class="title">徽标位置</view>
             <view class="item-block">
@@ -107,6 +118,9 @@
                 </view>
             </view>
         </view>
+        <view class="type-block">
+            <view>03 组件自定义</view>
+        </view>
         <view class="demo-item">
             <view class="title">为0时是否显示徽标</view>
             <view class="item-block">
@@ -137,7 +151,7 @@
             <view class="item-block">
                 <view>
                     <ste-badge>
-                        <template #content>
+                        <template slot="content">
                             <ste-icon code="&#xe67a;" size="20"></ste-icon>
                         </template>
                         <view class="avator"></view>
@@ -145,7 +159,7 @@
                 </view>
                 <view>
                     <ste-badge>
-                        <template #content>
+                        <template slot="content">
                             <ste-icon code="&#xe67b;" size="16"></ste-icon>
                         </template>
                         <view class="avator"></view>

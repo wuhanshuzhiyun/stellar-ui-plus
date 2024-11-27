@@ -40,6 +40,10 @@ const onClickItem = (title: string, text: string) => {
 </script>
 <template>
     <page-layout title="索引列表">
+        <view class="description">
+            <view class="cmp-name">IndexList 索引列表</view>
+            <view class="cmp-desc">通过折叠面板收纳内容区域。</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view style="width: 100%; height: 750rpx">

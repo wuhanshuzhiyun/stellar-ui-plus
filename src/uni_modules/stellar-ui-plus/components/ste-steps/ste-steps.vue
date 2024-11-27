@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { defineEmits, defineProps, defineOptions } from 'vue';
 import propsData, { STEPS_KEY, stepsEmits } from './props';
 import { useProvide } from '../../utils/mixin';
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch, defineProps, defineOptions } from 'vue';
 import { useInject } from '../../utils/mixin';
 import { type StepsProps, STEPS_KEY } from '../ste-steps/props';
 import propsData from './props';

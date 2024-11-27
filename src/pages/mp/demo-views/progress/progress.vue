@@ -18,6 +18,10 @@ function add() {
 
 <template>
     <page-layout title="进度条">
+        <view class="description">
+            <view class="cmp-name">Progress 进度条</view>
+            <view class="cmp-desc">用于展示任务当前的进度。</view>
+        </view>
         <view class="demo-item">
             <view class="title">背景色</view>
             <view class="item-block">

@@ -15,7 +15,14 @@ function finish(e: string | number) {
 
 <template>
     <page-layout title="验证码输入">
+        <view class="description">
+            <view class="cmp-name">CodeInput 验证码输入</view>
+            <view class="cmp-desc">用于验证码输入或短密码输入</view>
+        </view>
         <view class="demo-item">
+            <view class="type-block">
+                <view>01 组件类型</view>
+            </view>
             <view class="title">基础使用</view>
             <view class="item-block">
                 <view style="width: 100%">
@@ -50,6 +57,9 @@ function finish(e: string | number) {
                 </view>
             </view>
         </view>
+        <view class="type-block">
+            <view>02 组件样式</view>
+        </view>
         <view class="demo-item">
             <view class="title">调整颜色</view>
             <view class="item-block">
@@ -65,7 +75,7 @@ function finish(e: string | number) {
             <view class="title">自定义显示</view>
             <view class="item-block">
                 <view style="width: 100%">
-                    <ste-code-input v-model="value2" formatter="·" :fontSize="100" :maxlength="4"></ste-code-input>
+                    <ste-code-input v-model="value2" formatter="·" fontSize="100" :maxlength="4"></ste-code-input>
                 </view>
                 <view style="width: 100%">
                     <ste-code-input v-model="value3" mode="line" formatter="*" :maxlength="4"></ste-code-input>
@@ -79,7 +89,7 @@ function finish(e: string | number) {
 .demo-item {
     .item-block {
         > view:not(:last-child) {
-            margin: 0 8px 16px 0;
+            margin: 0 16rpx 32rpx 0;
         }
     }
 }

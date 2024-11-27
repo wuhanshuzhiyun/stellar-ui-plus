@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import utils from '../../utils/utils.js';
 import propsData from './props';
-import { computed, defineOptions, type CSSProperties } from 'vue';
+import { computed, defineEmits, defineProps, defineOptions, type CSSProperties } from 'vue';
 
 defineOptions({
     name: 'ste-rate',

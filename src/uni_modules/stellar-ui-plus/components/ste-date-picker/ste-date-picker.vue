@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, defineOptions, nextTick } from 'vue';
+import { ref, onMounted, nextTick, defineEmits, defineProps, defineOptions } from 'vue';
 import propsData from './props';
 import type { CloumnType } from './types';
 import utils from '../../utils/utils';

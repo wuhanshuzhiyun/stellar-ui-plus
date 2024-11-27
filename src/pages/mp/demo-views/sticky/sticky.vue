@@ -23,6 +23,10 @@ const onUnfixed = () => {
 
 <template>
     <page-layout title="吸顶">
+        <view class="description">
+            <view class="cmp-name">Sticky 吸顶</view>
+            <view class="cmp-desc">用于常驻页面顶部的信息、操作展示。</view>
+        </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
             <view class="title">滚动页面，即可看到下方标题栏目吸顶</view>

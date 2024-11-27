@@ -13,9 +13,11 @@ ps：注意 目前 useToast 只能在 setup 作用域下使用
 
 ```html
 <script setup lang="ts">
-    import { useToast } from 'stellar-ui-plus/composables";
+    import { useToast } from 'stellar-ui-plus/composables';
     const toast = useToast();
-    function click1() { toast.showToast({ title: '提示内容', }); }
+    function click1() {
+        toast.showToast({ title: '提示内容' });
+    }
 </script>
 ```
 

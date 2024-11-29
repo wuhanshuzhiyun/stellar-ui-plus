@@ -168,26 +168,32 @@ function getCode() {
         <view class="demo-item">
             <view class="title">前后插槽</view>
             <view class="item-block">
-                <view style="width: 80%">
+                <view style="width: 100%">
                     <ste-input placeholder="请输入内容" confirmType="next" rootClass="root-my-input" shape="line">
-                        <view slot="prefix" style="margin-right: 28rpx">
-                            <ste-icon code="&#xe68c;" size="28" />
-                            <text>文本</text>
-                        </view>
-                        <view slot="suffix">
-                            <ste-icon code="&#xe672;" size="28" />
-                        </view>
+                        <template v-slot:prefix>
+                            <view style="margin-right: 28rpx">
+                                <ste-icon code="&#xe68c;" size="28" />
+                                <text>文本</text>
+                            </view>
+                        </template>
+                        <template v-slot:suffix>
+                            <view>
+                                <ste-icon code="&#xe672;" size="28" />
+                            </view>
+                        </template>
                     </ste-input>
                 </view>
             </view>
             <view class="item-block">
-                <view style="width: 80%">
+                <view style="width: 100%">
                     <ste-input placeholder="请输入验证码" confirmType="next" rootClass="root-my-input" shape="line">
-                        <view slot="suffix">
-                            <ste-button :mode="100" :round="false" @click="getCode" :disabled="count > 0">
-                                {{ count <= 0 ? '获取验证码' : count + '秒后获取' }}
-                            </ste-button>
-                        </view>
+                        <template v-slot:suffix>
+                            <view>
+                                <ste-button :mode="100" :round="false" @click="getCode" :disabled="count > 0">
+                                    {{ count <= 0 ? '获取验证码' : count + '秒后获取' }}
+                                </ste-button>
+                            </view>
+                        </template>
                     </ste-input>
                 </view>
             </view>

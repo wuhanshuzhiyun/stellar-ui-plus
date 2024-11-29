@@ -151,7 +151,7 @@
             <view class="item-block">
                 <view>
                     <ste-badge>
-                        <template slot="content">
+                        <template #content>
                             <ste-icon code="&#xe67a;" size="20"></ste-icon>
                         </template>
                         <view class="avator"></view>
@@ -159,7 +159,7 @@
                 </view>
                 <view>
                     <ste-badge>
-                        <template slot="content">
+                        <template #content>
                             <ste-icon code="&#xe67b;" size="16"></ste-icon>
                         </template>
                         <view class="avator"></view>

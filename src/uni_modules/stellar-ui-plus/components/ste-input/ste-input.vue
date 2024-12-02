@@ -75,8 +75,10 @@ const cmpShowClear = computed(() => {
 watch(
     () => props.modelValue,
     val => {
-        dataValue.value = val;
-        tmpDataValue.value = val;
+        setTimeout(() => {
+            dataValue.value = val;
+            tmpDataValue.value = val;
+        });
     },
     { immediate: true }
 );
@@ -84,8 +86,10 @@ watch(
 watch(
     () => props.value,
     val => {
-        dataValue.value = val;
-        tmpDataValue.value = val;
+        setTimeout(() => {
+            dataValue.value = val;
+            tmpDataValue.value = val;
+        });
     },
     { immediate: true }
 );

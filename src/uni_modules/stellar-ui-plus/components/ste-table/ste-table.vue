@@ -91,10 +91,18 @@ const cmpShowFixedPlaceholder = computed(() => {
 watch(
     () => props.data,
     val => {
-        tableData.value = val as Obj[];
+        // 由于没有数据时会导致插槽无法渲染，然后表头无法显示，所以在无数据时先给默认值，让表头能渲染，再加延时，恢复成原来的数据
+        if (val.length === 0) {
+            tableData.value = [{}];
+        } else {
+            tableData.value = val as Obj[];
+        }
         initRowData();
         calcSum();
         initSelection();
+        setTimeout(() => {
+            tableData.value = val as Obj[];
+        });
     },
     { immediate: true, deep: true }
 );
@@ -176,7 +184,38 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
             </view>
             <template v-if="height || Number(height) > 0">
                 <scroll-view scroll-y class="ste-table-scroll" @scrolltolower="handleScrollToLower">
-                    <view class="ste-table-body">
+                    <view class="ste-table-body" :class="!tableData.length ? 'no-data' : ''">
+                        <template v-if="tableData.length">
+                            <view
+                                class="ste-table-row"
+                                :class="[getRowClass(row, rowIndex)]"
+                                :style="[getRowStyle(row, rowIndex) as CSSProperties]"
+                                v-for="(row, rowIndex) in tableData"
+                                :key="rowIndex"
+                                @click="rowClick(row, $event)"
+                            >
+                                <slot :row="row"></slot>
+                            </view>
+                            <view class="ste-table-row sum" v-if="showSummary">
+                                <view class="ste-table-cell" v-for="(column, index) in columns" :key="index" :class="[getHeaderCellClass(column, 0)]">
+                                    <view class="cell-box">
+                                        <view v-if="index === 0" class="sum-header">{{ sumText }}</view>
+                                        <view v-else>
+                                            {{ sumData[index] || '-' }}
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </template>
+                        <template v-else>
+                            <text class="no-data-text">- 暂无数据 -</text>
+                        </template>
+                    </view>
+                </scroll-view>
+            </template>
+            <template v-else>
+                <view class="ste-table-body" :class="!tableData.length ? 'no-data' : ''">
+                    <template v-if="tableData.length">
                         <view
                             class="ste-table-row"
                             :class="[getRowClass(row, rowIndex)]"
@@ -197,38 +236,17 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
                                 </view>
                             </view>
                         </view>
-                    </view>
-                </scroll-view>
-            </template>
-            <template v-else>
-                <view class="ste-table-body">
-                    <view
-                        class="ste-table-row"
-                        :class="[getRowClass(row, rowIndex)]"
-                        :style="[getRowStyle(row, rowIndex) as CSSProperties]"
-                        v-for="(row, rowIndex) in tableData"
-                        :key="rowIndex"
-                        @click="rowClick(row, $event)"
-                    >
-                        <slot :row="row"></slot>
-                    </view>
-                    <view class="ste-table-row sum" v-if="showSummary">
-                        <view class="ste-table-cell" v-for="(column, index) in columns" :key="index" :class="[getHeaderCellClass(column, 0)]">
-                            <view class="cell-box">
-                                <view v-if="index === 0" class="sum-header">{{ sumText }}</view>
-                                <view v-else>
-                                    {{ sumData[index] || '-' }}
-                                </view>
-                            </view>
-                        </view>
-                    </view>
+                    </template>
+                    <template v-else>
+                        <text class="no-data-text">- 暂无数据 -</text>
+                    </template>
                 </view>
             </template>
         </view>
     </view>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $default-border: 2rpx solid #ebebeb;
 
 .ste-table-root {
@@ -265,6 +283,11 @@ $default-border: 2rpx solid #ebebeb;
 
         .ste-table-content {
             border-left: $default-border;
+        }
+
+        &.no-data {
+            border-bottom: $default-border;
+            border-right: $default-border;
         }
     }
 
@@ -338,6 +361,18 @@ $default-border: 2rpx solid #ebebeb;
 
         .ste-table-body {
             // display: table-row-group;
+            &.no-data {
+                padding: 32rpx;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-bottom: $default-border;
+                border-right: $default-border;
+
+                .no-data-text {
+                    font-size: var(--font-size-28, 28rpx);
+                }
+            }
             width: 100%;
             .ste-table-row {
                 // display: table-row;

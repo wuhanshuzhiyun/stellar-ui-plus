@@ -57,8 +57,7 @@ export default function useData(props: TableProps, emits: SetupContext<TableEmit
     if (checkStates.value.length > 0) {
       if (canCheckStates.value.length === checkStates.value.length)
         checkAllState.value = 'all'
-      else
-        checkAllState.value = 'indeterminate'
+      else checkAllState.value = 'indeterminate'
     }
     else {
       checkAllState.value = 'none'
@@ -89,8 +88,7 @@ export default function useData(props: TableProps, emits: SetupContext<TableEmit
     else {
       if (state)
         checkStatesSet.value.add(rowIndex)
-      else
-        checkStatesSet.value.delete(rowIndex)
+      else checkStatesSet.value.delete(rowIndex)
     }
     checkStates.value = Array.from(checkStatesSet.value)
 
@@ -136,7 +134,9 @@ export default function useData(props: TableProps, emits: SetupContext<TableEmit
     if (!isProp) {
       const style = {} as CSSProperties
       if (column.width)
-        style.width = utils.addUnit(column.width)
+      // style.width = utils.addUnit(column.width)
+      // style.flexBasis = utils.addUnit(column.width);
+        style.flex = `0 1 ${utils.addUnit(column.width)}`
 
       if (column.minWidth)
         style.minWidth = utils.addUnit(column.minWidth)

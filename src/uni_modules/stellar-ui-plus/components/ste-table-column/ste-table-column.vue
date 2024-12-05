@@ -31,7 +31,10 @@ defineExpose({ row });
 const cmpRootStyle = computed(() => {
     let style: CSSProperties = {};
     if (props.width) {
-        style.width = utils.addUnit(props.width);
+        // style.width = utils.addUnit(props.width);
+        // style.flexBasis = utils.addUnit(props.width);
+        // style.flexGrow = 0;
+        style.flex = `0 1 ${utils.addUnit(props.width)}`;
     }
     if (props.minWidth) {
         style.minWidth = utils.addUnit(props.minWidth);

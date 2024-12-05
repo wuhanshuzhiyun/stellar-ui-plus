@@ -78,7 +78,7 @@ watch(
         setTimeout(() => {
             dataValue.value = val;
             tmpDataValue.value = val;
-        });
+        }, 10);
     },
     { immediate: true }
 );

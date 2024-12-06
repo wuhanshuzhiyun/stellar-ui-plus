@@ -65,7 +65,7 @@ const cmpBtnStyle = computed(() => {
 
     // 边框色 borderColor
     if (props.borderColor) {
-        style.border = `solid ${utils.formatPx(2)}`;
+        style.border = `solid ${utils.formatPx(props.borderWidth)}`;
         style.borderColor = props.borderColor;
     }
     // 类型 mode
@@ -105,6 +105,10 @@ const cmpBtnStyle = computed(() => {
     if (props.disabled) {
         style.opacity = 0.5;
     }
+
+    // 是否粗体
+    style.fontWeight = props.bold ? 'bold' : 'normal';
+
     return utils.deepMerge(style, props.rootStyle);
 });
 
@@ -181,7 +185,7 @@ function handleClick(e: Event) {
     background-size: cover;
     border-radius: 10rpx;
     margin: 0;
-
+    border-width: 10rpx;
     .btn-box {
         width: 100%;
         white-space: nowrap;

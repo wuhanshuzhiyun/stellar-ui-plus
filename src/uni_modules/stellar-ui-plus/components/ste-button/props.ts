@@ -16,4 +16,6 @@ export default {
   openType: String as PropType<ButtonOpenType>,
   scope: String,
   rootStyle: { type: Object, default: () => ({}) },
+  bold: { type: Boolean, default: false },
+  borderWidth: { type: String, default: 2 },
 }

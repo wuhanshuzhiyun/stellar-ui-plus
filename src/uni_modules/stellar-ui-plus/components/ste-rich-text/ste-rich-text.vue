@@ -12,6 +12,9 @@ const replaceVerticalAlign = (text: string) => {
     // 解决微信小程序会忽略空白换行的问题
     html = html.replace(/↵/g, '\n');
     html = html.replace(/&nbsp;/g, '\n');
+    // 解决特殊转义符的问题
+    html = html.replace(/&middot;/g, '·');
+    html = html.replace(/&mdash;/g, '—');
     return html;
 };
 </script>

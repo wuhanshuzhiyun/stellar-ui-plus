@@ -85,6 +85,11 @@ const cmpBtnStyle = computed(() => {
             style.height = utils.formatPx(96);
             style.fontSize = 'var(--font-size-36, 36rpx)';
             break;
+        case 450:
+            style.padding = `0 ${utils.formatPx(72)}`;
+            style.height = utils.formatPx(96);
+            style.fontSize = 'var(--font-size-40, 40rpx)';
+            break;
         default:
             style.padding = `0 ${utils.formatPx(40)}`;
             style.height = utils.formatPx(68);

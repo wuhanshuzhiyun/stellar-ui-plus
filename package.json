@@ -1,6 +1,6 @@
 {
     "name": "stellar-ui-plus",
-    "version": "1.15.6",
+    "version": "1.15.7",
     "private": true,
     "packageManager": "pnpm@8.14.1",
     "license": "MIT",

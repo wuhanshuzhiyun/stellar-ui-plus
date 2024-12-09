@@ -28,6 +28,7 @@ const inputProps = {
   cursorSpacing: { type: Number, default: 20 },
   allowSpace: { type: Boolean, default: true },
   cursor: { type: Number, default: 0 },
+  password: { type: Boolean, default: false },
 }
 
 export default inputProps

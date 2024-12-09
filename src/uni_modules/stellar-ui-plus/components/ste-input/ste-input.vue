@@ -212,6 +212,7 @@ function inputClick() {
                         :style="[{ width: cmpShowClear ? 'calc(100% - 48rpx)' : 'calc(100% - 8rpx)' }]"
                         :cursor-spacing="cursorSpacing"
                         :cursor="cursor"
+                        @click.stop="() => {}"
                     />
                     <view v-if="cmpShowClear" class="clear-icon" @click="onClear">
                         <ste-icon code="&#xe694;" color="#bbbbbb" size="34" />

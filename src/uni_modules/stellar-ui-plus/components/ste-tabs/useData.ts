@@ -184,7 +184,7 @@ export default function useData({
 
   const cmpScrollX = computed(() => internalChildren.length > props.divideNum)
 
-  const cmpPullDown = computed(() => props.divideNum > 0 && cmpScrollX.value && props.pullDown)
+  const cmpPullDown = computed(() => cmpScrollX.value && props.pullDown)
 
   const cmpPullStyle = computed(() => {
     if (!listBoxEl.value || !openPullDown.value)

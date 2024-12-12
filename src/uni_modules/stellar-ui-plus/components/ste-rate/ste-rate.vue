@@ -11,7 +11,6 @@ const props = defineProps(propsData);
 
 const cmpListStyle = computed(() => {
     const style: CSSProperties = {};
-    style['columnGap'] = utils.formatPx(props.gutter);
     // #ifdef H5
     if (props.disabled || props.readonly) {
         style['cursor'] = 'not-allowed';
@@ -19,6 +18,12 @@ const cmpListStyle = computed(() => {
         style['cursor'] = 'pointer';
     }
     // #endif
+    return style;
+});
+
+const cmpItemStyle = computed(() => {
+    let style: CSSProperties = {};
+    style['marginRight'] = utils.formatPx(props.gutter);
     return style;
 });
 
@@ -97,7 +102,7 @@ function getWidth(index: number) {
 <template>
     <view class="ste-rate-root">
         <view class="list" :style="[cmpListStyle]">
-            <view v-for="index in cmpCount" class="item">
+            <view v-for="index in cmpCount" class="item" :style="[cmpItemStyle]">
                 <view class="icon-box inactive" @click="onSelect(index)">
                     <ste-icon :code="cmpInactiveCode" :color="inactiveColor" :size="size"></ste-icon>
                 </view>
@@ -123,6 +128,9 @@ function getWidth(index: number) {
                 top: 0;
             }
         }
+    }
+    .item:last-child {
+        margin-right: 0 !important;
     }
 }
 </style>

@@ -39,7 +39,6 @@ const cmpRootStyle = computed(() => {
     style['fontSize'] = `var(--font-size-${cmpTextSize.value},${utils.formatPx(cmpTextSize.value)})`;
     style['color'] = cmpChecked.value ? cmpTextActiveColor.value : cmpTextInactiveColor.value;
     style['flexDirection'] = cmpTextPosition.value == 'right' ? 'row' : 'row-reverse';
-    style['columnGap'] = utils.formatPx(cmpColumnGap.value);
     style['marginLeft'] = utils.formatPx(cmpMarginLeft.value);
     style['marginRight'] = utils.formatPx(cmpMarginRight.value);
     // #ifdef H5
@@ -54,6 +53,12 @@ const cmpRootStyle = computed(() => {
     if (cmpTextDisabled.value) {
         style['pointerEvents'] = 'none';
     }
+    return style;
+});
+
+const cmpIconStyle = computed(() => {
+    let style: CSSProperties = {};
+    style['marginRight'] = utils.formatPx(cmpColumnGap.value);
     return style;
 });
 
@@ -128,7 +133,6 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
             if (props[key]) {
                 return props[key];
             } else {
-                // return parent[key] ? parent[key] : value
                 return value;
             }
         }
@@ -140,7 +144,7 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
 
 <template>
     <view class="ste-radio-root" :style="[cmpRootStyle]" @click="click">
-        <view class="icon">
+        <view class="icon" :style="[cmpIconStyle]">
             <slot name="icon" :slotProps="cmpSlotProps">
                 <view class="input-icon" :style="[cmpInputStyle]">
                     <ste-icon v-if="cmpChecked && cmpIconSize" :size="cmpIconSize * 0.8" code="&#xe67a;" :color="cmpDisabled ? '#bbbbbb' : '#fff'" bold></ste-icon>
@@ -161,7 +165,6 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
     width: auto;
     height: 100%;
     display: flex;
-    column-gap: 16rpx;
     align-items: center;
     .input-icon {
         display: flex;

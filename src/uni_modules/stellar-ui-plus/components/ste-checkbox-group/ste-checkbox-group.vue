@@ -28,8 +28,7 @@ function updateValue(value: any[]) {
 
 <style lang="scss" scoped>
 .ste-checkbox-group-root {
-    display: flex;
-    column-gap: 16rpx;
+    display: grid;
     row-gap: 16rpx;
 }
 </style>

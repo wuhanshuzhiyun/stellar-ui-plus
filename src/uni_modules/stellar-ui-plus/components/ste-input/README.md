@@ -61,7 +61,7 @@
 通过 `focus`值来控制输入框的焦点，支持双向绑定
 
 ```html
-<ste-input :focus.sync="focus" />
+<ste-input :focus="focus" />
 ```
 
 #### 文本对齐方式

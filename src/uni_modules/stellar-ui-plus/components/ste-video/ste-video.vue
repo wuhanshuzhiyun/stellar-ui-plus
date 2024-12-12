@@ -91,7 +91,7 @@ const cmpRootStyleVar = computed(() => {
         '--text-box-width': utils.formatPx(80),
         '--progress-bar-width': utils.formatPx(28),
         '--choose-item-font-size': `var(--font-size-${28},${utils.formatPx(28)})`,
-        '--check-icon-left': utils.formatPx(100),
+        '--check-icon-left': utils.formatPx(130),
         '--choose-item-gap': utils.formatPx(80),
         '--cover-font-size': `var(--font-size-${28},${utils.formatPx(28)})`,
         '--title-padding-left': utils.formatPx(194),

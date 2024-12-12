@@ -144,12 +144,16 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: var(--choose-item-gap);
+            // gap: var(--choose-item-gap);
 
             width: 100%;
             height: 100%;
         }
+
         .choose-item {
+            &:not(:last-child) {
+                margin-bottom: var(--choose-item-gap);
+            }
             color: #ffffff;
             position: relative;
             width: 100%;

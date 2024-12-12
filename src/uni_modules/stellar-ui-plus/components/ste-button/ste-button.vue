@@ -71,27 +71,37 @@ const cmpBtnStyle = computed(() => {
     // 类型 mode
     switch (props.mode) {
         case 100:
-            style.padding = `0 ${utils.formatPx(30)}`;
+            if (props.width == 'auto') {
+                style.padding = `0 ${utils.formatPx(30)}`;
+            }
             style.height = utils.formatPx(48);
             style.fontSize = 'var(--font-size-24, 24rpx)';
             break;
         case 300:
-            style.padding = `0 ${utils.formatPx(72)}`;
+            if (props.width == 'auto') {
+                style.padding = `0 ${utils.formatPx(72)}`;
+            }
             style.height = utils.formatPx(80);
             style.fontSize = 'var(--font-size-32, 32rpx)';
             break;
         case 400:
-            style.padding = `0 ${utils.formatPx(72)}`;
+            if (props.width == 'auto') {
+                style.padding = `0 ${utils.formatPx(72)}`;
+            }
             style.height = utils.formatPx(96);
             style.fontSize = 'var(--font-size-36, 36rpx)';
             break;
         case 450:
-            style.padding = `0 ${utils.formatPx(72)}`;
+            if (props.width == 'auto') {
+                style.padding = `0 ${utils.formatPx(72)}`;
+            }
             style.height = utils.formatPx(96);
             style.fontSize = 'var(--font-size-40, 40rpx)';
             break;
         default:
-            style.padding = `0 ${utils.formatPx(40)}`;
+            if (props.width == 'auto') {
+                style.padding = `0 ${utils.formatPx(40)}`;
+            }
             style.height = utils.formatPx(68);
             style.fontSize = 'var(--font-size-28, 28rpx)';
             break;

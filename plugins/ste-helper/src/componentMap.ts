@@ -1596,6 +1596,12 @@ export const componentMap: Record<string, ComponentDesc> = {
         type: 'number',
         default: '0',
       },
+      {
+        name: 'password',
+        description: '是否是密码类型,H5和App写此属性时，type失效',
+        type: 'boolean',
+        default: 'false',
+      },
     ],
     events: [
       {

@@ -27,7 +27,8 @@ const inputProps = {
   rootClass: { type: String, default: '' },
   cursorSpacing: { type: Number, default: 20 },
   allowSpace: { type: Boolean, default: true },
-  cursor: { type: Number, default: 0 },
+  cursor: { type: [Number] as PropType<number | undefined>, default: 999 },
+  password: { type: Boolean, default: false },
 }
 
 export default inputProps

@@ -182,7 +182,7 @@ export default function useData({
     return { marginLeft, display }
   })
 
-  const cmpScrollX = computed(() => props.divideNum > 0 && internalChildren.length > props.divideNum)
+  const cmpScrollX = computed(() => internalChildren.length > props.divideNum)
 
   const cmpPullDown = computed(() => cmpScrollX.value && props.pullDown)
 

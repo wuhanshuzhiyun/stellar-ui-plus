@@ -232,6 +232,7 @@ function fullscreenchange(e: BaseEvent) {
     if (isFull.value) {
         (videoContext as Obj).hideStatusBar();
     } else {
+        showPopup.value = false;
         (videoContext as Obj).showStatusBar();
     }
 }

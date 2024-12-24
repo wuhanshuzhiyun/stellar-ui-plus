@@ -93,7 +93,11 @@ export default function useData({ props, emits, thas }: {
       const step = cmpStep.value
       if (!step)
         return
-      const el = await utils.querySelector<false>(`#${step.target}`, thas.value?.$parent)
+      let component = thas.value
+      let el: UniApp.NodeInfo | null = null
+      for (component = component?.$parent; !el && component; component = component?.$parent)
+        el = await utils.querySelector<false>(`#${step.target}`, component)
+
       if (!el) {
         console.error(`未找到ID为${step.target}的元素`)
         return

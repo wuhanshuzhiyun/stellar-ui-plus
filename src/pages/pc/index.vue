@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onLoad } from '@dcloudio/uni-app';
 // #ifdef H5
 import { provide } from 'vue';
 import H5 from './components/H5.vue';

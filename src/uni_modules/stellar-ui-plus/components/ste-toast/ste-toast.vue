@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, defineOptions, inject, watch } from 'vue';
-import { toastDefaultOptionsKey } from './ste-toast';
+import { onPageShow, onPageHide } from '@dcloudio/uni-app';
+import { ref, computed, defineOptions, watch, nextTick } from 'vue';
+import { useToastStore } from '../../store/index';
+let { setToast, getToast } = useToastStore();
+
 defineOptions({
     name: 'ste-toast',
 });
@@ -23,6 +26,51 @@ const cmpIcon = computed(() => {
         error: '&#xe67b;',
     };
     return iconObj[icon.value] || '';
+});
+
+const openBegin = computed(() => {
+    return getToast();
+});
+
+let pageShow = ref(true);
+onPageShow(() => {
+    {
+        nextTick(() => {
+            pageShow.value = true;
+            // 每次进入页面 则清空队列时间
+            uni.removeStorageSync('toastLastParams');
+            // 每次进入新页面 清除所有定时器
+            getToast()?.timer?.forEach(value => {
+                clearTimeout(value);
+            });
+            // 清除定时器数据
+            setToast({
+                timer: [],
+            });
+        });
+    }
+});
+onPageHide(() => {
+    pageShow.value = false;
+    hideToast();
+    // 每次离开页面 则清空队列时间
+    uni.removeStorageSync('toastLastParams');
+    // 每次离开页面 清除所有定时器
+    getToast()?.timer?.forEach(value => {
+        clearTimeout(value);
+    });
+    // 清除定时器数据
+    setToast({
+        timer: [],
+    });
+});
+
+watch(openBegin, (value: any) => {
+    if (value.show && pageShow.value) {
+        showToast(value);
+    } else {
+        hideToast();
+    }
 });
 
 // 打开弹窗
@@ -86,16 +134,6 @@ function hideToast() {
     uni.removeStorageSync('toastLastParams');
     close.value();
 }
-
-// 组合函数
-const injectToastOptions = ref(inject(toastDefaultOptionsKey));
-watch(injectToastOptions, (value: any) => {
-    if (value.show) {
-        showToast(value);
-    } else {
-        hideToast();
-    }
-});
 
 defineExpose({
     showToast,

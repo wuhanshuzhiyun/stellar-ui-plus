@@ -1,7 +1,6 @@
 import utils from '../../utils/utils'
 import { getMonthDays } from '../ste-calendar/date'
-
-type Dayjs = typeof utils.dayjs.Dayjs
+import type { Dayjs } from '../../types/index'
 
 export type DateMode = 'date' | 'datetime' | 'time' | 'month' | 'minute'
 

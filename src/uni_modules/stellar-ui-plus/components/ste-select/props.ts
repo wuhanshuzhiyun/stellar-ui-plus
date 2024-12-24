@@ -56,4 +56,7 @@ export default {
   borderRadius: { type: [Number, String], default: () => 8 },
   optionsPosition: { type: String as PropType<SelectPosition>, default: () => 'auto' },
   disabled: { type: Boolean, default: () => false },
+  autoFilterable: { type: Boolean, default: () => true },
+  loading: { type: Boolean, default: () => false },
+  pageSize: { type: Boolean, default: () => 10 },
 }

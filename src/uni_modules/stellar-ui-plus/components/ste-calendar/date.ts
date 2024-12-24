@@ -1,6 +1,5 @@
 import utils from '../../utils/utils'
-
-type Dayjs = typeof utils.dayjs.Dayjs
+import type { Dayjs } from '../../types/index'
 
 export interface WeekType {
   dayText: string | number

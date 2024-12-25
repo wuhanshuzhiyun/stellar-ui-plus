@@ -1,10 +1,10 @@
-import { useToastStore } from '../../store/index'
-
+import { setToast } from '../../store/index'
 export function useToast() {
-  const { setToast } = useToastStore()
   // 打开弹窗
   function showToast(options: any) {
-    setToast(
+    console.log('options', options)
+    uni.setStorageSync(
+      'toast',
       Object.assign(
         {
           show: true,
@@ -12,6 +12,14 @@ export function useToast() {
         options,
       ),
     )
+    // setToast(
+    //     Object.assign(
+    //         {
+    //             show: true,
+    //         },
+    //         options
+    //     )
+    // );
   }
   /** 关闭弹窗 */
   function hideToast() {

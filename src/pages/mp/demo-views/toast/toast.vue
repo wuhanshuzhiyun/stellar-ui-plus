@@ -156,14 +156,12 @@ function click13() {
 
 function click14() {
     setTimeout(() => {
-        console.log('111111');
         toast1.showToast({
             title: '队列1',
             order: true,
         });
     });
     setTimeout(() => {
-        console.log('222222');
         toast1.showToast({
             title: '队列2',
             duration: 4000,

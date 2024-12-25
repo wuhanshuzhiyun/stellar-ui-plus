@@ -12,6 +12,8 @@ export default function useData({ props, emits, thas }: {
     (e: 'change', value: SelectValue, option: SelectOption | SelectOption[]): void
     (e: 'cancel'): void
     (e: 'confirm', value: SelectValue): void
+    (e: 'inputFilterable', value: string): void
+    (e: 'loadMore'): void
   }
   thas: globalThis.Ref<globalThis.ComponentPublicInstance | null | undefined>
 }) {
@@ -82,6 +84,8 @@ export default function useData({ props, emits, thas }: {
 
   const cmpFilterable = computed(() => props.mode === 'filterable' && dataOptions.value.length <= 1)
 
+  const cmpAutoFilterable = computed(() => cmpFilterable.value && props.autoFilterable)
+
   const cmpMultiple = computed(() => !cmpShowDate.value && (dataOptions.value.length > 1 || props.multiple))
 
   const cmpAllowCreate = computed(() => props.allowCreate && cmpFilterable.value)
@@ -135,7 +139,7 @@ export default function useData({ props, emits, thas }: {
   const getViewOptions = () => {
     nextTick(() => {
       let list = dataOptions.value
-      if (cmpFilterable.value && userFilterable.value) {
+      if (cmpAutoFilterable.value && userFilterable.value) {
         // 处理筛选数据
         list = list.map(item =>
           item.filter(value => value[props.labelKey].includes(userFilterable.value)),
@@ -191,10 +195,12 @@ export default function useData({ props, emits, thas }: {
 
   watch(() => userFilterable.value, getViewOptions)
 
-  const onUserFilterable = () => {
+  const onUserFilterable = (e?: any) => {
     const value = inputView.value
     setFilterableTime(() => {
       setUserFilterable(value)
+      if (e)
+        emits('inputFilterable', value)
       if (cmpAllowCreate.value && value) {
         setDataAllowCreate({
           [props.valueKey]: value,
@@ -252,7 +258,7 @@ export default function useData({ props, emits, thas }: {
   }
 
   const onFocus = () => {
-    if (!cmpFilterable.value)
+    if (!cmpAutoFilterable.value)
       return
     setInputView('')
     const v = confirmValue.value

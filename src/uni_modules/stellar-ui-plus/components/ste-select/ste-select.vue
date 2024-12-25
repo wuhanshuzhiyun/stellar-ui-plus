@@ -3,6 +3,7 @@ import { getCurrentInstance, defineOptions, onMounted, ref } from 'vue';
 import propsData, { type SelectOption, type SelectValue } from './props';
 import useData from './useData';
 import DateTime from './datetime.vue';
+import DatapagerVue from './datapager.vue';
 
 defineOptions({
     name: 'ste-select',
@@ -17,6 +18,8 @@ const emits = defineEmits<{
     (e: 'change', value: SelectValue, option: SelectOption): void;
     (e: 'cancel'): void;
     (e: 'confirm', value: SelectValue): void;
+    (e: 'inputFilterable', value: string): void;
+    (e: 'loadMore'): void;
 }>();
 const thas = ref<globalThis.ComponentPublicInstance | null>();
 
@@ -52,6 +55,10 @@ const {
     clickConfirm,
 } = useData({ props, emits, thas });
 const stop = () => {};
+const loadMore = () => {
+    if (viewOptions.value[0].length < props.pageSize) return;
+    emits('loadMore');
+};
 </script>
 <template>
     <view class="ste-select-root" :class="{ open: showOptions, disabled }" :style="[cmpRootStyle]">
@@ -115,23 +122,34 @@ const stop = () => {};
 
                     <block v-else>
                         <view class="one-col-options">
-                            <scroll-view scroll-y class="options-col" v-for="(col, index) in viewOptions" :key="index">
-                                <view class="options-item" v-if="dataAllowCreate" @click="onSelect(index, dataAllowCreate, true)">
-                                    {{ dataAllowCreate[labelKey] }}
-                                </view>
-                                <view class="options-item" v-for="(item, i) in col" :key="item[valueKey]" :class="{ active: active(index, item) }" @click="onSelect(index, item)">
-                                    {{ item[labelKey] }}
-                                </view>
-                                <block v-if="!dataAllowCreate && !col.length">
-                                    <view class="options-empty">暂无数据</view>
-                                </block>
-                            </scroll-view>
+                            <view class="options-col" v-for="(col, index) in viewOptions" :key="index">
+                                <DatapagerVue :rootStyle="{ maxHeight: '450rpx' }" @loadMore="loadMore">
+                                    <view class="options-item" v-if="dataAllowCreate" @click="onSelect(index, dataAllowCreate, true)">
+                                        {{ dataAllowCreate[labelKey] }}
+                                    </view>
+                                    <view class="options-item" v-for="(item, i) in col" :key="item[valueKey]" :class="{ active: active(index, item) }" @click="onSelect(index, item)">
+                                        {{ item[labelKey] }}
+                                    </view>
+                                    <block v-if="!dataAllowCreate && !col.length">
+                                        <view class="options-empty">暂无数据</view>
+                                    </block>
+                                </DatapagerVue>
+                            </view>
                         </view>
                     </block>
                 </view>
                 <view class="options-btns" v-if="cmpShowDate || dataOptions.length > 1">
                     <view class="options-cancel" @click="clickCancel">取消</view>
                     <view class="options-confirm" @click="clickConfirm">确定</view>
+                </view>
+                <view class="loading-mark" v-if="loading">
+                    <view class="loading-icon">
+                        <slot name="loading-icon">
+                            <view class="loading-icon-transform">
+                                <ste-icon code="&#xe6a2;" size="60" color="#555"></ste-icon>
+                            </view>
+                        </slot>
+                    </view>
                 </view>
             </view>
         </view>
@@ -143,9 +161,11 @@ const stop = () => {};
     width: var(--ste-select-width);
     height: var(--ste-select-height);
     position: relative;
+
     &.disabled .select-content {
         background-color: #eee;
     }
+
     &.open {
         .select-mask {
             position: fixed;
@@ -155,6 +175,7 @@ const stop = () => {};
             left: 0;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 996;
+
             .select-content {
                 .open-icon-event > .open-icon {
                     transform: rotate(180deg);
@@ -162,10 +183,12 @@ const stop = () => {};
             }
         }
     }
+
     .select-mask {
         width: var(--ste-select-width);
         height: var(--ste-select-height);
     }
+
     .select-content {
         width: var(--ste-select-width);
         height: var(--ste-select-height);
@@ -178,13 +201,16 @@ const stop = () => {};
         z-index: 1;
         padding-left: 20rpx; // 调整内边距，以适应不同的选项高度。
         overflow: hidden;
+
         .content-text {
             width: 100%;
             height: 100%;
             white-space: nowrap;
             font-size: var(--ste-select-font-size);
+
             &.multiple {
                 padding: 2px 0;
+
                 .view-item {
                     max-width: 100%;
                     line-height: var(--ste-select-multiple-line-height);
@@ -198,25 +224,31 @@ const stop = () => {};
                     white-space: nowrap; // 文本不换行，防止文字溢出
                     overflow: hidden; // 隐藏溢出内容，并显示省略号
                 }
+
                 .filterable-input {
                     height: var(--ste-select-multiple-placeholder-height);
                     display: inline-block;
+
                     &.content {
                         width: 50%;
                     }
                 }
+
                 .placeholder-text {
                     line-height: var(--ste-select-multiple-placeholder-height);
                 }
             }
         }
+
         .filterable-input {
             width: 100%;
             height: 100%;
         }
+
         .placeholder-text {
             color: #999999;
         }
+
         .open-icon-event {
             width: var(--ste-select-multiple-line-height);
             height: var(--ste-select-multiple-line-height);
@@ -228,6 +260,7 @@ const stop = () => {};
             right: 0;
             top: 50%;
             transform: translateY(-50%);
+
             .open-icon {
                 background-color: #ebebeb; // 设置一个背景颜色，以便在开发过程中能够看到这个元素。
                 border-radius: 16rpx;
@@ -237,6 +270,7 @@ const stop = () => {};
                 align-items: center;
                 justify-content: center;
                 transition: 300ms;
+
                 .open-icon-transform {
                     width: 100%;
                     height: 100%;
@@ -248,6 +282,7 @@ const stop = () => {};
             }
         }
     }
+
     .options-content {
         display: none;
         position: absolute;
@@ -255,16 +290,20 @@ const stop = () => {};
         border-radius: 8rpx;
         background-color: #fff;
         overflow: hidden;
+
         .select-options {
             width: 100%;
             max-height: 546rpx;
+
             .one-col-options {
                 padding: 20rpx 0;
             }
+
             .options-col {
                 padding: 0 16rpx;
                 height: 100%;
                 max-height: 450rpx;
+
                 .options-item {
                     width: 100%;
                     line-height: 42rpx;
@@ -286,10 +325,12 @@ const stop = () => {};
                     &:nth-child(1) {
                         padding-top: 0;
                     }
+
                     &:nth-last-child(1) {
                         padding-bottom: 0;
                     }
                 }
+
                 .options-empty {
                     width: 100%;
                     height: 82rpx;
@@ -298,6 +339,7 @@ const stop = () => {};
                     color: #999999;
                 }
             }
+
             .time-item {
                 width: 100%;
                 height: 100%;
@@ -307,6 +349,7 @@ const stop = () => {};
                 font-size: var(--ste-select-font-size);
             }
         }
+
         .options-btns {
             width: 100%;
             height: 96rpx;
@@ -315,13 +358,56 @@ const stop = () => {};
             align-items: center;
             justify-content: space-between;
             font-size: var(--ste-select-font-size);
+
             .options-cancel {
                 color: #999999;
                 padding: 0 40rpx;
             }
+
             .options-confirm {
                 color: #0090ff;
                 padding: 0 40rpx;
+            }
+        }
+
+        .loading-mark {
+            position: absolute;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .loading-icon {
+                width: 60rpx;
+                height: 60rpx;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .loading-icon-transform {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 16rpx;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: loading 1s infinite linear;
+
+                    @keyframes loading {
+                        from {
+                            transform: rotate(0deg);
+                        }
+
+                        to {
+                            transform: rotate(360deg);
+                        }
+                    }
+                }
             }
         }
     }

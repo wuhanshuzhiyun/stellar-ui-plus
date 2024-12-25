@@ -213,6 +213,24 @@
             "default": false
         },
         {
+            "name": "autoFilterable",
+            "description": "是否自动过滤条目（mode为filterable时生效）",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "loading",
+            "description": "加载动画",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "pageSize",
+            "description": "分页大小(当列表数量小于该值时,不会触发上拉触底事件)",
+            "type": "number",
+            "default": 10
+        },
+        {
             "name": "[event]change",
             "description": "选择时触发",
             "type": "(value: string | number,option: SelectOption | SelectOption[])=>void",
@@ -242,6 +260,16 @@
                     "description": "选中的值或选中值列表"
                 }
             ]
+        },
+        {
+            "name": "[event]inputFilterable",
+            "description": "搜索框输入数据时触发",
+            "type": "(str:string)=>void"
+        },
+        {
+            "name": "[event]loadMore",
+            "description": "上拉触底时触发",
+            "type": "()=>void"
         }
     ]
 }

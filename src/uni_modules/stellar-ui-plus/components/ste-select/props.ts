@@ -31,6 +31,9 @@ export interface SteSelectProps {
   borderRadius: number | string
   optionsPosition: SelectPosition
   disabled: boolean
+  autoFilterable: boolean
+  loading: boolean
+  pageSize: number
 }
 
 export default {
@@ -58,5 +61,5 @@ export default {
   disabled: { type: Boolean, default: () => false },
   autoFilterable: { type: Boolean, default: () => true },
   loading: { type: Boolean, default: () => false },
-  pageSize: { type: Boolean, default: () => 10 },
+  pageSize: { type: Number, default: () => 10 },
 }

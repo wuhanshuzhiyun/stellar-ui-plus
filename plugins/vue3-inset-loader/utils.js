@@ -71,11 +71,9 @@ function initPages(that) {
   let pagesPath = (that.query || {}).pagesPath
   if (!pagesPath)
     pagesPath = path.resolve(rootPath, 'pages.json')
-  else
-    rootPath = path.resolve(pagesPath, '../')
+  else rootPath = path.resolve(pagesPath, '../')
 
   rootPath = rootPath.replace(/\\/g, '/')
-  console.log(pagesPath, 'pagesPath')
   pagesJson = JSON.parse(stripJsonComments(fs.readFileSync(pagesPath, 'utf8')))
   return initInsetLoader()
 }

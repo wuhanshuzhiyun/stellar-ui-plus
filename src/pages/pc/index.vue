@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app';
 // #ifdef H5
 import { provide } from 'vue';
 import H5 from './components/H5.vue';
@@ -13,6 +12,7 @@ provide('datas', datas);
 // #endif
 
 // #ifndef H5
+import { onLoad } from '@dcloudio/uni-app';
 onLoad(() => {
     uni.redirectTo({ url: '/pages/mp/index' });
 });

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onPageShow, onPageHide } from '@dcloudio/uni-app';
-import { ref, toRef, computed, defineOptions, watch, nextTick } from 'vue';
-import { toast, setToast, getToast, setToastTimer, getToastTimer, setToastLastParams, getToastLastParams, clearToastLastParams, toastLastParams } from '../../store/index';
+import { ref, computed, defineOptions, watch, nextTick } from 'vue';
+import { useToastStore, useToastLastParams } from '../../store/index';
+let { setToast, getToast } = useToastStore();
+let { setToastLastParams, getToastLastParams } = useToastLastParams();
 
 defineOptions({
     name: 'ste-toast',
@@ -27,55 +29,55 @@ const cmpIcon = computed(() => {
     return iconObj[icon.value] || '';
 });
 
-const openBegin = computed(() => {
-    let toast = uni.getStorageSync('toast');
-    console.log('toast', toast);
-    return toast.show;
-    // console.log('getToast', toast.value.show);
-    // return toRef(toast.value.show);
-});
-
 let pageShow = ref(true);
 onPageShow(() => {
     {
         nextTick(() => {
             pageShow.value = true;
             // 每次进入页面 则清空队列时间
-            // setToastLastParams({});
-            // 每次离开页面 清除所有定时器
-            // getToastTimer().forEach(value => {
-            //     clearTimeout(value);
-            // });
-            // // 清除定时器数据
-            // setToastTimer([]);
+            setToastLastParams({});
+            // 每次进入新页面 清除所有定时器
+            getToast()?.timer?.forEach(value => {
+                clearTimeout(value);
+            });
+            // 清除定时器数据
+            setToast({
+                timer: [],
+            });
         });
     }
 });
 onPageHide(() => {
     pageShow.value = false;
+    hideToast();
     // 每次离开页面 则清空队列时间
-    // clearToastLastParams();
+    setToastLastParams({});
     // 每次离开页面 清除所有定时器
-    // getToastTimer().forEach(value => {
-    //     clearTimeout(value);
-    // });
-    // // 清除定时器数据
-    // setToastTimer([]);
+    getToast()?.timer?.forEach(value => {
+        clearTimeout(value);
+    });
+    // 清除定时器数据
+    setToast({
+        timer: [],
+    });
 });
 
-watch(openBegin, (value: any) => {
-    console.log('value', value);
-    console.log('pageShow', pageShow.value);
-    if (value && pageShow.value) {
-        showToast(getToast());
-    } else {
-        show.value = false;
+watch(
+    () => getToast().show,
+    (value: any) => {
+        if (value && pageShow.value) {
+            showToast(getToast());
+        } else {
+            show.value = false;
+        }
+    },
+    {
+        deep: true,
     }
-});
+);
 
 // 打开弹窗
 function showToast(params: any) {
-    console.log('params', params);
     // 关闭前面的弹窗
     show.value = false;
     // 关闭系统的弹窗
@@ -88,16 +90,17 @@ function showToast(params: any) {
         // 先取上一次存的值 如果为空 则为第一个值
         let toastLastParams = getToastLastParams();
         // 等待的时间 第一个没有等待时间 后面的都是前面的持续时间的合
-        time = toastLastParams.time ?? 0;
+        if (toastLastParams.time) {
+            time = toastLastParams.time;
+        }
         // 存当前的等待时间 加100ms 以防没有打开中间的提示
         params.time = time + (params.duration ?? defaultDuration) + 100;
         setToastLastParams(params);
     } else {
         // 遇到非队列数据 则清空队列时间
         setToastLastParams({});
-        setToastTimer([]);
     }
-    let stateTimer = setTimeout(() => {
+    setTimeout(() => {
         try {
             clearTimeout(timer.value);
             show.value = true;
@@ -120,24 +123,19 @@ function showToast(params: any) {
             }
             success.value();
         } catch (error) {
-            console.error('error', error);
+            console.log('error', error);
             fail.value();
         }
         complete.value();
     }, time);
-    setToastTimer([...getToastTimer(), stateTimer]);
 }
 
 // 关闭弹窗
 function hideToast() {
     show.value = false;
     // 遇到非队列数据 则清空队列时间
-    clearToastLastParams();
-    setToastTimer([]);
+    setToastLastParams({});
     close.value();
-    setToast({
-        show: false,
-    });
 }
 
 defineExpose({
@@ -159,7 +157,7 @@ defineExpose({
                         <ste-loading v-else :size="72" color="#FFFFFF"></ste-loading>
                     </block>
                 </view>
-                <ste-text class="title" space="nbsp">{{ title }}</ste-text>
+                <ste-text clas="title" space="nbsp">{{ title }}</ste-text>
             </view>
         </view>
         <view class="mask" v-if="mask"></view>

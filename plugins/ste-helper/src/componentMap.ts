@@ -3293,6 +3293,27 @@ export const componentMap: Record<string, ComponentDesc> = {
         type: 'boolean',
         default: false,
       },
+      {
+        name: 'autoFilterable',
+        description: '是否自动过滤条目（mode为filterable时生效）',
+        type: 'boolean',
+        version: '1.16.16',
+        default: true,
+      },
+      {
+        name: 'loading',
+        description: '加载动画',
+        type: 'boolean',
+        version: '1.16.16',
+        default: false,
+      },
+      {
+        name: 'total',
+        description: '数据总数（list选项数量大于或等于total值时不触发上拉触底事件）',
+        type: 'number',
+        version: '1.16.16',
+        default: 0,
+      },
     ],
     events: [
       {
@@ -3325,6 +3346,18 @@ export const componentMap: Record<string, ComponentDesc> = {
             description: '选中的值或选中值列表',
           },
         ],
+      },
+      {
+        name: 'inputFilterable',
+        description: '搜索框输入数据时触发',
+        version: '1.16.16',
+        type: '(str:string)=>void',
+      },
+      {
+        name: 'loadMore',
+        description: '上拉触底时触发',
+        version: '1.16.16',
+        type: '()=>void',
       },
     ],
   },

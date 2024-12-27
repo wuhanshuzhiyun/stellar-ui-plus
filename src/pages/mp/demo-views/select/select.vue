@@ -99,6 +99,7 @@ const time6 = ref(0);
 
 const pageSize = ref(10);
 const list7 = ref<{ label: string; value: number }[]>([]);
+const total = ref(0);
 const loading7 = ref(false);
 
 const onChange = (val: SelectValue, option: SelectOption) => {
@@ -137,6 +138,7 @@ const getList7 = () => {
             return { label: `选项${value}`, value };
         });
         list7.value = [...list7.value, ...newData];
+        total.value = 40;
     }, 1000);
 };
 onMounted(getList7);
@@ -207,7 +209,7 @@ const loadMore = () => {
         </view>
         <view class="demo-item">
             <view class="title">分页</view>
-            <ste-select :list="list7" :loading="loading7" :pageSize="pageSize" @loadMore="loadMore"></ste-select>
+            <ste-select :list="list7" :loading="loading7" :total="total" @loadMore="loadMore"></ste-select>
         </view>
         <view class="demo-item">
             <view class="title">自定义图标</view>

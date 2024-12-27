@@ -33,7 +33,7 @@ export interface SteSelectProps {
   disabled: boolean
   autoFilterable: boolean
   loading: boolean
-  pageSize: number
+  total: number
 }
 
 export default {
@@ -61,5 +61,5 @@ export default {
   disabled: { type: Boolean, default: () => false },
   autoFilterable: { type: Boolean, default: () => true },
   loading: { type: Boolean, default: () => false },
-  pageSize: { type: Number, default: () => 10 },
+  total: { type: Number, default: () => 0 },
 }

@@ -56,7 +56,7 @@ const {
 } = useData({ props, emits, thas });
 const stop = () => {};
 const loadMore = () => {
-    if (viewOptions.value[0].length < props.pageSize) return;
+    if (props.total < 1 || props.list.length >= props.total) return;
     emits('loadMore');
 };
 </script>

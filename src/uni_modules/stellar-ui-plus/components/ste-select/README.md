@@ -195,6 +195,127 @@
 </script>
 ```
 
+### 远程搜索
+- 当在`mode`属性为`filterable`时，属性`autoFilterable`设置为`false`时，则不会执行自动筛选，可通过`inputFilterable`监听输入执行远程搜索
+
+```html
+<template>
+<ste-select
+	:list="list"
+	mode="filterable"
+	:autoFilterable="false"
+	:loading="loading"
+	@inputFilterable="onInputFilterable"
+></ste-select>
+</template>
+<script setup>
+const listAll = [
+	{ label: '选项211', value: 211 },
+	{ label: '选项212', value: 212 },
+	{ label: '选项213', value: 213 },
+	{ label: '选项214', value: 214 },
+	{ label: '选项215', value: 215 },
+	{ label: '选项216', value: 216 },
+	{ label: '选项217', value: 217 },
+	{ label: '选项218', value: 218 },
+	{ label: '选项219', value: 219 },
+	{ label: '选项220', value: 220 },
+	{ label: '选项221', value: 221 },
+	{ label: '选项222', value: 222 },
+	{ label: '选项223', value: 223 },
+	{ label: '选项224', value: 224 },
+	{ label: '选项225', value: 225 },
+	{ label: '选项226', value: 226 },
+	{ label: '选项227', value: 227 },
+	{ label: '选项228', value: 228 },
+	{ label: '选项229', value: 229 },
+	{ label: '选项230', value: 230 },
+	{ label: '选项231', value: 231 },
+	{ label: '选项232', value: 232 },
+	{ label: '选项233', value: 233 },
+	{ label: '选项234', value: 234 },
+	{ label: '选项235', value: 235 },
+	{ label: '选项236', value: 236 },
+	{ label: '选项237', value: 237 },
+	{ label: '选项238', value: 238 },
+	{ label: '选项239', value: 239 },
+	{ label: '选项240', value: 240 },
+	{ label: '选项241', value: 241 },
+	{ label: '选项242', value: 242 },
+	{ label: '选项243', value: 243 },
+	{ label: '选项244', value: 244 },
+	{ label: '选项245', value: 245 },
+	{ label: '选项246', value: 246 },
+	{ label: '选项247', value: 247 },
+	{ label: '选项248', value: 248 },
+	{ label: '选项249', value: 249 },
+	{ label: '选项250', value: 250 },
+	{ label: '选项251', value: 251 },
+];
+
+const list = ref([])
+const loading = ref(false)
+let time = null
+const onInputFilterable = (v) => {
+    // 防抖
+    clearTimeout(time);
+    time = setTimeout(() => {
+        if (loading.value) return;
+        loading.value = true;
+        // 模拟远程搜索
+        setTimeout(() => {
+            loading.value = false;
+            console.log(v);
+            if (v) {
+                list.value = listAll.filter((item) => item.label.indexOf(v) !== -1);
+            } else {
+                list.value = listAll.map((item) => item);
+            }
+            console.log(list.value);
+        }, 1000);
+    }, 500);
+}
+</script>
+```
+### 分页
+- 事件`loadMore`可监听上拉触底（多列渲染无效）
+- 属性`total`控制每页显示条数
+	- `list`选项数量大于或等于`total`值时不触发上拉触底事件
+
+```html
+<template>
+	<ste-select :list="list" :loading="loading" :total="total" @loadMore="loadMore"></ste-select>
+</template>
+<script setup>
+const pageSize = ref(10);
+const list = ref([]);
+const total = ref(0)
+const loading = ref(false);
+
+const getList = () => {
+    if (loading.value) return;
+    loading.value = true;
+    // 模拟远程请求
+    setTimeout(() => {
+        loading.value = false;
+        const newData = Array.from({ length: pageSize.value }).map((_, i) => {
+            const value = list7.value.length + i + 1;
+            return { label: `选项${value}`, value };
+        });
+        list7.value.push(...newData);
+        total.value = 40
+    }, 1000);
+}
+
+onMonted(getList)
+
+const loadMore = ()=>getList()
+
+</script>
+```
+
+
+
 ### API
 
 #### Props

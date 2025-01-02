@@ -41,6 +41,7 @@ export default defineConfig({
     // see unocss.config.ts for config
     selfPlugin,
   ],
+
   build: {
     // 开启sourcemap
     sourcemap: true,

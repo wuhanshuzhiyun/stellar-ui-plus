@@ -1,44 +1,48 @@
 :root,
 :host {
-	// sizes
-	--pc-nav-width: 240px;
-	--pc-view-width: 375px;
-	--pc-view-height: 720px;
-	--pc-padding: 32px;
+    // sizes
+    --pc-nav-width: 338px;
+    --pc-view-width: 375px;
+    --pc-view-height: 720px;
+    --pc-padding: 32px;
+    --pc-header-nav-height: 64px;
+
+    // color
+    --pc-main-color: #409eff;
 }
 
 // 100%
 @media (max-width: 1920px) {
-	:root,
-	:host {
-		// sizes
-		--pc-nav-width: 240px;
-		--pc-view-width: 375px;
-		--pc-view-height: 720px;
-		--pc-padding: 32px;
-	}
+    :root,
+    :host {
+        // sizes
+        --pc-nav-width: 240px;
+        --pc-view-width: 375px;
+        --pc-view-height: 720px;
+        --pc-padding: 32px;
+    }
 }
 
 // 80%
 @media (max-width: 1600px) {
-	:root,
-	:host {
-		// sizes
-		--pc-nav-width: 240px;
-		--pc-view-width: 300px;
-		--pc-view-height: 620px;
-		--pc-padding: 32px;
-	}
+    :root,
+    :host {
+        // sizes
+        --pc-nav-width: 240px;
+        --pc-view-width: 300px;
+        --pc-view-height: 620px;
+        --pc-padding: 32px;
+    }
 }
 
 // 70%
 @media (max-width: 1280px) {
-	:root,
-	:host {
-		// sizes
-		--pc-nav-width: 240px;
-		--pc-view-width: 262px;
-		--pc-view-height: 520px;
-		--pc-padding: 32px;
-	}
+    :root,
+    :host {
+        // sizes
+        --pc-nav-width: 240px;
+        --pc-view-width: 262px;
+        --pc-view-height: 520px;
+        --pc-padding: 32px;
+    }
 }

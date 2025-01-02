@@ -2,7 +2,7 @@
 
 签名组件用于在页面上显示签名。
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -79,6 +79,8 @@
 <ste-signature strokeColor="#f0f" lineWidth="1" />
 ```
 
+---$
+
 ### API
 
 <!-- props -->
@@ -91,4 +93,5 @@
 | `back`  | 回退       | -                          | -        |
 | `save`  | 保存为图片 | (base64)=>void,(err)=>void | -        |
 
+---$
 {{xuyajun}}

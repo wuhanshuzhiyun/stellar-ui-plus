@@ -2,7 +2,7 @@
 
 在一组备选项中进行多选。
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -257,6 +257,8 @@
 </ste-checkbox-group>
 ```
 
+---$
+
 ### API
 
 <!-- props -->
@@ -294,5 +296,7 @@
 | --------- | -------------- | ------------------------------------------------------------ | -------- |
 | `default` | 复选框文本内容 | `{ checked: boolean, disabled: boolean, readonly: boolean }` | -        |
 | `icon`    | 复选框图标     | `{ checked: boolean, disabled: boolean, readonly: boolean }` | -        |
+
+---$
 
 {{qinpengfei}}

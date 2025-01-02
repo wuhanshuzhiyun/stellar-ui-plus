@@ -2,7 +2,7 @@
 
 在一组备选项中进行单选。
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -217,6 +217,8 @@
 </ste-radio-group>
 ```
 
+---$
+
 ### API
 
 <!-- props -->
@@ -254,4 +256,5 @@
 | `default` | 单选框文本内容 | `{ checked: boolean, disabled: boolean, readonly: boolean }` | -        |
 | `icon`    | 单选框图标     | `{ checked: boolean, disabled: boolean, readonly: boolean }` | -        |
 
+---$
 {{qinpengfei}}

@@ -2,7 +2,7 @@
 
 基于字体的图标集，包含了大多数常见场景的图标
 
-{{compatibility}}
+---$
 
 ## 代码演示
 
@@ -60,10 +60,13 @@
 <ste-icon fontFamily="iconfont" code="&#xe6cc;" />
 ```
 
+---$
+
 ### API
 
 <!-- props -->
 
+---$
 {{zyy}}
 
 {{qinpengfei}}

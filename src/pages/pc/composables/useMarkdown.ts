@@ -5,7 +5,7 @@ import { btnCopy } from '../markdown/requireFiles'
 
 export default function useMarkdown(): MarkdownData {
   const active = ref<string>('handbook-介绍')
-
+  const contents = ref<Group[]>(rests.concat(components))
   const isComponent = computed(() => !active.value.includes('handbook') && !active.value.includes('devGuide'))
 
   const activeBtns = () => {
@@ -17,6 +17,7 @@ export default function useMarkdown(): MarkdownData {
 
   const setActive = (value: string) => {
     window.history.pushState(null, '', `#/?active=${value}`)
+
     active.value = value
     const d = document.querySelector('.pc-page-body>.content>.right')
     if (d)
@@ -24,10 +25,24 @@ export default function useMarkdown(): MarkdownData {
     activeBtns()
   }
 
-  watch(() => uni.getLaunchOptionsSync().query, (v) => {
-    if (v.active)
-      setActive(v.active as string)
-  }, { immediate: true })
+  watch(
+    () => uni.getLaunchOptionsSync().query,
+    (v) => {
+      if (v.active) {
+        if (v.active.includes('handbook')) {
+          // 开发指南
+          contents.value = rests
+        }
+        else {
+          // 组件
+          contents.value = components
+        }
+
+        setActive(v.active as string)
+      }
+    },
+    { immediate: true },
+  )
 
   onMounted(() => {
     activeBtns()
@@ -39,17 +54,12 @@ export default function useMarkdown(): MarkdownData {
     else return `#/pages/mp/demo-views/${active.value}/${active.value}`
   })
 
-  const contents = ref<Group[]>(rests.concat(components))
-
   const viewMarkdown = computed(() => {
-    let result = ''
-    contents.value.forEach((group) => {
-      group.contents.forEach((item) => {
-        if (item.key === active.value)
-          result = item.html
-      })
-    })
-    return result
+    const targetGroup = contents.value.find(group => group.contents.some(item => item.key === active.value))
+    if (!targetGroup)
+      return { html: '', key: '', name: '', sort: 999 }
+
+    return targetGroup.contents.find(item => item.key === active.value) || { html: '', key: '', name: '', sort: 999 }
   })
 
   return {

@@ -2,7 +2,7 @@
 
 用于验证码输入或短密码输入
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -46,8 +46,11 @@
 <ste-code-input mode="line" formatter="*" :space="0" :maxlength="4" value="12"></ste-code-input>
 ```
 
+---$
+
 ### API
 
 <!-- props -->
 
+---$
 {{fuyuwei}}

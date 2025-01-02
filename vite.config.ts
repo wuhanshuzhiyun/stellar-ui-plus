@@ -3,8 +3,8 @@ import Uni from '@dcloudio/vite-plugin-uni'
 import UniHelperManifest from '@uni-helper/vite-plugin-uni-manifest'
 import UniHelperPages from '@uni-helper/vite-plugin-uni-pages'
 import UniHelperComponents from '@uni-helper/vite-plugin-uni-components'
-import mdPlugin, { Mode } from 'vite-plugin-markdown'
 import selfPlugin from './src/pages/pc/stellar-plus-plugin/index'
+import md2HtmlPlugin from './src/pages/pc/stellar-plus-plugin/md-to-html'
 
 // import AutoImport from 'unplugin-auto-import/vite'
 
@@ -15,7 +15,7 @@ export default defineConfig({
   plugins: [
     vue3InsetLoaderPlugin,
     // comTypes(),
-    mdPlugin({ mode: [Mode.HTML] }),
+    md2HtmlPlugin(),
     // https://github.com/uni-helper/vite-plugin-uni-manifest
     UniHelperManifest(),
     // https://github.com/uni-helper/vite-plugin-uni-pages
@@ -39,9 +39,8 @@ export default defineConfig({
     // }),
     // https://github.com/antfu/unocss
     // see unocss.config.ts for config
-    selfPlugin,
+    selfPlugin(),
   ],
-
   build: {
     // 开启sourcemap
     sourcemap: true,

@@ -2,7 +2,7 @@
 
 进度条组件
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -72,6 +72,8 @@
 <ste-progress :percentage="35" :displayTextThreshold="15"></ste-progress>
 ```
 
+---$
+
 ### API
 
 <!-- props -->
@@ -82,4 +84,5 @@
 | --------- | ---------- | -------- | -------- |
 | `default` | 进度条内容 | -        | -        |
 
+---$
 {{fuyuwei}}

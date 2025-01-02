@@ -5,8 +5,13 @@ const componentsType = require('./components-type')
 const propsMd = require('./props-md')
 
 module.exports = function () {
-  const comdir = path.join(getDir(), '/components')
-  const components = fs.readdirSync(comdir).filter(item => item.indexOf('ste-') === 0)
-  componentsType(components)
-  propsMd(components)
+  return {
+    name: 'self-plugin',
+    buildStart() {
+      const comdir = path.join(getDir(), '/components')
+      const components = fs.readdirSync(comdir).filter(item => item.indexOf('ste-') === 0)
+      componentsType(components)
+      propsMd(components)
+    },
+  }
 }

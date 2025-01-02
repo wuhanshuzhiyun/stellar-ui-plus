@@ -2,7 +2,7 @@
 
 步进器由增加按钮、减少按钮和输入框组成，用于在一定范围内输入、调整数字。
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -160,10 +160,13 @@
 <ste-stepper v-model="value15" theme="line" disableMinus></ste-stepper>
 ```
 
+---$
+
 ### API
 
 #### 组件属性(Props)
 
 <!-- props -->
 
+---$
 {{qinpengfei}}

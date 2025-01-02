@@ -2,7 +2,7 @@
 
 用于对事物进行评级操作。
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -87,8 +87,11 @@ let value5 = ref(2);
 let iconData = ref(['&#xe686;', '', '&#xe671;', '&#xe66a;', '&#xe66b;']);
 ```
 
+---$
+
 ### API
 
 <!-- props -->
 
+---$
 {{qinpengfei}}

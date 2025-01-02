@@ -2,7 +2,7 @@
 
 表示两种相互对立的状态间的切换，多用于触发「开/关」。
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -95,8 +95,11 @@ function change(value: any) {
 <ste-switch v-model="value5" loading></ste-switch>
 ```
 
+---$
+
 ### API
 
 <!-- props -->
 
+---$
 {{qinpengfei}}

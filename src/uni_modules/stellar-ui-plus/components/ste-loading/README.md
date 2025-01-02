@@ -2,7 +2,7 @@
 
 加载动画，用于表示加载中的过渡状态。
 
-{{compatibility}}
+---$
 
 ## 代码演示
 
@@ -64,8 +64,11 @@
 <ste-loading :type="2" :textSize="50" textColor="#0091FF">加载中...</ste-loading>
 ```
 
+---$
+
 ### API
 
 <!-- props -->
 
+---$
 {{qinpengfei}}

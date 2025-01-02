@@ -2,7 +2,7 @@
 
 用于页面上显示价格的组件
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -96,10 +96,13 @@
 <ste-price value="9527" bold :fontSize="50" />
 ```
 
+---$
+
 ### API
 
 <!-- props -->
 
+---$
 {{fuyuwei}}
 
 {{xuyajun}}

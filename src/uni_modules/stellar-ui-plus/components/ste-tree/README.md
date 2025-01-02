@@ -2,7 +2,7 @@
 
 -   树形控件
 
-{{compatibility}}
+---$
 
 ## 使用示例
 
@@ -198,6 +198,8 @@
 <script>
 ```
 
+---$
+
 ### API
 
 <!-- props -->
@@ -211,4 +213,5 @@
 | `close`  | 关闭指定节点                                                    | `value`  | -        |
 | `search` | 节点搜索                                                        | `title`  | -        |
 
+---$
 {{xuyajun}}

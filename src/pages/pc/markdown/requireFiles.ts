@@ -36,6 +36,7 @@ function formatHtml(html: string) {
   const pres = doc.querySelectorAll('body>pre')
   pres.forEach((pre) => {
     const codedom = pre.querySelector('code')
+    codedom?.classList.add('hljs')
     const code = codedom?.textContent
     const btn = document.createElement('button')
     btn.innerHTML = '复制'
@@ -142,14 +143,22 @@ export function componentFiles() {
   const markdowns: { [key: string]: Markdown } = import.meta.glob('../../../uni_modules/stellar-ui-plus/components/**/README.md', { eager: true })
 
   const markdownsData: Obj = {}
+
   for (const k in markdowns) {
-    let html = markdowns[k].html
+    // let html = markdowns[k].html;
+    let { html, desc, demo, api, guide } = markdowns[k]
     const name = k.replace(deg, '$1')
-    if (propsData[name] && html.includes('<!-- props -->'))
-      html = html.replace('<!-- props -->', propsData[name])
+    if (propsData[name] && api?.includes('<!-- props -->'))
+      api = api.replace('<!-- props -->', propsData[name])
     else console.error(`组件【${name}】Props文档异常，请严格按照规范编写文档`)
 
-    markdownsData[name] = formatHtml(assembleTemplate(html))
+    markdownsData[name] = {
+      html: formatHtml(assembleTemplate(html)),
+      htmlDesc: desc,
+      htmlDemo: demo ? formatHtml(assembleTemplate(demo)) : '',
+      htmlApi: api ? formatHtml(assembleTemplate(api)) : '',
+      htmlGuide: guide ? formatHtml(assembleTemplate(guide)) : '',
+    }
   }
 
   const groupData: { [key: string]: Group } = {}
@@ -160,7 +169,13 @@ export function componentFiles() {
     const name = k.replace(deg, '$1')
     const component: { group: keyof typeof ComponentGroups, html: string, title: string, sort: number } = componentJson[k].default
     componentData[name] = component
-    componentData[name].html = markdownsData[name]
+    const { html, htmlDesc, htmlDemo, htmlApi, htmlGuide } = markdownsData[name]
+    componentData[name].html = html
+    componentData[name].htmlDesc = htmlDesc
+    componentData[name].htmlDemo = htmlDemo
+    componentData[name].htmlApi = htmlApi
+    componentData[name].htmlGuide = htmlGuide
+
     if (!groupData[component.group])
       groupData[component.group] = Object.assign({ contents: [] }, ComponentGroups[component.group])
     groupData[component.group].contents.push({ ...component, name: component.title, key: name })

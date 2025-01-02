@@ -21,7 +21,7 @@ const style = {
 <style scoped lang="scss">
 .h5-component {
     position: fixed;
-    top: 50%;
+    top: calc(50% + var(--pc-header-nav-height));
     transform: translateY(-50%);
     right: 20px;
     z-index: 100;

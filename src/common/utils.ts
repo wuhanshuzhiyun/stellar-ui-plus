@@ -1,5 +1,6 @@
 import config from './config'
 
+type ReturnBasedOnBool<T extends boolean> = T extends true ? UniApp.NodeInfo[] : UniApp.NodeInfo
 let windowWidth: number = 0
 
 const utils = {
@@ -158,6 +159,23 @@ const utils = {
     const reg = new RegExp(`(^|&)${key}=([^&]*)(&|$)`)
     const r = url.substr(url.indexOf('?') + 1).match(reg)
     return r ? decodeURIComponent(r[2]) : null
+  },
+  querySelector<T extends boolean>(selectors: string, component?: globalThis.ComponentPublicInstance | null, all?: T): Promise<ReturnBasedOnBool<T>> {
+    return new Promise((resolve, reject) => {
+      try {
+        const func = all ? 'selectAll' : 'select'
+        uni.createSelectorQuery()
+          .in(component)
+          [func](selectors)
+          .boundingClientRect((data) => {
+            resolve(data as ReturnBasedOnBool<T>)
+          })
+          .exec()
+      }
+      catch (e) {
+        reject(e)
+      }
+    })
   },
 }
 

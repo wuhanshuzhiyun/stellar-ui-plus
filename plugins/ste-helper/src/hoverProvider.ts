@@ -64,7 +64,6 @@ export function registerHover(context: ExtensionContext) {
           }
           else {
             const markdonw = getComponentTableTemplate(item)
-            console.log('markdonw.propsTable is ', markdonw.propsTable)
             subString = `${markdonw.propsTable} \n ${markdonw.eventsTable}`
             return new MarkdownString(`${docString} \n ${markdonw.propsTable} \n ${markdonw.eventsTable}`)
           }

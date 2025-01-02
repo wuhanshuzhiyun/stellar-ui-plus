@@ -2,7 +2,7 @@
 
 搜索组件，集成了常见搜索框所需功能。
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -222,8 +222,11 @@ const onClick = (v: string) => {
 </view>
 ```
 
+---$
+
 ### API
 
 <!-- props -->
 
+---$
 {{xuyajun}}

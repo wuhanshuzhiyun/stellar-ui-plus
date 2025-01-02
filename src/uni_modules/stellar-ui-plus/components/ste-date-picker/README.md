@@ -2,7 +2,7 @@
 
 年月日时分秒选择器
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -109,10 +109,11 @@
 <ste-date-picker mode="date" :visibleItemCount="10"></ste-date-picker>
 ```
 
-### API
+---$
 
-#### Props
+### API
 
 <!-- props -->
 
+---$
 {{fuyuwei}}

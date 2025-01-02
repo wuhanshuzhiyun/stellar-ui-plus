@@ -2,7 +2,7 @@
 
 基于uni-app的视频组件二次开发，新增清晰度、倍速选择功能
 
-{{compatibility}}
+---$
 
 ### 代码演示
 
@@ -29,6 +29,8 @@
 <ste-video title="视频标题视频标题" :resolution="resolutionConfigArr"></ste-video>
 ```
 
+---$
+
 ### API
 
 #### 组件属性(Props)
@@ -40,5 +42,7 @@
 #### 组件事件(Events)
 
 事件可参考原生[video](https://zh.uniapp.dcloud.io/component/video.html)
+
+---$
 
 {{fuyuwei}}

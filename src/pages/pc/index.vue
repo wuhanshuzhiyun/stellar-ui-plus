@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 // #ifdef H5
-import { provide, ref } from 'vue';
+import { provide, ref, computed } from 'vue';
 import H5 from './components/H5.vue';
 import Left from './components/Left.vue';
 import Right from './components/Right.vue';
@@ -11,7 +11,6 @@ import useMarkdown from './composables/useMarkdown';
 import config from '@/common/config';
 import type { NavItem } from './types';
 import { rests, components } from './markdown';
-import { computed } from 'vue';
 
 const datas = useMarkdown();
 provide('datas', datas);
@@ -20,6 +19,10 @@ const navActive = ref(config.NAV_KEY_DEV);
 const isCompView = computed(() => {
     return navActive.value === config.NAV_KEY_COMP;
 }); // 标识当前是否在组件预览页面
+
+const cmpShowH5 = computed(() => {
+    return isCompView.value || config.SHOW_H5_PAGE.find(e => datas?.active.value.indexOf(e) > -1);
+});
 
 const handleHeaderNavChange = (item: NavItem) => {
     if (item.key === config.NAV_KEY_DEV) {
@@ -72,7 +75,7 @@ onLoad(() => {
                 <Right :is-comp-view="isCompView" />
             </div>
             <div class="content-h5">
-                <H5 />
+                <H5 v-if="cmpShowH5" />
             </div>
         </div>
     </div>

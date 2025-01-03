@@ -43,6 +43,8 @@ const NAV_COMP_DATA = [
   },
 ]
 
+const SHOW_H5_PAGE = ['个性化']
+
 export default {
   /** 图片根地址 */
   IMAGE_BASE_URL,
@@ -59,4 +61,5 @@ export default {
   NAV_COMP_KEY_API,
   NAV_COMP_KEY_GUIDE,
   BASE_WEB_URL,
+  SHOW_H5_PAGE,
 }

@@ -1,29 +1,26 @@
-import { provide, ref } from 'vue'
-import { messageBoxDefaultOptionsKey } from './ste-message-box'
-import type { MessageBoxOptions } from './constants'
+import type { MessageBoxOptions } from '../../types'
+import { useMsgBoxStore } from '../../store'
 
-export function useMessageBox(customKey?: string) {
-  const provideKey = customKey || messageBoxDefaultOptionsKey
-  const MsgOptions = ref<MessageBoxOptions>({})
-  provide(provideKey, MsgOptions)
+export const STE_MESSAGE_BOX_KEY = '$steMsgBoxKey'
+export function useMessageBox(key: string = STE_MESSAGE_BOX_KEY) {
+  const store = useMsgBoxStore()
 
-  // 打开弹窗
-  function showMsgBox(options: MessageBoxOptions) {
-    MsgOptions.value = Object.assign(
-      {
-        show: true,
-      },
-      options,
-    )
-  }
-  /** 关闭弹窗 */
-  function hideMsgBox() {
-    MsgOptions.value = {
-      show: false,
-    }
-  }
+  // 初始化
+  store.initializeState(key)
+
   return {
-    showMsgBox,
-    hideMsgBox,
+    showMsgBox(params: MessageBoxOptions) {
+      store.setMessageBox({
+        key,
+        params: {
+          ...params,
+          show: true,
+        },
+      })
+    },
+
+    hideMsgBox() {
+      store.resetMessageBox(key)
+    },
   }
 }

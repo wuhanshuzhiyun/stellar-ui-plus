@@ -8,24 +8,18 @@ export const ANIMATION_PROP: UniApp.CreateAnimationOptions = { duration: DURATIO
 
 export type MessageBoxIcon = 'info' | 'success' | 'error'
 
-export interface MessageBoxOptions {
-  show?: boolean
-  title?: string
-  content?: string
-  icon?: MessageBoxIcon
-  cancelText?: string
-  confirmText?: string
-  confirmColor?: string
-  showCancel?: boolean
-  showClose?: boolean
-  cancelColor?: string
-  editable?: boolean
-  placeholderText?: string
-  confirm?: (value?: string) => void
-  cancel?: (value?: string) => void
-  complete?: (value?: string) => void
-
-  closeOnClickOverlay?: boolean
-  closeOnPressEscape?: boolean
-  closeOnBackdropClick?: boolean
+export const DEFAULT_CONFIG = {
+  title: '',
+  content: '',
+  showCancel: true,
+  icon: '',
+  cancelText: '取消',
+  cancelColor: '#333333',
+  confirmText: '确认',
+  confirmColor: '#0090ff',
+  editable: false,
+  placeholderText: '',
+  success: null,
+  fail: null,
+  complete: null,
 }

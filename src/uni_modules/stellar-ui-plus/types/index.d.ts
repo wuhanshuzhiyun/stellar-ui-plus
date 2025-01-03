@@ -87,4 +87,26 @@ export interface SearchSuggestion {
   value?: any
 }
 
-export interface Dayjs extends dayjs.Dayjs { }
+export interface MessageBoxOptions {
+  show?: boolean
+  title?: string
+  content?: string
+  icon?: MessageBoxIcon
+  cancelText?: string
+  confirmText?: string
+  confirmColor?: string
+  showCancel?: boolean
+  showClose?: boolean
+  cancelColor?: string
+  editable?: boolean
+  placeholderText?: string
+  confirm?: (value?: string) => void
+  cancel?: (value?: string) => void
+  complete?: (value?: string) => void
+
+  closeOnClickOverlay?: boolean
+  closeOnPressEscape?: boolean
+  closeOnBackdropClick?: boolean
+}
+
+export interface Dayjs extends dayjs.Dayjs {}

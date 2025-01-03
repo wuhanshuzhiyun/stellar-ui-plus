@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { inject, watch, ref, computed, useSlots, defineOptions } from 'vue';
-import { messageBoxDefaultOptionsKey } from './ste-message-box';
+import { watch, computed, useSlots, defineOptions } from 'vue';
 import useData from './useData';
 import type { BaseEvent } from '../../types/event';
 import utils from '../../utils/utils';
-import { ICON_OBJ, ANIMATION_PROP, DURATION, type MessageBoxOptions } from './constants';
-
+import { ICON_OBJ, ANIMATION_PROP, DURATION } from './constants';
+import type { MessageBoxOptions } from '../../types';
+import { STE_MESSAGE_BOX_KEY } from './use-message-box';
+import { useMsgBoxStore } from '../../store';
 defineOptions({
     name: 'ste-message-box',
 });
@@ -15,6 +16,9 @@ const slots = useSlots();
 const props = defineProps<{
     selector: string;
 }>();
+const customKey = props.selector || STE_MESSAGE_BOX_KEY;
+const { getMessageBox, resetMessageBox } = useMsgBoxStore();
+const messageBoxOption = getMessageBox(customKey);
 
 const {
     animationData,
@@ -36,9 +40,6 @@ const {
     complete,
     showInputPlaceholder,
 } = useData();
-
-const injectKey = props.selector ? props.selector : messageBoxDefaultOptionsKey;
-const injectMessageBoxOption = ref<MessageBoxOptions>(inject(injectKey) || {});
 
 // 用input自带占位符时，由于动画原因导致最终显示会有一个下降的效果
 function handleInputFocus() {
@@ -108,6 +109,7 @@ function closeBox() {
     maskAnimationData.value = maskAnimation.export();
     setTimeout(() => {
         show.value = false;
+        resetMessageBox(customKey);
     }, DURATION);
 }
 function handleInput(e: Event) {
@@ -144,7 +146,7 @@ function loadMessageBoxParams(options: MessageBoxOptions) {
     complete.value = options.complete || complete.value;
 }
 
-watch(injectMessageBoxOption, val => {
+watch(messageBoxOption, val => {
     if (val.show) {
         loadMessageBoxParams(val);
         showBox();

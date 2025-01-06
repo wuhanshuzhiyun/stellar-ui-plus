@@ -379,6 +379,14 @@ $default-border: 2rpx solid #ebebeb;
                 display: flex;
                 justify-content: space-between;
 
+                /* #ifdef MP-WEIXIN */
+                > :deep(view:not(.ste-table-cell)) {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                /* #endif */
+
                 .a-view {
                     width: 100%;
                     display: flex;

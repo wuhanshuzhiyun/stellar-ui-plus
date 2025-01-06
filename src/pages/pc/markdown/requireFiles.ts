@@ -56,7 +56,46 @@ function formatHtml(html: string) {
     table.setAttribute('border', '1')
   })
 
+  // 处理标题
+  const headers = doc.querySelectorAll('h2, h3, h4')
+  headers.forEach((header) => {
+    // 获取纯文本内容
+    const slug = header.textContent || ''
+
+    // 创建锚点链接
+    const anchor = document.createElement('a')
+    anchor.href = `#${slug}`
+    anchor.className = 'header-anchor'
+    anchor.setAttribute('aria-hidden', 'true')
+    anchor.textContent = '#'
+
+    // 设置标题 ID
+    header.id = slug
+
+    // 创建包装容器
+    const wrapper = document.createElement('div')
+    wrapper.className = 'header-anchor-wrapper'
+    wrapper.style.position = 'relative'
+
+    // 将标题移动到包装容器中
+    header.parentNode?.insertBefore(wrapper, header)
+    wrapper.appendChild(header)
+
+    // 在标题内容后添加锚点链接
+    header.appendChild(document.createTextNode(' '))
+    header.appendChild(anchor)
+  })
+
   return doc.body.innerHTML
+}
+
+export function scrollToView($event: Event, ele: HTMLAnchorElement) {
+  // #ifdef WEB
+  $event.preventDefault()
+  if (ele)
+    ele.scrollIntoView({ behavior: 'smooth' })
+
+  // #ifdef WEB
 }
 
 export function btnCopy(btn: HTMLButtonElement) {

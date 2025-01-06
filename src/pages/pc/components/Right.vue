@@ -72,7 +72,7 @@ const load = () => {
             <div v-html="compMarkdonwHtml?.htmlGuide" v-if="compNavActive === config.NAV_COMP_KEY_GUIDE" class="markdown-view"></div>
         </template>
         <template v-else>
-            <div v-if="!show" v-html="markdown" class="markdown-view" />
+            <div v-if="!show" v-html="markdown" class="markdown-view render" />
             <iframe
                 v-show="show && loading"
                 id="v2"

@@ -38,6 +38,27 @@ body {
     color: transparent;
 }
 
+.header-anchor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    text-decoration: none;
+    color: var(--pc-main-color);
+    padding-right: 8px;
+    transform: translateX(-100%);
+}
+
+h2:hover .header-anchor,
+h3:hover .header-anchor,
+h4:hover .header-anchor {
+    opacity: 1;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 /*
   demo页通用样式 
 */

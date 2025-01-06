@@ -5,7 +5,7 @@ import { btnCopy } from '../markdown/requireFiles'
 
 export default function useMarkdown(): MarkdownData {
   const active = ref<string>('handbook-介绍')
-  const contents = ref<Group[]>(rests.concat(components))
+  const contents = ref<Group[]>(rests)
   const isComponent = computed(() => !active.value.includes('handbook') && !active.value.includes('devGuide'))
 
   const activeBtns = () => {

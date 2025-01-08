@@ -38,6 +38,15 @@ function toConfig(url: string) {
                                 <image class="icon-image" src="https://image.whzb.com/chain/StellarUI/%E7%BB%84%E4%BB%B6%E5%9B%BE%E6%A0%87/r-arrow.png" />
                             </view>
                         </view>
+                        <view class="components-item" @click="toConfig('/pages/mp/color/color')">
+                            <view class="item-title">
+                                <image src="https://image.whzb.com/chain/StellarUI/组件图标/color.png" mode="widthFix" />
+                                <text>主题色</text>
+                            </view>
+                            <view class="item-icon">
+                                <image class="icon-image" src="https://image.whzb.com/chain/StellarUI/%E7%BB%84%E4%BB%B6%E5%9B%BE%E6%A0%87/r-arrow.png" />
+                            </view>
+                        </view>
                     </view>
                 </view>
                 <view v-for="(item, index) in datas" :key="index" class="components-group">

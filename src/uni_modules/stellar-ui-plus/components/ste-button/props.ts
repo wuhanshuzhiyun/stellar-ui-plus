@@ -6,7 +6,7 @@ import type { ModeType, SizeType } from '../../types'
 export default {
   mode: { type: Number as PropType<ModeType>, default: 200 },
   color: { type: String, default: '#ffffff' },
-  background: { type: String, default: '#0091ff' },
+  background: { type: String, default: '' },
   borderColor: { type: String, default: '' },
   width: { type: [String, Number] as PropType<SizeType>, default: 'auto' },
   round: { type: Boolean, default: true },

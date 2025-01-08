@@ -52,9 +52,18 @@ export default function useMarkdown(): MarkdownData {
   })
 
   const h5url = computed(() => {
-    if (active.value.includes('handbook') || active.value.includes('devGuide'))
+    console.log('active', active.value)
+    if (active.value.includes('handbook') || active.value.includes('devGuide')) {
+      if (active.value.includes('自定义主题')) {
+        // 自定义主题打开小程序
+        return '#/pages/mp/color/color'
+      }
+      else if (active.value.includes('个性化')) {
+        return '#/pages/mp/font-size/font-size'
+      }
       return '#/pages/mp/index'
-    else return `#/pages/mp/demo-views/${active.value}/${active.value}`
+    }
+    else { return `#/pages/mp/demo-views/${active.value}/${active.value}` }
   })
 
   const viewMarkdown = computed(() => {

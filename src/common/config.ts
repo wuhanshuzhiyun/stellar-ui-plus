@@ -43,7 +43,7 @@ const NAV_COMP_DATA = [
   },
 ]
 
-const SHOW_H5_PAGE = ['个性化']
+const SHOW_H5_PAGE = ['个性化', '自定义主题']
 
 export default {
   /** 图片根地址 */

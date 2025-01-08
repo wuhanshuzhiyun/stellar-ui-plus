@@ -33,8 +33,7 @@ class Config {
     const style: { [key: string]: string } = {}
     const vw = System.getWindowWidth()
     const scale = this.options.fontScale
-    for (let i = this.options.minSize; i <= this.options.maxSize; i += 2)
-      style[`--font-size-${i}`] = `${Number(((vw * i * scale) / 750).toFixed(4))}px`
+    for (let i = this.options.minSize; i <= this.options.maxSize; i += 2) style[`--font-size-${i}`] = `${Number(((vw * i * scale) / 750).toFixed(4))}px`
 
     this._fontSize = style
   }

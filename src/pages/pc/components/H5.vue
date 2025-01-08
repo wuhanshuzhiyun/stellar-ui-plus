@@ -12,24 +12,24 @@ const style = {
 
 <template>
     <div class="h5-component" :style="style">
-        <div class="h5-content">
-            <iframe :src="datas?.h5url.value" frameborder="0" width="100%" height="100%" />
-        </div>
+        <iframe :src="datas?.h5url.value" frameborder="0" width="100%" height="100%" />
     </div>
 </template>
 
 <style scoped lang="scss">
 .h5-component {
     position: fixed;
-    top: calc(50% + var(--pc-header-nav-height));
-    transform: translateY(-50%);
+    z-index: 10;
+    top: calc(var(--pc-header-nav-height) + 32px);
     right: 20px;
-    z-index: 100;
-    background-size: 100% 100%;
+    width: calc(var(--pc-view-width) + 28px);
+    min-width: calc(var(--pc-view-width) + 28px);
+    height: calc(var(--pc-view-height));
     padding: 50px 14px 30px;
-    .h5-content {
-        width: var(--pc-view-width);
-        height: var(--pc-view-height);
-    }
+    overflow: hidden;
+    border-radius: 16px;
+    background-image: url(/assets/iPhone13.0a51aa1d.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 </style>

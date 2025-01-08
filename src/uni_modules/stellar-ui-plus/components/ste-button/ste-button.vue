@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, defineOptions, type CSSProperties } from 'vue';
+import useColor from '../../config/color';
+let color = useColor();
 import propsData from './props';
 import utils from '../../utils/utils';
 import type {
@@ -106,9 +108,10 @@ const cmpBtnStyle = computed(() => {
             style.fontSize = 'var(--font-size-28, 28rpx)';
             break;
     }
-
+    console.log('props.background', props.background);
+    console.log('props.background', color.getColor());
     // 背景色 & 字体色
-    style = { ...style, ...utils.bg2style(props.background) };
+    style = { ...style, ...utils.bg2style(props.background ? props.background : color.getColor().steThemeColor) };
     style.color = props.color;
 
     // 禁用 disabled | 加载 loading

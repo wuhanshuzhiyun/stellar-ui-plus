@@ -234,6 +234,13 @@
             "default": 0
         },
         {
+            "name": "clearable",
+            "description": "显示清楚按钮",
+            "type": "boolean",
+            "version": "1.16.17",
+            "default": false
+        },
+        {
             "name": "[event]change",
             "description": "选择时触发",
             "type": "(value: string | number,option: SelectOption | SelectOption[])=>void",

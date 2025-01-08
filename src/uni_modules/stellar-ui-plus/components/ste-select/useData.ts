@@ -136,6 +136,8 @@ export default function useData({ props, emits, thas }: {
     return !cmpMultiple.value && view[0] ? view[0] : view
   })
 
+  const cmpShowClearable = computed(() => props.clearable && confirmValue.value.length)
+
   const getViewOptions = () => {
     nextTick(() => {
       let list = dataOptions.value
@@ -421,6 +423,13 @@ export default function useData({ props, emits, thas }: {
     nextTick(onCancel)
   }
 
+  const clickClearable = () => {
+    confirmValue.value = []
+    inputView.value = ''
+    selected.value = []
+    onConfirm()
+  }
+
   return {
     dataOptions,
     confirmValue,
@@ -437,6 +446,7 @@ export default function useData({ props, emits, thas }: {
     cmpMultiple,
     cmpFilterable,
     cmpViewValue,
+    cmpShowClearable,
     clickOpenIcon,
     optionsStyle,
     cmpShowDate,
@@ -447,5 +457,6 @@ export default function useData({ props, emits, thas }: {
     active,
     clickCancel,
     clickConfirm,
+    clickClearable,
   }
 }

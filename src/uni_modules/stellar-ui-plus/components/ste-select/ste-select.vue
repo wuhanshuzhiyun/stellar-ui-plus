@@ -47,12 +47,14 @@ const {
     optionsStyle,
     cmpShowDate,
     cmpMultiseriateValue,
+    cmpShowClearable,
     onMultiseriateChange,
     viewOptions,
     onSelect,
     active,
     clickCancel,
     clickConfirm,
+    clickClearable,
 } = useData({ props, emits, thas });
 const stop = () => {};
 const loadMore = () => {
@@ -105,6 +107,10 @@ const loadMore = () => {
                             <ste-icon code="&#xe676;" size="20" />
                         </view>
                     </view>
+                </view>
+
+                <view class="clearable-icon" v-if="cmpShowClearable" @click.stop="clickClearable">
+                    <ste-icon code="&#xe694;" color="#bbbbbb" size="34" />
                 </view>
             </view>
 
@@ -283,6 +289,19 @@ const loadMore = () => {
                     transform: translateY(2rpx);
                 }
             }
+        }
+
+        .clearable-icon {
+            width: 60rpx;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            right: 48rpx;
+            top: 50%;
+            z-index: 10;
+            transform: translateY(-50%);
         }
     }
 

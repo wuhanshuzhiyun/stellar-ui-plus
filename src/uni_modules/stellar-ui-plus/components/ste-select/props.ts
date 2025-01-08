@@ -34,6 +34,7 @@ export interface SteSelectProps {
   autoFilterable: boolean
   loading: boolean
   total: number
+  clearable: boolean
 }
 
 export default {
@@ -62,4 +63,5 @@ export default {
   autoFilterable: { type: Boolean, default: () => true },
   loading: { type: Boolean, default: () => false },
   total: { type: Number, default: () => 0 },
+  clearable: { type: Boolean, default: () => false },
 }

@@ -77,6 +77,7 @@ const loadMore = () => {
                             <input
                                 v-model="inputView"
                                 class="filterable-input"
+                                placeholder-class="placeholder-text"
                                 :class="{ content: cmpMultiple && cmpViewValue.length }"
                                 :disabled="disabled"
                                 :placeholder="inputPlaceholder"
@@ -243,10 +244,12 @@ const loadMore = () => {
         .filterable-input {
             width: 100%;
             height: 100%;
+            font-size: var(--ste-select-font-size);
         }
 
         .placeholder-text {
             color: #999999;
+            font-size: var(--ste-select-font-size);
         }
 
         .open-icon-event {

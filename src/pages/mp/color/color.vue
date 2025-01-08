@@ -1,3 +1,98 @@
+<script setup lang="ts">
+import useColor from '../../../uni_modules/stellar-ui-plus/config/color';
+let color = useColor();
+import utils from '../../../uni_modules/stellar-ui-plus/utils/utils';
+import { ref, onMounted } from 'vue';
+import { useMessageBox } from '../../../uni_modules/stellar-ui-plus/composables';
+const msg = useMessageBox();
+
+let pageColor = ref('');
+let defaultColor = ref({ r: 255, g: 0, b: 0, a: 0.6 });
+onMounted(() => {
+    pageColor.value = color.getColor().steThemeColor;
+    let result: any = utils.Color.hex2rgba(color.color.defaultColor);
+    result = result.replace('rgba(', '').replace(')', '').split(',');
+    result = { r: result[0], g: result[1], b: result[2], a: result[3] };
+    defaultColor.value = result;
+});
+
+function reset() {
+    pageColor.value = color.color.defaultColor;
+    color.setColor({ steThemeColor: pageColor.value });
+}
+function msgBox() {
+    msg.showMsgBox({
+        title: '提示',
+        icon: 'info',
+    });
+}
+
+let colorPicker: any = ref(null);
+function selectColor() {
+    colorPicker.value.open();
+}
+function confirm(e) {
+    pageColor.value = e.hex;
+    color.setColor({ steThemeColor: pageColor.value });
+}
+
+let checkboxValue = ref(true);
+let datetime = ref('');
+let rateValue = ref(1);
+let selectValue = ref(2011);
+let list = ref([
+    { label: '选项2011', value: 2011 },
+    { label: '选项2012', value: 2012 },
+    { label: '选项2013', value: 2013 },
+    { label: '选项2014', value: 2014 },
+    { label: '选项2015', value: 2015 },
+    { label: '选项2016', value: 2016 },
+    { label: '选项2017', value: 2017 },
+    { label: '选项2018', value: 2018 },
+    { label: '选项2019', value: 2019 },
+]);
+let value1 = ref(10);
+let value2 = ref(true);
+let value3 = ref('');
+let active = ref(0);
+let rows = ref([
+    { name: '张三', birth: '2023.12.31', sex: '男' },
+    { name: '李四', birth: '2024.01.01', sex: '女' },
+    { name: '王五', birth: '2024.11.01', sex: '女' },
+    { name: '赵六', birth: '2024.11.01', sex: '女' },
+    { name: '王七', birth: '2024.01.01', sex: '男' },
+]);
+let menu1 = ref(1);
+let data = ref([
+    {
+        title: 'A',
+        list: ['列表A1', '列表A2', '列表A3', '列表A4', '列表A5', '列表A6', '列表A7', '列表A8'],
+    },
+]);
+let list1 = ref([
+    {
+        title: '标签1',
+        image: `https://image.whzb.com/chain/StellarUI/图片.jpg`,
+        content: 'https://image.whzb.com/chain/StellarUI/image/img1.jpg',
+    },
+    {
+        title: '标签2',
+        image: `https://image.whzb.com/chain/StellarUI/图片.jpg`,
+        content: 'https://image.whzb.com/chain/StellarUI/image/img2.jfif',
+    },
+    {
+        title: '标签3标签3标签3标签3',
+        image: `https://image.whzb.com/chain/StellarUI/图片.jpg`,
+        content: 'https://image.whzb.com/chain/StellarUI/image/img3.jpg',
+    },
+    {
+        title: '标签4',
+        image: `https://image.whzb.com/chain/StellarUI/图片.jpg`,
+        content: 'https://image.whzb.com/chain/StellarUI/image/img4.jpg',
+    },
+]);
+</script>
+
 <template>
     <view class="page">
         <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="主题色"></page-nav>
@@ -6,12 +101,12 @@
                 <view class="demo-item">
                     <view class="title">主题色</view>
                     <view class="item-block" style="display: flex; align-items: center; padding-bottom: 20px">
-                        <span>{{ color }}：</span>
+                        <span>{{ pageColor }}：</span>
                         <view
                             class="color-box"
                             @click="selectColor"
                             :style="{
-                                'background-color': color,
+                                'background-color': pageColor,
                                 marginRight: '20rpx',
                             }"
                         ></view>
@@ -161,105 +256,6 @@
         <t-color-picker ref="colorPicker" :color="defaultColor" @confirm="confirm"></t-color-picker>
     </view>
 </template>
-
-<script>
-import useColor from '../../../uni_modules/stellar-ui-plus/config/color';
-let color = useColor();
-import utils from '../../../uni_modules/stellar-ui-plus/utils/utils';
-export default {
-    data() {
-        return {
-            color: '',
-            defaultColor: { r: 255, g: 0, b: 0, a: 0.6 },
-            checkboxValue: true,
-            datetime: '',
-            radioValue: 'a',
-            rateValue: 1,
-            selectValue: 2011,
-            list: [
-                { label: '选项2011', value: 2011 },
-                { label: '选项2012', value: 2012 },
-                { label: '选项2013', value: 2013 },
-                { label: '选项2014', value: 2014 },
-                { label: '选项2015', value: 2015 },
-                { label: '选项2016', value: 2016 },
-                { label: '选项2017', value: 2017 },
-                { label: '选项2018', value: 2018 },
-                { label: '选项2019', value: 2019 },
-            ],
-            value1: 10,
-            value2: true,
-            value3: '',
-            active: 0,
-            rows: [
-                { name: '张三', birth: '2023.12.31', sex: '男' },
-                { name: '李四', birth: '2024.01.01', sex: '女' },
-                { name: '王五', birth: '2024.11.01', sex: '女' },
-                { name: '赵六', birth: '2024.11.01', sex: '女' },
-                { name: '王七', birth: '2024.01.01', sex: '男' },
-            ],
-            menu1: 1,
-            data: [
-                {
-                    title: 'A',
-                    list: ['列表A1', '列表A2', '列表A3', '列表A4', '列表A5', '列表A6', '列表A7', '列表A8'],
-                },
-            ],
-            list1: [
-                {
-                    title: '标签1',
-                    image: `https://image.whzb.com/chain/StellarUI/图片.jpg`,
-                    content: 'https://image.whzb.com/chain/StellarUI/image/img1.jpg',
-                },
-                {
-                    title: '标签2',
-                    image: `https://image.whzb.com/chain/StellarUI/图片.jpg`,
-                    content: 'https://image.whzb.com/chain/StellarUI/image/img2.jfif',
-                },
-                {
-                    title: '标签3标签3标签3标签3',
-                    image: `https://image.whzb.com/chain/StellarUI/图片.jpg`,
-                    content: 'https://image.whzb.com/chain/StellarUI/image/img3.jpg',
-                },
-                {
-                    title: '标签4',
-                    image: `https://image.whzb.com/chain/StellarUI/图片.jpg`,
-                    content: 'https://image.whzb.com/chain/StellarUI/image/img4.jpg',
-                },
-            ],
-        };
-    },
-    methods: {
-        headleChangeColor() {
-            color.setColor({ steThemeColor: this.color });
-        },
-        reset() {
-            this.color = color.$state.defaultColor;
-            color.setColor({ steThemeColor: this.color });
-        },
-        msgBox() {
-            this.showMsgBox({
-                title: '提示',
-                icon: 'info',
-            });
-        },
-        selectColor() {
-            this.$refs.colorPicker.open();
-        },
-        confirm(e) {
-            this.color = e.hex;
-            color.setColor({ steThemeColor: this.color });
-        },
-    },
-    mounted() {
-        this.color = color.getColor().steThemeColor;
-        let colormd = utils.Color.hex2rgba(color.$state.defaultColor);
-        colormd = colormd.replace('rgba(', '').replace(')', '').split(',');
-        colormd = { r: colormd[0], g: colormd[1], b: colormd[2], a: colormd[3] };
-        this.defaultColor = colormd;
-    },
-};
-</script>
 
 <style lang="scss" scoped>
 .page {

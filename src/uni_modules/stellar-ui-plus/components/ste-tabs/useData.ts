@@ -3,7 +3,10 @@ import utils from '../../utils/utils'
 import type { TabProps } from '../ste-tab/props'
 import type { SelfComponentInternalInstance } from '../../utils/mixin'
 import type { UniScrollViewOnScrollEvent } from '../../types/event'
+import useColor from '../../config/color'
 import type { SteTabsProps } from './props'
+
+const color = useColor()
 
 export default function useData({
   thas,
@@ -90,19 +93,19 @@ export default function useData({
 
   const cmpRootStyle = computed(() => {
     let tabCardBg = utils.Color.formatColor(props.titleColor, 0.05)
-    let tabCardBgActive = utils.Color.formatColor(props.color, 0.1)
-    let tabCardSubBg = props.color
+    let tabCardBgActive = utils.Color.formatColor(props.color ? props.color : color.getColor().steThemeColor, 0.1)
+    let tabCardSubBg = props.color ? props.color : color.getColor().steThemeColor
     let tabCardSubColor = '#fff'
     let activeTitleColor = props.activeTitleColor
     let borderWidthStart = '0'
     let borderWidth = '0'
     if (props.type === 'card') {
-      activeTitleColor = props.color
+      activeTitleColor = props.color ? props.color : color.getColor().steThemeColor
       if (props.border) {
         tabCardBg = 'none'
-        tabCardBgActive = props.color
+        tabCardBgActive = props.color ? props.color : color.getColor().steThemeColor
         tabCardSubBg = '#fff'
-        tabCardSubColor = props.color
+        tabCardSubColor = props.color ? props.color : color.getColor().steThemeColor
         activeTitleColor = '#fff'
         borderWidthStart = '1px'
         borderWidth = '1px 1px 1px 0'
@@ -123,7 +126,7 @@ export default function useData({
     }
 
     const style = {
-      '--tabs-color': props.color,
+      '--tabs-color': props.color ? props.color : color.getColor().steThemeColor,
       '--tabs-radius': utils.formatPx(props.radius),
       '--tabs-card-background': tabCardBg,
       '--tabs-card-background-active': tabCardBgActive,

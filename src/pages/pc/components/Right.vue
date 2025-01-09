@@ -67,9 +67,9 @@ const load = () => {
         <template v-if="props.isCompView">
             <div v-html="compMarkdonwHtml?.htmlDesc" class="markdown-view"></div>
             <comp-nav v-model:mode="compNavActive" style="margin-bottom: 10px"></comp-nav>
-            <div v-html="compMarkdonwHtml?.htmlDemo" v-if="compNavActive === config.NAV_COMP_KEY_DEMO" class="markdown-view"></div>
-            <div v-html="compMarkdonwHtml?.htmlApi" v-if="compNavActive === config.NAV_COMP_KEY_API" class="markdown-view"></div>
-            <div v-html="compMarkdonwHtml?.htmlGuide" v-if="compNavActive === config.NAV_COMP_KEY_GUIDE" class="markdown-view"></div>
+            <div v-html="compMarkdonwHtml?.htmlDemo" v-if="compNavActive === config.NAV_COMP_KEY_DEMO" class="markdown-view content"></div>
+            <div v-html="compMarkdonwHtml?.htmlApi" v-if="compNavActive === config.NAV_COMP_KEY_API" class="markdown-view content"></div>
+            <div v-html="compMarkdonwHtml?.htmlGuide" v-if="compNavActive === config.NAV_COMP_KEY_GUIDE" class="markdown-view content"></div>
         </template>
         <template v-else>
             <div v-if="!show" v-html="markdown" class="markdown-view render" />

@@ -30,6 +30,6 @@ export default {
   showClear: { type: Boolean, default: () => true },
   textColor: { type: String, default: () => '#000' },
   textSize: { type: [Number, String], default: () => 48 },
-  confirmBg: { type: String, default: () => '#0090FF' },
+  confirmBg: { type: String, default: () => '' },
   confirmColor: { type: String, default: () => '#fff' },
 }

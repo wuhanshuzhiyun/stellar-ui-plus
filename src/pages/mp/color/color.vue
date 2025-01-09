@@ -153,7 +153,7 @@ let list1 = ref([
             </view>
             <view class="demo-item">
                 <view class="title">下拉</view>
-                <view class="item-block">
+                <view class="item-block" style="display: block">
                     <ste-select :list="list" v-model="selectValue"></ste-select>
                 </view>
             </view>

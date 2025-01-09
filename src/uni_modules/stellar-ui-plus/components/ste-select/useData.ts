@@ -1,11 +1,18 @@
 import { type CSSProperties, computed, nextTick, ref, watch } from 'vue'
 import utils from '../../utils/utils'
+import useColor from '../../config/color.js'
 import type { SelectOption, SelectValue, SteSelectProps } from './props'
 import { type DateMode, formatDate, getFormatStr } from './defaultDate'
 
+const color = useColor()
+
 const isData = (d: any) => d || d === 0 || d === ''
 
-export default function useData({ props, emits, thas }: {
+export default function useData({
+  props,
+  emits,
+  thas,
+}: {
   props: SteSelectProps
   emits: {
     (e: 'update:modelValue', value: SelectValue): void
@@ -78,7 +85,7 @@ export default function useData({ props, emits, thas }: {
     viewOptions.value = value
   }
 
-  const cmpInputPlaceholder = computed(() => confirmValue.value.length > 0 ? '' : props.placeholder)
+  const cmpInputPlaceholder = computed(() => (confirmValue.value.length > 0 ? '' : props.placeholder))
 
   const cmpShowDate = computed(() => ['date', 'datetime', 'time', 'month', 'minute'].includes(props.mode))
 
@@ -100,6 +107,7 @@ export default function useData({ props, emits, thas }: {
     '--ste-select-background': props.background,
     '--ste-select-border': `1px solid ${props.borderColor}`,
     '--ste-select-border-radius': utils.formatPx(props.borderRadius),
+    '--ste-theme-color': color.getColor().steThemeColor,
   }))
 
   const cmpMultiseriateValue = computed(() => {
@@ -128,8 +136,7 @@ export default function useData({ props, emits, thas }: {
         item = utils.findTreeNode(props.list, value, props.valueKey, props.childrenKey)
       else if (props.multiple && dataOptions.value.length === 1)
         item = dataOptions.value[0]?.find(item => item[props.valueKey] === value)
-      else
-        item = dataOptions.value[index]?.find(item => item[props.valueKey] === value)
+      else item = dataOptions.value[index]?.find(item => item[props.valueKey] === value)
 
       view.push(item?.[props.labelKey] || '')
     })
@@ -143,9 +150,7 @@ export default function useData({ props, emits, thas }: {
       let list = dataOptions.value
       if (cmpAutoFilterable.value && userFilterable.value) {
         // 处理筛选数据
-        list = list.map(item =>
-          item.filter(value => value[props.labelKey].includes(userFilterable.value)),
-        )
+        list = list.map(item => item.filter(value => value[props.labelKey].includes(userFilterable.value)))
       }
       setViewOptions(list)
     })
@@ -178,22 +183,26 @@ export default function useData({ props, emits, thas }: {
 
   watch(() => props.list, initOptions, { immediate: true })
 
-  watch(() => props.modelValue, (v) => {
-    if (Array.isArray(v)) {
-      setConfirmValue(v)
-    }
-    else if (cmpShowDate.value) {
-      const value = v ? utils.dayjs(v).format('YYYY MM DD HH mm ss').split(' ') : []
-      setConfirmValue(value.map(item => Number(item)))
-    }
-    else {
-      if (dataOptions.value.length > 1 || props.multiple)
-        console.error('ste-select: value必须为数组（单列单选模式value可以为string或number类型）')
+  watch(
+    () => props.modelValue,
+    (v) => {
+      if (Array.isArray(v)) {
+        setConfirmValue(v)
+      }
+      else if (cmpShowDate.value) {
+        const value = v ? utils.dayjs(v).format('YYYY MM DD HH mm ss').split(' ') : []
+        setConfirmValue(value.map(item => Number(item)))
+      }
+      else {
+        if (dataOptions.value.length > 1 || props.multiple)
+          console.error('ste-select: value必须为数组（单列单选模式value可以为string或number类型）')
 
-      setConfirmValue(isData(v) ? [v as number | string] : [])
-    }
-    setSelected([...confirmValue.value])
-  }, { immediate: true })
+        setConfirmValue(isData(v) ? [v as number | string] : [])
+      }
+      setSelected([...confirmValue.value])
+    },
+    { immediate: true },
+  )
 
   watch(() => userFilterable.value, getViewOptions)
 
@@ -335,8 +344,7 @@ export default function useData({ props, emits, thas }: {
   const clickOpenIcon = () => {
     if (showOptions.value)
       onCancel()
-    else
-      openOptions()
+    else openOptions()
   }
 
   const onMultiseriateChange = ({ detail: { value } }: { detail: { value: number[] } }) => {
@@ -352,10 +360,12 @@ export default function useData({ props, emits, thas }: {
     if (props.mode === 'tree') {
       initTreeOptions()
       nextTick(() => {
-        setSelected(cmpMultiseriateValue.value.map((i, index) => {
-          const item = dataOptions.value[index][i]
-          return item ? item[props.valueKey] : null
-        }))
+        setSelected(
+          cmpMultiseriateValue.value.map((i, index) => {
+            const item = dataOptions.value[index][i]
+            return item ? item[props.valueKey] : null
+          }),
+        )
       })
     }
   }
@@ -413,8 +423,7 @@ export default function useData({ props, emits, thas }: {
   const active = (index: number, item: SelectOption) => {
     if (dataOptions.value.length > 1)
       return selected.value[index] === item[props.valueKey]
-    else
-      return selected.value.includes(item[props.valueKey])
+    else return selected.value.includes(item[props.valueKey])
   }
 
   const clickConfirm = () => {

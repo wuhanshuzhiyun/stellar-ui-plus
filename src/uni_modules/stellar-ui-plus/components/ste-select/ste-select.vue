@@ -337,7 +337,7 @@ const loadMore = () => {
                     overflow: hidden; // 隐藏溢出内容，并显示省略号
 
                     &.active {
-                        color: #3491fa;
+                        color: var(--ste-theme-color);
                     }
 
                     & + .options-item {

@@ -38,7 +38,7 @@
             "name": "background",
             "description": "背景",
             "type": "string",
-            "default": "#0091ff"
+            "default": "#0090FF"
         },
         {
             "name": "borderColor",

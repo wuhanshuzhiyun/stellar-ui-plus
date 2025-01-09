@@ -43,19 +43,19 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
             <view class="title">基础使用</view>
             <view class="item-block block">
                 <view>
-                    <ste-button @click="showTop = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">顶部弹出</ste-button>
+                    <ste-button @click="showTop = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">顶部弹出</ste-button>
                 </view>
                 <view>
-                    <ste-button @click="showBottom = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">底部弹出</ste-button>
+                    <ste-button @click="showBottom = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">底部弹出</ste-button>
                 </view>
                 <view>
-                    <ste-button @click="show = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">中间弹出</ste-button>
+                    <ste-button @click="show = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">中间弹出</ste-button>
                 </view>
                 <view>
-                    <ste-button @click="showLeft = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">左侧弹出</ste-button>
+                    <ste-button @click="showLeft = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">左侧弹出</ste-button>
                 </view>
                 <view>
-                    <ste-button @click="showRight = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">右侧弹出</ste-button>
+                    <ste-button @click="showRight = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">右侧弹出</ste-button>
                 </view>
             </view>
         </view>
@@ -65,30 +65,30 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
         <view class="demo-item">
             <view class="title">背景色</view>
             <view class="item-block">
-                <ste-button @click="bgShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">背景色弹窗</ste-button>
+                <ste-button @click="bgShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">背景色弹窗</ste-button>
             </view>
         </view>
         <view class="demo-item">
             <view class="title">大小</view>
             <view class="item-block">
                 <view>
-                    <ste-button @click="sizeShow1 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">宽: 300 高：500</ste-button>
+                    <ste-button @click="sizeShow1 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">宽: 300 高：500</ste-button>
                 </view>
                 <view>
-                    <ste-button @click="sizeShow2 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">宽: '100vw' 高：300</ste-button>
+                    <ste-button @click="sizeShow2 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">宽: '100vw' 高：300</ste-button>
                 </view>
             </view>
         </view>
         <view class="demo-item">
             <view class="title">圆角</view>
             <view class="item-block">
-                <ste-button @click="roundShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">圆角弹窗</ste-button>
+                <ste-button @click="roundShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">圆角弹窗</ste-button>
             </view>
         </view>
         <view class="demo-item">
             <view class="title">偏移</view>
             <view class="item-block">
-                <ste-button @click="offsetShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">偏移</ste-button>
+                <ste-button @click="offsetShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">偏移</ste-button>
             </view>
         </view>
         <view class="type-block">
@@ -98,10 +98,10 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
             <view class="title">是否遮罩关闭</view>
             <view class="item-block">
                 <view>
-                    <ste-button @click="maskShow1 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">遮罩可关闭</ste-button>
+                    <ste-button @click="maskShow1 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">遮罩可关闭</ste-button>
                 </view>
                 <view>
-                    <ste-button @click="maskShow2 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">遮罩不可关闭</ste-button>
+                    <ste-button @click="maskShow2 = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">遮罩不可关闭</ste-button>
                 </view>
             </view>
         </view>
@@ -109,13 +109,13 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
         <view class="demo-item">
             <view class="title">动画执行时间</view>
             <view class="item-block">
-                <ste-button @click="durationShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">动画执行时间</ste-button>
+                <ste-button @click="durationShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">动画执行时间</ste-button>
             </view>
         </view>
         <view class="demo-item">
             <view class="title">异步关闭</view>
             <view class="item-block">
-                <ste-button @click="syncShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">异步关闭</ste-button>
+                <ste-button @click="syncShow = true" :mode="200" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">异步关闭</ste-button>
             </view>
         </view>
 

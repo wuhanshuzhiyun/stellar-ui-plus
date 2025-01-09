@@ -13,5 +13,5 @@ export default {
   height: { type: [String, Number], default: () => '100%' },
   sticky: { type: Boolean, default: () => true },
   inactiveColor: { type: String, default: () => '#666' },
-  activeColor: { type: String, default: () => '#FF1A00' },
+  activeColor: { type: String, default: () => '#0090FF' },
 }

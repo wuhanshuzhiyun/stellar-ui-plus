@@ -57,9 +57,9 @@ const cmpStatusObj = computed(() => {
         obj.icon = '';
     }
     if (status == 'error') {
-        obj.color = '#FF1A00';
+        obj.color = '#0090FF';
         obj.icon = '&#xe67b;';
-        obj.textColor = '#FF1A00';
+        obj.textColor = '#0090FF';
     }
     obj.icon = props.icon ? props.icon : obj.icon;
     obj.bgColor = parentProps.active + 1 == stepIndex.value ? '#0090FF' : '#ffffff';

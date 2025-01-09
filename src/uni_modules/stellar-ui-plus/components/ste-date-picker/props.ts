@@ -53,7 +53,7 @@ export default {
   },
   confirmColor: {
     type: String,
-    default: '#0091ff',
+    default: '#0090FF',
   },
   visibleItemCount: {
     type: [String, Number],

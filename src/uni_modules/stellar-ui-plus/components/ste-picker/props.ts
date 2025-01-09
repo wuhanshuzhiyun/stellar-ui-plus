@@ -10,7 +10,7 @@ export default {
   cancelText: { type: String, default: '取消' },
   cancelColor: { type: String, default: '#969799' },
   confirmText: { type: String, default: '确认' },
-  confirmColor: { type: String, default: '#0091ff' },
+  confirmColor: { type: String, default: '#0090FF' },
   defaultIndex: { type: Array as PropType<number[]>, default: () => [] },
   rootClass: { type: String, default: '' },
 }

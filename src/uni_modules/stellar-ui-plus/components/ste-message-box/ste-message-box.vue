@@ -7,6 +7,8 @@ import { ICON_OBJ, ANIMATION_PROP, DURATION } from './constants';
 import type { MessageBoxOptions } from '../../types';
 import { STE_MESSAGE_BOX_KEY } from './use-message-box';
 import { useMsgBoxStore } from '../../store';
+import useColor from '../../config/color';
+let color = useColor();
 defineOptions({
     name: 'ste-message-box',
 });
@@ -56,7 +58,7 @@ const cmpRootStyle = computed(() => {
     return {
         opacity: 0,
         '--cancel-color': cancelColor.value,
-        '--confirm-color': confirmColor.value,
+        '--confirm-color': confirmColor.value ? confirmColor.value : color.getColor().steThemeColor,
     };
 });
 

@@ -16,8 +16,8 @@
         <view class="demo-item">
             <view class="title">自定义图标颜色</view>
             <view class="item-block">
-                <ste-loading color="#0091FF"></ste-loading>
-                <ste-loading :type="2" color="#0091FF"></ste-loading>
+                <ste-loading color="#0090FF"></ste-loading>
+                <ste-loading :type="2" color="#0090FF"></ste-loading>
             </view>
         </view>
         <view class="demo-item">
@@ -44,8 +44,8 @@
         <view class="demo-item">
             <view class="title">自定义文本样式</view>
             <view class="item-block">
-                <ste-loading :textSize="50" textColor="#0091FF">加载中...</ste-loading>
-                <ste-loading :type="2" :textSize="50" textColor="#0091FF">加载中...</ste-loading>
+                <ste-loading :textSize="50" textColor="#0090FF">加载中...</ste-loading>
+                <ste-loading :type="2" :textSize="50" textColor="#0090FF">加载中...</ste-loading>
             </view>
         </view>
     </page-layout>

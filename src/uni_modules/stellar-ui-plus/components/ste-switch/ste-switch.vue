@@ -2,7 +2,8 @@
 import utils from '../../utils/utils.js';
 import propsData from './props';
 import { ref, computed, defineOptions, type CSSProperties } from 'vue';
-
+import useColor from '../../config/color';
+let color = useColor();
 defineOptions({
     name: 'ste-switch',
 });
@@ -14,7 +15,7 @@ const cmpStyle = computed(() => {
     style['width'] = utils.formatPx(Number(props.size) * 2 + 4);
     style['height'] = utils.formatPx(Number(props.size) + 4);
     style['borderRadius'] = utils.formatPx((Number(props.size) + 4) / 2);
-    style['background'] = props.modelValue ? props.activeColor : props.inactiveColor;
+    style['background'] = props.modelValue ? cmpActiveColor.value : props.inactiveColor;
     style['opacity'] = props.disabled ? '0.6' : '1';
     // #ifdef H5
     style['cursor'] = props.disabled || props.readonly ? 'not-allowed' : 'pointer';
@@ -32,6 +33,10 @@ const cmpNodeStyle = computed(() => {
         style['marginLeft'] = utils.formatPx(2);
     }
     return style;
+});
+
+let cmpActiveColor = computed(() => {
+    return props.activeColor ? props.activeColor : color.getColor().steThemeColor;
 });
 
 const emits = defineEmits<{
@@ -67,7 +72,7 @@ function allowStop() {
 <template>
     <view class="ste-switch-root" :style="[cmpStyle]" @click="click">
         <view class="switch-node" :style="[cmpNodeStyle]">
-            <ste-loading v-if="loading" :type="2" :color="modelValue ? activeColor : inactiveColor" :size="Number(size) / 2"></ste-loading>
+            <ste-loading v-if="loading" :type="2" :color="modelValue ? cmpActiveColor : inactiveColor" :size="Number(size) / 2"></ste-loading>
         </view>
     </view>
 </template>

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { useSlots, computed, ref, type CSSProperties } from 'vue';
+import useColor from '../../config/color';
+let color = useColor();
 import utils from '../../utils/utils';
 import propsData, { CHECKBOX_KEY, checkboxEmits } from './props';
 import type { CheckboxGroupProps } from '../ste-checkbox-group/props';
@@ -21,7 +23,7 @@ const parentProps = computed(() => Parent?.parent?.props);
 const cmpReadonly = computed(() => getDefaultData('readonly', false));
 const cmpShape = computed(() => getDefaultData('shape', 'circle'));
 const cmpIconSize = computed(() => getDefaultData('iconSize', 36));
-const cmpCheckedColor = computed(() => getDefaultData('checkedColor', '#0090FF'));
+const cmpCheckedColor = computed(() => getDefaultData('checkedColor', color.getColor().steThemeColor));
 const cmpTextPosition = computed(() => getDefaultData('textPosition', 'right'));
 const cmpTextSize = computed(() => getDefaultData('textSize', 28));
 const cmpTextInactiveColor = computed(() => getDefaultData('textInactiveColor', '#000000'));

@@ -8,7 +8,7 @@ const sliderProps = {
   step: { type: [Number, String], default: 1 },
   barHeight: { type: [String, Number], default: 8 },
   buttonSize: { type: [String, Number], default: 40 },
-  activeColor: { type: String, default: '#0090ff' },
+  activeColor: { type: String, default: '' },
   inactiveColor: { type: String, default: '#eeeeee' },
   range: { type: Boolean, default: false },
   vertical: { type: Boolean, default: false },

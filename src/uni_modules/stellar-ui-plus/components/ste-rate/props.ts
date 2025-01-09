@@ -8,7 +8,7 @@ export default {
   readonly: { type: Boolean, default: false },
   size: { type: [String, Number], default: 44 },
   inactiveColor: { type: String, default: '#dddddd' },
-  activeColor: { type: String, default: '#fa5014' },
+  activeColor: { type: String, default: '' },
   inactiveCode: { type: String, default: '&#xe681;' },
   activeCode: { type: String, default: '&#xe684;' },
   gutter: { type: [String, Number], default: 10 },

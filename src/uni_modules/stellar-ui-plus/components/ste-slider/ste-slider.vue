@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineOptions, getCurrentInstance, type CSSProperties, type ComponentPublicInstance, onMounted, watch, onBeforeUnmount } from 'vue';
+import useColor from '../../config/color';
+let color = useColor();
 import type { UniTouchEvent, BaseEvent } from '../../types/event';
 import utils from '../../utils/utils';
 import propsData, { sliderEmits } from './props';
@@ -53,7 +55,7 @@ const cmpRootCssVar = computed(() => {
     return {
         '--progress-height': utils.addUnit(props.barHeight),
         '--bar-size': utils.addUnit(props.buttonSize),
-        '--active-color': props.activeColor,
+        '--active-color': props.activeColor ? props.activeColor : color.getColor().steThemeColor,
     };
 });
 
@@ -69,7 +71,7 @@ const cmpInactiveStyle = computed(() => {
 const cmpActiveStyle = computed(() => {
     let style: CSSProperties = {};
     if (!props.disabled) {
-        const bg = utils.bg2style(props.activeColor);
+        const bg = utils.bg2style(props.activeColor ? props.activeColor : color.getColor().steThemeColor);
         style = { ...style, ...bg };
     }
     if (props.vertical) {

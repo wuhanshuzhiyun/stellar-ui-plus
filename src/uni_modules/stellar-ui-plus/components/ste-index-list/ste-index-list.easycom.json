@@ -32,7 +32,7 @@
             "name": "activeColor",
             "description": "右边锚点状态激活时的颜色",
             "type": "string",
-            "default": "#FF1A00"
+            "default": "#0090FF"
         },
         {
             "name": "[event]change",

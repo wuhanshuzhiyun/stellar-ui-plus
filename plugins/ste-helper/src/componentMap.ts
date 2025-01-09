@@ -3,9 +3,7 @@ import type { ComponentDesc } from './componentDesc'
 export const componentMap: Record<string, ComponentDesc> = {
   'animate': {
     site: 'ste-animate',
-    attr: [
-      'show=\'\'',
-    ],
+    attr: ['show=\'\''],
     props: [
       {
         name: 'show',
@@ -42,9 +40,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'badge': {
     site: 'ste-badge',
-    attr: [
-      'content=\'\'',
-    ],
+    attr: ['content=\'\''],
     props: [
       {
         name: 'content',
@@ -139,9 +135,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'button': {
     site: 'ste-button',
-    attr: [
-      'mode=\'\'',
-    ],
+    attr: ['mode=\'\''],
     props: [
       {
         name: 'mode',
@@ -177,7 +171,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'background',
         description: '背景',
         type: 'string',
-        default: '#0091ff',
+        default: '#0090FF',
       },
       {
         name: 'borderColor',
@@ -252,7 +246,8 @@ export const componentMap: Record<string, ComponentDesc> = {
       },
       {
         name: 'getuserinfo',
-        description: '微信小程序：用户点击该按钮时，会返回获取到的用户信息，从返回参数的 detail 中获取到的值同 wx.getUserInfo。支付宝小程序：当 open-type 为 getAuthorize 且 scope 为 userInfo 时有效。当授权成功时触发。',
+        description:
+                    '微信小程序：用户点击该按钮时，会返回获取到的用户信息，从返回参数的 detail 中获取到的值同 wx.getUserInfo。支付宝小程序：当 open-type 为 getAuthorize 且 scope 为 userInfo 时有效。当授权成功时触发。',
         type: '() => void',
       },
       {
@@ -262,22 +257,26 @@ export const componentMap: Record<string, ComponentDesc> = {
       },
       {
         name: 'getphonenumber',
-        description: '微信小程序：手机号快速验证回调，open-type=getPhoneNumber时有效。Tips：在触发 bindgetphonenumber 回调后应立即隐藏手机号按钮组件，或置为 disabled 状态，避免用户重复授权手机号产生额外费用。支付宝小程序：当 open-type 为 getAuthorize 且 scope 为 phoneNumber 时有效。当授权成功时触发。',
+        description:
+                    '微信小程序：手机号快速验证回调，open-type=getPhoneNumber时有效。Tips：在触发 bindgetphonenumber 回调后应立即隐藏手机号按钮组件，或置为 disabled 状态，避免用户重复授权手机号产生额外费用。支付宝小程序：当 open-type 为 getAuthorize 且 scope 为 phoneNumber 时有效。当授权成功时触发。',
         type: '() => void',
       },
       {
         name: 'getrealtimephonenumber',
-        description: '微信小程序：手机号实时验证回调，open-type=getRealtimePhoneNumber 时有效。Tips：在触发 bindgetrealtimephonenumber 回调后应立即隐藏手机号按钮组件，或置为 disabled 状态，避免用户重复授权手机号产生额外费用。',
+        description:
+                    '微信小程序：手机号实时验证回调，open-type=getRealtimePhoneNumber 时有效。Tips：在触发 bindgetrealtimephonenumber 回调后应立即隐藏手机号按钮组件，或置为 disabled 状态，避免用户重复授权手机号产生额外费用。',
         type: '() => void',
       },
       {
         name: 'agreeprivacyauthorization',
-        description: '微信小程序：用户同意隐私协议事件回调，open-type=agreePrivacyAuthorization时有效 （Tips: 如果使用 onNeedPrivacyAuthorization 接口，需要在 bindagreeprivacyauthorization 触发后再调用 resolve({ event: "agree", buttonId })）',
+        description:
+                    '微信小程序：用户同意隐私协议事件回调，open-type=agreePrivacyAuthorization时有效 （Tips: 如果使用 onNeedPrivacyAuthorization 接口，需要在 bindagreeprivacyauthorization 触发后再调用 resolve({ event: "agree", buttonId })）',
         type: '() => void',
       },
       {
         name: 'error',
-        description: '微信小程序：当使用开放能力时，发生错误的回调，open-type=launchApp时有效 支付宝小程序：当 open-type 为 getAuthorize 时有效。当授权失败时触发。event.detail = {type, errorMessage}，此时 type 的值为 getAuthorize。',
+        description:
+                    '微信小程序：当使用开放能力时，发生错误的回调，open-type=launchApp时有效 支付宝小程序：当 open-type 为 getAuthorize 时有效。当授权失败时触发。event.detail = {type, errorMessage}，此时 type 的值为 getAuthorize。',
         type: '() => void',
       },
       {
@@ -302,16 +301,15 @@ export const componentMap: Record<string, ComponentDesc> = {
       },
       {
         name: 'followLifestyle',
-        description: '支付宝小程序：当 open-type 为 lifestyle 时有效。当点击按钮时触发。event.detail = { followStatus }，folllowStatus 合法值有 1、2、3，其中 1 表示已关注。2 表示用户不允许关注。3 表示发生未知错误；。',
+        description:
+                    '支付宝小程序：当 open-type 为 lifestyle 时有效。当点击按钮时触发。event.detail = { followStatus }，folllowStatus 合法值有 1、2、3，其中 1 表示已关注。2 表示用户不允许关注。3 表示发生未知错误；。',
         type: '() => void',
       },
     ],
   },
   'calendar': {
     site: 'ste-calendar',
-    attr: [
-      'title=\'\'',
-    ],
+    attr: ['title=\'\''],
     props: [
       {
         name: 'title',
@@ -367,7 +365,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'color',
         description: '主题颜色（选中日期背景、周末文日期颜色和确定按钮）',
         type: 'string',
-        default: '#FF1A00',
+        default: '#0090FF',
       },
       {
         name: 'minDate',
@@ -483,9 +481,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'checkbox': {
     site: 'ste-checkbox',
-    attr: [
-      'v-model=\'\'',
-    ],
+    attr: ['v-model=\'\''],
     props: [
       {
         name: 'v-model',
@@ -536,7 +532,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'checkedColor',
         description: '选中状态的图标颜色',
         type: 'string',
-        default: '#0090FF0',
+        default: '#0090FF',
       },
       {
         name: 'textPosition',
@@ -636,15 +632,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-checkbox-group': {
     site: 'ste-checkbox-group',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'code-input': {
     site: 'ste-code-input',
-    attr: [
-      'value=\'\'',
-    ],
+    attr: ['value=\'\''],
     props: [
       {
         name: 'value',
@@ -742,9 +734,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'date-picker': {
     site: 'ste-date-picker',
-    attr: [
-      'value=\'\'',
-    ],
+    attr: ['value=\'\''],
     props: [
       {
         name: 'value',
@@ -881,9 +871,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'drag': {
     site: 'ste-drag',
-    attr: [
-      'attract=\'\'',
-    ],
+    attr: ['attract=\'\''],
     props: [
       {
         name: 'attract',
@@ -933,9 +921,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'dropdown-menu': {
     site: 'ste-dropdown-menu',
-    attr: [
-      'title=\'\'',
-    ],
+    attr: ['title=\'\''],
     props: [
       {
         name: 'title',
@@ -1047,15 +1033,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-dropdown-menu-item': {
     site: 'ste-dropdown-menu-item',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'icon': {
     site: 'ste-icon',
-    attr: [
-      'code=\'\'',
-    ],
+    attr: ['code=\'\''],
     props: [
       {
         name: 'code',
@@ -1126,9 +1108,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'image': {
     site: 'ste-image',
-    attr: [
-      'src=\'\'',
-    ],
+    attr: ['src=\'\''],
     props: [
       {
         name: 'src',
@@ -1317,15 +1297,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-index-item': {
     site: 'ste-index-item',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'index-list': {
     site: 'ste-index-list',
-    attr: [
-      'active=\'\'',
-    ],
+    attr: ['active=\'\''],
     props: [
       {
         name: 'active',
@@ -1355,7 +1331,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'activeColor',
         description: '右边锚点状态激活时的颜色',
         type: 'string',
-        default: '#FF1A00',
+        default: '#0090FF',
       },
     ],
     events: [
@@ -1373,9 +1349,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'input': {
     site: 'ste-input',
-    attr: [
-      'value=\'\'',
-    ],
+    attr: ['value=\'\''],
     props: [
       {
         name: 'value',
@@ -1657,9 +1631,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'loading': {
     site: 'ste-loading',
-    attr: [
-      'color=\'\'',
-    ],
+    attr: ['color=\'\''],
     props: [
       {
         name: 'color',
@@ -1712,9 +1684,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'media-preview': {
     site: 'ste-media-preview',
-    attr: [
-      'show=\'\'',
-    ],
+    attr: ['show=\'\''],
     props: [
       {
         name: 'show',
@@ -1802,9 +1772,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'message-box': {
     site: 'ste-message-box',
-    attr: [
-      'selector=\'\'',
-    ],
+    attr: ['selector=\'\''],
     props: [
       {
         name: 'selector',
@@ -1817,9 +1785,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'notice-bar': {
     site: 'ste-notice-bar',
-    attr: [
-      'list=\'\'',
-    ],
+    attr: ['list=\'\''],
     props: [
       {
         name: 'list',
@@ -1928,9 +1894,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'number-keyboard': {
     site: 'ste-number-keyboard',
-    attr: [
-      'mode=\'\'',
-    ],
+    attr: ['mode=\'\''],
     props: [
       {
         name: 'mode',
@@ -2106,15 +2070,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-picker': {
     site: 'ste-picker',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'popup': {
     site: 'ste-popup',
-    attr: [
-      'show=\'\'',
-    ],
+    attr: ['show=\'\''],
     props: [
       {
         name: 'show',
@@ -2235,9 +2195,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'price': {
     site: 'ste-price',
-    attr: [
-      'value=\'\'',
-    ],
+    attr: ['value=\'\''],
     props: [
       {
         name: 'value',
@@ -2391,9 +2349,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'progress': {
     site: 'ste-progress',
-    attr: [
-      'activeBg=\'\'',
-    ],
+    attr: ['activeBg=\'\''],
     props: [
       {
         name: 'activeBg',
@@ -2472,9 +2428,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'radio': {
     site: 'ste-radio',
-    attr: [
-      'v-model=\'\'',
-    ],
+    attr: ['v-model=\'\''],
     props: [
       {
         name: 'v-model',
@@ -2524,7 +2478,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'checkedColor',
         description: '选中状态的图标颜色',
         type: 'string',
-        default: '#0090FF0',
+        default: '#0090FF',
       },
       {
         name: 'textPosition',
@@ -2624,15 +2578,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-radio-group': {
     site: 'ste-radio-group',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'rate': {
     site: 'ste-rate',
-    attr: [
-      'modelValue=\'\'',
-    ],
+    attr: ['modelValue=\'\''],
     props: [
       {
         name: 'modelValue',
@@ -2680,7 +2630,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'activeColor',
         description: '选中的颜色',
         type: 'String',
-        default: '#fa5014',
+        default: '#0090FF',
       },
       {
         name: 'inactiveCode',
@@ -2717,9 +2667,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'read-more': {
     site: 'ste-read-more',
-    attr: [
-      'showHeight=\'\'',
-    ],
+    attr: ['showHeight=\'\''],
     props: [
       {
         name: 'showHeight',
@@ -2773,9 +2721,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'rich-text': {
     site: 'ste-rich-text',
-    attr: [
-      'text=\'\'',
-    ],
+    attr: ['text=\'\''],
     props: [
       {
         name: 'text',
@@ -2814,9 +2760,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'scroll-to': {
     site: 'ste-scroll-to',
-    attr: [
-      'active=\'\'',
-    ],
+    attr: ['active=\'\''],
     props: [
       {
         name: 'active',
@@ -2841,15 +2785,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-scroll-to-item': {
     site: 'ste-scroll-to-item',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'search': {
     site: 'ste-search',
-    attr: [
-      'type=\'\'',
-    ],
+    attr: ['type=\'\''],
     props: [
       {
         name: 'type',
@@ -3081,9 +3021,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'select': {
     site: 'ste-select',
-    attr: [
-      'modelValue=\'\'',
-    ],
+    attr: ['modelValue=\'\''],
     props: [
       {
         name: 'modelValue',
@@ -3363,9 +3301,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'signature': {
     site: 'ste-signature',
-    attr: [
-      'customClass=\'\'',
-    ],
+    attr: ['customClass=\'\''],
     props: [
       {
         name: 'customClass',
@@ -3439,9 +3375,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'slider': {
     site: 'ste-slider',
-    attr: [
-      'value=\'\'',
-    ],
+    attr: ['value=\'\''],
     props: [
       {
         name: 'value',
@@ -3569,15 +3503,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-step': {
     site: 'ste-step',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'stepper': {
     site: 'ste-stepper',
-    attr: [
-      'v-model=\'\'',
-    ],
+    attr: ['v-model=\'\''],
     props: [
       {
         name: 'v-model',
@@ -3798,9 +3728,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'steps': {
     site: 'ste-steps',
-    attr: [
-      'active=\'\'',
-    ],
+    attr: ['active=\'\''],
     props: [
       {
         name: 'active',
@@ -3847,9 +3775,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'sticky': {
     site: 'ste-sticky',
-    attr: [
-      'offsetTop=\'\'',
-    ],
+    attr: ['offsetTop=\'\''],
     props: [
       {
         name: 'offsetTop',
@@ -3897,9 +3823,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'swipe-action': {
     site: 'ste-swipe-action',
-    attr: [
-      'mode=\'\'',
-    ],
+    attr: ['mode=\'\''],
     props: [
       {
         name: 'mode',
@@ -3973,9 +3897,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'swipe-action-group': {
     site: 'ste-swipe-action-group',
-    attr: [
-      'mode=\'\'',
-    ],
+    attr: ['mode=\'\''],
     props: [
       {
         name: 'mode',
@@ -4065,9 +3987,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'swiper': {
     site: 'ste-swiper',
-    attr: [
-      'current=\'\'',
-    ],
+    attr: ['current=\'\''],
     props: [
       {
         name: 'current',
@@ -4190,15 +4110,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-swiper-item': {
     site: 'ste-swiper-item',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'switch': {
     site: 'ste-switch',
-    attr: [
-      'modelValue=\'\'',
-    ],
+    attr: ['modelValue=\'\''],
     props: [
       {
         name: 'modelValue',
@@ -4258,9 +4174,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'tab': {
     site: 'ste-tab',
-    attr: [
-      'title=\'\'',
-    ],
+    attr: ['title=\'\''],
     props: [
       {
         name: 'title',
@@ -4316,9 +4230,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'table': {
     site: 'ste-table',
-    attr: [
-      'data=\'\'',
-    ],
+    attr: ['data=\'\''],
     props: [
       {
         name: 'data',
@@ -4506,15 +4418,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-table-column': {
     site: 'ste-table-column',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'tabs': {
     site: 'ste-tabs',
-    attr: [
-      'active=\'\'',
-    ],
+    attr: ['active=\'\''],
     props: [
       {
         name: 'active',
@@ -4793,9 +4701,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'text': {
     site: 'ste-text',
-    attr: [
-      'selectable=\'\'',
-    ],
+    attr: ['selectable=\'\''],
     props: [
       {
         name: 'selectable',
@@ -4824,9 +4730,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'toast': {
     site: 'ste-toast',
-    attr: [
-      'title=\'\'',
-    ],
+    attr: ['title=\'\''],
     props: [
       {
         name: 'title',
@@ -4907,9 +4811,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'touch-swipe': {
     site: 'ste-touch-swipe',
-    attr: [
-      'index=\'\'',
-    ],
+    attr: ['index=\'\''],
     props: [
       {
         name: 'index',
@@ -4992,15 +4894,11 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'ste-touch-swipe-item': {
     site: 'ste-touch-swipe-item',
-    attr: [
-      '',
-    ],
+    attr: [''],
   },
   'tour': {
     site: 'ste-tour',
-    attr: [
-      'show=\'\'',
-    ],
+    attr: ['show=\'\''],
     props: [
       {
         name: 'show',
@@ -5024,10 +4922,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'offset',
         description: '位置偏移量，格式为：[x, y]',
         type: '[number, number]',
-        default: [
-          0,
-          0,
-        ],
+        default: [0, 0],
       },
       {
         name: 'showTitleBar',
@@ -5123,9 +5018,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'tree': {
     site: 'ste-tree',
-    attr: [
-      'options=\'\'',
-    ],
+    attr: ['options=\'\''],
     props: [
       {
         name: 'options',
@@ -5231,9 +5124,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'upload': {
     site: 'ste-upload',
-    attr: [
-      'modelValue=\'\'',
-    ],
+    attr: ['modelValue=\'\''],
     props: [
       {
         name: 'modelValue',
@@ -5273,10 +5164,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'capture',
         description: '图片或者视频选取模式，当accept为image | media 类型时设置capture可选值为camera可以直接调起摄像头',
         type: 'Array<"album" | "camera">',
-        default: [
-          'album',
-          'camera',
-        ],
+        default: ['album', 'camera'],
       },
       {
         name: 'camera',
@@ -5503,9 +5391,7 @@ export const componentMap: Record<string, ComponentDesc> = {
   },
   'video': {
     site: 'ste-video',
-    attr: [
-      'title=\'\'',
-    ],
+    attr: ['title=\'\''],
     props: [
       {
         name: 'title',
@@ -5693,13 +5579,15 @@ export const componentMap: Record<string, ComponentDesc> = {
       },
       {
         name: 'httpCache',
-        description: '是否对 http、https 视频源开启本地缓存。缓存策略:开启了此开关的视频源，在视频播放时会在本地保存缓存文件，如果本地缓存池已超过100M，在进行缓存前会清空之前的缓存（不适用于m3u8等流媒体协议）',
+        description:
+                    '是否对 http、https 视频源开启本地缓存。缓存策略:开启了此开关的视频源，在视频播放时会在本地保存缓存文件，如果本地缓存池已超过100M，在进行缓存前会清空之前的缓存（不适用于m3u8等流媒体协议）',
         type: 'boolean',
         default: 'true',
       },
       {
         name: 'playStrategy',
-        description: '播放策略，0：普通模式，适合绝大部分视频播放场景；1：平滑播放模式（降级），增加缓冲区大小，采用open sl解码音频，避免音视频脱轨的问题，可能会降低首屏展现速度、视频帧率，出现开屏音频延迟等。 适用于高码率视频的极端场景；2： M3U8优化模式，增加缓冲区大小，提升视频加载速度和流畅度，可能会降低首屏展现速度。 适用于M3U8在线播放的场景',
+        description:
+                    '播放策略，0：普通模式，适合绝大部分视频播放场景；1：平滑播放模式（降级），增加缓冲区大小，采用open sl解码音频，避免音视频脱轨的问题，可能会降低首屏展现速度、视频帧率，出现开屏音频延迟等。 适用于高码率视频的极端场景；2： M3U8优化模式，增加缓冲区大小，提升视频加载速度和流畅度，可能会降低首屏展现速度。 适用于M3U8在线播放的场景',
         type: 'number',
         default: 0,
         values: [
@@ -5709,7 +5597,8 @@ export const componentMap: Record<string, ComponentDesc> = {
           },
           {
             name: '1',
-            description: '平滑播放模式（降级），增加缓冲区大小，采用open sl解码音频，避免音视频脱轨的问题，可能会降低首屏展现速度、视频帧率，出现开屏音频延迟等。 适用于高码率视频的极端场景；2： M3U8优化模式，增加缓冲区大小，提升视频加载速度和流畅度，可能会降低首屏展现速度。 适用于M3U8在线播放的场景',
+            description:
+                            '平滑播放模式（降级），增加缓冲区大小，采用open sl解码音频，避免音视频脱轨的问题，可能会降低首屏展现速度、视频帧率，出现开屏音频延迟等。 适用于高码率视频的极端场景；2： M3U8优化模式，增加缓冲区大小，提升视频加载速度和流畅度，可能会降低首屏展现速度。 适用于M3U8在线播放的场景',
           },
         ],
       },

@@ -23,8 +23,8 @@
 通过 `color` 属性来设置图标的颜色
 
 ```html
-<ste-loading color="#0091FF"></ste-loading>
-<ste-loading :type="2" color="#0091FF"></ste-loading>
+<ste-loading color="#0090FF"></ste-loading>
+<ste-loading :type="2" color="#0090FF"></ste-loading>
 ```
 
 ### 自定义图标大小
@@ -60,8 +60,8 @@
 -   通过 `textColor`设置文本颜色，默认和图标颜色同步
 
 ```html
-<ste-loading :textSize="50" textColor="#0091FF">加载中...</ste-loading>
-<ste-loading :type="2" :textSize="50" textColor="#0091FF">加载中...</ste-loading>
+<ste-loading :textSize="50" textColor="#0090FF">加载中...</ste-loading>
+<ste-loading :type="2" :textSize="50" textColor="#0090FF">加载中...</ste-loading>
 ```
 
 ---$

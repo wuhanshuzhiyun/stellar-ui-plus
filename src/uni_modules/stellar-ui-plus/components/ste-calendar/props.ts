@@ -8,7 +8,7 @@ export default {
   mode: { type: String, default: () => 'single' },
   startText: { type: String, default: () => '开始' },
   endText: { type: String, default: () => '结束' },
-  color: { type: String, default: () => '#FF1A00' },
+  color: { type: String, default: () => '' },
   minDate: { type: [String, Number, Date], default: () => 0 },
   maxDate: { type: [String, Number, Date], default: () => 0 },
   defaultMonth: { type: [Number, String, Date], default: () => 0 },

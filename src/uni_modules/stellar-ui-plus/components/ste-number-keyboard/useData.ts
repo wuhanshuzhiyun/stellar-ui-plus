@@ -1,8 +1,13 @@
 import { computed, ref, watch } from 'vue'
 import utils from '../../utils/utils'
+import useColor from '../../config/color'
 import type { NumberKeyboardProps } from './props'
 
-export default function useData({ props, emits }: {
+const color = useColor()
+export default function useData({
+  props,
+  emits,
+}: {
   props: NumberKeyboardProps
   emits: {
     (e: 'change', value: string): void
@@ -67,7 +72,7 @@ export default function useData({ props, emits }: {
       '--ste-number-keyboard-text-size': `var(--font-size-${props.textSize},${utils.formatPx(props.textSize)})`,
       '--ste-number-keyboard-clear-text-size': `var(--font-size-${props.textSize},${utils.formatPx(Number(props.textSize) - 8)})`,
       '--ste-number-keyboard-confirm-text-size': `var(--font-size-${props.textSize},${utils.formatPx(Number(props.textSize) - 3)})`,
-      '--ste-number-keyboard-confirm-bg': props.confirmBg,
+      '--ste-number-keyboard-confirm-bg': props.confirmBg ? props.confirmBg : color.getColor().steThemeColor,
       '--ste-number-keyboard-confirm-bg-active': utils.Color.formatColor(props.confirmBg, 0.8),
       '--ste-number-keyboard-confirm-color': props.confirmColor,
     }

@@ -61,10 +61,10 @@ const onClose = (index?: number) => {
                 </ste-swipe-action>
                 <view class="btn-box">
                     <view class="btn-item-box">
-                        <ste-button mode="200" @click="openSwipe" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">打开</ste-button>
+                        <ste-button mode="200" @click="openSwipe" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">打开</ste-button>
                     </view>
                     <view class="btn-item-box">
-                        <ste-button mode="200" @click="closeSwipe" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">关闭</ste-button>
+                        <ste-button mode="200" @click="closeSwipe" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">关闭</ste-button>
                     </view>
                 </view>
             </view>
@@ -96,16 +96,16 @@ const onClose = (index?: number) => {
                 </ste-swipe-action-group>
                 <view class="btn-box">
                     <view class="btn-item-box">
-                        <ste-button mode="200" @click="openSwipeGroup(0)" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">打开第1行</ste-button>
+                        <ste-button mode="200" @click="openSwipeGroup(0)" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">打开第1行</ste-button>
                     </view>
                     <view class="btn-item-box">
-                        <ste-button mode="200" @click="closeSwipeGroup(0)" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">关闭第1行</ste-button>
+                        <ste-button mode="200" @click="closeSwipeGroup(0)" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">关闭第1行</ste-button>
                     </view>
                     <view class="btn-item-box">
-                        <ste-button mode="200" @click="openSwipeGroup(1)" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">打开第2行</ste-button>
+                        <ste-button mode="200" @click="openSwipeGroup(1)" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">打开第2行</ste-button>
                     </view>
                     <view class="btn-item-box">
-                        <ste-button mode="200" @click="closeSwipeGroup(1)" width="100%" :round="false" background="#ffffff" border-color="#0091FF" color="#0091FF">关闭第2行</ste-button>
+                        <ste-button mode="200" @click="closeSwipeGroup(1)" width="100%" :round="false" background="#ffffff" border-color="#0090FF" color="#0090FF">关闭第2行</ste-button>
                     </view>
                 </view>
             </view>

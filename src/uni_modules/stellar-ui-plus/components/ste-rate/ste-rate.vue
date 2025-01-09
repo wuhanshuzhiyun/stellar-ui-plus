@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import utils from '../../utils/utils.js';
+import useColor from '../../config/color';
+let color = useColor();
 import propsData from './props';
 import { computed, defineOptions, type CSSProperties } from 'vue';
 
@@ -42,6 +44,10 @@ const cmpInactiveCode = computed(() => {
     let code = getIconCode();
     if (code) return code;
     return props.inactiveCode;
+});
+
+let cmpActiveColor = computed(() => {
+    return props.activeColor ? props.activeColor : color.getColor().steThemeColor;
 });
 
 // 根据iconData来算出每个分值对应的iconCode
@@ -107,7 +113,7 @@ function getWidth(index: number) {
                     <ste-icon :code="cmpInactiveCode" :color="inactiveColor" :size="size"></ste-icon>
                 </view>
                 <view class="icon-box active" @click="onSelect(index)" :style="{ width: getWidth(index) }">
-                    <ste-icon :code="cmpActiveCode" :color="disabled ? '#C8C9CC' : activeColor" :size="size"></ste-icon>
+                    <ste-icon :code="cmpActiveCode" :color="disabled ? '#C8C9CC' : cmpActiveColor" :size="size"></ste-icon>
                 </view>
             </view>
         </view>

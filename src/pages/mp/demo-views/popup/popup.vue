@@ -121,54 +121,54 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
 
         <!-- ******************** -->
         <!-- 弹窗 -->
-        <ste-popup :show.sync="show" width="300" height="300">
+        <ste-popup v-model:show="show" width="300" height="300">
             <view class="popup-content"></view>
         </ste-popup>
         <!-- 背景色 -->
-        <ste-popup :show.sync="bgShow" width="300" height="300" backgroundColor="#eff3dd">
+        <ste-popup v-model:show="bgShow" width="300" height="300" backgroundColor="#eff3dd">
             <view class="popup-content">背景色</view>
         </ste-popup>
         <!-- 遮罩 -->
-        <ste-popup :show.sync="maskShow1" width="300" height="300">
+        <ste-popup v-model:show="maskShow1" width="300" height="300">
             <view class="popup-content">遮罩可关闭</view>
         </ste-popup>
-        <ste-popup :show.sync="maskShow2" width="300" height="300" :isMaskClick="false">
+        <ste-popup v-model:show="maskShow2" width="300" height="300" :isMaskClick="false">
             <view class="popup-content">遮罩不可关闭</view>
         </ste-popup>
         <!-- 大小 -->
-        <ste-popup :show.sync="sizeShow1" width="300" height="500">
+        <ste-popup v-model:show="sizeShow1" width="300" height="500">
             <view class="popup-content">300*500</view>
         </ste-popup>
-        <ste-popup :show.sync="sizeShow2" width="100vw" height="300">
+        <ste-popup v-model:show="sizeShow2" width="100vw" height="300">
             <view class="popup-content">100vw*300</view>
         </ste-popup>
         <!-- 位置 -->
-        <ste-popup :show.sync="showTop" height="300" width="100vw" position="top">
+        <ste-popup v-model:show="showTop" height="300" width="100vw" position="top">
             <view class="popup-content"></view>
         </ste-popup>
-        <ste-popup :show.sync="showBottom" height="300" width="100vw" position="bottom" round>
+        <ste-popup v-model:show="showBottom" height="300" width="100vw" position="bottom" round>
             <view class="popup-content"></view>
         </ste-popup>
-        <ste-popup :show.sync="showLeft" width="300" height="100vh" position="left">
+        <ste-popup v-model:show="showLeft" width="300" height="100vh" position="left">
             <view class="popup-content"></view>
         </ste-popup>
-        <ste-popup :show.sync="showRight" width="300" height="100vh" position="right">
+        <ste-popup v-model:show="showRight" width="300" height="100vh" position="right">
             <view class="popup-content"></view>
         </ste-popup>
         <!-- 圆角 -->
-        <ste-popup :show.sync="roundShow" width="300" height="300" round>
+        <ste-popup v-model:show="roundShow" width="300" height="300" round>
             <view class="popup-content">圆角</view>
         </ste-popup>
         <!-- 偏移 -->
-        <ste-popup :show.sync="offsetShow" width="300" height="300" offsetX="50" offsetY="-50">
+        <ste-popup v-model:show="offsetShow" width="300" height="300" offsetX="50" offsetY="-50">
             <view class="popup-content">偏移</view>
         </ste-popup>
         <!-- 动画执行时间 -->
-        <ste-popup :show.sync="durationShow" width="300" height="300" :duration="800" :keepContent="false">
+        <ste-popup v-model:show="durationShow" width="300" height="300" :duration="800" :keepContent="false">
             <view class="popup-content">动画执行时间</view>
         </ste-popup>
         <!-- 异步关闭 -->
-        <ste-popup :show.sync="syncShow" width="100vw" height="300" @close="syncClose" position="bottom">
+        <ste-popup v-model:show="syncShow" width="100vw" height="300" @close="syncClose" position="bottom">
             <view class="popup-content">异步关闭</view>
         </ste-popup>
     </page-layout>
@@ -183,13 +183,16 @@ function syncClose(suspend: () => void, next: () => void, stop: () => void) {
     height: 100%;
     width: 100%;
 }
+
 .content {
     .demo-item {
         .item-block {
             display: block;
+
             &.block {
                 display: block;
             }
+
             > view {
                 margin: 0 16rpx 16rpx 0;
             }

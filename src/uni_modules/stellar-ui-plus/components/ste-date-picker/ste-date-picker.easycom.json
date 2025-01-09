@@ -110,7 +110,7 @@
             "name": "confirmColor",
             "description": "确认按钮的颜色",
             "type": "string",
-            "default": "#3c9cff"
+            "default": ""
         },
         {
             "name": "visibleItemCount",

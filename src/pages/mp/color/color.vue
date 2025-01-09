@@ -37,6 +37,7 @@ function confirm(e) {
 }
 
 let checkboxValue = ref(true);
+let radioValue = ref('a');
 let datetime = ref('');
 let rateValue = ref(1);
 let selectValue = ref(2011);
@@ -130,6 +131,12 @@ let list1 = ref([
                 <view class="title">复选框</view>
                 <view class="item-block">
                     <ste-checkbox v-model="checkboxValue">复选框</ste-checkbox>
+                </view>
+            </view>
+            <view class="demo-item">
+                <view class="title">单选框</view>
+                <view class="item-block">
+                    <ste-radio v-model="radioValue" name="a">单选框</ste-radio>
                 </view>
             </view>
             <view class="demo-item">

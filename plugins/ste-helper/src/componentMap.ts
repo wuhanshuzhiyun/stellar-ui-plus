@@ -532,7 +532,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'checkedColor',
         description: '选中状态的图标颜色',
         type: 'string',
-        default: '#0090FF0',
+        default: '#0090FF',
       },
       {
         name: 'textPosition',
@@ -2478,7 +2478,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'checkedColor',
         description: '选中状态的图标颜色',
         type: 'string',
-        default: '#0090FF0',
+        default: '#0090FF',
       },
       {
         name: 'textPosition',
@@ -2630,7 +2630,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         name: 'activeColor',
         description: '选中的颜色',
         type: 'String',
-        default: '#fa5014',
+        default: '#0090FF',
       },
       {
         name: 'inactiveCode',

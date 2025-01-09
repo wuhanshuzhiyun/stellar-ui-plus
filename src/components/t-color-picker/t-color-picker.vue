@@ -334,7 +334,6 @@ export default {
             this.setPosition(clientX, clientY, index);
         },
         touchmove(e, index) {
-            console.log('e', e);
             const { clientX, clientY } = e.touches[0] ? e.touches[0] : e;
             this.moveX = clientX;
             this.moveY = clientY;

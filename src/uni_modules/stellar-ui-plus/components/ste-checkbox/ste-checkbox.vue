@@ -23,7 +23,7 @@ const parentProps = computed(() => Parent?.parent?.props);
 const cmpReadonly = computed(() => getDefaultData('readonly', false));
 const cmpShape = computed(() => getDefaultData('shape', 'circle'));
 const cmpIconSize = computed(() => getDefaultData('iconSize', 36));
-const cmpCheckedColor = computed(() => getDefaultData('checkedColor', ''));
+const cmpCheckedColor = computed(() => getDefaultData('checkedColor', color.getColor().steThemeColor));
 const cmpTextPosition = computed(() => getDefaultData('textPosition', 'right'));
 const cmpTextSize = computed(() => getDefaultData('textSize', 28));
 const cmpTextInactiveColor = computed(() => getDefaultData('textInactiveColor', '#000000'));

@@ -53,7 +53,7 @@
             "name": "checkedColor",
             "description": "选中状态的图标颜色",
             "type": "string",
-            "default": "#0090FF0"
+            "default": "#0090FF"
         },
         {
             "name": "textPosition",

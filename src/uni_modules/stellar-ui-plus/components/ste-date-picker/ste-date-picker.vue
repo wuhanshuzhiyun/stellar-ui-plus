@@ -7,7 +7,7 @@
             :cancelText="cancelText"
             :cancelColor="cancelColor"
             :confirmText="confirmText"
-            :confirmColor="confirmColor"
+            :confirmColor="cmpConfirmColor"
             :visibleItemCount="visibleItemCount"
             :defaultIndex="innerDefaultIndex"
             :itemHeight="itemHeight"
@@ -21,7 +21,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, defineOptions } from 'vue';
+import { ref, onMounted, nextTick, defineOptions, computed } from 'vue';
+import useColor from '../../config/color.js';
+let color = useColor();
 import propsData from './props';
 import type { CloumnType } from './types';
 import utils from '../../utils/utils';
@@ -30,6 +32,12 @@ const dayjs = utils.dayjs;
 const componentName = 'ste-date-picker';
 defineOptions({
     name: componentName,
+});
+
+const props = defineProps(propsData);
+
+let cmpConfirmColor = computed(() => {
+    return props.confirmColor ? props.confirmColor : color.getColor().steThemeColor;
 });
 
 const DEFAULT_DATE = dayjs(new Date(1970, 1, 1, 0, 0, 0));
@@ -44,7 +52,6 @@ const times = (n: number, iteratee: (index: number) => string): string[] => {
     return result;
 };
 
-const props = defineProps(propsData);
 const emits = defineEmits<{
     (e: 'change', changeObj: any): void;
     (e: 'cancel'): void;

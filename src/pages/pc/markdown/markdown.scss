@@ -7,6 +7,9 @@
 .right-component {
     .markdown-view {
         padding-right: var(--pc-padding);
+        &.content {
+            padding-bottom: 1px;
+        }
         img {
             width: 100%;
         }

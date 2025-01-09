@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useSlots, computed, type CSSProperties } from 'vue';
-import useColor from '../../config/color.js';
+import useColor from '../../config/color';
 let color = useColor();
 import utils from '../../utils/utils';
 import propsData, { RADIO_KEY, radioEmits } from './props';

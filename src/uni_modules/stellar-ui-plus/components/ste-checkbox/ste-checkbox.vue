@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useSlots, computed, ref, type CSSProperties } from 'vue';
-import useColor from '../../config/color.js';
+import useColor from '../../config/color';
 let color = useColor();
 import utils from '../../utils/utils';
 import propsData, { CHECKBOX_KEY, checkboxEmits } from './props';

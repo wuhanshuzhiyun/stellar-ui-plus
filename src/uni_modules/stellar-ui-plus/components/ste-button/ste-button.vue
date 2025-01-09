@@ -108,8 +108,6 @@ const cmpBtnStyle = computed(() => {
             style.fontSize = 'var(--font-size-28, 28rpx)';
             break;
     }
-    console.log('props.background', props.background);
-    console.log('props.background', color.getColor());
     // 背景色 & 字体色
     style = { ...style, ...utils.bg2style(props.background ? props.background : color.getColor().steThemeColor) };
     style.color = props.color;

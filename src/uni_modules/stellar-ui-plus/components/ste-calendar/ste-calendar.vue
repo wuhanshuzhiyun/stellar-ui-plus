@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watch, onMounted, computed } from 'vue';
-import useColor from '../../config/color.js';
+import useColor from '../../config/color';
 let color = useColor();
 import { formatDate, type WeekType } from './date';
 import utils from '../../utils/utils';

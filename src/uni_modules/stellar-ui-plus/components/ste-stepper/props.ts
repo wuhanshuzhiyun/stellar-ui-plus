@@ -13,7 +13,7 @@ const stepperProps = {
   btnSize: { type: [Number, String] as PropType<number | string | undefined>, default: undefined },
   precision: { type: Number, default: 0 },
   theme: { type: String as PropType<CardType>, default: 'card' },
-  mainColor: { type: String, default: '#0090FF' },
+  mainColor: { type: String, default: '' },
   disabled: { type: Boolean, default: false },
   disablePlus: { type: Boolean, default: false },
   disableMinus: { type: Boolean, default: false },

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { BaseEvent } from '@uni-helper/uni-app-types';
 import { computed, type CSSProperties, nextTick, defineOptions } from 'vue';
+import useColor from '../../config/color';
+let color = useColor();
 import propsData, { stepperEmits } from './props';
 import utils from '../../utils/utils';
 
@@ -67,7 +69,7 @@ const cmpButtonStyle = computed(() => {
 const cmpLeftButtonStyle = computed(() => {
     let style = {} as CSSProperties;
     if (props.theme == 'card') {
-        style['border'] = `${utils.formatPx('2')} solid ${(cmpDisableMinus.value ? '#cccccc' : props.mainColor) + '80'}`;
+        style['border'] = `${utils.formatPx('2')} solid ${(cmpDisableMinus.value ? '#cccccc' : cmpMainColor.value) + '80'}`;
     }
     if (props.theme == 'line') {
         style['border'] = `none`;
@@ -80,10 +82,14 @@ const cmpLeftButtonStyle = computed(() => {
     return utils.deepMerge(utils.deepClone(cmpButtonStyle.value), style);
 });
 
+let cmpMainColor = computed(() => {
+    return props.mainColor ? props.mainColor : color.getColor().steThemeColor;
+});
+
 const cmpRightButtonStyle = computed(() => {
     let style = {} as CSSProperties;
-    style['background'] = cmpDisablePlus.value ? '#cccccc' : props.mainColor;
-    style['backgroundColor'] = cmpDisablePlus.value ? '#cccccc' : props.mainColor;
+    style['background'] = cmpDisablePlus.value ? '#cccccc' : cmpMainColor.value;
+    style['backgroundColor'] = cmpDisablePlus.value ? '#cccccc' : cmpMainColor.value;
     if (props.theme == 'line') {
         style['background'] = '#ffffff';
         style['backgroundColor'] = '#ffffff';
@@ -192,7 +198,7 @@ async function minus() {
                 <ste-icon
                     code="&#xe67c;"
                     :size="(theme == 'card' ? cmpBtnSize : cmpBtnSize * 0.8) * 0.65"
-                    :color="cmpDisableMinus ? '#cccccc' : theme == 'line' ? '#000000' : mainColor"
+                    :color="cmpDisableMinus ? '#cccccc' : theme == 'line' ? '#000000' : cmpMainColor"
                     :inlineBlock="false"
                 ></ste-icon>
             </view>

@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, defineOptions, computed } from 'vue';
-import useColor from '../../config/color.js';
+import useColor from '../../config/color';
 let color = useColor();
 import propsData from './props';
 import type { CloumnType } from './types';

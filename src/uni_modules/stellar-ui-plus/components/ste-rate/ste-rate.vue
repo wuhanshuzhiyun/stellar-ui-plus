@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import utils from '../../utils/utils.js';
-import useColor from '../../config/color.js';
+import useColor from '../../config/color';
 let color = useColor();
 import propsData from './props';
 import { computed, defineOptions, type CSSProperties } from 'vue';

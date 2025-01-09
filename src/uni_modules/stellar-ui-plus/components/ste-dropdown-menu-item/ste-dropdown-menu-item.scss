@@ -37,7 +37,7 @@
         border: none;
         padding: 14rpx 10rpx;
         border-radius: 48rpx;
-        border: 2rpx solid #0090ff;
+        border: 2rpx solid var(--active-color);
         width: 194rpx;
         white-space: nowrap;
         margin-bottom: 20rpx;
@@ -45,14 +45,14 @@
         .text {
             width: 100%;
             text-align: center;
-            color: #0090ff;
+            color: var(--active-color);
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
         }
 
         &.active {
-            background-color: #0090ff;
+            background-color: var(--active-color);
             .text {
                 color: #fff;
             }

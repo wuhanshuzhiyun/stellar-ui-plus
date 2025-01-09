@@ -2,6 +2,9 @@
 import { computed, ref, watch, useSlots, onMounted, type CSSProperties } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
+import useColor from '../../config/color';
+let color = useColor();
+
 const slots = useSlots();
 const props = defineProps(propsData);
 
@@ -67,7 +70,7 @@ const cmpActiveStyle = computed(() => {
     if (props.disabled) {
         style.backgroundColor = '#cccccc';
     } else {
-        const bg = utils.bg2style(props.activeBg);
+        const bg = utils.bg2style(props.activeBg ? props.activeBg : color.getColor().steThemeColor);
         style = { ...style, ...bg };
     }
     return style;

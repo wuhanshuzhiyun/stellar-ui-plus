@@ -169,9 +169,7 @@ const handleSuggestionClick = (item: SearchSuggestion) => {
     border: 1rpx solid var(--search-border-color);
     position: relative;
 
-    &,
-    view,
-    input {
+    & {
         box-sizing: border-box;
     }
 
@@ -365,6 +363,7 @@ const handleSuggestionClick = (item: SearchSuggestion) => {
             max-height: 400rpx;
         }
     }
+
     @keyframes suggestions-hide {
         0% {
             opacity: 1;

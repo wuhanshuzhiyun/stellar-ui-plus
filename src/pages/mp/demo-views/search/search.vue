@@ -163,12 +163,12 @@ function selectSuggestion(v: SearchSuggestion) {
                     placeholder="背景图片和按钮背景图片"
                     hiddenLine
                     borderColor="#F00"
-                    background="https://image.whzb.com/chain/StellarUI/背景1.png"
+                    background="url(https://image.whzb.com/chain/StellarUI/背景1.png)"
                     prefixIconColor="#fff"
                     placeholderColor="#fff"
                     inputTextColor="#fff"
                     clearIconColor="#a55"
-                    btnBackground="https://image.whzb.com/chain/StellarUI/背景2.png"
+                    btnBackground="url(https://image.whzb.com/chain/StellarUI/背景2.png)"
                     btnTextColor="#fff"
                     @search="onSearch"
                 />
@@ -192,7 +192,7 @@ function selectSuggestion(v: SearchSuggestion) {
                 <ste-search @click="onClick" v-model:focus="focus" />
                 <!--聚焦按钮-->
                 <view style="margin: 10px auto 0 auto">
-                    <ste-button @click="focus = true" width="100%">聚焦</ste-button>
+                    <ste-button @click="focus = true" width="660">聚焦</ste-button>
                 </view>
             </view>
         </view>

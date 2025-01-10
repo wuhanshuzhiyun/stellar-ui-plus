@@ -108,7 +108,7 @@ function getWidth(index: number) {
 <template>
     <view class="ste-rate-root">
         <view class="list" :style="[cmpListStyle]">
-            <view v-for="index in cmpCount" class="item" :style="[cmpItemStyle]">
+            <view v-for="index in cmpCount" class="item" :key="index" :style="[cmpItemStyle]">
                 <view class="icon-box inactive" @click="onSelect(index)">
                     <ste-icon :code="cmpInactiveCode" :color="inactiveColor" :size="size"></ste-icon>
                 </view>
@@ -135,6 +135,7 @@ function getWidth(index: number) {
             }
         }
     }
+
     .item:last-child {
         margin-right: 0 !important;
     }

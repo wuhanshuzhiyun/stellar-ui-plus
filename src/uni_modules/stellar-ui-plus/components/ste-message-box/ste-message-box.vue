@@ -192,10 +192,10 @@ defineExpose({
                 </view>
             </view>
             <view class="footer">
-                <view class="cancel text" v-if="showCancel" @click="handleCancel">
+                <view class="footer-btn cancel text" v-if="showCancel" @click="handleCancel">
                     {{ cancelText }}
                 </view>
-                <view class="confirm text" @click="handleConfirm">
+                <view class="footer-btn confirm text" @click="handleConfirm">
                     {{ confirmText }}
                 </view>
             </view>
@@ -239,6 +239,7 @@ defineExpose({
         .ste-message-title {
             padding-bottom: 48rpx !important;
         }
+
         .msg {
             padding: 0 !important;
         }
@@ -253,6 +254,7 @@ defineExpose({
         display: inline-flex;
         flex-direction: column;
         transform: scale(0);
+
         .content-box {
             .icon-box {
                 padding-top: 4rpx;
@@ -266,6 +268,7 @@ defineExpose({
                 align-items: center;
                 justify-content: center;
             }
+
             .ste-message-title {
                 width: 100%;
                 padding-top: 48rpx;
@@ -278,6 +281,7 @@ defineExpose({
             .msg {
                 padding: 0 32rpx 48rpx 32rpx;
                 text-align: center;
+
                 .text {
                     width: 100%;
                     font-size: var(--font-size-28, 28rpx);
@@ -308,10 +312,12 @@ defineExpose({
                 }
             }
         }
+
         .footer {
             display: flex;
             height: 96rpx;
-            > view {
+
+            .footer-btn {
                 height: 100%;
                 border-top: 2rpx solid #eeeeee;
                 border-right: 2rpx solid #eeeeee;
@@ -335,7 +341,7 @@ defineExpose({
                     color: var(--confirm-color);
                 }
 
-                &:nth-last-child(1) {
+                & + .footer-btn {
                     border-right: none;
                 }
             }

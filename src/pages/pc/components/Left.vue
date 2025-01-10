@@ -34,12 +34,6 @@ const datas = inject<MarkdownData>('datas');
     z-index: 1;
     background-color: #ffffff;
 
-    // &:hover {
-    //     &::-webkit-scrollbar-thumb {
-    //         background-color: #dddee0;
-    //     }
-    // }
-
     .left-group-title:not(:first-child) {
         padding-top: 0;
     }
@@ -68,13 +62,16 @@ const datas = inject<MarkdownData>('datas');
 
             &:hover {
                 background-color: #f2f4f7;
+
                 .name {
                     color: var(--pc-main-color);
                 }
             }
+
             &.active {
                 background: rgba(64, 158, 255, 0.1);
                 font-weight: bold;
+
                 .name {
                     color: var(--pc-main-color);
                 }

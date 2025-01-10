@@ -1,3 +1,4 @@
+/* #ifdef H5 */
 * {
     padding: 0;
     margin: 0;
@@ -7,9 +8,11 @@
 .right-component {
     .markdown-view {
         padding-right: var(--pc-padding);
+
         &.content {
             padding-bottom: 1px;
         }
+
         img {
             width: 100%;
         }
@@ -20,6 +23,7 @@
             font-size: 32px;
             font-weight: bold;
             cursor: default;
+
             // border-bottom: 1px solid #ddd;
             a {
                 display: none;
@@ -30,21 +34,25 @@
             margin-bottom: 20px;
             font-size: 22px;
         }
+
         h3 {
             margin-bottom: 16px;
             font-weight: 600;
             font-size: 20px;
         }
+
         h4 {
             margin-bottom: 14px;
             font-weight: 600;
             font-size: 18px;
         }
+
         h5 {
             margin-bottom: 12px;
             font-weight: 600;
             font-size: 16px;
         }
+
         h6 {
             margin-bottom: 10px;
             font-weight: 600;
@@ -65,10 +73,12 @@
                 border-radius: 5px;
             }
         }
+
         p {
             margin-bottom: 16px;
             color: rgb(115.2, 117.6, 122.4);
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -79,11 +89,13 @@
             td {
                 padding: 5px 10px;
                 text-align: left;
+
                 code {
                     white-space: normal;
                     word-break: break-all;
                 }
             }
+
             th {
                 width: auto;
             }
@@ -96,14 +108,17 @@
                 background-color: #f7f7f7;
             }
         }
+
         ol,
         ul {
             padding-left: 40px;
+
             li {
                 line-height: 30px;
                 color: rgb(115.2, 117.6, 122.4);
             }
         }
+
         pre {
             position: relative;
             border-radius: 0;
@@ -127,13 +142,16 @@
                 overflow: auto;
 
                 code {
-                    tab-size: 4; /* 这可能不起作用，取决于浏览器支持 */
-                    -moz-tab-size: 4; /* Firefox */
-                    -o-tab-size: 4; /* Opera */
+                    tab-size: 4;
+                    /* 这可能不起作用，取决于浏览器支持 */
+                    -moz-tab-size: 4;
+                    /* Firefox */
+                    -o-tab-size: 4;
+                    /* Opera */
                 }
             }
 
-            & > .code-copy-button {
+            &>.code-copy-button {
                 position: absolute;
                 top: 10px;
                 right: 15px;
@@ -146,8 +164,10 @@
 
             &.markdown-bash {
                 width: fit-content;
+
                 .code-body-box {
                     width: fit-content;
+
                     .language-bash {
                         width: fit-content;
                         padding-right: 80px;
@@ -155,10 +175,12 @@
                 }
             }
         }
+
         &.render {
             a {
                 color: #3890ff;
             }
+
             h1 {
                 line-height: 46px;
                 font-size: 33px;
@@ -169,18 +191,22 @@
             h2 {
                 font-size: 24px;
             }
+
             h4 {
                 font-size: 17px;
             }
+
             ul {
                 padding-left: 20px;
                 color: #000;
+
                 li {
                     font-weight: bold;
                     color: #000;
-                    h4 {
-                    }
+
+                    h4 {}
                 }
+
                 // margin-bottom: 10px;
             }
 
@@ -199,7 +225,7 @@
             monospace;
     }
 
-    pre + p {
+    pre+p {
         margin-top: 20px;
     }
 
@@ -279,9 +305,11 @@
         text-decoration: underline;
     }
 
-    *:not(.code-body-box) > code {
+    *:not(.code-body-box)>code {
         color: #a626a4;
         border-radius: 3px;
         white-space: nowrap;
     }
 }
+
+/* #endif */

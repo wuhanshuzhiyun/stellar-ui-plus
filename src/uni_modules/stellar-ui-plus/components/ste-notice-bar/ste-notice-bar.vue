@@ -166,12 +166,12 @@ function handleClick() {
                 </slot>
             </view>
             <view v-if="direction == 'across'" :class="'center ' + id" @click="handleClick">
-                <view :id="id" :class="cardMsgClass" :style="[cmpAcrossStyle]" @animationend="onAnimationEnd">
+                <view class="center-item" :id="id" :class="cardMsgClass" :style="[cmpAcrossStyle]" @animationend="onAnimationEnd">
                     <ste-rich-text :text="list[index]"></ste-rich-text>
                 </view>
             </view>
             <view v-else :class="'center vertical ' + cardMsgClass" @click="handleClick" @animationend="onAnimationEnd" :style="[cmpVerticalStyle]">
-                <view v-for="(item, i) in copyList" :key="i">
+                <view class="center-item" v-for="(item, i) in copyList" :key="i">
                     <ste-rich-text :text="item"></ste-rich-text>
                 </view>
             </view>
@@ -204,6 +204,7 @@ function handleClick() {
         flex: 1;
         height: 100%;
     }
+
     .left {
         flex-shrink: 0;
         margin-right: 16rpx;
@@ -212,12 +213,13 @@ function handleClick() {
         height: 36rpx;
         line-height: 36rpx;
     }
+
     .center {
         flex: 1;
         display: flex;
         overflow: hidden;
 
-        > view {
+        > .center-item {
             font-size: var(--font-size-24, 24rpx);
             display: inline-block;
             width: auto;

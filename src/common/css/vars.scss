@@ -1,3 +1,4 @@
+// #ifdef H5
 :root,
 :host {
     // sizes
@@ -13,6 +14,7 @@
 
 // 100%
 @media (max-width: 1920px) {
+
     :root,
     :host {
         // sizes
@@ -25,6 +27,7 @@
 
 // 80%
 @media (max-width: 1600px) {
+
     :root,
     :host {
         // sizes
@@ -37,6 +40,7 @@
 
 // 70%
 @media (max-width: 1280px) {
+
     :root,
     :host {
         // sizes
@@ -46,3 +50,5 @@
         --pc-padding: 32px;
     }
 }
+
+// #endif

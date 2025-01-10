@@ -7,7 +7,7 @@ const dropDownMenuProps = {
   value: { type: [String, Number, Array] as PropType<string | number | Array<any> | undefined>, default: undefined },
   modelValue: { type: [String, Number, Array] as PropType<string | number | Array<any> | undefined>, default: undefined },
   inactiveColor: { type: String, default: '#000000' },
-  activeColor: { type: String, default: '#0090FF' },
+  activeColor: { type: String, default: '' },
   direction: { type: String, default: 'down' },
   duration: { type: [Number, String], default: 0.2 },
   showMask: { type: Boolean, default: true },

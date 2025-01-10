@@ -1,13 +1,33 @@
-html,
-body {
-    user-select: auto;
+.header-anchor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    text-decoration: none;
+    color: var(--pc-main-color);
+    padding-right: 8px;
+    transform: translateX(-100%);
 }
 
 /* #ifdef APP */
 * {
     touch-action: pan-y;
 }
+
 /* #endif */
+
+
+/* #ifdef H5 */
+html,
+body {
+    user-select: auto;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
 
 .pc-page-body {
     min-width: 1100px;
@@ -38,26 +58,14 @@ body {
     color: transparent;
 }
 
-.header-anchor {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    text-decoration: none;
-    color: var(--pc-main-color);
-    padding-right: 8px;
-    transform: translateX(-100%);
-}
-
 h2:hover .header-anchor,
 h3:hover .header-anchor,
 h4:hover .header-anchor {
     opacity: 1;
 }
 
-html {
-    scroll-behavior: smooth;
-}
+/* #endif */
+
 
 /*
   demo页通用样式 
@@ -70,6 +78,8 @@ html {
 
     display: flex;
     flex-direction: column;
+
+    /* #ifdef H5 */
     ::-webkit-scrollbar {
         display: none;
         width: 0 !important;
@@ -78,7 +88,9 @@ html {
         background: transparent;
         color: transparent;
     }
-    > .content {
+
+    /* #endif */
+    >.content {
         padding: 0 40rpx;
         flex: 1;
         overflow-y: auto;
@@ -90,6 +102,7 @@ html {
                 padding-top: 48rpx;
                 color: #000000;
             }
+
             .cmp-desc {
                 color: #0009;
                 margin-top: 8rpx;
@@ -104,16 +117,16 @@ html {
             color: #000000;
         }
 
-        & > .demo-item {
+        &>.demo-item {
             margin-bottom: 16px;
 
-            & > .title {
+            &>.title {
                 font-size: 14px;
                 color: #8f9ca2;
                 margin-bottom: 8px;
             }
 
-            & > .item-block {
+            &>.item-block {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
@@ -134,17 +147,26 @@ html {
     row-gap: 25px;
     margin-bottom: 40px;
 }
+
 .con-item {
     display: flex;
     flex-direction: column;
     row-gap: 10px;
 }
+
 .con-image {
     width: 90px !important;
     height: 90px !important;
     border-radius: 50%;
 }
 
+
+.con-box .name {
+    color: #1989fa !important;
+    text-align: center;
+}
+
+/* #ifdef H5 */
 .con-box a:link,
 .con-box a:visited,
 .con-box a:hover,
@@ -153,7 +175,4 @@ html {
     color: #1989fa !important;
 }
 
-.con-box .name {
-    color: #1989fa !important;
-    text-align: center;
-}
+/* #endif */

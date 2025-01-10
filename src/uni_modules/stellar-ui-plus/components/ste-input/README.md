@@ -96,7 +96,7 @@
 
 ```html
 <ste-input background="linear-gradient(to right, #aaaaaa, #aaa000)" />
-<ste-input background="https://image.whzb.com/chain/StellarUI/背景1.png" />
+<ste-input background="url(https://image.whzb.com/chain/StellarUI/背景1.png)" />
 ```
 
 #### 前后插槽

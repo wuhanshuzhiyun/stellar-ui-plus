@@ -3,6 +3,7 @@ import { inject, ref, watch } from 'vue';
 import type { MarkdownData, Content } from '../types';
 import CompNav from './comp-nav.vue';
 import config from '@/common/config';
+import CommentVue from './Comment.vue';
 
 const props = defineProps<{
     isCompView: boolean;
@@ -70,6 +71,7 @@ const load = () => {
             <div v-html="compMarkdonwHtml?.htmlDemo" v-if="compNavActive === config.NAV_COMP_KEY_DEMO" class="markdown-view content"></div>
             <div v-html="compMarkdonwHtml?.htmlApi" v-if="compNavActive === config.NAV_COMP_KEY_API" class="markdown-view content"></div>
             <div v-html="compMarkdonwHtml?.htmlGuide" v-if="compNavActive === config.NAV_COMP_KEY_GUIDE" class="markdown-view content"></div>
+            <comment-vue />
         </template>
         <template v-else>
             <div v-if="!show" v-html="markdown" class="markdown-view render" />

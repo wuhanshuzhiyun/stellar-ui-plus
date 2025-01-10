@@ -182,12 +182,12 @@ const onClick = (v: string) => {
     placeholder="背景图片和按钮背景图片"
     hiddenLine
     borderColor="#F00"
-    background="https://image.whzb.com/chain/StellarUI/背景1.png"
+    background="url(https://image.whzb.com/chain/StellarUI/背景1.png)"
     prefixIconColor="#fff"
     placeholderColor="#fff"
     inputTextColor="#fff"
     clearIconColor="#a55"
-    btnBackground="https://image.whzb.com/chain/StellarUI/背景2.png"
+    btnBackground="url(https://image.whzb.com/chain/StellarUI/背景2.png)"
     btnTextColor="#fff"
     @search="onSearch"
 />

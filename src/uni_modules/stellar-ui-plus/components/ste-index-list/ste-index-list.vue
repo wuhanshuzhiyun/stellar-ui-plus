@@ -3,6 +3,8 @@ import { ref, computed, watch, nextTick, getCurrentInstance, defineOptions, onMo
 import propsData, { INDEX_LIST_KEY } from './props';
 import useData from '../ste-scroll-to/useData';
 import { useProvide } from '../../utils/mixin';
+import useColor from '../../config/color';
+let color = useColor();
 
 defineOptions({
     name: 'ste-index-list',
@@ -34,7 +36,10 @@ onMounted(() => {
 
 const { dataActive, setDataActive, scrollTop, cmpRootStyle, onScroll, initChildren } = useData({ thas, emits, props, children: internalChildren });
 
-const cmpIndexRootStyle = computed(() => ({ '--ste-index-list-inactive-color': props.inactiveColor, '--ste-index-list-active-color': props.activeColor }));
+const cmpIndexRootStyle = computed(() => ({
+    '--ste-index-list-inactive-color': props.inactiveColor,
+    '--ste-index-list-active-color': props.activeColor ? props.activeColor : color.getColor().steThemeColor,
+}));
 const cmpTitles = computed(() => internalChildren.map(c => c?.props?.title));
 
 const activeChange = (index: number) => {

@@ -1,5 +1,5 @@
 const progressProps = {
-  activeBg: { type: [String], default: '#0090ff' },
+  activeBg: { type: [String], default: '' },
   inactiveBg: { type: [String], default: '#eeeeee' },
   percentage: { type: [Number], default: 0 },
   strokeWidth: { type: [String, Number], default: 24 },

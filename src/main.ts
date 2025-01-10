@@ -11,7 +11,5 @@ export function createApp() {
     title.textContent = 'Stellar Plus'
   })
   // #endif
-  return {
-    app,
-  }
+  return { app }
 }

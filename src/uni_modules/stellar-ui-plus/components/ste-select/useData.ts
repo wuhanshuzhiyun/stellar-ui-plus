@@ -1,6 +1,6 @@
 import { type CSSProperties, computed, nextTick, ref, watch } from 'vue'
 import utils from '../../utils/utils'
-import useColor from '../../config/color.js'
+import useColor from '../../config/color'
 import type { SelectOption, SelectValue, SteSelectProps } from './props'
 import { type DateMode, formatDate, getFormatStr } from './defaultDate'
 

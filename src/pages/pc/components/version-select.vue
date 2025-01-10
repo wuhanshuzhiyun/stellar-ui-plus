@@ -93,7 +93,7 @@ defineExpose({
 .version-switcher {
     position: relative;
     display: inline-block;
-    min-width: 240rpx;
+    min-width: 120px;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -101,10 +101,10 @@ defineExpose({
 }
 
 .version-selected {
-    padding: 16rpx 32rpx;
+    padding: 8px 16px;
     background: #fff;
-    border: 1rpx solid #dcdfe6;
-    border-radius: 8rpx;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -120,7 +120,7 @@ defineExpose({
 /* #endif */
 
 .version-text {
-    font-size: 28rpx;
+    font-size: 14px;
     color: #606266;
     text-decoration: none;
 }
@@ -129,11 +129,11 @@ defineExpose({
     display: inline-block;
     width: 0;
     height: 0;
-    border-left: 12rpx solid transparent;
-    border-right: 12rpx solid transparent;
-    border-top: 12rpx solid #909399;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #909399;
     transition: transform 0.3s;
-    margin-left: 16rpx;
+    margin-left: 8px;
 }
 
 .arrow-up {
@@ -142,13 +142,13 @@ defineExpose({
 
 .dropdown-menu {
     position: absolute;
-    top: calc(100% + 8rpx);
+    top: calc(100% + 4px);
     left: 0;
     right: 0;
     background: #fff;
-    border: 1rpx solid #dcdfe6;
-    border-radius: 8rpx;
-    box-shadow: 0 4rpx 24rpx 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     z-index: 100;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -156,7 +156,7 @@ defineExpose({
 }
 
 .dropdown-item {
-    padding: 16rpx 32rpx;
+    padding: 8px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -177,14 +177,14 @@ defineExpose({
 }
 
 .check-icon {
-    font-size: 24rpx;
+    font-size: 12px;
     color: var(--pc-main-color);
 }
 
 @keyframes slideDown {
     from {
         opacity: 0;
-        transform: translateY(-10rpx);
+        transform: translateY(-5px);
     }
     to {
         opacity: 1;

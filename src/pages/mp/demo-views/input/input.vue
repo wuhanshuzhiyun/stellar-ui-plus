@@ -25,7 +25,7 @@ function hanldeInput(val) {
 </script>
 
 <template>
-    <page-layout title="输入框" contentStyle="background: #fbfbfc;">
+    <page-layout title="输入框" contentStyle="background: #fcfcfc;">
         <view class="description">
             <view class="cmp-name">Input 输入框</view>
             <view class="cmp-desc">用于单行文本信息输入。</view>

@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 const inputFocus = ref(false);
 const count = ref(0);
-const v = ref('');
+const v = ref('123');
 let codeTimer: any;
 
 function focus() {
@@ -17,6 +17,10 @@ function getCode() {
         }
         count.value--;
     }, 1000);
+}
+
+function hanldeInput(val) {
+    console.log('val is ', val, ' ***');
 }
 </script>
 

@@ -73,32 +73,20 @@ const cmpShowClear = computed(() => {
 });
 
 watch(
-    () => props.modelValue,
-    val => {
-        setTimeout(() => {
-            dataValue.value = val;
-            tmpDataValue.value = val;
-        }, 10);
+    () => [props.value, props.modelValue],
+    vals => {
+        const val = vals[0] || vals[1];
+        dataValue.value = val;
+        tmpDataValue.value = val;
     },
-    { immediate: true }
-);
-
-watch(
-    () => props.value,
-    val => {
-        setTimeout(() => {
-            dataValue.value = val as string | undefined;
-            tmpDataValue.value = val as string | undefined;
-        }, 10);
-    },
-    { immediate: true }
+    {
+        immediate: true,
+    }
 );
 
 watch(
     () => props.focus,
     val => {
-        // focused.value = val;
-
         setTimeout(() => {
             focused.value = val;
         }, 50);

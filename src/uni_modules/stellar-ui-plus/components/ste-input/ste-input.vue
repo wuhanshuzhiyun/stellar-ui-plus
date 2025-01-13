@@ -2,7 +2,7 @@
 import { computed, ref, watch, nextTick, type CSSProperties, defineOptions } from 'vue';
 
 import utils from '../../utils/utils';
-import propsData, { inputEmits } from './props';
+import propsData, { type InputEmits } from './props';
 import type { BaseEvent } from '../../types/event';
 import type { InputType } from '@uni-helper/uni-app-types';
 const componentName = `ste-input`;
@@ -14,11 +14,11 @@ defineOptions({
 });
 
 const props = defineProps(propsData);
-const emits = defineEmits(inputEmits);
+const emits = defineEmits<InputEmits>();
 
 const focused = ref(props.focus);
-const dataValue = ref<string | number>('');
-const tmpDataValue = ref<string | number>('');
+const dataValue = ref<string>();
+const tmpDataValue = ref<string>();
 
 const cmpRootClass = computed(() => {
     let classStr = '';
@@ -87,8 +87,8 @@ watch(
     () => props.value,
     val => {
         setTimeout(() => {
-            dataValue.value = val;
-            tmpDataValue.value = val;
+            dataValue.value = val as string | undefined;
+            tmpDataValue.value = val as string | undefined;
         }, 10);
     },
     { immediate: true }

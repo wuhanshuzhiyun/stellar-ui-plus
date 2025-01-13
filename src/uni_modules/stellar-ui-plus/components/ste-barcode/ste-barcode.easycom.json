@@ -1,0 +1,46 @@
+{
+    "name": "ste-barcode",
+    "description": "条形码组件",
+    "example": "<ste-barcode content='1234567890'></ste-barcode>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=barcode",
+    "attributes": [
+        {
+            "name": "content",
+            "description": "条形码内容(仅支持数字和字母)",
+            "type": "string"
+        },
+        {
+            "name": "width",
+            "description": "条形码宽度，单位`px`",
+            "type": "number",
+            "unit": "px"
+        },
+        {
+            "name": "height",
+            "description": "条形码高度，单位`px`",
+            "type": "number",
+            "unit": "px"
+        },
+        {
+            "name": "background",
+            "description": "背景色",
+            "type": "string"
+        },
+        {
+            "name": "foreground",
+            "description": "前景色(条形码画笔颜色)",
+            "type": "string"
+        },
+        {
+            "name": "[event]loadImage",
+            "description": "加载完成后返回条形码对应的图片数据",
+            "type": "(src:string r) => void",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "图片数据"
+                }
+            ]
+        }
+    ]
+}

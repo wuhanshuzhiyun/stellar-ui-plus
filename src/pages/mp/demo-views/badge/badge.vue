@@ -174,7 +174,7 @@
 .demo-item {
     .item-block {
         > view {
-            margin: 0 36px 36px 0;
+            margin: 0 36rpx 36rpx 0;
 
             .avator {
                 height: 80rpx;

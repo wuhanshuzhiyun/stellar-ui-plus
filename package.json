@@ -112,6 +112,6 @@
     "lint-staged": {
         "*.vue": "prettier --write",
         "*.ts": "eslint --fix",
-        "*.js": "eslint --fix"
+        "!(*uqrcode).js": "eslint --fix"
     }
 }

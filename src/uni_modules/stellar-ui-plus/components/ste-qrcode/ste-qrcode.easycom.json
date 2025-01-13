@@ -1,0 +1,57 @@
+{
+    "name": "ste-qrcode",
+    "description": "二维码组件",
+    "example": "<ste-qrcode content='https://example.com'></ste-qrcode>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=qrcode",
+    "attributes": [
+        {
+            "name": "content",
+            "description": "二维码内容",
+            "type": "string"
+        },
+        {
+            "name": "size",
+            "description": "二维码尺寸，单位`px`",
+            "type": "number",
+            "unit": "px"
+        },
+        {
+            "name": "background",
+            "description": "背景色",
+            "type": "string"
+        },
+        {
+            "name": "foreground",
+            "description": "前景色(条形码画笔颜色)",
+            "type": "string"
+        },
+        {
+            "name": "foregroundImageSrc",
+            "description": "二维码中间logo图",
+            "type": "string"
+        },
+        {
+            "name": "foregroundImageWidth",
+            "description": "logo图宽度，默认二维码尺寸的四分之一",
+            "type": "string",
+            "default": "size / 4"
+        },
+        {
+            "name": "foregroundImageHeight",
+            "description": "logo图高度，默认二维码尺寸的四分之一",
+            "type": "string",
+            "default": "size / 4"
+        },
+        {
+            "name": "[event]loadImage",
+            "description": "加载完成后返回条形码对应的图片数据",
+            "type": "(src:string r) => void",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "图片数据"
+                }
+            ]
+        }
+    ]
+}

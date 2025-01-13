@@ -40,6 +40,10 @@
       "type": "page"
     },
     {
+      "path": "pages/mp/demo-views/barcode/barcode",
+      "type": "page"
+    },
+    {
       "path": "pages/mp/demo-views/button/button",
       "type": "page"
     },
@@ -117,6 +121,10 @@
     },
     {
       "path": "pages/mp/demo-views/progress/progress",
+      "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/qrcode/qrcode",
       "type": "page"
     },
     {

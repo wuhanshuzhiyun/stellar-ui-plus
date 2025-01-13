@@ -101,12 +101,6 @@ defineExpose({ init });
         padding-top: 200rpx;
         margin-top: -200rpx;
         // margin-bottom: 20rpx;
-
-        text {
-            cursor: pointer;
-            font-size: var(--font-size-28, 28rpx);
-            margin-right: 16rpx;
-        }
     }
 }
 </style>

@@ -49,7 +49,7 @@ const cmpText = computed(() => {
     <view class="ste-loading-root" :style="[cmpStyle]">
         <view :class="'loading ' + 'loading-type-' + type" :style="[cmpLoadinStyle]">
             <block v-if="type == 1">
-                <i v-for="item in cmpCount" class="i" :style="{ transform: `rotate(${item * 40 + 80}deg)`, opacity: item == 0 ? 1 : (item + 1) / 10 }"></i>
+                <i v-for="(item, index) in cmpCount" :key="index" class="i" :style="{ transform: `rotate(${item * 40 + 80}deg)`, opacity: item == 0 ? 1 : (item + 1) / 10 }"></i>
             </block>
             <block v-if="type == 2">
                 <view></view>
@@ -81,6 +81,7 @@ const cmpText = computed(() => {
             width: 100%;
             height: 100%;
         }
+
         .i:before {
             display: block;
             width: 10%;
@@ -95,6 +96,7 @@ const cmpText = computed(() => {
     .loading-type-1 {
         animation: ste-rotate 0.8s linear infinite;
     }
+
     .loading-type-2 {
         width: 100%;
         height: 100%;
@@ -106,6 +108,7 @@ const cmpText = computed(() => {
         0% {
             transform: rotate(0deg);
         }
+
         100% {
             transform: rotate(360deg);
         }
@@ -115,6 +118,7 @@ const cmpText = computed(() => {
         0% {
             transform: rotate(0);
         }
+
         100% {
             transform: rotate(1turn);
         }

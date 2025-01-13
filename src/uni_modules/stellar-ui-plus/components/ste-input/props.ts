@@ -35,13 +35,12 @@ export default inputProps
 
 export type InputProps = ExtractPropTypes<typeof inputProps>
 
-export const inputEmits = {
-  'input': (value: string | number) => value,
-  'clear': () => true,
-  'update:focus': (v: boolean) => typeof v === 'boolean',
-  'update:modelValue': (value: string | number) => typeof value === 'string' || typeof value === 'number',
-  'blur': () => true,
-  'focus': (value: string | number) => value,
-  'confirm': (value: string | number) => value,
+export interface InputEmits {
+  (e: 'input', value: string | undefined): void
+  (e: 'clear'): void
+  (e: 'update:focus', v: boolean): void
+  (e: 'update:modelValue', value: string | undefined): void
+  (e: 'blur'): void
+  (e: 'focus', value: string | undefined): void
+  (e: 'confirm', value: string | undefined): void
 }
-export type InputEmits = typeof inputEmits

@@ -218,11 +218,6 @@ onMounted(() => {
                     background-size: 100% 100%;
                     margin: 0 auto;
 
-                    image {
-                        width: 100%;
-                        height: 100%;
-                    }
-
                     & + .tab-sub-title {
                         margin-top: 8rpx;
                     }

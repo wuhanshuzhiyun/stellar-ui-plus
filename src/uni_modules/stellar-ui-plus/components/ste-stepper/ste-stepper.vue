@@ -3,7 +3,7 @@ import type { BaseEvent } from '@uni-helper/uni-app-types';
 import { computed, type CSSProperties, nextTick, defineOptions } from 'vue';
 import useColor from '../../config/color';
 let color = useColor();
-import propsData, { stepperEmits } from './props';
+import propsData, { type StepperEmits } from './props';
 import utils from '../../utils/utils';
 
 const componentName = `ste-stepper`;
@@ -15,7 +15,7 @@ defineOptions({
 });
 
 const props = defineProps(propsData);
-const emits = defineEmits(stepperEmits);
+const emits = defineEmits<StepperEmits>();
 
 // const model = defineModel<number>({ default: 0 });
 
@@ -38,7 +38,7 @@ const cmpDisablePlus = computed(() => {
     if (props.disabled || props.disablePlus) {
         return true;
     } else {
-        return props.modelValue >= props.max;
+        return Number(props.modelValue) >= props.max;
     }
 });
 
@@ -46,7 +46,7 @@ const cmpDisableMinus = computed(() => {
     if (props.disabled || props.disableMinus) {
         return true;
     } else {
-        return props.modelValue <= props.min;
+        return Number(props.modelValue) <= props.min;
     }
 });
 
@@ -160,7 +160,7 @@ async function plus() {
                 return;
             }
         }
-        let value = handleValue(props.modelValue + props.step);
+        let value = handleValue(Number(props.modelValue) + props.step);
         emits('update:modelValue', value);
         emits('change', value);
     }
@@ -184,7 +184,7 @@ async function minus() {
                 return;
             }
         }
-        let value = handleValue(props.modelValue - props.step);
+        let value = handleValue(Number(props.modelValue) - props.step);
         emits('update:modelValue', value);
         emits('change', value);
     }
@@ -204,7 +204,7 @@ async function minus() {
             </view>
         </ste-button>
         <view v-if="theme != 'add'" class="input" :style="[cmpInputStyle]">
-            <input :type="precision ? 'digit' : 'number'" :value="modelValue" @blur="blur" @focus="focus" :disabled="disabled || disableInput" />
+            <input class="input-element" :type="precision ? 'digit' : 'number'" :value="modelValue" @blur="blur" @focus="focus" :disabled="disabled || disableInput" />
         </view>
         <ste-button v-if="theme != 'add'" :rootStyle="cmpRightButtonStyle" @click="plus" :disabled="cmpDisablePlus">
             <view class="button-icon">
@@ -233,7 +233,8 @@ async function minus() {
         font-weight: bold;
         color: #000000;
         text-align: center;
-        input {
+
+        .input-element {
             height: 100%;
             font-size: var(--font-size-28, 28rpx);
         }

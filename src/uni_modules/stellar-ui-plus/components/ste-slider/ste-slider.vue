@@ -278,7 +278,7 @@ function removeListenner() {
         </view>
 
         <template v-if="showStops">
-            <template v-for="(e, i) in markList">
+            <template v-for="(e, i) in markList" :key="i">
                 <view class="mark-box" :style="{ left: e.left, top: e.top }">
                     <view class="dot" />
                     <view class="marks-label" :style="e.style">{{ e.label }}</view>

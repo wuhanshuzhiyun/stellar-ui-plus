@@ -71,7 +71,7 @@ const cmpBtnStyle = computed(() => {
         style.borderColor = props.borderColor;
     }
     // 类型 mode
-    switch (props.mode) {
+    switch (Number(props.mode)) {
         case 100:
             if (props.width == 'auto') {
                 style.padding = `0 ${utils.formatPx(30)}`;
@@ -202,6 +202,7 @@ function handleClick(e: Event) {
     border-radius: 10rpx;
     margin: 0;
     border-width: 10rpx;
+
     .btn-box {
         width: 100%;
         white-space: nowrap;

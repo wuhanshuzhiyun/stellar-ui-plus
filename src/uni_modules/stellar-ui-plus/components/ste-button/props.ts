@@ -4,7 +4,7 @@ import type { ButtonOpenType } from '@uni-helper/uni-app-types'
 import type { ModeType, SizeType } from '../../types'
 
 export default {
-  mode: { type: Number as PropType<ModeType>, default: 200 },
+  mode: { type: [Number, String] as PropType<ModeType>, default: 200 },
   color: { type: String, default: '#ffffff' },
   background: { type: String, default: '' },
   borderColor: { type: String, default: '' },

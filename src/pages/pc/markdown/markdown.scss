@@ -8,10 +8,7 @@
 .right-component {
     .markdown-view {
         padding-right: var(--pc-padding);
-
-        &.content {
-            padding-bottom: 1px;
-        }
+        padding-bottom: 30px;
 
         img {
             width: 100%;
@@ -151,7 +148,7 @@
                 }
             }
 
-            &>.code-copy-button {
+            & > .code-copy-button {
                 position: absolute;
                 top: 10px;
                 right: 15px;
@@ -204,7 +201,8 @@
                     font-weight: bold;
                     color: #000;
 
-                    h4 {}
+                    h4 {
+                    }
                 }
 
                 // margin-bottom: 10px;
@@ -225,7 +223,7 @@
             monospace;
     }
 
-    pre+p {
+    pre + p {
         margin-top: 20px;
     }
 
@@ -305,7 +303,7 @@
         text-decoration: underline;
     }
 
-    *:not(.code-body-box)>code {
+    *:not(.code-body-box) > code {
         color: #a626a4;
         border-radius: 3px;
         white-space: nowrap;

@@ -25,9 +25,9 @@ export type CheckboxProps = ExtractPropTypes<typeof checkboxProps>
 
 export default checkboxProps
 
-export const checkboxEmits = {
-  'click': (value: boolean, suspend: () => void, next: () => void, stop: () => void) => value && suspend instanceof Function && next instanceof Function && stop instanceof Function,
-  'change': (value: boolean | any[]) => typeof value === 'boolean' || Array.isArray(value),
-  'input': (value: boolean) => typeof value === 'boolean',
-  'update:modelValue': (value: boolean) => typeof value === 'boolean',
+export interface CheckboxEmits {
+  (e: 'click', value: boolean, suspend: () => void, next: () => void, stop: () => void): void
+  (e: 'change', value: boolean | any[]): void
+  (e: 'input', value: boolean): void
+  (e: 'update:modelValue', value: boolean): void
 }

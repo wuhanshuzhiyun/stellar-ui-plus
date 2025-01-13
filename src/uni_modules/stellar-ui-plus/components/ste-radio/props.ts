@@ -25,9 +25,9 @@ export type RadioProps = ExtractPropTypes<typeof radioProps>
 
 export default radioProps
 
-export const radioEmits = {
-  'click': (value: string, suspend: () => void, next: () => void, stop: () => void) => value && suspend instanceof Function && next instanceof Function && stop instanceof Function,
-  'change': (value: string) => typeof value === 'string',
-  'input': (value: string) => typeof value === 'string',
-  'update:modelValue': (value: string) => typeof value === 'string',
+export interface RadioEmits {
+  (e: 'click', value: string, suspend: () => void, next: () => void, stop: () => void): void
+  (e: 'change', value: string): void
+  (e: 'input', value: string): void
+  (e: 'update:modelValue', value: string): void
 }

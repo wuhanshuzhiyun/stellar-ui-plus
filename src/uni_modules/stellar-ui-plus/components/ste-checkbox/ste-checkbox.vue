@@ -3,7 +3,7 @@ import { useSlots, computed, ref, type CSSProperties } from 'vue';
 import useColor from '../../config/color';
 let color = useColor();
 import utils from '../../utils/utils';
-import propsData, { CHECKBOX_KEY, checkboxEmits } from './props';
+import propsData, { CHECKBOX_KEY, type CheckboxEmits } from './props';
 import type { CheckboxGroupProps } from '../ste-checkbox-group/props';
 import { useInject } from '../../utils/mixin';
 const componentName = `ste-checkbox`;
@@ -14,7 +14,7 @@ defineOptions({
     },
 });
 const props = defineProps(propsData);
-const emits = defineEmits(checkboxEmits);
+const emits = defineEmits<CheckboxEmits>();
 const slots = useSlots();
 
 const Parent = useInject<{ props: Required<CheckboxGroupProps>; updateValue: (value: any[]) => void }>(CHECKBOX_KEY);
@@ -186,14 +186,17 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
     height: 100%;
     display: flex;
     align-items: center;
+
     .input-icon {
         display: flex;
         justify-content: center;
         align-items: center;
     }
+
     .icon {
         pointer-events: all;
     }
+
     .text {
         display: flex;
         align-items: center;

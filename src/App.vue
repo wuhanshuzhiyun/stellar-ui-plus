@@ -24,6 +24,7 @@ watch(
     margin: 0;
     box-sizing: border-box;
 }
+
 /* #endif */
 /* #ifndef H5 */
 view,
@@ -34,5 +35,6 @@ textarea {
     margin: 0;
     box-sizing: border-box;
 }
+
 /* #endif */
 </style>

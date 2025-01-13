@@ -148,14 +148,18 @@ function loadMessageBoxParams(options: MessageBoxOptions) {
     complete.value = options.complete || complete.value;
 }
 
-watch(messageBoxOption, val => {
-    if (val.show) {
-        loadMessageBoxParams(val);
-        showBox();
-    } else {
-        closeBox();
-    }
-});
+watch(
+    () => messageBoxOption,
+    val => {
+        if (val.show) {
+            loadMessageBoxParams(val);
+            showBox();
+        } else {
+            closeBox();
+        }
+    },
+    { deep: true }
+);
 
 function showMsgBox(options: MessageBoxOptions) {
     loadMessageBoxParams(options);

@@ -3,7 +3,7 @@ import { useSlots, computed, type CSSProperties } from 'vue';
 import useColor from '../../config/color';
 let color = useColor();
 import utils from '../../utils/utils';
-import propsData, { RADIO_KEY, radioEmits } from './props';
+import propsData, { RADIO_KEY, type RadioEmits } from './props';
 import type { RadioGroupProps } from '../ste-radio-group/props';
 import { useInject } from '../../utils/mixin';
 const componentName = `ste-radio`;
@@ -14,7 +14,7 @@ defineOptions({
     },
 });
 const props = defineProps(propsData);
-const emits = defineEmits(radioEmits);
+const emits = defineEmits<RadioEmits>();
 const slots = useSlots();
 
 const Parent = useInject<{ props: Required<RadioGroupProps>; updateValue: (value: string) => void }>(RADIO_KEY);
@@ -168,14 +168,17 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
     height: 100%;
     display: flex;
     align-items: center;
+
     .input-icon {
         display: flex;
         justify-content: center;
         align-items: center;
     }
+
     .icon {
         pointer-events: all;
     }
+
     .text {
         display: flex;
         align-items: center;

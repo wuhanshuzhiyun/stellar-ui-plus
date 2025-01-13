@@ -5,7 +5,7 @@ import type { AroundPositionType } from '../../types'
 type CardType = 'card' | 'line' | 'add'
 
 const stepperProps = {
-  modelValue: { type: Number, default: 1 },
+  modelValue: { type: [Number, String], default: 1 },
   min: { type: Number, default: 0 },
   max: { type: Number, default: Number.POSITIVE_INFINITY },
   step: { type: Number, default: 1 },
@@ -27,18 +27,14 @@ const stepperProps = {
   badgeMax: { type: Number, default: 99 },
 }
 
-export const stepperEmits = {
-  'update:modelValue': (val: number) => typeof val === 'number',
-  'focus': (e: BaseEvent) => e instanceof Object,
-  'blur': (e: BaseEvent) => e instanceof Object,
-  'change': (value: number | undefined) => value === undefined || typeof value === 'number',
-  'plus': (value: number | undefined, suspend: () => void, next: () => void, stop: () => void) =>
-    (value === undefined || typeof value === 'number') && suspend instanceof Function && next instanceof Function && stop instanceof Function,
-  'minus': (value: number | undefined, suspend: () => void, next: () => void, stop: () => void) =>
-    (value === undefined || typeof value === 'number') && suspend instanceof Function && next instanceof Function && stop instanceof Function,
+export interface StepperEmits {
+  (e: 'update:modelValue', val: number): void
+  (e: 'focus', event: BaseEvent): void
+  (e: 'blur', event: BaseEvent): void
+  (e: 'change', value: number | string): void
+  (e: 'plus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void
+  (e: 'minus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void
 }
-
-export type StepperEmits = typeof stepperEmits
 
 export default stepperProps
 

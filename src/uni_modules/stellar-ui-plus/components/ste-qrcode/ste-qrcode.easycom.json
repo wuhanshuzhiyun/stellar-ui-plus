@@ -12,8 +12,7 @@
         {
             "name": "size",
             "description": "二维码尺寸，单位`px`",
-            "type": "number",
-            "unit": "px"
+            "type": "number"
         },
         {
             "name": "background",

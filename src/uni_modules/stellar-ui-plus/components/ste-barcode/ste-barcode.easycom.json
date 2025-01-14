@@ -12,14 +12,12 @@
         {
             "name": "width",
             "description": "条形码宽度，单位`px`",
-            "type": "number",
-            "unit": "px"
+            "type": "number"
         },
         {
             "name": "height",
             "description": "条形码高度，单位`px`",
-            "type": "number",
-            "unit": "px"
+            "type": "number"
         },
         {
             "name": "background",

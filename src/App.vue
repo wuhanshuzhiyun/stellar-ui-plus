@@ -17,24 +17,6 @@ watch(
 // #endif
 </script>
 
-<style>
-/* #ifdef H5 */
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-/* #endif */
-/* #ifndef H5 */
-view,
-button,
-input,
-textarea {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-/* #endif */
+<style lang="scss">
+@import './uni_modules/stellar-ui-plus/common/css/common.scss';
 </style>

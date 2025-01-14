@@ -3,7 +3,6 @@ import type { TreeNode } from '../types'
 import config from '../config'
 import System from './System'
 import Color from './Color'
-import '../common/index.css'
 
 type ReturnBasedOnBool<T extends boolean> = T extends true ? UniApp.NodeInfo[] : UniApp.NodeInfo
 

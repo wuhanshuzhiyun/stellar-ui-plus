@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, nextTick, onMounted } from 'vue';
 import { setToken } from '../../common/token';
 import { isLogin } from '@/common/account';
 import config from '@/common/config';
@@ -108,16 +108,19 @@ onMounted(async () => {
             text-align: center;
             color: #0090ff;
         }
+
         .qr-image {
             width: 100%;
             height: calc(100% - 110px);
             border-top: 1px solid #0090ff80;
             padding: 30px;
             position: relative;
+
             image {
                 width: 100%;
                 height: 100%;
             }
+
             .status-message {
                 position: absolute;
                 width: 100%;

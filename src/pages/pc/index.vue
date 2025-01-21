@@ -60,7 +60,7 @@ onLoad(() => {
         <view class="pc-page-header">
             <view class="left">
                 <image class="logo" src="../../static/logo.png" mode="widthFix"></image>
-                <text class="logo-text">StellarUI</text>
+                <text class="logo-text">StellarPlus</text>
             </view>
             <view class="right">
                 <header-nav v-model:mode="navActive" @change="handleHeaderNavChange" />

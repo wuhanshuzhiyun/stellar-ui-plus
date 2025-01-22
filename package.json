@@ -1,8 +1,17 @@
 {
     "name": "stellar-ui-plus",
-    "version": "1.16.18",
-    "private": true,
+    "version": "1.16.19",
+    "keywords": [
+        "ui",
+        "uniApp",
+        "vu3"
+    ],
+    "packageManager": "pnpm@8.14.1",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wuhanshuzhiyun/stellar-ui-plus.git"
+    },
     "scripts": {
         "dev": "uni",
         "dev:app": "uni -p app",

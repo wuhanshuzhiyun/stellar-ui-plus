@@ -1,10 +1,9 @@
 {
     "name": "stellar-ui-plus",
-    "version": "1.16.18",
+    "version": "1.16.19",
     "description": "",
     "author": "",
     "license": "MIT",
-    "keywords": [],
     "main": "index.js",
     "repository": {
         "type": "git",

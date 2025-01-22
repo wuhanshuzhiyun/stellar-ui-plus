@@ -2,14 +2,14 @@
     "name": "ste-helper",
     "displayName": "ste-helper",
     "description": "StellarUI-Plus组件库的代码提示",
-    "version": "0.0.52",
+    "version": "0.0.56",
     "icon": "src/assets/logo.png",
     "engines": {
         "vscode": "^1.56.0"
     },
     "repository": {
         "type": "git",
-        "url": "git+http://172.16.108.253:8001/Mall/stellar-ui-plus.git",
+        "url": "git+https://github.com/wuhanshuzhiyun/stellar-ui-plus.git",
         "directory": "plugins/ste-helper"
     },
     "categories": [

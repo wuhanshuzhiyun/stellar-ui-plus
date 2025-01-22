@@ -32,8 +32,8 @@
 
 ## 安装
 
-```bash [npm]
-npm install stellar-ui-plus -S
+```bash [pnpm]
+pnpm install stellar-ui-plus -S
 ```
 
 ## 快速上手
@@ -44,7 +44,7 @@ npm install stellar-ui-plus -S
 
 我们非常欢迎大家一起贡献优秀的 Demo 与案例，欢迎在此 [issue](https://github.com/wuhanshuzhiyun/stellar-ui-plus/issues/1) 提交案例。
 
-<table boder="0">
+<table border="0">
 	<tr>
 		<td>
 			<img width="250" src="https://image.whzb.com/chain/StellarUI/头像/邻里购.png" />
@@ -74,11 +74,12 @@ npm install stellar-ui-plus -S
 
 ## 周边生态
 
-| 项目                                                                                   | 描述                                                                |
-| -------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| [StellarUI](https://stellar-ui.intecloud.com.cn/)                                      | 一个基于vue2构建，打造的uni-app组件库                               |
-| [ste-vue-inset-loader](https://github.com/wuhanshuzhiyun/ste-vue-inset-loader)         | 常用于小程序需要全局引入组件的场景的包                              |
-| [ste-helper](https://marketplace.visualstudio.com/items?itemName=StellarUI.ste-helper) | 旨在帮助开发者更加有效率的使用 StellarUI-Plus来开发项目的vscode插件 |
+| 项目                                                                                         | 描述                                                                |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| [StellarUI](https://github.com/wuhanshuzhiyun/stellar-ui)                                    | 一个基于vue2构建，打造的uni-app组件库                               |
+| [ste-vue-inset-loader](https://github.com/wuhanshuzhiyun/ste-vue-inset-loader)               | 常用于小程序需要全局引入组件的场景的包                              |
+| [ste-helper](https://github.com/wuhanshuzhiyun/stellar-ui-plus/tree/main/plugins/ste-helper) | 旨在帮助开发者更加有效率的使用 StellarUI-Plus来开发项目的vscode插件 |
+| [ste-cli](https://github.com/wuhanshuzhiyun/ste-cli)                                         | stellar配套的脚手架                                                 |
 
 ## 核心团队
 
@@ -163,8 +164,8 @@ npm install stellar-ui-plus -S
 
 感谢以下小伙伴们为 `StellarUI-Plus` 发展做出的贡献：
 
-<a href="https://github.com/wuhanshuzhiyun/stellar-ui/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=wuhanshuzhiyun/stellar-ui" alt="contributors">
+<a href="https://github.com/wuhanshuzhiyun/stellar-ui-plus/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=wuhanshuzhiyun/stellar-ui-plus" alt="contributors">
 </a>
 
 ## 鸣谢

@@ -11,7 +11,7 @@
             <view class="title">基础使用</view>
             <view class="item-block">
                 <view>
-                    <ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" />
+                    <ste-qrcode :content="content" />
                 </view>
             </view>
         </view>
@@ -22,7 +22,7 @@
             <view class="title">自定义颜色</view>
             <view class="item-block">
                 <view>
-                    <ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" foreground="#c11" background="#dad" />
+                    <ste-qrcode :content="content" foreground="#c11" background="#dad" />
                 </view>
             </view>
         </view>
@@ -30,12 +30,22 @@
             <view class="title">带logo</view>
             <view class="item-block">
                 <view>
-                    <ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" foregroundImageSrc="https://image.whzb.com/chain/StellarUI/logo.png" />
+                    <ste-qrcode :content="content" foregroundImageSrc="https://image.whzb.com/chain/StellarUI/logo.png" />
                 </view>
             </view>
         </view>
     </page-layout>
 </template>
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+const content = ref('');
+
+onMounted(() => {
+    setTimeout(() => {
+        content.value = 'https://stellar-ui.intecloud.com.cn/mp/index/index';
+    }, 1000);
+});
+</script>
 
 <style lang="scss" scoped>
 .demo-item {

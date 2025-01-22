@@ -49,6 +49,7 @@ export default class UQRCode {
   foregroundImageX: number
   foregroundImageY: number
 
+  loadImage(src: string): Promise
   setOptions(options: UQRCodeOptions): void // 设置uQRCode属性
   make(): void // 创建二维码
   drawCanvas(): Promise<void> // 将二维码绘制到 Canvas 上

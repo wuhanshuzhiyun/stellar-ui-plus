@@ -8,7 +8,7 @@
             <view class="title">基础使用</view>
             <view class="item-block">
                 <view>
-                    <ste-barcode content="123987456abc" />
+                    <ste-barcode :content="content1" />
                 </view>
             </view>
         </view>
@@ -16,12 +16,26 @@
             <view class="title">自定义颜色</view>
             <view class="item-block">
                 <view>
-                    <ste-barcode content="123456abc123" foreground="#c11" background="#dad" />
+                    <ste-barcode :content="content2" foreground="#c11" background="#dad" />
                 </view>
             </view>
         </view>
     </page-layout>
 </template>
+
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+
+const content1 = ref('');
+const content2 = ref('');
+
+onMounted(() => {
+    setTimeout(() => {
+        content1.value = '123987456abc';
+        content2.value = '123456abc123';
+    }, 500);
+});
+</script>
 
 <style lang="scss" scoped>
 .demo-item {

@@ -22,39 +22,77 @@ onMounted(() => {
 
 watch(
     () => props.content,
-    val => {
-        if (!val) return;
-        nextTick(() => {
-            initCanvas();
-        });
+    () => {
+        initCanvas();
     },
     {}
 );
 
 const initCanvas = () => {
-    // #ifdef H5 || APP
-    const context = uni.createCanvasContext(canvasId, instance);
-    draw(context);
-    // #endif
+    if (!props.content) return;
+    nextTick(() => {
+        // #ifdef H5 || APP
+        const context = uni.createCanvasContext(canvasId, instance);
+        draw(context);
+        // #endif
 
-    // #ifdef MP-WEIXIN  || MP-ALIPAY
-    uni.createSelectorQuery()
-        .in(instance)
-        .select(`#${canvasId}`)
-        .node(res => {
-            const context = res.node.getContext('2d');
-            const dpr = utils.System.getWindowInfo().pixelRatio;
-            res.node.width = props.size * dpr;
-            res.node.height = props.size * dpr;
-            context.scale(dpr, dpr);
-            draw(context);
-        })
-        .exec();
-    // #endif
+        // #ifdef MP-WEIXIN  || MP-ALIPAY
+        uni.createSelectorQuery()
+            .in(instance)
+            .select(`#${canvasId}`)
+            .node(res => {
+                const context = res.node.getContext('2d');
+                const dpr = utils.System.getWindowInfo().pixelRatio;
+                res.node.width = props.size * dpr;
+                res.node.height = props.size * dpr;
+                context.scale(dpr, dpr);
+                draw(context, res.node);
+            })
+            .exec();
+        // #endif
+    });
 };
 
-const draw = (ctx: URCodeCanvasContext) => {
+const draw = (ctx: URCodeCanvasContext, canvas: any = null) => {
     const qr = new UQRCode();
+    // #ifdef MP-WEIXIN || MP-ALIPAY
+    qr.loadImage = src => {
+        // 需要返回Promise对象，小程序下获取网络图片信息需先配置download域名白名单才能生效
+        return new Promise((resolve, reject) => {
+            var img = canvas.createImage();
+            img.src = src;
+            img.onload = () => {
+                // resolve返回img
+                resolve(img);
+            };
+            img.onerror = (err: any) => {
+                // reject返回错误信息
+                reject(err);
+            };
+        });
+    };
+
+    // #endif
+
+    // #ifdef H5
+    qr.loadImage = src => {
+        // 需要返回Promise对象
+        return new Promise((resolve, reject) => {
+            uni.getImageInfo({
+                src,
+                success: res => {
+                    resolve(res.path);
+                },
+                fail: err => {
+                    // reject返回错误信息
+                    reject(err);
+                },
+            });
+        });
+    };
+
+    // #endif
+
     qr.backgroundColor = props.background;
     qr.foregroundColor = props.foreground;
     qr.foregroundImageSrc = props.foregroundImageSrc;

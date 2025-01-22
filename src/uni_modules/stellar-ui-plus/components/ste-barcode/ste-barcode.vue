@@ -39,7 +39,6 @@ const initCanvas = () => {
         .in(instance)
         .select(`#${canvasId}`)
         .node(res => {
-            console.log('barcode res', res);
             const context = res.node.getContext('2d');
             const dpr = utils.System.getWindowInfo().pixelRatio;
             res.node.width = props.width * dpr;

@@ -3,7 +3,7 @@
     "version": "1.16.18",
     "description": "",
     "author": "",
-    "license": "ISC",
+    "license": "MIT",
     "keywords": [],
     "main": "index.js",
     "repository": {

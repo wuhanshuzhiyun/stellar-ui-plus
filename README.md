@@ -1,7 +1,7 @@
 <p align="center">
     <img alt="logo" src="https://image.whzb.com/chain/StellarUI/logo.png" width="200">
 </p>
-<h1 align="center">StellarUI-Plus/h1>
+<h1 align="center">StellarUI-Plus</h1>
 
 <p align="center">📱 一个基于vue3构建，打造的uni-app组件库</p>
 

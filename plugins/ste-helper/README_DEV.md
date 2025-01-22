@@ -12,9 +12,4 @@
 -   本地打包插件执行`pnpm run package`
 -   发布前执行`pnpm run login`，然后输入下面的token，再执行`pnpm run publish`
 
-#### 相关地址账号
-
--   微软账号密码：`StellarUI@proton.me` / `Stellar-ui-dev`
--   微软账号辅助邮箱: `stellarUI@proton.me` / `1234Abcd_`
--   [微软账号登录地址](https://login.live.com) [插件发布管理页](https://marketplace.visualstudio.com/manage/publishers/stellarui) [辅助邮箱地址](https://protonmail.com/)
--   发布前登录token: `vlbepgif26s7bywy5lbovpmoowk6lu2egoyxc4vn4in4u6sh52uq`，若到期失效需要重新生成[地址](https://dev.azure.com/stellarUI/_usersSettings/tokens)
+ps: 若执行`publish`或`login`命令出现`401`，前往token管理页重新生成再执行`login`

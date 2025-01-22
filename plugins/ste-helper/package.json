@@ -2,7 +2,7 @@
     "name": "ste-helper",
     "displayName": "ste-helper",
     "description": "StellarUI-Plus组件库的代码提示",
-    "version": "0.0.51",
+    "version": "0.0.52",
     "icon": "src/assets/logo.png",
     "engines": {
         "vscode": "^1.56.0"
@@ -33,13 +33,15 @@
         "package": "vsce package --no-dependencies",
         "check-login": "node ./src/scripts/checkLogin.js",
         "login": "vsce login StellarUI",
+        "ls-publishers": "vsce ls-publishers",
         "add-version": "standard-version",
-        "publish": "pnpm run check-login & pnpm run add-version & vsce publish --no-dependencies"
+        "publish": "pnpm run check-login & pnpm run add-version & vsce publish --no-dependencies",
+        "test-publish": "vsce publish --no-dependencies"
     },
     "devDependencies": {
         "@types/node": "20.x",
         "@types/vscode": "^1.56.0",
-        "@vscode/vsce": "^2.22.0",
+        "@vscode/vsce": "^3.2.1",
         "standard-version": "^9.5.0",
         "typescript": "^5.6.2"
     }

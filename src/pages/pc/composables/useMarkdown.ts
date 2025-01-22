@@ -63,7 +63,9 @@ export default function useMarkdown(): MarkdownData {
       }
       return '#/pages/mp/index'
     }
-    else { return `#/pages/mp/demo-views/${active.value}/${active.value}` }
+    else {
+      return `#/pages/mp/demo-views/${active.value}/${active.value}`
+    }
   })
 
   const viewMarkdown = computed(() => {

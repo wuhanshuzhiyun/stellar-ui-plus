@@ -1,6 +1,5 @@
 import { createSSRApp } from 'vue'
 import App from './App.vue'
-<<<<<<< HEAD
 
 export function createApp() {
   const app = createSSRApp(App)
@@ -13,13 +12,4 @@ export function createApp() {
   })
   // #endif
   return { app }
-=======
-import 'uno.css'
-
-export function createApp() {
-  const app = createSSRApp(App)
-  return {
-    app,
-  }
->>>>>>> f9c262a (feat(init): init)
 }

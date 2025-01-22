@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 declare module '*.vue' {
   import type { defineComponent } from 'vue'
 
@@ -6,8 +5,6 @@ declare module '*.vue' {
   export default Component
 }
 
-=======
->>>>>>> 88be933 (feat(save): save)
 declare module '*.md' {
   const attributes: Record<string, unknown>
 
@@ -30,12 +27,9 @@ declare module 'markdown-it' {
 interface Obj {
   [key: string]: any
 }
-<<<<<<< HEAD
 
 declare module 'vue3/jsx-runtime' {
   namespace JSX {
-    interface IntrinsicElements { }
+    interface IntrinsicElements {}
   }
 }
-=======
->>>>>>> 88be933 (feat(save): save)

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { onLoad } from '@dcloudio/uni-app';
 // #ifdef H5
 import { provide, ref, computed } from 'vue';
@@ -20,7 +18,7 @@ const navActive = ref(config.NAV_KEY_DEV);
 
 const isCompView = computed(() => {
     return navActive.value === config.NAV_KEY_COMP;
-}); // ±êÊ¶µ±Ç°ÊÇ·ñÔÚ×é¼şÔ¤ÀÀÒ³Ãæ
+}); // æ ‡è¯†å½“å‰æ˜¯å¦åœ¨ç»„ä»¶é¢„è§ˆé¡µé¢
 
 const cmpShowH5 = computed(() => {
     return isCompView.value || config.SHOW_H5_PAGE.find(e => datas?.active.value.indexOf(e) > -1);
@@ -28,11 +26,11 @@ const cmpShowH5 = computed(() => {
 
 const handleHeaderNavChange = (item: NavItem) => {
     if (item.key === config.NAV_KEY_DEV) {
-        // ¿ª·¢Ö¸ÄÏ
+        // å¼€å‘æŒ‡å—
         datas.contents.value = rests;
         datas.setActive(rests[0].contents[0].key);
     } else if (item.key === config.NAV_KEY_COMP) {
-        // ×é¼ş
+        // ç»„ä»¶
         datas.contents.value = components;
         datas.setActive(components[0].contents[0].key);
     }
@@ -148,43 +146,5 @@ onLoad(() => {
             padding-right: calc(var(--pc-view-width) + 20px + 28px);
         }
     }
-=======
-
-=======
-import './markdown/requireFiles'
->>>>>>> 5a68363 (feat(save): ¿½±´mdÎÄµµ)
-</script>
-
-<template>
-  <div class="pc-page-body">
-    <div class="left">
-      <Left />
-    </div>
-  </div>
-  <!-- #endif -->
-</template>
-
-<style scoped lang="scss">
-<<<<<<< HEAD
-h1 {
-  color: blue;
-  text{
-    color: red;
-  }
->>>>>>> f9c262a (feat(init): init)
-=======
-.pc-page-body {
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	flex-direction: row;
-	background-color: #fff;
-	position: relative;
->>>>>>> 5a68363 (feat(save): ¿½±´mdÎÄµµ)
-  .left {
-    width: 240px;
-    height: 100%;
-    background-color: #f5f5f5;
-  }
 }
 </style>

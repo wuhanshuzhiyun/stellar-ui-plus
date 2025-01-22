@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-<<<<<<< HEAD
 import type { Content } from '../pc/types';
 import useComponents from './composables/useComponents';
 import config from '@/uni_modules/stellar-ui-plus/package.json';
@@ -166,15 +165,4 @@ function toConfig(url: string) {
         }
     }
 }
-=======
-
-</script>
-
-<template>
-  <view>mp home</view>
-</template>
-
-<style lang="scss" scoped>
-
->>>>>>> f9c262a (feat(init): init)
 </style>

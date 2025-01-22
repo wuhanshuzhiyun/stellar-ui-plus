@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "Stellar Plus",
-=======
-  "name": "vitesse-uni-app",
->>>>>>> f9c262a (feat(init): init)
   "appid": "",
   "description": "",
   "versionName": "1.0.0",
@@ -42,30 +38,19 @@
       },
       "ios": {},
       "sdkConfigs": {}
-<<<<<<< HEAD
     },
     "compatible": {
       "ignoreVersion": true
-=======
->>>>>>> f9c262a (feat(init): init)
     }
   },
   "quickapp": {},
   "mp-weixin": {
-<<<<<<< HEAD
     "appid": "wxce58845415b46440",
-=======
-    "appid": "",
->>>>>>> f9c262a (feat(init): init)
     "setting": {
       "urlCheck": false
     },
     "usingComponents": true,
-<<<<<<< HEAD
     "darkmode": false,
-=======
-    "darkmode": true,
->>>>>>> f9c262a (feat(init): init)
     "themeLocation": "theme.json"
   },
   "mp-alipay": {
@@ -82,15 +67,10 @@
   },
   "vueVersion": "3",
   "h5": {
-<<<<<<< HEAD
     "darkmode": false,
     "themeLocation": "theme.json",
     "router": {
       "base": "/plus/"
     }
-=======
-    "darkmode": true,
-    "themeLocation": "theme.json"
->>>>>>> f9c262a (feat(init): init)
   }
 }

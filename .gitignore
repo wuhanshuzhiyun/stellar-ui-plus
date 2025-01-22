@@ -21,7 +21,6 @@ dist
 *.sw?
 .vscode/
 .github/
-<<<<<<< HEAD
 src/components.d.ts
 src/uni-pages.d.ts
 src/uni_modules/stellar-ui-plus/types/components.d.ts
@@ -30,5 +29,3 @@ src/uni_modules/stellar-ui-plus/index.ts
 src/uni_modules/stellar-ui-plus/components/**/ATTRIBUTES.md
 .hbuilderx/
 .history
-=======
->>>>>>> f9c262a (feat(init): init)

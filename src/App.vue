@@ -1,5 +1,4 @@
 <script setup lang="ts">
-<<<<<<< HEAD
 import { nextTick, watch } from 'vue';
 import config from '@/uni_modules/stellar-ui-plus/config';
 
@@ -21,7 +20,3 @@ watch(
 <style lang="scss">
 @import './uni_modules/stellar-ui-plus/common/css/common.scss';
 </style>
-=======
-onLaunch(() => {})
-</script>
->>>>>>> f9c262a (feat(init): init)

@@ -9,9 +9,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AppFooter: typeof import('./components/AppFooter.vue')['default']
-    AppLogos: typeof import('./components/AppLogos.vue')['default']
-    HiCounter: typeof import('./components/HiCounter.vue')['default']
-    InputEntry: typeof import('./components/InputEntry.vue')['default']
+    PageLayoutPageLayout: typeof import('./components/page-layout/page-layout.vue')['default']
+    PageNavPageNav: typeof import('./components/page-nav/page-nav.vue')['default']
+    TColorPickerTColorPicker: typeof import('./components/t-color-picker/t-color-picker.vue')['default']
   }
 }

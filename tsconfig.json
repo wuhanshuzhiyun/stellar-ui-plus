@@ -1,58 +1,18 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.json",
-  "compilerOptions": {
-    "ignoreDeprecations": "5.0",
-<<<<<<< HEAD
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "baseUrl": ".",
-    "moduleResolution": "node",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+    "extends": "@vue/tsconfig/tsconfig.json",
+    "compilerOptions": {
+        "ignoreDeprecations": "5.0",
+        "lib": ["esnext", "dom"],
+        "baseUrl": ".",
+        "moduleResolution": "node",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        "types": ["@dcloudio/types", "@uni-helper/uni-app-types", "miniprogram-api-typings", "mini-types"],
+        "sourceMap": true
     },
-    "types": [
-      "@dcloudio/types",
-      "@uni-helper/uni-app-types",
-      "miniprogram-api-typings",
-      "mini-types"
-    ],
-    "sourceMap": true
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "global.d.ts"
-  ],
-  "vueCompilerOptions": {
-    "nativeTags": [
-      "block",
-      "component",
-      "template",
-      "slot",
-      "view",
-      "canvas"
-    ]
-  }
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "global.d.ts"],
+    "vueCompilerOptions": {
+        "nativeTags": ["block", "component", "template", "slot", "view", "canvas"]
+    }
 }
-=======
-    "lib": ["esnext", "dom"],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "types": ["@dcloudio/types", "@uni-helper/uni-app-types"],
-    "sourceMap": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "global.d.ts"],
-  "vueCompilerOptions": {
-    "experimentalRuntimeMode": "runtime-uni-app",
-    "nativeTags": ["block", "component", "template", "slot", "view"]
-  }
-}
->>>>>>> f9c262a (feat(init): init)

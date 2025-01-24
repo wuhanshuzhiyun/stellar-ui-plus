@@ -22,8 +22,8 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, defineOptions, computed } from 'vue';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 import propsData from './props';
 import type { CloumnType } from './types';
 import utils from '../../utils/utils';
@@ -37,7 +37,7 @@ defineOptions({
 const props = defineProps(propsData);
 
 let cmpConfirmColor = computed(() => {
-    return props.confirmColor ? props.confirmColor : color.getColor().steThemeColor;
+    return props.confirmColor ? props.confirmColor : getColor().steThemeColor;
 });
 
 const DEFAULT_DATE = dayjs(new Date(1970, 1, 1, 0, 0, 0));

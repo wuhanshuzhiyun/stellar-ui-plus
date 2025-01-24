@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import utils from '../../utils/utils.js';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 import propsData from './props';
 import { computed, defineOptions, type CSSProperties } from 'vue';
 
@@ -47,7 +47,7 @@ const cmpInactiveCode = computed(() => {
 });
 
 let cmpActiveColor = computed(() => {
-    return props.activeColor ? props.activeColor : color.getColor().steThemeColor;
+    return props.activeColor ? props.activeColor : getColor().steThemeColor;
 });
 
 // 根据iconData来算出每个分值对应的iconCode

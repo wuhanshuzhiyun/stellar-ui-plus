@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineOptions, type CSSProperties } from 'vue';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 import propsData from './props';
 import utils from '../../utils/utils';
 import type {
@@ -109,7 +109,7 @@ const cmpBtnStyle = computed(() => {
             break;
     }
     // 背景色 & 字体色
-    style = { ...style, ...utils.bg2style(props.background ? props.background : color.getColor().steThemeColor) };
+    style = { ...style, ...utils.bg2style(props.background ? props.background : getColor().steThemeColor) };
     style.color = props.color;
 
     // 禁用 disabled | 加载 loading

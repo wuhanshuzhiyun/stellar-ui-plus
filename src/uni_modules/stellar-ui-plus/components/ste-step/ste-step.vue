@@ -4,8 +4,8 @@ import { useInject } from '../../utils/mixin';
 import { type StepsProps, STEPS_KEY } from '../ste-steps/props';
 import propsData from './props';
 import type { Obj } from '../../types';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 
 const componentName = `ste-step`;
 defineOptions({
@@ -49,9 +49,9 @@ const cmpStatusObj = computed(() => {
     } else {
         status = parentProps.active >= stepIndex.value ? 'finished' : 'process';
     }
-    obj.textColor = parentProps.active + 1 >= stepIndex.value ? color.getColor().steThemeColor : '#cccccc';
+    obj.textColor = parentProps.active + 1 >= stepIndex.value ? getColor().steThemeColor : '#cccccc';
     if (status == 'finished') {
-        obj.color = color.getColor().steThemeColor;
+        obj.color = getColor().steThemeColor;
         obj.icon = '&#xe67a;';
     }
     if (status == 'process') {
@@ -59,16 +59,16 @@ const cmpStatusObj = computed(() => {
         obj.icon = '';
     }
     if (status == 'error') {
-        obj.color = color.getColor().steThemeColor;
+        obj.color = getColor().steThemeColor;
         obj.icon = '&#xe67b;';
-        obj.textColor = color.getColor().steThemeColor;
+        obj.textColor = getColor().steThemeColor;
     }
     obj.icon = props.icon ? props.icon : obj.icon;
-    obj.bgColor = parentProps.active + 1 == stepIndex.value ? color.getColor().steThemeColor : '#ffffff';
+    obj.bgColor = parentProps.active + 1 == stepIndex.value ? getColor().steThemeColor : '#ffffff';
     obj.numColor = parentProps.active + 1 >= stepIndex.value ? '#ffffff' : '#cccccc';
     obj.descColor = parentProps.active + 1 >= stepIndex.value ? '#999999' : '#cccccc';
-    obj.lineColor = parentProps.active >= stepIndex.value ? color.getColor().steThemeColor : '#EEEEEE';
-    obj.dotColor = parentProps.active + 1 >= stepIndex.value ? color.getColor().steThemeColor : '#DDDDDD';
+    obj.lineColor = parentProps.active >= stepIndex.value ? getColor().steThemeColor : '#EEEEEE';
+    obj.dotColor = parentProps.active + 1 >= stepIndex.value ? getColor().steThemeColor : '#DDDDDD';
     return obj;
 });
 

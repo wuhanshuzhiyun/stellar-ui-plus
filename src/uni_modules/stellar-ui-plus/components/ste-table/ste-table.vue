@@ -5,8 +5,6 @@ import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
 import type { TableColumnProps } from '../ste-table-column/props';
-import useColor from '../../config/color';
-let color = useColor();
 
 const componentName = `ste-table`;
 defineOptions({
@@ -65,7 +63,7 @@ const cmpRootStyle = computed(() => {
         '--offset-top': props.offsetTop,
         '--table-height': utils.addUnit(props.height as string),
         '--table-max-height': utils.addUnit(props.maxHeight as string),
-        '--ste-theme-color': utils.Color.hex2rgba(color.getColor().steThemeColor, 0.05),
+        '--ste-theme-color': utils.Color.hex2rgba(getColor().steThemeColor, 0.05),
     };
     return style;
 });

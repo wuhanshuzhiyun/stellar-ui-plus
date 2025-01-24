@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { BaseEvent } from '@uni-helper/uni-app-types';
 import { computed, type CSSProperties, nextTick, defineOptions } from 'vue';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 import propsData, { type StepperEmits } from './props';
 import utils from '../../utils/utils';
 
@@ -83,7 +83,7 @@ const cmpLeftButtonStyle = computed(() => {
 });
 
 let cmpMainColor = computed(() => {
-    return props.mainColor ? props.mainColor : color.getColor().steThemeColor;
+    return props.mainColor ? props.mainColor : getColor().steThemeColor;
 });
 
 const cmpRightButtonStyle = computed(() => {

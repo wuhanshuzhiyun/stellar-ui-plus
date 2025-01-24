@@ -7,8 +7,8 @@ import type { DropdownItem } from '../ste-dropdown-menu-item/type';
 import { type DropdownMenuItemProps } from '../ste-dropdown-menu-item/props';
 import utils from '../../utils/utils';
 import System from '../../utils/System.js';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 
 const props = defineProps(propsData);
 const emits = defineEmits(dropDownMenuEmits);
@@ -44,7 +44,7 @@ const cmpRootClass = computed(() => {
 
 const cmpRootStyle = computed(() => ({
     '--duration': cmpDuration.value + 's',
-    '--active-color': props.activeColor ? props.activeColor : color.getColor().steThemeColor,
+    '--active-color': props.activeColor ? props.activeColor : getColor().steThemeColor,
     '--inactive-color': props.inactiveColor,
     '--menu-z-index': props.zIndex,
 }));

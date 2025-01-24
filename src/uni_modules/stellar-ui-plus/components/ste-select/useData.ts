@@ -1,10 +1,10 @@
 import { type CSSProperties, computed, nextTick, ref, watch } from 'vue'
 import utils from '../../utils/utils'
-import useColor from '../../config/color'
+import { useColorStore } from '../../store/color'
 import type { SelectOption, SelectValue, SteSelectProps } from './props'
 import { type DateMode, formatDate, getFormatStr } from './defaultDate'
 
-const color = useColor()
+const { getColor } = useColorStore()
 
 const isData = (d: any) => d || d === 0 || d === ''
 
@@ -107,7 +107,7 @@ export default function useData({
     '--ste-select-background': props.background,
     '--ste-select-border': `1px solid ${props.borderColor}`,
     '--ste-select-border-radius': utils.formatPx(props.borderRadius),
-    '--ste-theme-color': color.getColor().steThemeColor,
+    '--ste-theme-color': getColor().steThemeColor,
   }))
 
   const cmpMultiseriateValue = computed(() => {

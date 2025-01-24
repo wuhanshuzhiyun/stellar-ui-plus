@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch, onMounted, computed } from 'vue';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 import { formatDate, type WeekType } from './date';
 import utils from '../../utils/utils';
 import useData from './useData';
@@ -13,10 +13,10 @@ const props = defineProps(propsData);
 const cmpRootStyle = computed(() => ({
     '--calendar-width': utils.formatPx(props.width),
     '--calendar-height': utils.formatPx(props.height),
-    '--calendar-color': props.color ? props.color : color.getColor().steThemeColor,
-    '--calendar-bg-color': utils.Color.formatColor(props.color ? props.color : color.getColor().steThemeColor, 0.1),
-    '--calendar-range-color': utils.Color.formatColor(props.color ? props.color : color.getColor().steThemeColor, 0.2),
-    '--calendar-disabled-color': utils.Color.formatColor(props.color ? props.color : color.getColor().steThemeColor, 0.3),
+    '--calendar-color': props.color ? props.color : getColor().steThemeColor,
+    '--calendar-bg-color': utils.Color.formatColor(props.color ? props.color : getColor().steThemeColor, 0.1),
+    '--calendar-range-color': utils.Color.formatColor(props.color ? props.color : getColor().steThemeColor, 0.2),
+    '--calendar-disabled-color': utils.Color.formatColor(props.color ? props.color : getColor().steThemeColor, 0.3),
     '--calendar-start-text': `"${props.startText}"`,
     '--calendar-end-text': `"${props.endText}"`,
 }));

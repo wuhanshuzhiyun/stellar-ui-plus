@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useSlots, computed, type CSSProperties } from 'vue';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 import utils from '../../utils/utils';
 import propsData, { RADIO_KEY, type RadioEmits } from './props';
 import type { RadioGroupProps } from '../ste-radio-group/props';
@@ -24,7 +24,7 @@ const parentProps = computed(() => Parent?.parent?.props);
 const cmpReadonly = computed(() => getDefaultData('readonly', false));
 const cmpShape = computed(() => getDefaultData('shape', 'circle'));
 const cmpIconSize = computed(() => getDefaultData('iconSize', 36));
-const cmpCheckedColor = computed(() => getDefaultData('checkedColor', color.getColor().steThemeColor));
+const cmpCheckedColor = computed(() => getDefaultData('checkedColor', getColor().steThemeColor));
 const cmpTextPosition = computed(() => getDefaultData('textPosition', 'right'));
 const cmpTextSize = computed(() => getDefaultData('textSize', 28));
 const cmpTextInactiveColor = computed(() => getDefaultData('textInactiveColor', '#000000'));

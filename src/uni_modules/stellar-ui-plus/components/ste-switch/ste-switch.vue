@@ -2,8 +2,8 @@
 import utils from '../../utils/utils.js';
 import propsData from './props';
 import { ref, computed, defineOptions, type CSSProperties } from 'vue';
-import useColor from '../../config/color';
-let color = useColor();
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 defineOptions({
     name: 'ste-switch',
 });
@@ -36,7 +36,7 @@ const cmpNodeStyle = computed(() => {
 });
 
 let cmpActiveColor = computed(() => {
-    return props.activeColor ? props.activeColor : color.getColor().steThemeColor;
+    return props.activeColor ? props.activeColor : getColor().steThemeColor;
 });
 
 const emits = defineEmits<{

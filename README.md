@@ -33,7 +33,7 @@
 ## 安装
 
 ```bash [pnpm]
-pnpm install stellar-ui-plus -S
+npm install stellar-ui-plus -S
 ```
 
 ## 快速上手

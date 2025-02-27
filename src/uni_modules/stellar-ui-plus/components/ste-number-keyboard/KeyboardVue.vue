@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, computed, type PropType } from 'vue';
+import { computed, type PropType } from 'vue';
 defineOptions({
     name: 'KeyboardVue',
     options: {
@@ -86,16 +86,19 @@ const onChange = (key: string) => {
     display: grid;
     background-color: #f9f9f9;
     column-gap: 16rpx;
+
     .number-keyboard-left {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 16rpx;
     }
+
     .number-keyboard-right {
         display: grid;
         row-gap: 16rpx;
         grid-template-rows: var(--ste-number-keyboard-rows);
     }
+
     .number-keyboard-item {
         background-color: #fff;
         width: 100%;
@@ -123,6 +126,7 @@ const onChange = (key: string) => {
             font-size: var(--ste-number-keyboard-confirm-text-size);
             background: var(--ste-number-keyboard-confirm-bg);
             color: #fff;
+
             &:active {
                 background-color: var(--ste-number-keyboard-confirm-bg-active);
             }
@@ -131,9 +135,11 @@ const onChange = (key: string) => {
                 background: rgba(238, 238, 238, 0.4) !important;
             }
         }
+
         &.span2 {
             grid-column: span 2;
         }
+
         &.span3 {
             grid-column: span 3;
         }

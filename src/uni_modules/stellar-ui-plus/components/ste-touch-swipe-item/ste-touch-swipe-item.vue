@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineOptions } from 'vue';
 import { useInject } from '../../utils/mixin';
 import { TOUCH_SWIPE_KEY } from '../ste-touch-swipe/props';
 

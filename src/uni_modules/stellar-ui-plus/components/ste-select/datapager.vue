@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, onMounted, getCurrentInstance } from 'vue';
+import { onMounted, getCurrentInstance } from 'vue';
 defineOptions({
     virtualHost: true,
 });
@@ -43,9 +43,11 @@ onMounted(() => {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+
     .datapager-content {
         width: 100%;
     }
+
     .datapager-footer {
         width: 100%;
         height: 1px;

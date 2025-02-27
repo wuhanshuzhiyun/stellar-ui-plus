@@ -49,6 +49,7 @@ const toView = (item: NavItem) => {
 .header-nav {
     height: var(--pc-header-nav-height);
     display: flex;
+
     .nav-item {
         display: flex;
         align-items: center;

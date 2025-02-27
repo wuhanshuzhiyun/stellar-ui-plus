@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, ref, nextTick, onMounted } from 'vue';
+import { ref, nextTick, onMounted } from 'vue';
 import propsData from './props';
 import { useInject } from '../../utils/mixin';
 import { INDEX_LIST_KEY } from '../ste-index-list/props';
@@ -51,6 +51,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .ste-scroll-to-item-root {
     width: 100%;
+
     .index-item-title {
         width: 100%;
         height: 80rpx;
@@ -59,13 +60,16 @@ onMounted(() => {
         padding: 0 32rpx;
         background-color: #f5f5f5;
         color: var(--ste-index-list-inactive-color);
+
         &.active {
             color: var(--ste-index-list-active-color);
         }
     }
+
     .index-item-text-list {
         padding: 0 32rpx;
         background-color: #fff;
+
         .index-item-text {
             width: 100%;
             height: 92rpx;

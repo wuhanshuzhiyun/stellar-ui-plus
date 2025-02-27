@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 import type { MessageBoxOptions } from '../types'
 import { DEFAULT_CONFIG } from '../components/ste-message-box/constants'
@@ -13,7 +12,7 @@ interface MessageBoxStore {
   [key: string]: MessageBoxState
 }
 
-export const useMsgBoxStore = defineStore('msgBox', () => {
+export function useMsgBoxStore() {
   const messageBox = reactive<MessageBoxStore>({})
 
   const initializeState = (key: string): void => {
@@ -51,4 +50,4 @@ export const useMsgBoxStore = defineStore('msgBox', () => {
     resetMessageBox,
     getMessageBox,
   }
-})
+}

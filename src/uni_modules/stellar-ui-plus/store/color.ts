@@ -1,19 +1,21 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { reactive } from 'vue'
 
 // 主题色内容
-export const useColorStore = defineStore('color', () => {
-  const color = ref({
+export function useColorStore() {
+  const color = reactive({
     steThemeColor: '#0090FF',
     defaultColor: '#0090FF',
   })
   const setColor = (val: any) => {
-    console.log('val', val)
-    color.value = Object.assign(color.value, val)
-    console.log('color', color.value)
+    if ('steThemeColor' in val) {
+      color.steThemeColor = val.steThemeColor
+    }
+    if ('defaultColor' in val) {
+      color.defaultColor = val.defaultColor
+    }
   }
   const getColor = () => {
-    return color.value
+    return color
   }
 
   return {
@@ -21,4 +23,4 @@ export const useColorStore = defineStore('color', () => {
     setColor,
     getColor,
   }
-})
+}

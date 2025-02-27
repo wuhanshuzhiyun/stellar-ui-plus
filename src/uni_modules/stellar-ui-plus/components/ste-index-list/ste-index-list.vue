@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, getCurrentInstance, defineOptions, onMounted } from 'vue';
+import { ref, computed, watch, nextTick, getCurrentInstance, onMounted } from 'vue';
 import propsData, { INDEX_LIST_KEY } from './props';
 import useData from '../ste-scroll-to/useData';
 import { useProvide } from '../../utils/mixin';
@@ -78,10 +78,12 @@ defineExpose({ init: () => initChildren(true) });
     width: 100%;
     height: var(--index-list-height);
     position: relative;
+
     .ste-scroll-to-root {
         width: 100%;
         height: var(--index-list-height);
     }
+
     .ste-index-list {
         position: absolute;
         right: 12rpx;
@@ -100,6 +102,7 @@ defineExpose({ init: () => initChildren(true) });
             line-height: 44rpx;
             font-size: var(--font-size-24, 24rpx);
             color: var(--ste-index-list-inactive-color);
+
             &.active {
                 color: var(--ste-index-list-active-color);
             }

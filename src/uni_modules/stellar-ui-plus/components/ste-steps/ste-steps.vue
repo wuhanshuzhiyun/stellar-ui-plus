@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { defineOptions } from 'vue';
 import propsData, { STEPS_KEY, stepsEmits } from './props';
 import { useProvide } from '../../utils/mixin';
 
@@ -32,6 +31,7 @@ function onClickStep(index: number) {
     width: 100%;
     flex: 1;
 }
+
 .ste-steps-column {
     flex-flow: column;
     height: 100%;

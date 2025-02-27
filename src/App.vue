@@ -18,5 +18,5 @@ watch(
 </script>
 
 <style lang="scss">
-@import './uni_modules/stellar-ui-plus/common/css/common.scss';
+@import url('@/uni_modules/stellar-ui-plus/common/css/common.scss');
 </style>

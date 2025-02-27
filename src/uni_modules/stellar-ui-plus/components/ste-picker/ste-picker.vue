@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed, defineOptions } from 'vue';
+import { ref, watch, computed } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils.js';
 

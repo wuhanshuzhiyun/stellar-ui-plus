@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import utils from '../../utils/utils';
-import { nextTick, onMounted, watch, defineOptions, getCurrentInstance, ref, computed, type ComponentPublicInstance } from 'vue';
+import { nextTick, onMounted, watch, getCurrentInstance, ref, computed, type ComponentPublicInstance } from 'vue';
 import propsData from './props';
 
 import UQRCode, { type URCodeCanvasContext } from './uqrcode';
@@ -146,6 +146,7 @@ const draw = (ctx: URCodeCanvasContext, canvas: any = null) => {
 <style lang="scss" scoped>
 .ste-qrcode-root {
     position: relative;
+
     .h5-canvas {
         transform-origin: top left;
     }

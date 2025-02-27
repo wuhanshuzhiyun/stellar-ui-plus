@@ -3,7 +3,7 @@ import utils from '../../utils/utils.js';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import propsData from './props';
-import { computed, defineOptions, type CSSProperties } from 'vue';
+import { computed, type CSSProperties } from 'vue';
 
 defineOptions({
     name: 'ste-rate',

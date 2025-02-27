@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { onPageShow, onPageHide } from '@dcloudio/uni-app';
-import { ref, computed, defineOptions, watch, nextTick } from 'vue';
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { useToastStore, useToastLastParams } from '../../store/index';
 let { setToast, getToast } = useToastStore();
 let { setToastLastParams, getToastLastParams } = useToastLastParams();
@@ -30,24 +29,22 @@ const cmpIcon = computed(() => {
 });
 
 let pageShow = ref(true);
-onPageShow(() => {
-    {
-        nextTick(() => {
-            pageShow.value = true;
-            // 每次进入页面 则清空队列时间
-            setToastLastParams({});
-            // 每次进入新页面 清除所有定时器
-            getToast()?.timer?.forEach(value => {
-                clearTimeout(value);
-            });
-            // 清除定时器数据
-            setToast({
-                timer: [],
-            });
+onMounted(() => {
+    nextTick(() => {
+        pageShow.value = true;
+        // 每次进入页面 则清空队列时间
+        setToastLastParams({});
+        // 每次进入新页面 清除所有定时器
+        getToast()?.timer?.forEach(value => {
+            clearTimeout(value);
         });
-    }
+        // 清除定时器数据
+        setToast({
+            timer: [],
+        });
+    });
 });
-onPageHide(() => {
+onUnmounted(() => {
     pageShow.value = false;
     hideToast();
     // 每次离开页面 则清空队列时间
@@ -175,6 +172,7 @@ defineExpose({
         transform: translateY(-40%);
         width: 100vw;
     }
+
     .box {
         max-width: 520rpx;
         background-color: rgba(0, 0, 0, 0.7);
@@ -189,6 +187,7 @@ defineExpose({
         margin: 0 auto;
         display: inline-block;
     }
+
     .icon-box {
         margin-bottom: 24rpx;
         text-align: center;

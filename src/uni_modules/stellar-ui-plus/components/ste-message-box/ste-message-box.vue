@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch, computed, useSlots, defineOptions } from 'vue';
+import { watch, computed, useSlots } from 'vue';
 import useData from './useData';
 import type { BaseEvent } from '../../types/event';
 import utils from '../../utils/utils';

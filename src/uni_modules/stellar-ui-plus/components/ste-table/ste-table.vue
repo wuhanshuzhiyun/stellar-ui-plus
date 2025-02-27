@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, watch, ref, defineOptions, type CSSProperties } from 'vue';
+import { computed, watch, ref, type CSSProperties } from 'vue';
 import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG, type TableProps } from './props';
 import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
@@ -261,6 +261,7 @@ $default-border: 2rpx solid #ebebeb;
                 position: absolute;
                 top: 0;
             }
+
             .ste-table-scroll {
                 height: calc(var(--table-height) - 80rpx);
                 max-height: calc(var(--table-max-height) - 80rpx);
@@ -277,6 +278,7 @@ $default-border: 2rpx solid #ebebeb;
             }
         }
     }
+
     &.border {
         .ste-table-cell {
             border-right: $default-border;
@@ -295,13 +297,15 @@ $default-border: 2rpx solid #ebebeb;
     &.stripe {
         .ste-table-body {
             .ste-table-row:nth-child(even) {
-                background-color: #f8f8f8; /* 偶数行背景颜色 */
+                background-color: #f8f8f8;
+                /* 偶数行背景颜色 */
             }
         }
     }
 
     .ste-table-content {
         width: 100%;
+
         // display: table;
         // border-collapse: collapse;
         // table-layout: fixed;
@@ -309,6 +313,7 @@ $default-border: 2rpx solid #ebebeb;
             width: 100%;
             height: 80rpx;
         }
+
         .ste-table-header {
             width: 100%;
             // display: table-row;
@@ -374,7 +379,9 @@ $default-border: 2rpx solid #ebebeb;
                     font-size: var(--font-size-28, 28rpx);
                 }
             }
+
             width: 100%;
+
             .ste-table-row {
                 // display: table-row;
                 display: flex;
@@ -386,6 +393,7 @@ $default-border: 2rpx solid #ebebeb;
                     display: flex;
                     justify-content: space-between;
                 }
+
                 /* #endif */
 
                 .a-view {
@@ -406,11 +414,13 @@ $default-border: 2rpx solid #ebebeb;
                     display: flex;
                     justify-content: space-between;
                 }
+
                 /* #endif */
 
                 &.current-row {
                     background-color: #ecf5ff;
                 }
+
                 &.selection-row {
                     background-color: #ecf5ff;
                 }

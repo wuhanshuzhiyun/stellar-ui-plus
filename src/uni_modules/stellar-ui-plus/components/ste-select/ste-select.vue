@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCurrentInstance, defineOptions, onMounted, ref } from 'vue';
+import { getCurrentInstance, onMounted, ref } from 'vue';
 import propsData, { type SelectOption, type SelectValue } from './props';
 import useData from './useData';
 import DateTime from './datetime.vue';

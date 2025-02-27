@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineOptions } from 'vue';
 import { useInject } from '../../utils/mixin';
 import { SCROLL_TO_KEY } from '../ste-scroll-to/props';
 

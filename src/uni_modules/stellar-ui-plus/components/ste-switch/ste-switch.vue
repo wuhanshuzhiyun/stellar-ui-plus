@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import utils from '../../utils/utils.js';
 import propsData from './props';
-import { ref, computed, defineOptions, type CSSProperties } from 'vue';
+import { ref, computed, type CSSProperties } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 defineOptions({
@@ -82,6 +82,7 @@ function allowStop() {
     display: inline-flex;
     align-items: center;
     transition: background-color 0.3s;
+
     .switch-node {
         border-radius: 50%;
         background: #ffffff;

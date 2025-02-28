@@ -1,15 +1,4 @@
 {
-  "insetLoader": {
-    "config": {
-      "toast": "<ste-toast ref='steToast'></ste-toast>",
-      "messageBox": "<ste-message-box ref='steMessageBox'></ste-message-box>"
-    },
-    "label": [
-      "toast",
-      "messageBox"
-    ],
-    "rootEle": ".*"
-  },
   "pages": [
     {
       "path": "pages/pc/index",

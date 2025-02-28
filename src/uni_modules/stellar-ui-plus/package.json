@@ -15,7 +15,6 @@
         "prepublishOnly": "pnpm run publish-vscode-plugin"
     },
     "dependencies": {
-        "dayjs": "^1.11.11",
-        "pinia": "^2.3.0"
+        "dayjs": "^1.11.11"
     }
 }

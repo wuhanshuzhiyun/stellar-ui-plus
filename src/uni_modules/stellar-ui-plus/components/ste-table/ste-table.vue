@@ -5,6 +5,8 @@ import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
 import type { TableColumnProps } from '../ste-table-column/props';
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 
 const componentName = `ste-table`;
 defineOptions({

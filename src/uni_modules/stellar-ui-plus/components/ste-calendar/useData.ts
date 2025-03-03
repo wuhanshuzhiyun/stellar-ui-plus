@@ -1,4 +1,6 @@
 import { ref } from 'vue'
+import utils from '../../utils/utils'
+import type { Dayjs } from '../../types'
 
 export default function useData() {
   const initing = ref(false)
@@ -15,6 +17,13 @@ export default function useData() {
   const contentScrollTop = ref(0)
   const setContentScrollTop = (val: number) => contentScrollTop.value = val
 
+  const scrollTop = ref(0)
+
+  const viewDate = ref<Dayjs>(utils.dayjs())
+
+  const viewMonth = ref<string>("")
+
+
   return {
     initing,
     setIniting,
@@ -26,5 +35,8 @@ export default function useData() {
     setDataList,
     contentScrollTop,
     setContentScrollTop,
+    scrollTop,
+    viewDate,
+    viewMonth
   }
 }

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { watch, onMounted, computed } from 'vue';
+import { watch, onMounted, computed, nextTick } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
-import { formatDate, type WeekType } from './date';
+import { formatDate, type DateType, type WeekType } from './date';
+import type { Dayjs } from '../../types/index';
 import utils from '../../utils/utils';
 import useData from './useData';
 import propsData from './props';
@@ -10,49 +11,77 @@ import { getCalendarData } from './date';
 
 const props = defineProps(propsData);
 
-const cmpRootStyle = computed(() => ({
-    '--calendar-width': utils.formatPx(props.width),
-    '--calendar-height': utils.formatPx(props.height),
-    '--calendar-color': props.color ? props.color : getColor().steThemeColor,
-    '--calendar-bg-color': utils.Color.formatColor(props.color ? props.color : getColor().steThemeColor, 0.1),
-    '--calendar-range-color': utils.Color.formatColor(props.color ? props.color : getColor().steThemeColor, 0.2),
-    '--calendar-disabled-color': utils.Color.formatColor(props.color ? props.color : getColor().steThemeColor, 0.3),
-    '--calendar-start-text': `"${props.startText}"`,
-    '--calendar-end-text': `"${props.endText}"`,
-}));
+const cmpShowSigns = computed(() => {
+    return Object.keys(props.signs).length > 0;
+});
+const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, viewDate.value, props.monthCount, props.formatter, props.signs));
 
-const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, props.formatter));
+const cmpRootStyle = computed(() => {
+    const rowHeight = cmpShowSigns.value ? utils.formatPx(180, 'num') : utils.formatPx(126, 'num');
+    const color = props.color ? props.color : getColor().steThemeColor;
+    return {
+        '--calendar-width': utils.formatPx(props.width),
+        '--calendar-height': utils.formatPx(props.height),
+        '--calendar-color': color,
+        '--calendar-weekend-color': props.weekendColor ? props.weekendColor : color,
+        '--calendar-bg-color': utils.Color.formatColor(color, 0.1),
+        '--calendar-range-color': utils.Color.formatColor(color, 0.2),
+        '--calendar-disabled-color': utils.Color.formatColor(color, 0.3),
+        '--calendar-sign-color': utils.Color.formatColor(color, 0.7),
+        '--calendar-start-text': `"${props.startText}"`,
+        '--calendar-end-text': `"${props.endText}"`,
+        '--calendar-line-height': `${rowHeight}px`,
+        rowHeight,
+    };
+});
+
+const cmpMonthTops = computed(() => {
+    const datas = cmpDates.value.monthDatas;
+    const rowHeight = cmpRootStyle.value.rowHeight;
+    const tops: { [key: string]: { top?: number; end?: number } } = {};
+    let end = 0;
+    for (let i = 0; i < datas.length; i++) {
+        const month = datas[i];
+        tops[month.key] = { top: end };
+        end += utils.formatPx(80, 'num');
+        end += rowHeight * month.weeks.length;
+        tops[month.key].end = end;
+    }
+    return tops;
+});
 
 const cmpShowConfirm = computed(() => props.showConfirm && !props.readonly);
 
-const { initing, setIniting, startDate, setStartDate, endDate, setEndDate, dataList, setDataList, contentScrollTop, setContentScrollTop } = useData();
+const { initing, startDate, setStartDate, endDate, setEndDate, dataList, setDataList, contentScrollTop, scrollTop, viewDate, viewMonth } = useData();
 
 const emits = defineEmits<{
     (e: 'select', days: (string | number)[], day: string | number): void;
     (e: 'confirm', days: (string | number)[]): void;
+    (e: 'view-month', month: string): void;
 }>();
-
-const showMonth = (date = props.defaultMonth) => {
-    const showDate = date ? utils.dayjs(date).format('YYYY-MM') : null;
-    if (!showDate) return setIniting(false);
-    if (!cmpDates.value.monthDatas?.length) return setIniting(false);
-    let height = 0;
-    let show = false;
-    for (let i = 0; i < cmpDates.value.monthDatas.length; i++) {
-        const month = cmpDates.value.monthDatas[i];
-        if (month.key === showDate) {
-            show = true;
-            break;
-        }
-        height += utils.formatPx(80, 'num');
-        height += utils.formatPx(126, 'num') * month.weeks.length;
+let viewTimer = 0;
+const showMonth = (date?: DateType) => {
+    const newDate: Dayjs = date ? utils.dayjs(date) : viewDate.value;
+    if (newDate.format('YYYY-MM-DD') !== viewDate.value.format('YYYY-MM-DD')) {
+        viewDate.value = newDate;
     }
-    if (!height || !show) return setIniting(false);
-    setContentScrollTop(0);
-    setTimeout(() => {
-        setContentScrollTop(height);
-        setIniting(false);
-    }, 25);
+    clearTimeout(viewTimer);
+    viewTimer = setTimeout(() => {
+        const _viewMonth = viewDate.value.format('YYYY-MM');
+        const tops = cmpMonthTops.value;
+        const top = tops[_viewMonth]?.top || 0;
+        if (top === undefined || scrollTop.value === top) {
+            initing.value = false;
+            return;
+        }
+        contentScrollTop.value = scrollTop.value;
+        nextTick(() => {
+            contentScrollTop.value = top;
+            scrollTop.value = top;
+            viewMonth.value = _viewMonth;
+            initing.value = false;
+        });
+    }, 10);
 };
 
 const onMultiple = (day: WeekType) => {
@@ -132,6 +161,14 @@ watch(
     },
     { immediate: true }
 );
+watch(
+    () => props.defaultDate,
+    v => {
+        viewDate.value = v ? utils.dayjs(v) : utils.dayjs();
+        showMonth();
+    },
+    { immediate: true }
+);
 
 const confirm = () => {
     emits('confirm', dataList.value);
@@ -141,10 +178,28 @@ onMounted(() => {
 });
 
 defineExpose({ showMonth });
+const onShowMonth = (scrollTop: number) => {
+    clearTimeout(viewTimer);
+    viewTimer = setTimeout(() => {
+        for (let month in cmpMonthTops.value) {
+            const { top = 0, end = 0 } = cmpMonthTops.value[month];
+            if (scrollTop >= top && scrollTop < end) {
+                if (viewMonth.value === month) return;
+                viewMonth.value = month;
+                emits('view-month', month);
+                return;
+            }
+        }
+    }, 100);
+};
+const onScroll = (e: any) => {
+    scrollTop.value = e.detail.scrollTop;
+    onShowMonth(e.detail.scrollTop);
+};
 </script>
 <template>
     <view class="ste-calendar-root" :style="[cmpRootStyle, { opacity: initing ? 0 : 1 }]">
-        <view v-if="props.showTitle" class="calendar-title">{{ props.title }}</view>
+        <view v-if="showTitle" class="calendar-title">{{ title }}</view>
         <view class="week-head">
             <view class="week-row">
                 <view class="week-item" :class="{ weekend: index === 0 || index === 6 }" v-for="(w, index) in cmpDates.weekTexts" :key="index">
@@ -152,9 +207,9 @@ defineExpose({ showMonth });
                 </view>
             </view>
         </view>
-        <scroll-view class="date-content" :class="{ 'show-confirm': cmpShowConfirm, 'show-title': props.showTitle }" scroll-y :scroll-top="contentScrollTop">
+        <scroll-view class="date-content" :class="{ 'show-confirm': cmpShowConfirm, 'show-title': showTitle }" scroll-y :scroll-top="contentScrollTop" @scroll="onScroll">
             <view class="month-item" v-for="m in cmpDates.monthDatas" :key="m.key" :id="`month-${m.key}`">
-                <view class="month-bg" v-if="props.showMark">
+                <view class="month-bg" v-if="showMark">
                     {{ m.month }}
                 </view>
                 <view class="month-text">{{ m.monthText }}</view>
@@ -166,18 +221,27 @@ defineExpose({ showMonth });
                         @click="onSelect(d)"
                         :class="{
                             weekend: d.weekend,
-                            range: props.mode === 'range',
+                            range: mode === 'range',
+                            signs: cmpShowSigns,
                             active: dataList.indexOf(d.key) >= 0,
                             start: startDate === d.key,
                             end: endDate === d.key,
                             disabled: d.disabled,
                             not: !d.dayText,
+                            today: d.today,
                         }"
                     >
                         <block v-if="d.dayText">
-                            <view class="day-head"></view>
+                            <view class="day-range-head" v-if="mode === 'range'"></view>
                             <view class="day-content">{{ d.dayText }}</view>
-                            <view class="day-foot"></view>
+                            <view class="day-range-foot" v-if="mode === 'range'"></view>
+                            <view class="day-signs" v-if="cmpShowSigns">
+                                <block v-if="d.signs">
+                                    <view class="day-sign" v-for="sign in d.signs" :key="sign.key" :style="[sign.style]" :class="sign.className">
+                                        {{ sign.content }}
+                                    </view>
+                                </block>
+                            </view>
                         </block>
                     </view>
                 </view>
@@ -186,7 +250,8 @@ defineExpose({ showMonth });
         <view v-if="cmpShowConfirm" class="confirm-button" @click="confirm">确定</view>
     </view>
 </template>
-<style scoped lang="scss">
+
+<style lang="scss" scoped>
 .ste-calendar-root {
     width: var(--calendar-width);
     height: var(--calendar-height);
@@ -202,7 +267,7 @@ defineExpose({ showMonth });
             text-align: center;
 
             &.weekend {
-                color: var(--calendar-color);
+                color: var(--calendar-weekend-color);
             }
         }
 
@@ -213,7 +278,7 @@ defineExpose({ showMonth });
 
     .calendar-title {
         height: 90rpx;
-        font-size: var(--font-size-32, 32rpx);
+        font-size: 32rpx;
         line-height: 44rpx;
         padding-top: 30rpx;
 
@@ -224,7 +289,7 @@ defineExpose({ showMonth });
         width: 100%;
         height: 80rpx;
         line-height: 80rpx;
-        font-size: var(--font-size-32, 32rpx);
+        font-size: 32rpx;
         border-bottom: 1px solid #ddd;
         box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
@@ -274,82 +339,155 @@ defineExpose({ showMonth });
                 text-align: center;
                 height: 44rpx;
                 line-height: 44rpx;
-                font-size: var(--font-size-32, 32rpx);
+                font-size: 32rpx;
             }
 
-            .day-item {
-                position: relative;
-                height: 126rpx;
-                z-index: 2;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                // #ifdef H5
-                cursor: pointer;
+            .week-row {
+                height: var(--calendar-line-height);
 
-                &.not {
-                    cursor: default !important;
-                }
+                .day-item {
+                    position: relative;
+                    height: 100%;
+                    z-index: 2;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    // #ifdef H5
+                    cursor: pointer;
 
-                // #endif
-
-                &.active,
-                &.start,
-                &.end {
-                    background-color: var(--calendar-color);
-                    color: #fff;
-                }
-
-                &.active.range:not(.start):not(.end) {
-                    background-color: var(--calendar-range-color);
-                    color: var(--calendar-color);
-                }
-
-                &.start {
-                    .day-head::before {
-                        content: '';
+                    &.not {
+                        cursor: default !important;
                     }
 
-                    .day-foot::before {
-                        content: var(--calendar-start-text);
+                    // #endif
+                    &.active,
+                    &.start,
+                    &.end {
+                        &.range {
+                            background-color: var(--calendar-color);
+                            color: #fff;
+                        }
+
+                        &:not(.signs):not(.range) {
+                            background-color: var(--calendar-color);
+                            color: #fff;
+                        }
+
+                        &.signs {
+                            .day-content {
+                                background-color: var(--calendar-color);
+                                color: #fff;
+                                border-radius: 6rpx;
+                            }
+                        }
                     }
-                }
 
-                &.end {
-                    .day-head::before {
-                        content: '';
+                    &.start,
+                    &.end {
+                        .day-range-head,
+                        .day-range-foot {
+                            display: block;
+                        }
+
+                        .day-signs {
+                            display: none;
+                        }
                     }
 
-                    .day-foot::before {
-                        content: var(--calendar-end-text);
+                    &.today {
+                        font-weight: bold;
+
+                        &:not(.active):not(.start):not(.end) {
+                            color: var(--calendar-color);
+                        }
                     }
-                }
 
-                &.start.end {
-                    .day-head::before {
-                        content: var(--calendar-start-text);
+                    &.active.range:not(.start):not(.end) {
+                        background-color: var(--calendar-range-color);
+                        color: var(--calendar-color);
+
+                        .day-content {
+                            background-color: transparent;
+                            color: inherit;
+                            border-radius: 0;
+                        }
                     }
-                }
 
-                &.disabled {
-                    background-color: initial !important;
-                    color: #bbb !important;
-                }
+                    &.start {
+                        .day-range-head::before {
+                            content: '';
+                        }
 
-                .day-head,
-                .day-foot {
-                    width: 100%;
-                    height: 20rpx;
-                    line-height: 20rpx;
-                    font-size: var(--font-size-24, 24rpx);
-                }
+                        .day-range-foot::before {
+                            content: var(--calendar-start-text);
+                        }
+                    }
 
-                .day-content {
-                    width: 100%;
-                    height: 48rpx;
-                    line-height: 48rpx;
-                    font-size: var(--font-size-32, 32rpx);
+                    &.end {
+                        .day-range-head::before {
+                            content: '';
+                        }
+
+                        .day-range-foot::before {
+                            content: var(--calendar-end-text);
+                        }
+                    }
+
+                    &.start.end {
+                        .day-range-head::before {
+                            content: var(--calendar-start-text);
+                        }
+                    }
+
+                    &.disabled {
+                        background-color: initial !important;
+                        color: #bbb !important;
+                    }
+
+                    &.signs {
+                        .day-content {
+                            height: 72rpx;
+                            line-height: 72rpx;
+                        }
+                    }
+
+                    .day-content {
+                        width: 100%;
+                        height: 48rpx;
+                        line-height: 48rpx;
+                        font-size: 32rpx;
+                    }
+
+                    .day-range-head,
+                    .day-range-foot {
+                        width: 100%;
+                        height: 24rpx;
+                        line-height: 24rpx;
+                        font-size: 24rpx;
+                    }
+
+                    .day-range-head,
+                    .day-range-foot {
+                        display: none;
+                    }
+
+                    .day-signs {
+                        width: 100%;
+                        height: 102rpx;
+                        padding: 0 4rpx;
+                        display: flex;
+                        flex-direction: column;
+
+                        .day-sign {
+                            width: 100%;
+                            height: 24rpx;
+                            line-height: 24rpx;
+                            font-size: 24rpx;
+                            overflow: hidden;
+                            margin-top: 6rpx;
+                        }
+                    }
                 }
             }
         }
@@ -363,7 +501,6 @@ defineExpose({ showMonth });
         background-color: var(--calendar-color);
         color: #fff;
         text-align: center;
-        font-size: var(--font-size-32, 32rpx);
         // #ifdef H5
         cursor: pointer;
 

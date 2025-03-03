@@ -1,11 +1,18 @@
 import utils from '../../utils/utils'
 import type { Dayjs } from '../../types/index'
+import type { CSSProperties } from 'vue'
+
+export type SignType = { content: string, style?: CSSProperties, className?: string, key?: number }[]
+
 
 export interface WeekType {
   dayText: string | number
   key: string | number
   disabled: boolean
   weekend: boolean
+  today: boolean
+  date: string | number | null
+  signs: SignType | null
 }
 
 export interface MonthType {
@@ -21,8 +28,9 @@ export type DateType = string | number | Dayjs | Date
 /**
  * 获取从当前月份开始的12个月
  */
-function getMonthList(minDate?: DateType, maxDate?: DateType) {
-  const start = minDate ? utils.dayjs(minDate) : utils.dayjs()
+function getMonthList(minDate?: DateType, maxDate?: DateType, defaultDate?: DateType, monthCount?: number) {
+  if (maxDate) monthCount = 12;
+  const start = minDate ? utils.dayjs(minDate) : utils.dayjs(defaultDate)
   const sY = Number(start.format('YYYY'))
   const sM = Number(start.format('MM'))
   const end = maxDate ? utils.dayjs(maxDate) : null
@@ -30,10 +38,9 @@ function getMonthList(minDate?: DateType, maxDate?: DateType) {
   if (end) {
     eY = Number(end.format('YYYY'))
     eM = Number(end.format('MM'))
-  }
-  else {
-    eY = sM + 11 > 12 ? sY + 1 : sY
-    eM = sM + 11 > 12 ? sM + 11 - 12 : sM + 11
+  } else {
+    eY = sM + Number(monthCount) - 1 > 12 ? sY + 1 : sY
+    eM = sM + Number(monthCount) - 1 > 12 ? sM + Number(monthCount) - 1 - 12 : sM + Number(monthCount) - 1
   }
   const months = []
   for (let y = sY; y <= eY; y++) {
@@ -57,9 +64,10 @@ export function getMonthDays(year: number, month: number) {
 /**
  * 获取日历数据
  */
-export function getCalendarData(minDate?: DateType, maxDate?: DateType, formatter = 'YYYY-MM-DD') {
+export function getCalendarData(minDate?: DateType, maxDate?: DateType, defaultDate?: DateType, monthCount = 12, formatter = 'YYYY-MM-DD', signs: { [key: string]: SignType } = {}) {
   const monthDatas: MonthType[] = []
-  const months = getMonthList(minDate, maxDate)
+  const months = getMonthList(minDate, maxDate, defaultDate, monthCount)
+  const today = utils.dayjs().format('YYYY-MM-DD');
   months.forEach((date) => {
     const daysCount = getMonthDays(date.year(), date.month())
     // 一号的星期
@@ -78,21 +86,28 @@ export function getCalendarData(minDate?: DateType, maxDate?: DateType, formatte
       const week = []
       for (let d = 0; d < 7; d++) {
         let _day
-        if ((w === 0 && d < firstDay) || day > daysCount)
-          _day = ''
-        else
-          _day = day++
-
+        if ((w === 0 && d < firstDay) || day > daysCount) _day = ''
+        else _day = day++
         const key = _day ? utils.dayjs(`${monthData.key}-${_day}`).format(formatter) : Math.random()
         let disabled = !_day
         if (_day)
           disabled = Boolean((minDate && key < minDate) || (maxDate && key > maxDate))
+
+        const daySigns = _day && signs && signs[key] ? signs[key].slice(0, 3).map(item => ({
+          ...item,
+          key: Math.random()
+        })) : null;
+
 
         week.push({
           dayText: _day,
           key,
           disabled,
           weekend: d === 0 || d === 6,
+          // 是否是今天
+          today: Boolean(_day && today === key),
+          date: _day ? key : null,
+          signs: daySigns,
         })
       }
       monthData.weeks.push(week)

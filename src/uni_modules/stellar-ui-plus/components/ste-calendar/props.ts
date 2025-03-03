@@ -1,5 +1,5 @@
 import type { PropType } from 'vue'
-import type { DateType } from './date'
+import type { DateType, SignType } from './date'
 
 export default {
   title: { type: String, default: () => '日期选择' },
@@ -11,7 +11,6 @@ export default {
   color: { type: String, default: () => '' },
   minDate: { type: [String, Number, Date], default: () => 0 },
   maxDate: { type: [String, Number, Date], default: () => 0 },
-  defaultMonth: { type: [Number, String, Date], default: () => 0 },
   maxCount: { type: [Number, String], default: () => 0 },
   formatter: { type: String, default: () => 'YYYY-MM-DD' },
   showMark: { type: Boolean, default: () => true },
@@ -23,4 +22,8 @@ export default {
   showConfirm: { type: Boolean, default: () => true },
   width: { type: [Number, String], default: () => '100%' },
   height: { type: [Number, String], default: () => '100%' },
+  signs: { type: Object as PropType<{ [key: string]: SignType }>, default: () => ({}) },
+  defaultDate: { type: [String, Number, Date], default: () => 0 },
+  monthCount: { type: Number, default: () => 12 },
+  weekendColor: { type: String, default: () => '' },
 }

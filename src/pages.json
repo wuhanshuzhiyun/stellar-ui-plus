@@ -1,4 +1,13 @@
 {
+  "insetLoader": {
+    "config": {
+      "toast": "<ste-toast ref='steToast'></ste-toast>"
+    },
+    "label": [
+      "toast"
+    ],
+    "rootEle": ".*"
+  },
   "pages": [
     {
       "path": "pages/pc/index",

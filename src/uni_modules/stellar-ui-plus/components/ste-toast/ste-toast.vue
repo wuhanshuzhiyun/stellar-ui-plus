@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { onPageShow, onPageHide } from '@dcloudio/uni-app';
-import { ref, computed, defineOptions, watch, nextTick } from 'vue';
-import { useToastStore, useToastLastParams } from '../../store/index';
-let { setToast, getToast } = useToastStore();
-let { setToastLastParams, getToastLastParams } = useToastLastParams();
-
+import { ref, computed, defineOptions, inject, watch } from 'vue';
+import { toastDefaultOptionsKey } from './ste-toast';
 defineOptions({
     name: 'ste-toast',
 });
@@ -29,53 +25,6 @@ const cmpIcon = computed(() => {
     return iconObj[icon.value] || '';
 });
 
-let pageShow = ref(true);
-onPageShow(() => {
-    {
-        nextTick(() => {
-            pageShow.value = true;
-            // 每次进入页面 则清空队列时间
-            setToastLastParams({});
-            // 每次进入新页面 清除所有定时器
-            getToast()?.timer?.forEach(value => {
-                clearTimeout(value);
-            });
-            // 清除定时器数据
-            setToast({
-                timer: [],
-            });
-        });
-    }
-});
-onPageHide(() => {
-    pageShow.value = false;
-    hideToast();
-    // 每次离开页面 则清空队列时间
-    setToastLastParams({});
-    // 每次离开页面 清除所有定时器
-    getToast()?.timer?.forEach(value => {
-        clearTimeout(value);
-    });
-    // 清除定时器数据
-    setToast({
-        timer: [],
-    });
-});
-
-watch(
-    () => getToast().show,
-    (value: any) => {
-        if (value && pageShow.value) {
-            showToast(getToast());
-        } else {
-            show.value = false;
-        }
-    },
-    {
-        deep: true,
-    }
-);
-
 // 打开弹窗
 function showToast(params: any) {
     // 关闭前面的弹窗
@@ -88,17 +37,17 @@ function showToast(params: any) {
     let time = 0;
     if (params.order) {
         // 先取上一次存的值 如果为空 则为第一个值
-        let toastLastParams = getToastLastParams();
+        let toastLastParams = uni.getStorageSync('toastLastParams');
         // 等待的时间 第一个没有等待时间 后面的都是前面的持续时间的合
-        if (toastLastParams.time) {
+        if (typeof toastLastParams == 'object') {
             time = toastLastParams.time;
         }
         // 存当前的等待时间 加100ms 以防没有打开中间的提示
         params.time = time + (params.duration ?? defaultDuration) + 100;
-        setToastLastParams(params);
+        uni.setStorageSync('toastLastParams', params);
     } else {
         // 遇到非队列数据 则清空队列时间
-        setToastLastParams({});
+        uni.removeStorageSync('toastLastParams');
     }
     setTimeout(() => {
         try {
@@ -134,9 +83,19 @@ function showToast(params: any) {
 function hideToast() {
     show.value = false;
     // 遇到非队列数据 则清空队列时间
-    setToastLastParams({});
+    uni.removeStorageSync('toastLastParams');
     close.value();
 }
+
+// 组合函数
+const injectToastOptions = ref(inject(toastDefaultOptionsKey));
+watch(injectToastOptions, (value: any) => {
+    if (value.show) {
+        showToast(value);
+    } else {
+        hideToast();
+    }
+});
 
 defineExpose({
     showToast,

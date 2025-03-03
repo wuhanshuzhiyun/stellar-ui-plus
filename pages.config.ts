@@ -1,15 +1,16 @@
 import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages';
 
 export default defineUniPages({
-    //   insetLoader: {
-    //     config: {
-    //       toast: '<ste-toast ref=\'steToast\'></ste-toast>',
-    //       messageBox: '<ste-message-box ref=\'steMessageBox\'></ste-message-box>',
-    //     },
-    //     // 全局配置
-    //     label: ['toast', 'messageBox'],
-    //     rootEle: '.*',
-    //   },
+    insetLoader: {
+        config: {
+            toast: "<ste-toast ref='steToast'></ste-toast>",
+            //   messageBox: '<ste-message-box ref=\'steMessageBox\'></ste-message-box>',
+        },
+        // 全局配置
+        // label: ['toast', 'messageBox'],
+        label: ['toast'],
+        rootEle: '.*',
+    },
     pages: [],
     globalStyle: {
         backgroundColor: '@bgColor',

@@ -149,7 +149,7 @@ async function click() {
 type PropsKeyTypee = keyof typeof props;
 function getDefaultData(key: PropsKeyTypee, value: any) {
     try {
-        if (Object.hasOwn(props, key)) {
+        if (Object.prototype.hasOwnProperty.call(props, key)) {
             if (props[key]) {
                 return props[key];
             } else {

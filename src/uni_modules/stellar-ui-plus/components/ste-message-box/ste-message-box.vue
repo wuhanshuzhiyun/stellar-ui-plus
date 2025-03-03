@@ -1,14 +1,10 @@
 <script lang="ts" setup>
-import { watch, computed, useSlots, defineOptions } from 'vue';
+import { inject, watch, ref, computed, useSlots, defineOptions } from 'vue';
+import { messageBoxDefaultOptionsKey } from './ste-message-box';
 import useData from './useData';
 import type { BaseEvent } from '../../types/event';
 import utils from '../../utils/utils';
-import { ICON_OBJ, ANIMATION_PROP, DURATION } from './constants';
-import type { MessageBoxOptions } from '../../types';
-import { STE_MESSAGE_BOX_KEY } from './use-message-box';
-import { useMsgBoxStore } from '../../store';
-import { useColorStore } from '../../store/color';
-let { getColor } = useColorStore();
+import { ICON_OBJ, ANIMATION_PROP, DURATION, type MessageBoxOptions } from './constants';
 
 defineOptions({
     name: 'ste-message-box',
@@ -19,9 +15,6 @@ const slots = useSlots();
 const props = defineProps<{
     selector: string;
 }>();
-const customKey = props.selector || STE_MESSAGE_BOX_KEY;
-const { getMessageBox, resetMessageBox } = useMsgBoxStore();
-const messageBoxOption = getMessageBox(customKey);
 
 const {
     animationData,
@@ -44,6 +37,9 @@ const {
     showInputPlaceholder,
 } = useData();
 
+const injectKey = props.selector ? props.selector : messageBoxDefaultOptionsKey;
+const injectMessageBoxOption = ref<MessageBoxOptions>(inject(injectKey) || {});
+
 // 用input自带占位符时，由于动画原因导致最终显示会有一个下降的效果
 function handleInputFocus() {
     showInputPlaceholder.value = false;
@@ -59,7 +55,7 @@ const cmpRootStyle = computed(() => {
     return {
         opacity: 0,
         '--cancel-color': cancelColor.value,
-        '--confirm-color': confirmColor.value ? confirmColor.value : getColor().steThemeColor,
+        '--confirm-color': confirmColor.value,
     };
 });
 
@@ -112,7 +108,6 @@ function closeBox() {
     maskAnimationData.value = maskAnimation.export();
     setTimeout(() => {
         show.value = false;
-        resetMessageBox(customKey);
     }, DURATION);
 }
 function handleInput(e: Event) {
@@ -149,18 +144,14 @@ function loadMessageBoxParams(options: MessageBoxOptions) {
     complete.value = options.complete || complete.value;
 }
 
-watch(
-    () => messageBoxOption,
-    val => {
-        if (val.show) {
-            loadMessageBoxParams(val);
-            showBox();
-        } else {
-            closeBox();
-        }
-    },
-    { deep: true }
-);
+watch(injectMessageBoxOption, val => {
+    if (val.show) {
+        loadMessageBoxParams(val);
+        showBox();
+    } else {
+        closeBox();
+    }
+});
 
 function showMsgBox(options: MessageBoxOptions) {
     loadMessageBoxParams(options);
@@ -197,10 +188,10 @@ defineExpose({
                 </view>
             </view>
             <view class="footer">
-                <view class="footer-btn cancel text" v-if="showCancel" @click="handleCancel">
+                <view class="cancel text" v-if="showCancel" @click="handleCancel">
                     {{ cancelText }}
                 </view>
-                <view class="footer-btn confirm text" @click="handleConfirm">
+                <view class="confirm text" @click="handleConfirm">
                     {{ confirmText }}
                 </view>
             </view>
@@ -244,7 +235,6 @@ defineExpose({
         .ste-message-title {
             padding-bottom: 48rpx !important;
         }
-
         .msg {
             padding: 0 !important;
         }
@@ -259,7 +249,6 @@ defineExpose({
         display: inline-flex;
         flex-direction: column;
         transform: scale(0);
-
         .content-box {
             .icon-box {
                 padding-top: 4rpx;
@@ -273,7 +262,6 @@ defineExpose({
                 align-items: center;
                 justify-content: center;
             }
-
             .ste-message-title {
                 width: 100%;
                 padding-top: 48rpx;
@@ -286,7 +274,6 @@ defineExpose({
             .msg {
                 padding: 0 32rpx 48rpx 32rpx;
                 text-align: center;
-
                 .text {
                     width: 100%;
                     font-size: var(--font-size-28, 28rpx);
@@ -317,12 +304,10 @@ defineExpose({
                 }
             }
         }
-
         .footer {
             display: flex;
             height: 96rpx;
-
-            .footer-btn {
+            > view {
                 height: 100%;
                 border-top: 2rpx solid #eeeeee;
                 border-right: 2rpx solid #eeeeee;
@@ -346,7 +331,7 @@ defineExpose({
                     color: var(--confirm-color);
                 }
 
-                & + .footer-btn {
+                &:nth-last-child(1) {
                     border-right: none;
                 }
             }

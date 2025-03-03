@@ -113,8 +113,10 @@ watch(
 watch(
     () => internalChildren,
     () => {
-        initColumns();
-        initRowData();
+        setTimeout(() => {
+            initColumns();
+            initRowData();
+        }, 200);
     },
     { immediate: true, deep: true }
 );

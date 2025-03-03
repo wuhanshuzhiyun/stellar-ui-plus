@@ -14,7 +14,7 @@
 import utils from '@/common/utils';
 import config from '@/common/config';
 import { onMounted, ref, watch, nextTick, getCurrentInstance } from 'vue';
-import type { CSSProperties } from 'vue';
+import type { CSSProperties, ComponentPublicInstance } from 'vue';
 import type { NavItem } from '../types';
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 const props = defineProps<{
@@ -90,10 +90,12 @@ const updateSliderPosition = async () => {
     display: flex;
     align-items: center;
     width: 100%;
+
     .line {
         flex: 1;
         border-bottom: 1px solid #ddd;
     }
+
     .nav-box {
         display: flex;
         align-items: center;

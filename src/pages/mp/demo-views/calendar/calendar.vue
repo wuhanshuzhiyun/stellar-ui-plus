@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 import type { RefCalendar } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+import utils from '@/uni_modules/stellar-ui-plus/utils/utils';
+import type { SignType } from '@/uni_modules/stellar-ui-plus/components/ste-calendar/date';
 const show1 = ref(false);
 const show2 = ref(false);
 const show3 = ref(false);
@@ -29,6 +31,19 @@ const defaultMonth = ref<RefCalendar>();
 const setViewMonth = () => {
     defaultMonth.value?.showMonth('2024-07');
 };
+
+const defaultDate = ref(utils.dayjs().format('YYYY-MM'));
+const signs = reactive<{ [key: string]: SignType }>({
+    [utils.dayjs().format('YYYY-MM-DD')]: [
+        { content: 'XXXXX', className: 'test-signs' },
+        { content: 'XXXXX', className: 'test-signs' },
+        { content: 'XXXXX', className: 'test-signs' },
+    ],
+    [utils.dayjs(Date.now() + 1000 * 60 * 60 * 24).format('YYYY-MM-DD')]: [
+        { content: 'XXXXX', style: { color: '#666', background: '#f5f5f5' } },
+        { content: 'XXXXX', style: { color: '#666', background: '#f5f5f5' } },
+    ],
+});
 </script>
 <template>
     <page-layout title="日历" contentStyle="padding: 0">
@@ -78,7 +93,7 @@ const setViewMonth = () => {
                     <ste-button @click="show4 = true" width="100%">自定义主题色</ste-button>
                     <ste-popup v-model:show="show4" height="60vh" position="bottom">
                         <div style="padding-bottom: 20px; height: 100%">
-                            <ste-calendar color="#3478f6" @confirm="handleConfirm" />
+                            <ste-calendar color="#ff0000" @confirm="handleConfirm" />
                         </div>
                     </ste-popup>
                 </view>
@@ -91,7 +106,7 @@ const setViewMonth = () => {
                     </ste-popup>
                 </view>
                 <view class="type-block">
-                    <view>02 组件状态</view>
+                    <view>03 组件状态</view>
                 </view>
                 <view class="demo-code">
                     <ste-button @click="show6 = true" width="100%">日期最大范围</ste-button>
@@ -160,7 +175,7 @@ const setViewMonth = () => {
             </view>
         </view>
 
-        <!-- <view class="demo-item">
+        <view class="demo-item">
             <view class="type-block" style="padding: 0 30rpx">
                 <view>03 组件自定义</view>
             </view>
@@ -172,7 +187,7 @@ const setViewMonth = () => {
             </ste-select>
 
             <ste-calendar @select="handleConfirm" weekendColor="#999" color="#09f" :signs="signs" :defaultDate="defaultDate" :monthCount="1" :showConfirm="false" :showTitle="false" />
-        </view> -->
+        </view>
     </page-layout>
 </template>
 <style scoped lang="scss">

@@ -224,6 +224,43 @@
     </div>
 </ste-popup>
 ```
+#### 自定义组件
+
+- 属性`weekendColor`用于设置周末日期颜色
+- 属性`monthCount`用于设置渲染的月数
+- 属性`signs`用于设置标记的日期
+
+```html
+<script setup>
+import { ref, reactive } from 'vue';
+import type { SignType } from '@/uni_modules/stellar-ui-plus/components/ste-calendar/date';
+import utils from '@/uni_modules/stellar-ui-plus/utils/utils';
+const defaultDate = ref(utils.dayjs().format('YYYY-MM'));
+const signs = reactive<{ [key: string]: SignType }>({
+    // 标记今天
+    [utils.dayjs().format('YYYY-MM-DD')]: [
+        { content: 'XXXXX', className: 'test-signs' },
+        { content: 'XXXXX', className: 'test-signs' },
+        { content: 'XXXXX', className: 'test-signs' },
+    ],
+    // 标记明天
+    [utils.dayjs(Date.now() + 1000 * 60 * 60 * 24).format('YYYY-MM-DD')]: [
+        { content: 'XXXXX', style: { color: '#666', background: '#f5f5f5' } },
+        { content: 'XXXXX', style: { color: '#666', background: '#f5f5f5' } },
+    ],
+});
+</script>
+<template>
+    <ste-select mode="month" v-model="defaultDate" width="200" options-width="420" border-color="transparency">
+        <template v-slot:icon>
+            <ste-icon code="&#xe699;"></ste-icon>
+    </template>
+</ste-select>
+
+<ste-calendar @select="handleConfirm" weekendColor="#999" color="#09f" :signs="signs" :defaultDate="defaultDate"
+    :monthCount="1" :showConfirm="false" :showTitle="false" />
+</template>
+```
 
 ---$
 

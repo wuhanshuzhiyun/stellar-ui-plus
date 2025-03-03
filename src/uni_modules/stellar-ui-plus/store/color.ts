@@ -1,17 +1,17 @@
-import { ref } from 'vue'
+import { ref } from 'vue';
 // 主题色内容
 export function useColorStore() {
-  const color = ref({
-    steThemeColor: '#0090FF',
-    defaultColor: '#0090FF',
-  })
-  const getColor = () => {
-    return color.value
-  }
-  return {
-    color,
-    getColor,
-  }
+    const color = ref({
+        steThemeColor: '#0090FF',
+        defaultColor: '#0090FF',
+    });
+    const getColor = () => {
+        return color.value;
+    };
+    return {
+        color,
+        getColor,
+    };
 }
 
 // defineStore('color', () => {

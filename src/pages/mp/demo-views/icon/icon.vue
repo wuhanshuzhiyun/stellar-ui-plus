@@ -30,7 +30,6 @@ const fetchGlyphs = async () => {
                     unicode: '&#x' + item.unicode + ';',
                 };
             });
-            console.log('glyphs.value', glyphs.value);
         } else {
             console.error('Failed to fetch glyphs:', res);
         }

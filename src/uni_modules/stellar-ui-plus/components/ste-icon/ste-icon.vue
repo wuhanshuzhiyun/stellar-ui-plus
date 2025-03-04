@@ -14,7 +14,7 @@ defineOptions({
 
 const props = defineProps(propsData);
 const emits = defineEmits<{
-    (e: 'click', event?: Event): void;
+    (e: 'click', event?: any): void;
 }>();
 
 let defaultFontFamily = 'ste-iconfont-1709689042473';

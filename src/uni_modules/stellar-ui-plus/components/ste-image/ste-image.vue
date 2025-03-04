@@ -16,7 +16,7 @@ const iconSize = ref(50);
 const initializing = ref(true);
 
 const emits = defineEmits<{
-    (e: 'click', event?: Event): void;
+    (e: 'click', event?: any): void;
     (e: 'load', event?: BaseEvent): void;
     (e: 'error', event?: BaseEvent): void;
 }>();
@@ -65,7 +65,7 @@ const onFault = (e?: BaseEvent) => {
     emits('error', e);
 };
 
-const click = (e: Event) => {
+const click = (e: any) => {
     emits('click', e);
 };
 

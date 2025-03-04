@@ -14,7 +14,7 @@ const props = defineProps(propsData);
 
 const emits = defineEmits<{
     (e: 'end', value: string | number): void;
-    (e: 'close', value: Event): void;
+    (e: 'close', value: any): void;
     (e: 'click', value: string | number): void;
 }>();
 
@@ -148,7 +148,7 @@ function doPause() {
 function doRun() {
     touch.value = false;
 }
-function handleClose(e: Event) {
+function handleClose(e: any) {
     closeShow.value = false;
     emits('close', e);
 }

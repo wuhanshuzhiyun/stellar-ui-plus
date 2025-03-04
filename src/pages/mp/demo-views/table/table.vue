@@ -106,13 +106,13 @@ function select(selection: Obj[], row: Obj) {
 function selectAll(selection: Obj[]) {
     console.log('selectAll', selection);
 }
-function cellClick(row: Obj, column: Obj, event: Event) {
+function cellClick(row: Obj, column: Obj, event: any) {
     console.log('cellClick', row, column, event);
 }
-function rowClick(row: Obj, event: Event) {
+function rowClick(row: Obj, event: any) {
     console.log('rowClick', row, event);
 }
-function headerClick(column: Obj, event: Event) {
+function headerClick(column: Obj, event: any) {
     console.log('headerClick', column, event);
 }
 function clearSelect() {

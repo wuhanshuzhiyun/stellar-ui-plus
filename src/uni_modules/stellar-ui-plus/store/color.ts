@@ -1,16 +1,22 @@
-import { ref } from 'vue';
+import { reactive } from 'vue';
+const color = reactive({
+    steThemeColor: '#0090FF',
+    defaultColor: '#0090FF',
+});
 // 主题色内容
 export function useColorStore() {
-    const color = ref({
-        steThemeColor: '#0090FF',
-        defaultColor: '#0090FF',
-    });
     const getColor = () => {
-        return color.value;
+        return color;
     };
+    const setColor = (value: any) => {
+        Object.assign(color, value);
+        console.log('color', color);
+    };
+
     return {
         color,
         getColor,
+        setColor,
     };
 }
 

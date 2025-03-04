@@ -8,6 +8,7 @@ const msg = useMessageBox();
 
 let pageColor = ref('');
 let defaultColor = ref({ r: 255, g: 0, b: 0, a: 0.6 });
+
 onMounted(() => {
     pageColor.value = color.getColor().steThemeColor;
     let result: any = utils.Color.hex2rgba(color.color.defaultColor);

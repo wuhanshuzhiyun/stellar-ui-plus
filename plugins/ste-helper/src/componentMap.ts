@@ -429,12 +429,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": 0
             },
             {
-                "name": "defaultMonth",
-                "description": "默认展示的月份",
-                "type": "number | string | Date",
-                "default": 0
-            },
-            {
                 "name": "maxCount",
                 "description": "mode=multiple时，最多可选多少个日期",
                 "type": "number",
@@ -497,6 +491,30 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "可视区域高度",
                 "type": "number | string",
                 "default": "100%"
+            },
+            {
+                "name": "defaultDate",
+                "description": "默认展示的日期",
+                "type": "number | string | Date",
+                "default": "今天"
+            },
+            {
+                "name": "monthCount",
+                "description": "渲染的月份个数",
+                "type": "number",
+                "default": 12
+            },
+            {
+                "name": "weekendColor",
+                "description": "周末颜色，默认跟随主题色",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "signs",
+                "description": "日历标签",
+                "type": "{[key:string]:SignType}",
+                "default": "{}"
             }
         ],
         "events": [
@@ -523,6 +541,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                     {
                         "name": "days",
                         "description": "当前选中的日期列表"
+                    }
+                ]
+            },
+            {
+                "name": "view-month",
+                "description": "页面展示月份发生变化时触发",
+                "type": "(month:string) => void",
+                "params": [
+                    {
+                        "name": "month",
+                        "description": "当前页面上显示的月份"
                     }
                 ]
             }

@@ -175,9 +175,9 @@ function cellStyle(data: { column: any; columnIndex: number; row: any; rowIndex:
             <view class="title">基础使用</view>
             <view class="item-block">
                 <view style="width: 100%">
-                    <ste-table :data="rows">
+                    <ste-table :data="rows" @cellClick="cellClick">
                         <template v-slot="{ row }">
-                            <ste-table-column label="姓名" prop="name"></ste-table-column>
+                            <ste-table-column label="姓名123" prop="name"></ste-table-column>
                             <ste-table-column label="生日" prop="birth"></ste-table-column>
                             <ste-table-column label="性别" prop="sex"></ste-table-column>
                         </template>

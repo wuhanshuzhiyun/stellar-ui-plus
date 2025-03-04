@@ -29,13 +29,13 @@ defineOptions({
 const props = defineProps(propsData);
 
 const emits = defineEmits<{
-    (e: 'click', event?: Event): void;
+    (e: 'click', event?: any): void;
     (e: 'getphonenumber', event?: ButtonOnGetphonenumberEvent): void;
-    (e: 'getuserinfo', event?: Event): void;
+    (e: 'getuserinfo', event?: any): void;
     (e: 'error', event?: ButtonOnErrorEvent): void;
     (e: 'opensetting', event?: ButtonOnOpensettingEvent): void;
     (e: 'launchapp', event?: ButtonOnLaunchappEvent): void;
-    (e: 'contact', event?: Event): void;
+    (e: 'contact', event?: any): void;
     (e: 'chooseavatar', event?: ButtonOnChooseavatarEvent): void;
     (e: 'agreeprivacyauthorization', event?: ButtonOnAgreeprivacyauthorizationEvent): void;
     (e: 'addgroupapp', event?: ButtonOnAddgroupappEvent): void;
@@ -43,10 +43,10 @@ const emits = defineEmits<{
     (e: 'chooseinvoicetitle', event?: ButtonOnChooseinvoicetitleEvent): void;
     (e: 'subscribe', event?: ButtonOnSubscribeEvent): void;
     (e: 'login', event?: ButtonOnLoginEvent): void;
-    (e: 'getrealtimephonenumber', event?: Event): void;
-    (e: 'greeprivacyauthorization', event?: Event): void;
-    (e: 'getAuthorize', event?: Event): void;
-    (e: 'followLifestyle', event?: Event): void;
+    (e: 'getrealtimephonenumber', event?: any): void;
+    (e: 'greeprivacyauthorization', event?: any): void;
+    (e: 'getAuthorize', event?: any): void;
+    (e: 'followLifestyle', event?: any): void;
 }>();
 
 const cmpBtnStyle = computed(() => {
@@ -128,7 +128,7 @@ const cmpBtnStyle = computed(() => {
     return utils.deepMerge(style, props.rootStyle);
 });
 
-function handleClick(e: Event) {
+function handleClick(e: any) {
     if (props.disabled || props.loading) return;
     emits('click', e);
 }

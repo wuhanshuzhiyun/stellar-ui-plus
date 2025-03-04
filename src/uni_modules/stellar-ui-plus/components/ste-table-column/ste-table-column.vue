@@ -120,7 +120,7 @@ function cellText(this: any) {
     }
 }
 
-function cellClick(this: any, event: Event) {
+function cellClick(this: any, event: any) {
     parent?.cellClick(row.value, props, event);
     // 扩大选中热区
     if (props.type == 'checkbox' || props.type == 'radio') {

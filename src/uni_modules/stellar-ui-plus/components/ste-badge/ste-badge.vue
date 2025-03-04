@@ -15,7 +15,7 @@ defineOptions({
 const props = defineProps(propsData);
 
 const emits = defineEmits<{
-    (e: 'click', event?: Event): void;
+    (e: 'click', event?: any): void;
 }>();
 
 const cmpContentStyle = computed(() => {

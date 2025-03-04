@@ -93,7 +93,7 @@ watch(
     }
 );
 
-function onInput(e: Event) {
+function onInput(e: any) {
     const baseEvent = e as unknown as BaseEvent;
     if (!props.disabled && !props.readonly) {
         if (!props.allowSpace) {

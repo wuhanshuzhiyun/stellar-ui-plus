@@ -11,15 +11,16 @@ let defaultColor = ref({ r: 255, g: 0, b: 0, a: 0.6 });
 
 onMounted(() => {
     pageColor.value = color.getColor().steThemeColor;
-    let result: any = utils.Color.hex2rgba(color.color.defaultColor);
+    let result: any = utils.Color.hex2rgba(color.getColor().defaultColor);
     result = result.replace('rgba(', '').replace(')', '').split(',');
     result = { r: result[0], g: result[1], b: result[2], a: result[3] };
     defaultColor.value = result;
 });
 
 function reset() {
-    pageColor.value = color.color.defaultColor;
+    pageColor.value = color.getColor().defaultColor;
     color.setColor({ steThemeColor: pageColor.value });
+    resetPage();
 }
 function msgBox() {
     msg.showMsgBox({
@@ -32,11 +33,24 @@ let colorPicker: any = ref(null);
 function selectColor() {
     colorPicker.value.open();
 }
-function confirm(e) {
+
+function confirm(e: any) {
     pageColor.value = e.hex;
     color.setColor({ steThemeColor: pageColor.value });
+    resetPage();
 }
 
+// 重新刷新当前页面
+function resetPage() {
+    const pages = getCurrentPages();
+    const currentPage = pages[pages.length - 1];
+    const url = `/${currentPage.route}?${Object.entries(currentPage.options)
+        .map(([k, v]) => `${k}=${v}`)
+        .join('&')}`;
+
+    // 通过 reLaunch 关闭所有页面并重新打开当前页面（最彻底）
+    uni.reLaunch({ url });
+}
 let checkboxValue = ref(true);
 let radioValue = ref('a');
 let datetime = ref('');

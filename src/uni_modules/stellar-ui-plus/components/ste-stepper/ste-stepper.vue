@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { BaseEvent } from '@uni-helper/uni-app-types';
-import { computed, type CSSProperties, nextTick, defineOptions } from 'vue';
+import { computed, type CSSProperties, nextTick } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import propsData, { type StepperEmits } from './props';

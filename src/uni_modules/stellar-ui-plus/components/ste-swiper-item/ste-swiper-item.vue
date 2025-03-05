@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineOptions } from 'vue';
+import { ref, computed } from 'vue';
 import { useInject } from '../../utils/mixin';
 import { SWIPER_KEY } from '../ste-swiper/props';
 

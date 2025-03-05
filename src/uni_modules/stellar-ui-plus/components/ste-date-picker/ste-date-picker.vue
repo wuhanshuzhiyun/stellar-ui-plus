@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, defineOptions, computed } from 'vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import propsData from './props';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, getCurrentInstance, ref } from 'vue';
+import { getCurrentInstance, ref } from 'vue';
 import propsData, { SWIPER_KEY } from './props';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';

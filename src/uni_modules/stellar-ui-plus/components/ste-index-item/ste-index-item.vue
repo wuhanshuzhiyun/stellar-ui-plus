@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, ref, nextTick, onMounted } from 'vue';
+import { ref, nextTick, onMounted } from 'vue';
 import propsData from './props';
 import { useInject } from '../../utils/mixin';
 import { INDEX_LIST_KEY } from '../ste-index-list/props';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import utils from '../../utils/utils';
-import { nextTick, onMounted, watch, defineOptions, getCurrentInstance, ref, computed, type ComponentPublicInstance } from 'vue';
+import { nextTick, onMounted, watch, getCurrentInstance, ref, computed, type ComponentPublicInstance } from 'vue';
 import propsData from './props';
 
 import UQRCode, { type URCodeCanvasContext } from './uqrcode';

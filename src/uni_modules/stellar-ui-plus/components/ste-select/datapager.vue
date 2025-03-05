@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineOptions, onMounted, getCurrentInstance } from 'vue';
+import { onMounted, getCurrentInstance } from 'vue';
 defineOptions({
     virtualHost: true,
 });

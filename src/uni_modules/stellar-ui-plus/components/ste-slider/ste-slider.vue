@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineOptions, getCurrentInstance, type CSSProperties, type ComponentPublicInstance, onMounted, watch, onBeforeUnmount } from 'vue';
+import { computed, getCurrentInstance, type CSSProperties, type ComponentPublicInstance, onMounted, watch, onBeforeUnmount } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import type { UniTouchEvent, BaseEvent } from '../../types/event';

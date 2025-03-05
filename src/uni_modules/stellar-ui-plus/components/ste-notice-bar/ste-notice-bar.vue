@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import utils from '../../utils/utils.js';
-import { defineOptions, ref, computed, type CSSProperties, watch, nextTick, getCurrentInstance } from 'vue';
+import { ref, computed, type CSSProperties, watch, nextTick, getCurrentInstance } from 'vue';
 import propsData from './props';
 
 defineOptions({

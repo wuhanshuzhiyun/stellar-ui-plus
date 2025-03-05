@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineOptions, computed, onMounted, getCurrentInstance } from 'vue';
+import { ref, computed, onMounted, getCurrentInstance } from 'vue';
 import { useProvide } from '../../utils/mixin';
 import { type TabProps } from '../ste-tab/props';
 import propsData, { TAB_KEY } from './props';

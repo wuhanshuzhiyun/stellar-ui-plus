@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineOptions, type CSSProperties } from 'vue';
+import { computed, type CSSProperties } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import propsData from './props';

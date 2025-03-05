@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineOptions, inject, watch } from 'vue';
+import { ref, computed, inject, watch } from 'vue';
 import { toastDefaultOptionsKey } from './ste-toast';
 defineOptions({
     name: 'ste-toast',

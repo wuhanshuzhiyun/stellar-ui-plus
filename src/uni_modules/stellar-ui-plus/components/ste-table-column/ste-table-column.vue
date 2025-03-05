@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, type CSSProperties, defineOptions } from 'vue';
+import { computed, ref, type CSSProperties } from 'vue';
 import type { Obj } from '../../types';
 import propsData from './props';
 import utils from '../../utils/utils';

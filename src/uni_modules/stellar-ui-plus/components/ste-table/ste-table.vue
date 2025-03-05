@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, watch, ref, defineOptions, type CSSProperties } from 'vue';
+import { computed, watch, ref, type CSSProperties } from 'vue';
 import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG, type TableProps } from './props';
 import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';

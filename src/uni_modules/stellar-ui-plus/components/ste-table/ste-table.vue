@@ -65,7 +65,7 @@ const cmpRootStyle = computed(() => {
         '--offset-top': props.offsetTop,
         '--table-height': utils.addUnit(props.height as string),
         '--table-max-height': utils.addUnit(props.maxHeight as string),
-        '--ste-theme-color': utils.Color.hex2rgba(getColor().steThemeColor, 0.05),
+        '--ste-theme-color': utils.Color.hex2rgba(getColor().steThemeColor),
     };
     return style;
 });

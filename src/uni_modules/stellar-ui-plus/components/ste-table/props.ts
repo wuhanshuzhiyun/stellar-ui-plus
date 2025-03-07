@@ -45,6 +45,7 @@ const tableProps = {
         type: Object as PropType<typeof SELECTION_COLOR_CONFIG>,
         default: () => SELECTION_COLOR_CONFIG,
     },
+    isPopover: [Boolean, null],
 };
 
 export type TableProps = ExtractPropTypes<typeof tableProps>;

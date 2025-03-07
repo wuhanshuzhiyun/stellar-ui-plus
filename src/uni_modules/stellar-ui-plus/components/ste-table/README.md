@@ -48,8 +48,8 @@
 
 #### 空数据显示
 
--   通过`table`中的`emptyText`属性来指定单元格中数据为空时显示的值，否则显示`-`
--   也可以通过插槽来自定义空数据时显示
+- 通过`table`中的`emptyText`属性来指定单元格中数据为空时显示的值，否则显示`-`
+- 也可以通过插槽来自定义空数据时显示
 
 ```html
 <script lang="ts" setup>
@@ -149,8 +149,8 @@
 
 #### 显示合计
 
--   通过`showSummary`控制是否显示合计，`sumText`控制合计行第一列的文本
--   `summaryMethod`来指定合计的方法，需要返回一个数组来确定每一列合计显示的内容
+- 通过`showSummary`控制是否显示合计，`sumText`控制合计行第一列的文本
+- `summaryMethod`来指定合计的方法，需要返回一个数组来确定每一列合计显示的内容
 
 ```html
 <script lang="ts" setup>
@@ -185,8 +185,8 @@
 
 #### 对齐方式
 
--   通过`align`指定某列的单元格的对齐方式
--   `headerAlign`指定表头的单元格对齐方式， 没设置时跟随`align`值
+- 通过`align`指定某列的单元格的对齐方式
+- `headerAlign`指定表头的单元格对齐方式， 没设置时跟随`align`值
 
 ```html
 <ste-table :data="rows">
@@ -564,6 +564,35 @@
 	disabled: '#E6E6E6', // 禁用时背景色
 	readonly: 'rgba(52, 145, 250, 0.4)' // 只读时背景色
 }
+```
+
+#### 单元格超出长按显示气泡
+
+```html
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const rows5 = ref([
+        { t1: '张三', t2: '我是张三我是张三我是张三我是张三', t3: '男男男男男男男男男' },
+        { t1: '李四', t2: '你是李四你是李四你是李四你是李四你是李四', t3: '女' },
+        { t1: '王五王五王五', t2: '王五描述', t3: '女' },
+        { t1: '赵六赵六赵六赵六', t2: '赵六', t3: '女' },
+        { t1: '王七', t2: '他是王七他是王七他是王七他是王七他是王七', t3: '女女女女女女女' },
+    ]);
+</script>
+<template>
+    <view class="title">单元格文字超出时气泡显示内容</view>
+    <view class="item-block">
+        <view style="width: 100%">
+            <ste-table :data="rows5" isPopover>
+                <template v-slot="{ row }">
+                    <ste-table-column label="文字1" prop="t1"></ste-table-column>
+                    <ste-table-column label="文字2" prop="t2"></ste-table-column>
+                    <ste-table-column label="文字3" prop="t3"></ste-table-column>
+                </template>
+            </ste-table>
+        </view>
+    </view>
+</template>
 ```
 
 ---$

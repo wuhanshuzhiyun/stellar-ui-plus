@@ -58,6 +58,14 @@ const rows4 = ref([
     },
 ]);
 
+const rows5 = ref([
+    { t1: '张三', t2: '我是张三我是张三我是张三我是张三', t3: '男男男男男男男男男' },
+    { t1: '李四', t2: '你是李四你是李四你是李四你是李四你是李四', t3: '女' },
+    { t1: '王五王五王五', t2: '王五描述', t3: '女' },
+    { t1: '赵六赵六赵六赵六', t2: '赵六', t3: '女' },
+    { t1: '王七', t2: '他是王七他是王七他是王七他是王七他是王七', t3: '女女女女女女女' },
+]);
+
 function scrollToLower() {
     toast.showToast({
         title: '到底了',
@@ -440,6 +448,20 @@ function cellStyle(data: { column: any; columnIndex: number; row: any; rowIndex:
                             <ste-table-column label="姓名" prop="name"></ste-table-column>
                             <ste-table-column label="生日" prop="birth"></ste-table-column>
                             <ste-table-column label="性别" prop="sex"></ste-table-column>
+                        </template>
+                    </ste-table>
+                </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">单元格文字超出时气泡显示内容</view>
+            <view class="item-block">
+                <view style="width: 100%">
+                    <ste-table :data="rows5" isPopover>
+                        <template v-slot="{ row }">
+                            <ste-table-column label="文字1" prop="t1"></ste-table-column>
+                            <ste-table-column label="文字2" prop="t2"></ste-table-column>
+                            <ste-table-column label="文字3" prop="t3"></ste-table-column>
                         </template>
                     </ste-table>
                 </view>

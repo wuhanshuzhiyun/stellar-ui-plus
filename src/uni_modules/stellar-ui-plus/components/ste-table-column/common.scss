@@ -10,9 +10,22 @@
     align-items: center;
 }
 
+&.popover {
+    overflow-x: hidden;
+    .cell-box {
+        // overflow: hidden;
+        max-width: 100%;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // /* 防止文本被选中，提升移动端体验 */
+        // user-select: none;
+        // -webkit-user-select: none;
+    }
+}
+
 .cell-box {
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     padding: 24rpx 32rpx;
 }
 
@@ -40,13 +53,15 @@
 &.align-center {
     justify-content: center;
     .cell-box {
-        justify-content: center;
+        // justify-content: center;
+        text-align: center;
     }
 }
 
 &.align-right {
     justify-content: flex-end;
     .cell-box {
-        justify-content: flex-end;
+        // justify-content: flex-end;
+        text-align: right;
     }
 }

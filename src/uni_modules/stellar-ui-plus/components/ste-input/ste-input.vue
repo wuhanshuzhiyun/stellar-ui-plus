@@ -17,8 +17,8 @@ const props = defineProps(propsData);
 const emits = defineEmits<InputEmits>();
 
 const focused = ref(props.focus);
-const dataValue = ref<string>();
-const tmpDataValue = ref<string>();
+const dataValue = ref<string | number>();
+const tmpDataValue = ref<string | number>();
 
 const cmpRootClass = computed(() => {
     let classStr = '';
@@ -98,6 +98,11 @@ function onInput(e: any) {
     if (!props.disabled && !props.readonly) {
         if (!props.allowSpace) {
             baseEvent.detail.value = baseEvent.detail.value.replace(/\s*/g, '');
+        }
+
+        // 应用自定义过滤函数（如果提供）
+        if (typeof props.filter === 'function') {
+            baseEvent.detail.value = props.filter(baseEvent.detail.value);
         }
 
         if (props.maxlength > 0) {

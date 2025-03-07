@@ -6,8 +6,8 @@
 
 #### 文本输入框
 
--   通过`value`给输入框初始值
--   支持通过`v-model`双向绑定
+- 通过`value`给输入框初始值
+- 支持通过`v-model`双向绑定
 
 ```html
 <ste-input value="输入" />
@@ -27,8 +27,8 @@
 
 #### 占位符
 
--   支持`placeholderStyle`给占位符指定样式
--   支持`placeholderClass`给占位符指定类名
+- 支持`placeholderStyle`给占位符指定样式
+- 支持`placeholderClass`给占位符指定类名
     > 非H5平台上需要在类名前添加`/deep/`才生效
 
 ```html
@@ -48,8 +48,8 @@
 
 #### 字数统计
 
--   `showWordLimit`值为`true`时在右下角显示字数统计
--   当`type`值为`textarea`并且`maxlength`大于0时才会显示
+- `showWordLimit`值为`true`时在右下角显示字数统计
+- 当`type`值为`textarea`并且`maxlength`大于0时才会显示
 
 ```html
 <ste-input type="textarea" :maxlength="140" showWordLimit />
@@ -111,6 +111,31 @@
         <ste-icon code="&#xe672;" size="28" />
     </view>
 </ste-input>
+```
+
+#### 前置过滤
+
+```html
+<script lang="ts" setup>
+    const onlyPositiveDecimal = (value: any) => {
+        // 1. 移除所有负号
+        // 2. 保留数字和最多一个小数点
+        let result = value.replace(/-/g, '');
+
+        // 检查是否已有小数点
+        const dotIndex = result.indexOf('.');
+        if (dotIndex !== -1) {
+            // 如果有小数点，保留第一个小数点，删除后面的所有小数点
+            const beforeDot = result.substring(0, dotIndex + 1);
+            const afterDot = result.substring(dotIndex + 1).replace(/\./g, '');
+            result = beforeDot + afterDot;
+        }
+
+        // 移除所有非数字和小数点的字符
+        return result.replace(/[^\d.]/g, '');
+    };
+</script>
+<ste-input :filter="onlyPositiveDecimal" />
 ```
 
 ---$

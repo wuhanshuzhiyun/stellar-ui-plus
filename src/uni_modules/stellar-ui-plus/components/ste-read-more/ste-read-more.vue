@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, getCurrentInstance, type CSSProperties } from 'vue';
+import { computed, ref, onMounted, getCurrentInstance, type CSSProperties, type ComponentPublicInstance } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, type CSSProperties, onMounted, nextTick, watch, getCurrentInstance } from 'vue';
+import { computed, type CSSProperties, onMounted, nextTick, watch, getCurrentInstance, type ComponentPublicInstance } from 'vue';
 import type { BaseEvent } from '../../types/event';
 import useData from './useData';
 import utils from '../../utils/utils';

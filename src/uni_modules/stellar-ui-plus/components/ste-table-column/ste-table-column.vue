@@ -150,8 +150,10 @@ function cellClick(this: any, event: any) {
         <template v-else>
             <slot v-if="row[prop] || !$slots.empty">
                 <view class="cell-box">
-                    <!-- {{ cellText() }} -->
-                    <table-popover :text="cellText()"></table-popover>
+                    <template v-if="!parentProps.isPopover">
+                        {{ cellText() }}
+                    </template>
+                    <table-popover v-else :text="cellText()"></table-popover>
                 </view>
             </slot>
             <view class="cell-box" v-else>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, inject, watch } from 'vue';
-import { toastDefaultOptionsKey } from './ste-toast';
+import { ref, computed, onUnmounted, onMounted } from 'vue';
 defineOptions({
     name: 'ste-toast',
 });
@@ -87,14 +86,21 @@ function hideToast() {
     close.value();
 }
 
-// 组合函数
-const injectToastOptions = ref(inject(toastDefaultOptionsKey));
-watch(injectToastOptions, (value: any) => {
-    if (value.show) {
-        showToast(value);
-    } else {
+// 替换为 uni-app 事件监听
+onMounted(() => {
+    uni.$on('ste:toast:show', options => {
+        showToast(options);
+    });
+
+    uni.$on('ste:toast:hide', () => {
         hideToast();
-    }
+    });
+});
+
+// 记得在组件卸载时移除事件监听
+onUnmounted(() => {
+    uni.$off('ste:toast:show');
+    uni.$off('ste:toast:hide');
 });
 
 defineExpose({

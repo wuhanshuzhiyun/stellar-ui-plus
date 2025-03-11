@@ -1677,6 +1677,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否是密码类型,H5和App写此属性时，type失效",
                 "type": "boolean",
                 "default": "false"
+            },
+            {
+                "name": "filter",
+                "description": "过滤器函数，用于在输入时对值进行预处理",
+                "type": "(value: any) => string",
+                "default": "null"
             }
         ],
         "events": [
@@ -4609,6 +4615,11 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "selectionIconColor",
                 "description": "配置选择项图标色",
                 "type": "object"
+            },
+            {
+                "name": "isPopover",
+                "description": "是否为超出单元格时气泡显示内容",
+                "type": "boolean"
             }
         ],
         "events": [

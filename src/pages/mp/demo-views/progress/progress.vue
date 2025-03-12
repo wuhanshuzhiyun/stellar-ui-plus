@@ -14,6 +14,12 @@ function add() {
         p.value += 10;
     }
 }
+
+const stageData = ref({
+    20: { label: '完成进度20%', style: { background: '#F53F3F' } },
+    50: { label: '完成进度50%', style: { background: '#FFC53D' } },
+    100: { label: '当月销售计划20,80万', style: { background: '#077EDB', textAlign: 'right' } },
+});
 </script>
 
 <template>
@@ -103,6 +109,14 @@ function add() {
                 </view>
                 <view style="width: 100%">
                     <ste-progress :percentage="35" :displayTextThreshold="15"></ste-progress>
+                </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">分段配置</view>
+            <view class="item-block">
+                <view style="width: 100%">
+                    <ste-progress :percentage="10" strokeWidth="36" :stageData="stageData"></ste-progress>
                 </view>
             </view>
         </view>

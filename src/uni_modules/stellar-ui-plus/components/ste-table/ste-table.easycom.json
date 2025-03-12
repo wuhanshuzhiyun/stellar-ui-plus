@@ -154,6 +154,11 @@
             "type": "object"
         },
         {
+            "name": "isPopover",
+            "description": "是否为超出单元格时气泡显示内容",
+            "type": "boolean"
+        },
+        {
             "name": "[event]select",
             "description": "当用户手动勾选数据行的 Checkbox 时触发的事件",
             "type": "() => void"

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, type CSSProperties } from 'vue';
+import { computed, ref, type CSSProperties, type Ref } from 'vue';
 import type { Obj } from '../../types';
 import propsData from './props';
 import utils from '../../utils/utils';
@@ -8,6 +8,7 @@ import { useInject } from '../../utils/mixin';
 import { TABLE_KEY, SELECTION_COLOR_CONFIG, type TableProps } from '../ste-table/props';
 import CheckBoxIcon from './checkbox-icon.vue';
 import RadioIcon from './radio-icon.vue';
+import TablePopover from './table-popover.vue';
 
 const componentName = `ste-table-column`;
 defineOptions({
@@ -19,7 +20,7 @@ defineOptions({
 
 const props = defineProps(propsData);
 
-const Parent = useInject<{ props: Required<TableProps>; checkStates: globalThis.Ref<number[]>; handleCheck: (...args: any[]) => void; cellClick: (...args: any[]) => void }>(TABLE_KEY);
+const Parent = useInject<{ props: Required<TableProps>; checkStates: Ref<number[]>; handleCheck: (...args: any[]) => void; cellClick: (...args: any[]) => void }>(TABLE_KEY);
 const parent = Parent.parent;
 const parentProps = Parent.parent?.props as TableProps;
 
@@ -62,6 +63,10 @@ const cmpRootClass = computed(() => {
 
     if (parentProps.border) {
         classArr.push('border');
+    }
+
+    if (parentProps.isPopover) {
+        classArr.push('popover');
     }
 
     const cellClassParam = {
@@ -145,7 +150,10 @@ function cellClick(this: any, event: any) {
         <template v-else>
             <slot v-if="row[prop] || !$slots.empty">
                 <view class="cell-box">
-                    {{ cellText() }}
+                    <template v-if="!parentProps.isPopover">
+                        {{ cellText() }}
+                    </template>
+                    <table-popover v-else :text="cellText()"></table-popover>
                 </view>
             </slot>
             <view class="cell-box" v-else>

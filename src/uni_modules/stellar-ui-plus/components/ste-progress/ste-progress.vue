@@ -5,6 +5,8 @@ import utils from '../../utils/utils';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 
+let hasStage = false;
+
 const slots = useSlots();
 const props = defineProps(propsData);
 
@@ -17,20 +19,6 @@ const haveSlot = ref(false);
 onMounted(() => {
     haveSlot.value = !!slots.default;
 });
-
-watch(
-    () => props.percentage,
-    val => {
-        if (val >= MAX) {
-            realPercentage.value = MAX;
-        } else if (val <= MIN) {
-            realPercentage.value = MIN;
-        } else {
-            realPercentage.value = val;
-        }
-    },
-    { immediate: true }
-);
 
 const cmpRootCssVar = computed(() => {
     let style: CSSProperties = {
@@ -83,12 +71,72 @@ const cmpActiveText = computed(() => {
     }
     return str;
 });
+
+const getPercentage = (value: number): number => {
+    if (!(typeof value === 'number')) {
+        return MIN;
+    }
+    if (value >= MAX) {
+        return MAX;
+    } else if (value <= MIN) {
+        return MIN;
+    } else {
+        return value;
+    }
+};
+
+const getStageStyle = (stageValue: number, index: number, value: any): CSSProperties => {
+    let style: CSSProperties = { width: `${getPercentage(stageValue)}%`, zIndex: Object.keys(props.stageData).length - index };
+
+    if (value instanceof Object && value.style) {
+        const { background, ...restStyle } = value.style;
+        style = {
+            ...style,
+            ...utils.bg2style(background),
+            ...restStyle,
+        };
+    }
+
+    return style;
+};
+
+const getStageTextWidth = (index: number, value: any): CSSProperties => {
+    let style: CSSProperties = { width: '100%' };
+    if (index > 0) {
+        const stageValues = Object.keys(props.stageData);
+        const widthPercentage = (Number(stageValues[index]) - Number(stageValues[index - 1])) / Number(stageValues[index]);
+        style.width = `${widthPercentage * 100}%`;
+        style.textAlign = value.style?.textAlign;
+    }
+    return style;
+};
+
+watch(
+    () => props.stageData,
+    val => {
+        hasStage = Object.keys(val || {}).length > 0;
+    },
+    { immediate: true }
+);
+
+watch(
+    () => props.percentage,
+    val => {
+        realPercentage.value = getPercentage(val);
+    },
+    { immediate: true }
+);
 </script>
 
 <template>
     <view class="ste-progress-root" :style="[cmpRootCssVar]">
         <view class="inactive-box" :style="[cmpInactiveStyle]"></view>
-        <view class="active-box line" :style="[cmpActiveStyle]" v-if="realPercentage > 0">
+        <view class="stage-box" v-if="hasStage">
+            <view class="stage" v-for="(item, index) in Object.keys(stageData)" :style="[getStageStyle(Number(item), index, stageData[item])]">
+                <text class="text" :style="[getStageTextWidth(index, stageData[item])]">{{ stageData[item].label }}</text>
+            </view>
+        </view>
+        <view class="active-box line" :style="[cmpActiveStyle]" v-if="realPercentage > 0 && !hasStage">
             <slot v-if="haveSlot"></slot>
             <text class="text" v-else>{{ cmpActiveText }}</text>
         </view>
@@ -102,7 +150,9 @@ const cmpActiveText = computed(() => {
     height: var(--progress-height);
 
     > .inactive-box,
-    > .active-box {
+    > .active-box,
+    > .stage-box,
+    > .stage-box > .stage {
         width: var(--progress-width);
         height: var(--progress-height);
         border-radius: 24rpx;
@@ -129,6 +179,34 @@ const cmpActiveText = computed(() => {
             font-size: var(--active-text-font-size);
             vertical-align: middle;
             line-height: 0;
+        }
+    }
+
+    .stage-box {
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        .stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+
+            text-align: right;
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: var(--progress-padding) 0;
+            .text {
+                color: var(--active-text-color);
+                font-size: var(--active-text-font-size);
+                text-align: center;
+
+                overflow: hidden; //超出的文本隐藏
+                text-overflow: ellipsis; //溢出用省略号显示
+                white-space: nowrap; //溢出不换行
+            }
         }
     }
 }

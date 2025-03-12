@@ -230,6 +230,12 @@
             "default": "false"
         },
         {
+            "name": "filter",
+            "description": "过滤器函数，用于在输入时对值进行预处理",
+            "type": "(value: any) => string",
+            "default": "null"
+        },
+        {
             "name": "[event]blur",
             "description": "输入框失去焦点事件",
             "type": "(value: string | number) => void",

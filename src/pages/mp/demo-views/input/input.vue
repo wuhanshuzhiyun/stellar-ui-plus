@@ -19,9 +19,23 @@ function getCode() {
     }, 1000);
 }
 
-function hanldeInput(val) {
-    console.log('val is ', val, ' ***');
-}
+const onlyPositiveDecimal = (value: any) => {
+    // 1. 移除所有负号
+    // 2. 保留数字和最多一个小数点
+    let result = value.replace(/-/g, '');
+
+    // 检查是否已有小数点
+    const dotIndex = result.indexOf('.');
+    if (dotIndex !== -1) {
+        // 如果有小数点，保留第一个小数点，删除后面的所有小数点
+        const beforeDot = result.substring(0, dotIndex + 1);
+        const afterDot = result.substring(dotIndex + 1).replace(/\./g, '');
+        result = beforeDot + afterDot;
+    }
+
+    // 移除所有非数字和小数点的字符
+    return result.replace(/[^\d.]/g, '');
+};
 </script>
 
 <template>
@@ -199,6 +213,14 @@ function hanldeInput(val) {
                             </view>
                         </template>
                     </ste-input>
+                </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">前置过滤</view>
+            <view class="item-block">
+                <view style="width: 100%">
+                    <ste-input :filter="onlyPositiveDecimal" />
                 </view>
             </view>
         </view>

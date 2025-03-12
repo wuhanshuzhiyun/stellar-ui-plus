@@ -343,7 +343,7 @@ $default-border: 2rpx solid #ebebeb;
             padding: 0 32rpx;
             height: 80rpx;
             font-size: var(--font-size-24, 24rpx);
-
+            overflow-x: hidden;
             .cell-box {
                 height: 100%;
                 display: flex;

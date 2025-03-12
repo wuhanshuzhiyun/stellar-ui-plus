@@ -2548,6 +2548,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "显示文本的阈值",
                 "type": "number",
                 "default": "0"
+            },
+            {
+                "name": "stageData",
+                "description": "阶段配置信息，该值存在时percentage将不生效",
+                "type": "object",
+                "default": "{}"
             }
         ],
         "events": []

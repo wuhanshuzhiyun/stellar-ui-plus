@@ -86,21 +86,39 @@ function hideToast() {
     close.value();
 }
 
-// 替换为 uni-app 事件监听
-onMounted(() => {
-    uni.$on('ste:toast:show', options => {
-        showToast(options);
-    });
+const registEvent = (flag = true) => {
+    if (flag) {
+        // 注册事件
+        uni.$on('ste:toast:show', showToast);
+        uni.$on('ste:toast:hide', hideToast);
+    } else {
+        // 卸载事件
+        uni.$off('ste:toast:show');
+        uni.$off('ste:toast:hide');
+    }
+};
 
-    uni.$on('ste:toast:hide', () => {
-        hideToast();
-    });
+// 记录组件挂载时间
+let mountTimestamp = 0;
+// 最短合理的组件生命周期(毫秒)
+// 用于解决APP等某些环境下组件卸载顺序异常，导致事件卸载
+const MIN_REASONABLE_LIFECYCLE = 800;
+
+onMounted(() => {
+    mountTimestamp = Date.now();
+    registEvent(false);
+    setTimeout(() => {
+        registEvent();
+    }, 200);
 });
 
-// 记得在组件卸载时移除事件监听
 onUnmounted(() => {
-    uni.$off('ste:toast:show');
-    uni.$off('ste:toast:hide');
+    // 计算组件生命周期时长
+    const lifecycleDuration = Date.now() - mountTimestamp;
+    // 只有当组件存活时间合理时，才考虑卸载事件监听
+    if (lifecycleDuration >= MIN_REASONABLE_LIFECYCLE) {
+        registEvent(false);
+    }
 });
 
 defineExpose({

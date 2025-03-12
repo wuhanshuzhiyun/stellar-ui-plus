@@ -102,11 +102,13 @@ const loadMore = () => {
                     </scroll-view>
                 </slot>
                 <view class="open-icon-event" @click.stop="clickOpenIcon">
-                    <view class="open-icon">
-                        <view class="open-icon-transform">
-                            <ste-icon code="&#xe676;" size="20" />
+                    <slot name="icon">
+                        <view class="open-icon">
+                            <view class="open-icon-transform">
+                                <ste-icon code="&#xe676;" size="20" />
+                            </view>
                         </view>
-                    </view>
+                    </slot>
                 </view>
 
                 <view class="clearable-icon" v-if="cmpShowClearable" @click.stop="clickClearable">

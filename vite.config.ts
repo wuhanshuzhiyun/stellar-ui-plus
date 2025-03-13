@@ -30,4 +30,8 @@ export default defineConfig({
         // 开启sourcemap
         sourcemap: true,
     },
+    server: {
+        // 允许CodeSandbox的主机访问
+        allowedHosts: ['7rsqf4-5173.csb.app', '.csb.app'],
+    },
 });

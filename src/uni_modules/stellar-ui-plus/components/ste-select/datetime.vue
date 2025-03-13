@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, type PropType } from 'vue';
+import { ref, watch, nextTick, type PropType } from 'vue';
 import { getDateOptions, getNowDate, type DateMode } from './defaultDate';
 import utils from '../../utils/utils';
 

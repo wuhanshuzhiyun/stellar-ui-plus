@@ -13,8 +13,5 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "publish-vscode-plugin": "cd ../../../plugins/ste-helper & pnpm run publish",
         "prepublishOnly": "pnpm run publish-vscode-plugin"
-    },
-    "dependencies": {
-        "dayjs": "^1.11.11"
     }
 }

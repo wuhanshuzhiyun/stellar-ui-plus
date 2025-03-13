@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import * as dayjs from './dayjs';
 import type { TreeNode } from '../types';
 import config from '../config';
 import System from './System';

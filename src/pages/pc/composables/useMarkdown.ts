@@ -10,7 +10,7 @@ export default function useMarkdown(): MarkdownData {
 
     const activeBtns = () => {
         nextTick(() => {
-            const btns = document.querySelectorAll<HTMLButtonElement>('button.code-copy-button');
+            const btns = document.querySelectorAll<HTMLButtonElement>('.btn.copy');
             btns.forEach(btn => (btn.onclick = () => btnCopy(btn)));
 
             const as = document.querySelectorAll<HTMLAnchorElement>('a.header-anchor');

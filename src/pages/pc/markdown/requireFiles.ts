@@ -3,6 +3,19 @@ import ComponentGroups from './componentGroups.json';
 
 const parser = new DOMParser();
 
+const codeBtnArr = [
+    {
+        type: 'debug',
+        label: 'codesandbox',
+        iconSrc: 'https://image.whzb.com/chain/StellarUI/image/debug.png',
+    },
+    {
+        type: 'copy',
+        label: '复制',
+        iconSrc: 'https://image.whzb.com/chain/StellarUI/image/copy.png',
+    },
+];
+
 function templateFiles() {
     const deg = /.+\/(\w+)\.(md|json)$/;
     const map: Obj = {};
@@ -31,23 +44,55 @@ function assembleTemplate(html: string) {
     return result;
 }
 
-function formatHtml(html: string) {
+function formatHtml(html: string, isComponent = false) {
     const doc = parser.parseFromString(html, 'text/html');
     const pres = doc.querySelectorAll('body>pre');
     pres.forEach(pre => {
         const codedom = pre.querySelector('code');
         codedom?.classList.add('hljs');
         const code = codedom?.textContent;
-        const btn = document.createElement('button');
-        btn.innerHTML = '复制';
-        btn.setAttribute('content', code || '');
-        btn.classList.add('code-copy-button');
-        pre.innerHTML = '';
+
+        // 外部盒子
         const div = document.createElement('div');
         div.classList.add('code-body-box');
         if (codedom) div.appendChild(codedom);
         pre.appendChild(div);
-        pre.appendChild(btn);
+
+        // 按钮盒子
+        const btnDiv = document.createElement('div');
+        btnDiv.classList.add('btn-box');
+
+        codeBtnArr.forEach(btn => {
+            // 非组件示例不添加debug按钮
+            if (!isComponent && btn.type === 'debug') return;
+            const tipDiv = document.createElement('div');
+            tipDiv.classList.add('tip');
+
+            const btnEle = document.createElement('a');
+            if (btn.type === 'copy') {
+                btnEle.setAttribute('content', code || '');
+            }
+            btnEle.classList.add('btn');
+            btnEle.classList.add(btn.type);
+            const iconImg = document.createElement('img');
+            iconImg.src = btn.iconSrc;
+            iconImg.classList.add('img');
+            tipDiv.innerHTML = btn.label;
+            btnEle.appendChild(iconImg);
+            btnEle.appendChild(tipDiv);
+            btnDiv.appendChild(btnEle);
+        });
+
+        // 添加盒子
+        pre.appendChild(btnDiv);
+
+        // 复制按钮
+        // const btn = document.createElement('button');
+        // btn.innerHTML = '复制';
+        // btn.setAttribute('content', code || '');
+        // btn.classList.add('code-copy-button');
+        // pre.innerHTML = '';
+        // pre.appendChild(btn);
     });
 
     const tables = doc.querySelectorAll('table');
@@ -108,16 +153,10 @@ export function btnCopy(btn: HTMLButtonElement) {
         data: code,
         showToast: false,
         success: () => {
-            btn.innerHTML = '复制成功';
-            setTimeout(() => {
-                btn.innerHTML = '复制';
-            }, 2000);
+            uni.showToast({ title: '复制成功', icon: 'success' });
         },
         fail: () => {
-            btn.innerHTML = '复制失败';
-            setTimeout(() => {
-                btn.innerHTML = '复制';
-            }, 1000);
+            uni.showToast({ title: '复制失败', icon: 'fail' });
         },
     });
 }
@@ -189,7 +228,7 @@ export function componentFiles() {
         markdownsData[name] = {
             html: formatHtml(assembleTemplate(html)),
             htmlDesc: desc,
-            htmlDemo: demo ? formatHtml(assembleTemplate(demo)) : '',
+            htmlDemo: demo ? formatHtml(assembleTemplate(demo), true) : '',
             htmlApi: api ? formatHtml(assembleTemplate(api)) : '',
             htmlGuide: guide ? formatHtml(assembleTemplate(guide)) : '',
         };

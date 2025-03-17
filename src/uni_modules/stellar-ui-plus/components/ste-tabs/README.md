@@ -89,42 +89,44 @@
     const showType = ref('line');
     const setShowType = (v: SwitchOnChangeEvent) => (showType.value = v.detail.value ? 'card' : 'line');
 </script>
-<ste-tabs :showImage="showImage" :showSubtitle="showSubTitle" :showTitle="showTitle" :swipeable="swipeable" :type="showType">
-    <ste-tab v-for="item in datas" :key="item.title" :title="item.title" :image="item.image" :badge="showBadge ? item.badge : 0" :subTitle="item.subTitle">
-        <view>{{ item.title }} Content</view>
-        <image mode="widthFix" :src="item.content" />
-    </ste-tab>
-</ste-tabs>
-<view class="method-list">
-    <view>
-        显示主标题
-        <switch :checked="showTitle" @change="setShowTitle"></switch>
+<template>
+    <ste-tabs :showImage="showImage" :showSubtitle="showSubTitle" :showTitle="showTitle" :swipeable="swipeable" :type="showType">
+        <ste-tab v-for="item in datas" :key="item.title" :title="item.title" :image="item.image" :badge="showBadge ? item.badge : 0" :subTitle="item.subTitle">
+            <view>{{ item.title }} Content</view>
+            <image mode="widthFix" :src="item.content" />
+        </ste-tab>
+    </ste-tabs>
+    <view class="method-list">
+        <view>
+            显示主标题
+            <switch :checked="showTitle" @change="setShowTitle"></switch>
+        </view>
+        <view>
+            显示图标
+            <switch @change="setShowImage"></switch>
+        </view>
+        <view>
+            显示子标题
+            <switch @change="setSubTitle"></switch>
+        </view>
+        <view>
+            切换数据
+            <switch @change="switchData"></switch>
+        </view>
+        <view>
+            显示徽标
+            <switch @change="setShowBadge"></switch>
+        </view>
+        <view>
+            手势切换
+            <switch @change="setSwipeable"></switch>
+        </view>
+        <view>
+            卡片模式
+            <switch @change="setShowType"></switch>
+        </view>
     </view>
-    <view>
-        显示图标
-        <switch @change="setShowImage"></switch>
-    </view>
-    <view>
-        显示子标题
-        <switch @change="setSubTitle"></switch>
-    </view>
-    <view>
-        切换数据
-        <switch @change="switchData"></switch>
-    </view>
-    <view>
-        显示徽标
-        <switch @change="setShowBadge"></switch>
-    </view>
-    <view>
-        手势切换
-        <switch @change="setSwipeable"></switch>
-    </view>
-    <view>
-        卡片模式
-        <switch @change="setShowType"></switch>
-    </view>
-</view>
+</template>
 ```
 
 ####

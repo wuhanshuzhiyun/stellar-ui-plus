@@ -1,0 +1,29 @@
+{
+    "name": "stellar-debug",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "uni",
+        "preview": "uni h5",
+        "build": "uni build"
+    },
+    "dependencies": {
+        "@dcloudio/uni-app": "3.0.0-4050520250307001",
+        "@dcloudio/uni-components": "3.0.0-4050520250307001",
+        "@dcloudio/uni-h5": "3.0.0-4050520250307001",
+        "stellar-ui-plus": "^1.18.2",
+        "vue": "3.4.21"
+    },
+    "devDependencies": {
+        "@dcloudio/types": "3.4.8",
+        "@dcloudio/vite-plugin-uni": "3.0.0-4050520250307001",
+        "@types/node": "^22.13.10",
+        "@uni-helper/uni-types": "^1.0.0-alpha.6",
+        "@vue/runtime-core": "3.4.21",
+        "@vue/tsconfig": "^0.7.0",
+        "sass": "1.64.2",
+        "typescript": "^5.8.2",
+        "vite": "5.2.8",
+        "vue-tsc": "^2.2.8"
+    }
+}

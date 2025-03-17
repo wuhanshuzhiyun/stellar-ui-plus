@@ -9,44 +9,58 @@
 #### 基础使用
 
 ```html
-<ste-slider value="30"></ste-slider>
+<template>
+    <ste-slider value="30"></ste-slider>
+</template>
 ```
 
 #### 滑块条高度 & 滑块大小
 
 ```html
-<ste-slider barHeight="26" value="30"></ste-slider>
-<ste-slider buttonSize="50" value="30"></ste-slider>
+<template>
+    <ste-slider barHeight="26" value="30"></ste-slider>
+    <ste-slider buttonSize="50" value="30"></ste-slider>
+</template>
 ```
 
 #### 进度条颜色
 
 ```html
-<ste-slider value="30" activeColor="#ff0000" inactiveColor="#a9ee13"></ste-slider>
+<template>
+    <ste-slider value="30" activeColor="#ff0000" inactiveColor="#a9ee13"></ste-slider>
+</template>
 ```
 
 #### 范围选择
 
 ```html
-<ste-slider :value="[10, 20]" range></ste-slider>
+<template>
+    <ste-slider :value="[10, 20]" range></ste-slider>
+</template>
 ```
 
 #### 竖向
 
 ```html
-<ste-slider vertical value="30"></ste-slider>
+<template>
+    <ste-slider vertical value="30"></ste-slider>
+</template>
 ```
 
 #### 禁用
 
 ```html
-<ste-slider disabled value="30"></ste-slider>
+<template>
+    <ste-slider disabled value="30"></ste-slider>
+</template>
 ```
 
 #### 只读
 
 ```html
-<ste-slider readonly value="30"></ste-slider>
+<template>
+    <ste-slider readonly value="30"></ste-slider>
+</template>
 ```
 
 #### 间断点
@@ -54,7 +68,9 @@
 当`showStops`为`true`时，会根据最大值(`max`)、最小值(`min`)、步长(`step`)来显示间断点
 
 ```html
-<ste-slider showStops :step="10" value="30"></ste-slider>
+<template>
+    <ste-slider showStops :step="10" value="30"></ste-slider>
+</template>
 ```
 
 #### 标记
@@ -76,32 +92,35 @@
         },
     });
 </script>
-
-<ste-slider showStops :marks="marks" value="30"></ste-slider>
+<template>
+    <ste-slider showStops :marks="marks" value="30"></ste-slider>
+</template>
 ```
 
 #### 自定义滑块
 
 ```html
-<ste-slider :step="10" showStops value="30" activeColor="#ff0000">
-    <view class="c-slider-1" slot="button">
-        <view class="content">
-            <text>滑块</text>
+<template>
+    <ste-slider :step="10" showStops value="30" activeColor="#ff0000">
+        <view class="c-slider-1" slot="button">
+            <view class="content">
+                <text>滑块</text>
+            </view>
         </view>
-    </view>
-</ste-slider>
-<ste-slider :step="10" showStops :value="[10, 40]" range>
-    <view class="c-slider-2" slot="leftButton">
-        <view class="content">
-            <ste-icon code="&#xe673;" color="#fff"></ste-icon>
+    </ste-slider>
+    <ste-slider :step="10" showStops :value="[10, 40]" range>
+        <view class="c-slider-2" slot="leftButton">
+            <view class="content">
+                <ste-icon code="&#xe673;" color="#fff"></ste-icon>
+            </view>
         </view>
-    </view>
-    <view class="c-slider-2" slot="rightButton">
-        <view class="content">
-            <ste-icon code="&#xe674;" color="#fff"></ste-icon>
+        <view class="c-slider-2" slot="rightButton">
+            <view class="content">
+                <ste-icon code="&#xe674;" color="#fff"></ste-icon>
+            </view>
         </view>
-    </view>
-</ste-slider>
+    </ste-slider>
+</template>
 <style lang="scss">
     .c-slider-1 {
         .content {

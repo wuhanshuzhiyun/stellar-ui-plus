@@ -9,21 +9,25 @@
 #### 基础使用
 
 ```html
-<ste-drag>
-    <ste-button>拖拽按钮</ste-button>
-</ste-drag>
+<template>
+    <ste-drag>
+        <ste-button>拖拽按钮</ste-button>
+    </ste-drag>
+</template>
 ```
 
 #### 固定方向
 
 ```html
-<ste-drag direction="x">
-    <ste-button>横向固定</ste-button>
-</ste-drag>
+<template>
+    <ste-drag direction="x">
+        <ste-button>横向固定</ste-button>
+    </ste-drag>
 
-<ste-drag direction="y">
-    <ste-button>竖向固定</ste-button>
-</ste-drag>
+    <ste-drag direction="y">
+        <ste-button>竖向固定</ste-button>
+    </ste-drag>
+</template>
 ```
 
 #### 贴边
@@ -31,15 +35,17 @@
 会根据元素移动结束时到左右边界距离来进行贴边
 
 ```html
-<ste-drag attract>
-    <ste-button>贴边</ste-button>
-</ste-drag>
+<template>
+    <ste-drag attract>
+        <ste-button>贴边</ste-button>
+    </ste-drag>
+</template>
 ```
 
 #### 边界
 
--   数据结构是 `{top: 0, right: 0, bottom: 0, left: 0}`，分别代表距离屏幕上、右、下、左的距离(单位px)
--   可按照样例中的做法，根据屏幕大小动态边界值
+- 数据结构是 `{top: 0, right: 0, bottom: 0, left: 0}`，分别代表距离屏幕上、右、下、左的距离(单位px)
+- 可按照样例中的做法，根据屏幕大小动态边界值
 
 ```html
 <template>

@@ -7,13 +7,17 @@
 #### 一张图片
 
 ```html
-<ste-rich-text :text="node1"></ste-rich-text>
+<template>
+    <ste-rich-text :text="node1"></ste-rich-text>
+</template>
 ```
 
 #### 两张图片
 
 ```html
-<ste-rich-text :text="node2"></ste-rich-text>
+<template>
+    <ste-rich-text :text="node2"></ste-rich-text>
+</template>
 ```
 
 ---$

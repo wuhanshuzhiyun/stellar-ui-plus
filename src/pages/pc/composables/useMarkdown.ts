@@ -1,17 +1,31 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { components, rests } from '../markdown/index';
 import type { Group, MarkdownData } from '../types';
-import { btnCopy, scrollToView } from '../markdown/requireFiles';
+import { btnCopy, btnDebug, scrollToView, setCodePartActive } from '../markdown/utils';
 
 export default function useMarkdown(): MarkdownData {
     const active = ref<string>('handbook-介绍');
     const contents = ref<Group[]>(rests);
     const isComponent = computed(() => !active.value.includes('handbook') && !active.value.includes('devGuide'));
 
-    const activeBtns = () => {
+    // 绑定操作事件
+    const bindActions = () => {
         nextTick(() => {
-            const btns = document.querySelectorAll<HTMLButtonElement>('button.code-copy-button');
-            btns.forEach(btn => (btn.onclick = () => btnCopy(btn)));
+            document.querySelectorAll<HTMLPreElement>('.markdown-view > pre').forEach(pre => {
+                const copyEle = pre.querySelector<HTMLButtonElement>('.btn.copy');
+                if (copyEle) {
+                    copyEle.onclick = () => btnCopy(copyEle);
+                }
+
+                const debugEle = pre.querySelector<HTMLButtonElement>('.btn.debug');
+                if (debugEle) {
+                    debugEle.onclick = () => btnDebug(debugEle);
+                }
+
+                pre.querySelectorAll<HTMLElement>('.tag').forEach(tag => {
+                    tag.onclick = () => setCodePartActive(tag?.getAttribute('content'), pre);
+                });
+            });
 
             const as = document.querySelectorAll<HTMLAnchorElement>('a.header-anchor');
             as.forEach(a => (a.onclick = e => scrollToView(e, a)));
@@ -24,7 +38,7 @@ export default function useMarkdown(): MarkdownData {
         active.value = value;
         const d = document.querySelector('.pc-page-body>.content>.right');
         if (d) d.scrollTop = 0;
-        activeBtns();
+        bindActions();
     };
 
     watch(
@@ -46,7 +60,7 @@ export default function useMarkdown(): MarkdownData {
     );
 
     onMounted(() => {
-        activeBtns();
+        bindActions();
     });
 
     const h5url = computed(() => {

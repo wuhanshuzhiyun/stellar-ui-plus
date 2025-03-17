@@ -8,48 +8,56 @@
 
 #### 基础使用
 
--   通过`value`属性可设置默认选中的时间(支持时间戳、字符串格式)
--   切换后的返回值为时间戳
--   没有值或值非法时显示当前时间
+- 通过`value`属性可设置默认选中的时间(支持时间戳、字符串格式)
+- 切换后的返回值为时间戳
+- 没有值或值非法时显示当前时间
 
 ```html
-<ste-date-picker :value="datetime"></ste-date-picker>
+<template>
+    <ste-date-picker :value="datetime"></ste-date-picker>
+</template>
 ```
 
 #### 不显示操作栏
 
 ```html
-<ste-date-picker :showToolbar="false" mode="date"></ste-date-picker>
+<template>
+    <ste-date-picker :showToolbar="false" mode="date"></ste-date-picker>
+</template>
 ```
 
 #### 时间类型
 
--   默认显示年、月、日、时、分、秒(`all`)
--   年月日时分(`datetime`)，年月日(`date`)，年月(`year-month`)，月日(`month-day`)，时分秒(`time`)，时分(`hour-minute`)，分秒(`minute-second`)
+- 默认显示年、月、日、时、分、秒(`all`)
+- 年月日时分(`datetime`)，年月日(`date`)，年月(`year-month`)，月日(`month-day`)，时分秒(`time`)，时分(`hour-minute`)，分秒(`minute-second`)
 
 ```html
-<ste-date-picker mode="datetime"></ste-date-picker>
-<ste-date-picker mode="date"></ste-date-picker>
-<ste-date-picker mode="year-month"></ste-date-picker>
-<ste-date-picker mode="month-day"></ste-date-picker>
-<ste-date-picker mode="time"></ste-date-picker>
-<ste-date-picker mode="hour-minute"></ste-date-picker>
-<ste-date-picker mode="minute-second"></ste-date-picker>
+<template>
+    <ste-date-picker mode="datetime"></ste-date-picker>
+    <ste-date-picker mode="date"></ste-date-picker>
+    <ste-date-picker mode="year-month"></ste-date-picker>
+    <ste-date-picker mode="month-day"></ste-date-picker>
+    <ste-date-picker mode="time"></ste-date-picker>
+    <ste-date-picker mode="hour-minute"></ste-date-picker>
+    <ste-date-picker mode="minute-second"></ste-date-picker>
+</template>
 ```
 
 #### 最大值 & 最小值
 
--   通过最大值最小值可设置选择的边界（支持时间戳、字符串格式）
--   可精确到秒
+- 通过最大值最小值可设置选择的边界（支持时间戳、字符串格式）
+- 可精确到秒
 
 ```html
-<ste-date-picker :minDate="new Date(2000, 11, 1, 1, 0, 30, 0).getTime()" :maxDate="new Date(2030, 11, 1, 1, 23, 59, 30).getTime()"></ste-date-picker>
-<ste-date-picker maxDate="2030-01-01 00:00:00" minDate="2022-01-01 00:00:00"></ste-date-picker>
+<template>
+    <ste-date-picker :minDate="new Date(2000, 11, 1, 1, 0, 30, 0).getTime()" :maxDate="new Date(2030, 11, 1, 1, 23, 59, 30).getTime()"></ste-date-picker>
+    <ste-date-picker maxDate="2030-01-01 00:00:00" minDate="2022-01-01 00:00:00"></ste-date-picker>
+</template>
 ```
 
 #### 过滤
 
--   可通过`filter`属性传递一个函数来对数据进行过滤
+- 可通过`filter`属性传递一个函数来对数据进行过滤
 
 ```html
 <template>
@@ -100,13 +108,17 @@
 #### 选项高度
 
 ```html
-<ste-date-picker mode="date" itemHeight="50"></ste-date-picker>
+<template>
+    <ste-date-picker mode="date" itemHeight="50"></ste-date-picker>
+</template>
 ```
 
 #### 每列可见数量
 
 ```html
-<ste-date-picker mode="date" :visibleItemCount="10"></ste-date-picker>
+<template>
+    <ste-date-picker mode="date" :visibleItemCount="10"></ste-date-picker>
+</template>
 ```
 
 ---$

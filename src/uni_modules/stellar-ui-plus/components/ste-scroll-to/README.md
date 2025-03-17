@@ -20,15 +20,17 @@
         'https://image.whzb.com/chain/StellarUI/image/img4.jpg',
     ];
 </script>
-<ste-tabs :active.sync="active" sticky>
-    <ste-tab v-for="(m, i) in imgs" :key="i" :title="`标签${i + 1}`" />
-</ste-tabs>
-<ste-scroll-to v-model:active="active" height="1200">
-    <ste-scroll-to-item v-for="(m, i) in contents" :key="i">
-        <view>内容{{ i + 1 }}</view>
-        <image :src="m" mode="widthFix" style="width:100%"></image>
-    </ste-scroll-to-item>
-</ste-scroll-to>
+<template>
+    <ste-tabs :active.sync="active" sticky>
+        <ste-tab v-for="(m, i) in imgs" :key="i" :title="`标签${i + 1}`" />
+    </ste-tabs>
+    <ste-scroll-to v-model:active="active" height="1200">
+        <ste-scroll-to-item v-for="(m, i) in contents" :key="i">
+            <view>内容{{ i + 1 }}</view>
+            <image :src="m" mode="widthFix" style="width:100%"></image>
+        </ste-scroll-to-item>
+    </ste-scroll-to>
+</template>
 ```
 
 ---$

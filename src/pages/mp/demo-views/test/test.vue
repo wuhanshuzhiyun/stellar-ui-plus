@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
 const rows = ref([
     { name: '张三', birth: '2023.12.31', sex: '男', state: 1 },
     { name: '李四', birth: '2024.01.01', sex: '女', state: 2 },

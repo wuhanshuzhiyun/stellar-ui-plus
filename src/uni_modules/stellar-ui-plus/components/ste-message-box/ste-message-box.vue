@@ -174,10 +174,10 @@ defineExpose({
                 <view class="icon-box" v-if="icon">
                     <ste-icon :code="cmpIconCode" color="#999999" size="45"></ste-icon>
                 </view>
-                <view class="ste-message-title">{{ title }}</view>
+                <text class="ste-message-title">{{ title }}</text>
                 <view class="msg" v-if="!icon">
                     <slot>
-                        <view class="text" v-if="!editable">{{ content }}</view>
+                        <text class="text" v-if="!editable">{{ content }}</text>
                         <view v-else class="input-box">
                             <text class="placeholder-text" v-show="showInputPlaceholder">
                                 {{ placeholderText }}
@@ -269,6 +269,7 @@ defineExpose({
                 font-weight: bold;
                 font-size: var(--font-size-32, 32rpx);
                 text-align: center;
+                display: block;
             }
 
             .msg {

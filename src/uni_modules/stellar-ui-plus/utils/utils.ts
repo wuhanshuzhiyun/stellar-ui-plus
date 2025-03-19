@@ -4,6 +4,8 @@ import config from '../config';
 import System from './System';
 import Color from './Color';
 
+import { type ComponentPublicInstance } from 'vue';
+
 type ReturnBasedOnBool<T extends boolean> = T extends true ? UniApp.NodeInfo[] : UniApp.NodeInfo;
 
 type PxType = 'str' | 'num';
@@ -11,6 +13,15 @@ type PxType = 'str' | 'num';
 type PX<T extends PxType> = T extends 'str' ? string : number;
 
 type PartType = 0 | 1 | 2;
+
+// 声明全局变量用于节流函数
+let throLast: number = 0;
+let throTimer: ReturnType<typeof setTimeout> | null = null;
+
+// 定义延迟选项接口
+interface DelayOption {
+    delay?: number;
+}
 
 interface FormatTreeOptions {
     valueKey?: string;
@@ -25,6 +36,66 @@ const utils = {
     Color,
     dayjs: dayjs.default,
     config,
+    /**
+     * 节流
+     * @param fn 要节流的方法
+     * @param args 要节流方法的参数，如果最后一个参数是 {delay:2000}，则该参数为节流时间参数，不记入方法参数
+     */
+    thro<T extends (...args: any[]) => any>(fn: T, ...args: any[]): void {
+        let delay: number = 500;
+        let lastArg: any = null;
+
+        if (args.length > 0) {
+            lastArg = args[args.length - 1];
+            if (lastArg && typeof lastArg === 'object' && 'delay' in lastArg) {
+                delay = (lastArg as DelayOption).delay || 500;
+                args.pop();
+            }
+        }
+
+        const now: number = new Date().getTime();
+
+        if (throLast === 0 || now - throLast > delay) {
+            if (throTimer !== null) {
+                clearTimeout(throTimer);
+            }
+            fn.call(this, ...args);
+            throLast = now;
+            throTimer = setTimeout(() => {
+                throLast = 0;
+            }, delay);
+        }
+    },
+
+    /**
+     * 防抖
+     * @param fn 要防抖的方法
+     * @param args 要防抖方法的参数，如果最后一个参数是 {delay:2000}，则该参数为防抖时间参数，不记入方法参数
+     * @returns 返回一个新的函数
+     */
+    debounce<T extends (...args: any[]) => any>(fn: T, ...args: any[]): () => void {
+        let delay: number = 500;
+        let lastArg: any = null;
+
+        if (args.length > 0) {
+            lastArg = args[args.length - 1];
+            if (lastArg && typeof lastArg === 'object' && 'delay' in lastArg) {
+                delay = (lastArg as DelayOption).delay || 500;
+                args.pop();
+            }
+        }
+
+        let timer: ReturnType<typeof setTimeout> | null = null;
+
+        return function (this: any): void {
+            if (timer !== null) {
+                clearTimeout(timer);
+            }
+            timer = setTimeout(() => {
+                fn.call(this, ...args);
+            }, delay);
+        };
+    },
     isNaN(value: number | string | null | undefined): boolean {
         const deg = /^-?\d+(\.\d+)?$/i;
         return !deg.test(String(value));
@@ -158,7 +229,7 @@ const utils = {
         for (let i = str.length; i < len; i++) str += Math.floor(Math.random() * 32).toString(32);
         return str;
     },
-    querySelector<T extends boolean>(selectors: string, component?: globalThis.ComponentPublicInstance | null, all?: T): Promise<ReturnBasedOnBool<T>> {
+    querySelector<T extends boolean>(selectors: string, component?: ComponentPublicInstance | null, all?: T): Promise<ReturnBasedOnBool<T>> {
         return new Promise((resolve, reject) => {
             try {
                 const func = all ? 'selectAll' : 'select';

@@ -141,7 +141,19 @@ function initColumns() {
         result.push(refChilds.value[i]);
     }
 
-    columns.value = result.map(e => {
+    // 解决某些情况下列重复
+    const tempResult: any[] = [];
+    result.forEach(e => {
+        if (
+            !tempResult.find(r => {
+                return r.props.label === e.props.label && r.props.prop === e.props.prop;
+            })
+        ) {
+            tempResult.push(e);
+        }
+    });
+
+    columns.value = tempResult.map(e => {
         if (!e.props.label && props.header && typeof props.header === 'function') {
             e.props.label = props.header(e.props, tableData.value);
         }

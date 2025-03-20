@@ -4626,6 +4626,11 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "isPopover",
                 "description": "是否为超出单元格时气泡显示内容",
                 "type": "boolean"
+            },
+            {
+                "name": "popoverLine",
+                "description": "单元格开启isPopover时，超过多少行才显示省略提示",
+                "type": "number | string"
             }
         ],
         "events": [

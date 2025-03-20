@@ -326,7 +326,6 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
             </template>
             <template v-else>
                 <view class="ste-table-body" :class="!tableData.length ? 'no-data' : ''">
-                    <slot></slot>
                     <template v-if="tableData.length">
                         <view
                             class="ste-table-row"

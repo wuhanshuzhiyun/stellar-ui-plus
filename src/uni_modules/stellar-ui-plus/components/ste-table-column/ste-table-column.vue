@@ -153,7 +153,7 @@ function cellClick(this: any, event: any) {
                     <template v-if="!parentProps.isPopover">
                         {{ cellText() }}
                     </template>
-                    <table-popover v-else :text="cellText()"></table-popover>
+                    <table-popover v-else :text="cellText()" :line="parentProps.popoverLine"></table-popover>
                 </view>
             </slot>
             <view class="cell-box" v-else>

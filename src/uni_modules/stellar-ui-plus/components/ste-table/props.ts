@@ -45,7 +45,8 @@ const tableProps = {
         type: Object as PropType<typeof SELECTION_COLOR_CONFIG>,
         default: () => SELECTION_COLOR_CONFIG,
     },
-    isPopover: [Boolean, null],
+    isPopover: [Boolean, null], // 单元格是否开启内容超长时省略显示并长按显示提示
+    popoverLine: { type: [Number, String], default: 1 }, // 单元格开启isPopover时，超过多少行才显示省略提示
 };
 
 export type TableProps = ExtractPropTypes<typeof tableProps>;

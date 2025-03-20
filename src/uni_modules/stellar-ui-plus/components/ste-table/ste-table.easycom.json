@@ -159,6 +159,11 @@
             "type": "boolean"
         },
         {
+            "name": "popoverLine",
+            "description": "单元格开启isPopover时，超过多少行才显示省略提示",
+            "type": "number | string"
+        },
+        {
             "name": "[event]select",
             "description": "当用户手动勾选数据行的 Checkbox 时触发的事件",
             "type": "() => void"

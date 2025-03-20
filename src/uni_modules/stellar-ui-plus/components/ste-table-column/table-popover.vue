@@ -9,6 +9,10 @@ const props = defineProps({
         type: [String, null],
         default: '',
     },
+    line: {
+        type: [Number, String],
+        default: 1,
+    }, // 配置超过多少行后才显示
 });
 
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
@@ -38,7 +42,7 @@ const checkTextOverflow = async () => {
     let textData = await utils.querySelector<false>('.measure-text', instance);
 
     if (containerData && textData && textData.width && containerData.width) {
-        isTextOverflow.value = textData.width > containerData.width;
+        isTextOverflow.value = textData.width > containerData.width * Number(props.line);
     }
 };
 
@@ -141,9 +145,13 @@ const doHide = () => {
 }
 
 .ellipsis-box {
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: var(--ste-table-popover-line);
+    line-clamp: var(--ste-table-popover-line);
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-word;
     // #ifdef H5
     user-select: none;
     // #endif

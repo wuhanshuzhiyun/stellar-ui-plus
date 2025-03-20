@@ -9,9 +9,6 @@ import { groupByKeys } from './utils';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 
-let tableLength = 0;
-let uuid = utils.guid();
-
 const componentName = `ste-table`;
 defineOptions({
     name: componentName,
@@ -70,6 +67,7 @@ const cmpRootStyle = computed(() => {
         '--table-height': utils.addUnit(props.height as string),
         '--table-max-height': utils.addUnit(props.maxHeight as string),
         '--ste-theme-color': utils.Color.hex2rgba(getColor().steThemeColor),
+        '--ste-table-popover-line': props.popoverLine,
     };
     return style;
 });
@@ -96,7 +94,6 @@ const cmpShowFixedPlaceholder = computed(() => {
 });
 
 const dataChangeFun = (fullLength: number = 0, val: any) => {
-    tableLength = val.length;
     // 由于没有数据时会导致插槽无法渲染，然后表头无法显示，所以在无数据时先给默认值，让表头能渲染，再加延时，恢复成原来的数据
     if (val.length === 0) {
         tableData.value = [{}];
@@ -262,7 +259,7 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
 </script>
 
 <template>
-    <view class="ste-table-root" :class="[cmpRootClass]" :style="[cmpRootStyle]" v-if="tableData.length > 0" :id="'ste-table-' + uuid">
+    <view class="ste-table-root" :class="[cmpRootClass]" :style="[cmpRootStyle]">
         <view class="ste-table-content">
             <view class="fixed-placeholder" v-if="cmpShowFixedPlaceholder" />
             <view class="ste-table-header" :class="[getHeaderRowClass()]" :style="[getHeaderRowStyle() as CSSProperties]" v-if="showHeader">

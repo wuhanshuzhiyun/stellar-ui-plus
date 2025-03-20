@@ -1,12 +1,16 @@
 <script lang="ts" setup>
-import { computed, watch, ref, type CSSProperties } from 'vue';
+import { computed, watch, ref, type CSSProperties, toRaw, nextTick } from 'vue';
 import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG, type TableProps } from './props';
 import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
 import type { TableColumnProps } from '../ste-table-column/props';
+import { groupByKeys } from './utils';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
+
+let tableLength = 0;
+let uuid = utils.guid();
 
 const componentName = `ste-table`;
 defineOptions({
@@ -91,32 +95,74 @@ const cmpShowFixedPlaceholder = computed(() => {
     return props.fixed || props.height || Number(props.height) > 0 || props.maxHeight || Number(props.maxHeight) > 0;
 });
 
-watch(
-    () => props.data,
-    val => {
-        // 由于没有数据时会导致插槽无法渲染，然后表头无法显示，所以在无数据时先给默认值，让表头能渲染，再加延时，恢复成原来的数据
-        if (val.length === 0) {
-            tableData.value = [{}];
+const dataChangeFun = (fullLength: number = 0, val: any) => {
+    tableLength = val.length;
+    // 由于没有数据时会导致插槽无法渲染，然后表头无法显示，所以在无数据时先给默认值，让表头能渲染，再加延时，恢复成原来的数据
+    if (val.length === 0) {
+        tableData.value = [{}];
+    } else {
+        if (fullLength > 0) {
+            tableData.value = ensureArrayLength(10, val) as Obj[];
         } else {
             tableData.value = val as Obj[];
         }
-        initRowData();
-        calcSum();
-        initSelection();
-        setTimeout(() => {
-            tableData.value = val as Obj[];
-        });
+    }
+    initRowData();
+    calcSum();
+    initSelection();
+};
+
+watch(
+    () => props.data,
+    val => {
+        dataChangeFun(0, val);
     },
     { immediate: true, deep: true }
 );
 
+let lastChildrenCount = 0;
+let lastChangeTime = 0;
+let processTimer: any = null;
 watch(
     () => internalChildren,
-    () => {
-        setTimeout(() => {
+    val => {
+        const currentTime = Date.now();
+        const currentCount = val.length;
+
+        // 最后一次子元素变动时再执行初始化
+        if (processTimer) clearTimeout(processTimer);
+
+        // 如果内容没有变化，并且距离上次变化已经超过300ms
+        if (currentCount === lastChildrenCount && currentTime - lastChangeTime > 300 && currentCount > 0) {
+            console.log('内容已稳定，执行初始化');
+
             initColumns();
             initRowData();
-        }, 200);
+        } else {
+            // 更新最后一次变化的记录
+            lastChildrenCount = currentCount;
+            lastChangeTime = currentTime;
+
+            // 设置一个较短的延迟检查
+            processTimer = setTimeout(() => {
+                // 触发延迟检查
+                if (val.length === lastChildrenCount) {
+                    initColumns();
+                    initRowData();
+
+                    // #ifdef MP-WEIXIN
+                    const group = groupByKeys(val.map(e => e.props) as any);
+                    if (group[0].length > tableData.value.length) {
+                        // 由于uni-app 编译到微信小程序时，如果使用循环插槽导致插槽节点不会消失，所以使用折中办法，强行补全数据再还原
+                        dataChangeFun(group[0].length, tableData.value);
+                        nextTick(() => {
+                            tableData.value = props.data as any;
+                        });
+                    }
+                    // #endif
+                }
+            }, 50); // 从1000ms减少到400ms
+        }
     },
     { immediate: true, deep: true }
 );
@@ -153,22 +199,70 @@ function initColumns() {
         }
     });
 
-    columns.value = tempResult.map(e => {
-        if (!e.props.label && props.header && typeof props.header === 'function') {
-            e.props.label = props.header(e.props, tableData.value);
+    // 创建一个全新的数组，包含全新的普通对象
+    const finalColumns = [];
+
+    for (let i = 0; i < tempResult.length; i++) {
+        const e = tempResult[i];
+        const propsData = toRaw(e.props);
+
+        // 创建一个全新的对象
+        const newColumn: TableColumnProps = {} as TableColumnProps;
+
+        // 复制所有属性
+        for (const key in propsData) {
+            (newColumn as any)[key] = propsData[key];
         }
-        return e.props;
-    }) as TableColumnProps[];
+
+        // 特别处理 label
+        if (!newColumn.label && props.header && typeof props.header === 'function') {
+            const labelValue = props.header(newColumn, tableData.value);
+            // 强制设置 label，确保不会丢失
+            newColumn.label = labelValue;
+        }
+
+        finalColumns.push(newColumn);
+    }
+
+    // 直接赋值
+    columns.value = finalColumns;
+
     calcSum();
     loadSelectType();
     loadCanCheckArr();
+}
+
+/**
+ * 确保数组达到指定数量，不足则补充空对象
+ * @param targetCount 目标数量
+ * @param array 需要处理的数组
+ * @returns 处理后的数组
+ */
+function ensureArrayLength<T>(targetCount: number, array: T[]): T[] {
+    // 创建数组副本，避免修改原数组
+    const result = [...array];
+
+    // 计算需要补充的元素数量
+    const shortfall = targetCount - result.length;
+
+    // 如果数组长度已经够了或超出，直接返回原数组
+    if (shortfall <= 0) {
+        return result;
+    }
+
+    // 补充空对象到数组
+    for (let i = 0; i < shortfall; i++) {
+        result.push({} as T);
+    }
+
+    return result;
 }
 
 defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelection });
 </script>
 
 <template>
-    <view class="ste-table-root" :class="[cmpRootClass]" :style="[cmpRootStyle]">
+    <view class="ste-table-root" :class="[cmpRootClass]" :style="[cmpRootStyle]" v-if="tableData.length > 0" :id="'ste-table-' + uuid">
         <view class="ste-table-content">
             <view class="fixed-placeholder" v-if="cmpShowFixedPlaceholder" />
             <view class="ste-table-header" :class="[getHeaderRowClass()]" :style="[getHeaderRowStyle() as CSSProperties]" v-if="showHeader">
@@ -211,7 +305,7 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
                                 :key="rowIndex"
                                 @click="rowClick(row, $event)"
                             >
-                                <slot :row="row"></slot>
+                                <slot :row="row" name="default"></slot>
                             </view>
                             <view class="ste-table-row sum" v-if="showSummary">
                                 <view class="ste-table-cell" v-for="(column, index) in columns" :key="index" :class="[getHeaderCellClass(column, 0)]">
@@ -232,13 +326,13 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
             </template>
             <template v-else>
                 <view class="ste-table-body" :class="!tableData.length ? 'no-data' : ''">
+                    <slot></slot>
                     <template v-if="tableData.length">
                         <view
                             class="ste-table-row"
                             :class="[getRowClass(row, rowIndex)]"
                             :style="[getRowStyle(row, rowIndex) as CSSProperties]"
                             v-for="(row, rowIndex) in tableData"
-                            :key="rowIndex"
                             @click="rowClick(row, $event)"
                         >
                             <slot :row="row"></slot>

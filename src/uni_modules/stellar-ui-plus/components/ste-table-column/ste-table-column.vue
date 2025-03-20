@@ -103,13 +103,13 @@ const cmpReadonlyCheck = computed(() => {
     return false;
 });
 
-function changeCheck(this: any) {
+function changeCheck() {
     if (!cmpDisableCheck.value && !cmpReadonlyCheck.value) {
         parent?.handleCheck(row.value);
     }
 }
 
-function cellText(this: any) {
+function cellText() {
     if (parentProps.formatter) {
         let text = parentProps.formatter(row.value, props.customKey);
         if (!text) {
@@ -125,7 +125,7 @@ function cellText(this: any) {
     }
 }
 
-function cellClick(this: any, event: any) {
+function cellClick(event: any) {
     parent?.cellClick(row.value, props, event);
     // 扩大选中热区
     if (props.type == 'checkbox' || props.type == 'radio') {

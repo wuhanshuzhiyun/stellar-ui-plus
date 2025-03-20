@@ -146,19 +146,8 @@ watch(
                 if (val.length === lastChildrenCount) {
                     initColumns();
                     initRowData();
-
-                    // #ifdef MP-WEIXIN
-                    const group = groupByKeys(val.map(e => e.props) as any);
-                    if (group[0].length > tableData.value.length) {
-                        // 由于uni-app 编译到微信小程序时，如果使用循环插槽导致插槽节点不会消失，所以使用折中办法，强行补全数据再还原
-                        dataChangeFun(group[0].length, tableData.value);
-                        nextTick(() => {
-                            tableData.value = props.data as any;
-                        });
-                    }
-                    // #endif
                 }
-            }, 50); // 从1000ms减少到400ms
+            }, 50);
         }
     },
     { immediate: true, deep: true }
@@ -166,7 +155,11 @@ watch(
 
 function initRowData() {
     const rowNums = tableData.value.length; // 有多少行
-    const colNums = refChilds.value.length / rowNums; // 有多少列
+    let colNums = refChilds.value.length / rowNums; // 有多少列
+    // #ifdef MP-WEIXIN
+    // 由于uni-app 编译到微信小程序时，如果使用循环插槽导致插槽节点不会消失，子节点完全异常
+    colNums = groupByKeys(refChilds.value.map(e => e.props) as any).length;
+    // #endif
 
     refChilds.value.forEach((child, index) => {
         const rowIndex = Math.floor(index / colNums); // 计算出当前元素属于哪一行

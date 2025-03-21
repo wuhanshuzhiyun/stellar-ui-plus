@@ -1,5 +1,23 @@
 import type { Group, Markdown } from '../types.js';
 import ComponentGroups from './componentGroups.json';
+import LZUTF8 from 'lzutf8';
+import { getParameters } from 'codesandbox/lib/api/define';
+import * as codesandboxPackage from './demo-block/package.json?raw'; // 引入josn文件
+import * as codesandboxtsconfig from './demo-block/tsconfig.json?raw'; // 引入ts文件
+// import codesandboxtVite from '../../../../vite.config.ts?raw'; // 引入vite文件
+import INDEX_HTML from './demo-block/index.html?raw';
+const APP_VUE = `import { createApp } from "vue";
+import App from "./App.vue";
+createApp(App).mount("#app");`;
+
+function decodeBase64(str: string): any {
+    // @ts-ignore
+    return LZUTF8.decodeBase64(str);
+}
+function decompressText(str: string): any {
+    // @ts-ignore
+    return LZUTF8.decompress(decodeBase64(str));
+}
 
 const parser = new DOMParser();
 
@@ -85,16 +103,7 @@ function formatHtml(html: string, isComponent = false) {
 
         // 添加盒子
         pre.appendChild(btnDiv);
-
-        // 复制按钮
-        // const btn = document.createElement('button');
-        // btn.innerHTML = '复制';
-        // btn.setAttribute('content', code || '');
-        // btn.classList.add('code-copy-button');
-        // pre.innerHTML = '';
-        // pre.appendChild(btn);
     });
-
     const tables = doc.querySelectorAll('table');
     tables.forEach(table => {
         table.setAttribute('border', '1');
@@ -141,6 +150,42 @@ export function scrollToView($event: Event, ele: HTMLAnchorElement) {
     // #ifdef WEB
 }
 
+export function btnDebug(btn: any) {
+    console.log('xxxx', btn?.parentElement?.previousElementSibling?.outerHTML);
+    const sourceValue = decompressText(btn?.parentElement?.previousElementSibling?.outerHTML);
+    const parameters = getParameters({
+        files: {
+            'package.json': {
+                content: codesandboxPackage as unknown as string,
+                isBinary: false,
+            },
+            'tsconfig.json': {
+                content: codesandboxtsconfig as unknown as string,
+                isBinary: false,
+            },
+            // 'vite.config.ts': {
+            //     content: codesandboxtVite,
+            //     isBinary: false,
+            // },
+            'index.html': {
+                content: INDEX_HTML,
+                isBinary: false,
+            },
+            'src/main.ts': {
+                content: APP_VUE,
+                isBinary: false,
+            },
+            'src/App.vue': {
+                content: sourceValue,
+                isBinary: false,
+            },
+        },
+    });
+    console.log('parameters', parameters);
+    const query = 'file=/src/App.vue';
+    window.open(`https://codesandbox.io/api/v1/sandboxes/define?parameters=${parameters}&query=${query}&resolutionHeight=736`, '_blank');
+}
+
 export function btnCopy(btn: HTMLButtonElement) {
     const code = btn.getAttribute('content');
     if (!code) {
@@ -148,7 +193,6 @@ export function btnCopy(btn: HTMLButtonElement) {
         return;
     }
     if (btn.innerHTML === '复制成功') return;
-    console.log('copy: ', code);
     uni.setClipboardData({
         data: code,
         showToast: false,

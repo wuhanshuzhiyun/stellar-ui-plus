@@ -1,7 +1,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { components, rests } from '../markdown/index';
 import type { Group, MarkdownData } from '../types';
-import { btnCopy, scrollToView } from '../markdown/requireFiles';
+import { btnCopy, btnDebug, scrollToView } from '../markdown/requireFiles';
 
 export default function useMarkdown(): MarkdownData {
     const active = ref<string>('handbook-介绍');
@@ -10,6 +10,9 @@ export default function useMarkdown(): MarkdownData {
 
     const activeBtns = () => {
         nextTick(() => {
+            const debugBtns = document.querySelectorAll<HTMLButtonElement>('.btn.debug');
+            debugBtns.forEach(btn => (btn.onclick = () => btnDebug(btn)));
+
             const btns = document.querySelectorAll<HTMLButtonElement>('.btn.copy');
             btns.forEach(btn => (btn.onclick = () => btnCopy(btn)));
 

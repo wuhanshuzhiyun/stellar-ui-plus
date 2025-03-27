@@ -95,27 +95,26 @@ watch(
 
 function onInput(e: any) {
     const baseEvent = e as unknown as BaseEvent;
-    if (!props.disabled && !props.readonly) {
-        if (!props.allowSpace) {
-            baseEvent.detail.value = baseEvent.detail.value.replace(/\s*/g, '');
-        }
 
-        // 应用自定义过滤函数（如果提供）
-        if (typeof props.filter === 'function') {
-            baseEvent.detail.value = props.filter(baseEvent.detail.value);
-        }
-
-        if (props.maxlength > 0) {
-            baseEvent.detail.value = baseEvent.detail.value.substring(0, props.maxlength);
-        }
-
-        nextTick(() => {
-            dataValue.value = baseEvent.detail.value;
-            tmpDataValue.value = dataValue.value;
-            emits('input', dataValue.value);
-            emits('update:modelValue', dataValue.value);
-        });
+    if (!props.allowSpace) {
+        baseEvent.detail.value = baseEvent.detail.value.replace(/\s*/g, '');
     }
+
+    // 应用自定义过滤函数（如果提供）
+    if (typeof props.filter === 'function') {
+        baseEvent.detail.value = props.filter(baseEvent.detail.value);
+    }
+
+    if (props.maxlength > 0) {
+        baseEvent.detail.value = baseEvent.detail.value.substring(0, props.maxlength);
+    }
+
+    nextTick(() => {
+        dataValue.value = baseEvent.detail.value;
+        tmpDataValue.value = dataValue.value;
+        emits('input', dataValue.value);
+        emits('update:modelValue', dataValue.value);
+    });
 }
 
 function onClear() {

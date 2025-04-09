@@ -26,7 +26,6 @@ describe('Icon', async () => {
         },
     });
     const icon: any = wrapper.get('[data-test="icon"]');
-    console.log('icon', icon.element.style._values);
     await nextTick();
 
     test('code', () => {

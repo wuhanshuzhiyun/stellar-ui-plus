@@ -50,7 +50,7 @@ function handleClick(event: any) {
 </script>
 
 <template>
-    <view class="ste-icon-root" :style="[cmpCssVar]" @click="handleClick">{{ cmpCode }}</view>
+    <view class="ste-icon-root" :style="[cmpCssVar]" @click="handleClick" data-test="icon">{{ cmpCode }}</view>
 </template>
 
 <style lang="scss" scoped>

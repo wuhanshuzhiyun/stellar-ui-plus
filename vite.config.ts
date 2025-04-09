@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import Uni from '@dcloudio/vite-plugin-uni';
 import UniHelperManifest from '@uni-helper/vite-plugin-uni-manifest';
@@ -33,5 +34,16 @@ export default defineConfig({
     server: {
         // 允许CodeSandbox的主机访问
         allowedHosts: ['7rsqf4-5173.csb.app', '.csb.app'],
+    },
+    // vitest
+    test: {
+        // ... Specify options here.
+        globals: true,
+        environment: 'jsdom',
+        dir: 'test',
+    },
+    // vue 去重
+    resolve: {
+        dedupe: ['vue'],
     },
 });

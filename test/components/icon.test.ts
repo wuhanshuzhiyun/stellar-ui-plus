@@ -29,8 +29,7 @@ describe('Icon', async () => {
     await nextTick();
 
     test('code', () => {
-        let code1 = iconFormart(code);
-        expect(icon.text()).toBe(code1);
+        expect(icon.text()).toBe(iconFormart(code));
     });
 
     test('size', () => {

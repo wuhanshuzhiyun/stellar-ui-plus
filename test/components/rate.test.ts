@@ -4,17 +4,25 @@ import steRate from '../../src/uni_modules/stellar-ui-plus/components/ste-rate/s
 import { fontSize, iconFormart } from '../methods';
 
 describe('Rate', async () => {
+    let modelValue = 3.2;
+    let score = 2;
+    let count = 6;
+    let size = 50;
+    const activeColor = 'red';
+    const inactiveColor = '#eee';
     let gutter = 20;
+    let inactiveCode = '&#xe685;';
+    let activeCode = '&#xe687;';
     const wrapper = mount(steRate, {
         propsData: {
-            modelValue: 3.2,
-            count: 6,
-            score: 2,
-            size: 50,
-            inactiveColor: '#eee',
-            activeColor: 'red',
-            inactiveCode: '&#xe685;',
-            activeCode: '&#xe687;',
+            modelValue,
+            count,
+            score,
+            size,
+            inactiveColor,
+            activeColor,
+            inactiveCode,
+            activeCode,
             gutter,
         },
     });
@@ -27,45 +35,38 @@ describe('Rate', async () => {
     await nextTick();
 
     test('value && score', () => {
-        let value = 3.2;
-        let score = 2;
         let sum = 0;
         actives.forEach(value => {
             let width = value.element.style._values.width;
             width = Number(width.replace('%', '').replace('px', ''));
             sum += width;
         });
-        expect(value).toBe((sum * score) / 100);
+        expect(modelValue).toBe((sum * score) / 100);
     });
 
     test('count', () => {
-        let count = 6;
         expect(count).toBe(items.length);
     });
 
     test('size', () => {
-        let size = 50 / 2 + 'px';
-        expect(fontSize(icon.element.style._values['--size'])).toBe(size);
+        let size1 = size / 2 + 'px';
+        expect(fontSize(icon.element.style._values['--size'])).toBe(size1);
     });
 
     test('inactiveColor', () => {
-        const inactiveColor = '#eee';
         expect(inactiveIcon.element.style._values['--color']).toBe(inactiveColor);
     });
 
     test('activeColor', () => {
-        let activeColor = 'red';
         expect(activeIcon.element.style._values['--color']).toBe(activeColor);
     });
 
     test('inactiveCode', () => {
-        let inactiveCode = iconFormart('&#xe685;');
-        expect(inactiveIcon.text()).toBe(inactiveCode);
+        expect(inactiveIcon.text()).toBe(iconFormart(inactiveCode));
     });
 
     test('activeCode', () => {
-        let activeCode = iconFormart('&#xe687;');
-        expect(activeIcon.text()).toBe(activeCode);
+        expect(activeIcon.text()).toBe(iconFormart(activeCode));
     });
 
     test('gutter', () => {

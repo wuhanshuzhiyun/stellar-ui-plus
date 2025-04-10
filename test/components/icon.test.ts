@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import steIcon from '../../src/uni_modules/stellar-ui-plus/components/ste-icon/ste-icon.vue';
-import { fontSize } from '../methods';
+import { fontSize, iconFormart } from '../methods';
 
 describe('Icon', async () => {
     let code = '&#xe653;';
@@ -29,7 +29,7 @@ describe('Icon', async () => {
     await nextTick();
 
     test('code', () => {
-        let code1 = String.fromCharCode(Number(code.replace('&#', '0').replace(';', '')));
+        let code1 = iconFormart(code);
         expect(icon.text()).toBe(code1);
     });
 

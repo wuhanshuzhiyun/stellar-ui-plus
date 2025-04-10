@@ -42,8 +42,7 @@ export default class System {
      * 获取窗口信息
      */
     static getWindowInfo() {
-        // #ifdef MP-360
-        // 为了兼容测试环境没有uni，wx等, 使用360做条件编译，减少组件库包大小
+        // 测试环境判断
         if (process.env.NODE_ENV == 'test') {
             let windowInfo = {
                 pixelRatio: 3,
@@ -68,7 +67,6 @@ export default class System {
             };
             return windowInfo;
         }
-        // #endif
         if (process.env.NODE_ENV != 'test') {
             // #ifdef MP-WEIXIN
             let windowInfo = wx.getWindowInfo();

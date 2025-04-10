@@ -1,8 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import steRate from '../../src/uni_modules/stellar-ui-plus/components/ste-rate/ste-rate.vue';
+import { fontSize, iconFormart } from '../methods';
 
 describe('Rate', async () => {
+    let gutter = 20;
+    let iconData = ['&#xe686;', '&#xe687;', '&#xe671;', '&#xe66a;', '&#xe66b;'];
     const wrapper = mount(steRate, {
         propsData: {
             value: 3.2,
@@ -13,24 +16,26 @@ describe('Rate', async () => {
             activeColor: 'red',
             inactiveCode: '&#xe685;',
             activeCode: '&#xe687;',
-            gutter: 20,
+            gutter,
         },
     });
-    const rate = wrapper.get('[data-test="rate"]');
+    const rate: any = wrapper.get('[data-test="rate"]');
     const items = rate.findAll('.item');
     const actives = rate.findAll('.active');
-    const iconBox = rate.get('.icon-box');
-    const icon = wrapper.get('[data-test="icon"]');
-    const activeIcon = wrapper.get('.active [data-test="icon"]');
-    const inactiveIcon = wrapper.get('.inactive [data-test="icon"]');
-    const list = wrapper.get('.list');
+    const icon: any = wrapper.get('[data-test="icon"]');
+    const activeIcon: any = wrapper.get('.active [data-test="icon"]');
+    const inactiveIcon: any = wrapper.get('.inactive [data-test="icon"]');
+    const list: any = wrapper.get('.list');
     await nextTick();
+    console.log('rate', rate);
+    console.log('activesactives', actives);
 
     test('value && score', () => {
         let value = 3.2;
         let score = 2;
         let sum = 0;
-        actives.wrappers.forEach(value => {
+        actives.forEach(value => {
+            console.log('value.element.style._values', value.element.style._values);
             let width = value.element.style._values.width;
             width = Number(width.replace('%', '').replace('px', ''));
             sum += width;
@@ -45,7 +50,7 @@ describe('Rate', async () => {
 
     test('size', () => {
         let size = 50 / 2 + 'px';
-        expect(icon.element.style._values['--size']).toBe(size);
+        expect(fontSize(icon.element.style._values['--size'])).toBe(size);
     });
 
     test('inactiveColor', () => {
@@ -69,26 +74,25 @@ describe('Rate', async () => {
     });
 
     test('gutter', () => {
-        let columnGap = 20 / 2 + 'px';
-        expect(list.element.style._values['column-gap']).toBe(columnGap);
+        let columnGap = gutter / 2 + 'px';
+        expect(items[0].element.style._values['margin-right']).toBe(columnGap);
     });
 
     test('iconData', async () => {
         let iconData = ['&#xe686;', '&#xe687;', '&#xe671;', '&#xe66a;', '&#xe66b;'];
         for (let i = 0; i < iconData.length; i++) {
-            const wrapper = mount(steRate, {
+            const wrapper1 = mount(steRate, {
                 propsData: {
                     value: i + 1,
                     iconData,
                 },
             });
-            const icon = wrapper.get('[data-test="icon"]');
+            const icon = wrapper1.get('[data-test="icon"]');
             await nextTick();
+            console.log('iiiiii', i);
+            console.log('icon.text', icon.text());
+            console.log('icon.text', iconFormart(iconData[i]));
             expect(icon.text()).toBe(iconFormart(iconData[i]));
         }
     });
-
-    function iconFormart(code) {
-        return String.fromCharCode(code.replace('&#', '0').replace(';', ''));
-    }
 });

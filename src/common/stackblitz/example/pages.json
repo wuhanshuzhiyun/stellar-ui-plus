@@ -1,0 +1,28 @@
+{
+    "pages": [
+        {
+            "path": "pages/index",
+            "type": "home"
+        },
+        {
+            "path": "pages/demo"
+        }
+    ],
+    "globalStyle": {
+        "backgroundColor": "@bgColor",
+        "backgroundColorBottom": "@bgColorBottom",
+        "backgroundColorTop": "@bgColorTop",
+        "backgroundTextStyle": "@bgTxtStyle",
+        "navigationBarBackgroundColor": "#000000",
+        "navigationBarTextStyle": "@navTxtStyle",
+        "navigationBarTitleText": "stellar-ui-debug",
+        "navigationStyle": "custom"
+    },
+    "easycom": {
+        "autoscan": true,
+        "custom": {
+            "ste-(.*)": "stellar-ui-plus/components/ste-$1/ste-$1.vue"
+        }
+    },
+    "subPackages": []
+}

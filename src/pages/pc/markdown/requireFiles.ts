@@ -1,5 +1,6 @@
 import type { Group, Markdown } from '../types.js';
 import ComponentGroups from './componentGroups.json';
+import onlinePreview from '../../../common/stackblitz';
 
 const parser = new DOMParser();
 
@@ -61,6 +62,7 @@ function formatHtml(html: string, isComponent = false) {
         // 按钮盒子
         const btnDiv = document.createElement('div');
         btnDiv.classList.add('btn-box');
+        btnDiv.setAttribute('content', code || '');
 
         codeBtnArr.forEach(btn => {
             // 非组件示例不添加debug按钮
@@ -69,30 +71,22 @@ function formatHtml(html: string, isComponent = false) {
             tipDiv.classList.add('tip');
 
             const btnEle = document.createElement('a');
-            if (btn.type === 'copy') {
-                btnEle.setAttribute('content', code || '');
-            }
+
             btnEle.classList.add('btn');
             btnEle.classList.add(btn.type);
             const iconImg = document.createElement('img');
             iconImg.src = btn.iconSrc;
             iconImg.classList.add('img');
             tipDiv.innerHTML = btn.label;
+
             btnEle.appendChild(iconImg);
             btnEle.appendChild(tipDiv);
+
             btnDiv.appendChild(btnEle);
         });
 
         // 添加盒子
         pre.appendChild(btnDiv);
-
-        // 复制按钮
-        // const btn = document.createElement('button');
-        // btn.innerHTML = '复制';
-        // btn.setAttribute('content', code || '');
-        // btn.classList.add('code-copy-button');
-        // pre.innerHTML = '';
-        // pre.appendChild(btn);
     });
 
     const tables = doc.querySelectorAll('table');
@@ -142,7 +136,7 @@ export function scrollToView($event: Event, ele: HTMLAnchorElement) {
 }
 
 export function btnCopy(btn: HTMLButtonElement) {
-    const code = btn.getAttribute('content');
+    const code = btn.parentElement?.getAttribute('content');
     if (!code) {
         console.error('没有找到复制的内容');
         return;
@@ -159,6 +153,11 @@ export function btnCopy(btn: HTMLButtonElement) {
             uni.showToast({ title: '复制失败', icon: 'fail' });
         },
     });
+}
+
+export function btnDebug(btn: HTMLButtonElement) {
+    const code = btn.parentElement?.getAttribute('content');
+    onlinePreview(code || '');
 }
 
 export function restsFiles() {

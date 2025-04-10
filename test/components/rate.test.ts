@@ -5,10 +5,9 @@ import { fontSize, iconFormart } from '../methods';
 
 describe('Rate', async () => {
     let gutter = 20;
-    let iconData = ['&#xe686;', '&#xe687;', '&#xe671;', '&#xe66a;', '&#xe66b;'];
     const wrapper = mount(steRate, {
         propsData: {
-            value: 3.2,
+            modelValue: 3.2,
             count: 6,
             score: 2,
             size: 50,
@@ -25,17 +24,13 @@ describe('Rate', async () => {
     const icon: any = wrapper.get('[data-test="icon"]');
     const activeIcon: any = wrapper.get('.active [data-test="icon"]');
     const inactiveIcon: any = wrapper.get('.inactive [data-test="icon"]');
-    const list: any = wrapper.get('.list');
     await nextTick();
-    console.log('rate', rate);
-    console.log('activesactives', actives);
 
     test('value && score', () => {
         let value = 3.2;
         let score = 2;
         let sum = 0;
         actives.forEach(value => {
-            console.log('value.element.style._values', value.element.style._values);
             let width = value.element.style._values.width;
             width = Number(width.replace('%', '').replace('px', ''));
             sum += width;
@@ -83,15 +78,12 @@ describe('Rate', async () => {
         for (let i = 0; i < iconData.length; i++) {
             const wrapper1 = mount(steRate, {
                 propsData: {
-                    value: i + 1,
+                    modelValue: i + 1,
                     iconData,
                 },
             });
             const icon = wrapper1.get('[data-test="icon"]');
             await nextTick();
-            console.log('iiiiii', i);
-            console.log('icon.text', icon.text());
-            console.log('icon.text', iconFormart(iconData[i]));
             expect(icon.text()).toBe(iconFormart(iconData[i]));
         }
     });

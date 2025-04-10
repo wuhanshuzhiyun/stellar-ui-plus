@@ -106,7 +106,7 @@ function getWidth(index: number) {
 </script>
 
 <template>
-    <view class="ste-rate-root">
+    <view class="ste-rate-root" data-test="rate">
         <view class="list" :style="[cmpListStyle]">
             <view v-for="index in cmpCount" class="item" :key="index" :style="[cmpItemStyle]">
                 <view class="icon-box inactive" @click="onSelect(index)">

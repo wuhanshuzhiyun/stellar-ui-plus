@@ -1,6 +1,6 @@
 # NoticeBar 公告栏
 
-用于循环播放展示一组消息通知。
+用于循环播放展示一组消息通知
 
 ---$
 
@@ -25,9 +25,9 @@ let list2 = ref(['第一条:111', '第二条:222', '第三条:333', '第四条:4
 
 #### 自定义样式
 
--   通过 `color` 属性设置文字颜色，默认为 `#000000`。
--   通过 `background` 属性设置背景，默认为 `#ffffff`。
--   通过 `width` 属性设置宽度，默认为 `100%`，继承父属性。
+- 通过 `color` 属性设置文字颜色，默认为 `#000000`。
+- 通过 `background` 属性设置背景，默认为 `#ffffff`。
+- 通过 `width` 属性设置宽度，默认为 `100%`，继承父属性。
 
 ```
 <ste-notice-bar :list="list" background="#FBF8DC" color="red" :width="400"></ste-notice-bar>

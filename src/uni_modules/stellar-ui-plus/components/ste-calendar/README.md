@@ -1,15 +1,15 @@
 # Calendar 日历
 
-日历组件
+此组件用于单个选择日期，范围选择日期等
 
 ---$
 
 ### 基础用法
 
--   属性`height`用于设置日历的高度，单位为`rpx`，默认`100%`
--   属性`showTitle`用于设置是否显示日历的标题，默认`true`
--   属性`title`用户设置日历的标题，默认`日期选择`
--   事件`confirm`用于监听用户点击确定按钮事件，参数为选中的日期数组
+- 属性`height`用于设置日历的高度，单位为`rpx`，默认`100%`
+- 属性`showTitle`用于设置是否显示日历的标题，默认`true`
+- 属性`title`用户设置日历的标题，默认`日期选择`
+- 事件`confirm`用于监听用户点击确定按钮事件，参数为选中的日期数组
 
 ```html
 <script setup lang="ts">
@@ -63,8 +63,8 @@
 
 #### 多个日期
 
--   属性`mode`用于设置日历的模式，可选值`single`、`multiple`、`range`，默认`single`
-    -   设置为`multiple`可以选择多个日期
+- 属性`mode`用于设置日历的模式，可选值`single`、`multiple`、`range`，默认`single`
+    - 设置为`multiple`可以选择多个日期
 
 ```html
 <ste-button @click="show2 = true">多个日期</ste-button>
@@ -77,8 +77,8 @@
 
 #### 日期范围
 
--   属性`mode`用于设置日历的模式，可选值`single`、`multiple`、`range`，默认`single`
-    -   设置为`single`可以选择日期范围
+- 属性`mode`用于设置日历的模式，可选值`single`、`multiple`、`range`，默认`single`
+    - 设置为`single`可以选择日期范围
 
 ```html
 <ste-button @click="show3 = true">日期范围</ste-button>
@@ -91,7 +91,7 @@
 
 #### 自定义主题色
 
--   属性`color`可以设置日历的主题色，包括周末日期颜色、日期选中颜色、日期范围选中颜色、确定按钮颜色
+- 属性`color`可以设置日历的主题色，包括周末日期颜色、日期选中颜色、日期范围选中颜色、确定按钮颜色
 
 ```html
 <ste-button @click="show4 = true">自定义主题色</ste-button>
@@ -104,9 +104,9 @@
 
 #### 自定义文案
 
--   属性`title`可以设置标题文案
--   属性`startText`可以设置开始日期的文案，`mode`值为`range`时生效
--   属性`endText`可以设置结束日期的文案，`mode`值为`range`时生效
+- 属性`title`可以设置标题文案
+- 属性`startText`可以设置开始日期的文案，`mode`值为`range`时生效
+- 属性`endText`可以设置结束日期的文案，`mode`值为`range`时生效
 
 ```html
 <ste-button @click="show5 = true">自定义文案</ste-button>
@@ -119,8 +119,8 @@
 
 #### 日期最大范围
 
--   属性`minDate`可以设置日期的最小可选范围
--   属性`maxDate`可以设置日期的最大可选范围
+- 属性`minDate`可以设置日期的最小可选范围
+- 属性`maxDate`可以设置日期的最大可选范围
 
 ```html
 <ste-button @click="show6 = true">日期最大范围</ste-button>
@@ -133,7 +133,7 @@
 
 #### 多选数量限制
 
--   属性`maxCount`用于设置多选模式下最多可选的日期数量
+- 属性`maxCount`用于设置多选模式下最多可选的日期数量
 
 ```html
 <ste-button @click="show7 = true">多选数量限制</ste-button>
@@ -146,9 +146,9 @@
 
 #### 多选数量限制
 
--   属性`maxRange`用于设置范围模式下最多可选的日期数量
--   属性`showRangePrompt`用于设置范围模式下是否显示超出数量时的提示文案
--   属性`rangePrompt`用于设置范围模式下超出数量时的提示文案
+- 属性`maxRange`用于设置范围模式下最多可选的日期数量
+- 属性`showRangePrompt`用于设置范围模式下是否显示超出数量时的提示文案
+- 属性`rangePrompt`用于设置范围模式下超出数量时的提示文案
 
 ```html
 <ste-button @click="show8 = true">范围数量限制</ste-button>
@@ -161,7 +161,7 @@
 
 #### 默认选择日期
 
--   属性`list`用于设置默认选择的日期
+- 属性`list`用于设置默认选择的日期
 
 ```html
 <ste-button @click="show9 = true">默认选择日期</ste-button>
@@ -174,7 +174,7 @@
 
 #### 默认展示月份
 
--   属性`defaultMonth`用于设置默认展示的月份，因为弹窗中的日历不在文档流，无法设置滚动距离，所以需要在弹窗动画结束之后手动设置默认展示的月份
+- 属性`defaultMonth`用于设置默认展示的月份，因为弹窗中的日历不在文档流，无法设置滚动距离，所以需要在弹窗动画结束之后手动设置默认展示的月份
 
 ```html
 <ste-button @click="show10 = true">默认展示月份</ste-button>
@@ -187,8 +187,8 @@
 
 #### 隐藏确定按钮
 
--   属性`showConfirm`用于设置是否显示确定按钮
--   事件`select`用于监听选择日期的事件
+- 属性`showConfirm`用于设置是否显示确定按钮
+- 事件`select`用于监听选择日期的事件
 
 ```html
 <ste-button @click="show11 = true">隐藏确定按钮</ste-button>
@@ -201,7 +201,7 @@
 
 #### 只读
 
--   属性`readonly`用于设置是否只读
+- 属性`readonly`用于设置是否只读
 
 ```html
 <ste-button @click="show12 = true">只读</ste-button>
@@ -214,7 +214,7 @@
 
 #### 隐藏背景月份
 
--   属性`showMark`用于设置是否显示背景月份
+- 属性`showMark`用于设置是否显示背景月份
 
 ```html
 <ste-button @click="show13 = true">隐藏背景月份</ste-button>
@@ -224,6 +224,7 @@
     </div>
 </ste-popup>
 ```
+
 #### 自定义组件
 
 - 属性`weekendColor`用于设置周末日期颜色
@@ -232,33 +233,32 @@
 
 ```html
 <script setup>
-import { ref, reactive } from 'vue';
-import type { SignType } from '@/uni_modules/stellar-ui-plus/components/ste-calendar/date';
-import utils from '@/uni_modules/stellar-ui-plus/utils/utils';
-const defaultDate = ref(utils.dayjs().format('YYYY-MM'));
-const signs = reactive<{ [key: string]: SignType }>({
-    // 标记今天
-    [utils.dayjs().format('YYYY-MM-DD')]: [
-        { content: 'XXXXX', className: 'test-signs' },
-        { content: 'XXXXX', className: 'test-signs' },
-        { content: 'XXXXX', className: 'test-signs' },
-    ],
-    // 标记明天
-    [utils.dayjs(Date.now() + 1000 * 60 * 60 * 24).format('YYYY-MM-DD')]: [
-        { content: 'XXXXX', style: { color: '#666', background: '#f5f5f5' } },
-        { content: 'XXXXX', style: { color: '#666', background: '#f5f5f5' } },
-    ],
-});
+    import { ref, reactive } from 'vue';
+    import type { SignType } from '@/uni_modules/stellar-ui-plus/components/ste-calendar/date';
+    import utils from '@/uni_modules/stellar-ui-plus/utils/utils';
+    const defaultDate = ref(utils.dayjs().format('YYYY-MM'));
+    const signs = reactive<{ [key: string]: SignType }>({
+        // 标记今天
+        [utils.dayjs().format('YYYY-MM-DD')]: [
+            { content: 'XXXXX', className: 'test-signs' },
+            { content: 'XXXXX', className: 'test-signs' },
+            { content: 'XXXXX', className: 'test-signs' },
+        ],
+        // 标记明天
+        [utils.dayjs(Date.now() + 1000 * 60 * 60 * 24).format('YYYY-MM-DD')]: [
+            { content: 'XXXXX', style: { color: '#666', background: '#f5f5f5' } },
+            { content: 'XXXXX', style: { color: '#666', background: '#f5f5f5' } },
+        ],
+    });
 </script>
 <template>
     <ste-select mode="month" v-model="defaultDate" width="200" options-width="420" border-color="transparency">
         <template v-slot:icon>
             <ste-icon code="&#xe699;"></ste-icon>
-    </template>
-</ste-select>
+        </template>
+    </ste-select>
 
-<ste-calendar @select="handleConfirm" weekendColor="#999" color="#09f" :signs="signs" :defaultDate="defaultDate"
-    :monthCount="1" :showConfirm="false" :showTitle="false" />
+    <ste-calendar @select="handleConfirm" weekendColor="#999" color="#09f" :signs="signs" :defaultDate="defaultDate" :monthCount="1" :showConfirm="false" :showTitle="false" />
 </template>
 ```
 

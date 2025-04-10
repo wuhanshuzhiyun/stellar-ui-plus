@@ -1,6 +1,6 @@
 # IndexList 索引列表
 
-通过折叠面板收纳内容区域。
+通过折叠面板收纳内容区域
 
 ---$
 
@@ -44,11 +44,11 @@
 
 #### 基础用法
 
--   标签`ste-index-list`为外层盒子
-    -   事件`clickItem`监听点击索引分组事件
--   标签`ste-index-item`为索引分组
-    -   属性`title`为当前索引分组标题
-    -   属性`list`为当前索引分组内容列表
+- 标签`ste-index-list`为外层盒子
+    - 事件`clickItem`监听点击索引分组事件
+- 标签`ste-index-item`为索引分组
+    - 属性`title`为当前索引分组标题
+    - 属性`list`为当前索引分组内容列表
 
 ```html
 <ste-index-list @clickItem="onClickItem">
@@ -63,12 +63,12 @@
 
 #### 自定义颜色/标题/内容
 
--   标签`ste-index-list`为外层盒子
-    -   属性`inactiveColor`为索引分组标题未选中颜色
-    -   属性`activeColor`为索引分组标题选中颜色
--   标签`ste-index-item`为索引分组
-    -   插槽`title`为当前索引分组标题
-    -   插槽`default`为当前索引分组内容列表
+- 标签`ste-index-list`为外层盒子
+    - 属性`inactiveColor`为索引分组标题未选中颜色
+    - 属性`activeColor`为索引分组标题选中颜色
+- 标签`ste-index-item`为索引分组
+    - 插槽`title`为当前索引分组标题
+    - 插槽`default`为当前索引分组内容列表
 
 ```html
 <ste-index-list inactiveColor="#0f0" activeColor="#f0f">

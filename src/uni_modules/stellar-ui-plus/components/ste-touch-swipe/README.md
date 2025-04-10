@@ -1,6 +1,6 @@
 # TouchSwipe 手势切屏
 
-手势切屏组件，支持水平手势切换和垂直手势切换。
+手势切屏组件，支持水平手势切换和垂直手势切换
 
 ---$
 
@@ -40,10 +40,10 @@
 
 #### 水平切换，固定宽度
 
--   外层使用`ste-touch-swipe`父标签包裹
-    -   `index`属性设置当前激活区域，支持`v-model`双向绑定
-    -   `width`属性设置区域宽度，默认`100%`
--   内层使用`ste-touch-swipe-item`子标签包裹每一块区域的内容
+- 外层使用`ste-touch-swipe`父标签包裹
+    - `index`属性设置当前激活区域，支持`v-model`双向绑定
+    - `width`属性设置区域宽度，默认`100%`
+- 内层使用`ste-touch-swipe-item`子标签包裹每一块区域的内容
 
 ```html
 <ste-touch-swipe width="690" v-model:index="hIndex">
@@ -55,9 +55,9 @@
 
 #### 垂直切换，固定高度
 
--   外层使用`ste-touch-swipe`父标签包裹
-    -   `height`属性设置区域高度，默认`100%`
--   内层使用`ste-touch-swipe-item`子标签包裹每一块区域的内容
+- 外层使用`ste-touch-swipe`父标签包裹
+    - `height`属性设置区域高度，默认`100%`
+- 内层使用`ste-touch-swipe-item`子标签包裹每一块区域的内容
 
 ```html
 <ste-touch-swipe height="600" direction="vertical" v-model:index="vIndex">

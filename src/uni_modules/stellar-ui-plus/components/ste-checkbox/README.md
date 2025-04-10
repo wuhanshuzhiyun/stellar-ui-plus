@@ -1,6 +1,6 @@
 # Checkbox 复选框
 
-在一组备选项中进行多选。
+在一组备选项中进行多选
 
 ---$
 
@@ -187,9 +187,9 @@
 
 #### 自定义文本
 
--   通过设置 `textSize` 属性可以自定义文本的大小，单位`rpx`，默认`28`。
--   通过设置 `textInactiveColor` 属性可以自定义文本未选中颜色，默认`#000000`。
--   通过设置 `textActiveColor` 属性可以自定义文本选中颜色，默认`#000000`。
+- 通过设置 `textSize` 属性可以自定义文本的大小，单位`rpx`，默认`28`。
+- 通过设置 `textInactiveColor` 属性可以自定义文本未选中颜色，默认`#000000`。
+- 通过设置 `textActiveColor` 属性可以自定义文本选中颜色，默认`#000000`。
 
 ```
 <ste-checkbox v-model="val.value14" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">
@@ -199,8 +199,8 @@
 
 #### 回调事件
 
--   `click` 点击复选框时触发的事件（可拦截change事件），`value`：改变后的分值,`allowStop`：允许阻止后续的事件触发,：`resolve`：后续的事件执行。
--   `change` 当绑定值变化时触发的事件，`value`:改变后的分值。
+- `click` 点击复选框时触发的事件（可拦截change事件），`value`：改变后的分值,`allowStop`：允许阻止后续的事件触发,：`resolve`：后续的事件执行。
+- `change` 当绑定值变化时触发的事件，`value`:改变后的分值。
 
 ```
 <ste-checkbox v-model="val.value16" @click="click1" @change="change">复选框</ste-checkbox>

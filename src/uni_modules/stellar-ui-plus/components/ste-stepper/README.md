@@ -1,6 +1,6 @@
 # Stepper 步进器
 
-步进器由增加按钮、减少按钮和输入框组成，用于在一定范围内输入、调整数字。
+步进器由增加按钮、减少按钮和输入框组成，用于在一定范围内输入、调整数字
 
 ---$
 
@@ -136,10 +136,10 @@
 
 #### 禁用
 
--   通过 `disabled` 属性设置禁用步进器，默认为 `false`。
--   通过 `disablePlus` 属性设置禁用增加按钮，默认为 `false`。
--   通过 `disableMinus` 属性设置禁用减少按钮，默认为 `false`。
--   通过 `disableInput` 属性设置禁用输入框，默认为 `false`。
+- 通过 `disabled` 属性设置禁用步进器，默认为 `false`。
+- 通过 `disablePlus` 属性设置禁用增加按钮，默认为 `false`。
+- 通过 `disableMinus` 属性设置禁用减少按钮，默认为 `false`。
+- 通过 `disableInput` 属性设置禁用输入框，默认为 `false`。
 
 ```
 <ste-stepper v-model="value7" disabled></ste-stepper>

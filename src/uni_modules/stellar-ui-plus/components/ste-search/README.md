@@ -1,6 +1,6 @@
 # Search 搜索
 
-搜索组件，集成了常见搜索框所需功能。
+搜索组件，集成了常见搜索框所需功能
 
 ---$
 
@@ -39,11 +39,11 @@ const onClick = (v: string) => {
 
 #### 基础用法
 
--   通过`input`事件可以捕获用户输入行为，参数为输入的value内容
--   通过`search`事件可以捕获用户点击`搜索按钮`或`软键盘上的回车`行为，参数为输入的value内容
--   使用`v-model`属性进行输入框内容的双向绑定
--   使用`placeholder`属性设置输入框的占位符
--   使用`disabled`属性禁用组件，组件禁用后全部功能失效
+- 通过`input`事件可以捕获用户输入行为，参数为输入的value内容
+- 通过`search`事件可以捕获用户点击`搜索按钮`或`软键盘上的回车`行为，参数为输入的value内容
+- 使用`v-model`属性进行输入框内容的双向绑定
+- 使用`placeholder`属性设置输入框的占位符
+- 使用`disabled`属性禁用组件，组件禁用后全部功能失效
 
 ```html
 <ste-search @input="onInput" @search="onSearch" />
@@ -54,8 +54,8 @@ const onClick = (v: string) => {
 
 #### 搜索建议
 
--   给`suggestionsList`属性赋值时，会在输入框下方显示，数据结构见下方示例
--   点击某条建议后会触发搜索的`selectSuggestion`事件，参数为搜索建议对象
+- 给`suggestionsList`属性赋值时，会在输入框下方显示，数据结构见下方示例
+- 点击某条建议后会触发搜索的`selectSuggestion`事件，参数为搜索建议对象
 
 ```html
 <ste-search :suggestion-list="suggestionList" @input="input1" @selectSuggestion="selectSuggestion" />
@@ -95,8 +95,8 @@ const onClick = (v: string) => {
 
 #### 热词列表
 
--   可以通过`hotWords`属性传入热词列表
--   可以通过`interval`属性设置热词切换间隔，单位为毫秒
+- 可以通过`hotWords`属性传入热词列表
+- 可以通过`interval`属性设置热词切换间隔，单位为毫秒
 
 ```html
 <ste-search placeholder="搜索商品" @input="onInput" @search="onSearch" />
@@ -105,7 +105,7 @@ const onClick = (v: string) => {
 
 #### 自定义按钮文本内容
 
--   可以通过`btnText`属性自定义按钮文本内容
+- 可以通过`btnText`属性自定义按钮文本内容
 
 ```html
 <ste-search btnText="查询" @search="onSearch" />
@@ -113,8 +113,8 @@ const onClick = (v: string) => {
 
 #### 隐藏分割线以及按钮
 
--   可以通过`hiddenLine`属性隐藏分割线
--   可以通过`hiddenBtn`属性隐藏按钮，隐藏按钮时也会隐藏分割线
+- 可以通过`hiddenLine`属性隐藏分割线
+- 可以通过`hiddenBtn`属性隐藏按钮，隐藏按钮时也会隐藏分割线
 
 ```html
 <ste-search hiddenLine @search="onSearch" />
@@ -123,7 +123,7 @@ const onClick = (v: string) => {
 
 #### 隐藏输入框以及按钮
 
--   可以通过设置`hiddenInput`属性隐藏输入框 和 `hiddenBtn`属性隐藏按钮只保留放大镜的功能
+- 可以通过设置`hiddenInput`属性隐藏输入框 和 `hiddenBtn`属性隐藏按钮只保留放大镜的功能
 
 ```html
 <view style="width: 60rpx">
@@ -133,7 +133,7 @@ const onClick = (v: string) => {
 
 #### 不显示清除图标
 
--   可以通过`clearable`属性来切换清除图标是否显示
+- 可以通过`clearable`属性来切换清除图标是否显示
 
 ```html
 <ste-search :clearable="false" @search="onSearch" />
@@ -141,14 +141,14 @@ const onClick = (v: string) => {
 
 #### 颜色和背景
 
--   可以通过`borderColor`属性设置边框颜色
--   可以通过`background`属性设置背景颜色或者背景图片
--   可以通过`prefixIconColor`属性设置左侧图标颜色
--   可以通过`placeholderColor`属性设置占位符颜色
--   可以通过`inputTextColor`属性设置输入框文字颜色
--   可以通过`clearIconColor`属性设置清除按钮图标颜色
--   可以通过`btnBackground`属性设置搜索按钮背景颜色或者背景图片
--   可以通过`btnTextColor`属性设置搜索按钮文字颜色
+- 可以通过`borderColor`属性设置边框颜色
+- 可以通过`background`属性设置背景颜色或者背景图片
+- 可以通过`prefixIconColor`属性设置左侧图标颜色
+- 可以通过`placeholderColor`属性设置占位符颜色
+- 可以通过`inputTextColor`属性设置输入框文字颜色
+- 可以通过`clearIconColor`属性设置清除按钮图标颜色
+- 可以通过`btnBackground`属性设置搜索按钮背景颜色或者背景图片
+- 可以通过`btnTextColor`属性设置搜索按钮文字颜色
 
 ```html
 <ste-search
@@ -195,8 +195,8 @@ const onClick = (v: string) => {
 
 #### 自定义高度以及圆角弧度
 
--   可以通过`height`属性设置搜索框高度，默认值`64`
--   可以通过`radius`属性设置圆角弧度，默认值`32`
+- 可以通过`height`属性设置搜索框高度，默认值`64`
+- 可以通过`radius`属性设置圆角弧度，默认值`32`
 
 ```
 <ste-search :height="120" :radius="60" @search="onSearch" />
@@ -204,7 +204,7 @@ const onClick = (v: string) => {
 
 #### 导航模式
 
--   可以通过`type`属性设置`nav`开启导航模式；开启后，点击搜索框任意区域都会触发`click`事件，其他功能失效。
+- 可以通过`type`属性设置`nav`开启导航模式；开启后，点击搜索框任意区域都会触发`click`事件，其他功能失效。
 
 ```
 <ste-search type="nav" @click="onClick" :hotWords="hotWords" />
@@ -212,7 +212,7 @@ const onClick = (v: string) => {
 
 #### 聚焦
 
--   可以通过`fous`属性控制搜索框聚焦，双向绑定
+- 可以通过`fous`属性控制搜索框聚焦，双向绑定
 
 ```
 <ste-search @click="onClick" :focus.sync="focus" />

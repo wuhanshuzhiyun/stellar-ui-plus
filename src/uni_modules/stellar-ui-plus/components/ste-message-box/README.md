@@ -1,6 +1,6 @@
 # MessageBox 弹框
 
-模拟系统的消息提示框而实现的一套模态对话框组件，用于消息提示、确认消息和提交内容。
+模拟系统的消息提示框而实现的一套模态对话框组件，用于消息提示、确认消息和提交内容
 
 ---$
 
@@ -88,8 +88,8 @@ function click() {
 
 #### 带图标
 
--   内置三种图标类型：`info`、`success`、`error`
--   当显示图标时，内容(`content`)会失效，只显示标题(`title`)
+- 内置三种图标类型：`info`、`success`、`error`
+- 当显示图标时，内容(`content`)会失效，只显示标题(`title`)
 
 ```javascript
 function msgBoxIcon1() {

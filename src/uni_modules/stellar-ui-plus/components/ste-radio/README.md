@@ -1,6 +1,6 @@
 # Radio 单选框
 
-在一组备选项中进行单选。
+在一组备选项中进行单选
 
 ---$
 
@@ -158,9 +158,9 @@
 
 #### 自定义文本
 
--   通过设置 `textSize` 属性可以自定义文本的大小，单位`rpx`，默认`28`。
--   通过设置 `textInactiveColor` 属性可以自定义文本未选中颜色，默认`#000000`。
--   通过设置 `textActiveColor` 属性可以自定义文本选中颜色，默认`#000000`。
+- 通过设置 `textSize` 属性可以自定义文本的大小，单位`rpx`，默认`28`。
+- 通过设置 `textInactiveColor` 属性可以自定义文本未选中颜色，默认`#000000`。
+- 通过设置 `textActiveColor` 属性可以自定义文本选中颜色，默认`#000000`。
 
 ```html
 <ste-radio v-model="value9" name="a" textSize="50" textInactiveColor="green" textActiveColor="#d276a3">单选框</ste-radio>
@@ -169,8 +169,8 @@
 
 #### 回调事件
 
--   `click` 点击单选框时触发的事件（可拦截change事件），`value`：改变后的分值,`allowStop`：允许阻止后续的事件触发,：`resolve`：后续的事件执行。
--   `change` 当绑定值变化时触发的事件，`value`:改变后的分值。
+- `click` 点击单选框时触发的事件（可拦截change事件），`value`：改变后的分值,`allowStop`：允许阻止后续的事件触发,：`resolve`：后续的事件执行。
+- `change` 当绑定值变化时触发的事件，`value`:改变后的分值。
 
 ```html
 <ste-radio v-model="value11" name="a" @click="click1" @change="change">单选框</ste-radio>

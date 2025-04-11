@@ -14,7 +14,7 @@ describe('Rate', async () => {
     let inactiveCode = '&#xe685;';
     let activeCode = '&#xe687;';
     const wrapper = mount(steRate, {
-        propsData: {
+        props: {
             modelValue,
             count,
             score,
@@ -78,7 +78,7 @@ describe('Rate', async () => {
         let iconData = ['&#xe686;', '&#xe687;', '&#xe671;', '&#xe66a;', '&#xe66b;'];
         for (let i = 0; i < iconData.length; i++) {
             const wrapper1 = mount(steRate, {
-                propsData: {
+                props: {
                     modelValue: i + 1,
                     iconData,
                 },

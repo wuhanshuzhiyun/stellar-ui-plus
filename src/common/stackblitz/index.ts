@@ -26,8 +26,7 @@ export default function (codeValue: string) {
             'src/App.vue': APP_VUE,
             'src/pages.json': JSON.stringify(PAGES_JSON),
             'src/manifest.json': JSON.stringify(MANIFEST_JSON),
-            'src/pages/index.vue': PAGES_INDEX,
-            'src/pages/demo.vue': codeValue,
+            'src/pages/index.vue': codeValue,
         },
     };
 

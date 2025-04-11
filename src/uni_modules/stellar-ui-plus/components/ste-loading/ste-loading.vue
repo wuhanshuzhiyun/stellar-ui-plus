@@ -46,7 +46,7 @@ const cmpText = computed(() => {
 </script>
 
 <template>
-    <view class="ste-loading-root" :style="[cmpStyle]">
+    <view class="ste-loading-root" :style="[cmpStyle]" data-test="loading">
         <view :class="'loading ' + 'loading-type-' + type" :style="[cmpLoadinStyle]">
             <block v-if="type == 1">
                 <i v-for="(item, index) in cmpCount" :key="index" class="i" :style="{ transform: `rotate(${item * 40 + 80}deg)`, opacity: item == 0 ? 1 : (item + 1) / 10 }"></i>

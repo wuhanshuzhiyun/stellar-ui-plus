@@ -36,7 +36,6 @@ const cmpCount = computed(() => {
 
 const cmpActiveCode = computed(() => {
     let code = getIconCode();
-    console.log('code', code);
     if (code) return code;
     return props.activeCode;
 });
@@ -53,7 +52,6 @@ let cmpActiveColor = computed(() => {
 
 // 根据iconData来算出每个分值对应的iconCode
 function getIconCode() {
-    console.log('props.iconData', props.iconData);
     if (!props.iconData || props.iconData.length === 0) return;
 
     let curScroeIndex = Math.ceil(props.modelValue / props.score) - 1;

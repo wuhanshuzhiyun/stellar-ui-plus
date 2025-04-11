@@ -12,7 +12,7 @@ describe('Icon', async () => {
     let fontFamily = 'iconfont';
     let inlineBlock = false;
     const wrapper = mount(steIcon, {
-        propsData: {
+        props: {
             code,
             size,
             color,
@@ -29,8 +29,7 @@ describe('Icon', async () => {
     await nextTick();
 
     test('code', () => {
-        let code1 = iconFormart(code);
-        expect(icon.text()).toBe(code1);
+        expect(icon.text()).toBe(iconFormart(code));
     });
 
     test('size', () => {

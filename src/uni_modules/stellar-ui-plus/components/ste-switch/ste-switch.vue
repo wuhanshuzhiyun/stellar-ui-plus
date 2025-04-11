@@ -11,6 +11,7 @@ defineOptions({
 const props = defineProps(propsData);
 
 const cmpStyle = computed(() => {
+    console.log('props', props);
     let style: CSSProperties = {};
     style['width'] = utils.formatPx(Number(props.size) * 2 + 4);
     style['height'] = utils.formatPx(Number(props.size) + 4);
@@ -70,7 +71,7 @@ function allowStop() {
 </script>
 
 <template>
-    <view class="ste-switch-root" :style="[cmpStyle]" @click="click">
+    <view class="ste-switch-root" :style="[cmpStyle]" @click="click" data-test="switch">
         <view class="switch-node" :style="[cmpNodeStyle]">
             <ste-loading v-if="loading" :type="2" :color="modelValue ? cmpActiveColor : inactiveColor" :size="Number(size) / 2"></ste-loading>
         </view>

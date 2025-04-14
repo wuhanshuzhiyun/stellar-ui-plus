@@ -42,8 +42,4 @@ export default defineConfig({
         environment: 'jsdom',
         dir: 'test',
     },
-    // vue 去重
-    resolve: {
-        dedupe: ['vue'],
-    },
 });

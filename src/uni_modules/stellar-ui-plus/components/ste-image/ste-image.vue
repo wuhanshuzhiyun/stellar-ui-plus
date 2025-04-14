@@ -90,7 +90,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <view class="ste-image-root" :style="[cmpStyle]">
+    <view class="ste-image-root" :style="[cmpStyle]" data-test="image">
         <view class="loading-icon" v-if="!props.hiddenLoading && status === 0">
             <slot name="loading">
                 <ste-icon code="&#xe693;" :size="iconSize" />

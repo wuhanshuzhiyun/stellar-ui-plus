@@ -117,7 +117,7 @@ function calcFontSize() {
 </script>
 
 <template>
-    <view class="ste-price-root">
+    <view class="ste-price-root" data-test="price">
         <view class="content" :style="[cmpPriceStyle]">
             <text v-if="showUnit" class="unit" :style="[cmpUnitStyle]">
                 {{ unitSymbol }}

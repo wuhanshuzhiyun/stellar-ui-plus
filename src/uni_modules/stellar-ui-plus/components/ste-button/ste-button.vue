@@ -155,6 +155,7 @@ function handleClick(e: any) {
         @chooseavatar="emits('chooseavatar', $event)"
         @getAuthorize="emits('getAuthorize', $event)"
         @followLifestyle="emits('followLifestyle', $event)"
+        data-test="button"
     >
         <view class="btn-box">
             <text v-if="loading">加载中.......</text>
@@ -181,6 +182,7 @@ function handleClick(e: any) {
         @chooseavatar="emits('chooseavatar', $event)"
         @getAuthorize="emits('getAuthorize', $event)"
         @followLifestyle="emits('followLifestyle', $event)"
+        data-test="button"
     >
         <view class="btn-box">
             <text v-if="loading">加载中.......</text>
@@ -246,30 +248,6 @@ function handleClick(e: any) {
         &:before {
             opacity: 0.15;
         }
-    }
-
-    &-100 {
-        padding: 0 30rpx;
-        height: 48rpx;
-        font-size: var(--font-size-24, 24rpx);
-    }
-
-    &-200 {
-        padding: 0 40rpx;
-        height: 68rpx;
-        font-size: var(--font-size-28, 28rpx);
-    }
-
-    &-300 {
-        padding: 0 72rpx;
-        height: 80rpx;
-        font-size: var(--font-size-32, 32rpx);
-    }
-
-    &-400 {
-        padding: 0 72rpx;
-        height: 96rpx;
-        font-size: var(--font-size-36, 36rpx);
     }
 }
 </style>

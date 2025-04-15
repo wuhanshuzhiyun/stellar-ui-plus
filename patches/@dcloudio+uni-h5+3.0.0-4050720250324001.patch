@@ -1,19 +1,13 @@
 diff --git a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
-index 3498ec9..ef87180 100644
+index 3498ec9..1d7febd 100644
 --- a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 +++ b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
-@@ -4,1025 +4,1030 @@ import { once, UNI_STORAGE_LOCALE, I18N_JSON_DELIMITERS, Emitter, passive, resol
- import { onCreateVueApp as onCreateVueApp2 } from "@dcloudio/uni-shared";
+@@ -5,1024 +5,1024 @@ import { onCreateVueApp as onCreateVueApp2 } from "@dcloudio/uni-shared";
  import { useRoute, isNavigationFailure, createRouter, createWebHistory, createWebHashHistory, useRouter, RouterView } from "vue-router";
  import { initVueI18n, isI18nStr, LOCALE_EN, LOCALE_ES, LOCALE_FR, LOCALE_ZH_HANS, LOCALE_ZH_HANT } from "@dcloudio/uni-i18n";
-+
-+// 测试环境使用
-+if (process.env.NODE_ENV == 'test') {
-+    var __uniConfig = {};
-+}
  const isEnableLocale = /* @__PURE__ */ once(
 -  () => typeof __uniConfig !== "undefined" && __uniConfig.locales && !!Object.keys(__uniConfig.locales).length
-+    () => typeof __uniConfig !== "undefined" && __uniConfig?.locales && !!Object.keys(__uniConfig.locales).length
++    () => typeof __uniConfig !== "undefined" && __uniConfig.locales && !!Object.keys(__uniConfig.locales).length
  );
  let i18n;
  function getLocaleMessage() {
@@ -21,7 +15,7 @@ index 3498ec9..ef87180 100644
 -  const locales = __uniConfig.locales;
 -  return locales[locale] || locales[__uniConfig.fallbackLocale] || locales.en || {};
 +    const locale = uni.getLocale();
-+    const locales = __uniConfig?.locales;
++    const locales = __uniConfig.locales;
 +    return locales[locale] || locales[__uniConfig.fallbackLocale] || locales.en || {};
  }
  function formatI18n(message) {
@@ -135,7 +129,7 @@ index 3498ec9..ef87180 100644
 +        let locale;
 +        {
 +            {
-+                locale = navigator.cookieEnabled && window.localStorage && localStorage[UNI_STORAGE_LOCALE] || __uniConfig?.locale || navigator.language;
++                locale = navigator.cookieEnabled && window.localStorage && localStorage[UNI_STORAGE_LOCALE] || __uniConfig.locale || navigator.language;
 +            }
 +        }
 +        i18n = initVueI18n(locale);
@@ -143,7 +137,7 @@ index 3498ec9..ef87180 100644
 +            const localeKeys = Object.keys(__uniConfig.locales || {});
 +            if (localeKeys.length) {
 +                localeKeys.forEach(
-+                    (locale2) => i18n.add(locale2, __uniConfig?.locales[locale2])
++                    (locale2) => i18n.add(locale2, __uniConfig.locales[locale2])
 +                );
 +            }
 +            i18n.setLocale(locale);
@@ -1364,7 +1358,7 @@ index 3498ec9..ef87180 100644
 -  document.addEventListener("DOMContentLoaded", updateRem);
 -  window.addEventListener("load", updateRem);
 -  window.addEventListener("resize", updateRem);
-+    const config = __uniConfig?.globalStyle || {};
++    const config = __uniConfig.globalStyle || {};
 +    const maxWidth2 = checkValue$1(config.rpxCalcMaxDeviceWidth, 960);
 +    const baseWidth2 = checkValue$1(config.rpxCalcBaseDeviceWidth, 375);
 +    function updateRem() {
@@ -1576,6 +1570,8 @@ index 3498ec9..ef87180 100644
 -  offChange
 -};
 -var out = safeAreaInsets;
+-const safeAreaInsets$1 = /* @__PURE__ */ getDefaultExportFromCjs(out);
+-const onEventPrevent = /* @__PURE__ */ withModifiers(() => {
 +function init() {
 +    support = typeof support === "string" ? support : getSupport();
 +    if (!support) {
@@ -1746,8 +1742,8 @@ index 3498ec9..ef87180 100644
 +    offChange
 +};
 +var out = safeAreaInsets;
- const safeAreaInsets$1 = /* @__PURE__ */ getDefaultExportFromCjs(out);
- const onEventPrevent = /* @__PURE__ */ withModifiers(() => {
++const safeAreaInsets$1 = /* @__PURE__ */ getDefaultExportFromCjs(out);
++const onEventPrevent = /* @__PURE__ */ withModifiers(() => {
  }, ["prevent"]);
  const onEventStop = /* @__PURE__ */ withModifiers(
 -  (_event) => {
@@ -1922,7 +1918,7 @@ index 3498ec9..ef87180 100644
  }
  const ICON_PATH_CANCEL = "M20.928 10.176l-4.928 4.928-4.928-4.928-0.896 0.896 4.928 4.928-4.928 4.928 0.896 0.896 4.928-4.928 4.928 4.928 0.896-0.896-4.928-4.928 4.928-4.928-0.896-0.896zM16 2.080q-3.776 0-7.040 1.888-3.136 1.856-4.992 4.992-1.888 3.264-1.888 7.040t1.888 7.040q1.856 3.136 4.992 4.992 3.264 1.888 7.040 1.888t7.040-1.888q3.136-1.856 4.992-4.992 1.888-3.264 1.888-7.040t-1.888-7.040q-1.856-3.136-4.992-4.992-3.264-1.888-7.040-1.888zM16 28.64q-3.424 0-6.4-1.728-2.848-1.664-4.512-4.512-1.728-2.976-1.728-6.4t1.728-6.4q1.664-2.848 4.512-4.512 2.976-1.728 6.4-1.728t6.4 1.728q2.848 1.664 4.512 4.512 1.728 2.976 1.728 6.4t-1.728 6.4q-1.664 2.848-4.512 4.512-2.976 1.728-6.4 1.728z";
  const ICON_PATH_CLEAR = "M16 0q-4.352 0-8.064 2.176-3.616 2.144-5.76 5.76-2.176 3.712-2.176 8.064t2.176 8.064q2.144 3.616 5.76 5.76 3.712 2.176 8.064 2.176t8.064-2.176q3.616-2.144 5.76-5.76 2.176-3.712 2.176-8.064t-2.176-8.064q-2.144-3.616-5.76-5.76-3.712-2.176-8.064-2.176zM22.688 21.408q0.32 0.32 0.304 0.752t-0.336 0.736-0.752 0.304-0.752-0.32l-5.184-5.376-5.376 5.184q-0.32 0.32-0.752 0.304t-0.736-0.336-0.304-0.752 0.32-0.752l5.376-5.184-5.184-5.376q-0.32-0.32-0.304-0.752t0.336-0.752 0.752-0.304 0.752 0.336l5.184 5.376 5.376-5.184q0.32-0.32 0.752-0.304t0.752 0.336 0.304 0.752-0.336 0.752l-5.376 5.184 5.184 5.376z";
-@@ -1037,1777 +1042,1777 @@ const ICON_PATH_BACK = "M21.781 7.844l-9.063 8.594 9.063 8.594q0.25 0.25 0.25 0.
+@@ -1037,1777 +1037,1777 @@ const ICON_PATH_BACK = "M21.781 7.844l-9.063 8.594 9.063 8.594q0.25 0.25 0.25 0.
  const ICON_PATH_CLOSE = "M17.25 16.156l7.375-7.313q0.281-0.281 0.281-0.641t-0.281-0.641q-0.25-0.25-0.625-0.25t-0.625 0.25l-7.375 7.344-7.313-7.344q-0.25-0.25-0.625-0.25t-0.625 0.25q-0.281 0.25-0.281 0.625t0.281 0.625l7.313 7.344-7.375 7.344q-0.281 0.25-0.281 0.625t0.281 0.625q0.125 0.125 0.281 0.188t0.344 0.063q0.156 0 0.328-0.063t0.297-0.188l7.375-7.344 7.375 7.406q0.125 0.156 0.297 0.219t0.328 0.063q0.188 0 0.344-0.078t0.281-0.203q0.281-0.25 0.281-0.609t-0.281-0.641l-7.375-7.406z";
  const ICON_PATH_CONFIRM = "M31.562 4.9966666659375q0.435 0.399 0.435 0.87 0.036 0.58-0.399 0.98l-18.61 19.917q-0.145 0.145-0.327 0.217-0.073 0.037-0.145 0.11-0.254 0.035-0.472 0.035-0.29 0-0.544-0.036l-0.145-0.072q-0.109-0.073-0.217-0.182l-0.11-0.072L0.363 16.2786666659375q-0.327-0.399-0.363-0.907 0-0.544 0.363-1.016 0.435-0.326 0.961-0.362 0.527-0.036 0.962 0.362l9.722 9.542L29.712 5.0326666659375q0.399-0.363 0.943-0.363 0.544-0.036 0.907 0.327z";
  function createSvgIconVNode(path, color = "#000", size = 27) {
@@ -2126,7 +2122,7 @@ index 3498ec9..ef87180 100644
 +    const { id: id2, route } = meta;
 +    const titleColor = normalizeStyles(
 +        meta.navigationBar,
-+        __uniConfig?.themeConfig,
++        __uniConfig.themeConfig,
 +        themeMode
 +    ).titleColor;
 +    return {
@@ -2189,6 +2185,9 @@ index 3498ec9..ef87180 100644
 +        } else {
 +            vm = getCurrentPageVm();
 +        }
++    }
++    if (!vm) {
++        return;
      }
 -  }
 -  if (!vm) {
@@ -2196,9 +2195,6 @@ index 3498ec9..ef87180 100644
 -  }
 -  const hooks = vm.$[name];
 -  return hooks && invokeArrayFns(hooks, args);
-+    if (!vm) {
-+        return;
-+    }
 +    const hooks = vm.$[name];
 +    return hooks && invokeArrayFns(hooks, args);
  }
@@ -2407,7 +2403,7 @@ index 3498ec9..ef87180 100644
 +        const { meta } = newTabBarRoute;
 +        meta.tabBarIndex = index2;
 +        meta.isQuit = meta.isTabBar = true;
-+        const tabBar2 = __uniConfig?.tabBar;
++        const tabBar2 = __uniConfig.tabBar;
 +        if (tabBar2 && tabBar2.list && tabBar2.list[index2]) {
 +            tabBar2.list[index2].pagePath = removeLeadingSlash(newPagePath);
 +        }
@@ -2984,7 +2980,8 @@ index 3498ec9..ef87180 100644
 -  {
 +    const { type, timeStamp, target, currentTarget } = evt;
 +    let realTarget, realCurrentTarget;
-+    {
+     {
+-      wrapperEvent(event, evt);
 +        realTarget = normalizeTarget(
 +            htmlElement ? target : findUniTarget(target)
 +        );
@@ -2999,30 +2996,36 @@ index 3498ec9..ef87180 100644
 +    };
 +    if (evt._stopped) {
 +        event._stopped = true;
-+    }
-+    if (evt.type.startsWith("touch")) {
-+        event.touches = evt.touches;
-+        event.changedTouches = evt.changedTouches;
-+    }
-     {
--      wrapperEvent(event, evt);
-+        {
-+            wrapperEvent(event, evt);
-+        }
      }
 -  }
 -  return event;
-+    return event;
- }
- function wrapperEvent(event, evt) {
+-}
+-function wrapperEvent(event, evt) {
 -  extend(event, {
 -    preventDefault() {
 -      return evt.preventDefault();
 -    },
 -    stopPropagation() {
 -      return evt.stopPropagation();
--    }
++    if (evt.type.startsWith("touch")) {
++        event.touches = evt.touches;
++        event.changedTouches = evt.changedTouches;
+     }
 -  });
+-}
+-function normalizeClickEvent(evt, mouseEvt) {
+-  const { x, y } = mouseEvt;
+-  const top = getWindowTop();
+-  evt.detail = { x, y: y - top };
+-  evt.touches = evt.changedTouches = [createTouchEvent(mouseEvt, top)];
++    {
++        {
++            wrapperEvent(event, evt);
++        }
++    }
++    return event;
++}
++function wrapperEvent(event, evt) {
 +    extend(event, {
 +        preventDefault() {
 +            return evt.preventDefault();
@@ -3031,12 +3034,8 @@ index 3498ec9..ef87180 100644
 +            return evt.stopPropagation();
 +        }
 +    });
- }
- function normalizeClickEvent(evt, mouseEvt) {
--  const { x, y } = mouseEvt;
--  const top = getWindowTop();
--  evt.detail = { x, y: y - top };
--  evt.touches = evt.changedTouches = [createTouchEvent(mouseEvt, top)];
++}
++function normalizeClickEvent(evt, mouseEvt) {
 +    const { x, y } = mouseEvt;
 +    const top = getWindowTop();
 +    evt.detail = { x, y: y - top };
@@ -3065,7 +3064,6 @@ index 3498ec9..ef87180 100644
 -    pageX: evt.pageX,
 -    pageY: evt.pageY - top
 -  };
--}
 +    return {
 +        force: 1,
 +        identifier: 0,
@@ -3074,7 +3072,7 @@ index 3498ec9..ef87180 100644
 +        pageX: evt.pageX,
 +        pageY: evt.pageY - top
 +    };
-+}
+ }
  function normalizeTouchEvent(touches, top) {
 -  const res = [];
 -  for (let i = 0; i < touches.length; i++) {
@@ -4169,11 +4167,11 @@ index 3498ec9..ef87180 100644
 +    const pageId = useCurrentPageId();
 +    if (watch2 && !id2) {
 +        return;
-     }
--  });
++    }
 +    if (!isPlainObject(listeners2)) {
 +        return;
-+    }
+     }
+-  });
 +    Object.keys(listeners2).forEach((name) => {
 +        if (watch2) {
 +            if (name.indexOf("@") !== 0 && name.indexOf("uni-") !== 0) {
@@ -4210,11 +4208,11 @@ index 3498ec9..ef87180 100644
 +    const pageId = useCurrentPageId();
 +    if (watch2 && !id2) {
 +        return;
-+    }
-+    if (!isPlainObject(listeners2)) {
-+        return;
      }
 -  });
++    if (!isPlainObject(listeners2)) {
++        return;
++    }
 +    Object.keys(listeners2).forEach((name) => {
 +        if (watch2) {
 +            if (name.indexOf("@") !== 0 && name.indexOf("uni-") !== 0) {
@@ -4618,8 +4616,8 @@ index 3498ec9..ef87180 100644
 +        window.outerHeight,
 +        screen2.width,
 +        screen2.height,
-+        documentElement?.clientWidth,
-+        documentElement?.clientHeight
++        documentElement.clientWidth,
++        documentElement.clientHeight
 +    ];
 +    return Math.max.apply(null, sizes) > minWidth;
  }
@@ -4853,6 +4851,10 @@ index 3498ec9..ef87180 100644
 -  if (validator2) {
 -    return validator2(value);
 -  }
+-}
+-const isSimpleType = /* @__PURE__ */ makeMap$1(
+-  "String,Number,Boolean,Function,Symbol"
+-);
 +    if (!isPlainObject(prop)) {
 +        prop = { type: prop };
 +    }
@@ -4879,11 +4881,10 @@ index 3498ec9..ef87180 100644
 +    if (validator2) {
 +        return validator2(value);
 +    }
- }
- const isSimpleType = /* @__PURE__ */ makeMap$1(
--  "String,Number,Boolean,Function,Symbol"
++}
++const isSimpleType = /* @__PURE__ */ makeMap$1(
 +    "String,Number,Boolean,Function,Symbol"
- );
++);
  function assertType(value, type) {
 -  let valid;
 -  const expectedType = getType(type);
@@ -5170,7 +5171,7 @@ index 3498ec9..ef87180 100644
  }
  const HOOK_SUCCESS = "success";
  const HOOK_FAIL = "fail";
-@@ -2815,346 +2820,346 @@ const HOOK_COMPLETE = "complete";
+@@ -2815,346 +2815,346 @@ const HOOK_COMPLETE = "complete";
  const globalInterceptors = {};
  const scopedInterceptors = {};
  function wrapperHook(hook, params) {
@@ -5783,7 +5784,7 @@ index 3498ec9..ef87180 100644
  ];
  const EPS = 1e-4;
  const BASE_DEVICE_WIDTH = 750;
-@@ -3165,2212 +3170,2212 @@ let maxWidth = 960;
+@@ -3165,2212 +3165,2212 @@ let maxWidth = 960;
  let baseWidth = 375;
  let includeWidth = 750;
  function checkDeviceWidth() {
@@ -5807,7 +5808,7 @@ index 3498ec9..ef87180 100644
 -  maxWidth = checkValue(config.rpxCalcMaxDeviceWidth, 960);
 -  baseWidth = checkValue(config.rpxCalcBaseDeviceWidth, 375);
 -  includeWidth = checkValue(config.rpxCalcBaseDeviceWidth, 750);
-+    const config = __uniConfig?.globalStyle || {};
++    const config = __uniConfig.globalStyle || {};
 +    maxWidth = checkValue(config.rpxCalcMaxDeviceWidth, 960);
 +    baseWidth = checkValue(config.rpxCalcBaseDeviceWidth, 375);
 +    includeWidth = checkValue(config.rpxCalcBaseDeviceWidth, 750);
@@ -6259,64 +6260,20 @@ index 3498ec9..ef87180 100644
 -  hideStatusBar() {
 -    operateVideoPlayer(this.id, this.pageId, "hideStatusBar");
 -  }
-+    constructor(id2, pageId) {
-+        this.id = id2;
-+        this.pageId = pageId;
-+    }
-+    play() {
-+        operateVideoPlayer(this.id, this.pageId, "play");
-+    }
-+    pause() {
-+        operateVideoPlayer(this.id, this.pageId, "pause");
-+    }
-+    stop() {
-+        operateVideoPlayer(this.id, this.pageId, "stop");
-+    }
-+    seek(position) {
-+        operateVideoPlayer(this.id, this.pageId, "seek", {
-+            position
-+        });
-+    }
-+    sendDanmu(args) {
-+        operateVideoPlayer(this.id, this.pageId, "sendDanmu", args);
-+    }
-+    playbackRate(rate) {
-+        if (!~RATES.indexOf(rate)) {
-+            rate = 1;
-+        }
-+        operateVideoPlayer(this.id, this.pageId, "playbackRate", {
-+            rate
-+        });
-+    }
-+    requestFullScreen(args = {}) {
-+        operateVideoPlayer(this.id, this.pageId, "requestFullScreen", args);
-+    }
-+    exitFullScreen() {
-+        operateVideoPlayer(this.id, this.pageId, "exitFullScreen");
-+    }
-+    showStatusBar() {
-+        operateVideoPlayer(this.id, this.pageId, "showStatusBar");
-+    }
-+    hideStatusBar() {
-+        operateVideoPlayer(this.id, this.pageId, "hideStatusBar");
-+    }
- }
- const createVideoContext = /* @__PURE__ */ defineSyncApi(
+-}
+-const createVideoContext = /* @__PURE__ */ defineSyncApi(
 -  API_CREATE_VIDEO_CONTEXT,
 -  (id2, context) => {
 -    if (context) {
 -      return new VideoContext(id2, getPageIdByVm(context));
-+    API_CREATE_VIDEO_CONTEXT,
-+    (id2, context) => {
-+        if (context) {
-+            return new VideoContext(id2, getPageIdByVm(context));
-+        }
-+        return new VideoContext(id2, getPageIdByVm(getCurrentPageVm()));
++    constructor(id2, pageId) {
++        this.id = id2;
++        this.pageId = pageId;
      }
 -    return new VideoContext(id2, getPageIdByVm(getCurrentPageVm()));
 -  }
- );
- const operateMapCallback = (options, res) => {
+-);
+-const operateMapCallback = (options, res) => {
 -  const errMsg = res.errMsg || "";
 -  if (new RegExp("\\:\\s*fail").test(errMsg)) {
 -    options.fail && options.fail(res);
@@ -6324,23 +6281,13 @@ index 3498ec9..ef87180 100644
 -    options.success && options.success(res);
 -  }
 -  options.complete && options.complete(res);
-+    const errMsg = res.errMsg || "";
-+    if (new RegExp("\\:\\s*fail").test(errMsg)) {
-+        options.fail && options.fail(res);
-+    } else {
-+        options.success && options.success(res);
-+    }
-+    options.complete && options.complete(res);
- };
- const operateMapWrap = (id2, pageId, type, options) => {
+-};
+-const operateMapWrap = (id2, pageId, type, options) => {
 -  operateMap(id2, pageId, type, options, (res) => {
 -    options && operateMapCallback(options, res);
 -  });
-+    operateMap(id2, pageId, type, options, (res) => {
-+        options && operateMapCallback(options, res);
-+    });
- };
- class MapContext {
+-};
+-class MapContext {
 -  constructor(id2, pageId) {
 -    this.id = id2;
 -    this.pageId = pageId;
@@ -6407,9 +6354,8 @@ index 3498ec9..ef87180 100644
 -  (id2, context) => {
 -    if (context) {
 -      return new MapContext(id2, getPageIdByVm(context));
-+    constructor(id2, pageId) {
-+        this.id = id2;
-+        this.pageId = pageId;
++    play() {
++        operateVideoPlayer(this.id, this.pageId, "play");
      }
 -    return new MapContext(id2, getPageIdByVm(getCurrentPageVm()));
 -  },
@@ -6421,13 +6367,74 @@ index 3498ec9..ef87180 100644
 -      params[name] = Math.round(value);
 -    } else if (typeof defaultValue !== "undefined") {
 -      params[name] = defaultValue;
-+    getCenterLocation(options) {
-+        operateMapWrap(this.id, this.pageId, "getCenterLocation", options);
++    pause() {
++        operateVideoPlayer(this.id, this.pageId, "pause");
      }
 -  };
 -}
--const formatWidth = getInt("width");
--const formatHeight = getInt("height");
++    stop() {
++        operateVideoPlayer(this.id, this.pageId, "stop");
++    }
++    seek(position) {
++        operateVideoPlayer(this.id, this.pageId, "seek", {
++            position
++        });
++    }
++    sendDanmu(args) {
++        operateVideoPlayer(this.id, this.pageId, "sendDanmu", args);
++    }
++    playbackRate(rate) {
++        if (!~RATES.indexOf(rate)) {
++            rate = 1;
++        }
++        operateVideoPlayer(this.id, this.pageId, "playbackRate", {
++            rate
++        });
++    }
++    requestFullScreen(args = {}) {
++        operateVideoPlayer(this.id, this.pageId, "requestFullScreen", args);
++    }
++    exitFullScreen() {
++        operateVideoPlayer(this.id, this.pageId, "exitFullScreen");
++    }
++    showStatusBar() {
++        operateVideoPlayer(this.id, this.pageId, "showStatusBar");
++    }
++    hideStatusBar() {
++        operateVideoPlayer(this.id, this.pageId, "hideStatusBar");
++    }
++}
++const createVideoContext = /* @__PURE__ */ defineSyncApi(
++    API_CREATE_VIDEO_CONTEXT,
++    (id2, context) => {
++        if (context) {
++            return new VideoContext(id2, getPageIdByVm(context));
++        }
++        return new VideoContext(id2, getPageIdByVm(getCurrentPageVm()));
++    }
++);
++const operateMapCallback = (options, res) => {
++    const errMsg = res.errMsg || "";
++    if (new RegExp("\\:\\s*fail").test(errMsg)) {
++        options.fail && options.fail(res);
++    } else {
++        options.success && options.success(res);
++    }
++    options.complete && options.complete(res);
++};
++const operateMapWrap = (id2, pageId, type, options) => {
++    operateMap(id2, pageId, type, options, (res) => {
++        options && operateMapCallback(options, res);
++    });
++};
++class MapContext {
++    constructor(id2, pageId) {
++        this.id = id2;
++        this.pageId = pageId;
++    }
++    getCenterLocation(options) {
++        operateMapWrap(this.id, this.pageId, "getCenterLocation", options);
++    }
 +    moveToLocation(options) {
 +        operateMapWrap(this.id, this.pageId, "moveToLocation", options);
 +    }
@@ -6501,8 +6508,8 @@ index 3498ec9..ef87180 100644
 +        }
 +    };
 +}
-+const formatWidth = getInt("width");
-+const formatHeight = getInt("height");
+ const formatWidth = getInt("width");
+ const formatHeight = getInt("height");
  const API_CANVAS_GET_IMAGE_DATA = "canvasGetImageData";
  const CanvasGetImageDataOptions = {
 -  formatArgs: {
@@ -8144,72 +8151,13 @@ index 3498ec9..ef87180 100644
 -        },
 -        (data2) => {
 -          if (data2.errMsg && data2.errMsg.indexOf("fail") !== -1) {
--            reject();
--            return;
--          }
--          resolve(data2);
--        }
--      );
--    };
--    {
--      data = Array.prototype.slice.call(data);
 +    set globalAlpha(value) {
 +        value = Math.floor(255 * parseFloat(value));
 +        this.actions.push({
 +            method: "setGlobalAlpha",
 +            data: [value]
 +        });
-     }
--    operate();
--  },
--  CanvasPutImageDataProtocol,
--  CanvasPutImageDataOptions
--);
--const canvasToTempFilePath = /* @__PURE__ */ defineAsyncApi(
--  API_CANVAS_TO_TEMP_FILE_PATH,
--  ({
--    x = 0,
--    y = 0,
--    width,
--    height,
--    destWidth,
--    destHeight,
--    canvasId,
--    fileType,
--    quality
--  }, { resolve, reject }) => {
--    var pageId = getPageIdByVm(getCurrentPageVm());
--    if (!pageId) {
--      reject();
--      return;
--    }
--    let dirname = `${getTempPath()}/canvas`;
--    operateCanvas(
--      canvasId,
--      pageId,
--      "toTempFilePath",
--      {
--        x,
--        y,
--        width,
--        height,
--        destWidth,
--        destHeight,
--        fileType,
--        quality,
--        dirname
--      },
--      (res) => {
--        if (res.errMsg && res.errMsg.indexOf("fail") !== -1) {
--          reject("", res);
--          return;
--        }
--        resolve(res);
--      }
--    );
--  },
--  CanvasToTempFilePathProtocol,
--  CanvasToTempFilePathOptions
++    }
 +    set textAlign(align2) {
 +        this.actions.push({
 +            method: "setTextAlign",
@@ -8432,9 +8380,20 @@ index 3498ec9..ef87180 100644
 +    ({ canvasId, x, y, width, height }, { resolve, reject }) => {
 +        const pageId = getPageIdByVm(getCurrentPageVm());
 +        if (!pageId) {
-+            reject();
-+            return;
-+        }
+             reject();
+             return;
+-          }
+-          resolve(data2);
+         }
+-      );
+-    };
+-    {
+-      data = Array.prototype.slice.call(data);
+-    }
+-    operate();
+-  },
+-  CanvasPutImageDataProtocol,
+-  CanvasPutImageDataOptions
 +        function callback(data) {
 +            if (data.errMsg && data.errMsg.indexOf("fail") !== -1) {
 +                reject("", data);
@@ -8501,18 +8460,57 @@ index 3498ec9..ef87180 100644
 +    },
 +    CanvasPutImageDataProtocol,
 +    CanvasPutImageDataOptions
-+);
-+const canvasToTempFilePath = /* @__PURE__ */ defineAsyncApi(
+ );
+ const canvasToTempFilePath = /* @__PURE__ */ defineAsyncApi(
+-  API_CANVAS_TO_TEMP_FILE_PATH,
+-  ({
+-    x = 0,
+-    y = 0,
+-    width,
+-    height,
+-    destWidth,
+-    destHeight,
+-    canvasId,
+-    fileType,
+-    quality
+-  }, { resolve, reject }) => {
+-    var pageId = getPageIdByVm(getCurrentPageVm());
+-    if (!pageId) {
+-      reject();
+-      return;
+-    }
+-    let dirname = `${getTempPath()}/canvas`;
+-    operateCanvas(
+-      canvasId,
+-      pageId,
+-      "toTempFilePath",
+-      {
+-        x,
+-        y,
 +    API_CANVAS_TO_TEMP_FILE_PATH,
 +    ({
 +        x = 0,
 +        y = 0,
-+        width,
-+        height,
-+        destWidth,
-+        destHeight,
+         width,
+         height,
+         destWidth,
+         destHeight,
 +        canvasId,
-+        fileType,
+         fileType,
+-        quality,
+-        dirname
+-      },
+-      (res) => {
+-        if (res.errMsg && res.errMsg.indexOf("fail") !== -1) {
+-          reject("", res);
+-          return;
+-        }
+-        resolve(res);
+-      }
+-    );
+-  },
+-  CanvasToTempFilePathProtocol,
+-  CanvasToTempFilePathOptions
 +        quality
 +    }, { resolve, reject }) => {
 +        var pageId = getPageIdByVm(getCurrentPageVm());
@@ -9744,6 +9742,7 @@ index 3498ec9..ef87180 100644
 -      });
 -    });
 -  }
+-}
 +    if (args.type === "enabled") {
 +        enabled = true;
 +    } else if (args.type === "clientId") {
@@ -9770,7 +9769,7 @@ index 3498ec9..ef87180 100644
 +            });
 +        });
 +    }
- }
++}
  const getPushCidCallbacks = [];
  function invokeGetPushCidCallbacks(cid2, errMsg) {
 -  getPushCidCallbacks.forEach((callback) => {
@@ -9929,7 +9928,7 @@ index 3498ec9..ef87180 100644
  };
  const API_ON_ACCELEROMETER = "onAccelerometer";
  const API_OFF_ACCELEROMETER = "offAccelerometer";
-@@ -5384,457 +5389,457 @@ const API_VIBRATE_SHORT = "vibrateShort";
+@@ -5384,457 +5384,457 @@ const API_VIBRATE_SHORT = "vibrateShort";
  const API_VIBRATE_LONG = "vibrateLong";
  const API_GET_STORAGE = "getStorage";
  const GetStorageProtocol = {
@@ -10723,7 +10722,7 @@ index 3498ec9..ef87180 100644
  };
  const API_START_LOCATION_UPDATE = "startLocationUpdate";
  const API_ON_LOCATION_CHANGE = "onLocationChange";
-@@ -5844,69 +5849,69 @@ const API_OFF_LOCATION_CHANGE_ERROR = "offLocationChangeError";
+@@ -5844,69 +5844,69 @@ const API_OFF_LOCATION_CHANGE_ERROR = "offLocationChangeError";
  const API_ON_LOCATION_CHANGE_ERROR = "onLocationChangeError";
  const coordTypes = ["wgs84", "gcj02"];
  const StartLocationUpdateProtocol = {
@@ -10846,7 +10845,7 @@ index 3498ec9..ef87180 100644
  };
  const API_NAVIGATE_TO = "navigateTo";
  const API_REDIRECT_TO = "redirectTo";
-@@ -5916,17 +5921,17 @@ const API_NAVIGATE_BACK = "navigateBack";
+@@ -5916,17 +5916,17 @@ const API_NAVIGATE_BACK = "navigateBack";
  const API_PRELOAD_PAGE = "preloadPage";
  const API_UN_PRELOAD_PAGE = "unPreloadPage";
  const NavigateToProtocol = /* @__PURE__ */ extend(
@@ -10873,7 +10872,7 @@ index 3498ec9..ef87180 100644
  );
  const RedirectToProtocol = BaseRouteProtocol;
  const ReLaunchProtocol = BaseRouteProtocol;
-@@ -5937,319 +5942,319 @@ const RedirectToOptions = /* @__PURE__ */ createRouteOptions(API_REDIRECT_TO);
+@@ -5937,319 +5937,319 @@ const RedirectToOptions = /* @__PURE__ */ createRouteOptions(API_REDIRECT_TO);
  const ReLaunchOptions = /* @__PURE__ */ createRouteOptions(API_RE_LAUNCH);
  const SwitchTabOptions = /* @__PURE__ */ createRouteOptions(API_SWITCH_TAB);
  const NavigateBackOptions = {
@@ -11325,22 +11324,9 @@ index 3498ec9..ef87180 100644
 -      }
 -    }
 -  }
-+    beforeInvoke() {
-+        const pageMeta = getCurrentPageMeta();
-+        if (pageMeta && !pageMeta.isTabBar) {
-+            return "not TabBar page";
-+        }
-+    },
-+    formatArgs: {
-+        index(value) {
-+            if (!__uniConfig.tabBar.list[value]) {
-+                return "tabbar item not found";
-+            }
-+        }
-+    }
- };
- const API_SET_TAB_BAR_ITEM = "setTabBarItem";
- const SetTabBarItemProtocol = /* @__PURE__ */ extend(
+-};
+-const API_SET_TAB_BAR_ITEM = "setTabBarItem";
+-const SetTabBarItemProtocol = /* @__PURE__ */ extend(
 -  {
 -    text: String,
 -    iconPath: String,
@@ -11352,12 +11338,28 @@ index 3498ec9..ef87180 100644
 -const SetTabBarItemOptions = {
 -  beforeInvoke: IndexOptions.beforeInvoke,
 -  formatArgs: /* @__PURE__ */ extend(
-     {
+-    {
 -      pagePath(value, params) {
 -        if (value) {
 -          params.pagePath = removeLeadingSlash(value);
--        }
++    beforeInvoke() {
++        const pageMeta = getCurrentPageMeta();
++        if (pageMeta && !pageMeta.isTabBar) {
++            return "not TabBar page";
++        }
++    },
++    formatArgs: {
++        index(value) {
++            if (!__uniConfig.tabBar.list[value]) {
++                return "tabbar item not found";
++            }
+         }
 -      }
++    }
++};
++const API_SET_TAB_BAR_ITEM = "setTabBarItem";
++const SetTabBarItemProtocol = /* @__PURE__ */ extend(
++    {
 +        text: String,
 +        iconPath: String,
 +        selectedIconPath: String,
@@ -11365,15 +11367,6 @@ index 3498ec9..ef87180 100644
      },
 -    IndexOptions.formatArgs
 -  )
--};
--const API_SET_TAB_BAR_STYLE = "setTabBarStyle";
--const SetTabBarStyleProtocol = {
--  color: String,
--  selectedColor: String,
--  backgroundColor: String,
--  backgroundImage: String,
--  backgroundRepeat: String,
--  borderStyle: String
 +    IndexProtocol
 +);
 +const SetTabBarItemOptions = {
@@ -11388,9 +11381,15 @@ index 3498ec9..ef87180 100644
 +        },
 +        IndexOptions.formatArgs
 +    )
-+};
-+const API_SET_TAB_BAR_STYLE = "setTabBarStyle";
-+const SetTabBarStyleProtocol = {
+ };
+ const API_SET_TAB_BAR_STYLE = "setTabBarStyle";
+ const SetTabBarStyleProtocol = {
+-  color: String,
+-  selectedColor: String,
+-  backgroundColor: String,
+-  backgroundImage: String,
+-  backgroundRepeat: String,
+-  borderStyle: String
 +    color: String,
 +    selectedColor: String,
 +    backgroundColor: String,
@@ -11434,7 +11433,7 @@ index 3498ec9..ef87180 100644
  };
  const API_SHOW_TAB_BAR = "showTabBar";
  const ShowTabBarProtocol = HideTabBarProtocol;
-@@ -6264,1128 +6269,1128 @@ const RemoveTabBarBadgeProtocol = IndexProtocol;
+@@ -6264,1128 +6264,1130 @@ const RemoveTabBarBadgeProtocol = IndexProtocol;
  const RemoveTabBarBadgeOptions = IndexOptions;
  const API_SET_TAB_BAR_BADGE = "setTabBarBadge";
  const SetTabBarBadgeProtocol = /* @__PURE__ */ extend(
@@ -12208,10 +12207,10 @@ index 3498ec9..ef87180 100644
 +            rootRect = {
 +                top: 0,
 +                left: 0,
-+                right: html?.clientWidth || body?.clientWidth,
-+                width: html?.clientWidth || body?.clientWidth,
-+                bottom: html?.clientHeight || body?.clientHeight,
-+                height: html?.clientHeight || body?.clientHeight
++                right: html.clientWidth || body.clientWidth,
++                width: html.clientWidth || body.clientWidth,
++                bottom: html.clientHeight || body.clientHeight,
++                height: html.clientHeight || body.clientHeight
 +            };
 +        }
 +        return this._expandRectByRootMargin(rootRect);
@@ -12970,6 +12969,17 @@ index 3498ec9..ef87180 100644
 -  reLaunchPages.forEach(
 -    ({ args, resolve, reject }) => (removeAllPages(), navigate(args).then(resolve).catch(reject))
 -  );
+-}
+-let tabBar;
+-function useTabBar() {
+-  if (!tabBar) {
+-    tabBar = __uniConfig.tabBar && reactive(initTabBarI18n(__uniConfig.tabBar));
+-  }
+-  return tabBar;
+-}
+-function cssSupports(css) {
+-  const supports = window.CSS && window.CSS.supports;
+-  return supports && (supports(css) || supports.apply(window.CSS, css.split(":")));
 +    if (entryPageState.handledBeforeEntryPageRoutes) {
 +        return;
 +    }
@@ -12997,21 +13007,15 @@ index 3498ec9..ef87180 100644
 +    reLaunchPages.forEach(
 +        ({ args, resolve, reject }) => (removeAllPages(), navigate(args).then(resolve).catch(reject))
 +    );
- }
- let tabBar;
- function useTabBar() {
--  if (!tabBar) {
--    tabBar = __uniConfig.tabBar && reactive(initTabBarI18n(__uniConfig.tabBar));
--  }
--  return tabBar;
++}
++let tabBar;
++function useTabBar() {
 +    if (!tabBar) {
-+        tabBar = __uniConfig?.tabBar && reactive(initTabBarI18n(__uniConfig.tabBar));
++        tabBar = __uniConfig.tabBar && reactive(initTabBarI18n(__uniConfig.tabBar));
 +    }
 +    return tabBar;
- }
- function cssSupports(css) {
--  const supports = window.CSS && window.CSS.supports;
--  return supports && (supports(css) || supports.apply(window.CSS, css.split(":")));
++}
++function cssSupports(css) {
 +    const supports = window.CSS && window.CSS.supports;
 +    return supports && (supports(css) || supports.apply(window.CSS, css.split(":")));
  }
@@ -13331,7 +13335,7 @@ index 3498ec9..ef87180 100644
 -      document.body.removeAttribute("nvue");
 -      document.body.removeAttribute(nvueDirKey);
 +    {
-+        const nvueDirKey = "nvue-dir-" + __uniConfig?.nvue["flex-direction"];
++        const nvueDirKey = "nvue-dir-" + __uniConfig.nvue["flex-direction"];
 +        if (pageMeta.isNVue) {
 +            document.body.setAttribute("nvue", "");
 +            document.body.setAttribute(nvueDirKey, "");
@@ -13481,7 +13485,7 @@ index 3498ec9..ef87180 100644
 -    return addLeadingSlash(filePath);
 -  }
 -  return baseUrl + filePath;
-+    const { base: baseUrl } = __uniConfig?.router;
++    const { base: baseUrl } = __uniConfig.router;
 +    if (addLeadingSlash(filePath).indexOf(baseUrl) === 0) {
 +        return addLeadingSlash(filePath);
 +    }
@@ -13499,34 +13503,10 @@ index 3498ec9..ef87180 100644
 -      filePath = "https:" + filePath;
 -    } else {
 -      return addBase(filePath.slice(1));
-+    const { base, assets } = __uniConfig?.router ?? {};
-+    if (base === "./") {
-+        if (filePath.indexOf("./") === 0 && (filePath.includes("/static/") || filePath.indexOf("./" + (assets || "assets") + "/") === 0)) {
-+            filePath = filePath.slice(1);
-+        }
-+    }
-+    if (filePath.indexOf("/") === 0) {
-+        if (filePath.indexOf("//") === 0) {
-+            filePath = "https:" + filePath;
-+        } else {
-+            return addBase(filePath.slice(1));
-+        }
-+    }
-+    if (SCHEME_RE.test(filePath) || DATA_RE.test(filePath) || filePath.indexOf("blob:") === 0) {
-+        return filePath;
-+    }
-+    const pages = getCurrentBasePages();
-+    if (pages.length) {
-+        return addBase(
-+            getRealRoute(
-+                getPage$BasePage(pages[pages.length - 1]).route,
-+                filePath
-+            ).slice(1)
-+        );
-     }
+-    }
 -  }
 -  if (SCHEME_RE.test(filePath) || DATA_RE.test(filePath) || filePath.indexOf("blob:") === 0) {
-     return filePath;
+-    return filePath;
 -  }
 -  const pages = getCurrentBasePages();
 -  if (pages.length) {
@@ -13538,10 +13518,38 @@ index 3498ec9..ef87180 100644
 -    );
 -  }
 -  return filePath;
++    if (process.env.NODE_ENV != 'test') {
++        const { base, assets } = __uniConfig.router;
++        if (base === "./") {
++            if (filePath.indexOf("./") === 0 && (filePath.includes("/static/") || filePath.indexOf("./" + (assets || "assets") + "/") === 0)) {
++                filePath = filePath.slice(1);
++            }
++        }
++        if (filePath.indexOf("/") === 0) {
++            if (filePath.indexOf("//") === 0) {
++                filePath = "https:" + filePath;
++            } else {
++                return addBase(filePath.slice(1));
++            }
++        }
++        if (SCHEME_RE.test(filePath) || DATA_RE.test(filePath) || filePath.indexOf("blob:") === 0) {
++            return filePath;
++        }
++        const pages = getCurrentBasePages();
++        if (pages.length) {
++            return addBase(
++                getRealRoute(
++                    getPage$BasePage(pages[pages.length - 1]).route,
++                    filePath
++                ).slice(1)
++            );
++        }
++        return filePath;
++    }
  }
  const ua = navigator.userAgent;
  const isAndroid = /* @__PURE__ */ /android/i.test(ua);
-@@ -7395,10757 +7400,10757 @@ const isMac = /* @__PURE__ */ /Macintosh|Mac/i.test(ua);
+@@ -7395,2544 +7397,2544 @@ const isMac = /* @__PURE__ */ /Macintosh|Mac/i.test(ua);
  const isLinux = /* @__PURE__ */ /Linux|X11/i.test(ua);
  const isIPadOS = isMac && navigator.maxTouchPoints > 0;
  function getScreenFix() {
@@ -14748,40 +14756,6 @@ index 3498ec9..ef87180 100644
 -      $listeners
 -    } = useAttrs({
 -      excludeListeners: true
--    });
--    const {
--      _listeners
--    } = useListeners(props2, $listeners, trigger);
--    const {
--      _handleSubscribe,
--      _resize
--    } = useMethods(props2, canvas, actionsWaiting);
--    useSubscribe(_handleSubscribe, useContextInfo(props2.canvasId), true);
--    onMounted(() => {
--      _resize();
--    });
--    return () => {
--      const {
--        canvasId,
--        disableScroll
--      } = props2;
--      return createVNode("uni-canvas", mergeProps({
--        "ref": rootRef,
--        "canvas-id": canvasId,
--        "disable-scroll": disableScroll
--      }, $attrs.value, $excludeAttrs.value, _listeners.value), [createVNode("canvas", {
--        "ref": canvas,
--        "class": "uni-canvas-canvas",
--        "width": "300",
--        "height": "150"
--      }, null, 512), createVNode("div", {
--        "style": "position: absolute;top: 0;left: 0;width: 100%;height: 100%;overflow: hidden;"
--      }, [slots.default && slots.default()]), createVNode(ResizeSensor, {
--        "ref": sensor,
--        "onResize": _resize
--      }, null, 8, ["onResize"])], 16, ["canvas-id", "disable-scroll"]);
--    };
--  }
 +    inheritAttrs: false,
 +    name: "Canvas",
 +    compatConfig: {
@@ -14843,36 +14817,8 @@ index 3498ec9..ef87180 100644
 +            }, null, 8, ["onResize"])], 16, ["canvas-id", "disable-scroll"]);
 +        };
 +    }
- });
- function useListeners(props2, Listeners, trigger) {
--  const _listeners = computed(() => {
--    let events = ["onTouchstart", "onTouchmove", "onTouchend"];
--    let _$listeners = Listeners.value;
--    let $listeners = extend({}, (() => {
--      let obj = {};
--      for (const key in _$listeners) {
--        if (hasOwn(_$listeners, key)) {
--          const event = _$listeners[key];
--          obj[key] = event;
--        }
--      }
--      return obj;
--    })());
--    events.forEach((event) => {
--      let existing = $listeners[event];
--      let eventHandler = [];
--      if (existing) {
--        eventHandler.push(withWebEvent(($event) => {
--          const rect = $event.currentTarget.getBoundingClientRect();
--          processTouches(rect, $event.touches);
--          processTouches(rect, $event.changedTouches);
--          trigger(event.replace("on", "").toLocaleLowerCase(), $event);
--        }));
--      }
--      if (props2.disableScroll && event === "onTouchmove") {
--        eventHandler.push(onEventPrevent);
--      }
--      $listeners[event] = eventHandler;
++});
++function useListeners(props2, Listeners, trigger) {
 +    const _listeners = computed(() => {
 +        let events = ["onTouchstart", "onTouchmove", "onTouchend"];
 +        let _$listeners = Listeners.value;
@@ -14904,14 +14850,77 @@ index 3498ec9..ef87180 100644
 +        });
 +        return $listeners;
      });
+-    const {
+-      _listeners
+-    } = useListeners(props2, $listeners, trigger);
+-    const {
+-      _handleSubscribe,
+-      _resize
+-    } = useMethods(props2, canvas, actionsWaiting);
+-    useSubscribe(_handleSubscribe, useContextInfo(props2.canvasId), true);
+-    onMounted(() => {
+-      _resize();
+-    });
+-    return () => {
+-      const {
+-        canvasId,
+-        disableScroll
+-      } = props2;
+-      return createVNode("uni-canvas", mergeProps({
+-        "ref": rootRef,
+-        "canvas-id": canvasId,
+-        "disable-scroll": disableScroll
+-      }, $attrs.value, $excludeAttrs.value, _listeners.value), [createVNode("canvas", {
+-        "ref": canvas,
+-        "class": "uni-canvas-canvas",
+-        "width": "300",
+-        "height": "150"
+-      }, null, 512), createVNode("div", {
+-        "style": "position: absolute;top: 0;left: 0;width: 100%;height: 100%;overflow: hidden;"
+-      }, [slots.default && slots.default()]), createVNode(ResizeSensor, {
+-        "ref": sensor,
+-        "onResize": _resize
+-      }, null, 8, ["onResize"])], 16, ["canvas-id", "disable-scroll"]);
++    return {
++        _listeners
+     };
+-  }
+-});
+-function useListeners(props2, Listeners, trigger) {
+-  const _listeners = computed(() => {
+-    let events = ["onTouchstart", "onTouchmove", "onTouchend"];
+-    let _$listeners = Listeners.value;
+-    let $listeners = extend({}, (() => {
+-      let obj = {};
+-      for (const key in _$listeners) {
+-        if (hasOwn(_$listeners, key)) {
+-          const event = _$listeners[key];
+-          obj[key] = event;
+-        }
+-      }
+-      return obj;
+-    })());
+-    events.forEach((event) => {
+-      let existing = $listeners[event];
+-      let eventHandler = [];
+-      if (existing) {
+-        eventHandler.push(withWebEvent(($event) => {
+-          const rect = $event.currentTarget.getBoundingClientRect();
+-          processTouches(rect, $event.touches);
+-          processTouches(rect, $event.changedTouches);
+-          trigger(event.replace("on", "").toLocaleLowerCase(), $event);
+-        }));
+-      }
+-      if (props2.disableScroll && event === "onTouchmove") {
+-        eventHandler.push(onEventPrevent);
+-      }
+-      $listeners[event] = eventHandler;
+-    });
 -    return $listeners;
 -  });
 -  return {
 -    _listeners
 -  };
-+    return {
-+        _listeners
-+    };
  }
  function useMethods(props2, canvasRef, actionsWaiting) {
 -  let _actionsDefer = [];
@@ -15034,83 +15043,7 @@ index 3498ec9..ef87180 100644
          } else {
 -          c2d[method1] = actionType;
 +            wrapper(canvas, props2.hidpi);
-         }
--      } else if (method === "fillPath" || method === "strokePath") {
--        method = method.replace(/Path/, "");
--        c2d.beginPath();
--        data.forEach(function(data_) {
--          c2d[data_.method].apply(c2d, data_.data);
--        });
--        c2d[method]();
--      } else if (method === "fillText") {
--        c2d.fillText.apply(c2d, data);
--      } else if (method === "drawImage") {
--        let drawImage = function() {
--          let dataArray = [...data];
--          let url = dataArray[0];
--          let otherData = dataArray.slice(1);
--          _images = _images || {};
--          if (!checkImageLoaded(url, actions.slice(index2 + 1), resolve, function(image2) {
--            if (image2) {
--              c2d.drawImage.apply(
--                c2d,
--                // @ts-expect-error
--                [image2].concat(
--                  // @ts-expect-error
--                  [...otherData.slice(4, 8)],
--                  [...otherData.slice(0, 4)]
--                )
--              );
--            }
--          }))
--            return "break";
--        }();
--        if (drawImage === "break") {
--          break;
--        }
--      } else {
--        if (method === "clip") {
--          data.forEach(function(data_) {
--            c2d[data_.method].apply(c2d, data_.data);
--          });
--          c2d.clip();
--        } else {
--          c2d[method].apply(c2d, data);
--        }
--      }
--    }
--    if (!actionsWaiting.value) {
--      resolve({
--        errMsg: "drawCanvas:ok"
--      });
--    }
--  }
--  function preloadImage(actions) {
--    actions.forEach(function(action) {
--      let method = action.method;
--      let data = action.data;
--      let src = "";
--      if (method === "drawImage") {
--        src = data[0];
--        src = $getRealPath(src);
--        data[0] = src;
--      } else if (method === "setFillStyle" && data[0] === "pattern") {
--        src = data[1];
--        src = $getRealPath(src);
--        data[1] = src;
--      }
--      if (src && !_images[src]) {
--        loadImage();
--      }
--      function loadImage() {
--        const image2 = _images[src] = new Image();
--        image2.onload = function() {
--          image2.ready = true;
--        };
--        getSameOriginUrl(src).then((src2) => {
--          image2.src = src2;
--        }).catch(() => {
--          image2.src = src;
++        }
 +    }
 +    function actionsChanged({
 +        actions,
@@ -15250,7 +15183,12 @@ index 3498ec9..ef87180 100644
 +            resolve({
 +                errMsg: "drawCanvas:ok"
 +            });
-+        }
+         }
+-      } else if (method === "fillPath" || method === "strokePath") {
+-        method = method.replace(/Path/, "");
+-        c2d.beginPath();
+-        data.forEach(function(data_) {
+-          c2d[data_.method].apply(c2d, data_.data);
 +    }
 +    function preloadImage(actions) {
 +        actions.forEach(function (action) {
@@ -15281,6 +15219,83 @@ index 3498ec9..ef87180 100644
 +                });
 +            }
          });
+-        c2d[method]();
+-      } else if (method === "fillText") {
+-        c2d.fillText.apply(c2d, data);
+-      } else if (method === "drawImage") {
+-        let drawImage = function() {
+-          let dataArray = [...data];
+-          let url = dataArray[0];
+-          let otherData = dataArray.slice(1);
+-          _images = _images || {};
+-          if (!checkImageLoaded(url, actions.slice(index2 + 1), resolve, function(image2) {
+-            if (image2) {
+-              c2d.drawImage.apply(
+-                c2d,
+-                // @ts-expect-error
+-                [image2].concat(
+-                  // @ts-expect-error
+-                  [...otherData.slice(4, 8)],
+-                  [...otherData.slice(0, 4)]
+-                )
+-              );
+-            }
+-          }))
+-            return "break";
+-        }();
+-        if (drawImage === "break") {
+-          break;
+-        }
+-      } else {
+-        if (method === "clip") {
+-          data.forEach(function(data_) {
+-            c2d[data_.method].apply(c2d, data_.data);
+-          });
+-          c2d.clip();
++    }
++    function checkImageLoaded(src, actions, resolve, fn) {
++        let image2 = _images[src];
++        if (image2.ready) {
++            fn(image2);
++            return true;
+         } else {
+-          c2d[method].apply(c2d, data);
+-        }
+-      }
+-    }
+-    if (!actionsWaiting.value) {
+-      resolve({
+-        errMsg: "drawCanvas:ok"
+-      });
+-    }
+-  }
+-  function preloadImage(actions) {
+-    actions.forEach(function(action) {
+-      let method = action.method;
+-      let data = action.data;
+-      let src = "";
+-      if (method === "drawImage") {
+-        src = data[0];
+-        src = $getRealPath(src);
+-        data[0] = src;
+-      } else if (method === "setFillStyle" && data[0] === "pattern") {
+-        src = data[1];
+-        src = $getRealPath(src);
+-        data[1] = src;
+-      }
+-      if (src && !_images[src]) {
+-        loadImage();
+-      }
+-      function loadImage() {
+-        const image2 = _images[src] = new Image();
+-        image2.onload = function() {
+-          image2.ready = true;
+-        };
+-        getSameOriginUrl(src).then((src2) => {
+-          image2.src = src2;
+-        }).catch(() => {
+-          image2.src = src;
+-        });
 -      }
 -    });
 -  }
@@ -15363,13 +15378,6 @@ index 3498ec9..ef87180 100644
 -          ;
 -        else {
 -          data = Array.prototype.slice.call(imgData.data);
-+    }
-+    function checkImageLoaded(src, actions, resolve, fn) {
-+        let image2 = _images[src];
-+        if (image2.ready) {
-+            fn(image2);
-+            return true;
-+        } else {
 +            _actionsDefer.unshift([actions, true]);
 +            actionsWaiting.value = true;
 +            image2.onload = function () {
@@ -16456,6 +16464,16 @@ index 3498ec9..ef87180 100644
 -    };
 -  }
 -  callbacks2.push(callback);
+-}
+-function divider(Quill) {
+-  const BlockEmbed = Quill.import("blots/block/embed");
+-  class Divider extends BlockEmbed {
+-  }
+-  Divider.blotName = "divider";
+-  Divider.tagName = "HR";
+-  return {
+-    "formats/divider": Divider
+-  };
 +    const globalObject = isString(globalName) ? window[globalName] : globalName;
 +    if (globalObject) {
 +        callback();
@@ -16473,16 +16491,8 @@ index 3498ec9..ef87180 100644
 +        };
 +    }
 +    callbacks2.push(callback);
- }
- function divider(Quill) {
--  const BlockEmbed = Quill.import("blots/block/embed");
--  class Divider extends BlockEmbed {
--  }
--  Divider.blotName = "divider";
--  Divider.tagName = "HR";
--  return {
--    "formats/divider": Divider
--  };
++}
++function divider(Quill) {
 +    const BlockEmbed = Quill.import("blots/block/embed");
 +    class Divider extends BlockEmbed {
 +    }
@@ -16589,49 +16599,6 @@ index 3498ec9..ef87180 100644
 -        }
 -      };
 -      domNode.addEventListener("click", listEventHandler);
--    }
--    format(name, value) {
--      if (this.children.length > 0) {
--        this.children.tail.format(name, value);
--      }
--    }
--    formats() {
--      return { [this.statics.blotName]: this.statics.formats(this.domNode) };
--    }
--    insertBefore(blot, ref2) {
--      if (blot instanceof ListItem) {
--        super.insertBefore(blot, ref2);
--      } else {
--        const index2 = ref2 == null ? this.length() : ref2.offset(this);
--        const after = this.split(index2);
--        after.parent.insertBefore(blot, after);
--      }
--    }
--    optimize(context) {
--      super.optimize(context);
--      const next = this.next;
--      if (next != null && next.prev === this && next.statics.blotName === this.statics.blotName && next.domNode.tagName === this.domNode.tagName && next.domNode.getAttribute("data-checked") === this.domNode.getAttribute("data-checked")) {
--        next.moveChildren(this);
--        next.remove();
--      }
--    }
--    replace(target) {
--      if (target.statics.blotName !== this.statics.blotName) {
--        const item = Parchment.create(this.statics.defaultChild);
--        target.moveChildren(item);
--        this.appendChild(item);
--      }
--      super.replace(target);
--    }
--  }
--  List.blotName = "list";
--  List.scope = Parchment.Scope.BLOCK_BLOT;
--  List.tagName = ["OL", "UL"];
--  List.defaultChild = "list-item";
--  List.allowedChildren = [ListItem];
--  return {
--    "formats/list": List
--  };
 +    const Parchment = Quill.import("parchment");
 +    const Container = Quill.import("blots/container");
 +    const ListItem = Quill.import("formats/list/item");
@@ -16704,7 +16671,49 @@ index 3498ec9..ef87180 100644
 +            }
 +            super.replace(target);
 +        }
-+    }
+     }
+-    format(name, value) {
+-      if (this.children.length > 0) {
+-        this.children.tail.format(name, value);
+-      }
+-    }
+-    formats() {
+-      return { [this.statics.blotName]: this.statics.formats(this.domNode) };
+-    }
+-    insertBefore(blot, ref2) {
+-      if (blot instanceof ListItem) {
+-        super.insertBefore(blot, ref2);
+-      } else {
+-        const index2 = ref2 == null ? this.length() : ref2.offset(this);
+-        const after = this.split(index2);
+-        after.parent.insertBefore(blot, after);
+-      }
+-    }
+-    optimize(context) {
+-      super.optimize(context);
+-      const next = this.next;
+-      if (next != null && next.prev === this && next.statics.blotName === this.statics.blotName && next.domNode.tagName === this.domNode.tagName && next.domNode.getAttribute("data-checked") === this.domNode.getAttribute("data-checked")) {
+-        next.moveChildren(this);
+-        next.remove();
+-      }
+-    }
+-    replace(target) {
+-      if (target.statics.blotName !== this.statics.blotName) {
+-        const item = Parchment.create(this.statics.defaultChild);
+-        target.moveChildren(item);
+-        this.appendChild(item);
+-      }
+-      super.replace(target);
+-    }
+-  }
+-  List.blotName = "list";
+-  List.scope = Parchment.Scope.BLOCK_BLOT;
+-  List.tagName = ["OL", "UL"];
+-  List.defaultChild = "list-item";
+-  List.allowedChildren = [ListItem];
+-  return {
+-    "formats/list": List
+-  };
 +    List.blotName = "list";
 +    List.scope = Parchment.Scope.BLOCK_BLOT;
 +    List.tagName = ["OL", "UL"];
@@ -18220,8 +18229,12 @@ index 3498ec9..ef87180 100644
 -    num = Math.round(num / 2) * 2;
 -  }
 -  return num;
--}
--function useImageSize(rootRef, props2, state2) {
++    if (isChrome && num > 10) {
++        num = Math.round(num / 2) * 2;
++    }
++    return num;
+ }
+ function useImageSize(rootRef, props2, state2) {
 -  const fixSize = () => {
 -    const {
 -      mode: mode2
@@ -18229,9 +18242,7 @@ index 3498ec9..ef87180 100644
 -    const names = FIX_MODES[mode2];
 -    if (!names) {
 -      return;
-+    if (isChrome && num > 10) {
-+        num = Math.round(num / 2) * 2;
-     }
+-    }
 -    const {
 -      origWidth,
 -      origHeight
@@ -18271,20 +18282,6 @@ index 3498ec9..ef87180 100644
 -    fixSize,
 -    resetSize
 -  };
-+    return num;
- }
--function throttle(fn, wait) {
--  let last = 0;
--  let timeout;
--  let waitCallback;
--  const newFn = function(...arg) {
--    const now = Date.now();
--    clearTimeout(timeout);
--    waitCallback = () => {
--      waitCallback = null;
--      last = now;
--      fn.apply(this, arg);
-+function useImageSize(rootRef, props2, state2) {
 +    const fixSize = () => {
 +        const {
 +            mode: mode2
@@ -18306,23 +18303,7 @@ index 3498ec9..ef87180 100644
 +        if (value) {
 +            rootEl.style[names[1]] = fixNumber(names[2](value, ratio)) + "px";
 +        }
-     };
--    if (now - last < wait) {
--      timeout = setTimeout(waitCallback, wait - (now - last));
--      return;
--    }
--    waitCallback();
--  };
--  newFn.cancel = function() {
--    clearTimeout(timeout);
--    waitCallback = null;
--  };
--  newFn.flush = function() {
--    clearTimeout(timeout);
--    waitCallback && waitCallback();
--  };
--  return newFn;
--}
++    };
 +    const resetSize = () => {
 +        const {
 +            style
@@ -18348,8 +18329,18 @@ index 3498ec9..ef87180 100644
 +        fixSize,
 +        resetSize
 +    };
-+}
-+function throttle(fn, wait) {
+ }
+ function throttle(fn, wait) {
+-  let last = 0;
+-  let timeout;
+-  let waitCallback;
+-  const newFn = function(...arg) {
+-    const now = Date.now();
+-    clearTimeout(timeout);
+-    waitCallback = () => {
+-      waitCallback = null;
+-      last = now;
+-      fn.apply(this, arg);
 +    let last = 0;
 +    let timeout;
 +    let waitCallback;
@@ -18370,16 +18361,31 @@ index 3498ec9..ef87180 100644
 +    newFn.cancel = function () {
 +        clearTimeout(timeout);
 +        waitCallback = null;
-+    };
+     };
+-    if (now - last < wait) {
+-      timeout = setTimeout(waitCallback, wait - (now - last));
+-      return;
+-    }
+-    waitCallback();
+-  };
+-  newFn.cancel = function() {
+-    clearTimeout(timeout);
+-    waitCallback = null;
+-  };
+-  newFn.flush = function() {
+-    clearTimeout(timeout);
+-    waitCallback && waitCallback();
+-  };
+-  return newFn;
 +    newFn.flush = function () {
 +        clearTimeout(timeout);
 +        waitCallback && waitCallback();
 +    };
 +    return newFn;
-+}
+ }
  const passiveOptions$1 = /* @__PURE__ */ passive(true);
  const states = [];
- let userInteract = 0;
+@@ -9940,8212 +9942,8212 @@ let userInteract = 0;
  let inited = false;
  const setUserAction = (userAction) => states.forEach((vm) => vm.userAction = userAction);
  function addInteractListener(vm = { userAction: false }) {
@@ -19504,6 +19510,84 @@ index 3498ec9..ef87180 100644
 -          state22.value = input.value;
 -          const modelValue = props2.modelValue !== void 0 && props2.modelValue !== null ? props2.modelValue.toString() : "";
 -          return modelValue !== input.value;
+-        }
+-      }
+-    });
+-    watch(() => state2.value, (value) => {
+-      if (props2.type === "number" && !(cache.value === "-" && value === "")) {
+-        cache.value = value.toString();
+-      }
+-    });
+-    const NUMBER_TYPES = ["number", "digit"];
+-    const step = computed(() => NUMBER_TYPES.includes(props2.type) ? props2.step : "");
+-    function onKeyUpEnter(event) {
+-      if (event.key !== "Enter") {
+-        return;
+-      }
+-      const input = event.target;
+-      event.stopPropagation();
+-      trigger("confirm", event, {
+-        value: input.value
+-      });
+-      !props2.confirmHold && input.blur();
+-    }
+-    expose({
+-      $triggerInput: (detail) => {
+-        emit2("update:modelValue", detail.value);
+-        emit2("update:value", detail.value);
+-        state2.value = detail.value;
+-      }
+-    });
+-    return () => {
+-      let inputNode = props2.disabled && fixDisabledColor ? createVNode("input", {
+-        "key": "disabled-input",
+-        "ref": fieldRef,
+-        "value": state2.value,
+-        "tabindex": "-1",
+-        "readonly": !!props2.disabled,
+-        "type": type.value,
+-        "maxlength": state2.maxlength,
+-        "step": step.value,
+-        "class": "uni-input-input",
+-        "style": props2.cursorColor ? {
+-          caretColor: props2.cursorColor
+-        } : {},
+-        "onFocus": (event) => event.target.blur()
+-      }, null, 44, ["value", "readonly", "type", "maxlength", "step", "onFocus"]) : createVNode("input", {
+-        "key": "input",
+-        "ref": fieldRef,
+-        "value": state2.value,
+-        "onInput": (event) => {
+-          state2.value = event.target.value.toString();
+-        },
+-        "disabled": !!props2.disabled,
+-        "type": type.value,
+-        "maxlength": state2.maxlength,
+-        "step": step.value,
+-        "enterkeyhint": props2.confirmType,
+-        "pattern": props2.type === "number" ? "[0-9]*" : void 0,
+-        "class": "uni-input-input",
+-        "style": props2.cursorColor ? {
+-          caretColor: props2.cursorColor
+-        } : {},
+-        "autocomplete": autocomplete.value,
+-        "onKeyup": onKeyUpEnter,
+-        "inputmode": props2.inputmode
+-      }, null, 44, ["value", "onInput", "disabled", "type", "maxlength", "step", "enterkeyhint", "pattern", "autocomplete", "onKeyup", "inputmode"]);
+-      return createVNode("uni-input", {
+-        "ref": rootRef
+-      }, [createVNode("div", {
+-        "class": "uni-input-wrapper"
+-      }, [withDirectives(createVNode("div", mergeProps(scopedAttrsState.attrs, {
+-        "style": props2.placeholderStyle,
+-        "class": ["uni-input-placeholder", props2.placeholderClass]
+-      }), [props2.placeholder], 16), [[vShow, !(state2.value.length || cache.value === "-" || cache.value.includes("."))]]), props2.confirmType === "search" ? createVNode("form", {
+-        "action": "",
+-        "onSubmit": (event) => event.preventDefault(),
+-        "class": "uni-input-form"
+-      }, [inputNode], 40, ["onSubmit"]) : inputNode])], 512);
+-    };
+-  }
 +    name: "Input",
 +    props: props$q,
 +    emits: ["confirm", ...emit],
@@ -19605,84 +19689,7 @@ index 3498ec9..ef87180 100644
 +                value: input.value
 +            });
 +            !props2.confirmHold && input.blur();
-         }
--      }
--    });
--    watch(() => state2.value, (value) => {
--      if (props2.type === "number" && !(cache.value === "-" && value === "")) {
--        cache.value = value.toString();
--      }
--    });
--    const NUMBER_TYPES = ["number", "digit"];
--    const step = computed(() => NUMBER_TYPES.includes(props2.type) ? props2.step : "");
--    function onKeyUpEnter(event) {
--      if (event.key !== "Enter") {
--        return;
--      }
--      const input = event.target;
--      event.stopPropagation();
--      trigger("confirm", event, {
--        value: input.value
--      });
--      !props2.confirmHold && input.blur();
--    }
--    expose({
--      $triggerInput: (detail) => {
--        emit2("update:modelValue", detail.value);
--        emit2("update:value", detail.value);
--        state2.value = detail.value;
--      }
--    });
--    return () => {
--      let inputNode = props2.disabled && fixDisabledColor ? createVNode("input", {
--        "key": "disabled-input",
--        "ref": fieldRef,
--        "value": state2.value,
--        "tabindex": "-1",
--        "readonly": !!props2.disabled,
--        "type": type.value,
--        "maxlength": state2.maxlength,
--        "step": step.value,
--        "class": "uni-input-input",
--        "style": props2.cursorColor ? {
--          caretColor: props2.cursorColor
--        } : {},
--        "onFocus": (event) => event.target.blur()
--      }, null, 44, ["value", "readonly", "type", "maxlength", "step", "onFocus"]) : createVNode("input", {
--        "key": "input",
--        "ref": fieldRef,
--        "value": state2.value,
--        "onInput": (event) => {
--          state2.value = event.target.value.toString();
--        },
--        "disabled": !!props2.disabled,
--        "type": type.value,
--        "maxlength": state2.maxlength,
--        "step": step.value,
--        "enterkeyhint": props2.confirmType,
--        "pattern": props2.type === "number" ? "[0-9]*" : void 0,
--        "class": "uni-input-input",
--        "style": props2.cursorColor ? {
--          caretColor: props2.cursorColor
--        } : {},
--        "autocomplete": autocomplete.value,
--        "onKeyup": onKeyUpEnter,
--        "inputmode": props2.inputmode
--      }, null, 44, ["value", "onInput", "disabled", "type", "maxlength", "step", "enterkeyhint", "pattern", "autocomplete", "onKeyup", "inputmode"]);
--      return createVNode("uni-input", {
--        "ref": rootRef
--      }, [createVNode("div", {
--        "class": "uni-input-wrapper"
--      }, [withDirectives(createVNode("div", mergeProps(scopedAttrsState.attrs, {
--        "style": props2.placeholderStyle,
--        "class": ["uni-input-placeholder", props2.placeholderClass]
--      }), [props2.placeholder], 16), [[vShow, !(state2.value.length || cache.value === "-" || cache.value.includes("."))]]), props2.confirmType === "search" ? createVNode("form", {
--        "action": "",
--        "onSubmit": (event) => event.preventDefault(),
--        "class": "uni-input-form"
--      }, [inputNode], 40, ["onSubmit"]) : inputNode])], 512);
--    };
--  }
++        }
 +        expose({
 +            $triggerInput: (detail) => {
 +                emit2("update:modelValue", detail.value);
@@ -20826,13 +20833,13 @@ index 3498ec9..ef87180 100644
 -      return t3 * (g2 * p2 * n2 - v2 * p2 * i2) + f2 * t3 * (g2 * i2 + v2 * n2);
 -    }
 -  };
- };
+-};
 -Spring$1.prototype.x = function(e2) {
 -  if (void 0 === e2) {
 -    e2 = ((/* @__PURE__ */ new Date()).getTime() - this._startTime) / 1e3;
 -  }
 -  return this._solution ? this._endPosition + this._solution.x(e2) : 0;
--};
+ };
 -Spring$1.prototype.dx = function(e2) {
 -  if (void 0 === e2) {
 -    e2 = ((/* @__PURE__ */ new Date()).getTime() - this._startTime) / 1e3;
@@ -20987,11 +20994,11 @@ index 3498ec9..ef87180 100644
 +Spring$1.prototype.configuration = function () {
 +    function e2(e3, t3) {
 +        e3.reconfigure(1, t3, e3.damping());
-+    }
-+    function t2(e3, t3) {
-+        e3.reconfigure(1, e3.springConstant(), t3);
      }
 -  ];
++    function t2(e3, t3) {
++        e3.reconfigure(1, e3.springConstant(), t3);
++    }
 +    return [
 +        {
 +            label: "Spring Constant",
@@ -21117,6 +21124,41 @@ index 3498ec9..ef87180 100644
 -    type: [Boolean, String],
 -    default: true
 -  }
+-};
+-function v(a2, b) {
+-  return +((1e3 * a2 - 1e3 * b) / 1e3).toFixed(1);
+-}
+-const MovableView = /* @__PURE__ */ defineBuiltInComponent({
+-  name: "MovableView",
+-  props: movableViewProps,
+-  emits: ["change", "scale"],
+-  setup(props2, {
+-    slots,
+-    emit: emit2
+-  }) {
+-    const rootRef = ref(null);
+-    const trigger = useCustomEvent(rootRef, emit2);
+-    const {
+-      setParent
+-    } = useMovableViewState(props2, trigger, rootRef);
+-    return () => {
+-      return createVNode("uni-movable-view", {
+-        "ref": rootRef
+-      }, [createVNode(ResizeSensor, {
+-        "onResize": setParent
+-      }, null, 8, ["onResize"]), slots.default && slots.default()], 512);
+-    };
+-  }
+-});
+-let requesting = false;
+-function _requestAnimationFrame(e2) {
+-  if (!requesting) {
+-    requesting = true;
+-    requestAnimationFrame(function() {
+-      e2();
+-      requesting = false;
+-    });
+-  }
 +    direction: {
 +        type: String,
 +        default: "none"
@@ -21169,32 +21211,11 @@ index 3498ec9..ef87180 100644
 +        type: [Boolean, String],
 +        default: true
 +    }
- };
- function v(a2, b) {
--  return +((1e3 * a2 - 1e3 * b) / 1e3).toFixed(1);
++};
++function v(a2, b) {
 +    return +((1e3 * a2 - 1e3 * b) / 1e3).toFixed(1);
- }
- const MovableView = /* @__PURE__ */ defineBuiltInComponent({
--  name: "MovableView",
--  props: movableViewProps,
--  emits: ["change", "scale"],
--  setup(props2, {
--    slots,
--    emit: emit2
--  }) {
--    const rootRef = ref(null);
--    const trigger = useCustomEvent(rootRef, emit2);
--    const {
--      setParent
--    } = useMovableViewState(props2, trigger, rootRef);
--    return () => {
--      return createVNode("uni-movable-view", {
--        "ref": rootRef
--      }, [createVNode(ResizeSensor, {
--        "onResize": setParent
--      }, null, 8, ["onResize"]), slots.default && slots.default()], 512);
--    };
--  }
++}
++const MovableView = /* @__PURE__ */ defineBuiltInComponent({
 +    name: "MovableView",
 +    props: movableViewProps,
 +    emits: ["change", "scale"],
@@ -21215,16 +21236,9 @@ index 3498ec9..ef87180 100644
 +            }, null, 8, ["onResize"]), slots.default && slots.default()], 512);
 +        };
 +    }
- });
- let requesting = false;
- function _requestAnimationFrame(e2) {
--  if (!requesting) {
--    requesting = true;
--    requestAnimationFrame(function() {
--      e2();
--      requesting = false;
--    });
--  }
++});
++let requesting = false;
++function _requestAnimationFrame(e2) {
 +    if (!requesting) {
 +        requesting = true;
 +        requestAnimationFrame(function () {
@@ -21251,13 +21265,12 @@ index 3498ec9..ef87180 100644
 -  }
 -  let i = t2.offsetTop;
 -  return t2.offsetParent ? i += f(t2.offsetParent, n) : 0;
--}
 +    if (t2 === n) {
 +        return 0;
 +    }
 +    let i = t2.offsetTop;
 +    return t2.offsetParent ? i += f(t2.offsetParent, n) : 0;
-+}
+ }
  function g(friction, execute, endCallback) {
 -  let record = {
 -    id: 0,
@@ -22860,13 +22873,13 @@ index 3498ec9..ef87180 100644
 +        validator: function (val) {
 +            return isArray(val) && val.filter((val2) => typeof val2 === "number").length === val.length;
 +        }
-+    },
-+    indicatorStyle: {
-+        type: String,
-+        default: ""
      },
 -    validator: function(val) {
 -      return isArray(val) && val.filter((val2) => typeof val2 === "number").length === val.length;
++    indicatorStyle: {
++        type: String,
++        default: ""
++    },
 +    indicatorClass: {
 +        type: String,
 +        default: ""
@@ -23027,66 +23040,6 @@ index 3498ec9..ef87180 100644
 -      }, [defaultSlots], 512)], 512);
 -    };
 -  }
--});
--class Friction {
--  constructor(drag) {
--    this._drag = drag;
--    this._dragLog = Math.log(drag);
--    this._x = 0;
--    this._v = 0;
--    this._startTime = 0;
--  }
--  set(x, v2) {
--    this._x = x;
--    this._v = v2;
--    this._startTime = (/* @__PURE__ */ new Date()).getTime();
--  }
--  setVelocityByEnd(e2) {
--    this._v = (e2 - this._x) * this._dragLog / (Math.pow(this._drag, 100) - 1);
--  }
--  x(e2) {
--    if (e2 === void 0) {
--      e2 = ((/* @__PURE__ */ new Date()).getTime() - this._startTime) / 1e3;
--    }
--    const t2 = e2 === this._dt && this._powDragDt ? this._powDragDt : this._powDragDt = Math.pow(this._drag, e2);
--    this._dt = e2;
--    return this._x + this._v * t2 / this._dragLog - this._v / this._dragLog;
--  }
--  dx(e2) {
--    if (e2 === void 0) {
--      e2 = ((/* @__PURE__ */ new Date()).getTime() - this._startTime) / 1e3;
--    }
--    const t2 = e2 === this._dt && this._powDragDt ? this._powDragDt : this._powDragDt = Math.pow(this._drag, e2);
--    this._dt = e2;
--    return this._v * t2;
--  }
--  done() {
--    return Math.abs(this.dx()) < 3;
--  }
--  reconfigure(e2) {
--    const t2 = this.x();
--    const n = this.dx();
--    this._drag = e2;
--    this._dragLog = Math.log(e2);
--    this.set(t2, n);
--  }
--  configuration() {
--    const e2 = this;
--    return [
--      {
--        label: "Friction",
--        read: function() {
--          return e2._drag;
--        },
--        write: function(t2) {
--          e2.reconfigure(t2);
--        },
--        min: 1e-3,
--        max: 0.1,
--        step: 1e-3
--      }
--    ];
--  }
 +        let ColumnsPreRef = ref([]);
 +        let columnsRef = ref([]);
 +        function getItemIndex(vnode) {
@@ -23146,8 +23099,66 @@ index 3498ec9..ef87180 100644
 +            }, [defaultSlots], 512)], 512);
 +        };
 +    }
-+});
-+class Friction {
+ });
+ class Friction {
+-  constructor(drag) {
+-    this._drag = drag;
+-    this._dragLog = Math.log(drag);
+-    this._x = 0;
+-    this._v = 0;
+-    this._startTime = 0;
+-  }
+-  set(x, v2) {
+-    this._x = x;
+-    this._v = v2;
+-    this._startTime = (/* @__PURE__ */ new Date()).getTime();
+-  }
+-  setVelocityByEnd(e2) {
+-    this._v = (e2 - this._x) * this._dragLog / (Math.pow(this._drag, 100) - 1);
+-  }
+-  x(e2) {
+-    if (e2 === void 0) {
+-      e2 = ((/* @__PURE__ */ new Date()).getTime() - this._startTime) / 1e3;
+-    }
+-    const t2 = e2 === this._dt && this._powDragDt ? this._powDragDt : this._powDragDt = Math.pow(this._drag, e2);
+-    this._dt = e2;
+-    return this._x + this._v * t2 / this._dragLog - this._v / this._dragLog;
+-  }
+-  dx(e2) {
+-    if (e2 === void 0) {
+-      e2 = ((/* @__PURE__ */ new Date()).getTime() - this._startTime) / 1e3;
+-    }
+-    const t2 = e2 === this._dt && this._powDragDt ? this._powDragDt : this._powDragDt = Math.pow(this._drag, e2);
+-    this._dt = e2;
+-    return this._v * t2;
+-  }
+-  done() {
+-    return Math.abs(this.dx()) < 3;
+-  }
+-  reconfigure(e2) {
+-    const t2 = this.x();
+-    const n = this.dx();
+-    this._drag = e2;
+-    this._dragLog = Math.log(e2);
+-    this.set(t2, n);
+-  }
+-  configuration() {
+-    const e2 = this;
+-    return [
+-      {
+-        label: "Friction",
+-        read: function() {
+-          return e2._drag;
+-        },
+-        write: function(t2) {
+-          e2.reconfigure(t2);
+-        },
+-        min: 1e-3,
+-        max: 0.1,
+-        step: 1e-3
+-      }
+-    ];
+-  }
 +    constructor(drag) {
 +        this._drag = drag;
 +        this._dragLog = Math.log(drag);
@@ -24347,76 +24358,7 @@ index 3498ec9..ef87180 100644
 -    handleTouchMove,
 -    handleTouchEnd
 -  };
--}
--function useCustomClick(dom) {
--  const MAX_MOVE = 20;
--  let x = 0;
--  let y = 0;
--  dom.addEventListener("touchstart", (event) => {
--    const info = event.changedTouches[0];
--    x = info.clientX;
--    y = info.clientY;
--  });
--  dom.addEventListener("touchend", (event) => {
--    const info = event.changedTouches[0];
--    if (Math.abs(info.clientX - x) < MAX_MOVE && Math.abs(info.clientY - y) < MAX_MOVE) {
--      const options = {
--        bubbles: true,
--        cancelable: true,
--        target: event.target,
--        currentTarget: event.currentTarget
--      };
--      const customClick = new CustomEvent("click", options);
--      const props2 = ["screenX", "screenY", "clientX", "clientY", "pageX", "pageY"];
--      props2.forEach((key) => {
--        customClick[key] = info[key];
--      });
--      event.target.dispatchEvent(customClick);
--    }
--  });
--}
--const PickerViewColumn = /* @__PURE__ */ defineBuiltInComponent({
--  name: "PickerViewColumn",
--  setup(props2, {
--    slots,
--    emit: emit2
--  }) {
--    const rootRef = ref(null);
--    const contentRef = ref(null);
--    const getPickerViewColumn = inject("getPickerViewColumn");
--    const instance2 = getCurrentInstance();
--    const currentRef = getPickerViewColumn ? getPickerViewColumn(instance2) : ref(0);
--    const pickerViewProps2 = inject("pickerViewProps");
--    const pickerViewState = inject("pickerViewState");
--    const indicatorHeight = ref(34);
--    const resizeSensorRef = ref(null);
--    const initIndicatorHeight = () => {
--      const resizeSensor = resizeSensorRef.value;
--      indicatorHeight.value = resizeSensor.$el.offsetHeight;
--    };
--    {
--      onMounted(initIndicatorHeight);
-     }
--    const maskSize = computed(() => (pickerViewState.height - indicatorHeight.value) / 2);
--    const {
--      state: scopedAttrsState
--    } = useScopedAttrs();
--    let scroller;
--    const state2 = reactive({
--      current: currentRef.value,
--      length: 0
--    });
--    let updatesScrollerRequest;
--    function updatesScroller() {
--      if (scroller && !updatesScrollerRequest) {
--        updatesScrollerRequest = true;
--        nextTick(() => {
--          updatesScrollerRequest = false;
--          let current = Math.min(state2.current, state2.length - 1);
--          current = Math.max(current, 0);
--          scroller.update(current * indicatorHeight.value, void 0, indicatorHeight.value);
--        });
--      }
++    }
 +    function handleTouchStart(event) {
 +        const touchtrackEvent = event;
 +        const mouseEvent = event;
@@ -24463,50 +24405,7 @@ index 3498ec9..ef87180 100644
 +                }
 +            }
 +        }
-     }
--    watch(() => currentRef.value, (current) => {
--      if (current !== state2.current) {
--        state2.current = current;
--        updatesScroller();
--      }
--    });
--    watch(() => state2.current, (current) => currentRef.value = current);
--    watch([() => indicatorHeight.value, () => state2.length, () => pickerViewState.height], updatesScroller);
--    let oldDeltaY = 0;
--    function handleWheel(event) {
--      const deltaY = oldDeltaY + event.deltaY;
--      if (Math.abs(deltaY) > 10) {
--        oldDeltaY = 0;
--        let current = Math.min(state2.current + (deltaY < 0 ? -1 : 1), state2.length - 1);
--        state2.current = current = Math.max(current, 0);
--        scroller.scrollTo(current * indicatorHeight.value);
--      } else {
--        oldDeltaY = deltaY;
--      }
--      event.preventDefault();
--    }
--    function handleTap({
--      clientY
--    }) {
--      const el = rootRef.value;
--      if (!scroller.isScrolling()) {
--        const rect = el.getBoundingClientRect();
--        const r = clientY - rect.top - pickerViewState.height / 2;
--        const o2 = indicatorHeight.value / 2;
--        if (!(Math.abs(r) <= o2)) {
--          const a2 = Math.ceil((Math.abs(r) - o2) / indicatorHeight.value);
--          const s = r < 0 ? -a2 : a2;
--          let current = Math.min(state2.current + s, state2.length - 1);
--          state2.current = current = Math.max(current, 0);
--          scroller.scrollTo(current * indicatorHeight.value);
--        }
--      }
--    }
--    const initScroller = () => {
--      const el = rootRef.value;
--      const content = contentRef.value;
--      const {
--        scroller: scrollerOrigin,
++    }
 +    function handleTouchEnd(event) {
 +        if (touchInfo.trackingID !== -1) {
 +            event.preventDefault();
@@ -24543,9 +24442,156 @@ index 3498ec9..ef87180 100644
 +    }
 +    return {
 +        scroller,
-         handleTouchStart,
-         handleTouchMove,
-         handleTouchEnd
++        handleTouchStart,
++        handleTouchMove,
++        handleTouchEnd
++    };
+ }
+ function useCustomClick(dom) {
+-  const MAX_MOVE = 20;
+-  let x = 0;
+-  let y = 0;
+-  dom.addEventListener("touchstart", (event) => {
+-    const info = event.changedTouches[0];
+-    x = info.clientX;
+-    y = info.clientY;
+-  });
+-  dom.addEventListener("touchend", (event) => {
+-    const info = event.changedTouches[0];
+-    if (Math.abs(info.clientX - x) < MAX_MOVE && Math.abs(info.clientY - y) < MAX_MOVE) {
+-      const options = {
+-        bubbles: true,
+-        cancelable: true,
+-        target: event.target,
+-        currentTarget: event.currentTarget
+-      };
+-      const customClick = new CustomEvent("click", options);
+-      const props2 = ["screenX", "screenY", "clientX", "clientY", "pageX", "pageY"];
+-      props2.forEach((key) => {
+-        customClick[key] = info[key];
+-      });
+-      event.target.dispatchEvent(customClick);
+-    }
+-  });
++    const MAX_MOVE = 20;
++    let x = 0;
++    let y = 0;
++    dom.addEventListener("touchstart", (event) => {
++        const info = event.changedTouches[0];
++        x = info.clientX;
++        y = info.clientY;
++    });
++    dom.addEventListener("touchend", (event) => {
++        const info = event.changedTouches[0];
++        if (Math.abs(info.clientX - x) < MAX_MOVE && Math.abs(info.clientY - y) < MAX_MOVE) {
++            const options = {
++                bubbles: true,
++                cancelable: true,
++                target: event.target,
++                currentTarget: event.currentTarget
++            };
++            const customClick = new CustomEvent("click", options);
++            const props2 = ["screenX", "screenY", "clientX", "clientY", "pageX", "pageY"];
++            props2.forEach((key) => {
++                customClick[key] = info[key];
++            });
++            event.target.dispatchEvent(customClick);
++        }
++    });
+ }
+ const PickerViewColumn = /* @__PURE__ */ defineBuiltInComponent({
+-  name: "PickerViewColumn",
+-  setup(props2, {
+-    slots,
+-    emit: emit2
+-  }) {
+-    const rootRef = ref(null);
+-    const contentRef = ref(null);
+-    const getPickerViewColumn = inject("getPickerViewColumn");
+-    const instance2 = getCurrentInstance();
+-    const currentRef = getPickerViewColumn ? getPickerViewColumn(instance2) : ref(0);
+-    const pickerViewProps2 = inject("pickerViewProps");
+-    const pickerViewState = inject("pickerViewState");
+-    const indicatorHeight = ref(34);
+-    const resizeSensorRef = ref(null);
+-    const initIndicatorHeight = () => {
+-      const resizeSensor = resizeSensorRef.value;
+-      indicatorHeight.value = resizeSensor.$el.offsetHeight;
+-    };
+-    {
+-      onMounted(initIndicatorHeight);
+-    }
+-    const maskSize = computed(() => (pickerViewState.height - indicatorHeight.value) / 2);
+-    const {
+-      state: scopedAttrsState
+-    } = useScopedAttrs();
+-    let scroller;
+-    const state2 = reactive({
+-      current: currentRef.value,
+-      length: 0
+-    });
+-    let updatesScrollerRequest;
+-    function updatesScroller() {
+-      if (scroller && !updatesScrollerRequest) {
+-        updatesScrollerRequest = true;
+-        nextTick(() => {
+-          updatesScrollerRequest = false;
+-          let current = Math.min(state2.current, state2.length - 1);
+-          current = Math.max(current, 0);
+-          scroller.update(current * indicatorHeight.value, void 0, indicatorHeight.value);
+-        });
+-      }
+-    }
+-    watch(() => currentRef.value, (current) => {
+-      if (current !== state2.current) {
+-        state2.current = current;
+-        updatesScroller();
+-      }
+-    });
+-    watch(() => state2.current, (current) => currentRef.value = current);
+-    watch([() => indicatorHeight.value, () => state2.length, () => pickerViewState.height], updatesScroller);
+-    let oldDeltaY = 0;
+-    function handleWheel(event) {
+-      const deltaY = oldDeltaY + event.deltaY;
+-      if (Math.abs(deltaY) > 10) {
+-        oldDeltaY = 0;
+-        let current = Math.min(state2.current + (deltaY < 0 ? -1 : 1), state2.length - 1);
+-        state2.current = current = Math.max(current, 0);
+-        scroller.scrollTo(current * indicatorHeight.value);
+-      } else {
+-        oldDeltaY = deltaY;
+-      }
+-      event.preventDefault();
+-    }
+-    function handleTap({
+-      clientY
++    name: "PickerViewColumn",
++    setup(props2, {
++        slots,
++        emit: emit2
+     }) {
+-      const el = rootRef.value;
+-      if (!scroller.isScrolling()) {
+-        const rect = el.getBoundingClientRect();
+-        const r = clientY - rect.top - pickerViewState.height / 2;
+-        const o2 = indicatorHeight.value / 2;
+-        if (!(Math.abs(r) <= o2)) {
+-          const a2 = Math.ceil((Math.abs(r) - o2) / indicatorHeight.value);
+-          const s = r < 0 ? -a2 : a2;
+-          let current = Math.min(state2.current + s, state2.length - 1);
+-          state2.current = current = Math.max(current, 0);
+-          scroller.scrollTo(current * indicatorHeight.value);
+-        }
+-      }
+-    }
+-    const initScroller = () => {
+-      const el = rootRef.value;
+-      const content = contentRef.value;
+-      const {
+-        scroller: scrollerOrigin,
+-        handleTouchStart,
+-        handleTouchMove,
+-        handleTouchEnd
 -      } = useScroller(content, {
 -        enableY: true,
 -        enableX: false,
@@ -24572,7 +24618,22 @@ index 3498ec9..ef87180 100644
 -          case "end":
 -          case "cancel":
 -            handleTouchEnd(e2);
--        }
++        const rootRef = ref(null);
++        const contentRef = ref(null);
++        const getPickerViewColumn = inject("getPickerViewColumn");
++        const instance2 = getCurrentInstance();
++        const currentRef = getPickerViewColumn ? getPickerViewColumn(instance2) : ref(0);
++        const pickerViewProps2 = inject("pickerViewProps");
++        const pickerViewState = inject("pickerViewState");
++        const indicatorHeight = ref(34);
++        const resizeSensorRef = ref(null);
++        const initIndicatorHeight = () => {
++            const resizeSensor = resizeSensorRef.value;
++            indicatorHeight.value = resizeSensor.$el.offsetHeight;
++        };
++        {
++            onMounted(initIndicatorHeight);
+         }
 -      }, true);
 -      useCustomClick(el);
 -      updatesScroller();
@@ -24609,159 +24670,6 @@ index 3498ec9..ef87180 100644
 -        "style": {
 -          padding,
 -          "--picker-view-column-indicator-height": `${indicatorHeight.value}px`
--        }
--      }, [defaultSlots], 4)], 40, ["onWheel", "onClick"])], 512);
-     };
--  }
--});
--const FONT_SIZE = 16;
--const PROGRESS_VALUES = {
--  activeColor: PRIMARY_COLOR,
--  backgroundColor: "#EBEBEB",
--  activeMode: "backwards"
--};
--const progressProps = {
--  percent: {
--    type: [Number, String],
--    default: 0,
--    validator(value) {
--      return !isNaN(parseFloat(value));
--    }
--  },
--  fontSize: {
--    type: [String, Number],
--    default: FONT_SIZE
--  },
--  showInfo: {
--    type: [Boolean, String],
--    default: false
--  },
--  strokeWidth: {
--    type: [Number, String],
--    default: 6,
--    validator(value) {
--      return !isNaN(parseFloat(value));
--    }
--  },
--  color: {
--    type: String,
--    default: PROGRESS_VALUES.activeColor
--  },
--  activeColor: {
--    type: String,
--    default: PROGRESS_VALUES.activeColor
--  },
--  backgroundColor: {
--    type: String,
--    default: PROGRESS_VALUES.backgroundColor
--  },
--  active: {
--    type: [Boolean, String],
--    default: false
--  },
--  activeMode: {
--    type: String,
--    default: PROGRESS_VALUES.activeMode
--  },
--  duration: {
--    type: [Number, String],
--    default: 30,
--    validator(value) {
--      return !isNaN(parseFloat(value));
--    }
--  },
--  borderRadius: {
--    type: [Number, String],
--    default: 0
--  }
--};
--const index$o = /* @__PURE__ */ defineBuiltInComponent({
--  name: "Progress",
--  props: progressProps,
--  setup(props2) {
--    const rootRef = ref(null);
--    const state2 = useProgressState(props2);
--    _activeAnimation(state2, props2);
--    watch(() => state2.realPercent, (newValue, oldValue) => {
--      state2.strokeTimer && clearInterval(state2.strokeTimer);
--      state2.lastPercent = oldValue || 0;
--      _activeAnimation(state2, props2);
-+}
-+function useCustomClick(dom) {
-+    const MAX_MOVE = 20;
-+    let x = 0;
-+    let y = 0;
-+    dom.addEventListener("touchstart", (event) => {
-+        const info = event.changedTouches[0];
-+        x = info.clientX;
-+        y = info.clientY;
-     });
--    return () => {
--      const {
--        showInfo
--      } = props2;
--      const {
--        outerBarStyle,
--        innerBarStyle,
--        currentPercent
--      } = state2;
--      return createVNode("uni-progress", {
--        "class": "uni-progress",
--        "ref": rootRef
--      }, [createVNode("div", {
--        "style": outerBarStyle,
--        "class": "uni-progress-bar"
--      }, [createVNode("div", {
--        "style": innerBarStyle,
--        "class": "uni-progress-inner-bar"
--      }, null, 4)], 4), showInfo ? (
--        // {currentPercent}% 的写法会影响 SSR Hydration (tsx插件的问题)
--        createVNode("p", {
--          "class": "uni-progress-info"
--        }, [currentPercent + "%"])
--      ) : ""], 512);
--    };
--  }
-+    dom.addEventListener("touchend", (event) => {
-+        const info = event.changedTouches[0];
-+        if (Math.abs(info.clientX - x) < MAX_MOVE && Math.abs(info.clientY - y) < MAX_MOVE) {
-+            const options = {
-+                bubbles: true,
-+                cancelable: true,
-+                target: event.target,
-+                currentTarget: event.currentTarget
-+            };
-+            const customClick = new CustomEvent("click", options);
-+            const props2 = ["screenX", "screenY", "clientX", "clientY", "pageX", "pageY"];
-+            props2.forEach((key) => {
-+                customClick[key] = info[key];
-+            });
-+            event.target.dispatchEvent(customClick);
-+        }
-+    });
-+}
-+const PickerViewColumn = /* @__PURE__ */ defineBuiltInComponent({
-+    name: "PickerViewColumn",
-+    setup(props2, {
-+        slots,
-+        emit: emit2
-+    }) {
-+        const rootRef = ref(null);
-+        const contentRef = ref(null);
-+        const getPickerViewColumn = inject("getPickerViewColumn");
-+        const instance2 = getCurrentInstance();
-+        const currentRef = getPickerViewColumn ? getPickerViewColumn(instance2) : ref(0);
-+        const pickerViewProps2 = inject("pickerViewProps");
-+        const pickerViewState = inject("pickerViewState");
-+        const indicatorHeight = ref(34);
-+        const resizeSensorRef = ref(null);
-+        const initIndicatorHeight = () => {
-+            const resizeSensor = resizeSensorRef.value;
-+            indicatorHeight.value = resizeSensor.$el.offsetHeight;
-+        };
-+        {
-+            onMounted(initIndicatorHeight);
-+        }
 +        const maskSize = computed(() => (pickerViewState.height - indicatorHeight.value) / 2);
 +        const {
 +            state: scopedAttrsState
@@ -24782,7 +24690,10 @@ index 3498ec9..ef87180 100644
 +                    scroller.update(current * indicatorHeight.value, void 0, indicatorHeight.value);
 +                });
 +            }
-+        }
+         }
+-      }, [defaultSlots], 4)], 40, ["onWheel", "onClick"])], 512);
+-    };
+-  }
 +        watch(() => currentRef.value, (current) => {
 +            if (current !== state2.current) {
 +                state2.current = current;
@@ -24896,14 +24807,70 @@ index 3498ec9..ef87180 100644
 +            }, [defaultSlots], 4)], 40, ["onWheel", "onClick"])], 512);
 +        };
 +    }
-+});
-+const FONT_SIZE = 16;
-+const PROGRESS_VALUES = {
+ });
+ const FONT_SIZE = 16;
+ const PROGRESS_VALUES = {
+-  activeColor: PRIMARY_COLOR,
+-  backgroundColor: "#EBEBEB",
+-  activeMode: "backwards"
 +    activeColor: PRIMARY_COLOR,
 +    backgroundColor: "#EBEBEB",
 +    activeMode: "backwards"
-+};
-+const progressProps = {
+ };
+ const progressProps = {
+-  percent: {
+-    type: [Number, String],
+-    default: 0,
+-    validator(value) {
+-      return !isNaN(parseFloat(value));
+-    }
+-  },
+-  fontSize: {
+-    type: [String, Number],
+-    default: FONT_SIZE
+-  },
+-  showInfo: {
+-    type: [Boolean, String],
+-    default: false
+-  },
+-  strokeWidth: {
+-    type: [Number, String],
+-    default: 6,
+-    validator(value) {
+-      return !isNaN(parseFloat(value));
+-    }
+-  },
+-  color: {
+-    type: String,
+-    default: PROGRESS_VALUES.activeColor
+-  },
+-  activeColor: {
+-    type: String,
+-    default: PROGRESS_VALUES.activeColor
+-  },
+-  backgroundColor: {
+-    type: String,
+-    default: PROGRESS_VALUES.backgroundColor
+-  },
+-  active: {
+-    type: [Boolean, String],
+-    default: false
+-  },
+-  activeMode: {
+-    type: String,
+-    default: PROGRESS_VALUES.activeMode
+-  },
+-  duration: {
+-    type: [Number, String],
+-    default: 30,
+-    validator(value) {
+-      return !isNaN(parseFloat(value));
+-    }
+-  },
+-  borderRadius: {
+-    type: [Number, String],
+-    default: 0
+-  }
 +    percent: {
 +        type: [Number, String],
 +        default: 0,
@@ -24957,8 +24924,18 @@ index 3498ec9..ef87180 100644
 +        type: [Number, String],
 +        default: 0
 +    }
-+};
-+const index$o = /* @__PURE__ */ defineBuiltInComponent({
+ };
+ const index$o = /* @__PURE__ */ defineBuiltInComponent({
+-  name: "Progress",
+-  props: progressProps,
+-  setup(props2) {
+-    const rootRef = ref(null);
+-    const state2 = useProgressState(props2);
+-    _activeAnimation(state2, props2);
+-    watch(() => state2.realPercent, (newValue, oldValue) => {
+-      state2.strokeTimer && clearInterval(state2.strokeTimer);
+-      state2.lastPercent = oldValue || 0;
+-      _activeAnimation(state2, props2);
 +    name: "Progress",
 +    props: progressProps,
 +    setup(props2) {
@@ -24996,8 +24973,55 @@ index 3498ec9..ef87180 100644
 +            ) : ""], 512);
 +        };
 +    }
- });
- function useProgressState(props2) {
++});
++function useProgressState(props2) {
++    const currentPercent = ref(0);
++    const outerBarStyle = computed(() => `background-color: ${props2.backgroundColor}; height: ${props2.strokeWidth}px;`);
++    const innerBarStyle = computed(() => {
++        const backgroundColor = props2.color !== PROGRESS_VALUES.activeColor && props2.activeColor === PROGRESS_VALUES.activeColor ? props2.color : props2.activeColor;
++        return `width: ${currentPercent.value}%;background-color: ${backgroundColor}`;
+     });
+-    return () => {
+-      const {
+-        showInfo
+-      } = props2;
+-      const {
++    const realPercent = computed(() => {
++        if (typeof props2.percent === "string" && !/^-?\d*\.?\d*$/.test(props2.percent)) {
++            return 0;
++        }
++        let realValue = parseFloat(props2.percent);
++        if (Number.isNaN(realValue) || realValue < 0) {
++            realValue = 0;
++        } else if (realValue > 100) {
++            realValue = 100;
++        }
++        return realValue;
++    });
++    const state2 = reactive({
+         outerBarStyle,
+         innerBarStyle,
+-        currentPercent
+-      } = state2;
+-      return createVNode("uni-progress", {
+-        "class": "uni-progress",
+-        "ref": rootRef
+-      }, [createVNode("div", {
+-        "style": outerBarStyle,
+-        "class": "uni-progress-bar"
+-      }, [createVNode("div", {
+-        "style": innerBarStyle,
+-        "class": "uni-progress-inner-bar"
+-      }, null, 4)], 4), showInfo ? (
+-        // {currentPercent}% 的写法会影响 SSR Hydration (tsx插件的问题)
+-        createVNode("p", {
+-          "class": "uni-progress-info"
+-        }, [currentPercent + "%"])
+-      ) : ""], 512);
+-    };
+-  }
+-});
+-function useProgressState(props2) {
 -  const currentPercent = ref(0);
 -  const outerBarStyle = computed(() => `background-color: ${props2.backgroundColor}; height: ${props2.strokeWidth}px;`);
 -  const innerBarStyle = computed(() => {
@@ -25025,27 +25049,6 @@ index 3498ec9..ef87180 100644
 -    lastPercent: 0
 -  });
 -  return state2;
-+    const currentPercent = ref(0);
-+    const outerBarStyle = computed(() => `background-color: ${props2.backgroundColor}; height: ${props2.strokeWidth}px;`);
-+    const innerBarStyle = computed(() => {
-+        const backgroundColor = props2.color !== PROGRESS_VALUES.activeColor && props2.activeColor === PROGRESS_VALUES.activeColor ? props2.color : props2.activeColor;
-+        return `width: ${currentPercent.value}%;background-color: ${backgroundColor}`;
-+    });
-+    const realPercent = computed(() => {
-+        if (typeof props2.percent === "string" && !/^-?\d*\.?\d*$/.test(props2.percent)) {
-+            return 0;
-+        }
-+        let realValue = parseFloat(props2.percent);
-+        if (Number.isNaN(realValue) || realValue < 0) {
-+            realValue = 0;
-+        } else if (realValue > 100) {
-+            realValue = 100;
-+        }
-+        return realValue;
-+    });
-+    const state2 = reactive({
-+        outerBarStyle,
-+        innerBarStyle,
 +        realPercent,
 +        currentPercent,
 +        strokeTimer: 0,
@@ -26082,169 +26085,28 @@ index 3498ec9..ef87180 100644
 -      ref: rootRef
 -    }, h("div", {}, _vnode.value));
 -  }
-+    name: "RichText",
-+    compatConfig: {
-+        MODE: 3
-+    },
-+    props: props$n,
-+    emits: ["itemclick"],
-+    setup(props2, {
-+        emit: emit2
-+    }) {
-+        const vm = getCurrentInstance();
-+        const scopeId = vm && vm.vnode.scopeId || "";
-+        const rootRef = ref(null);
-+        const _vnode = ref([]);
-+        const trigger = useCustomEvent(rootRef, emit2);
-+        function triggerItemClick(e2, detail = {}) {
-+            trigger("itemclick", e2, detail);
-+        }
-+        function renderVNode() {
-+            let nodeList = props2.nodes;
-+            if (isString(nodeList)) {
-+                nodeList = parseHtml(props2.nodes);
-+            }
-+            _vnode.value = nodeList2VNode(scopeId, triggerItemClick, nodeList);
-+        }
-+        watch(() => props2.nodes, renderVNode, {
-+            immediate: true
-+        });
-+        return () => h("uni-rich-text", {
-+            ref: rootRef
-+        }, h("div", {}, _vnode.value));
-+    }
- });
- const Refresher = /* @__PURE__ */ defineBuiltInComponent({
+-});
+-const Refresher = /* @__PURE__ */ defineBuiltInComponent({
 -  name: "Refresher",
 -  props: {
 -    refreshState: {
 -      type: String,
 -      default: ""
-+    name: "Refresher",
-+    props: {
-+        refreshState: {
-+            type: String,
-+            default: ""
-+        },
-+        refresherHeight: {
-+            type: Number,
-+            default: 0
-+        },
-+        refresherThreshold: {
-+            type: Number,
-+            default: 45
-+        },
-+        refresherDefaultStyle: {
-+            type: String,
-+            default: "black"
-+        },
-+        refresherBackground: {
-+            type: String,
-+            default: "#fff"
-+        }
-     },
+-    },
 -    refresherHeight: {
 -      type: Number,
 -      default: 0
-+    setup(props2, {
-+        slots
-+    }) {
-+        const rootRef = ref(null);
-+        const rootStyle = computed(() => {
-+            const style = {
-+                backgroundColor: props2.refresherBackground
-+            };
-+            switch (props2.refreshState) {
-+                case "pulling":
-+                    style.height = props2.refresherHeight + "px";
-+                    break;
-+                case "refreshing":
-+                    style.height = props2.refresherThreshold + "px";
-+                    style.transition = "height 0.3s";
-+                    break;
-+                case "":
-+                case "refresherabort":
-+                case "restore":
-+                    style.height = "0px";
-+                    style.transition = "height 0.3s";
-+                    break;
-+            }
-+            return style;
-+        });
-+        const refreshRotate = computed(() => {
-+            const route = props2.refresherHeight / props2.refresherThreshold;
-+            return (route > 1 ? 1 : route) * 360;
-+        });
-+        return () => {
-+            const {
-+                refreshState,
-+                refresherDefaultStyle,
-+                refresherThreshold
-+            } = props2;
-+            return createVNode("div", {
-+                "ref": rootRef,
-+                "style": rootStyle.value,
-+                "class": "uni-scroll-view-refresher"
-+            }, [refresherDefaultStyle !== "none" ? createVNode("div", {
-+                "class": "uni-scroll-view-refresh"
-+            }, [createVNode("div", {
-+                "class": "uni-scroll-view-refresh-inner"
-+            }, [refreshState == "pulling" ? createVNode("svg", {
-+                "key": "refresh__icon",
-+                "style": {
-+                    transform: "rotate(" + refreshRotate.value + "deg)"
-+                },
-+                "fill": "#2BD009",
-+                "class": "uni-scroll-view-refresh__icon",
-+                "width": "24",
-+                "height": "24",
-+                "viewBox": "0 0 24 24"
-+            }, [createVNode("path", {
-+                "d": "M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
-+            }, null), createVNode("path", {
-+                "d": "M0 0h24v24H0z",
-+                "fill": "none"
-+            }, null)], 4) : null, refreshState == "refreshing" ? createVNode("svg", {
-+                "key": "refresh__spinner",
-+                "class": "uni-scroll-view-refresh__spinner",
-+                "width": "24",
-+                "height": "24",
-+                "viewBox": "25 25 50 50"
-+            }, [createVNode("circle", {
-+                "cx": "50",
-+                "cy": "50",
-+                "r": "20",
-+                "fill": "none",
-+                "style": "color: #2bd009",
-+                "stroke-width": "3"
-+            }, null)]) : null])]) : null, refresherDefaultStyle === "none" ? createVNode("div", {
-+                "class": "uni-scroll-view-refresher-container",
-+                "style": {
-+                    height: `${refresherThreshold}px`
-+                }
-+            }, [slots.default && slots.default()]) : null], 4);
-+        };
-+    }
-+});
-+const passiveOptions = /* @__PURE__ */ passive(true);
-+const props$m = {
-+    direction: {
-+        type: [String],
-+        default: "vertical"
-     },
+-    },
 -    refresherThreshold: {
 -      type: Number,
 -      default: 45
-+    scrollX: {
-+        type: [Boolean, String],
-+        default: false
-     },
+-    },
 -    refresherDefaultStyle: {
 -      type: String,
 -      default: "black"
-+    scrollY: {
-+        type: [Boolean, String],
-+        default: false
++    name: "RichText",
++    compatConfig: {
++        MODE: 3
      },
 -    refresherBackground: {
 -      type: String,
@@ -26326,13 +26188,143 @@ index 3498ec9..ef87180 100644
 -        "class": "uni-scroll-view-refresher-container",
 -        "style": {
 -          height: `${refresherThreshold}px`
--        }
++    props: props$n,
++    emits: ["itemclick"],
++    setup(props2, {
++        emit: emit2
++    }) {
++        const vm = getCurrentInstance();
++        const scopeId = vm && vm.vnode.scopeId || "";
++        const rootRef = ref(null);
++        const _vnode = ref([]);
++        const trigger = useCustomEvent(rootRef, emit2);
++        function triggerItemClick(e2, detail = {}) {
++            trigger("itemclick", e2, detail);
+         }
 -      }, [slots.default && slots.default()]) : null], 4);
 -    };
 -  }
--});
--const passiveOptions = /* @__PURE__ */ passive(true);
--const props$m = {
++        function renderVNode() {
++            let nodeList = props2.nodes;
++            if (isString(nodeList)) {
++                nodeList = parseHtml(props2.nodes);
++            }
++            _vnode.value = nodeList2VNode(scopeId, triggerItemClick, nodeList);
++        }
++        watch(() => props2.nodes, renderVNode, {
++            immediate: true
++        });
++        return () => h("uni-rich-text", {
++            ref: rootRef
++        }, h("div", {}, _vnode.value));
++    }
++});
++const Refresher = /* @__PURE__ */ defineBuiltInComponent({
++    name: "Refresher",
++    props: {
++        refreshState: {
++            type: String,
++            default: ""
++        },
++        refresherHeight: {
++            type: Number,
++            default: 0
++        },
++        refresherThreshold: {
++            type: Number,
++            default: 45
++        },
++        refresherDefaultStyle: {
++            type: String,
++            default: "black"
++        },
++        refresherBackground: {
++            type: String,
++            default: "#fff"
++        }
++    },
++    setup(props2, {
++        slots
++    }) {
++        const rootRef = ref(null);
++        const rootStyle = computed(() => {
++            const style = {
++                backgroundColor: props2.refresherBackground
++            };
++            switch (props2.refreshState) {
++                case "pulling":
++                    style.height = props2.refresherHeight + "px";
++                    break;
++                case "refreshing":
++                    style.height = props2.refresherThreshold + "px";
++                    style.transition = "height 0.3s";
++                    break;
++                case "":
++                case "refresherabort":
++                case "restore":
++                    style.height = "0px";
++                    style.transition = "height 0.3s";
++                    break;
++            }
++            return style;
++        });
++        const refreshRotate = computed(() => {
++            const route = props2.refresherHeight / props2.refresherThreshold;
++            return (route > 1 ? 1 : route) * 360;
++        });
++        return () => {
++            const {
++                refreshState,
++                refresherDefaultStyle,
++                refresherThreshold
++            } = props2;
++            return createVNode("div", {
++                "ref": rootRef,
++                "style": rootStyle.value,
++                "class": "uni-scroll-view-refresher"
++            }, [refresherDefaultStyle !== "none" ? createVNode("div", {
++                "class": "uni-scroll-view-refresh"
++            }, [createVNode("div", {
++                "class": "uni-scroll-view-refresh-inner"
++            }, [refreshState == "pulling" ? createVNode("svg", {
++                "key": "refresh__icon",
++                "style": {
++                    transform: "rotate(" + refreshRotate.value + "deg)"
++                },
++                "fill": "#2BD009",
++                "class": "uni-scroll-view-refresh__icon",
++                "width": "24",
++                "height": "24",
++                "viewBox": "0 0 24 24"
++            }, [createVNode("path", {
++                "d": "M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
++            }, null), createVNode("path", {
++                "d": "M0 0h24v24H0z",
++                "fill": "none"
++            }, null)], 4) : null, refreshState == "refreshing" ? createVNode("svg", {
++                "key": "refresh__spinner",
++                "class": "uni-scroll-view-refresh__spinner",
++                "width": "24",
++                "height": "24",
++                "viewBox": "25 25 50 50"
++            }, [createVNode("circle", {
++                "cx": "50",
++                "cy": "50",
++                "r": "20",
++                "fill": "none",
++                "style": "color: #2bd009",
++                "stroke-width": "3"
++            }, null)]) : null])]) : null, refresherDefaultStyle === "none" ? createVNode("div", {
++                "class": "uni-scroll-view-refresher-container",
++                "style": {
++                    height: `${refresherThreshold}px`
++                }
++            }, [slots.default && slots.default()]) : null], 4);
++        };
++    }
+ });
+ const passiveOptions = /* @__PURE__ */ passive(true);
+ const props$m = {
 -  direction: {
 -    type: [String],
 -    default: "vertical"
@@ -26397,6 +26389,18 @@ index 3498ec9..ef87180 100644
 -    type: [Boolean, String],
 -    default: false
 -  }
++    direction: {
++        type: [String],
++        default: "vertical"
++    },
++    scrollX: {
++        type: [Boolean, String],
++        default: false
++    },
++    scrollY: {
++        type: [Boolean, String],
++        default: false
++    },
 +    showScrollbar: {
 +        type: [Boolean, String],
 +        default: true
@@ -27270,6 +27274,15 @@ index 3498ec9..ef87180 100644
 +    onActivated(() => {
 +        realScrollY.value && (main.value.scrollTop = state2.lastScrollTop);
 +        realScrollX.value && (main.value.scrollLeft = state2.lastScrollLeft);
++    });
++    watch(scrollTopNumber, (val) => {
++        _scrollTopChanged(val);
++    });
++    watch(scrollLeftNumber, (val) => {
++        _scrollLeftChanged(val);
++    });
++    watch(() => props2.scrollIntoView, (val) => {
++        _scrollIntoViewChanged(val);
      });
 -  });
 -  onActivated(() => {
@@ -27298,15 +27311,6 @@ index 3498ec9..ef87180 100644
 -    _scrollTopChanged,
 -    _scrollLeftChanged
 -  };
-+    watch(scrollTopNumber, (val) => {
-+        _scrollTopChanged(val);
-+    });
-+    watch(scrollLeftNumber, (val) => {
-+        _scrollLeftChanged(val);
-+    });
-+    watch(() => props2.scrollIntoView, (val) => {
-+        _scrollIntoViewChanged(val);
-+    });
 +    watch(() => props2.refresherTriggered, (val) => {
 +        if (val === true) {
 +            _setRefreshState("refreshing");
@@ -28484,7 +28488,7 @@ index 3498ec9..ef87180 100644
 +                if (props2.autoplay) {
 +                    scheduleAutoplay();
 +                }
-+            }
+             }
 +        } else {
 +            invalid = true;
 +            updateViewport(-state2.displayMultipleItems - 1);
@@ -28499,7 +28503,7 @@ index 3498ec9..ef87180 100644
 +                    current = i;
 +                    break;
 +                }
-             }
++            }
 +        }
 +        if (current < 0) {
 +            current = Math.round(props2.current) || 0;
@@ -28647,12 +28651,7 @@ index 3498ec9..ef87180 100644
 -                state2.userTracking = false;
 -              }
 +                move(-data.dx / slideFrameEl.offsetWidth, -data.ddx / time);
-             }
--            if (!state2.userTracking) {
--              if (props2.autoplay) {
--                scheduleAutoplay();
--              }
--              return;
++            }
 +        }
 +        function handleTrackEnd(isCancel) {
 +            state2.userTracking = false;
@@ -28660,7 +28659,12 @@ index 3498ec9..ef87180 100644
 +            let n = 0;
 +            if (!isCancel && Math.abs(contentTrackSpeed) > 0.2) {
 +                n = 0.5 * t2;
-+            }
+             }
+-            if (!state2.userTracking) {
+-              if (props2.autoplay) {
+-                scheduleAutoplay();
+-              }
+-              return;
 +            const current = normalizeCurrentValue(viewportPosition + n);
 +            if (isCancel) {
 +                updateViewport(contentTrackViewport);
@@ -28714,10 +28718,6 @@ index 3498ec9..ef87180 100644
 +                }
 +            }
 +        });
-+    });
-+    onUnmounted(() => {
-+        cancelSchedule();
-+        cancelAnimationFrame(animationFrame);
      });
 -  });
 -  onUnmounted(() => {
@@ -28732,6 +28732,10 @@ index 3498ec9..ef87180 100644
 -    circularEnabled,
 -    swiperEnabled
 -  };
++    onUnmounted(() => {
++        cancelSchedule();
++        cancelAnimationFrame(animationFrame);
++    });
 +    function onSwiperDotClick(index2) {
 +        animateViewport(state2.current = index2, currentChangeSource = "click", circularEnabled.value ? 1 : 0);
 +    }
@@ -30607,7 +30611,7 @@ index 3498ec9..ef87180 100644
 -    }
 -  });
 -  return history2;
-+    let { routerBase } = __uniConfig?.router;
++    let { routerBase } = __uniConfig.router;
 +    if (routerBase === "/") {
 +        routerBase = "";
 +    }
@@ -33669,27 +33673,27 @@ index 3498ec9..ef87180 100644
 +    if (__uniConfig.bMapKey) {
 +        return {
 +            type: "BMapGL",
-+            key: __uniConfig?.bMapKey
++            key: __uniConfig.bMapKey
 +        };
 +    }
 +    if (__uniConfig.qqMapKey) {
 +        return {
 +            type: "qq",
-+            key: __uniConfig?.qqMapKey
++            key: __uniConfig.qqMapKey
 +        };
 +    }
 +    if (__uniConfig.googleMapKey) {
 +        return {
 +            type: "google",
-+            key: __uniConfig?.googleMapKey
++            key: __uniConfig.googleMapKey
 +        };
 +    }
 +    if (__uniConfig.aMapKey) {
 +        return {
 +            type: "AMap",
-+            key: __uniConfig?.aMapKey,
-+            securityJsCode: __uniConfig?.aMapSecurityJsCode,
-+            serviceHost: __uniConfig?.aMapServiceHost
++            key: __uniConfig.aMapKey,
++            securityJsCode: __uniConfig.aMapSecurityJsCode,
++            serviceHost: __uniConfig.aMapServiceHost
 +        };
 +    }
      return {
@@ -34241,7 +34245,7 @@ index 3498ec9..ef87180 100644
                    margin-left:${labelStyle.marginLeft};
                    margin-top:${labelStyle.marginTop};
                    padding:${labelStyle.padding};
-@@ -18158,7246 +18163,7246 @@ const MapMarker = /* @__PURE__ */ defineSystemComponent({
+@@ -18158,7246 +18160,7246 @@ const MapMarker = /* @__PURE__ */ defineSystemComponent({
                    ">
                    ${labelOpt.content}
                  <div>`;
@@ -35667,7 +35671,7 @@ index 3498ec9..ef87180 100644
 +}
 +function getTheme() {
 +    if (__uniConfig.darkmode !== true)
-+        return isString(__uniConfig.darkmode) ? __uniConfig?.darkmode : "light";
++        return isString(__uniConfig.darkmode) ? __uniConfig.darkmode : "light";
      try {
 -      storage[UUID_KEY] = deviceId;
 +        return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
@@ -36218,10 +36222,10 @@ index 3498ec9..ef87180 100644
 +        const { theme, language, browserName, browserVersion } = browserInfo;
 +        return extend(
 +            {
-+                appId: __uniConfig?.appId,
-+                appName: __uniConfig?.appName,
-+                appVersion: __uniConfig?.appVersion,
-+                appVersionCode: __uniConfig?.appVersionCode,
++                appId: __uniConfig.appId,
++                appName: __uniConfig.appName,
++                appVersion: __uniConfig.appVersion,
++                appVersionCode: __uniConfig.appVersionCode,
 +                appLanguage: getLocale ? getLocale() : language,
 +                enableDebug: false,
 +                hostSDKVersion: void 0,
@@ -36237,9 +36241,9 @@ index 3498ec9..ef87180 100644
 +                version: "",
 +                uniPlatform: "web",
 +                isUniAppX: false,
-+                uniCompileVersion: __uniConfig?.compilerVersion,
-+                uniCompilerVersion: __uniConfig?.compilerVersion,
-+                uniRuntimeVersion: __uniConfig?.compilerVersion
++                uniCompileVersion: __uniConfig.compilerVersion,
++                uniCompilerVersion: __uniConfig.compilerVersion,
++                uniRuntimeVersion: __uniConfig.compilerVersion
 +            },
 +            {}
 +        );
@@ -36299,8 +36303,8 @@ index 3498ec9..ef87180 100644
 +                browserName,
 +                browserVersion,
 +                uniPlatform: "web",
-+                uniCompileVersion: __uniConfig?.compilerVersion,
-+                uniRuntimeVersion: __uniConfig?.compilerVersion,
++                uniCompileVersion: __uniConfig.compilerVersion,
++                uniRuntimeVersion: __uniConfig.compilerVersion,
 +                fontSizeSetting: void 0,
 +                osName: osname.toLocaleLowerCase(),
 +                osVersion: osversion,
@@ -38553,7 +38557,7 @@ index 3498ec9..ef87180 100644
 +        dataType: dataType2,
 +        responseType,
 +        withCredentials,
-+        timeout = __uniConfig?.networkTimeout.request
++        timeout = __uniConfig.networkTimeout.request
 +    }, { resolve, reject }) => {
 +        let body = null;
 +        const contentType = normalizeContentType(header);
@@ -38850,7 +38854,7 @@ index 3498ec9..ef87180 100644
 -          totalBytesWritten,
 -          totalBytesExpectedToWrite
 +    API_DOWNLOAD_FILE,
-+    ({ url, header = {}, timeout = __uniConfig?.networkTimeout.downloadFile }, { resolve, reject }) => {
++    ({ url, header = {}, timeout = __uniConfig.networkTimeout.downloadFile }, { resolve, reject }) => {
 +        var timer;
 +        var xhr = new XMLHttpRequest();
 +        var downloadTask = new DownloadTask(xhr);
@@ -39069,7 +39073,7 @@ index 3498ec9..ef87180 100644
 +        files: files2,
 +        header = {},
 +        formData = {},
-+        timeout = __uniConfig?.networkTimeout.uploadFile
++        timeout = __uniConfig.networkTimeout.uploadFile
 +    }, { resolve, reject }) => {
 +        var uploadTask = new UploadTask();
 +        if (!isArray(files2) || !files2.length) {
@@ -40201,7 +40205,7 @@ index 3498ec9..ef87180 100644
 -        latitude: item.location.lat,
 -        longitude: item.location.lng
 -      });
-+    const key = __uniConfig?.qqMapKey;
++    const key = __uniConfig.qqMapKey;
 +    const list2 = reactive([]);
 +    const selectedIndexRef = ref(-1);
 +    const selectedRef = computed(() => list2[selectedIndexRef.value]);
@@ -41047,11 +41051,11 @@ index 3498ec9..ef87180 100644
 +    if (__uniConfig.darkmode) {
 +        parsedStyle = normalizeStyles(
 +            pageStyle,
-+            __uniConfig?.themeConfig,
++            __uniConfig.themeConfig,
 +            getTheme()
 +        );
 +    }
-+    return __uniConfig?.darkmode ? parsedStyle : pageStyle;
++    return __uniConfig.darkmode ? parsedStyle : pageStyle;
  }
  function useTheme(pageStyle, onThemeChangeCallback) {
 -  const isReactivity = isReactive(pageStyle);
@@ -42904,7 +42908,7 @@ index 3498ec9..ef87180 100644
 +    }
 +    const { index: index2 } = args;
 +    if (typeof index2 === "number") {
-+        const tabBarListLength = (_a = __uniConfig == null ? void 0 : __uniConfig?.tabBar) == null ? void 0 : _a.list.length;
++        const tabBarListLength = (_a = __uniConfig == null ? void 0 : __uniConfig.tabBar) == null ? void 0 : _a.list.length;
 +        if (!tabBarListLength || index2 >= tabBarListLength) {
 +            return reject(`tabbar item not found`);
 +        }
@@ -43813,7 +43817,7 @@ index 3498ec9..ef87180 100644
 -        const rootEl = rootRef.value;
 -        if (rootEl) {
 -          rootEl.removeAttribute("style");
-+        const maxWidth2 = parseInt(String((hasOwn(meta, "maxWidth") ? meta.maxWidth : __uniConfig?.globalStyle.maxWidth) || Number.MAX_SAFE_INTEGER));
++        const maxWidth2 = parseInt(String((hasOwn(meta, "maxWidth") ? meta.maxWidth : __uniConfig.globalStyle.maxWidth) || Number.MAX_SAFE_INTEGER));
 +        let showMaxWidth = false;
 +        if (windowWidth > maxWidth2) {
 +            showMaxWidth = true;
@@ -44148,7 +44152,7 @@ index 3498ec9..ef87180 100644
 +    const {
 +        component,
 +        style
-+    } = __uniConfig?.topWindow;
++    } = __uniConfig.topWindow;
 +    const windowRef = ref(null);
 +    function updateWindow() {
 +        const instance2 = windowRef.value;
@@ -44186,7 +44190,7 @@ index 3498ec9..ef87180 100644
 +    const {
 +        component,
 +        style
-+    } = __uniConfig?.leftWindow;
++    } = __uniConfig.leftWindow;
 +    const windowRef = ref(null);
 +    function updateWindow() {
 +        const instance2 = windowRef.value;
@@ -44224,7 +44228,7 @@ index 3498ec9..ef87180 100644
 +    const {
 +        component,
 +        style
-+    } = __uniConfig?.rightWindow;
++    } = __uniConfig.rightWindow;
 +    const windowRef = ref(null);
 +    function updateWindow() {
 +        const instance2 = windowRef.value;
@@ -47964,7 +47968,7 @@ index 3498ec9..ef87180 100644
  }
  const index$6 = /* @__PURE__ */ defineUnsupportedComponent("ad");
  const index$5 = /* @__PURE__ */ defineUnsupportedComponent("ad-content-page");
-@@ -25406,509 +25411,509 @@ const index$3 = /* @__PURE__ */ defineUnsupportedComponent("camera");
+@@ -25406,509 +25408,509 @@ const index$3 = /* @__PURE__ */ defineUnsupportedComponent("camera");
  const index$2 = /* @__PURE__ */ defineUnsupportedComponent("live-player");
  const index$1 = /* @__PURE__ */ defineUnsupportedComponent("live-pusher");
  const UniViewJSBridge$1 = /* @__PURE__ */ extend(ViewJSBridge, {
@@ -48914,7 +48918,7 @@ index 3498ec9..ef87180 100644
  }
  const PULLING = "pulling";
  const REACHED = "reached";
-@@ -25916,540 +25921,540 @@ const ABORTING = "aborting";
+@@ -25916,540 +25918,540 @@ const ABORTING = "aborting";
  const REFRESHING = "refreshing";
  const RESTORING = "restoring";
  function usePageRefresh(refreshRef) {

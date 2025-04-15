@@ -17,15 +17,15 @@ describe('Image', async () => {
             display: 'inline-flex',
         },
     });
+    const img = wrapper.get('[data-test="image"]').find('image');
     await nextTick();
 
     test('mode', async () => {
-        const img = wrapper.get('[data-test="image"]').find('.content');
+        console.log('wrapper', wrapper.html());
         expect(img.attributes().mode).toEqual('scaleToFill');
     });
 
     test('src', async () => {
-        const img = wrapper.get('[data-test="image"]').find('.content');
         expect(img.attributes().src).toEqual('https://image.whzb.com/chain/StellarUI/%E6%94%AF%E4%BB%98%E5%AE%9D.png');
     });
     const view = wrapper.find('.ste-image-root');

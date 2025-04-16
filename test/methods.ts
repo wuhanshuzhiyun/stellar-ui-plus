@@ -16,7 +16,7 @@ export function iconFormart(code) {
     return String.fromCharCode(Number(code.replace('&#', '0').replace(';', '')));
 }
 
-export function style2obj(el) {
+export function style2obj(el:any):{[key:string]:string} {
     const style = {};
     el.attributes()
         .style.split(';')

@@ -77,7 +77,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <div class="ste-sticky-root" :id="elId" :style="cmpRootStyle">
+    <div class="ste-sticky-root" data-test="sticky" :id="elId" :style="cmpRootStyle">
         <slot />
     </div>
 </template>

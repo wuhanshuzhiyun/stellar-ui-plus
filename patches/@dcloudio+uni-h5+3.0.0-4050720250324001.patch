@@ -1,5 +1,5 @@
 diff --git a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
-index 3498ec9..1d7febd 100644
+index 3498ec9..ccb248d 100644
 --- a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 +++ b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 @@ -5,1024 +5,1024 @@ import { onCreateVueApp as onCreateVueApp2 } from "@dcloudio/uni-shared";
@@ -18385,7 +18385,7 @@ index 3498ec9..1d7febd 100644
  }
  const passiveOptions$1 = /* @__PURE__ */ passive(true);
  const states = [];
-@@ -9940,8212 +9942,8212 @@ let userInteract = 0;
+@@ -9940,8212 +9942,8216 @@ let userInteract = 0;
  let inited = false;
  const setUserAction = (userAction) => states.forEach((vm) => vm.userAction = userAction);
  function addInteractListener(vm = { userAction: false }) {
@@ -26968,7 +26968,9 @@ index 3498ec9..1d7febd 100644
 +                if (props2.scrollWithAnimation) {
 +                    scrollTo2(val, "y");
 +                } else {
-+                    main.value.scrollTop = val;
++                    if (main?.value?.scrollTop) {
++                        main.value.scrollTop = val;
++                    }
 +                }
 +            }
 +        }
@@ -27024,12 +27026,14 @@ index 3498ec9..1d7febd 100644
 +                }
 +                if (realScrollY.value) {
 +                    let top = elRect.top - mainRect.top;
-+                    let scrollTop = main.value.scrollTop;
++                    let scrollTop = main?.value?.scrollTop;
 +                    let y = scrollTop + top;
 +                    if (props2.scrollWithAnimation) {
 +                        scrollTo2(y, "y");
 +                    } else {
-+                        main.value.scrollTop = y;
++                        if (main.value.scrollTop) {
++                            main.value.scrollTop = y;
++                        }
 +                    }
 +                }
 +            }
@@ -27270,19 +27274,6 @@ index 3498ec9..1d7febd 100644
 +            main.value.removeEventListener("scroll", __handleScroll);
 +            main.value.removeEventListener("touchend", __handleTouchEnd);
 +        });
-+    });
-+    onActivated(() => {
-+        realScrollY.value && (main.value.scrollTop = state2.lastScrollTop);
-+        realScrollX.value && (main.value.scrollLeft = state2.lastScrollLeft);
-+    });
-+    watch(scrollTopNumber, (val) => {
-+        _scrollTopChanged(val);
-+    });
-+    watch(scrollLeftNumber, (val) => {
-+        _scrollLeftChanged(val);
-+    });
-+    watch(() => props2.scrollIntoView, (val) => {
-+        _scrollIntoViewChanged(val);
      });
 -  });
 -  onActivated(() => {
@@ -27311,6 +27302,19 @@ index 3498ec9..1d7febd 100644
 -    _scrollTopChanged,
 -    _scrollLeftChanged
 -  };
++    onActivated(() => {
++        realScrollY.value && (main.value.scrollTop = state2.lastScrollTop);
++        realScrollX.value && (main.value.scrollLeft = state2.lastScrollLeft);
++    });
++    watch(scrollTopNumber, (val) => {
++        _scrollTopChanged(val);
++    });
++    watch(scrollLeftNumber, (val) => {
++        _scrollLeftChanged(val);
++    });
++    watch(() => props2.scrollIntoView, (val) => {
++        _scrollIntoViewChanged(val);
++    });
 +    watch(() => props2.refresherTriggered, (val) => {
 +        if (val === true) {
 +            _setRefreshState("refreshing");
@@ -28651,7 +28655,12 @@ index 3498ec9..1d7febd 100644
 -                state2.userTracking = false;
 -              }
 +                move(-data.dx / slideFrameEl.offsetWidth, -data.ddx / time);
-+            }
+             }
+-            if (!state2.userTracking) {
+-              if (props2.autoplay) {
+-                scheduleAutoplay();
+-              }
+-              return;
 +        }
 +        function handleTrackEnd(isCancel) {
 +            state2.userTracking = false;
@@ -28659,12 +28668,7 @@ index 3498ec9..1d7febd 100644
 +            let n = 0;
 +            if (!isCancel && Math.abs(contentTrackSpeed) > 0.2) {
 +                n = 0.5 * t2;
-             }
--            if (!state2.userTracking) {
--              if (props2.autoplay) {
--                scheduleAutoplay();
--              }
--              return;
++            }
 +            const current = normalizeCurrentValue(viewportPosition + n);
 +            if (isCancel) {
 +                updateViewport(contentTrackViewport);
@@ -34245,7 +34249,7 @@ index 3498ec9..1d7febd 100644
                    margin-left:${labelStyle.marginLeft};
                    margin-top:${labelStyle.marginTop};
                    padding:${labelStyle.padding};
-@@ -18158,7246 +18160,7246 @@ const MapMarker = /* @__PURE__ */ defineSystemComponent({
+@@ -18158,7246 +18164,7246 @@ const MapMarker = /* @__PURE__ */ defineSystemComponent({
                    ">
                    ${labelOpt.content}
                  <div>`;
@@ -47968,7 +47972,7 @@ index 3498ec9..1d7febd 100644
  }
  const index$6 = /* @__PURE__ */ defineUnsupportedComponent("ad");
  const index$5 = /* @__PURE__ */ defineUnsupportedComponent("ad-content-page");
-@@ -25406,509 +25408,509 @@ const index$3 = /* @__PURE__ */ defineUnsupportedComponent("camera");
+@@ -25406,509 +25412,509 @@ const index$3 = /* @__PURE__ */ defineUnsupportedComponent("camera");
  const index$2 = /* @__PURE__ */ defineUnsupportedComponent("live-player");
  const index$1 = /* @__PURE__ */ defineUnsupportedComponent("live-pusher");
  const UniViewJSBridge$1 = /* @__PURE__ */ extend(ViewJSBridge, {
@@ -48918,7 +48922,7 @@ index 3498ec9..1d7febd 100644
  }
  const PULLING = "pulling";
  const REACHED = "reached";
-@@ -25916,540 +25918,540 @@ const ABORTING = "aborting";
+@@ -25916,540 +25922,540 @@ const ABORTING = "aborting";
  const REFRESHING = "refreshing";
  const RESTORING = "restoring";
  function usePageRefresh(refreshRef) {

@@ -1,5 +1,5 @@
 diff --git a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
-index 3498ec9..ccb248d 100644
+index 3498ec9..e3e3e0e 100644
 --- a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 +++ b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 @@ -5,1024 +5,1024 @@ import { onCreateVueApp as onCreateVueApp2 } from "@dcloudio/uni-shared";
@@ -27264,15 +27264,15 @@ index 3498ec9..ccb248d 100644
 +                y: props2.refresherThreshold
 +            };
 +        };
-+        main.value.addEventListener("touchstart", __handleTouchStart, passiveOptions);
-+        main.value.addEventListener("touchmove", __handleTouchMove, passive(false));
-+        main.value.addEventListener("scroll", __handleScroll, passive(false));
-+        main.value.addEventListener("touchend", __handleTouchEnd, passiveOptions);
++        main?.value?.addEventListener("touchstart", __handleTouchStart, passiveOptions);
++        main?.value?.addEventListener("touchmove", __handleTouchMove, passive(false));
++        main?.value?.addEventListener("scroll", __handleScroll, passive(false));
++        main?.value?.addEventListener("touchend", __handleTouchEnd, passiveOptions);
 +        onBeforeUnmount(() => {
-+            main.value.removeEventListener("touchstart", __handleTouchStart);
-+            main.value.removeEventListener("touchmove", __handleTouchMove);
-+            main.value.removeEventListener("scroll", __handleScroll);
-+            main.value.removeEventListener("touchend", __handleTouchEnd);
++            main?.value?.removeEventListener("touchstart", __handleTouchStart);
++            main?.value?.removeEventListener("touchmove", __handleTouchMove);
++            main?.value?.removeEventListener("scroll", __handleScroll);
++            main?.value?.removeEventListener("touchend", __handleTouchEnd);
 +        });
      });
 -  });

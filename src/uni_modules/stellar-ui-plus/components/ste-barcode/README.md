@@ -9,13 +9,17 @@
 #### 基础使用
 
 ```html
-<ste-barcode content="123456abc123" />
+<template>
+    <ste-barcode content="123456abc123" />
+</template>
 ```
 
 #### 自定义颜色
 
 ```html
-<ste-barcode content="123456abc123" foreground="#c11" background="#dad" />
+<template>
+    <ste-barcode content="123456abc123" foreground="#c11" background="#dad" />
+</template>
 ```
 
 ---$

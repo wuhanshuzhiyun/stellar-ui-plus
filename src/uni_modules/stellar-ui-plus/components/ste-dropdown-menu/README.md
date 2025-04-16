@@ -11,20 +11,22 @@
 - 可以通过`v-model`绑定选中值
 
 ```html
-<view>
-    <ste-dropdown-menu v-model="menu1">
-        <ste-dropdown-menu-item value="1" title="全部商品" />
-        <ste-dropdown-menu-item value="2" title="新款商品" />
-        <ste-dropdown-menu-item value="3" title="活动商品" />
-    </ste-dropdown-menu>
-</view>
-<view>
-    <ste-dropdown-menu value="1">
-        <ste-dropdown-menu-item value="1" title="默认排序" @click="itemClick" />
-        <ste-dropdown-menu-item value="2" title="销量排序" />
-        <ste-dropdown-menu-item value="3" title="价格排序" />
-    </ste-dropdown-menu>
-</view>
+<template>
+    <view>
+        <ste-dropdown-menu v-model="menu1">
+            <ste-dropdown-menu-item value="1" title="全部商品" />
+            <ste-dropdown-menu-item value="2" title="新款商品" />
+            <ste-dropdown-menu-item value="3" title="活动商品" />
+        </ste-dropdown-menu>
+    </view>
+    <view>
+        <ste-dropdown-menu value="1">
+            <ste-dropdown-menu-item value="1" title="默认排序" @click="itemClick" />
+            <ste-dropdown-menu-item value="2" title="销量排序" />
+            <ste-dropdown-menu-item value="3" title="价格排序" />
+        </ste-dropdown-menu>
+    </view>
+</template>
 ```
 
 #### 按钮类型
@@ -34,28 +36,30 @@
     > > > 推荐选项名称字数小于6个字时使用按钮类型，过长的字会导致截断
 
 ```html
-<view>
-    <ste-dropdown-menu title="选择项1" type="round" value="2">
-        <ste-dropdown-menu-item value="1" title="选项名称" />
-        <ste-dropdown-menu-item value="2" title="选项名称" />
-        <ste-dropdown-menu-item value="3" title="选项名称" />
-        <ste-dropdown-menu-item value="4" title="选项名称" />
-        <ste-dropdown-menu-item value="5" title="选项名称" />
-        <ste-dropdown-menu-item value="6" title="选项名称" />
-        <ste-dropdown-menu-item value="7" title="选项名称" />
-    </ste-dropdown-menu>
-</view>
-<view>
-    <ste-dropdown-menu title="选择项2" type="round" :max="2">
-        <ste-dropdown-menu-item value="1" title="选项名称名称" />
-        <ste-dropdown-menu-item value="2" title="选项名称" />
-        <ste-dropdown-menu-item value="3" title="选项名称" />
-        <ste-dropdown-menu-item value="4" title="选项名称名称名称" />
-        <ste-dropdown-menu-item value="5" title="选项名称" />
-        <ste-dropdown-menu-item value="6" title="选项名称" />
-        <ste-dropdown-menu-item value="7" title="选项名称" />
-    </ste-dropdown-menu>
-</view>
+<template>
+    <view>
+        <ste-dropdown-menu title="选择项1" type="round" value="2">
+            <ste-dropdown-menu-item value="1" title="选项名称" />
+            <ste-dropdown-menu-item value="2" title="选项名称" />
+            <ste-dropdown-menu-item value="3" title="选项名称" />
+            <ste-dropdown-menu-item value="4" title="选项名称" />
+            <ste-dropdown-menu-item value="5" title="选项名称" />
+            <ste-dropdown-menu-item value="6" title="选项名称" />
+            <ste-dropdown-menu-item value="7" title="选项名称" />
+        </ste-dropdown-menu>
+    </view>
+    <view>
+        <ste-dropdown-menu title="选择项2" type="round" :max="2">
+            <ste-dropdown-menu-item value="1" title="选项名称名称" />
+            <ste-dropdown-menu-item value="2" title="选项名称" />
+            <ste-dropdown-menu-item value="3" title="选项名称" />
+            <ste-dropdown-menu-item value="4" title="选项名称名称名称" />
+            <ste-dropdown-menu-item value="5" title="选项名称" />
+            <ste-dropdown-menu-item value="6" title="选项名称" />
+            <ste-dropdown-menu-item value="7" title="选项名称" />
+        </ste-dropdown-menu>
+    </view>
+</template>
 ```
 
 #### 自定义下拉内容
@@ -187,106 +191,118 @@
 #### 选中颜色 & 未选中颜色用
 
 ```html
-<view>
-    <ste-dropdown-menu value="1" activeColor="#e9e">
-        <ste-dropdown-menu-item value="1" title="全部商品" />
-        <ste-dropdown-menu-item value="2" title="新款商品" />
-        <ste-dropdown-menu-item value="3" title="活动商品" />
-    </ste-dropdown-menu>
-</view>
-<view>
-    <ste-dropdown-menu value="2" inactiveColor="#53e">
-        <ste-dropdown-menu-item value="1" title="默认排序" />
-        <ste-dropdown-menu-item value="2" title="销量排序" />
-        <ste-dropdown-menu-item value="3" title="价格排序" />
-    </ste-dropdown-menu>
-</view>
+<template>
+    <view>
+        <ste-dropdown-menu value="1" activeColor="#e9e">
+            <ste-dropdown-menu-item value="1" title="全部商品" />
+            <ste-dropdown-menu-item value="2" title="新款商品" />
+            <ste-dropdown-menu-item value="3" title="活动商品" />
+        </ste-dropdown-menu>
+    </view>
+    <view>
+        <ste-dropdown-menu value="2" inactiveColor="#53e">
+            <ste-dropdown-menu-item value="1" title="默认排序" />
+            <ste-dropdown-menu-item value="2" title="销量排序" />
+            <ste-dropdown-menu-item value="3" title="价格排序" />
+        </ste-dropdown-menu>
+    </view>
+</template>
 ```
 
 #### 展开方向
 
 ```html
-<view>
-    <ste-dropdown-menu title="手机" direction="down">
-        <ste-dropdown-menu-item value="1" title="选项1" />
-        <ste-dropdown-menu-item value="2" title="选项2" />
-    </ste-dropdown-menu>
-</view>
-<view>
-    <ste-dropdown-menu title="手机" direction="up">
-        <ste-dropdown-menu-item value="1" title="选项1" />
-        <ste-dropdown-menu-item value="2" title="选项2" />
-    </ste-dropdown-menu>
-</view>
+<template>
+    <view>
+        <ste-dropdown-menu title="手机" direction="down">
+            <ste-dropdown-menu-item value="1" title="选项1" />
+            <ste-dropdown-menu-item value="2" title="选项2" />
+        </ste-dropdown-menu>
+    </view>
+    <view>
+        <ste-dropdown-menu title="手机" direction="up">
+            <ste-dropdown-menu-item value="1" title="选项1" />
+            <ste-dropdown-menu-item value="2" title="选项2" />
+        </ste-dropdown-menu>
+    </view>
+</template>
 ```
 
 #### 展开动画时间
 
 ```html
-<view>
-    <ste-dropdown-menu value="1" :duration="0.8">
-        <ste-dropdown-menu-item value="1" title="全部商品" />
-        <ste-dropdown-menu-item value="2" title="新款商品" />
-        <ste-dropdown-menu-item value="3" title="活动商品" />
-    </ste-dropdown-menu>
-</view>
-<view>
-    <ste-dropdown-menu value="2" :duration="0">
-        <ste-dropdown-menu-item value="1" title="默认排序" />
-        <ste-dropdown-menu-item value="2" title="销量排序" />
-        <ste-dropdown-menu-item value="3" title="价格排序" />
-    </ste-dropdown-menu>
-</view>
+<template>
+    <view>
+        <ste-dropdown-menu value="1" :duration="0.8">
+            <ste-dropdown-menu-item value="1" title="全部商品" />
+            <ste-dropdown-menu-item value="2" title="新款商品" />
+            <ste-dropdown-menu-item value="3" title="活动商品" />
+        </ste-dropdown-menu>
+    </view>
+    <view>
+        <ste-dropdown-menu value="2" :duration="0">
+            <ste-dropdown-menu-item value="1" title="默认排序" />
+            <ste-dropdown-menu-item value="2" title="销量排序" />
+            <ste-dropdown-menu-item value="3" title="价格排序" />
+        </ste-dropdown-menu>
+    </view>
+</template>
 ```
 
 #### 遮罩
 
 ```html
-<view>
-    <ste-dropdown-menu value="1" :showMask="false" title="不显示遮罩">
-        <ste-dropdown-menu-item value="1" title="全部商品" />
-        <ste-dropdown-menu-item value="2" title="新款商品" />
-        <ste-dropdown-menu-item value="3" title="活动商品" />
-    </ste-dropdown-menu>
-</view>
-<view>
-    <ste-dropdown-menu value="2" title="遮罩不关闭" :isMaskClick="false">
-        <ste-dropdown-menu-item value="1" title="默认排序" />
-        <ste-dropdown-menu-item value="2" title="销量排序" />
-        <ste-dropdown-menu-item value="3" title="价格排序" />
-    </ste-dropdown-menu>
-</view>
+<template>
+    <view>
+        <ste-dropdown-menu value="1" :showMask="false" title="不显示遮罩">
+            <ste-dropdown-menu-item value="1" title="全部商品" />
+            <ste-dropdown-menu-item value="2" title="新款商品" />
+            <ste-dropdown-menu-item value="3" title="活动商品" />
+        </ste-dropdown-menu>
+    </view>
+    <view>
+        <ste-dropdown-menu value="2" title="遮罩不关闭" :isMaskClick="false">
+            <ste-dropdown-menu-item value="1" title="默认排序" />
+            <ste-dropdown-menu-item value="2" title="销量排序" />
+            <ste-dropdown-menu-item value="3" title="价格排序" />
+        </ste-dropdown-menu>
+    </view>
+</template>
 ```
 
 #### 多选
 
 ```html
-<view>
-    <ste-dropdown-menu title="可选两项" :max="2">
-        <ste-dropdown-menu-item value="1" title="选项1" />
-        <ste-dropdown-menu-item value="2" title="选项2" />
-        <ste-dropdown-menu-item value="3" title="选项3" />
-    </ste-dropdown-menu>
-</view>
-<view>
-    <ste-dropdown-menu title="可选三项" :max="3">
-        <ste-dropdown-menu-item value="1" title="选项1" />
-        <ste-dropdown-menu-item value="2" title="选项2" />
-        <ste-dropdown-menu-item value="3" title="选项3" />
-    </ste-dropdown-menu>
-</view>
+<template>
+    <view>
+        <ste-dropdown-menu title="可选两项" :max="2">
+            <ste-dropdown-menu-item value="1" title="选项1" />
+            <ste-dropdown-menu-item value="2" title="选项2" />
+            <ste-dropdown-menu-item value="3" title="选项3" />
+        </ste-dropdown-menu>
+    </view>
+    <view>
+        <ste-dropdown-menu title="可选三项" :max="3">
+            <ste-dropdown-menu-item value="1" title="选项1" />
+            <ste-dropdown-menu-item value="2" title="选项2" />
+            <ste-dropdown-menu-item value="3" title="选项3" />
+        </ste-dropdown-menu>
+    </view>
+</template>
 ```
 
 #### 禁用某项
 
 ```html
-<view>
-    <ste-dropdown-menu title="选择项" direction="up">
-        <ste-dropdown-menu-item value="1" title="选项1" />
-        <ste-dropdown-menu-item value="2" title="选项2" disabled />
-        <ste-dropdown-menu-item value="3" title="选项3" />
-    </ste-dropdown-menu>
-</view>
+<template>
+    <view>
+        <ste-dropdown-menu title="选择项" direction="up">
+            <ste-dropdown-menu-item value="1" title="选项1" />
+            <ste-dropdown-menu-item value="2" title="选项2" disabled />
+            <ste-dropdown-menu-item value="3" title="选项3" />
+        </ste-dropdown-menu>
+    </view>
+</template>
 ```
 
 ---$

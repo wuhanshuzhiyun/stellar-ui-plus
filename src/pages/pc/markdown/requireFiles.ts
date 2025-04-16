@@ -1,7 +1,6 @@
 import type { Group, Markdown } from '../types.js';
 import ComponentGroups from './componentGroups.json';
-
-const parser = new DOMParser();
+import { formatHtml } from './MdHtmlFormatter';
 
 function templateFiles() {
     const deg = /.+\/(\w+)\.(md|json)$/;
@@ -31,97 +30,6 @@ function assembleTemplate(html: string) {
     return result;
 }
 
-function formatHtml(html: string) {
-    const doc = parser.parseFromString(html, 'text/html');
-    const pres = doc.querySelectorAll('body>pre');
-    pres.forEach(pre => {
-        const codedom = pre.querySelector('code');
-        codedom?.classList.add('hljs');
-        const code = codedom?.textContent;
-        const btn = document.createElement('button');
-        btn.innerHTML = '复制';
-        btn.setAttribute('content', code || '');
-        btn.classList.add('code-copy-button');
-        pre.innerHTML = '';
-        const div = document.createElement('div');
-        div.classList.add('code-body-box');
-        if (codedom) div.appendChild(codedom);
-        pre.appendChild(div);
-        pre.appendChild(btn);
-    });
-
-    const tables = doc.querySelectorAll('table');
-    tables.forEach(table => {
-        table.setAttribute('border', '1');
-    });
-
-    // 处理标题
-    const headers = doc.querySelectorAll('h2, h3, h4');
-    headers.forEach(header => {
-        // 获取纯文本内容
-        const slug = header.textContent || '';
-
-        // 创建锚点链接
-        const anchor = document.createElement('a');
-        anchor.href = `#${slug}`;
-        anchor.className = 'header-anchor';
-        anchor.setAttribute('aria-hidden', 'true');
-        anchor.textContent = '#';
-
-        // 设置标题 ID
-        header.id = slug;
-
-        // 创建包装容器
-        const wrapper = document.createElement('div');
-        wrapper.className = 'header-anchor-wrapper';
-        wrapper.style.position = 'relative';
-
-        // 将标题移动到包装容器中
-        header.parentNode?.insertBefore(wrapper, header);
-        wrapper.appendChild(header);
-
-        // 在标题内容后添加锚点链接
-        header.appendChild(document.createTextNode(' '));
-        header.appendChild(anchor);
-    });
-
-    return doc.body.innerHTML;
-}
-
-export function scrollToView($event: Event, ele: HTMLAnchorElement) {
-    // #ifdef WEB
-    $event.preventDefault();
-    if (ele) ele.scrollIntoView({ behavior: 'smooth' });
-
-    // #ifdef WEB
-}
-
-export function btnCopy(btn: HTMLButtonElement) {
-    const code = btn.getAttribute('content');
-    if (!code) {
-        console.error('没有找到复制的内容');
-        return;
-    }
-    if (btn.innerHTML === '复制成功') return;
-    console.log('copy: ', code);
-    uni.setClipboardData({
-        data: code,
-        showToast: false,
-        success: () => {
-            btn.innerHTML = '复制成功';
-            setTimeout(() => {
-                btn.innerHTML = '复制';
-            }, 2000);
-        },
-        fail: () => {
-            btn.innerHTML = '复制失败';
-            setTimeout(() => {
-                btn.innerHTML = '复制';
-            }, 1000);
-        },
-    });
-}
-
 export function restsFiles() {
     const deg = /\.\/(\w+)\/(\d+)?\-?(.+)\.(md|json)$/;
     const groupJson: Obj = import.meta.glob('./**/*.json', { eager: true });
@@ -134,7 +42,7 @@ export function restsFiles() {
 
     const map: Obj = {};
     for (const k in markdowns) {
-        const html = formatHtml(assembleTemplate(markdowns[k].html));
+        const html = formatHtml(assembleTemplate(markdowns[k].html), { enableDebugButton: false });
         const group = k.replace(deg, '$1');
         const sort = k.replace(deg, '$2');
         const name = k.replace(deg, '$3');

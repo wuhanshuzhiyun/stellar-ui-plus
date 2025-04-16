@@ -247,7 +247,7 @@ const onScroll = (e: any) => {
                 </view>
             </view>
         </scroll-view>
-        <view v-if="cmpShowConfirm" class="confirm-button" @click="confirm">确定</view>
+        <view v-if="cmpShowConfirm" data-test="confirm-button" class="confirm-button" @click="confirm">确定</view>
     </view>
 </template>
 

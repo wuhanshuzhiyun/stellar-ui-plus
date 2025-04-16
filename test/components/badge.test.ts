@@ -28,7 +28,7 @@ describe('Badge', async () => {
     });
 
     test('background', () => {
-        const wrapper = mount(steBadge, {
+        const wrapper: any = mount(steBadge, {
             propsData: {
                 background: 'rgb(25, 137, 250)',
                 content: 1,

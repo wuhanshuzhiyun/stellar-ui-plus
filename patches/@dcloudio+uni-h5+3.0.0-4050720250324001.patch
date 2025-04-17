@@ -1,5 +1,5 @@
 diff --git a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
-index 3498ec9..e3e3e0e 100644
+index 3498ec9..300c70b 100644
 --- a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 +++ b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 @@ -5,1024 +5,1024 @@ import { onCreateVueApp as onCreateVueApp2 } from "@dcloudio/uni-shared";
@@ -125,7 +125,7 @@ index 3498ec9..e3e3e0e 100644
 -        );
 -      }
 -      i18n.setLocale(locale);
-+    if (!i18n) {
++    if (!i18n && process.env.NODE_ENV != 'test') {
 +        let locale;
 +        {
 +            {
@@ -18385,7 +18385,7 @@ index 3498ec9..e3e3e0e 100644
  }
  const passiveOptions$1 = /* @__PURE__ */ passive(true);
  const states = [];
-@@ -9940,8212 +9942,8216 @@ let userInteract = 0;
+@@ -9940,8212 +9942,8219 @@ let userInteract = 0;
  let inited = false;
  const setUserAction = (userAction) => states.forEach((vm) => vm.userAction = userAction);
  function addInteractListener(vm = { userAction: false }) {
@@ -32180,34 +32180,6 @@ index 3498ec9..e3e3e0e 100644
 -    toggleDanmu,
 -    sendDanmu
 -  };
--}
--function useContext(play, pause, stop, seek, sendDanmu, playbackRate, requestFullScreen, exitFullScreen) {
--  const methods = {
--    play,
--    stop,
--    pause,
--    seek,
--    sendDanmu,
--    playbackRate,
--    requestFullScreen,
--    exitFullScreen
--  };
--  const id2 = useContextInfo();
--  useSubscribe((type, data) => {
--    let options;
--    switch (type) {
--      case "seek":
--        options = data.position;
--        break;
--      case "sendDanmu":
--        options = data;
--        break;
--      case "playbackRate":
--        options = data.rate;
--        break;
--    }
--    if (type in methods) {
--      methods[type](options);
 +    function toggleDanmu() {
 +        state2.enable = !state2.enable;
 +    }
@@ -32265,8 +32237,7 @@ index 3498ec9..e3e3e0e 100644
 +            color: danmu.color,
 +            time: videoState.currentTime || 0
 +        });
-     }
--  }, id2, true);
++    }
 +    return {
 +        state: state2,
 +        danmuRef,
@@ -32274,8 +32245,36 @@ index 3498ec9..e3e3e0e 100644
 +        toggleDanmu,
 +        sendDanmu
 +    };
-+}
-+function useContext(play, pause, stop, seek, sendDanmu, playbackRate, requestFullScreen, exitFullScreen) {
+ }
+ function useContext(play, pause, stop, seek, sendDanmu, playbackRate, requestFullScreen, exitFullScreen) {
+-  const methods = {
+-    play,
+-    stop,
+-    pause,
+-    seek,
+-    sendDanmu,
+-    playbackRate,
+-    requestFullScreen,
+-    exitFullScreen
+-  };
+-  const id2 = useContextInfo();
+-  useSubscribe((type, data) => {
+-    let options;
+-    switch (type) {
+-      case "seek":
+-        options = data.position;
+-        break;
+-      case "sendDanmu":
+-        options = data;
+-        break;
+-      case "playbackRate":
+-        options = data.rate;
+-        break;
+-    }
+-    if (type in methods) {
+-      methods[type](options);
+-    }
+-  }, id2, true);
 +    const methods = {
 +        play,
 +        stop,
@@ -32694,6 +32693,9 @@ index 3498ec9..e3e3e0e 100644
 +        attrs: attrs2,
 +        slots
 +    }) {
++        if (process.env.NODE_ENV == 'test') {
++            return;
++        }
 +        const rootRef = ref(null);
 +        const containerRef = ref(null);
 +        const trigger = useCustomEvent(rootRef, emit2);
@@ -34249,7 +34251,7 @@ index 3498ec9..e3e3e0e 100644
                    margin-left:${labelStyle.marginLeft};
                    margin-top:${labelStyle.marginTop};
                    padding:${labelStyle.padding};
-@@ -18158,7246 +18164,7246 @@ const MapMarker = /* @__PURE__ */ defineSystemComponent({
+@@ -18158,7246 +18167,7246 @@ const MapMarker = /* @__PURE__ */ defineSystemComponent({
                    ">
                    ${labelOpt.content}
                  <div>`;
@@ -47972,7 +47974,7 @@ index 3498ec9..e3e3e0e 100644
  }
  const index$6 = /* @__PURE__ */ defineUnsupportedComponent("ad");
  const index$5 = /* @__PURE__ */ defineUnsupportedComponent("ad-content-page");
-@@ -25406,509 +25412,509 @@ const index$3 = /* @__PURE__ */ defineUnsupportedComponent("camera");
+@@ -25406,509 +25415,509 @@ const index$3 = /* @__PURE__ */ defineUnsupportedComponent("camera");
  const index$2 = /* @__PURE__ */ defineUnsupportedComponent("live-player");
  const index$1 = /* @__PURE__ */ defineUnsupportedComponent("live-pusher");
  const UniViewJSBridge$1 = /* @__PURE__ */ extend(ViewJSBridge, {
@@ -48922,7 +48924,7 @@ index 3498ec9..e3e3e0e 100644
  }
  const PULLING = "pulling";
  const REACHED = "reached";
-@@ -25916,540 +25922,540 @@ const ABORTING = "aborting";
+@@ -25916,540 +25925,540 @@ const ABORTING = "aborting";
  const REFRESHING = "refreshing";
  const RESTORING = "restoring";
  function usePageRefresh(refreshRef) {

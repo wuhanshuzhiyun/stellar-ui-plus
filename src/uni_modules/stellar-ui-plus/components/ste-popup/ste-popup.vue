@@ -49,7 +49,6 @@ const cmpContentStyle = computed(() => {
     };
 
     if (props.position === 'center') {
-        // style.transform = `translate(${utils.addUnit(this.offsetX)}, ${utils.addUnit(this.offsetY)})`;
     } else if (props.position === 'bottom') {
     } else if (props.position === 'top') {
     } else if (props.position === 'left') {
@@ -158,7 +157,7 @@ function touchmove(e: TouchEvent) {
 </script>
 
 <template>
-    <view class="ste-popup" :class="position" :style="[cmpPageStyle]" @click.stop="onMaskClick" @touchmove.stop.prevent="touchmove" :animation="overlayAnimationData">
+    <view class="ste-popup" :class="position" :style="[cmpPageStyle]" @click.stop="onMaskClick" @touchmove.stop.prevent="touchmove" :animation="overlayAnimationData" data-test="popup">
         <view class="content" :class="position" :style="[cmpContentStyle]" :animation="animationData" @click.stop>
             <template v-if="keepContent || showContent">
                 <scroll-view style="width: 100%; height: 100%" v-if="Number(height) > 0" :scroll-y="true">

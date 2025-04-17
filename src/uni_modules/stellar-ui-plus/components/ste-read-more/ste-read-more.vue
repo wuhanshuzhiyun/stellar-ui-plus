@@ -73,14 +73,14 @@ defineExpose({ init });
 </script>
 
 <template>
-    <view class="ste-read-more-root">
+    <view class="ste-read-more-root" data-test="read-more">
         <view class="content-box" :style="[cmpContentStyle]">
             <view class="content">
                 <slot></slot>
             </view>
         </view>
         <view class="action-box" :style="[cmpActionStyle]" v-if="cmpShowAction">
-            <view @click="handleToggleStatus">{{ open ? openText : closeText }}</view>
+            <view class="action-btn" @click="handleToggleStatus">{{ open ? openText : closeText }}</view>
             <ste-icon :code="open ? '&#xe678;' : '&#xe676;'" size="28" marginBottom="3"></ste-icon>
         </view>
     </view>

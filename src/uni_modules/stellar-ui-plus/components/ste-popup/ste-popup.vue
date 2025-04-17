@@ -100,6 +100,11 @@ async function handleClose() {
 }
 
 async function beginAnimation() {
+    // 测试环境屏蔽uni
+    if (process.env.NODE_ENV == 'test') {
+        return;
+    }
+
     pageDisplay.value = 'flex';
     await utils.sleep(50);
     let animation = uni.createAnimation(animationProp);

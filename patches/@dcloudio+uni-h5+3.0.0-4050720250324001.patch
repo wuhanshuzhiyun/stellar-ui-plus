@@ -1,5 +1,5 @@
 diff --git a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
-index 3498ec9..300c70b 100644
+index 3498ec9..1cd4f27 100644
 --- a/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 +++ b/node_modules/@dcloudio/uni-h5/dist/uni-h5.es.js
 @@ -5,1024 +5,1024 @@ import { onCreateVueApp as onCreateVueApp2 } from "@dcloudio/uni-shared";
@@ -1918,7 +1918,7 @@ index 3498ec9..300c70b 100644
  }
  const ICON_PATH_CANCEL = "M20.928 10.176l-4.928 4.928-4.928-4.928-0.896 0.896 4.928 4.928-4.928 4.928 0.896 0.896 4.928-4.928 4.928 4.928 0.896-0.896-4.928-4.928 4.928-4.928-0.896-0.896zM16 2.080q-3.776 0-7.040 1.888-3.136 1.856-4.992 4.992-1.888 3.264-1.888 7.040t1.888 7.040q1.856 3.136 4.992 4.992 3.264 1.888 7.040 1.888t7.040-1.888q3.136-1.856 4.992-4.992 1.888-3.264 1.888-7.040t-1.888-7.040q-1.856-3.136-4.992-4.992-3.264-1.888-7.040-1.888zM16 28.64q-3.424 0-6.4-1.728-2.848-1.664-4.512-4.512-1.728-2.976-1.728-6.4t1.728-6.4q1.664-2.848 4.512-4.512 2.976-1.728 6.4-1.728t6.4 1.728q2.848 1.664 4.512 4.512 1.728 2.976 1.728 6.4t-1.728 6.4q-1.664 2.848-4.512 4.512-2.976 1.728-6.4 1.728z";
  const ICON_PATH_CLEAR = "M16 0q-4.352 0-8.064 2.176-3.616 2.144-5.76 5.76-2.176 3.712-2.176 8.064t2.176 8.064q2.144 3.616 5.76 5.76 3.712 2.176 8.064 2.176t8.064-2.176q3.616-2.144 5.76-5.76 2.176-3.712 2.176-8.064t-2.176-8.064q-2.144-3.616-5.76-5.76-3.712-2.176-8.064-2.176zM22.688 21.408q0.32 0.32 0.304 0.752t-0.336 0.736-0.752 0.304-0.752-0.32l-5.184-5.376-5.376 5.184q-0.32 0.32-0.752 0.304t-0.736-0.336-0.304-0.752 0.32-0.752l5.376-5.184-5.184-5.376q-0.32-0.32-0.304-0.752t0.336-0.752 0.752-0.304 0.752 0.336l5.184 5.376 5.376-5.184q0.32-0.32 0.752-0.304t0.752 0.336 0.304 0.752-0.336 0.752l-5.376 5.184 5.184 5.376z";
-@@ -1037,1777 +1037,1777 @@ const ICON_PATH_BACK = "M21.781 7.844l-9.063 8.594 9.063 8.594q0.25 0.25 0.25 0.
+@@ -1037,1777 +1037,1781 @@ const ICON_PATH_BACK = "M21.781 7.844l-9.063 8.594 9.063 8.594q0.25 0.25 0.25 0.
  const ICON_PATH_CLOSE = "M17.25 16.156l7.375-7.313q0.281-0.281 0.281-0.641t-0.281-0.641q-0.25-0.25-0.625-0.25t-0.625 0.25l-7.375 7.344-7.313-7.344q-0.25-0.25-0.625-0.25t-0.625 0.25q-0.281 0.25-0.281 0.625t0.281 0.625l7.313 7.344-7.375 7.344q-0.281 0.25-0.281 0.625t0.281 0.625q0.125 0.125 0.281 0.188t0.344 0.063q0.156 0 0.328-0.063t0.297-0.188l7.375-7.344 7.375 7.406q0.125 0.156 0.297 0.219t0.328 0.063q0.188 0 0.344-0.078t0.281-0.203q0.281-0.25 0.281-0.609t-0.281-0.641l-7.375-7.406z";
  const ICON_PATH_CONFIRM = "M31.562 4.9966666659375q0.435 0.399 0.435 0.87 0.036 0.58-0.399 0.98l-18.61 19.917q-0.145 0.145-0.327 0.217-0.073 0.037-0.145 0.11-0.254 0.035-0.472 0.035-0.29 0-0.544-0.036l-0.145-0.072q-0.109-0.073-0.217-0.182l-0.11-0.072L0.363 16.2786666659375q-0.327-0.399-0.363-0.907 0-0.544 0.363-1.016 0.435-0.326 0.961-0.362 0.527-0.036 0.962 0.362l9.722 9.542L29.712 5.0326666659375q0.399-0.363 0.943-0.363 0.544-0.036 0.907 0.327z";
  function createSvgIconVNode(path, color = "#000", size = 27) {
@@ -2016,6 +2016,10 @@ index 3498ec9..300c70b 100644
 -  if (len) {
 -    return pages[len - 1];
 -  }
++    // 测试环境屏蔽uni
++    if (process.env.NODE_ENV == 'test') {
++        return;
++    }
 +    const pages = getCurrentPages();
 +    const len = pages.length;
 +    if (len) {
@@ -2185,9 +2189,6 @@ index 3498ec9..300c70b 100644
 +        } else {
 +            vm = getCurrentPageVm();
 +        }
-+    }
-+    if (!vm) {
-+        return;
      }
 -  }
 -  if (!vm) {
@@ -2195,6 +2196,9 @@ index 3498ec9..300c70b 100644
 -  }
 -  const hooks = vm.$[name];
 -  return hooks && invokeArrayFns(hooks, args);
++    if (!vm) {
++        return;
++    }
 +    const hooks = vm.$[name];
 +    return hooks && invokeArrayFns(hooks, args);
  }
@@ -3010,19 +3014,13 @@ index 3498ec9..300c70b 100644
 +    if (evt.type.startsWith("touch")) {
 +        event.touches = evt.touches;
 +        event.changedTouches = evt.changedTouches;
-     }
--  });
--}
--function normalizeClickEvent(evt, mouseEvt) {
--  const { x, y } = mouseEvt;
--  const top = getWindowTop();
--  evt.detail = { x, y: y - top };
--  evt.touches = evt.changedTouches = [createTouchEvent(mouseEvt, top)];
++    }
 +    {
 +        {
 +            wrapperEvent(event, evt);
 +        }
-+    }
+     }
+-  });
 +    return event;
 +}
 +function wrapperEvent(event, evt) {
@@ -3034,8 +3032,12 @@ index 3498ec9..300c70b 100644
 +            return evt.stopPropagation();
 +        }
 +    });
-+}
-+function normalizeClickEvent(evt, mouseEvt) {
+ }
+ function normalizeClickEvent(evt, mouseEvt) {
+-  const { x, y } = mouseEvt;
+-  const top = getWindowTop();
+-  evt.detail = { x, y: y - top };
+-  evt.touches = evt.changedTouches = [createTouchEvent(mouseEvt, top)];
 +    const { x, y } = mouseEvt;
 +    const top = getWindowTop();
 +    evt.detail = { x, y: y - top };
@@ -4167,11 +4169,11 @@ index 3498ec9..300c70b 100644
 +    const pageId = useCurrentPageId();
 +    if (watch2 && !id2) {
 +        return;
-+    }
-+    if (!isPlainObject(listeners2)) {
-+        return;
      }
 -  });
++    if (!isPlainObject(listeners2)) {
++        return;
++    }
 +    Object.keys(listeners2).forEach((name) => {
 +        if (watch2) {
 +            if (name.indexOf("@") !== 0 && name.indexOf("uni-") !== 0) {
@@ -4208,11 +4210,11 @@ index 3498ec9..300c70b 100644
 +    const pageId = useCurrentPageId();
 +    if (watch2 && !id2) {
 +        return;
-     }
--  });
++    }
 +    if (!isPlainObject(listeners2)) {
 +        return;
-+    }
+     }
+-  });
 +    Object.keys(listeners2).forEach((name) => {
 +        if (watch2) {
 +            if (name.indexOf("@") !== 0 && name.indexOf("uni-") !== 0) {
@@ -4855,9 +4857,30 @@ index 3498ec9..300c70b 100644
 -const isSimpleType = /* @__PURE__ */ makeMap$1(
 -  "String,Number,Boolean,Function,Symbol"
 -);
+-function assertType(value, type) {
+-  let valid;
+-  const expectedType = getType(type);
+-  if (isSimpleType(expectedType)) {
+-    const t2 = typeof value;
+-    valid = t2 === expectedType.toLowerCase();
+-    if (!valid && t2 === "object") {
+-      valid = value instanceof type;
+-    }
+-  } else if (expectedType === "Object") {
+-    valid = isObject(value);
+-  } else if (expectedType === "Array") {
+-    valid = isArray(value);
+-  } else {
+-    {
+-      valid = value instanceof type;
 +    if (!isPlainObject(prop)) {
 +        prop = { type: prop };
-+    }
+     }
+-  }
+-  return {
+-    valid,
+-    expectedType
+-  };
 +    const { type, required, validator: validator2 } = prop;
 +    if (required && isAbsent) {
 +        return 'Missing required args: "' + name + '"';
@@ -4885,22 +4908,7 @@ index 3498ec9..300c70b 100644
 +const isSimpleType = /* @__PURE__ */ makeMap$1(
 +    "String,Number,Boolean,Function,Symbol"
 +);
- function assertType(value, type) {
--  let valid;
--  const expectedType = getType(type);
--  if (isSimpleType(expectedType)) {
--    const t2 = typeof value;
--    valid = t2 === expectedType.toLowerCase();
--    if (!valid && t2 === "object") {
--      valid = value instanceof type;
--    }
--  } else if (expectedType === "Object") {
--    valid = isObject(value);
--  } else if (expectedType === "Array") {
--    valid = isArray(value);
--  } else {
--    {
--      valid = value instanceof type;
++function assertType(value, type) {
 +    let valid;
 +    const expectedType = getType(type);
 +    if (isSimpleType(expectedType)) {
@@ -4917,12 +4925,7 @@ index 3498ec9..300c70b 100644
 +        {
 +            valid = value instanceof type;
 +        }
-     }
--  }
--  return {
--    valid,
--    expectedType
--  };
++    }
 +    return {
 +        valid,
 +        expectedType
@@ -5171,7 +5174,7 @@ index 3498ec9..300c70b 100644
  }
  const HOOK_SUCCESS = "success";
  const HOOK_FAIL = "fail";
-@@ -2815,346 +2815,346 @@ const HOOK_COMPLETE = "complete";
+@@ -2815,346 +2819,346 @@ const HOOK_COMPLETE = "complete";
  const globalInterceptors = {};
  const scopedInterceptors = {};
  function wrapperHook(hook, params) {
@@ -5784,7 +5787,7 @@ index 3498ec9..300c70b 100644
  ];
  const EPS = 1e-4;
  const BASE_DEVICE_WIDTH = 750;
-@@ -3165,2212 +3165,2212 @@ let maxWidth = 960;
+@@ -3165,2212 +3169,2212 @@ let maxWidth = 960;
  let baseWidth = 375;
  let includeWidth = 750;
  function checkDeviceWidth() {
@@ -9928,7 +9931,7 @@ index 3498ec9..300c70b 100644
  };
  const API_ON_ACCELEROMETER = "onAccelerometer";
  const API_OFF_ACCELEROMETER = "offAccelerometer";
-@@ -5384,457 +5384,457 @@ const API_VIBRATE_SHORT = "vibrateShort";
+@@ -5384,457 +5388,457 @@ const API_VIBRATE_SHORT = "vibrateShort";
  const API_VIBRATE_LONG = "vibrateLong";
  const API_GET_STORAGE = "getStorage";
  const GetStorageProtocol = {
@@ -10722,7 +10725,7 @@ index 3498ec9..300c70b 100644
  };
  const API_START_LOCATION_UPDATE = "startLocationUpdate";
  const API_ON_LOCATION_CHANGE = "onLocationChange";
-@@ -5844,69 +5844,69 @@ const API_OFF_LOCATION_CHANGE_ERROR = "offLocationChangeError";
+@@ -5844,69 +5848,69 @@ const API_OFF_LOCATION_CHANGE_ERROR = "offLocationChangeError";
  const API_ON_LOCATION_CHANGE_ERROR = "onLocationChangeError";
  const coordTypes = ["wgs84", "gcj02"];
  const StartLocationUpdateProtocol = {
@@ -10845,7 +10848,7 @@ index 3498ec9..300c70b 100644
  };
  const API_NAVIGATE_TO = "navigateTo";
  const API_REDIRECT_TO = "redirectTo";
-@@ -5916,17 +5916,17 @@ const API_NAVIGATE_BACK = "navigateBack";
+@@ -5916,17 +5920,17 @@ const API_NAVIGATE_BACK = "navigateBack";
  const API_PRELOAD_PAGE = "preloadPage";
  const API_UN_PRELOAD_PAGE = "unPreloadPage";
  const NavigateToProtocol = /* @__PURE__ */ extend(
@@ -10872,7 +10875,7 @@ index 3498ec9..300c70b 100644
  );
  const RedirectToProtocol = BaseRouteProtocol;
  const ReLaunchProtocol = BaseRouteProtocol;
-@@ -5937,319 +5937,319 @@ const RedirectToOptions = /* @__PURE__ */ createRouteOptions(API_REDIRECT_TO);
+@@ -5937,319 +5941,319 @@ const RedirectToOptions = /* @__PURE__ */ createRouteOptions(API_REDIRECT_TO);
  const ReLaunchOptions = /* @__PURE__ */ createRouteOptions(API_RE_LAUNCH);
  const SwitchTabOptions = /* @__PURE__ */ createRouteOptions(API_SWITCH_TAB);
  const NavigateBackOptions = {
@@ -11433,7 +11436,7 @@ index 3498ec9..300c70b 100644
  };
  const API_SHOW_TAB_BAR = "showTabBar";
  const ShowTabBarProtocol = HideTabBarProtocol;
-@@ -6264,1128 +6264,1130 @@ const RemoveTabBarBadgeProtocol = IndexProtocol;
+@@ -6264,1128 +6268,1130 @@ const RemoveTabBarBadgeProtocol = IndexProtocol;
  const RemoveTabBarBadgeOptions = IndexOptions;
  const API_SET_TAB_BAR_BADGE = "setTabBarBadge";
  const SetTabBarBadgeProtocol = /* @__PURE__ */ extend(
@@ -13549,7 +13552,7 @@ index 3498ec9..300c70b 100644
  }
  const ua = navigator.userAgent;
  const isAndroid = /* @__PURE__ */ /android/i.test(ua);
-@@ -7395,2544 +7397,2544 @@ const isMac = /* @__PURE__ */ /Macintosh|Mac/i.test(ua);
+@@ -7395,2544 +7401,2544 @@ const isMac = /* @__PURE__ */ /Macintosh|Mac/i.test(ua);
  const isLinux = /* @__PURE__ */ /Linux|X11/i.test(ua);
  const isIPadOS = isMac && navigator.maxTouchPoints > 0;
  function getScreenFix() {
@@ -18385,7 +18388,7 @@ index 3498ec9..300c70b 100644
  }
  const passiveOptions$1 = /* @__PURE__ */ passive(true);
  const states = [];
-@@ -9940,8212 +9942,8219 @@ let userInteract = 0;
+@@ -9940,8212 +9946,8219 @@ let userInteract = 0;
  let inited = false;
  const setUserAction = (userAction) => states.forEach((vm) => vm.userAction = userAction);
  function addInteractListener(vm = { userAction: false }) {
@@ -19291,7 +19294,7 @@ index 3498ec9..300c70b 100644
 +    const { state: scopedAttrsState } = useScopedAttrs();
 +    useFormField("name", state2);
 +    useEvent(fieldRef, state2, props2, trigger, triggerInput, beforeInput);
-+    const fixDisabledColor = String(navigator.vendor).indexOf("Apple") === 0 && CSS.supports("image-orientation:from-image");
++    const fixDisabledColor = String(navigator.vendor).indexOf("Apple") === 0 && CSS?.supports("image-orientation:from-image");
 +    return {
 +        fieldRef,
 +        state: state2,
@@ -34251,7 +34254,7 @@ index 3498ec9..300c70b 100644
                    margin-left:${labelStyle.marginLeft};
                    margin-top:${labelStyle.marginTop};
                    padding:${labelStyle.padding};
-@@ -18158,7246 +18167,7246 @@ const MapMarker = /* @__PURE__ */ defineSystemComponent({
+@@ -18158,7246 +18171,7246 @@ const MapMarker = /* @__PURE__ */ defineSystemComponent({
                    ">
                    ${labelOpt.content}
                  <div>`;
@@ -47974,7 +47977,7 @@ index 3498ec9..300c70b 100644
  }
  const index$6 = /* @__PURE__ */ defineUnsupportedComponent("ad");
  const index$5 = /* @__PURE__ */ defineUnsupportedComponent("ad-content-page");
-@@ -25406,509 +25415,509 @@ const index$3 = /* @__PURE__ */ defineUnsupportedComponent("camera");
+@@ -25406,509 +25419,509 @@ const index$3 = /* @__PURE__ */ defineUnsupportedComponent("camera");
  const index$2 = /* @__PURE__ */ defineUnsupportedComponent("live-player");
  const index$1 = /* @__PURE__ */ defineUnsupportedComponent("live-pusher");
  const UniViewJSBridge$1 = /* @__PURE__ */ extend(ViewJSBridge, {
@@ -48924,7 +48927,7 @@ index 3498ec9..300c70b 100644
  }
  const PULLING = "pulling";
  const REACHED = "reached";
-@@ -25916,540 +25925,540 @@ const ABORTING = "aborting";
+@@ -25916,540 +25929,540 @@ const ABORTING = "aborting";
  const REFRESHING = "refreshing";
  const RESTORING = "restoring";
  function usePageRefresh(refreshRef) {

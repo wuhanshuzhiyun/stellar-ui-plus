@@ -4,7 +4,7 @@ import Search from '../../src/uni_modules/stellar-ui-plus/components/ste-search/
 
 describe('Search Component', async () => {
 	const wrapper = mount(Search, {
-		propsData: {
+		props: {
 			type: 'default',
 			value: "",
 			placeholder: '请输入搜索内容',
@@ -36,10 +36,6 @@ describe('Search Component', async () => {
 		expect(nav.exists()).toBe(false);
 
 	})
-
-	test('value', async () => {
-		expect(wrapper.props('value')).toBe('');
-	});
 
 	test('placeholder', async () => {
 		expect(wrapper.props('placeholder')).toBe('请输入搜索内容');

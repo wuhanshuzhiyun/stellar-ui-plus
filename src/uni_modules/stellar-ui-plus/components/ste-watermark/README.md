@@ -42,7 +42,7 @@
 
 ```html
 <template>
-    <lt-watermark :width="130" :height="30" image="https://image.whzb.com/chain/StellarUI/组件图标/watermark.png">
+    <lt-watermark :width="130" :height="30" image="https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*lkAoRbywo0oAAAAAAAAAAAAADrJ8AQ/original">
         <div style="height: 500px" />
     </lt-watermark>
 </template>

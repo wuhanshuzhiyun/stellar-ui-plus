@@ -82,7 +82,7 @@ const onClick = (v: string) => {
 </template>
 <script lang="ts" setup>
     import { ref } from 'vue';
-    import type { SearchSuggestion } from '@/uni_modules/stellar-ui-plus/types/index';
+    import type { SearchSuggestion } from 'stellar-ui-plus/types/index';
     const data = [
         { label: '三全鲜食（北新泾店）', value: '1全' },
         { label: 'Hot honey 首尔炸鸡（仙霞路）', value: '2全' },

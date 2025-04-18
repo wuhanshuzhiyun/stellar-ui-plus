@@ -55,7 +55,7 @@
             children: [{ title: '标题2-1', value: '2-1' }],
         },
     ]);
-    import type { TreeNode } from '/uni_modules/stellar-ui-plus/types/index';
+    import type { TreeNode } from 'stellar-ui-plus/types/index';
 
     const onOpen = (node: TreeNode) => {
         toast.showToast({ title: `打开节点：${node.title}`, icon: 'none' });
@@ -113,7 +113,7 @@
             children: [{ title: '标题2-1', value: '2-1' }],
         },
     ]);
-    import type { RefTree } from '/uni_modules/stellar-ui-plus/types/refComponents';
+    import type { RefTree } from 'stellar-ui-plus/types/refComponents';
 
     const accordion = ref<RefTree>();
 
@@ -239,7 +239,7 @@
 ```html
 <script setup lang="ts">
     import { ref } from 'vue';
-    import type { TreeNode } from '.././../../../uni_modules/stellar-ui-plus/types/index';
+    import type { TreeNode } from 'stellar-ui-plus/types/index';
     import { ref } from 'vue';
     const options = ref([
         {

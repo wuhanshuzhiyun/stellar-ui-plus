@@ -68,7 +68,7 @@
 
 ```html
 <script lang="ts" setup>
-    import type { RefDropdownMenu } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+    import type { RefDropdownMenu } from 'stellar-ui-plus/types/refComponents';
     import { ref } from 'vue';
     const m1 = ref(0);
     const m2 = ref(0);

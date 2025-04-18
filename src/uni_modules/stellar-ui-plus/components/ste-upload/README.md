@@ -160,7 +160,7 @@
     <ste-upload @beforeRead="beforeRead" @read="onSuccessRead"></ste-upload>
 </template>
 <script lang="ts" setup>
-    import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
+    import { useToast } from 'stellar-ui-plus/composables';
     let toast = useToast();
     function beforeRead(fileList, suspend, next, stop) {
         suspend();
@@ -188,7 +188,7 @@
     <ste-upload v-model="fileList6" @beforeDelete="beforeDelete" @delete="onSuccessDelete"></ste-upload>
 </template>
 <script lang="ts" setup>
-    import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
+    import { useToast } from 'stellar-ui-plus/composables';
     let toast = useToast();
     import { ref, watch } from 'vue';
     const fileList6 = ref([]);

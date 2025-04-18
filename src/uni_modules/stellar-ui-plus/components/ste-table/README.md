@@ -220,7 +220,7 @@
 
 ```html
 <script lang="ts" setup>
-    import type { RefTable } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+    import type { RefTable } from 'stellar-ui-plus/types/refComponents';
     import { ref } from 'vue';
     const methodTable = ref<RefTable>();
     const rows = ref([

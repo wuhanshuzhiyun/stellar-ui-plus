@@ -13,7 +13,7 @@
 
 ```html
 <script setup lang="ts">
-    import type { RefSignature } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+    import type { RefSignature } from 'stellar-ui-plus/types/refComponents';
     import { ref } from 'vue';
     const signature = ref<RefSignature>();
     const save = () => {

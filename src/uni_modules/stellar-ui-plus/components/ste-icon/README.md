@@ -13,7 +13,7 @@
 
 ```html
 <template>
-    <ste-icon code="&#xe653;"></ste-icon>
+    <ste-icon code="&#xe684;"></ste-icon>
 </template>
 ```
 
@@ -34,9 +34,9 @@
 
 ```html
 <template>
-    <ste-icon code="&#xe671;" marginRight="30"></ste-icon>
-    <ste-icon code="&#xe671;" marginRight="30" :size="50"></ste-icon>
-    <ste-icon code="&#xe671;" marginRight="30" :size="70"></ste-icon>
+    <ste-icon code="&#xe684;" marginRight="30"></ste-icon>
+    <ste-icon code="&#xe684;" marginRight="30" :size="50"></ste-icon>
+    <ste-icon code="&#xe684;" marginRight="30" :size="70"></ste-icon>
 </template>
 ```
 
@@ -46,8 +46,8 @@
 
 ```html
 <template>
-    <ste-icon code="&#xe673;" marginRight="30"></ste-icon>
-    <ste-icon code="&#xe673;" bold></ste-icon>
+    <ste-icon code="&#xe684;" marginRight="30"></ste-icon>
+    <ste-icon code="&#xe684;" bold></ste-icon>
 </template>
 ```
 

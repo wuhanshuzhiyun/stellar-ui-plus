@@ -283,7 +283,7 @@
 ```html
 <script setup lang="ts">
     import { ref } from 'vue';
-    import type { RefCalendar } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+    import type { RefCalendar } from 'stellar-ui-plus/types/refComponents';
     const show = ref(false);
 
     const handleConfirm = (v: (string | number)[]) => {
@@ -401,8 +401,8 @@
 ```html
 <script setup lang="ts">
     import { ref, reactive } from 'vue';
-    import type { SignType } from '@/uni_modules/stellar-ui-plus/components/ste-calendar/date';
-    import utils from '@/uni_modules/stellar-ui-plus/utils/utils';
+    import type { SignType } from 'stellar-ui-plus/components/ste-calendar/date';
+    import utils from 'stellar-ui-plus/utils/utils';
     const defaultDate = ref(utils.dayjs().format('YYYY-MM'));
     const signs = reactive<{ [key: string]: SignType }>({
         // 标记今天

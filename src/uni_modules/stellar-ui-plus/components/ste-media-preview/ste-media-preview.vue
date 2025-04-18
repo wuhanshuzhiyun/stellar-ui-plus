@@ -113,12 +113,13 @@ const onLongpress = () => {
 const getTransfrom = (i: number) => (dataIndex.value === i ? cmpTransform.value : {});
 </script>
 <template>
-    <view class="ste-media-preview-root" v-if="dataShow">
+    <view class="ste-media-preview-root" data-test="media-preview" v-if="dataShow">
         <view class="media-preview-content">
             <swiper style="width: 100%; height: 100%" :autoplay="props.autoplay > 0" :interval="props.autoplay" :circular="props.loop" :current="dataIndex" @change="onChange">
                 <swiper-item v-for="(item, index) in cmpUrls" :key="index">
                     <view
                         class="preview-item"
+                        data-test="media-preview-item"
                         @click.stop="1"
                         @touchstart="onTouchstart"
                         @touchmove="onTouchmove"

@@ -8,19 +8,21 @@
 
 #### 基础用法
 
--   事件`fixed`监听组件进入粘性布局时触发
--   事件`unfixed`监听组件取消粘性布局时触发
+- 事件`fixed`监听组件进入粘性布局时触发
+- 事件`unfixed`监听组件取消粘性布局时触发
 
 ```html
-<ste-sticky @fixed="onFixed" @unfixed="onUnfixed">
-    <view style="width: 100%; height: 44px; line-height: 44px; text-align: center">这是一个吸顶的标题栏目</view>
-</ste-sticky>
-<ste-image src="https://image.whzb.com/chain/StellarUI/image/banner1.png" height="360" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/image/banner2.png" height="360" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/image/banner1.png" height="360" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/image/banner2.png" height="360" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/image/banner1.png" height="360" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/image/banner2.png" height="360" />
+<template>
+    <ste-sticky @fixed="onFixed" @unfixed="onUnfixed">
+        <view style="width: 100%; height: 44px; line-height: 44px; text-align: center">这是一个吸顶的标题栏目</view>
+    </ste-sticky>
+    <ste-image src="https://image.whzb.com/chain/StellarUI/image/banner1.png" height="360" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/image/banner2.png" height="360" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/image/banner1.png" height="360" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/image/banner2.png" height="360" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/image/banner1.png" height="360" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/image/banner2.png" height="360" />
+</template>
 
 <script setup lang="ts">
     import { ref, onMounted } from 'vue';

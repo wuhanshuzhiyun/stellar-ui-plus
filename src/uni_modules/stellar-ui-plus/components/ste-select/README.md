@@ -283,7 +283,7 @@
 <template>
     <ste-select :list="list" :loading="loading" :total="total" @loadMore="loadMore"></ste-select>
 </template>
-<script setup>
+<script setup lang="ts">
     const pageSize = ref(10);
     const list = ref([]);
     const total = ref(0);

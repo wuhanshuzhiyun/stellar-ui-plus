@@ -14,11 +14,13 @@
 - 通过`mode`属性设置图片的裁剪和拉伸
 
 ```html
-<ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" mode="aspectFit" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" mode="aspectFill" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" mode="widthFix" />
-<ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" height="200" mode="heightFix" />
+<template>
+    <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" mode="aspectFit" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" height="200" mode="aspectFill" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="200" mode="widthFix" />
+    <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" height="200" mode="heightFix" />
+</template>
 ```
 
 #### 圆角
@@ -26,7 +28,9 @@
 - 通过`radius`属性设置图片圆角属性
 
 ```html
-<ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" radius="50%" width="200" height="200" />
+<template>
+    <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" radius="50%" width="200" height="200" />
+</template>
 ```
 
 #### 加载效果
@@ -95,10 +99,12 @@
 - 通过`error`具名插槽可以自定义加载失败内容
 
 ```html
-<ste-image :src="errorUrl" width="200" height="200">
-    <template v-slot:loading>Loading...</template>
-    <template v-slot:error>Error</template>
-</ste-image>
+<template>
+    <ste-image :src="errorUrl" width="200" height="200">
+        <template v-slot:loading>Loading...</template>
+        <template v-slot:error>Error</template>
+    </ste-image>
+</template>
 ```
 
 ---$

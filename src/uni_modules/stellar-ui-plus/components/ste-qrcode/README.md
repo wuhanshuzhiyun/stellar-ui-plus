@@ -9,19 +9,25 @@
 #### 基础使用
 
 ```html
-<ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" />
+<template>
+    <ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" />
+</template>
 ```
 
 #### 自定义颜色
 
 ```html
-<ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" foreground="#c11" background="#dad" />
+<template>
+    <ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" foreground="#c11" background="#dad" />
+</template>
 ```
 
 #### 带logo
 
 ```html
-<ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" foregroundImageSrc="https://image.whzb.com/chain/StellarUI/logo.png" />
+<template>
+    <ste-qrcode content="https://stellar-ui.intecloud.com.cn/mp/index/index" foregroundImageSrc="https://image.whzb.com/chain/StellarUI/logo.png" />
+</template>
 ```
 
 ---$

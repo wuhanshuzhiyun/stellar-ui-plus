@@ -11,7 +11,9 @@
 默认视频宽度会根据父容器的宽度撑满
 
 ```html
-<ste-video title="视频标题视频标题" src="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/2minute-demo.mp4"></ste-video>
+<template>
+    <ste-video title="视频标题视频标题" src="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/2minute-demo.mp4"></ste-video>
+</template>
 ```
 
 #### 可选择清晰度
@@ -26,7 +28,9 @@
         { text: '高清', url: 'https://image.whzb.com/chain/StellarUI/video/demo2.mp4' },
     ]);
 </script>
-<ste-video title="视频标题视频标题" :resolution="resolutionConfigArr"></ste-video>
+<template>
+    <ste-video title="视频标题视频标题" :resolution="resolutionConfigArr"></ste-video>
+</template>
 ```
 
 ---$

@@ -43,7 +43,7 @@ export default class System {
      */
     static getWindowInfo() {
         // 测试环境判断
-        if (process.env.NODE_ENV == 'test') {
+        if (process.env.NODE_ENV == 'test' || process.env.UNI_APP_NAME == 'stellar-debug') {
             let windowInfo = {
                 pixelRatio: 3,
                 safeArea: {

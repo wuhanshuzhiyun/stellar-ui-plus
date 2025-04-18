@@ -11,19 +11,25 @@
 - 支持通过`v-model`双向绑定
 
 ```html
-<ste-input value="输入" />
+<template>
+    <ste-input value="输入" />
+</template>
 ```
 
 #### 密码输入框
 
 ```html
-<ste-input type="password" />
+<template>
+    <ste-input type="password" />
+</template>
 ```
 
 #### 数字输入框
 
 ```html
-<ste-input type="number" />
+<template>
+    <ste-input type="number" />
+</template>
 ```
 
 #### 占位符
@@ -33,18 +39,22 @@
     > 非H5平台上需要在类名前添加`/deep/`才生效
 
 ```html
-<ste-input placeholder="请输入" />
-<ste-input placeholder="请输入" placeholderStyle="color: #f00" />
-<ste-input placeholder="请输入" placeholderClass="my-input-holder" />
+<template>
+    <ste-input placeholder="请输入" />
+    <ste-input placeholder="请输入" placeholderStyle="color: #f00" />
+    <ste-input placeholder="请输入" placeholderClass="my-input-holder" />
+</template>
 ```
 
 #### 禁用&只读
 
 ```html
-<ste-input disabled value="禁用" />
-<ste-input readonly value="只读" />
-<ste-input disabled shape="line" value="禁用" />
-<ste-input shape="line" readonly value="只读" />
+<template>
+    <ste-input disabled value="禁用" />
+    <ste-input readonly value="只读" />
+    <ste-input disabled shape="line" value="禁用" />
+    <ste-input shape="line" readonly value="只读" />
+</template>
 ```
 
 #### 字数统计
@@ -53,8 +63,10 @@
 - 当`type`值为`textarea`并且`maxlength`大于0时才会显示
 
 ```html
-<ste-input type="textarea" :maxlength="140" showWordLimit />
-<ste-input shape="line" type="textarea" :maxlength="140" showWordLimit />
+<template>
+    <ste-input type="textarea" :maxlength="140" showWordLimit />
+    <ste-input shape="line" type="textarea" :maxlength="140" showWordLimit />
+</template>
 ```
 
 #### 焦点
@@ -62,56 +74,70 @@
 通过 `focus`值来控制输入框的焦点，支持双向绑定
 
 ```html
-<ste-input :focus="focus" />
+<template>
+    <ste-input :focus="focus" />
+</template>
 ```
 
 #### 文本对齐方式
 
 ```html
-<ste-input placeholder="请输入" inputAlign="center" />
-<ste-input placeholder="请输入" inputAlign="right" />
+<template>
+    <ste-input placeholder="请输入" inputAlign="center" />
+    <ste-input placeholder="请输入" inputAlign="right" />
+</template>
 ```
 
 #### 输入框字体
 
 ```html
-<ste-input value="字体大小" fontSize="36" />
-<ste-input value="字体颜色" fontColor="#f00" />
+<template>
+    <ste-input value="字体大小" fontSize="36" />
+    <ste-input value="字体颜色" fontColor="#f00" />
+</template>
 ```
 
 #### 输入框形状
 
 ```html
-<ste-input shape="circle" />
-<ste-input shape="line" />
+<template>
+    <ste-input shape="circle" />
+    <ste-input shape="line" />
+</template>
 ```
 
 #### 输入框边框
 
 ```html
-<ste-input border />
-<ste-input border borderColor="#f00" />
+<template>
+    <ste-input border />
+    <ste-input border borderColor="#f00" />
+</template>
 ```
 
 #### 背景色
 
 ```html
-<ste-input background="linear-gradient(to right, #aaaaaa, #aaa000)" />
-<ste-input background="url(https://image.whzb.com/chain/StellarUI/背景1.png)" />
+<template>
+    <ste-input background="linear-gradient(to right, #aaaaaa, #aaa000)" />
+    <ste-input background="url(https://image.whzb.com/chain/StellarUI/背景1.png)" />
+</template>
 ```
 
 #### 前后插槽
 
 ```html
-<ste-input placeholder="请输入内容" confirmType="next" rootClass="root-my-input" shape="line">
-    <view slot="prefix" style="margin-right: 28rpx">
-        <ste-icon code="&#xe68c;" size="28" />
-        <text>文本</text>
-    </view>
-    <view slot="suffix">
-        <ste-icon code="&#xe672;" size="28" />
-    </view>
-</ste-input>
+<template>
+    <ste-input placeholder="请输入内容" confirmType="next" rootClass="root-my-input" shape="line">
+        <view slot="prefix" style="margin-right: 28rpx">
+            <ste-icon code="&#xe68c;" size="28" />
+            <text>文本</text>
+        </view>
+        <view slot="suffix">
+            <ste-icon code="&#xe672;" size="28" />
+        </view>
+    </ste-input>
+</template>
 ```
 
 #### 前置过滤
@@ -136,7 +162,9 @@
         return result.replace(/[^\d.]/g, '');
     };
 </script>
-<ste-input :filter="onlyPositiveDecimal" />
+<template>
+    <ste-input :filter="onlyPositiveDecimal" />
+</template>
 ```
 
 ---$

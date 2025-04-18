@@ -7,6 +7,7 @@ import Left from './components/Left.vue';
 import Right from './components/Right.vue';
 import HeaderNav from './components/header-nav.vue';
 import VersionSelect from './components/version-select.vue';
+import AppendLink from './components/append-link.vue';
 import useMarkdown from './composables/useMarkdown';
 import config from '@/common/config';
 import type { NavItem } from './types';
@@ -65,6 +66,7 @@ onLoad(() => {
             <view class="right">
                 <header-nav v-model:mode="navActive" @change="handleHeaderNavChange" />
                 <version-select style="margin-left: 32px"></version-select>
+                <append-link style="margin-left: 32px" />
             </view>
         </view>
         <div class="content">

@@ -16,20 +16,20 @@ const hotWords = ref(['RTX4060', 'RTX4070', 'RTX4080']);
 const focus = ref(false);
 
 const onInput = (v: string) => {
-    toast.showToast({
+    uni.showToast({
         title: 'onInput' + v,
         icon: 'none',
     });
 };
 const onSearch = (v: string) => {
-    toast.showToast({
+    tunioast.showToast({
         title: 'onSearch' + v,
         icon: 'none',
     });
 };
 
 const onClick = (v: string) => {
-    toast.showToast({
+    uni.showToast({
         title: 'onClick' + v,
         icon: 'none',
     });
@@ -46,10 +46,29 @@ const onClick = (v: string) => {
 - 使用`disabled`属性禁用组件，组件禁用后全部功能失效
 
 ```html
-<ste-search @input="onInput" @search="onSearch" />
-<ste-search v-model="value" @search="onSearch" />
-<ste-search placeholder="搜索商品" @search="onSearch" />
-<ste-search disabled />
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value = ref('RTX4060Ti');
+
+    const onInput = (v: string) => {
+        uni.showToast({
+            title: 'onInput' + v,
+            icon: 'none',
+        });
+    };
+    const onSearch = (v: string) => {
+        uni.showToast({
+            title: 'onSearch' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search @input="onInput" @search="onSearch" />
+    <ste-search v-model="value" @search="onSearch" />
+    <ste-search placeholder="搜索商品" @search="onSearch" />
+    <ste-search disabled />
+</template>
 ```
 
 #### 搜索建议
@@ -58,7 +77,9 @@ const onClick = (v: string) => {
 - 点击某条建议后会触发搜索的`selectSuggestion`事件，参数为搜索建议对象
 
 ```html
-<ste-search :suggestion-list="suggestionList" @input="input1" @selectSuggestion="selectSuggestion" />
+<template>
+    <ste-search :suggestion-list="suggestionList" @input="input1" @selectSuggestion="selectSuggestion" />
+</template>
 <script lang="ts" setup>
     import { ref } from 'vue';
     import type { SearchSuggestion } from '@/uni_modules/stellar-ui-plus/types/index';
@@ -99,8 +120,28 @@ const onClick = (v: string) => {
 - 可以通过`interval`属性设置热词切换间隔，单位为毫秒
 
 ```html
-<ste-search placeholder="搜索商品" @input="onInput" @search="onSearch" />
-<ste-search :hotWords="hotWords" :interval="1000" @input="onInput" @search="onSearch" />
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value = ref('RTX4060Ti');
+    const hotWords = ref(['RTX4060', 'RTX4070', 'RTX4080']);
+
+    const onInput = (v: string) => {
+        uni.showToast({
+            title: 'onInput' + v,
+            icon: 'none',
+        });
+    };
+    const onSearch = (v: string) => {
+        uni.showToast({
+            title: 'onSearch' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search placeholder="搜索商品" @input="onInput" @search="onSearch" />
+    <ste-search :hotWords="hotWords" :interval="1000" @input="onInput" @search="onSearch" />
+</template>
 ```
 
 #### 自定义按钮文本内容
@@ -108,7 +149,17 @@ const onClick = (v: string) => {
 - 可以通过`btnText`属性自定义按钮文本内容
 
 ```html
-<ste-search btnText="查询" @search="onSearch" />
+<script setup lang="ts">
+    const onSearch = (v: string) => {
+        uni.showToast({
+            title: 'onSearch' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search btnText="查询" @search="onSearch" />
+</template>
 ```
 
 #### 隐藏分割线以及按钮
@@ -117,8 +168,18 @@ const onClick = (v: string) => {
 - 可以通过`hiddenBtn`属性隐藏按钮，隐藏按钮时也会隐藏分割线
 
 ```html
-<ste-search hiddenLine @search="onSearch" />
-<ste-search hiddenBtn @search="onSearch" />
+<script setup lang="ts">
+    const onSearch = (v: string) => {
+        uni.showToast({
+            title: 'onSearch' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search hiddenLine @search="onSearch" />
+    <ste-search hiddenBtn @search="onSearch" />
+</template>
 ```
 
 #### 隐藏输入框以及按钮
@@ -126,9 +187,19 @@ const onClick = (v: string) => {
 - 可以通过设置`hiddenInput`属性隐藏输入框 和 `hiddenBtn`属性隐藏按钮只保留放大镜的功能
 
 ```html
-<view style="width: 60rpx">
-    <ste-search hiddenInput hiddenBtn @click="onClick" />
-</view>
+<script setup lang="ts">
+    const onClick = (v: string) => {
+        uni.showToast({
+            title: 'onClick' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <view style="width: 60rpx">
+        <ste-search hiddenInput hiddenBtn @click="onClick" />
+    </view>
+</template>
 ```
 
 #### 不显示清除图标
@@ -136,7 +207,17 @@ const onClick = (v: string) => {
 - 可以通过`clearable`属性来切换清除图标是否显示
 
 ```html
-<ste-search :clearable="false" @search="onSearch" />
+<script setup lang="ts">
+    const onSearch = (v: string) => {
+        uni.showToast({
+            title: 'onSearch' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search :clearable="false" @search="onSearch" />
+</template>
 ```
 
 #### 颜色和背景
@@ -151,46 +232,56 @@ const onClick = (v: string) => {
 - 可以通过`btnTextColor`属性设置搜索按钮文字颜色
 
 ```html
-<ste-search
-    placeholder="全部颜色"
-    borderColor="#F00"
-    background="#000"
-    prefixIconColor="#a55"
-    placeholderColor="#a55"
-    inputTextColor="#fff"
-    clearIconColor="#a55"
-    btnBackground="#fff"
-    btnTextColor="#000"
-    @search="onSearch"
-/>
+<script setup lang="ts">
+    const onSearch = (v: string) => {
+        uni.showToast({
+            title: 'onSearch' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search
+        placeholder="全部颜色"
+        borderColor="#F00"
+        background="#000"
+        prefixIconColor="#a55"
+        placeholderColor="#a55"
+        inputTextColor="#fff"
+        clearIconColor="#a55"
+        btnBackground="#fff"
+        btnTextColor="#000"
+        @search="onSearch"
+    />
 
-<ste-search
-    placeholder="背景渐变和按钮背景渐变"
-    hiddenLine
-    borderColor="#F00"
-    background="linear-gradient(to right, #aaaaaa, #aaa000)"
-    prefixIconColor="#fff"
-    placeholderColor="#fff"
-    inputTextColor="#fff"
-    clearIconColor="#a55"
-    btnBackground="linear-gradient(to right, #0AAAAA, #000FFF)"
-    btnTextColor="#fff"
-    @search="onSearch"
-/>
+    <ste-search
+        placeholder="背景渐变和按钮背景渐变"
+        hiddenLine
+        borderColor="#F00"
+        background="linear-gradient(to right, #aaaaaa, #aaa000)"
+        prefixIconColor="#fff"
+        placeholderColor="#fff"
+        inputTextColor="#fff"
+        clearIconColor="#a55"
+        btnBackground="linear-gradient(to right, #0AAAAA, #000FFF)"
+        btnTextColor="#fff"
+        @search="onSearch"
+    />
 
-<ste-search
-    placeholder="背景图片和按钮背景图片"
-    hiddenLine
-    borderColor="#F00"
-    background="url(https://image.whzb.com/chain/StellarUI/背景1.png)"
-    prefixIconColor="#fff"
-    placeholderColor="#fff"
-    inputTextColor="#fff"
-    clearIconColor="#a55"
-    btnBackground="url(https://image.whzb.com/chain/StellarUI/背景2.png)"
-    btnTextColor="#fff"
-    @search="onSearch"
-/>
+    <ste-search
+        placeholder="背景图片和按钮背景图片"
+        hiddenLine
+        borderColor="#F00"
+        background="url(https://image.whzb.com/chain/StellarUI/背景1.png)"
+        prefixIconColor="#fff"
+        placeholderColor="#fff"
+        inputTextColor="#fff"
+        clearIconColor="#a55"
+        btnBackground="url(https://image.whzb.com/chain/StellarUI/背景2.png)"
+        btnTextColor="#fff"
+        @search="onSearch"
+    />
+</template>
 ```
 
 #### 自定义高度以及圆角弧度
@@ -198,28 +289,64 @@ const onClick = (v: string) => {
 - 可以通过`height`属性设置搜索框高度，默认值`64`
 - 可以通过`radius`属性设置圆角弧度，默认值`32`
 
-```
-<ste-search :height="120" :radius="60" @search="onSearch" />
+```html
+<script setup lang="ts">
+    const onSearch = (v: string) => {
+        uni.showToast({
+            title: 'onSearch' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search :height="120" :radius="60" @search="onSearch" />
+</template>
 ```
 
 #### 导航模式
 
 - 可以通过`type`属性设置`nav`开启导航模式；开启后，点击搜索框任意区域都会触发`click`事件，其他功能失效。
 
-```
-<ste-search type="nav" @click="onClick" :hotWords="hotWords" />
+```html
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const hotWords = ref(['RTX4060', 'RTX4070', 'RTX4080']);
+
+    const onClick = (v: string) => {
+        uni.showToast({
+            title: 'onClick' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search type="nav" @click="onClick" :hotWords="hotWords" />
+</template>
 ```
 
 #### 聚焦
 
 - 可以通过`fous`属性控制搜索框聚焦，双向绑定
 
-```
-<ste-search @click="onClick" :focus.sync="focus" />
-<!--聚焦按钮-->
-<view style="margin: 10px auto 0 auto">
-	<ste-button @click="focus = true" width="100%">聚焦</ste-button>
-</view>
+```html
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const focus = ref(false);
+
+    const onClick = (v: string) => {
+        uni.showToast({
+            title: 'onClick' + v,
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-search @click="onClick" :focus.sync="focus" />
+    <!--聚焦按钮-->
+    <view style="margin: 10px auto 0 auto">
+        <ste-button @click="focus = true" width="100%">聚焦</ste-button>
+    </view>
+</template>
 ```
 
 ---$

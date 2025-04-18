@@ -29,7 +29,9 @@
     - `file`：当前文件对象（H5平台专属）
 
 ```html
-<ste-upload v-model="fileList" @read="onRead" />
+<template>
+    <ste-upload v-model="fileList" @read="onRead" />
+</template>
 <script lang="ts" setup>
     import { ref } from 'vue';
     const fileList = ref([]);
@@ -57,7 +59,9 @@
     - `file`：除了图片和视频之外的其他类型（仅微信小程序可用）
 
 ```html
-<ste-upload v-model="fileList1" @read="onRead1" accept="media" multiple />
+<template>
+    <ste-upload v-model="fileList1" @read="onRead1" accept="media" multiple />
+</template>
 <script lang="ts" setup>
     import { ref } from 'vue';
     const fileList1 = ref([]);
@@ -77,7 +81,9 @@
 - `maxCount`属性可以设置最大上传数量，超出数量后，无法继续选择文件
 
 ```html
-<ste-upload v-model="fileList2" :maxCount="2" />
+<template>
+    <ste-upload v-model="fileList2" :maxCount="2" />
+</template>
 <script lang="ts" setup>
     import { ref, watch } from 'vue';
     const fileList2 = ref([]);
@@ -97,7 +103,9 @@
 - `maxSize`属性可以设置可上传文件的大小，超出大小无法选择
 
 ```html
-<ste-upload v-model="fileList3" :maxSize="2048" />
+<template>
+    <ste-upload v-model="fileList3" :maxSize="2048" />
+</template>
 ```
 
 #### 自定义上传样式
@@ -105,9 +113,11 @@
 - 默认插槽可自定义上传按钮样式
 
 ```html
-<ste-upload v-model="fileList4">
-    <button type="primary" size="mini" style="padding: 0 10px">上传文件</button>
-</ste-upload>
+<template>
+    <ste-upload v-model="fileList4">
+        <button type="primary" size="mini" style="padding: 0 10px">上传文件</button>
+    </ste-upload>
+</template>
 ```
 
 #### 自定义预览图层
@@ -115,11 +125,13 @@
 - 具名插槽`preview-cover`可自定义每一份文件的预览图层样式
 
 ```html
-<ste-upload v-model="fileList5">
-    <template v-slot:preview-cover="{ item }">
-        <view class="item-preview">size:{{ item.size }}b</view>
-    </template>
-</ste-upload>
+<template>
+    <ste-upload v-model="fileList5">
+        <template v-slot:preview-cover="{ item }">
+            <view class="item-preview">size:{{ item.size }}b</view>
+        </template>
+    </ste-upload>
+</template>
 <style>
     .item-preview {
         position: absolute;
@@ -144,7 +156,9 @@
     -
 
 ```html
-<ste-upload @beforeRead="beforeRead" @read="onSuccessRead"></ste-upload>
+<template>
+    <ste-upload @beforeRead="beforeRead" @read="onSuccessRead"></ste-upload>
+</template>
 <script lang="ts" setup>
     import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
     let toast = useToast();
@@ -170,7 +184,9 @@
     - 第四个参数是回调函数`stop`，调用阻止删除
 
 ```html
-<ste-upload v-model="fileList6" @beforeDelete="beforeDelete" @delete="onSuccessDelete"></ste-upload>
+<template>
+    <ste-upload v-model="fileList6" @beforeDelete="beforeDelete" @delete="onSuccessDelete"></ste-upload>
+</template>
 <script lang="ts" setup>
     import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
     let toast = useToast();

@@ -76,7 +76,9 @@
 - 属性`lineWidth`可以自定义画笔线宽，默认`3`
 
 ```html
-<ste-signature strokeColor="#f0f" lineWidth="1" />
+<template>
+    <ste-signature strokeColor="#f0f" lineWidth="1" />
+</template>
 ```
 
 ---$

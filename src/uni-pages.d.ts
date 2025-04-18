@@ -57,7 +57,8 @@ interface NavigateToOptions {
        "/pages/mp/demo-views/tour/tour" |
        "/pages/mp/demo-views/tree/tree" |
        "/pages/mp/demo-views/upload/upload" |
-       "/pages/mp/demo-views/video/video";
+       "/pages/mp/demo-views/video/video" |
+       "/pages/mp/demo-views/watermark/watermark";
 }
 interface RedirectToOptions extends NavigateToOptions {}
 

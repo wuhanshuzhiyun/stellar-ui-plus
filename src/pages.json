@@ -226,6 +226,10 @@
     {
       "path": "pages/mp/demo-views/video/video",
       "type": "page"
+    },
+    {
+      "path": "pages/mp/demo-views/watermark/watermark",
+      "type": "page"
     }
   ],
   "globalStyle": {
@@ -252,5 +256,6 @@
       "^ste-(.*)": "@/uni_modules/stellar-ui-plus/components/ste-$1/ste-$1.vue"
     }
   },
+  "__esModule": true,
   "subPackages": []
 }

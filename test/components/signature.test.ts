@@ -5,7 +5,7 @@ import { style2obj } from '../methods';
 
 describe('Signature Component', async () => {
 	const wrapper = mount(Signature, {
-		propsData: {
+		props: {
 			customClass: 'test-class',
 			lineWidth: 10,
 			strokeColor: "#000000",

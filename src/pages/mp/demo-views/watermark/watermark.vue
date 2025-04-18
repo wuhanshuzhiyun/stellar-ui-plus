@@ -5,8 +5,6 @@ const font = ref({
     color: 'rgba(0, 0, 0, .15)',
 });
 
-const image = ref('https://image.whzb.com/chain/StellarUI/组件图标/watermark.png');
-
 const config = ref({
     content: 'ste-watermark',
     font: {
@@ -52,7 +50,7 @@ const handelChange = (key: any, val: any, i?: any) => {
         <view class="demo-item">
             <view class="title">图片水印</view>
             <view class="item-block">
-                <ste-watermark :font="font" :width="130" :height="30" :image="image">
+                <ste-watermark :width="130" :height="30" image="https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*lkAoRbywo0oAAAAAAAAAAAAADrJ8AQ/original">
                     <div style="height: 150px; width: 400px" />
                 </ste-watermark>
             </view>

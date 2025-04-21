@@ -192,8 +192,8 @@ async function minus() {
 </script>
 
 <template>
-    <view class="ste-stepper-root" :style="[cmpRootStyle]">
-        <ste-button v-if="theme != 'add'" :rootStyle="cmpLeftButtonStyle" @click="minus" :disabled="cmpDisableMinus">
+    <view class="ste-stepper-root" :style="[cmpRootStyle]" data-test="stepper">
+        <ste-button class="btn-minus" v-if="theme != 'add'" :rootStyle="cmpLeftButtonStyle" @click="minus" :disabled="cmpDisableMinus">
             <view class="button-icon">
                 <ste-icon
                     code="&#xe67c;"
@@ -204,7 +204,7 @@ async function minus() {
             </view>
         </ste-button>
         <view v-if="theme != 'add'" class="input" :style="[cmpInputStyle]">
-            <input class="input-element" :type="precision ? 'digit' : 'number'" :value="modelValue" @blur="blur" @focus="focus" :disabled="disabled || disableInput" />
+            <input class="input-element" :type="precision ? 'digit' : 'number'" :value="modelValue" @blur="blur" @focus="focus" :disabled="disabled || disableInput" data-test="input-el" />
         </view>
         <ste-button v-if="theme != 'add'" :rootStyle="cmpRightButtonStyle" @click="plus" :disabled="cmpDisablePlus">
             <view class="button-icon">

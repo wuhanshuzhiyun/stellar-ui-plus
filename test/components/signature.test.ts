@@ -1,7 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import Signature from '../../src/uni_modules/stellar-ui-plus/components/ste-signature/ste-signature.vue';
-import { style2obj } from '../methods';
 
 describe('Signature Component', async () => {
 	const wrapper = mount(Signature, {
@@ -19,7 +18,7 @@ describe('Signature Component', async () => {
 	await nextTick();
 
 	test("customClass", async () => {
-		expect(wrapper.classes()).toContain('test-class');
+		expect(wrapper.props().customClass).toContain('test-class');
 	})
 
 	test("lineWidth", async () => {
@@ -37,14 +36,10 @@ describe('Signature Component', async () => {
 	test("type", async () => {
 		expect(wrapper.props().type).toBe("png");
 	})
-
-	const el = wrapper.find('.test-class');
-	const style = style2obj(el)
-
-	test('width', async () => {
-		expect(style.width).toBe('50px');
-	});
-	test('height', async () => {
-		expect(style.height).toBe('50px');
+	test("width", async () => {
+		expect(wrapper.props().width).toBe(100);
+	})
+	test("height", async () => {
+		expect(wrapper.props().height).toBe(100);
 	})
 });

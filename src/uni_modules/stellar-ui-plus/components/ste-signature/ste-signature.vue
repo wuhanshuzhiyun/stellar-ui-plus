@@ -39,6 +39,7 @@ const initCtx = () => {
 };
 
 const drawStrokes = () => {
+    if (!ctx.value || typeof ctx.value.setLineCap !== 'function') return;
     ctx.value?.setLineCap('round');
     ctx.value?.setLineWidth(props.lineWidth);
     ctx.value?.setStrokeStyle(props.strokeColor);

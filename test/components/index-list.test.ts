@@ -1,0 +1,38 @@
+import { mount } from '@vue/test-utils';
+import IndexList from '../../src/uni_modules/stellar-ui-plus/components/ste-index-list/ste-index-list.vue';
+import { nextTick } from 'vue';
+
+describe('IndexList', async () => {
+    const wrapper: any = mount(IndexList, {
+        props: {
+            sticky: true,
+            inactiveColor: '#666666',
+            activeColor: 'red',
+        },
+        slots: {
+            default: `<uni-view data-v-72996cad="" data-v-c1387ee4="" class="ste-scroll-to-item-root"><div data-v-c5e6a32b="" data-v-72996cad="" class="ste-sticky-root" id="ufam67bq" style="background: rgb(255, 255, 255); position: sticky; top: 0px; z-index: 98;"><uni-view data-v-72996cad="" class="index-item-title active">A</uni-view></div><uni-view data-v-72996cad="" class="index-item-text-list"><uni-view data-v-72996cad="" class="index-item-text">列表A1</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表A2</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表A3</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表A4</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表A5</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表A6</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表A7</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表A8</uni-view></uni-view></uni-view><uni-view data-v-72996cad="" data-v-c1387ee4="" class="ste-scroll-to-item-root"><div data-v-c5e6a32b="" data-v-72996cad="" class="ste-sticky-root" id="u39p2gev" style="background: rgb(255, 255, 255); position: sticky; top: 0px; z-index: 98;"><uni-view data-v-72996cad="" class="index-item-title">B</uni-view></div><uni-view data-v-72996cad="" class="index-item-text-list"><uni-view data-v-72996cad="" class="index-item-text">列表B1</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表B2</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表B3</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表B4</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表B5</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表B6</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表B7</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表B8</uni-view></uni-view></uni-view><uni-view data-v-72996cad="" data-v-c1387ee4="" class="ste-scroll-to-item-root"><div data-v-c5e6a32b="" data-v-72996cad="" class="ste-sticky-root" id="u1q4rvmm" style="background: rgb(255, 255, 255); position: sticky; top: 0px; z-index: 98;"><uni-view data-v-72996cad="" class="index-item-title">C</uni-view></div><uni-view data-v-72996cad="" class="index-item-text-list"><uni-view data-v-72996cad="" class="index-item-text">列表C1</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表C2</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表C3</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表C4</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表C5</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表C6</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表C7</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表C8</uni-view></uni-view></uni-view><uni-view data-v-72996cad="" data-v-c1387ee4="" class="ste-scroll-to-item-root"><div data-v-c5e6a32b="" data-v-72996cad="" class="ste-sticky-root" id="ur10kgt1" style="background: rgb(255, 255, 255); position: sticky; top: 0px; z-index: 98;"><uni-view data-v-72996cad="" class="index-item-title">D</uni-view></div><uni-view data-v-72996cad="" class="index-item-text-list"><uni-view data-v-72996cad="" class="index-item-text">列表D1</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表D2</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表D3</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表D4</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表D5</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表D6</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表D7</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表D8</uni-view></uni-view></uni-view><uni-view data-v-72996cad="" data-v-c1387ee4="" class="ste-scroll-to-item-root"><div data-v-c5e6a32b="" data-v-72996cad="" class="ste-sticky-root" id="ul9p4m1d" style="background: rgb(255, 255, 255); position: sticky; top: 0px; z-index: 98;"><uni-view data-v-72996cad="" class="index-item-title">E</uni-view></div><uni-view data-v-72996cad="" class="index-item-text-list"><uni-view data-v-72996cad="" class="index-item-text">列表E1</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表E2</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表E3</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表E4</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表E5</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表E6</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表E7</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表E8</uni-view></uni-view></uni-view><uni-view data-v-72996cad="" data-v-c1387ee4="" class="ste-scroll-to-item-root"><div data-v-c5e6a32b="" data-v-72996cad="" class="ste-sticky-root" id="uid517t4" style="background: rgb(255, 255, 255); position: sticky; top: 0px; z-index: 98;"><uni-view data-v-72996cad="" class="index-item-title">F</uni-view></div><uni-view data-v-72996cad="" class="index-item-text-list"><uni-view data-v-72996cad="" class="index-item-text">列表F1</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表F2</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表F3</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表F4</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表F5</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表F6</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表F7</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表F8</uni-view></uni-view></uni-view><uni-view data-v-72996cad="" data-v-c1387ee4="" class="ste-scroll-to-item-root"><div data-v-c5e6a32b="" data-v-72996cad="" class="ste-sticky-root" id="uo3bn3dk" style="background: rgb(255, 255, 255); position: sticky; top: 0px; z-index: 98;"><uni-view data-v-72996cad="" class="index-item-title">G</uni-view></div><uni-view data-v-72996cad="" class="index-item-text-list"><uni-view data-v-72996cad="" class="index-item-text">列表G1</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表G2</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表G3</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表G4</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表G5</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表G6</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表G7</uni-view><uni-view data-v-72996cad="" class="index-item-text">列表G8</uni-view></uni-view></uni-view>`,
+            title: '测试',
+        },
+    });
+    const list = wrapper.findAll('.ste-scroll-to-item-root');
+    const items = wrapper.findAll('.index-item-text');
+    await nextTick();
+
+    test('list-item', async () => {
+        expect(list.length).toBe(7);
+    });
+
+    test('item-item', async () => {
+        expect(items.length).toBe(56);
+    });
+
+    test('sticky', () => {
+        expect(wrapper.props('sticky')).toBe(true);
+    });
+    test('inactiveColor', () => {
+        expect(wrapper.props('inactiveColor')).toBe('#666666');
+    });
+    test('activeColor', () => {
+        expect(wrapper.props('activeColor')).toBe('red');
+    });
+});

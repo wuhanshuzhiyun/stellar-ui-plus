@@ -5,7 +5,7 @@ import steBadge from '../../src/uni_modules/stellar-ui-plus/components/ste-badge
 describe('Badge', async () => {
     test('content & position & offset', async () => {
         const wrapper = mount(steBadge, {
-            propsData: {
+            props: {
                 content: 80,
                 position: 'topLeft',
             },
@@ -19,7 +19,7 @@ describe('Badge', async () => {
 
     test('dot', () => {
         const wrapper = mount(steBadge, {
-            propsData: {
+            props: {
                 showDot: true,
             },
         });
@@ -29,7 +29,7 @@ describe('Badge', async () => {
 
     test('background', () => {
         const wrapper: any = mount(steBadge, {
-            propsData: {
+            props: {
                 background: 'rgb(25, 137, 250)',
                 content: 1,
             },
@@ -40,7 +40,7 @@ describe('Badge', async () => {
 
     test('zero', () => {
         const wrapper = mount(steBadge, {
-            propsData: {
+            props: {
                 showZero: true,
                 content: 0,
             },
@@ -52,7 +52,7 @@ describe('Badge', async () => {
     test('max', () => {
         const max = 99;
         const wrapper = mount(steBadge, {
-            propsData: {
+            props: {
                 max,
                 content: 100,
             },

@@ -32,7 +32,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <view class="ste-scroll-to-item-root">
+    <view class="ste-scroll-to-item-root" data-test="index-item">
         <slot name="title">
             <block v-if="title">
                 <ste-sticky v-if="sticky">

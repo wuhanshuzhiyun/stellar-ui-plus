@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import Tour from '../../src/uni_modules/stellar-ui-plus/components/ste-tour/ste-tour.vue';
 
-describe('Tour Vue Component', async () => {
+describe('Tour', async () => {
     const wrapper = mount(Tour, {
         propsData: {
             show: true,
@@ -22,8 +22,7 @@ describe('Tour Vue Component', async () => {
             completeTxt: '完成',
         },
     });
-
-    await new Promise(p => setTimeout(p, 500));
+    await nextTick();
 
     test('offset', () => {
         expect(wrapper.props('offset')).toEqual([0, 0]);

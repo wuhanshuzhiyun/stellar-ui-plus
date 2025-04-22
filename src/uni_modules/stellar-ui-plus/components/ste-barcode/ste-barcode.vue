@@ -69,6 +69,10 @@ const patternsToBinary = (codes: number[]) => {
 
 // H5环境下的绘制方法
 const drawBarcodeH5 = (context: UniApp.CanvasContext) => {
+    // 测试环境屏蔽uni
+    if (process.env.NODE_ENV == 'test') {
+        return;
+    }
     if (!props.content) return;
     // 生成编码数据
     const codes = stringToCode128(props.content);

@@ -19,7 +19,7 @@ describe('Steps', async () => {
     test('init', async () => {
         expect(list.length).toBe(3);
     });
-    console.log('list[0].style', list[0].element.style);
+
     test('active', async () => {
         expect(list[0].element.style._values['---color']).toBe('#0090FF');
     });

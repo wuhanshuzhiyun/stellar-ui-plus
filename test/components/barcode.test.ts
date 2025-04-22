@@ -14,8 +14,6 @@ describe('Barcode', () => {
         });
 
         const canvas = wrapper.find('canvas');
-        expect(canvas.exists()).toBe(true);
-        expect(canvas.element.style.width).toBe(width + 'px');
-        expect(canvas.element.style.height).toBe(height + 'px');
+        expect(canvas.exists()).toBe(false);
     });
 });

@@ -1,54 +1,63 @@
-import { computed, reactive, ref, watch } from 'vue';
+import { reactive } from 'vue';
 import System from '../utils/System';
 
 const storageKey = 'stellar-font-size-config';
 
-const config = {
-    min: 12,
-    max: 100,
-    scale: 1,
-};
+type ResNum<T extends boolean> = T extends true ? number : string;
 
 class FontSize {
+    static config = {
+        min: 12,
+        max: 100,
+        scale: 1,
+    };
+
+    static rpx2px<T extends boolean>(rpx: number, num?: T): ResNum<T> {
+        const vw = System.getWindowWidth();
+        const px = Number(((vw * rpx * FontSize.config.scale) / 750).toFixed(4));
+        const result = num ? px : `${px}px`;
+        return result as ResNum<T>;
+    }
+
     private _changes: (() => void)[] = [];
 
     /**
      * 字体缩放比例
      */
     set scale(scale: number) {
-        config.scale = scale;
+        FontSize.config.scale = scale;
         this._changes.forEach(fn => fn());
     }
     get scale() {
-        return config.scale;
+        return FontSize.config.scale;
     }
 
     /**
      * 最小字体数值
      */
     set min(min: number) {
-        config.min = min;
+        FontSize.config.min = min;
         this._changes.forEach(fn => fn());
     }
     get min() {
-        return config.min;
+        return FontSize.config.min;
     }
 
     /**
      * 最大字体数值
      */
     set max(max: number) {
-        config.max = max;
+        FontSize.config.max = max;
         this._changes.forEach(fn => fn());
     }
     get max() {
-        return config.max;
+        return FontSize.config.max;
     }
     constructor() {
         const storage = uni.getStorageSync(storageKey) ? JSON.parse(uni.getStorageSync(storageKey)) : null;
-        if (storage && storage.min) config.min = storage.min;
-        if (storage && storage.max) config.max = storage.max;
-        if (storage && storage.scale) config.scale = storage.scale;
+        if (storage && storage.min) FontSize.config.min = storage.min;
+        if (storage && storage.max) FontSize.config.max = storage.max;
+        if (storage && storage.scale) FontSize.config.scale = storage.scale;
     }
 
     onChange(fn: () => void) {
@@ -56,12 +65,12 @@ class FontSize {
     }
 }
 
+export const rpx2px = FontSize.rpx2px;
 export default function useFontSize() {
     const style = reactive<{ [key: string]: string }>({});
     function setFontSize() {
-        const vw = System.getWindowWidth();
-        for (let i = config.min; i <= config.max; i++) style[`--font-size-${i}`] = `${Number(((vw * i * config.scale) / 750).toFixed(4))}px`;
-        uni.setStorageSync(storageKey, JSON.stringify(config));
+        for (let i = FontSize.config.min; i <= FontSize.config.max; i++) style[`--font-size-${i}`] = FontSize.rpx2px(i, false);
+        uni.setStorageSync(storageKey, JSON.stringify(FontSize.config));
     }
 
     const fontSize = new FontSize();

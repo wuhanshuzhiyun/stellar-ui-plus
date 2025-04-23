@@ -1,26 +1,17 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, watch } from 'vue';
 import config from '../../../uni_modules/stellar-ui-plus/config';
 import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 import { useMessageBox } from '@/uni_modules/stellar-ui-plus/composables';
 
-const fontSize = ref(config.options.fontScale);
-
+const fontSize = ref<number>(config.options.fontScale * 10);
 watch(
     () => fontSize.value,
-    v => {
-        config.setConfig({ fontScale: v });
+    (v: number) => {
+        config.options.fontScale = v / 10;
     }
 );
 
-const rootStyle = computed(() => {
-    // #ifdef MP | APP
-    return config.rootStyle;
-    // #endif
-    // #ifndef MP
-    return {};
-    // #endif
-});
 const value1 = ref(null);
 const list1 = [
     { label: '选项2011', value: 2011 },
@@ -35,11 +26,10 @@ const list1 = [
 ];
 
 const fontSizeChange = (v: number | number[]) => {
-    console.log(v);
     if (Array.isArray(v)) {
-        fontSize.value = v[0] / 10;
+        fontSize.value = v[0];
     } else {
-        fontSize.value = v / 10;
+        fontSize.value = v;
     }
 };
 
@@ -90,11 +80,11 @@ const rows = ref([
 const menu1 = ref(1);
 </script>
 <template>
-    <view :style="[rootStyle]">
+    <view data-test="font-size-page" :style="[config.rootStyle]">
         <ste-sticky>
             <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="字体大小配置"></page-nav>
             <view style="background-color: #fff; padding: 24rpx; display: flex; justify-content: center; border-bottom: 1px solid #eee">
-                <ste-slider :value="fontSize * 10" :min="5" :max="20" :step="1" @change="fontSizeChange" />
+                <ste-slider :value="fontSize" :min="5" :max="20" :step="1" @change="fontSizeChange" />
             </view>
         </ste-sticky>
         <view class="demo-content">

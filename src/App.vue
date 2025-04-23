@@ -5,14 +5,14 @@ import config from '@/uni_modules/stellar-ui-plus/config';
 // #ifdef H5
 watch(
     () => config.rootStyle,
-    style => {
+    (style: { [key: string]: string }) => {
         nextTick(() => {
             Object.keys(style).forEach((key: string) => {
                 document.documentElement.style.setProperty(key, style[key]);
             });
         });
     },
-    { immediate: true }
+    { immediate: true, deep: true }
 );
 // #endif
 </script>

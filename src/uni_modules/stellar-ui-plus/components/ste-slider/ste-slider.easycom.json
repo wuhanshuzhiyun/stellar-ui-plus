@@ -6,7 +6,7 @@
     "attributes": [
         {
             "name": "value",
-            "description": "当前进度百分比，在双滑块模式下为数组格式（数组的值都是从小到大）",
+            "description": "滑块选择值，在双滑块模式下为数组格式（数组的值都是从小到大）",
             "type": "number | string | array"
         },
         {
@@ -87,7 +87,7 @@
             "params": [
                 {
                     "name": "percentage",
-                    "description": "进度百分比"
+                    "description": "当前滑块值"
                 }
             ]
         },

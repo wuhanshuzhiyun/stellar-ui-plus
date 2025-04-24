@@ -27,7 +27,11 @@ let isSecondSlider = false;
 
 let elRoot: UniApp.NodeInfo;
 
-let { markList, isDrag, realPercentage, realPercentage2, getRealValue, calculateStepMarks, startPosition, getPosition, startPercentage, getValueFromPercentage } = useData(props, emits, instance);
+let { markList, isDrag, realPercentage, realPercentage2, getRealValue, calculateStepMarks, startPosition, getPosition, startPercentage, getValueFromPercentage, getPercentageFromValue } = useData(
+    props,
+    emits,
+    instance
+);
 
 const cmpRootClass = computed(() => {
     let classStr = '';
@@ -106,10 +110,10 @@ watch(
     () => props.value,
     val => {
         if (Array.isArray(val)) {
-            realPercentage.value = getRealValue(Number(val[0]));
-            realPercentage2.value = getRealValue(Number(val[1]));
+            realPercentage.value = getPercentageFromValue(Number(val[0]));
+            realPercentage2.value = getPercentageFromValue(Number(val[1]));
         } else {
-            realPercentage.value = getRealValue(Number(val));
+            realPercentage.value = getPercentageFromValue(Number(val));
         }
     },
     { immediate: true }
@@ -164,7 +168,7 @@ function onTouchEnd(e: UniTouchEvent | MouseEvent) {
     isDrag.value = false;
     // this.isSecondSlider = false;
     emits('dragEnd', e);
-    emits('change', props.range ? [realPercentage.value, realPercentage2.value] : getValueFromPercentage(realPercentage.value));
+    emits('change', props.range ? [getValueFromPercentage(realPercentage.value), getValueFromPercentage(realPercentage2.value)] : getValueFromPercentage(realPercentage.value));
 
     // #ifdef WEB
     removeListenner && removeListenner();

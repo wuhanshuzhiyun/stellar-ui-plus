@@ -15,3 +15,17 @@ export function fontSize(fontSize: string) {
 export function iconFormart(code) {
     return String.fromCharCode(Number(code.replace('&#', '0').replace(';', '')));
 }
+
+export function style2obj(el: any): { [key: string]: string } {
+    const style = {};
+    el.attributes()
+        .style.split(';')
+        .forEach(item => {
+            const [key, value] = item.split(':');
+            if (key && value) {
+                style[key.trim()] = value.trim();
+            }
+        });
+    Object.assign(style, window.getComputedStyle(el.element));
+    return style;
+}

@@ -45,7 +45,7 @@ const onChange = (key: string) => {
 };
 </script>
 <template>
-    <view class="number-keyboard" :style="[cmpRootStyle]">
+    <view class="number-keyboard" :style="[cmpRootStyle]" data-test="number-keyboard-item">
         <view class="number-keyboard-left">
             <block v-for="(num, index) in list" :key="num">
                 <view

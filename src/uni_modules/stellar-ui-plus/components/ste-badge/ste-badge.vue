@@ -57,7 +57,7 @@ const cmpIsSmall = computed(() => {
 </script>
 
 <template>
-    <view class="ste-badge-root" :style="[rootStyle as any, { display: isInline ? 'inline-block' : 'block' }]">
+    <view class="ste-badge-root" data-test="badge" :style="[rootStyle as any, { display: isInline ? 'inline-block' : 'block' }]">
         <view class="ste-badge-content" :style="[cmpContentStyle]" :class="'ste-badge-' + position" v-if="showDot || cmpShowContent || $slots.content">
             <view v-if="showDot" class="dot-box" />
             <view v-else class="content-box" :class="{ 'no-padding': $slots.content || cmpIsSmall }">

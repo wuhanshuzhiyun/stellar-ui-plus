@@ -158,7 +158,7 @@ function handleClick() {
 </script>
 
 <template>
-    <view v-if="closeShow" class="ste-notice-bar-root" :style="[cmpStyle]">
+    <view v-if="closeShow" class="ste-notice-bar-root" :style="[cmpStyle]" data-test="notice-bar">
         <view class="msg-box-content" @touchstart="doPause" @touchend="doRun" @mousedown="doPause" @mouseup="doRun">
             <view class="left">
                 <slot name="leftIcon">

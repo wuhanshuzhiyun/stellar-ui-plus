@@ -85,9 +85,6 @@ const cmpRootClass = computed(() => {
 const cmpRootStyleVar = computed(() => {
     let style = {
         '--control-height': isFull.value ? utils.formatPx(128) : utils.formatPx(88),
-        // #ifndef H5 || WEB
-        // '--control-bottom-bar': utils.System.getNavbarBottom(),
-        // #endif
         '--text-box-width': utils.formatPx(80),
         '--progress-bar-width': utils.formatPx(28),
         '--choose-item-font-size': `var(--font-size-${28},${utils.formatPx(28)})`,
@@ -202,9 +199,6 @@ function handleChooseItem(e: any, index: number) {
         resolutionIndex.value = index;
         handlePlay(false);
         videoSrc.value = props.resolution[resolutionIndex.value].url;
-        // setTimeout(() => {
-
-        // }, 200);
         nextTick(() => {
             videoContext.seek(videoCurrent.value);
             handlePlay(true);
@@ -215,9 +209,6 @@ function handleChooseItem(e: any, index: number) {
         showPopup.value = false;
         tip(tipMsg);
     });
-    // setTimeout(() => {
-
-    // }, 20);
 }
 
 function timeupdate(e: BaseEvent) {
@@ -239,7 +230,7 @@ function fullscreenchange(e: BaseEvent) {
 </script>
 
 <template>
-    <view class="ste-video-root" :class="cmpRootClass" :style="[cmpRootStyleVar]">
+    <view class="ste-video-root" :class="cmpRootClass" :style="[cmpRootStyleVar]" data-test="video">
         <!-- #ifndef MP-ALIPAY || APP -->
         <video
             class="ste-video"
@@ -286,7 +277,6 @@ function fullscreenchange(e: BaseEvent) {
             @loadedmetadata="loadedMetaData"
             @fullscreenclick="fullscreenclick"
         >
-            <!-- <view class="ste-video-custom-content"> -->
             <!-- 图片操作提示 -->
             <view class="overlay-box" v-if="isFull && !firstFullDone">
                 <ste-image src="https://image.whzb.com/chain/StellarUI/video/overlay.png" mode="widthFix" width="100%" />

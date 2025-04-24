@@ -219,7 +219,7 @@ const onMediaType = () => {
 // #endif
 </script>
 <template>
-    <view class="ste-upload-root" :style="[cmpRootStyle]">
+    <view class="ste-upload-root" data-test="upload" :style="[cmpRootStyle]">
         <view class="upload-list">
             <block v-if="previewImage">
                 <view class="image-item" v-for="(item, index) in dataValue" :key="index" @click="toSelectFile">
@@ -242,12 +242,12 @@ const onMediaType = () => {
                     </block>
                 </view>
             </block>
-            <view class="add-file" v-if="cmpShowUpload" @click="() => selectFile()">
+            <view class="add-file" data-test="upload-add-file" v-if="cmpShowUpload" @click="() => selectFile()">
                 <slot>
                     <view class="image-item add-file">
                         <view class="upload-btn">
                             <ste-icon :code="uploadIcon" :size="60" color="#ddd"></ste-icon>
-                            <view class="upload-text">{{ uploadText }}</view>
+                            <view class="upload-text" data-test="upload-text">{{ uploadText }}</view>
                         </view>
                         <!-- #ifdef MP-ALIPAY -->
                         <view class="delete" v-if="accept === 'media'" @click.stop="onMediaType">

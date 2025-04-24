@@ -57,7 +57,7 @@ function animated() {
 </script>
 
 <template>
-    <view class="ste-animate-root" :class="[cmpRootClass]" :style="[cmpRootStyle]" @click="handleClick">
+    <view class="ste-animate-root" :class="[cmpRootClass]" :style="[cmpRootStyle]" @click="handleClick" data-test="animate">
         <slot></slot>
     </view>
 </template>

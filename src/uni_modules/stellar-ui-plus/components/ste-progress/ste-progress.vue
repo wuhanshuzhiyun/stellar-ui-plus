@@ -129,7 +129,7 @@ watch(
 </script>
 
 <template>
-    <view class="ste-progress-root" :style="[cmpRootCssVar]">
+    <view class="ste-progress-root" :style="[cmpRootCssVar]" data-test="progress">
         <view class="inactive-box" :style="[cmpInactiveStyle]"></view>
         <view class="stage-box" v-if="hasStage">
             <view class="stage" v-for="(item, index) in Object.keys(stageData)" :style="[getStageStyle(Number(item), index, stageData[item])]">

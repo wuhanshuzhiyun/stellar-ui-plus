@@ -25,7 +25,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useDat
 </script>
 
 <template>
-    <view class="ste-number-keyboard-root" :style="[cmpRootStyle]">
+    <view class="ste-number-keyboard-root" :style="[cmpRootStyle]" data-test="number-keyboard">
         <block v-if="mode === 'popup'">
             <ste-popup v-model:show="dataShow" @close="onClose" position="bottom" :show-close="false" @open="onOpen">
                 <view style="padding: 30rpx 30rpx 60rpx 30rpx; background-color: #f5f5f5">

@@ -27,6 +27,7 @@ const cmpRootCssVar = computed(() => {
         :space="space"
         :decode="decode"
         :number-of-lines="lines"
+        data-test="text"
     >
         <slot></slot>
     </text>

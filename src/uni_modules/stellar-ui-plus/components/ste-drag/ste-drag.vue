@@ -160,6 +160,7 @@ function getMoveObj(e: TouchEvent | MouseEvent): { clientX: number; clientY: num
         @touchmove.stop.prevent="touchMove"
         @touchend="touchEnd"
         @mousedown="mouseDown"
+        data-test="drag"
     >
         <slot />
     </view>

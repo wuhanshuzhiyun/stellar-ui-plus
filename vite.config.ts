@@ -41,9 +41,6 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         dir: 'test',
-    },
-    // vue 去重
-    resolve: {
-        dedupe: ['vue'],
+        setupFiles: ['./test/setup.ts'],
     },
 });

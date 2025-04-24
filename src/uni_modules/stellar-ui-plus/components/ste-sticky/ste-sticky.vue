@@ -60,6 +60,10 @@ onBeforeUnmount(() => {
 });
 
 const observeContent = () => {
+    // 测试环境屏蔽uni
+    if (process.env.NODE_ENV == 'test') {
+        return;
+    }
     disconnectObserver();
     observe.value = uni.createIntersectionObserver(thas.value, { thresholds: [0.8, 1] });
     observe.value.relativeToViewport({ top: -(relativeToViewportTop.value + 1) });

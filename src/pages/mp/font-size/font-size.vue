@@ -35,8 +35,6 @@ const fontSizeChange = (v: number | number[]) => {
 
 let checkBox = ref(false);
 
-let radioBox = ref(false);
-
 let rateBox = ref(2);
 
 let stepperBox = ref(1);
@@ -45,10 +43,6 @@ let list = ref(['第一条:1111111111111111111111111111', '第二条:22222222222
 
 const active = ref(0);
 
-function goToPrev() {
-    if (active.value <= 0) return;
-    active.value--;
-}
 const toast = useToast();
 const showToast = () => {
     toast.showToast({
@@ -124,7 +118,7 @@ const menu1 = ref(1);
             <ste-input value="测试" border borderColor="#f00"></ste-input>
             <br />
             <br />
-            <ste-radio v-model="radioBox">单选框</ste-radio>
+            <ste-radio>单选框</ste-radio>
             <br />
             <br />
             <ste-rate v-model="rateBox"></ste-rate>
@@ -154,7 +148,7 @@ const menu1 = ref(1);
             <ste-read-more>{{ moreStr }}</ste-read-more>
             <br />
             <br />
-            <ste-steps :active="active" @clickStep="toToast">
+            <ste-steps :active="active">
                 <ste-step></ste-step>
                 <ste-step></ste-step>
                 <ste-step></ste-step>

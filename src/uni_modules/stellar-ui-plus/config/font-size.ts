@@ -65,7 +65,10 @@ class FontSize {
     }
 }
 
-export const rpx2px = FontSize.rpx2px;
+export function normalizeFontSize<T extends boolean>(rpx: number, num?: T): ResNum<T> {
+    return FontSize.rpx2px(rpx, num);
+}
+
 export default function useFontSize() {
     const style = reactive<{ [key: string]: string }>({});
     function setFontSize() {

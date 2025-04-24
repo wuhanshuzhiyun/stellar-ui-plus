@@ -1,5 +1,4 @@
 import type { InputType } from '@uni-helper/uni-app-types';
-import type dayjs from 'dayjs';
 import type dayjs from '../utils/dayjs';
 
 export type UniImageMode =

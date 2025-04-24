@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
-import { useMutationObserver } from '@vueuse/core';
+// import { useMutationObserver } from '@vueuse/core';
 import { watermarkProps } from './props';
 import type { WatermarkProps } from './props';
 import { getPixelRatio, getStyleStr, reRendering } from './utils';
@@ -213,9 +213,9 @@ const onMutate = (mutations: MutationRecord[]) => {
     });
 };
 
-useMutationObserver(containerRef, onMutate, {
-    attributes: true,
-    subtree: true,
-    childList: true,
-});
+// useMutationObserver(containerRef, onMutate, {
+//     attributes: true,
+//     subtree: true,
+//     childList: true,
+// });
 </script>

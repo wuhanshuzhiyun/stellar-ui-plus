@@ -1,48 +1,39 @@
-import { reactive } from 'vue'
-import System from '../utils/System'
+import useFontSize from './font-size';
 
-class Config {
-  private _options = {
-    minSize: 12, // 最小字体
-    maxSize: 80, // 最大字体
-    fontScale: 1, // 字体缩放比例
-  }
+const { config, fontSizeStyle } = useFontSize();
 
-  get options() {
-    return this._options
-  }
+class Options {
+    get minSize() {
+        return config.min;
+    }
 
-  set options(options: typeof this._options) {
-    this._options = options
-    this._setFontSize()
-  }
+    set minSize(value: number) {
+        config.min = value;
+    }
 
-  private _fontSize: { [key: string]: string } = {}
+    get maxSize() {
+        return config.max;
+    }
 
-  get rootStyle() {
-    return this._fontSize
-  }
+    set maxSize(value: number) {
+        config.max = value;
+    }
 
-  constructor(options?: Partial<typeof this._options>) {
-    if (options)
-      this.options = Object.assign(this._options, options)
-    this._setFontSize()
-  }
+    get fontScale() {
+        return config.scale;
+    }
 
-  private _setFontSize() {
-    const style: { [key: string]: string } = {}
-    const vw = System.getWindowWidth()
-    const scale = this.options.fontScale
-    for (let i = this.options.minSize; i <= this.options.maxSize; i += 2) style[`--font-size-${i}`] = `${Number(((vw * i * scale) / 750).toFixed(4))}px`
-
-    this._fontSize = style
-  }
-
-  setConfig(options: Partial<typeof this._options>) {
-    this.options = Object.assign(this._options, options)
-  }
+    set fontScale(value: number) {
+        config.scale = value;
+    }
 }
 
-const config = new Config()
-
-export default reactive(config)
+export default {
+    rootStyle: fontSizeStyle,
+    options: new Options(),
+    setConfig(options: Partial<{ minSize?: number; maxSize?: number; fontScale?: number }> = {}) {
+        if (options.minSize) config.min = options.minSize;
+        if (options.maxSize) config.max = options.maxSize;
+        if (options.fontScale) config.scale = options.fontScale;
+    },
+};

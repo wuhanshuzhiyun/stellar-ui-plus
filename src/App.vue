@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { nextTick, watch } from 'vue';
-import config from '@/uni_modules/stellar-ui-plus/config';
-
 // #ifdef H5
-watch(
-    () => config.rootStyle,
-    style => {
-        nextTick(() => {
-            Object.keys(style).forEach((key: string) => {
-                document.documentElement.style.setProperty(key, style[key]);
-            });
-        });
-    },
-    { immediate: true }
-);
+import useFontSize from '@/uni_modules/stellar-ui-plus/config/font-size';
+
+const { fontSizeStyle, config } = useFontSize();
+
+function setFontSize() {
+    Object.keys(fontSizeStyle).forEach((key: string) => {
+        document.documentElement.style.setProperty(key, fontSizeStyle[key]);
+    });
+}
+setTimeout(setFontSize);
+config.onChange(setFontSize);
 // #endif
 </script>
 

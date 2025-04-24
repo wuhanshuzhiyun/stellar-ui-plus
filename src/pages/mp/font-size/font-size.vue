@@ -1,26 +1,19 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import config from '../../../uni_modules/stellar-ui-plus/config';
+import { ref, watch } from 'vue';
 import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 import { useMessageBox } from '@/uni_modules/stellar-ui-plus/composables';
+import useFontSize from '@/uni_modules/stellar-ui-plus/config/font-size';
 
-const fontSize = ref(config.options.fontScale);
+const { fontSizeStyle, config } = useFontSize();
 
+const fontSize = ref<number>(config.scale * 10);
 watch(
     () => fontSize.value,
-    v => {
-        config.setConfig({ fontScale: v });
+    (v: number) => {
+        config.scale = v / 10;
     }
 );
 
-const rootStyle = computed(() => {
-    // #ifdef MP | APP
-    return config.rootStyle;
-    // #endif
-    // #ifndef MP
-    return {};
-    // #endif
-});
 const value1 = ref(null);
 const list1 = [
     { label: '选项2011', value: 2011 },
@@ -35,17 +28,14 @@ const list1 = [
 ];
 
 const fontSizeChange = (v: number | number[]) => {
-    console.log(v);
     if (Array.isArray(v)) {
-        fontSize.value = v[0] / 10;
+        fontSize.value = v[0];
     } else {
-        fontSize.value = v / 10;
+        fontSize.value = v;
     }
 };
 
 let checkBox = ref(false);
-
-let radioBox = ref(false);
 
 let rateBox = ref(2);
 
@@ -55,10 +45,6 @@ let list = ref(['第一条:1111111111111111111111111111', '第二条:22222222222
 
 const active = ref(0);
 
-function goToPrev() {
-    if (active.value <= 0) return;
-    active.value--;
-}
 const toast = useToast();
 const showToast = () => {
     toast.showToast({
@@ -90,11 +76,11 @@ const rows = ref([
 const menu1 = ref(1);
 </script>
 <template>
-    <view :style="[rootStyle]">
+    <view data-test="font-size-page" :style="[fontSizeStyle]">
         <ste-sticky>
             <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="字体大小配置"></page-nav>
             <view style="background-color: #fff; padding: 24rpx; display: flex; justify-content: center; border-bottom: 1px solid #eee">
-                <ste-slider :value="fontSize * 10" :min="5" :max="20" :step="1" @change="fontSizeChange" />
+                <ste-slider :value="fontSize" :min="5" :max="20" :step="1" @change="fontSizeChange" />
             </view>
         </ste-sticky>
         <view class="demo-content">
@@ -134,7 +120,7 @@ const menu1 = ref(1);
             <ste-input value="测试" border borderColor="#f00"></ste-input>
             <br />
             <br />
-            <ste-radio v-model="radioBox">单选框</ste-radio>
+            <ste-radio>单选框</ste-radio>
             <br />
             <br />
             <ste-rate v-model="rateBox"></ste-rate>
@@ -164,7 +150,7 @@ const menu1 = ref(1);
             <ste-read-more>{{ moreStr }}</ste-read-more>
             <br />
             <br />
-            <ste-steps :active="active" @clickStep="toToast">
+            <ste-steps :active="active">
                 <ste-step></ste-step>
                 <ste-step></ste-step>
                 <ste-step></ste-step>

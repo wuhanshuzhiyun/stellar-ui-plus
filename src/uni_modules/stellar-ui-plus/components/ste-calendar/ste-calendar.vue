@@ -278,18 +278,17 @@ const onScroll = (e: any) => {
 
     .calendar-title {
         height: 90rpx;
-        font-size: 32rpx;
+        font-size: var(--font-size-32, 32rpx);
         line-height: 44rpx;
         padding-top: 30rpx;
-
         text-align: center;
     }
 
     .week-head {
         width: 100%;
-        height: 80rpx;
-        line-height: 80rpx;
-        font-size: 32rpx;
+        height: var(--font-size-80, 80rpx);
+        line-height: var(--font-size-80, 80rpx);
+        font-size: var(--font-size-32, 32rpx);
         border-bottom: 1px solid #ddd;
         box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
@@ -298,7 +297,7 @@ const onScroll = (e: any) => {
     .date-content {
         width: 100%;
         overflow-y: auto;
-        height: calc(100% - 80rpx);
+        height: calc(100% - var(--font-size-80, 80rpx));
         padding-bottom: 12rpx;
 
         &.show-title {
@@ -339,7 +338,7 @@ const onScroll = (e: any) => {
                 text-align: center;
                 height: 44rpx;
                 line-height: 44rpx;
-                font-size: 32rpx;
+                font-size: var(--font-size-32, 32rpx);
             }
 
             .week-row {
@@ -456,7 +455,7 @@ const onScroll = (e: any) => {
                         width: 100%;
                         height: 48rpx;
                         line-height: 48rpx;
-                        font-size: 32rpx;
+                        font-size: var(--font-size-32, 32rpx);
                     }
 
                     .day-range-head,
@@ -464,7 +463,7 @@ const onScroll = (e: any) => {
                         width: 100%;
                         height: 24rpx;
                         line-height: 24rpx;
-                        font-size: 24rpx;
+                        font-size: var(--font-size-24, 24rpx);
                     }
 
                     .day-range-head,
@@ -483,7 +482,7 @@ const onScroll = (e: any) => {
                             width: 100%;
                             height: 24rpx;
                             line-height: 24rpx;
-                            font-size: 24rpx;
+                            font-size: var(--font-size-24, 24rpx);
                             overflow: hidden;
                             margin-top: 6rpx;
                         }

@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import config from '../../../uni_modules/stellar-ui-plus/config';
 import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 import { useMessageBox } from '@/uni_modules/stellar-ui-plus/composables';
+import useFontSize from '@/uni_modules/stellar-ui-plus/config/font-size';
 
-const fontSize = ref<number>(config.options.fontScale * 10);
+const { fontSizeStyle, config } = useFontSize();
+
+const fontSize = ref<number>(config.scale * 10);
 watch(
     () => fontSize.value,
     (v: number) => {
-        config.options.fontScale = v / 10;
+        config.scale = v / 10;
     }
 );
 
@@ -74,7 +76,7 @@ const rows = ref([
 const menu1 = ref(1);
 </script>
 <template>
-    <view data-test="font-size-page" :style="[config.rootStyle]">
+    <view data-test="font-size-page" :style="[fontSizeStyle]">
         <ste-sticky>
             <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="字体大小配置"></page-nav>
             <view style="background-color: #fff; padding: 24rpx; display: flex; justify-content: center; border-bottom: 1px solid #eee">

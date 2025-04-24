@@ -1,6 +1,6 @@
 import useFontSize from './font-size';
 
-const { config, style } = useFontSize();
+const { config, fontSizeStyle } = useFontSize();
 
 class Options {
     get minSize() {
@@ -29,7 +29,7 @@ class Options {
 }
 
 export default {
-    rootStyle: style,
+    rootStyle: fontSizeStyle,
     options: new Options(),
     setConfig(options: Partial<{ minSize?: number; maxSize?: number; fontScale?: number }> = {}) {
         if (options.minSize) config.min = options.minSize;

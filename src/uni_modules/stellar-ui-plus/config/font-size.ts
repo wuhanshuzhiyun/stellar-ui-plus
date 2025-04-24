@@ -8,7 +8,7 @@ type ResNum<T extends boolean> = T extends true ? number : string;
 class FontSize {
     static config = {
         min: 12,
-        max: 100,
+        max: 80,
         scale: 1,
     };
 
@@ -69,17 +69,16 @@ export function normalizeFontSize<T extends boolean>(rpx: number, num?: T): ResN
     return FontSize.rpx2px(rpx, num);
 }
 
+const fontSizeStyle = reactive<{ [key: string]: string }>({});
+function setFontSize() {
+    for (let i = FontSize.config.min; i <= FontSize.config.max; i++) fontSizeStyle[`--font-size-${i}`] = FontSize.rpx2px(i, false);
+    uni.setStorageSync(storageKey, JSON.stringify(FontSize.config));
+}
+
+const fontSize = new FontSize();
+
+setTimeout(setFontSize);
+fontSize.onChange(setFontSize);
 export default function useFontSize() {
-    const style = reactive<{ [key: string]: string }>({});
-    function setFontSize() {
-        for (let i = FontSize.config.min; i <= FontSize.config.max; i++) style[`--font-size-${i}`] = FontSize.rpx2px(i, false);
-        uni.setStorageSync(storageKey, JSON.stringify(FontSize.config));
-    }
-
-    const fontSize = new FontSize();
-
-    setTimeout(setFontSize);
-    fontSize.onChange(setFontSize);
-
-    return { config: fontSize, style };
+    return { config: fontSize, fontSizeStyle };
 }

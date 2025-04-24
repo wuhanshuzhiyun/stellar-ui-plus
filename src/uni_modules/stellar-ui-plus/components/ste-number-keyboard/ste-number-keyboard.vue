@@ -17,6 +17,8 @@ const emits = defineEmits<{
     (e: 'close'): void;
     (e: 'update:show', show: boolean): void;
     (e: 'open'): void;
+    // 新增事件
+    (e: 'update:inputValues', values: Record<string, string>): void; // 更新多输入框值的事件
 }>();
 
 const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useData({ props, emits });

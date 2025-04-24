@@ -259,6 +259,48 @@
 </style>
 ```
 
+#### 绑定多个输入框
+
+- 当有一个键盘绑定多个输入框的需求时，可去掉键盘组件的`v-model`，使用如下数据格式
+- 在输入框绑定点击事件来指定当前输入
+
+```html
+<template>
+    <view class="test-input" @click="activeInputRef = 'value1'">
+        <text v-if="inputValues.value1">{{ inputValues.value1 }}</text>
+        <text v-else class="placeholder">请输入</text>
+    </view>
+    <view class="test-input" @click="activeInputRef = 'value2'">
+        <text v-if="inputValues.value2">{{ inputValues.value2 }}</text>
+        <text v-else class="placeholder">请输入</text>
+    </view>
+    <view style="padding: 30rpx; background-color: #f5f5f5; margin-top: 12rpx">
+        <ste-number-keyboard mode="page" :inputValues="inputValues" :activeInputRef="activeInputRef" />
+    </view>
+</template>
+<script setup lang="ts">
+    import { reactive, ref } from 'vue';
+    const inputValues = reactive({
+        value1: '123',
+        value2: '321',
+    });
+
+    const activeInputRef = ref('value1');
+</script>
+<style scoped lang="scss">
+    .test-input {
+        height: 66rpx;
+        line-height: 66rpx;
+        background-color: #f5f5f5;
+        padding: 0 18rpx;
+        font-size: 24rpx;
+        .placeholder {
+            color: #999;
+        }
+    }
+</style>
+```
+
 ---$
 
 ### API

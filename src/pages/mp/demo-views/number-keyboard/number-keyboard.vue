@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 const value1 = ref('');
 const show1 = ref(false);
 const value2 = ref('');
@@ -13,6 +13,13 @@ const show5 = ref(false);
 const value6 = ref('');
 const show6 = ref(false);
 const value7 = ref('');
+
+const inputValues = reactive({
+    value1: '123',
+    value2: '321',
+});
+
+const activeInputRef = ref('value1');
 
 const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () => void) => {
     // 等待后续操作
@@ -93,6 +100,20 @@ const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () 
             </view>
             <view style="padding: 30rpx; background-color: #f5f5f5; margin-top: 12rpx">
                 <ste-number-keyboard mode="page" v-model="value7" />
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">绑定多个输入框</view>
+            <view class="test-input" @click="activeInputRef = 'value1'">
+                <text v-if="inputValues.value1">{{ inputValues.value1 }}</text>
+                <text v-else class="placeholder">请输入</text>
+            </view>
+            <view class="test-input" @click="activeInputRef = 'value2'">
+                <text v-if="inputValues.value2">{{ inputValues.value2 }}</text>
+                <text v-else class="placeholder">请输入</text>
+            </view>
+            <view style="padding: 30rpx; background-color: #f5f5f5; margin-top: 12rpx">
+                <ste-number-keyboard mode="page" :inputValues="inputValues" :activeInputRef="activeInputRef" />
             </view>
         </view>
     </page-layout>

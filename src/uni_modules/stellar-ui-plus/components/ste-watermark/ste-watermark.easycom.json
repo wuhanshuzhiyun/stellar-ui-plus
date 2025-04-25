@@ -8,52 +8,82 @@
             "name": "width",
             "description": "水印的宽度， content 的默认值是它自己的宽度",
             "type": "number",
-            "default": 120
+            "default": 120,
+            "version": "v1.18.3"
         },
         {
             "name": "height",
             "description": "水印的高度， content 的默认值是它自己的高度",
             "type": "number",
-            "default": "64"
+            "default": "64",
+            "version": "v1.18.3"
         },
         {
             "name": "rotate",
             "description": "水印的旋转角度, 单位 °",
             "type": "number",
-            "default": "-22"
+            "default": "-22",
+            "version": "v1.18.3"
         },
         {
             "name": "zIndex",
             "description": "水印元素的 z-index 值",
             "type": "number",
-            "default": "9"
+            "default": "9",
+            "version": "v1.18.3"
         },
         {
             "name": "image",
             "description": "水印图片，建议使用 2x 或 3x 图像",
-            "type": "string"
+            "type": "string",
+            "version": "v1.18.3"
         },
         {
             "name": "content",
             "description": "水印文本内容",
-            "type": "string / object"
+            "type": "string / array",
+            "version": "v1.18.3"
         },
         {
             "name": "font",
-            "description": "文字样式",
-            "type": "Font"
+            "description": "文字样式，包括字体、大小、颜色等，具体说明见下方",
+            "type": "object",
+            "version": "v1.18.3"
         },
         {
-            "name": "gap",
-            "description": "水印之间的间距",
-            "type": "object",
-            "default": [50, 50]
+            "name": "gapX",
+            "description": "水印之间的水平间距",
+            "type": "number",
+            "default": 50,
+            "version": "v1.18.3"
         },
         {
-            "name": "offset",
-            "description": "水印从容器左上角的偏移 默认值为 gap/2",
-            "type": "object",
-            "default": "[gap[0]/2, gap[1]/2]"
+            "name": "gapY",
+            "description": "水印之间的垂直间距",
+            "type": "number",
+            "default": 50,
+            "version": "v1.18.3"
+        },
+        {
+            "name": "imageWidth",
+            "description": "使用图片水印时图片的宽度",
+            "type": "number",
+            "default": 120,
+            "version": "v1.18.3"
+        },
+        {
+            "name": "imageHeight",
+            "description": "使用图片水印时图片的高度",
+            "type": "number",
+            "default": 64,
+            "version": "v1.18.3"
+        },
+        {
+            "name": "fullPage",
+            "description": "是否覆盖整个页面",
+            "type": "boolean",
+            "default": true,
+            "version": "v1.18.3"
         }
     ]
 }

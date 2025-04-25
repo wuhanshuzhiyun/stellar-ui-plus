@@ -26,7 +26,7 @@ const show = ref(false);
         <view class="demo-item">
             <view class="title">图片水印</view>
             <view class="item-block" style="height: 150px; width: 400px">
-                <ste-watermark image="https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*lkAoRbywo0oAAAAAAAAAAAAADrJ8AQ/original" :full-page="false"></ste-watermark>
+                <ste-watermark image="https://easy.fxx6.top/i/2025/04/25/sbhyrw.png" :full-page="false"></ste-watermark>
             </view>
         </view>
     </page-layout>

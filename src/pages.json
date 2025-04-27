@@ -24,6 +24,10 @@
             "type": "page"
         },
         {
+            "path": "pages/mp/charts/charts",
+            "type": "page"
+        },
+        {
             "path": "pages/mp/color/color",
             "type": "page"
         },
@@ -256,5 +260,6 @@
             "^ste-(.*)": "@/uni_modules/stellar-ui-plus/components/ste-$1/ste-$1.vue"
         }
     },
+    "__esModule": true,
     "subPackages": []
 }

@@ -7,6 +7,7 @@ interface NavigateToOptions {
   url: "/pages/pc/index" |
        "/pages/mp/index" |
        "/pages/pc/login" |
+       "/pages/mp/charts/charts" |
        "/pages/mp/color/color" |
        "/pages/mp/font-size/font-size" |
        "/pages/mp/demo-views/animate/animate" |

@@ -4,9 +4,9 @@
     </view>
 </template>
 
-<script>
-import uCharts from '../../utils/u-charts.min.js';
-var uChartsInstance = {};
+<script lang="ts">
+import uCharts from '../../Charts/Charts';
+var uChartsInstance: { [key: string]: any } = {};
 export default {
     data() {
         return {
@@ -42,9 +42,9 @@ export default {
                 this.drawCharts('PXTeHitZEKtvSrAgnhSGBOkvBSQQqxWQ', res);
             }, 500);
         },
-        drawCharts(id, data) {
+        drawCharts(id: string, data: any) {
             const ctx = uni.createCanvasContext(id, this);
-            uChartsInstance[id] = new uCharts({
+            uChartsInstance[id] = new uCharts<'column'>({
                 type: 'column',
                 context: ctx,
                 width: this.cWidth,
@@ -56,7 +56,7 @@ export default {
                 color: ['#1890FF', '#91CB74', '#FAC858', '#EE6666', '#73C0DE', '#3CA272', '#FC8452', '#9A60B4', '#ea7ccc'],
                 padding: [15, 15, 0, 5],
                 enableScroll: false,
-                legend: {},
+                // legend: {},
                 xAxis: {
                     disableGrid: true,
                 },
@@ -77,7 +77,7 @@ export default {
                 },
             });
         },
-        tap(e) {
+        tap(e: any) {
             uChartsInstance[e.target.id].touchLegend(e);
             uChartsInstance[e.target.id].showToolTip(e);
         },

@@ -116,6 +116,10 @@
             "type": "page"
         },
         {
+            "path": "pages/mp/demo-views/pie-chart/pie-chart",
+            "type": "page"
+        },
+        {
             "path": "pages/mp/demo-views/popup/popup",
             "type": "page"
         },
@@ -260,6 +264,5 @@
             "^ste-(.*)": "@/uni_modules/stellar-ui-plus/components/ste-$1/ste-$1.vue"
         }
     },
-    "__esModule": true,
     "subPackages": []
 }

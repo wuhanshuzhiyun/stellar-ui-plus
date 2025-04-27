@@ -30,6 +30,7 @@ interface NavigateToOptions {
        "/pages/mp/demo-views/message-box/message-box" |
        "/pages/mp/demo-views/notice-bar/notice-bar" |
        "/pages/mp/demo-views/number-keyboard/number-keyboard" |
+       "/pages/mp/demo-views/pie-chart/pie-chart" |
        "/pages/mp/demo-views/popup/popup" |
        "/pages/mp/demo-views/price/price" |
        "/pages/mp/demo-views/progress/progress" |

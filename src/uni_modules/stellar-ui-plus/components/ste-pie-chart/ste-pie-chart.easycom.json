@@ -1,0 +1,109 @@
+{
+    "name": "ste-pie-chart",
+    "description": "主要用于表现不同类目的数据在总和中的占比。每个的弧度表示数据数量的比例。",
+    "example": "<ste-notice-bar :list='list'></ste-notice-bar>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=notice-bar",
+    "attributes": [
+        {
+            "name": "list",
+            "description": "滚动数据列表",
+            "type": "Array",
+            "default": []
+        },
+        {
+            "name": "direction",
+            "description": "滚动的方向",
+            "type": "String",
+            "default": "across",
+            "values": [
+                {
+                    "name": "across",
+                    "description": "水平"
+                },
+                {
+                    "name": "vertical",
+                    "description": "垂直"
+                }
+            ]
+        },
+        {
+            "name": "closeMode",
+            "description": "是否启用关闭模式",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "color",
+            "description": "文字颜色",
+            "type": "String",
+            "default": "#000000"
+        },
+        {
+            "name": "background",
+            "description": "背景",
+            "type": "String",
+            "default": "#ffffff"
+        },
+        {
+            "name": "width",
+            "description": "宽度",
+            "type": "Number|String",
+            "default": "100%",
+            "values": [
+                {
+                    "name": "100%",
+                    "description": "填满"
+                },
+                {
+                    "name": "{{Number}} ",
+                    "description": "自定义宽度，单位rpx"
+                }
+            ]
+        },
+        {
+            "name": "acrossSpeed",
+            "description": "滚动速率 (px/s)",
+            "type": "Number",
+            "default": 50
+        },
+        {
+            "name": "verticalSpeed",
+            "description": "滚动的速度（ms)",
+            "type": "Number",
+            "default": 500
+        },
+        {
+            "name": "delay",
+            "description": "延时（ms",
+            "type": "Number",
+            "default": 1000
+        },
+        {
+            "name": "standTime",
+            "description": "每次滚动前停留多少毫秒(竖向滚动时有效)（ms）",
+            "type": "Number",
+            "default": 1000
+        },
+        {
+            "name": "scrollable",
+            "description": "是否可以滚动",
+            "type": "Boolean",
+            "default": true
+        },
+        {
+            "name": "[event]click",
+            "description": "外层点击事件回调",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]close",
+            "description": "关闭通知栏时触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]end",
+            "description": "滚动结束时触发",
+            "type": "() => void"
+        }
+    ]
+}

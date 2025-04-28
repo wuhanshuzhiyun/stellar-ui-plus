@@ -12,6 +12,7 @@ import utils from '../../utils/utils';
 import propsData from './props';
 defineOptions({
     name: 'ste-donut-chart',
+    virtualHost: true,
 });
 
 const props = defineProps(propsData);
@@ -77,36 +78,21 @@ function drawCharts(id: string, data: any) {
         background: props.background,
         color: props.color,
         padding: props.padding,
-        dataLabel: true,
-        enableScroll: false,
-        legend: {
-            show: true,
-            position: 'right',
-            lineHeight: 25,
-        },
-        title: {
-            name: '收益率',
-            fontSize: 15,
-            color: '#666666',
-        },
-        subtitle: {
-            name: '70%',
-            fontSize: 25,
-            color: '#7cb5ec',
-        },
-        extra: {
-            ring: {
-                ringWidth: 60,
-                activeOpacity: 0.5,
-                activeRadius: 10,
-                offsetAngle: 0,
-                labelWidth: 15,
-                border: true,
-                borderWidth: 3,
-                borderColor: '#FFFFFF',
-                linearType: 'custom',
-            },
-        },
+        fontSize: props.fontSize,
+        fontColor: props.fontColor,
+        dataLabel: props.dataLabel,
+        dataPointShape: props.dataPointShape,
+        dataPointShapeType: props.dataPointShapeType,
+        touchMoveLimit: props.touchMoveLimit,
+        enableScroll: props.enableScroll,
+        enableMarkLine: props.enableMarkLine,
+        scrollPosition: props.scrollPosition,
+        xAxis: props.xAxis,
+        yAxis: props.yAxis,
+        legend: props.legend,
+        title: props.title,
+        subtitle: props.subtitle,
+        extra: props.extra,
     });
 }
 function tap(e: any) {

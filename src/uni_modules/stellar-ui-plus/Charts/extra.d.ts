@@ -306,6 +306,37 @@ export interface ChartsRingExtra {
     customColor?: string[];
 }
 
+/** 玫瑰图 */
+export interface ChartsRoseExtra {
+    /** 玫瑰图样式，可选值："area"面积模式,"radius"半径模式 */
+    type?: 'area' | 'radius';
+    /** 最小半径值，默认为图形半径的50% */
+    minRadius?: number;
+    /** 启用Tooltip点击时，突出部分的透明度 */
+    activeOpacity?: number;
+    /** 启用Tooltip点击时，突出部分的宽度（最大值不得超过labelWidth） */
+    activeRadius?: number;
+    /** 起始角度偏移度数，顺时针方向，起点为3点钟位置为0度（比如要设置起点为12点钟位置，即逆时针偏移90度，传入-90即可） */
+    offsetAngle?: number;
+    /** 数据标签到饼图外圆连线的长度 */
+    labelWidth?: number;
+    /** 是否绘制各类别中间的分割线 */
+    border?: boolean;
+    /** 分割线的宽度 */
+    borderWidth?: number;
+    /** 分割线的颜色，默认#FFFFFF */
+    borderColor?: string;
+    /** 渐变类型，可选值："none"关闭渐变,"custom"开启渐变 */
+    linearType?: 'none' | 'custom';
+    /** 自定义渐变颜色，数组类型对应series的数组长度以匹配不同series颜色的不同配色方案，例如["#FA7D8D", "#EB88E2"] */
+    customColor?: string[];
+}
+
+/**
+ * 雷达图
+ */
+export interface ChartsRadarExtra {}
+
 /** 额外配置 */
 export interface ChartsExtra {
     /** 提示窗配置 */
@@ -332,4 +363,8 @@ export interface ChartsExtra {
     pie?: ChartsPieExtra;
     /** 圆环图 */
     ring?: ChartsRingExtra;
+    /** 玫瑰图 */
+    rose?: ChartsRoseExtra;
+    /** 雷达图 */
+    radar?: ChartsRadarExtra;
 }

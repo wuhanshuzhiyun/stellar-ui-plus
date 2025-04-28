@@ -294,9 +294,9 @@ export interface ChartsOptions<T extends ChartsType> {
     /** 连续更新数据时，滚动条的位置。可选值："current"当前位置,"left"左对齐,"right"右对齐 */
     scrollPosition?: 'current' | 'left' | 'right';
     /** X轴配置 */
-    xAxis: ChartsXAxis;
+    xAxis?: ChartsXAxis;
     /** Y轴配置 */
-    yAxis: ChartsYAxis;
+    yAxis?: ChartsYAxis;
     /** 额外配置 */
-    extra: ChartsExtra;
+    extra?: ChartsExtra;
 }

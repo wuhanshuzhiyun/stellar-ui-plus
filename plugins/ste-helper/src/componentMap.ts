@@ -998,12 +998,18 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "start",
                 "description": "拖拽开始",
-                "type": "(t) => void"
+                "type": "() => void"
             },
             {
                 "name": "end",
                 "description": "拖拽结束",
-                "type": "() => void"
+                "type": "(position: any) => void",
+                "params": [
+                    {
+                        "name": "position",
+                        "description": "当前拖拽是否处于边界(上、下、左、右)"
+                    }
+                ]
             }
         ]
     },
@@ -3598,7 +3604,7 @@ export const componentMap: Record<string, ComponentDesc> = {
         "props": [
             {
                 "name": "value",
-                "description": "当前进度百分比，在双滑块模式下为数组格式（数组的值都是从小到大）",
+                "description": "滑块选择值，在双滑块模式下为数组格式（数组的值都是从小到大）",
                 "type": "number | string | array"
             },
             {
@@ -3681,7 +3687,7 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "params": [
                     {
                         "name": "percentage",
-                        "description": "进度百分比"
+                        "description": "当前滑块值"
                     }
                 ]
             },
@@ -5887,6 +5893,96 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否为直播源",
                 "type": "boolean",
                 "default": "false"
+            }
+        ],
+        "events": []
+    },
+    "watermark": {
+        "site": "ste-watermark",
+        "attr": [
+            "width=''"
+        ],
+        "props": [
+            {
+                "name": "width",
+                "description": "水印的宽度， content 的默认值是它自己的宽度",
+                "type": "number",
+                "default": 120,
+                "version": "v1.18.3"
+            },
+            {
+                "name": "height",
+                "description": "水印的高度， content 的默认值是它自己的高度",
+                "type": "number",
+                "default": "64",
+                "version": "v1.18.3"
+            },
+            {
+                "name": "rotate",
+                "description": "水印的旋转角度, 单位 °",
+                "type": "number",
+                "default": "-22",
+                "version": "v1.18.3"
+            },
+            {
+                "name": "zIndex",
+                "description": "水印元素的 z-index 值",
+                "type": "number",
+                "default": "9",
+                "version": "v1.18.3"
+            },
+            {
+                "name": "image",
+                "description": "水印图片，建议使用 2x 或 3x 图像",
+                "type": "string",
+                "version": "v1.18.3"
+            },
+            {
+                "name": "content",
+                "description": "水印文本内容",
+                "type": "string / array",
+                "version": "v1.18.3"
+            },
+            {
+                "name": "font",
+                "description": "文字样式，包括字体、大小、颜色等，具体说明见下方",
+                "type": "object",
+                "version": "v1.18.3"
+            },
+            {
+                "name": "gapX",
+                "description": "水印之间的水平间距",
+                "type": "number",
+                "default": 50,
+                "version": "v1.18.3"
+            },
+            {
+                "name": "gapY",
+                "description": "水印之间的垂直间距",
+                "type": "number",
+                "default": 50,
+                "version": "v1.18.3"
+            },
+            {
+                "name": "imageWidth",
+                "description": "使用图片水印时图片的宽度",
+                "type": "number",
+                "default": 120,
+                "version": "v1.18.3"
+            },
+            {
+                "name": "imageHeight",
+                "description": "使用图片水印时图片的高度",
+                "type": "number",
+                "default": 64,
+                "version": "v1.18.3"
+            },
+            {
+                "name": "fullPage",
+                "description": "是否覆盖整个页面",
+                "type": "boolean",
+                "default": true,
+                "version": "v1.18.3"
             }
         ],
         "events": []

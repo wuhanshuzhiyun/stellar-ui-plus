@@ -1,3 +1,6 @@
+import type { ChartsExtra } from './extra';
+
+/** 图表类型 */
 export type ChartsType =
     | 'column'
     | 'mount'
@@ -20,6 +23,7 @@ export type ChartsType =
     | 'candle'
     | 'map';
 
+/** K线图自定义折线数据列表，内容同series，仅在opts.extra.candle.average.show为false时调用此数据，（默认调用此数据） */
 export interface ChartsSerieDataItem<T extends ChartsType> {
     name: string;
     value: number;
@@ -31,6 +35,7 @@ export interface ChartsSerieDataItem<T extends ChartsType> {
     centerTextColor?: string;
 }
 
+/** 数据值 */
 export type ChartsSerieData<T extends ChartsType> = T extends 'column' | 'bar' | 'line' | 'area' | 'radar'
     ? number[]
     : T extends 'gauge' | 'arcbar'
@@ -54,6 +59,7 @@ export type ChartsSerieData<T extends ChartsType> = T extends 'column' | 'bar' |
                       value: number | string;
                   }[];
 
+/** 图表数据集 */
 export interface ChartsSerie<T extends ChartsType> {
     /** 多维数据结构索引值，应用于多坐标系 */
     index?: number;
@@ -105,10 +111,137 @@ export interface ChartsSerie<T extends ChartsType> {
     seriesMA: ChartsSerieDataItem<T>[];
 }
 
-export interface ChartsXAxis {}
-export interface ChartsYAxis {}
-export interface ChartsExtra {}
+/** X轴配置 */
+export interface ChartsXAxis {
+    /** 不绘制X轴 */
+    disabled?: boolean;
+    /** 绘制坐标轴轴线 */
+    axisLine?: boolean;
+    /** 坐标轴轴线颜色 */
+    axisLineColor?: string;
+    /** 坐标轴刻度线 */
+    calibration?: boolean;
+    /** 数据点（刻度点）字体颜色 */
+    fontColor?: string;
+    /** 数据点（刻度点）字体大小 */
+    fontSize?: number;
+    /** 数据点（刻度点）字体行高 */
+    lineHeight?: number;
+    /** X轴文字距离轴线的距离（不包含行高） */
+    marginTop?: number;
+    /** 【旋转】数据点（刻度点）文字 */
+    rotateLabel?: boolean;
+    /** 开启上面旋转功能后，文字旋转的角度，取值范围(-90至90) */
+    rotateAngle?: number;
+    /** 数据点文字（刻度点）单屏幕限制显示的数量 */
+    labelCount?: number;
+    /** 单屏数据密度即图表可视区域内显示的X轴数据点数量，仅在启用enableScroll时有效 */
+    itemCount?: number;
+    /** 折线图、区域图起画点结束点方法，可选值：'center'两端留空,'justify'两端对齐 */
+    boundaryGap?: 'center' | 'justify';
+    /** 不绘制纵向网格(即默认绘制网格) */
+    disableGrid?: boolean;
+    /** X轴网格数量，纵向网格数量(竖着的) */
+    splitNumber?: number;
+    /** 纵向网格颜色，默认#CCCCCC */
+    gridColor?: string;
+    /** 纵向网格线型，可选值：'solid'实线,'dash'虚线 */
+    gridType?: 'solid' | 'dash';
+    /** 纵向网格为虚线时，单段虚线长度 */
+    dashLength?: number;
+    /** 纵向网格线显示间隔 */
+    gridEval?: number;
+    /** 是否显示滚动条，配合拖拽滚动使用（即仅在启用【基本配置】的 enableScroll 时有效） */
+    scrollShow?: boolean;
+    /** 滚动条初始位置，可选值：'left'左对齐,'right'右对齐 */
+    scrollAlign?: 'left' | 'right';
+    /** 滚动条颜色，默认#A6A6A6 */
+    scrollColor?: string;
+    /** 滚动条底部背景颜色，默认#EFEBEF */
+    scrollBackgroundColor?: string;
+    /** X轴起始值（默认数据中的最小值） */
+    min?: number;
+    /** X轴终止值（默认数据中的最大值） */
+    max?: number;
+    /** X轴标题文本 */
+    title?: string;
+    /** 标题字体大小 */
+    titleFontSize?: number;
+    /** 标题纵向偏移距离，负数为向上偏移，正数向下偏移 */
+    titleOffsetY?: number;
+    /** 标题横向偏移距离，负数为向左偏移，正数向右偏移 */
+    titleOffsetX?: number;
+    /** 标题字体颜色，默认#666666 */
+    titleFontColor?: string;
+    /** 【原生】格式化X轴文案显示，形参为function(value,index,opts){} */
+    formatter?: (value: number, index: number, opts: any) => string;
+}
 
+/** 多Y轴配置项 */
+export interface ChartsYAxisDataItem {
+    /** Y轴数据类型，可选值：'value'数值,'categories'类别（条状图需选择为类别） */
+    type?: 'value' | 'categories';
+    /** 当前Y轴显示位置，可选值：'left','right','center' */
+    position?: 'left' | 'right' | 'center';
+    /** 不绘制Y轴（刻度和轴线都不绘制） */
+    disabled?: boolean;
+    /** 坐标轴轴线是否显示（数据还能显示） */
+    axisLine?: boolean;
+    /** 坐标轴轴线颜色，默认#CCCCCC */
+    axisLineColor?: string;
+    /** 刻度线是否显示 */
+    calibration?: boolean;
+    /** 数据点（刻度点）字体颜色，默认#666666 */
+    fontColor?: string;
+    /** 数据点（刻度点）字体大小 */
+    fontSize?: number;
+    /** 数据点（刻度点）相对轴线的对齐方式，可选值：'left','right','center' */
+    textAlign?: 'left' | 'right' | 'center';
+    /** 当前Y轴标题（需要上面showTitle设置为true） */
+    title?: string;
+    /** 标题字体大小 */
+    titleFontSize?: number;
+    /** 标题纵向偏移距离，负数为向上偏移，正数向下偏移 */
+    titleOffsetY?: number;
+    /** 标题横向偏移距离，负数为向左偏移，正数向右偏移 */
+    titleOffsetX?: number;
+    /** Y轴标题字体颜色，默认#666666 */
+    titleFontColor?: string;
+    /** 当前Y轴起始值（默认数据中的最小值） */
+    min?: number;
+    /** 当前Y轴终止值（默认数据中的最大值） */
+    max?: number;
+    /** Y轴刻度值保留的小数位数 */
+    tofix?: number;
+    /** Y轴刻度值后附加单位 */
+    unit?: string;
+    /** 格式化Y轴文案显示，形参为function(value,index,opts){} */
+    formatter?: (value: number, index: number, opts: any) => string;
+}
+
+/** Y轴配置 */
+export interface ChartsYAxis {
+    /** 不绘制Y轴 */
+    disabled?: boolean;
+    /** 不绘制横向向网格(即默认绘制网格) */
+    disableGrid?: boolean;
+    /** 横向向网格数量，此数量与Y轴数据点是否为小数有关，如果指定了max，请指定为能被max-min整除的数值，如果不传max一般指定为5 */
+    splitNumber?: number;
+    /** 横向向网格线型，可选值：'solid'实线,'dash'虚线 */
+    gridType?: 'solid' | 'dash';
+    /** 横向网格为虚线时，单段虚线长度 */
+    dashLength?: number;
+    /** 横向网格颜色，默认#CCCCCC */
+    gridColor?: string;
+    /** 多个Y轴间的间距 */
+    padding?: number;
+    /** 不绘制Y轴标题 */
+    showTitle?: boolean;
+    /** 多Y轴配置 */
+    data?: ChartsYAxisDataItem[];
+}
+
+/** 图表配置项 */
 export interface ChartsOptions<T extends ChartsType> {
     /** 图表类型 */
     type: T;

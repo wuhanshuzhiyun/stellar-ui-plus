@@ -18,6 +18,7 @@ interface NavigateToOptions {
        "/pages/mp/demo-views/checkbox/checkbox" |
        "/pages/mp/demo-views/code-input/code-input" |
        "/pages/mp/demo-views/date-picker/date-picker" |
+       "/pages/mp/demo-views/donut-chart/donut-chart" |
        "/pages/mp/demo-views/drag/drag" |
        "/pages/mp/demo-views/dropdown-menu/dropdown-menu" |
        "/pages/mp/demo-views/icon/icon" |

@@ -9,42 +9,50 @@ import uCharts from '../../Charts/Charts';
 let uChartsInstance: { [key: string]: any } = {};
 import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
 import utils from '../../utils/utils';
-import propsData from './props';
+import { propsData, propsComponent } from './props';
 defineOptions({
     name: 'ste-donut-chart',
     virtualHost: true,
 });
 
+// 合并默认对象配置
 let props = defineProps(propsData);
+let cmpProps = computed(() => {
+    return {
+        xAxis: utils.deepMerge(utils.deepClone(propsComponent?.xAxis ?? {}), props.xAxis),
+        yAxis: utils.deepMerge(utils.deepClone(propsComponent?.yAxis ?? {}), props.yAxis),
+        legend: utils.deepMerge(utils.deepClone(propsComponent.legend), props.legend),
+        title: utils.deepMerge(utils.deepClone(propsComponent.title), props.title),
+        subtitle: utils.deepMerge(utils.deepClone(propsComponent?.subtitle ?? {}), props.subtitle),
+        extra: utils.deepMerge(utils.deepClone(propsComponent.extra), props.extra),
+    };
+});
 
 let canvasId = ref('');
 let cWidth = computed(() => {
-    return uni.upx2px(Number(props.width));
+    return utils.formatPx(Number(props.width), 'num');
 });
 let cHeight = computed(() => {
-    return uni.upx2px(Number(props.height));
+    return utils.formatPx(Number(props.height), 'num');
 });
 
 const chartStyle = computed(() => {
     let style: CSSProperties = {};
-    style.width = cWidth + 'px';
-    style.height = cHeight + 'px';
+    style.width = cWidth.value + 'px';
+    style.height = cHeight.value + 'px';
     return style;
 });
 
 onMounted(() => {
-    // 赋予id，id不能为数字开头
     canvasId.value = utils.guid();
+    // 赋予id，id不能为数字开头
     drawCharts(props.series);
 });
 
 watch(
     () => props.series,
     (series: any) => {
-        console.log('series', series);
-        uChartsInstance[canvasId.value].updateData({
-            series: series,
-        });
+        drawCharts(series);
     }
 );
 
@@ -75,13 +83,12 @@ function drawCharts(series: any) {
         enableScroll: props.enableScroll,
         enableMarkLine: props.enableMarkLine,
         scrollPosition: props.scrollPosition,
-        update: props.update,
-        xAxis: props.xAxis,
-        yAxis: props.yAxis,
-        legend: props.legend,
-        title: props.title,
-        subtitle: props.subtitle,
-        extra: props.extra,
+        xAxis: cmpProps.value.xAxis,
+        yAxis: cmpProps.value.yAxis,
+        legend: cmpProps.value.legend,
+        title: cmpProps.value.title,
+        subtitle: cmpProps.value.subtitle,
+        extra: cmpProps.value.extra,
     });
 }
 function tap(e: any) {

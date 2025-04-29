@@ -109,7 +109,7 @@ export const propsDefault = {
     // 图表拖拽时每秒重新渲染的帧数
     touchMoveLimit: {
         type: Number as PropType<ChartsOptions<ChartsType>['touchMoveLimit']>,
-        default: 60,
+        default: 24,
     },
 
     // 开启滚动条

@@ -80,6 +80,10 @@
             "type": "page"
         },
         {
+            "path": "pages/mp/demo-views/funnel-chart/funnel-chart",
+            "type": "page"
+        },
+        {
             "path": "pages/mp/demo-views/icon/icon",
             "type": "page"
         },

@@ -1,109 +1,191 @@
 {
-    "name": "ste-pie-chart",
-    "description": "主要用于表现不同类目的数据在总和中的占比。每个的弧度表示数据数量的比例。",
-    "example": "<ste-notice-bar :list='list'></ste-notice-bar>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=notice-bar",
+    "name": "ste-funnel-chart",
+    "description": "环形图",
+    "example": "<ste-donut-chart></ste-donut-chart>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=donut-chart",
     "attributes": [
         {
-            "name": "list",
-            "description": "滚动数据列表",
-            "type": "Array",
-            "default": []
-        },
-        {
-            "name": "direction",
-            "description": "滚动的方向",
-            "type": "String",
-            "default": "across",
-            "values": [
-                {
-                    "name": "across",
-                    "description": "水平"
-                },
-                {
-                    "name": "vertical",
-                    "description": "垂直"
-                }
-            ]
-        },
-        {
-            "name": "closeMode",
-            "description": "是否启用关闭模式",
-            "type": "Boolean",
-            "default": false
-        },
-        {
-            "name": "color",
-            "description": "文字颜色",
-            "type": "String",
-            "default": "#000000"
-        },
-        {
-            "name": "background",
-            "description": "背景",
-            "type": "String",
-            "default": "#ffffff"
-        },
-        {
             "name": "width",
-            "description": "宽度",
-            "type": "Number|String",
-            "default": "100%",
-            "values": [
-                {
-                    "name": "100%",
-                    "description": "填满"
-                },
-                {
-                    "name": "{{Number}} ",
-                    "description": "自定义宽度，单位rpx"
-                }
-            ]
+            "description": "图表宽度",
+            "type": "number | string",
+            "default": "750"
         },
         {
-            "name": "acrossSpeed",
-            "description": "滚动速率 (px/s)",
-            "type": "Number",
-            "default": 50
+            "name": "height",
+            "description": "图表高度",
+            "type": "number | string",
+            "default": "200"
         },
         {
-            "name": "verticalSpeed",
-            "description": "滚动的速度（ms)",
-            "type": "Number",
-            "default": 500
-        },
-        {
-            "name": "delay",
-            "description": "延时（ms",
-            "type": "Number",
-            "default": 1000
-        },
-        {
-            "name": "standTime",
-            "description": "每次滚动前停留多少毫秒(竖向滚动时有效)（ms）",
-            "type": "Number",
-            "default": 1000
-        },
-        {
-            "name": "scrollable",
-            "description": "是否可以滚动",
-            "type": "Boolean",
+            "name": "canvas2d",
+            "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+            "type": "boolean",
             "default": true
         },
         {
-            "name": "[event]click",
-            "description": "外层点击事件回调",
-            "type": "() => void"
+            "name": "pixelRatio",
+            "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+            "type": "number",
+            "default": 1
         },
         {
-            "name": "[event]close",
-            "description": "关闭通知栏时触发",
-            "type": "() => void"
+            "name": "animation",
+            "description": "是否动画展示图表",
+            "type": "boolean",
+            "default": true
         },
         {
-            "name": "[event]end",
-            "description": "滚动结束时触发",
-            "type": "() => void"
+            "name": "timing",
+            "description": "图表动画效果",
+            "type": "string",
+            "default": "easeOut",
+            "values": [
+                { "name": "easeOut", "description": "由快到慢" },
+                { "name": "easeIn", "description": "由慢到快" },
+                { "name": "easeInOut", "description": "慢快慢" },
+                { "name": "linear", "description": "匀速" }
+            ]
+        },
+        {
+            "name": "duration",
+            "description": "动画展示时长（单位：毫秒）",
+            "type": "string",
+            "default": "1000"
+        },
+        {
+            "name": "rotate",
+            "description": "横屏模式",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "rotateLock",
+            "description": "横屏锁定模式",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "background",
+            "description": "背景颜色，开启滚动条后请赋值",
+            "type": "string",
+            "default": "rgba(0,0,0,0)"
+        },
+        {
+            "name": "color",
+            "description": "主题颜色数组，16进制颜色格式",
+            "type": "array",
+            "default": ["#165DFF", "#14C9C9", "#F7BA1E", "#3491FA", "#722ED1", "#9FDB1D"]
+        },
+        {
+            "name": "padding",
+            "description": "画布填充边距（顺序为上右下左）",
+            "type": "array",
+            "default": [5, 5, 5, 5]
+        },
+        {
+            "name": "fontSize",
+            "description": "全局默认字体大小",
+            "type": "number",
+            "default": 13
+        },
+        {
+            "name": "fontColor",
+            "description": "全局默认字体颜色",
+            "type": "string",
+            "default": "#666666"
+        },
+        {
+            "name": "dataLabel",
+            "description": "是否显示图表区域内数据点上方的数据文案",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "dataPointShape",
+            "description": "是否显示数据点的图形标识",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "dataPointShapeType",
+            "description": "图形标识点显示类型",
+            "type": "string",
+            "default": "solid",
+            "values": [
+                { "name": "solid", "description": "实心" },
+                { "name": "hollow", "description": "空心" }
+            ]
+        },
+        {
+            "name": "touchMoveLimit",
+            "description": "图表拖拽时每秒重新渲染的帧数",
+            "type": "number",
+            "default": 60
+        },
+        {
+            "name": "enableScroll",
+            "description": "开启滚动条功能",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "enableMarkLine",
+            "description": "是否启用标记线功能",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "scrollPosition",
+            "description": "连续更新数据时滚动条的位置",
+            "type": "string",
+            "default": "current",
+            "values": [
+                { "name": "current", "description": "当前位置" },
+                { "name": "left", "description": "左对齐" },
+                { "name": "right", "description": "右对齐" }
+            ]
+        },
+        {
+            "name": "series",
+            "description": "图表数据",
+            "type": "object",
+            "default": {}
+        },
+        {
+            "name": "xAxis",
+            "description": "X轴配置",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "yAxis",
+            "description": "Y轴配置",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "legend",
+            "description": "图例配置",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "title",
+            "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "subtitle",
+            "description": "副标题配置",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "extra",
+            "description": "额外配置项",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
         }
     ]
 }

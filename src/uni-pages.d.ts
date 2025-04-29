@@ -21,6 +21,7 @@ interface NavigateToOptions {
        "/pages/mp/demo-views/donut-chart/donut-chart" |
        "/pages/mp/demo-views/drag/drag" |
        "/pages/mp/demo-views/dropdown-menu/dropdown-menu" |
+       "/pages/mp/demo-views/funnel-chart/funnel-chart" |
        "/pages/mp/demo-views/icon/icon" |
        "/pages/mp/demo-views/icon-vertical-align/icon-vertical-align" |
        "/pages/mp/demo-views/image/image" |

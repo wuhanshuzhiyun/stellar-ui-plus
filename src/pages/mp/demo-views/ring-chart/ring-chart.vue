@@ -52,9 +52,62 @@ function getServerData() {
             </view>
         </view>
         <view class="demo-item">
-            <view class="title margin-view">标题配置</view>
+            <view class="title margin-view">副标题，标题+副标题</view>
             <view class="item-block">
-                <ste-ring-chart :series="series1" :title="{ name: '指标名', fontSize: 12 }"></ste-ring-chart>
+                <ste-ring-chart
+                    :series="series1"
+                    :subtitle="{
+                        name: '50%',
+                    }"
+                ></ste-ring-chart>
+            </view>
+            <view class="item-block">
+                <ste-ring-chart
+                    :series="series1"
+                    :title="{
+                        name: '指标名',
+                    }"
+                    :subtitle="{
+                        name: '50%',
+                    }"
+                ></ste-ring-chart>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title margin-view">图例</view>
+            <view class="item-block">
+                <ste-ring-chart
+                    :series="series1"
+                    :height="400"
+                    :title="{
+                        name: '指标名',
+                    }"
+                    :subtitle="{
+                        name: '50%',
+                    }"
+                    :legend="{
+                        show: true,
+                        position: 'bottom',
+                    }"
+                    :extra="{ ring: { ringWidth: 10.5, customRadius: 64, offsetAngle: -90, linearType: 'none' } }"
+                ></ste-ring-chart>
+            </view>
+            <view class="item-block">
+                <ste-ring-chart
+                    :series="series1"
+                    :height="400"
+                    :title="{
+                        name: '指标名',
+                    }"
+                    :subtitle="{
+                        name: '50%',
+                    }"
+                    :legend="{
+                        show: true,
+                        position: 'right',
+                    }"
+                    :extra="{ ring: { ringWidth: 10.5, customRadius: 64, offsetAngle: -90, linearType: 'none' } }"
+                ></ste-ring-chart>
             </view>
         </view>
     </page-layout>
@@ -69,6 +122,7 @@ function getServerData() {
 }
 .item-block {
     column-gap: 40rpx;
+    justify-content: center;
 }
 
 :deep(.page > .content) {

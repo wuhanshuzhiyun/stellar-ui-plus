@@ -22,8 +22,12 @@ export const propsComponent = {
         show: false,
     },
     title: {
-        fontSize: 28,
-        color: '#bbbbbb',
+        fontSize: 12,
+        color: '#666666',
+    },
+    subtitle: {
+        fontSize: 14,
+        color: '#1D2129',
     },
     // 额外配置
     extra: {

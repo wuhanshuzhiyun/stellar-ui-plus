@@ -17,6 +17,12 @@
             "default": "200"
         },
         {
+            "name": "series",
+            "description": "图表数据",
+            "type": "Object",
+            "default": ""
+        },
+        {
             "name": "canvas2d",
             "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
             "type": "boolean",
@@ -184,6 +190,12 @@
         {
             "name": "extra",
             "description": "额外配置项",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "event",
+            "description": "事件",
             "type": "-",
             "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
         }

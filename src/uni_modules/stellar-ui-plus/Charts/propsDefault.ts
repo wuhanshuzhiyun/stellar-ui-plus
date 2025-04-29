@@ -7,13 +7,13 @@ export const propsDefault = {
     // 图表宽度
     width: {
         type: [Number, String] as PropType<ChartsOptions<ChartsType>['width']>,
-        default: '600',
+        default: '750',
     },
 
     // 图表高度
     height: {
         type: [Number, String] as PropType<ChartsOptions<ChartsType>['height']>,
-        default: '400',
+        default: '500',
     },
 
     // canvas2d模式

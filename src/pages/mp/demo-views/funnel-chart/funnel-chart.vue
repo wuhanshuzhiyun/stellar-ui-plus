@@ -65,4 +65,17 @@ function getServerData() {
     </page-layout>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.item-block {
+    column-gap: 40rpx;
+}
+
+:deep(.page > .content) {
+    padding: 0;
+    margin: 0;
+}
+
+.margin-view {
+    margin: 0 40rpx;
+}
+</style>

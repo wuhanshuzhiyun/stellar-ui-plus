@@ -341,6 +341,35 @@ export interface ChartsRoseExtra {
  */
 export interface ChartsRadarExtra {}
 
+/** 漏斗图 */
+export interface ChartsFunnelExtra {
+    /** 漏斗图类型，可选值："funnel"基本漏斗图,"triangle"倒三角漏斗图,"pyramid"金字塔漏斗图 */
+    type?: 'funnel' | 'triangle' | 'pyramid';
+    /** 启用Tooltip点击时，突出部分的透明度 */
+    activeOpacity?: number;
+    /** 启用Tooltip点击时，突出部分的宽度（最大值不得超过labelWidth） */
+    activeWidth?: number;
+    /** 是否绘制各类别中间的分割线 */
+    border?: boolean;
+    /** 分割线的宽度 */
+    borderWidth?: number;
+    /** 分割线的颜色，默认#FFFFFF */
+    borderColor?: string;
+    /** 漏斗图主体透明度 */
+    fillOpacity?: number;
+    /** 最小值的最小宽度 */
+    minSize?: number;
+    /** 数据标签显示位置，可选值："right","left" */
+    labelAlign?: 'right' | 'left';
+    /** 渐变类型，可选值："none"关闭渐变,"custom"开启渐变 */
+    linearType?: 'none' | 'custom';
+    /**
+     * 自定义渐变颜色，数组类型对应series的数组长度以匹配不同series颜色的不同配色方案，
+     * 例如["#FA7D8D", "#EB88E2"]
+     */
+    customColor?: string[];
+}
+
 /** 额外配置 */
 export interface ChartsExtra {
     /** 提示窗配置 */

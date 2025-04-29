@@ -1,8 +1,8 @@
 {
-    "name": "ste-donut-chart",
+    "name": "ste-ring-chart",
     "description": "环形图",
-    "example": "<ste-donut-chart></ste-donut-chart>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=donut-chart",
+    "example": "<ste-ring-chart></ste-ring-chart>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=ring-chart",
     "attributes": [
         {
             "name": "width",

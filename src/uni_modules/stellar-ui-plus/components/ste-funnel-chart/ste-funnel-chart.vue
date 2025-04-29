@@ -6,70 +6,65 @@
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-var uChartsInstance: { [key: string]: any } = {};
-import { ref, onMounted, computed, type CSSProperties } from 'vue';
+let uChartsInstance: { [key: string]: any } = {};
+import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
 import utils from '../../utils/utils';
-import propsData from './props';
+import { propsData, propsComponent } from './props';
 defineOptions({
-    name: 'ste-donut-chart',
+    name: 'ste-funnel-chart',
     virtualHost: true,
 });
 
-const props = defineProps(propsData);
-console.log('props', props);
+// 合并默认对象配置
+let props = defineProps(propsData);
+let cmpProps = computed(() => {
+    return {
+        xAxis: utils.deepMerge(utils.deepClone(propsComponent?.xAxis ?? {}), props.xAxis),
+        yAxis: utils.deepMerge(utils.deepClone(propsComponent?.yAxis ?? {}), props.yAxis),
+        legend: utils.deepMerge(utils.deepClone(propsComponent.legend), props.legend),
+        title: utils.deepMerge(utils.deepClone(propsComponent.title), props.title),
+        subtitle: utils.deepMerge(utils.deepClone(propsComponent?.subtitle ?? {}), props.subtitle),
+        extra: utils.deepMerge(utils.deepClone(propsComponent.extra), props.extra),
+    };
+});
 
 let canvasId = ref('');
 let cWidth = computed(() => {
-    return uni.upx2px(Number(props.width));
+    return utils.formatPx(Number(props.width), 'num');
 });
 let cHeight = computed(() => {
-    return uni.upx2px(Number(props.height));
+    return utils.formatPx(Number(props.height), 'num');
 });
 
 const chartStyle = computed(() => {
     let style: CSSProperties = {};
-    style.width = cWidth + 'px';
-    style.height = cHeight + 'px';
+    style.width = cWidth.value + 'px';
+    style.height = cHeight.value + 'px';
     return style;
 });
 
 onMounted(() => {
-    // 赋予id，id不能为数字开头
     canvasId.value = utils.guid();
-    getServerData();
+    // 赋予id，id不能为数字开头
+    drawCharts(props.series);
 });
 
-function getServerData() {
-    //模拟从服务器获取数据时的延时
-    setTimeout(() => {
-        //模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-        let res = {
-            series: [
-                {
-                    data: [
-                        { name: '一班', value: 50 },
-                        { name: '二班', value: 30 },
-                        { name: '三班', value: 20 },
-                        { name: '四班', value: 18 },
-                        { name: '五班', value: 8 },
-                    ],
-                },
-            ],
-        };
-        drawCharts(canvasId.value, res);
-    }, 500);
-}
+watch(
+    () => props.series,
+    (series: any) => {
+        drawCharts(series);
+    }
+);
 
-function drawCharts(id: string, data: any) {
-    console.log('color: props.color is ', props);
+function drawCharts(series: any) {
     // 默认配置项
-    const ctx = uni.createCanvasContext(id);
-    uChartsInstance[id] = new uCharts<'funnel'>({
+    const ctx = uni.createCanvasContext(canvasId.value);
+    uChartsInstance[canvasId.value] = new uCharts<'funnel'>({
         type: 'funnel',
         context: ctx,
         width: cWidth.value,
         height: cHeight.value,
-        series: data.series,
+        series: utils.deepClone(series),
         pixelRatio: props.pixelRatio,
         animation: props.animation,
         timing: props.timing,
@@ -88,9 +83,12 @@ function drawCharts(id: string, data: any) {
         enableScroll: props.enableScroll,
         enableMarkLine: props.enableMarkLine,
         scrollPosition: props.scrollPosition,
-        xAxis: props.xAxis,
-        yAxis: props.yAxis,
-        extra: props.extra,
+        xAxis: cmpProps.value.xAxis,
+        yAxis: cmpProps.value.yAxis,
+        legend: cmpProps.value.legend,
+        title: cmpProps.value.title,
+        subtitle: cmpProps.value.subtitle,
+        extra: cmpProps.value.extra,
     });
 }
 function tap(e: any) {

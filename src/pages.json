@@ -68,10 +68,6 @@
             "type": "page"
         },
         {
-            "path": "pages/mp/demo-views/donut-chart/donut-chart",
-            "type": "page"
-        },
-        {
             "path": "pages/mp/demo-views/drag/drag",
             "type": "page"
         },
@@ -157,6 +153,10 @@
         },
         {
             "path": "pages/mp/demo-views/rich-text/rich-text",
+            "type": "page"
+        },
+        {
+            "path": "pages/mp/demo-views/ring-chart/ring-chart",
             "type": "page"
         },
         {

@@ -7,7 +7,7 @@ import utils from '../../utils/utils';
 export const propsData = utils.deepMerge(propsDefault(), {
     // 图表数据
     series: {
-        type: Object as PropType<ChartsSerie<'column'>>,
+        type: Object as PropType<ChartsSerie<'line'>>,
         default: () => ({}),
     },
     // 自定义配置
@@ -26,6 +26,8 @@ export const propsData = utils.deepMerge(propsDefault(), {
         type: Object as any,
         default: () => [],
     },
+    dataPointShape: { type: Boolean, default: false },
+    dataLabel: { type: Boolean, default: false },
 });
 
 export const propsComponent = {
@@ -42,23 +44,16 @@ export const propsComponent = {
         gridType: 'dash',
     },
     yAxis: {
-        // disableGrid: true,
         gridType: 'dash',
-        data: [
-            {
-                min: 0,
-                axisLine: false,
-            },
-        ],
+        dashLength: 2,
+        data: [{ axisLine: false }],
     },
     // 额外配置
     extra: {
-        column: {
-            type: 'group',
-            width: 30,
-            activeBgColor: '#000000',
-            activeBgOpacity: 0.08,
-            showLabel: false,
+        line: {
+            type: 'straight',
+            width: 2,
+            activeType: 'none',
         },
     },
 };

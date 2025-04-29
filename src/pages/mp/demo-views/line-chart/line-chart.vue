@@ -35,52 +35,51 @@ function getServerData() {
 </script>
 
 <template>
-    <page-layout title="柱状图">
+    <page-layout title="折线图">
         <view class="description margin-view">
-            <view class="cmp-name">ColumnChart 柱状图</view>
-            <view class="cmp-desc">柱状图</view>
+            <view class="cmp-name">LineChart 折线图</view>
+            <view class="cmp-desc">折线图</view>
         </view>
         <view class="demo-item">
             <view class="title margin-view">默认配置</view>
             <view class="item-block">
-                <ste-column-chart :series="series1" :categories="categories"></ste-column-chart>
+                <ste-line-chart :series="series1" :categories="categories"></ste-line-chart>
             </view>
         </view>
         <view class="demo-item">
             <view class="title margin-view">多图例</view>
             <view class="item-block">
-                <ste-column-chart :series="series2" :categories="categories" :dataLabel="false" :extra="{ column: { width: 20 } }" :legend="{ show: true }"></ste-column-chart>
+                <ste-line-chart :series="series2" :categories="categories" :dataLabel="true" :legend="{ show: true }"></ste-line-chart>
             </view>
         </view>
         <view class="demo-item">
-            <view class="title margin-view">堆叠</view>
+            <view class="title margin-view">曲线</view>
             <view class="item-block">
-                <ste-column-chart :series="series2" :categories="categories" :dataLabel="false" :extra="{ column: { type: 'stack' } }"></ste-column-chart>
+                <ste-line-chart :series="series2" :categories="categories" :dataLabel="false" :extra="{ line: { type: 'curve' } }"></ste-line-chart>
             </view>
         </view>
         <view class="demo-item">
             <view class="title margin-view">迷你图表</view>
             <view class="item-block">
-                <ste-column-chart
+                <ste-line-chart
                     :series="series1"
                     :categories="categories"
                     :dataLabel="false"
                     :xAxis="{ disabled: true, disableGrid: true, axisLine: false }"
                     :yAxis="{ disabled: true, disableGrid: true }"
-                    :extra="{ column: { width: 20 } }"
-                    width="500"
-                ></ste-column-chart>
+                    width="300"
+                ></ste-line-chart>
+                <ste-line-chart
+                    :series="series1"
+                    :categories="categories"
+                    :dataLabel="false"
+                    :xAxis="{ disabled: true, disableGrid: true, axisLine: false }"
+                    :yAxis="{ disabled: true, disableGrid: true }"
+                    :extra="{ line: { type: 'curve' } }"
+                    width="300"
+                ></ste-line-chart>
             </view>
         </view>
-        <!-- <view class="demo-item">
-            <view class="title margin-view">显示类型</view>
-            <view class="item-block">
-                <ste-column-chart :series="series1" :extra="{ funnel: { type: 'triangle', minSize: 0 } }"></ste-column-chart>
-            </view>
-            <view class="item-block">
-                <ste-column-chart :series="series1" :extra="{ funnel: { type: 'pyramid' } }"></ste-column-chart>
-            </view>
-        </view> -->
     </page-layout>
 </template>
 

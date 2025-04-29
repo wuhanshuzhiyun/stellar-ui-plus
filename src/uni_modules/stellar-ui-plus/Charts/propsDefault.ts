@@ -1,64 +1,173 @@
+import { type PropType } from 'vue';
+import type { ChartsType, ChartsOptions, ChartsXAxis, ChartsYAxis } from './types';
+import type { ChartsExtra } from './extra';
+
 // 公共默认配置
 export const propsDefault = {
     // 图表宽度
-    width: { type: [Number, String], default: '600' },
+    width: {
+        type: [Number, String] as PropType<ChartsOptions<ChartsType>['width']>,
+        default: '600',
+    },
+
     // 图表高度
-    height: { type: [Number, String], default: '400' },
-    // canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题，小程序平台开启后context及canvas的格式不同
-    canvas2d: { type: [Boolean], default: true },
-    // 设备像素比，解决开启canvas2d后画布模糊的问题
-    pixelRatio: { type: [Number, String], default: 1 },
+    height: {
+        type: [Number, String] as PropType<ChartsOptions<ChartsType>['height']>,
+        default: '400',
+    },
+
+    // canvas2d模式
+    canvas2d: {
+        type: Boolean as PropType<ChartsOptions<ChartsType>['canvas2d']>,
+        default: true,
+    },
+
+    // 设备像素比
+    pixelRatio: {
+        type: Number as PropType<ChartsOptions<ChartsType>['pixelRatio']>,
+        default: 1,
+    },
+
     // 是否动画展示图表
-    animation: { type: [Boolean], default: true },
-    // 图表动画效果，可选值：'easeOut'由快到慢,'easeIn'由慢到快,'easeInOut'慢快慢,'linear'匀速
-    timing: { type: [String], default: 'easeOut' },
-    // 动画展示时长，单位毫秒
-    duration: { type: [Number, String], default: 1000 },
+    animation: {
+        type: Boolean as PropType<ChartsOptions<ChartsType>['animation']>,
+        default: true,
+    },
+
+    // 图表动画效果
+    timing: {
+        type: String as PropType<ChartsOptions<ChartsType>['timing']>,
+        default: 'easeOut',
+    },
+
+    // 动画展示时长
+    duration: {
+        type: [Number, String] as PropType<ChartsOptions<ChartsType>['duration']>,
+        default: '1000',
+    },
+
     // 横屏模式
-    rotate: { type: [Boolean], default: false },
-    // 横屏锁定模式，如果开启横屏模式后，图表交互每次都会旋转90度，请赋值true
-    rotateLock: { type: [Boolean], default: false },
-    // 背景颜色，开启滚动条后请赋值
-    background: { type: [String], default: 'rgba(0,0,0,0)' },
-    // 主题颜色，16进制颜色格式
-    color: { type: Array as any, default: () => ['#165DFF', '#14C9C9', '#F7BA1E', '#3491FA', '#722ED1', '#9FDB1D'] },
-    // 	画布填充边距，顺序为上右下左
-    padding: { type: Array as any, default: () => [10, 15, 25, 15] },
+    rotate: {
+        type: Boolean as PropType<ChartsOptions<ChartsType>['rotate']>,
+        default: false,
+    },
+
+    // 横屏锁定模式
+    rotateLock: {
+        type: Boolean as PropType<ChartsOptions<ChartsType>['rotateLock']>,
+        default: false,
+    },
+
+    // 背景颜色
+    background: {
+        type: String as PropType<ChartsOptions<ChartsType>['background']>,
+        default: 'rgba(0,0,0,0)',
+    },
+
+    // 主题颜色
+    color: {
+        type: Array as PropType<ChartsOptions<ChartsType>['color']>,
+        default: () => ['#165DFF', '#14C9C9', '#F7BA1E', '#3491FA', '#722ED1', '#9FDB1D'],
+    },
+
+    // 画布填充边距
+    padding: {
+        type: Array as unknown as PropType<ChartsOptions<ChartsType>['padding']>,
+        default: () => [5, 5, 5, 5],
+    },
+
     // 全局默认字体大小
-    fontSize: { type: [Number, String], default: 13 },
-    // 全局默认字体颜色，16进制颜色格式
-    fontColor: { type: [String], default: '#666666' },
+    fontSize: {
+        type: Number as PropType<ChartsOptions<ChartsType>['fontSize']>,
+        default: 13,
+    },
+
+    // 全局默认字体颜色
+    fontColor: {
+        type: String as PropType<ChartsOptions<ChartsType>['fontColor']>,
+        default: '#666666',
+    },
+
     // 是否显示图表区域内数据点上方的数据文案
-    dataLabel: { type: [Boolean], default: true },
+    dataLabel: {
+        type: Boolean as PropType<ChartsOptions<ChartsType>['dataLabel']>,
+        default: true,
+    },
+
     // 是否显示数据点的图形标识
-    dataPointShape: { type: [Boolean], default: true },
-    // 图形标识点显示类型，可选值：'solid'实心,'hollow'空心
-    dataPointShapeType: { type: [String], default: 'solid' },
-    // 图表拖拽时，每秒重新渲染的帧数（用于图表拖拽卡顿，可以降低js与视图层交互的次数，理论上24帧/秒就够用了）
-    touchMoveLimit: { type: [Number, String], default: 60 },
-    // 开启滚动条，X轴配置里需要配置itemCount单屏幕数据点数量
-    enableScroll: { type: [Boolean], default: false },
-    // 是否启用标记线功能，也可做为隐藏图表区域内的标记线的开关
-    enableMarkLine: { type: [Boolean], default: false },
-    // 连续更新数据时，滚动条的位置。可选值："current"当前位置,"left"左对齐,"right"右对齐
-    scrollPosition: { type: [String], default: 'current' },
-    update: { type: [Boolean], default: true },
+    dataPointShape: {
+        type: Boolean as PropType<ChartsOptions<ChartsType>['dataPointShape']>,
+        default: true,
+    },
+
+    // 图形标识点显示类型
+    dataPointShapeType: {
+        type: String as PropType<ChartsOptions<ChartsType>['dataPointShapeType']>,
+        default: 'solid',
+    },
+
+    // 图表拖拽时每秒重新渲染的帧数
+    touchMoveLimit: {
+        type: Number as PropType<ChartsOptions<ChartsType>['touchMoveLimit']>,
+        default: 60,
+    },
+
+    // 开启滚动条
+    enableScroll: {
+        type: Boolean as PropType<ChartsOptions<ChartsType>['enableScroll']>,
+        default: false,
+    },
+
+    // 是否启用标记线功能
+    enableMarkLine: {
+        type: Boolean as PropType<ChartsOptions<ChartsType>['enableMarkLine']>,
+        default: false,
+    },
+
+    // 连续更新数据时，滚动条的位置
+    scrollPosition: {
+        type: String as PropType<ChartsOptions<ChartsType>['scrollPosition']>,
+        default: 'current',
+    },
 
     // 图表数据
-    series: { type: Object as any, default: () => ({}) },
-    // X轴配置
-    xAxis: { type: Object as any, default: () => ({}) },
-    // Y轴配置
-    yAxis: { type: Object as any, default: () => ({}) },
-    // 图例配置
-    legend: {
-        type: Object as any,
+    series: {
+        type: Object,
         default: () => ({}),
     },
-    // 标题配置 注意：标题配置仅适用于ring、arcbar、gauge，直角坐标系图表可在X轴配置/Y轴配置中设置标题。其他标题请在图表外面自行处理。
-    title: { type: Object as any, default: () => ({}) },
-    // 副标题
-    subtitle: { type: Object as any, default: () => ({}) },
+
+    // X轴配置
+    xAxis: {
+        type: Object as PropType<ChartsXAxis>,
+        default: () => ({}),
+    },
+
+    // Y轴配置
+    yAxis: {
+        type: Object as PropType<ChartsYAxis>,
+        default: () => ({}),
+    },
+
+    // 图例配置
+    legend: {
+        type: Object,
+        default: () => ({}),
+    },
+
+    // 标题配置
+    title: {
+        type: Object,
+        default: () => ({}),
+    },
+
+    subtitle: {
+        type: Object,
+        default: () => ({}),
+    },
+
     // 额外配置
-    extra: { type: Object as any, default: () => ({}) },
+    extra: {
+        type: Object as PropType<ChartsExtra>,
+        default: () => ({}),
+    },
 };

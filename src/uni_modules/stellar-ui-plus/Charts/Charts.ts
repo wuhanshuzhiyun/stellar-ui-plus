@@ -40,7 +40,7 @@ class Charts<T extends ChartsType> extends Ucharts {
      * @param options 自定义ToolTip配置
      * @returns
      */
-    showToolTip(e: Event, options: ToolTipOptions) {
+    showToolTip(e: Event, options?: ToolTipOptions) {
         return super.showToolTip(e, options);
     }
 
@@ -50,7 +50,7 @@ class Charts<T extends ChartsType> extends Ucharts {
      * @param options 配置参数
      * @returns
      */
-    touchLegend(e: Event, options: TouchLegendOptions) {
+    touchLegend(e: Event, options?: TouchLegendOptions) {
         return super.touchLegend(e, options);
     }
 

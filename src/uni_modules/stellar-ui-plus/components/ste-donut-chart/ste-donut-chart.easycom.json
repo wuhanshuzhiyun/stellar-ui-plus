@@ -26,7 +26,7 @@
             "name": "pixelRatio",
             "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
             "type": "number",
-            "default": "具体设备决定"
+            "default": "微信小程序由具体设备决定，其余的默认为1"
         },
         {
             "name": "animation",

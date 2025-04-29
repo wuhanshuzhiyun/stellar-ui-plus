@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartsExtra, ChartsPieExtra } from '@/uni_modules/stellar-ui-plus/Charts/extra';
+import type { ChartsExtra } from '@/uni_modules/stellar-ui-plus/Charts/extra';
 import type { ChartsSerie } from '@/uni_modules/stellar-ui-plus/Charts/types';
 import { ref, onMounted } from 'vue';
 let series1 = ref<ChartsSerie<'pie'>[]>([
@@ -63,19 +63,19 @@ function getServerData() {
         <view class="demo-item">
             <view class="title margin-view">默认配置</view>
             <view class="item-block">
-                <ste-pie-chart :series="series1" width="660" height="400" :padding="[5, 5, 5, 5]" :enableScroll="false"></ste-pie-chart>
+                <ste-pie-chart :series="series1" width="420" height="420" :enableScroll="false"></ste-pie-chart>
             </view>
         </view>
         <view class="demo-item">
-            <view class="title margin-view">默认颜色</view>
+            <view class="title margin-view">带分割线+渐变色</view>
             <view class="item-block">
-                <ste-pie-chart :series="series2" width="660" height="500"></ste-pie-chart>
+                <ste-pie-chart :series="series2" width="420" height="420" :extra="extra"></ste-pie-chart>
             </view>
         </view>
         <view class="demo-item">
-            <view class="title margin-view">带分割线+渐变色+Label</view>
+            <view class="title margin-view">显示Label</view>
             <view class="item-block">
-                <ste-pie-chart :series="series1" width="660" height="400" :extra="extra" dataLabel></ste-pie-chart>
+                <ste-pie-chart :series="series1" width="420" height="420" dataLabel></ste-pie-chart>
             </view>
         </view>
     </page-layout>

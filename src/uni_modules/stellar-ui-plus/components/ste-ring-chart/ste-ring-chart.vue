@@ -52,7 +52,9 @@ onMounted(() => {
 watch(
     () => props.series,
     (series: any) => {
-        drawCharts(series);
+        uChartsInstance[canvasId.value].updateData({
+            series: utils.deepClone(series),
+        });
     }
 );
 

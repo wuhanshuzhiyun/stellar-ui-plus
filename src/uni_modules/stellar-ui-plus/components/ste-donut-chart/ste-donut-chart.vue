@@ -15,8 +15,7 @@ defineOptions({
     virtualHost: true,
 });
 
-const props = defineProps(propsData);
-console.log('props', props);
+let props = defineProps(propsData);
 
 let canvasId = ref('');
 let cWidth = computed(() => {

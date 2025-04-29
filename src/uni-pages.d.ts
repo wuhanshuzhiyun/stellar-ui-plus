@@ -18,7 +18,6 @@ interface NavigateToOptions {
        "/pages/mp/demo-views/checkbox/checkbox" |
        "/pages/mp/demo-views/code-input/code-input" |
        "/pages/mp/demo-views/date-picker/date-picker" |
-       "/pages/mp/demo-views/donut-chart/donut-chart" |
        "/pages/mp/demo-views/drag/drag" |
        "/pages/mp/demo-views/dropdown-menu/dropdown-menu" |
        "/pages/mp/demo-views/funnel-chart/funnel-chart" |
@@ -41,6 +40,7 @@ interface NavigateToOptions {
        "/pages/mp/demo-views/rate/rate" |
        "/pages/mp/demo-views/read-more/read-more" |
        "/pages/mp/demo-views/rich-text/rich-text" |
+       "/pages/mp/demo-views/ring-chart/ring-chart" |
        "/pages/mp/demo-views/scroll-to/scroll-to" |
        "/pages/mp/demo-views/search/search" |
        "/pages/mp/demo-views/select/select" |

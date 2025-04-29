@@ -42,6 +42,7 @@ export const propsDefault = {
     enableMarkLine: { type: [Boolean], default: false },
     // 连续更新数据时，滚动条的位置。可选值："current"当前位置,"left"左对齐,"right"右对齐
     scrollPosition: { type: [String], default: 'current' },
+    update: { type: [Boolean], default: true },
 
     // 图表数据
     series: { type: Object as any, default: () => ({}) },
@@ -56,6 +57,7 @@ export const propsDefault = {
     },
     // 标题配置 注意：标题配置仅适用于ring、arcbar、gauge，直角坐标系图表可在X轴配置/Y轴配置中设置标题。其他标题请在图表外面自行处理。
     title: { type: Object as any, default: () => ({}) },
+    // 副标题
     subtitle: { type: Object as any, default: () => ({}) },
     // 额外配置
     extra: { type: Object as any, default: () => ({}) },

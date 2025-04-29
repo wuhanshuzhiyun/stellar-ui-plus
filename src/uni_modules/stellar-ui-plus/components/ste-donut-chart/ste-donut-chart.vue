@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-var uChartsInstance: { [key: string]: any } = {};
-import { ref, onMounted, computed, type CSSProperties } from 'vue';
+let uChartsInstance: { [key: string]: any } = {};
+import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
 defineOptions({
@@ -35,39 +35,28 @@ const chartStyle = computed(() => {
 onMounted(() => {
     // 赋予id，id不能为数字开头
     canvasId.value = utils.guid();
-    getServerData();
+    drawCharts(props.series);
 });
 
-function getServerData() {
-    //模拟从服务器获取数据时的延时
-    setTimeout(() => {
-        //模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-        let res = {
-            series: [
-                {
-                    data: [
-                        { name: '一班', value: 50 },
-                        { name: '二班', value: 30 },
-                        { name: '三班', value: 20 },
-                        { name: '四班', value: 18 },
-                        { name: '五班', value: 8 },
-                    ],
-                },
-            ],
-        };
-        drawCharts(canvasId.value, res);
-    }, 500);
-}
+watch(
+    () => props.series,
+    (series: any) => {
+        console.log('series', series);
+        uChartsInstance[canvasId.value].updateData({
+            series: series,
+        });
+    }
+);
 
-function drawCharts(id: string, data: any) {
+function drawCharts(series: any) {
     // 默认配置项
-    const ctx = uni.createCanvasContext(id);
-    uChartsInstance[id] = new uCharts<'ring'>({
+    const ctx = uni.createCanvasContext(canvasId.value);
+    uChartsInstance[canvasId.value] = new uCharts<'ring'>({
         type: 'ring',
         context: ctx,
         width: cWidth.value,
         height: cHeight.value,
-        series: data.series,
+        series: utils.deepClone(series),
         pixelRatio: props.pixelRatio,
         animation: props.animation,
         timing: props.timing,
@@ -86,6 +75,7 @@ function drawCharts(id: string, data: any) {
         enableScroll: props.enableScroll,
         enableMarkLine: props.enableMarkLine,
         scrollPosition: props.scrollPosition,
+        update: props.update,
         xAxis: props.xAxis,
         yAxis: props.yAxis,
         legend: props.legend,

@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+let series: any = ref([]);
+onMounted(() => {
+    getServerData();
+});
+function getServerData() {
+    //模拟从服务器获取数据时的延时
+    setTimeout(() => {
+        // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
+        series.value = [
+            {
+                data: [
+                    { name: '一班', value: 50 },
+                    { name: '二班', value: 30 },
+                    { name: '三班', value: 20 },
+                    { name: '四班', value: 18 },
+                    { name: '五班', value: 8 },
+                ],
+            },
+        ];
+    }, 500);
+}
+</script>
+
 <template>
     <page-layout title="环形图">
         <view class="description">
@@ -7,13 +32,11 @@
         <view class="demo-item">
             <view class="title">默认配置</view>
             <view class="item-block">
-                <ste-donut-chart></ste-donut-chart>
+                <ste-donut-chart :series="series"></ste-donut-chart>
             </view>
         </view>
     </page-layout>
 </template>
-
-<script></script>
 
 <style lang="scss" scoped>
 .loading-box {

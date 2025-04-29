@@ -7,7 +7,7 @@ import utils from '../../utils/utils';
 export const propsData = utils.deepMerge(propsDefault(), {
     // 图表数据
     series: {
-        type: Object as PropType<ChartsSerie<'funnel'>>,
+        type: Object as PropType<ChartsSerie<'funnel'>[]>,
         default: () => ({}),
     },
     // 自定义配置

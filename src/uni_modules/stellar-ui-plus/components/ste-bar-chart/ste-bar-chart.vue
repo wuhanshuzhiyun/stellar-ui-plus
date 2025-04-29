@@ -60,51 +60,6 @@ watch(
 function drawCharts(series: ChartsSerie<'bar'>[]) {
     // 默认配置项
     const ctx = uni.createCanvasContext(canvasId.value);
-    // const options: ChartsOptions<'bar'> = {
-    //     type: 'bar',
-    //     context: ctx,
-    //     width: cWidth.value,
-    //     height: cHeight.value,
-    //     categories: ['2018', '2019', '2020', '2021', '2022', '2023'],
-    //     series: [
-    //         {
-    //             name: '目标值',
-    //             data: [35, 36, 31, 33, 13, 34],
-    //         },
-    //         {
-    //             name: '完成量',
-    //             data: [18, 27, 21, 24, 6, 28],
-    //         },
-    //     ],
-    //     animation: true,
-    //     background: '#FFFFFF',
-    //     color: ['#1890FF', '#91CB74', '#FAC858', '#EE6666', '#73C0DE', '#3CA272', '#FC8452', '#9A60B4', '#ea7ccc'],
-    //     padding: [15, 30, 0, 5],
-    //     enableScroll: false,
-    //     legend: {},
-    //     xAxis: {
-    //         boundaryGap: 'justify',
-    //         disableGrid: false,
-    //         min: 0,
-    //         axisLine: false,
-    //         max: 40,
-    //     },
-    //     yAxis: {},
-    //     extra: {
-    //         bar: {
-    //             type: 'group',
-    //             width: 30,
-    //             meterBorde: 1,
-    //             meterFillColor: '#FFFFFF',
-    //             activeBgColor: '#000000',
-    //             activeBgOpacity: 0.08,
-    //             linearType: 'custom',
-    //             barBorderCircle: true,
-    //             seriesGap: 2,
-    //             categoryGap: 2,
-    //         },
-    //     },
-    // };
     const options: ChartsOptions<'bar'> = {
         type: 'bar',
         context: ctx,

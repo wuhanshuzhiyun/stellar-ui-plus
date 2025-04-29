@@ -12,7 +12,7 @@ export const propsData = utils.deepMerge(propsDefault(), {
     dataLabel: { type: [Boolean], default: false },
     // 图表数据
     series: {
-        type: Object as PropType<ChartsSerie<'ring'>>,
+        type: Object as PropType<ChartsSerie<'ring'>[]>,
         default: () => ({}),
     },
 });

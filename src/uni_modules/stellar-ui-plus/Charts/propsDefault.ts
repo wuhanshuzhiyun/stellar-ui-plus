@@ -2,6 +2,8 @@ import { type PropType } from 'vue';
 import type { ChartsType, ChartsOptions, ChartsXAxis, ChartsYAxis } from './types';
 import type { ChartsExtra } from './extra';
 
+// 设备像素比
+let pixelRatio = uni.getSystemInfoSync();
 // 公共默认配置
 export const propsDefault = {
     // 图表宽度
@@ -25,7 +27,7 @@ export const propsDefault = {
     // 设备像素比
     pixelRatio: {
         type: Number as PropType<ChartsOptions<ChartsType>['pixelRatio']>,
-        default: 1,
+        default: pixelRatio,
     },
 
     // 是否动画展示图表

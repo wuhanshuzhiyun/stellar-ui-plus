@@ -1,18 +1,18 @@
 {
-    "name": "ste-funnel-chart",
+    "name": "ste-donut-chart",
     "description": "环形图",
     "example": "<ste-donut-chart></ste-donut-chart>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=donut-chart",
     "attributes": [
         {
             "name": "width",
-            "description": "图表宽度",
+            "description": "图表宽度，单位rpx",
             "type": "number | string",
             "default": "750"
         },
         {
             "name": "height",
-            "description": "图表高度",
+            "description": "图表高度，单位rpx",
             "type": "number | string",
             "default": "200"
         },
@@ -26,7 +26,7 @@
             "name": "pixelRatio",
             "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
             "type": "number",
-            "default": 1
+            "default": "具体设备决定"
         },
         {
             "name": "animation",
@@ -78,13 +78,13 @@
         },
         {
             "name": "padding",
-            "description": "画布填充边距（顺序为上右下左）",
+            "description": "画布填充边距（顺序为上右下左），单位px",
             "type": "array",
             "default": [5, 5, 5, 5]
         },
         {
             "name": "fontSize",
-            "description": "全局默认字体大小",
+            "description": "全局默认字体大小，单位px",
             "type": "number",
             "default": 13
         },
@@ -120,7 +120,7 @@
             "name": "touchMoveLimit",
             "description": "图表拖拽时每秒重新渲染的帧数",
             "type": "number",
-            "default": 60
+            "default": 24
         },
         {
             "name": "enableScroll",

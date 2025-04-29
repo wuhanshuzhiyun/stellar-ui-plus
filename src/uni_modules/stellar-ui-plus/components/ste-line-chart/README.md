@@ -1,6 +1,6 @@
-# FunnelChart 漏斗图
+# LineChart 折线图
 
-漏斗图
+折线图
 ---$
 
 ### 代码演示

@@ -1,6 +1,6 @@
-# FunnelChart 漏斗图
+# ColumnChart 柱状图
 
-漏斗图
+柱状图
 ---$
 
 ### 代码演示
@@ -9,7 +9,7 @@
 
 ```html
 <template>
-    <ste-funnel-chart :series="series"></ste-funnel-chart>
+    <ste-column-chart :series="series1" :categories="categories"></ste-column-chart>
 </template>
 <script setup lang="ts">
     import { ref, onMounted } from 'vue';

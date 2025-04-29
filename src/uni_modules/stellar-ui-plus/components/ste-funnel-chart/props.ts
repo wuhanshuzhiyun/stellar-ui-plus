@@ -1,9 +1,15 @@
 import { propsDefault } from '../../Charts/propsDefault';
 import type { PropType } from 'vue';
+import type { ChartsSerie } from '../../Charts/types';
 
 // 组件默认配置
 const props = {
-    ...propsDefault,
+    ...propsDefault(),
+    // 图表数据
+    series: {
+        type: Object as PropType<ChartsSerie<'funnel'>>,
+        default: () => ({}),
+    },
     // 自定义配置
     color: { type: Array as PropType<string[]>, default: () => ['#0E42D2', '#165DFF', '#4080FF', '#6AA1FF', '#94BFFF'] },
     legend: {

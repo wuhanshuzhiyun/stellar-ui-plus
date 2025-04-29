@@ -5,7 +5,7 @@ import type { ChartsExtra } from './extra';
 // 设备像素比
 let pixelRatio = uni.getSystemInfoSync();
 // 公共默认配置
-export const propsDefault = {
+export const propsDefault = () => ({
     // 图表宽度
     width: {
         type: [Number, String] as PropType<ChartsOptions<ChartsType>['width']>,
@@ -136,13 +136,6 @@ export const propsDefault = {
         type: String as PropType<ChartsOptions<ChartsType>['scrollPosition']>,
         default: 'current',
     },
-
-    // 图表数据
-    series: {
-        type: Object,
-        default: () => ({}),
-    },
-
     // X轴配置
     xAxis: {
         type: Object as PropType<ChartsXAxis>,
@@ -177,4 +170,4 @@ export const propsDefault = {
         type: Object as PropType<ChartsExtra>,
         default: () => ({}),
     },
-};
+});

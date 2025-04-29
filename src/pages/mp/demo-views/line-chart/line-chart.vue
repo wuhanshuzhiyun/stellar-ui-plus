@@ -38,7 +38,7 @@ function getServerData() {
     <page-layout title="折线图">
         <view class="description margin-view">
             <view class="cmp-name">LineChart 折线图</view>
-            <view class="cmp-desc">折线图</view>
+            <view class="cmp-desc">折线图主要用来展示数据项随着时间推移的趋势或变化</view>
         </view>
         <view class="demo-item">
             <view class="title margin-view">默认配置</view>

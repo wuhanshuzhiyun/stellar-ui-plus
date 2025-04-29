@@ -38,7 +38,7 @@ function getServerData() {
     <page-layout title="柱状图">
         <view class="description margin-view">
             <view class="cmp-name">ColumnChart 柱状图</view>
-            <view class="cmp-desc">柱状图</view>
+            <view class="cmp-desc">柱状图（或称条形图）是一种通过柱形的长度来表现数据大小的一种常用图表类型</view>
         </view>
         <view class="demo-item">
             <view class="title margin-view">默认配置</view>

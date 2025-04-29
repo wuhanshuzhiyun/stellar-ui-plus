@@ -1,10 +1,10 @@
 import { propsDefault } from '../../Charts/propsDefault';
 import type { PropType } from 'vue';
 import type { ChartsSerie } from '../../Charts/types';
+import utils from '../../utils/utils';
 
 // 组件默认配置
-const props = {
-    ...propsDefault(),
+export const propsData = utils.deepMerge(propsDefault(), {
     // 图表数据
     series: {
         type: Object as PropType<ChartsSerie<'funnel'>>,
@@ -21,7 +21,7 @@ const props = {
     extra: {
         type: Object as any,
         default: () => ({
-            ring: {
+            funnel: {
                 ringWidth: 60,
                 activeOpacity: 0.5,
                 activeRadius: 10,
@@ -34,6 +34,23 @@ const props = {
             },
         }),
     },
-};
+});
 
-export default props;
+export const propsComponent = {
+    legend: {
+        show: false,
+    },
+    title: {
+        fontSize: 28,
+        color: '#bbbbbb',
+    },
+    // 额外配置
+    extra: {
+        funnel: {
+            ringWidth: 6,
+            customRadius: 32,
+            offsetAngle: -90,
+            linearType: 'none',
+        },
+    },
+};

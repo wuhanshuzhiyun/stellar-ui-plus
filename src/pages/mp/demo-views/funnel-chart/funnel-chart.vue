@@ -1,19 +1,84 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+let series1: any = ref([]);
+let series2: any = ref([]);
+onMounted(() => {
+    getServerData();
+});
+function getServerData() {
+    //模拟从服务器获取数据时的延时
+    setTimeout(() => {
+        // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
+        series1.value = [
+            {
+                data: [
+                    { name: '一班', centerText: '50', value: 50 },
+                    { name: '二班', centerText: '30', value: 30 },
+                    { name: '三班', centerText: '20', value: 20 },
+                    { name: '四班', centerText: '18', value: 18 },
+                    { name: '五班', centerText: '8', value: 8 },
+                ],
+            },
+        ];
+        series2.value = [
+            {
+                data: [
+                    { name: '一班', value: 50 },
+                    { name: '二班', value: 30 },
+                    { name: '三班', value: 20 },
+                    { name: '四班', value: 18 },
+                    { name: '五班', value: 8 },
+                ],
+            },
+        ];
+    }, 500);
+}
+</script>
+
 <template>
     <page-layout title="漏斗图">
-        <view class="description">
+        <view class="description margin-view">
             <view class="cmp-name">FunnelChart 漏斗图</view>
-            <view class="cmp-desc">漏斗图</view>
+            <view class="cmp-desc">漏斗图。</view>
         </view>
         <view class="demo-item">
-            <view class="title">默认配置</view>
+            <view class="title margin-view">默认配置</view>
             <view class="item-block">
-                <!-- <ste-donut-chart></ste-donut-chart> -->
-                <ste-funnel-chart></ste-funnel-chart>
+                <ste-funnel-chart :series="series1" :color="['#0E42D2', '#165DFF', '#4080FF', '#6AA1FF', '#94BFFF']" :extra="{ funnel: { minSize: 10 } }"></ste-funnel-chart>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title margin-view">默认颜色</view>
+            <view class="item-block">
+                <ste-funnel-chart :series="series2"></ste-funnel-chart>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title margin-view">标题配置</view>
+            <view class="item-block">
+                <ste-funnel-chart :series="series1" :title="{ name: '指标名', fontSize: 12 }"></ste-funnel-chart>
             </view>
         </view>
     </page-layout>
 </template>
 
-<script></script>
+<style lang="scss" scoped>
+.loading-box {
+    flex-direction: column !important;
+    row-gap: 20rpx;
+    align-items: flex-start !important;
+    justify-content: center;
+}
+.item-block {
+    column-gap: 40rpx;
+}
 
-<style lang="scss" scoped></style>
+:deep(.page > .content) {
+    padding: 0;
+    margin: 0;
+}
+
+.margin-view {
+    margin: 0 40rpx;
+}
+</style>

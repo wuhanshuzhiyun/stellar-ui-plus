@@ -174,6 +174,10 @@ export interface ChartsBarExtra {
     activeBgColor?: string;
     /** 当前点击柱状图的背景颜色透明度 */
     activeBgOpacity?: number;
+    /** 边框 */
+    meterBorde?: number;
+    /** 颜色 */
+    meterFillColor?: string;
 }
 
 /** 折线图 */

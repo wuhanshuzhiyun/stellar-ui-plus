@@ -39,7 +39,7 @@ function getServerData() {
     <page-layout title="漏斗图">
         <view class="description margin-view">
             <view class="cmp-name">FunnelChart 漏斗图</view>
-            <view class="cmp-desc">漏斗图。</view>
+            <view class="cmp-desc">漏斗图适用于业务流程比较规范、周期长、环节多的单流程单向分析</view>
         </view>
         <view class="demo-item">
             <view class="title margin-view">默认配置</view>
@@ -65,4 +65,17 @@ function getServerData() {
     </page-layout>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.item-block {
+    column-gap: 40rpx;
+}
+
+:deep(.page > .content) {
+    padding: 0;
+    margin: 0;
+}
+
+.margin-view {
+    margin: 0 40rpx;
+}
+</style>

@@ -7,11 +7,11 @@ import utils from '../../utils/utils';
 export const propsData = utils.deepMerge(propsDefault(), {
     // 图表数据
     series: {
-        type: Object as PropType<ChartsSerie<'funnel'>[]>,
+        type: Object as PropType<ChartsSerie<'line'>>,
         default: () => ({}),
     },
     // 自定义配置
-    color: { type: Array as PropType<string[]>, default: () => ['#0E42D2', '#165DFF', '#4080FF', '#6AA1FF', '#94BFFF'] },
+    color: { type: Array as PropType<string[]>, default: () => ['#165DFF', '#14C9C9', '#F7BA1E'] },
     legend: {
         type: Object as any,
         default: () => ({
@@ -22,6 +22,12 @@ export const propsData = utils.deepMerge(propsDefault(), {
         type: Object as any,
         default: () => ({}),
     },
+    categories: {
+        type: Object as any,
+        default: () => [],
+    },
+    dataPointShape: { type: Boolean, default: false },
+    dataLabel: { type: Boolean, default: false },
 });
 
 export const propsComponent = {
@@ -32,14 +38,22 @@ export const propsComponent = {
         fontSize: 28,
         color: '#bbbbbb',
     },
+    xAxis: {
+        // disabled: true,
+        disableGrid: true,
+        gridType: 'dash',
+    },
+    yAxis: {
+        gridType: 'dash',
+        dashLength: 2,
+        data: [{ axisLine: false }],
+    },
     // 额外配置
     extra: {
-        funnel: {
-            ringWidth: 6,
-            customRadius: 32,
-            offsetAngle: -90,
-            linearType: 'none',
-            minSize: 20,
+        line: {
+            type: 'straight',
+            width: 2,
+            activeType: 'none',
         },
     },
 };

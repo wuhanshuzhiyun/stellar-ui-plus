@@ -2,45 +2,38 @@
 import type { ChartsExtra } from '@/uni_modules/stellar-ui-plus/Charts/extra';
 import type { ChartsSerie } from '@/uni_modules/stellar-ui-plus/Charts/types';
 import { ref, onMounted } from 'vue';
-let series1 = ref<ChartsSerie<'pie'>[]>([
+let series1 = ref<ChartsSerie<'bar'>[]>([
     {
         name: '测试1',
-        data: [
-            { name: '一班', value: 50 },
-            { name: '二班', value: 30 },
-            { name: '三班', value: 20 },
-        ],
+        data: [35, 36, 31],
     },
-]);
-let series2 = ref<ChartsSerie<'pie'>[]>([
     {
         name: '测试2',
-        data: [
-            { name: '一班', value: 50 },
-            { name: '二班', value: 30 },
-            { name: '三班', value: 20 },
-            { name: '四班', value: 18 },
-            { name: '五班', value: 8 },
-        ],
+        data: [20, 16, 31],
+    },
+]);
+let series2 = ref<ChartsSerie<'bar'>[]>([
+    {
+        name: '测试1',
+        data: [35, 36, 31, 13, 34],
+    },
+    {
+        name: '测试2',
+        data: [20, 16, 31, 53, 24],
     },
 ]);
 
 const extra: ChartsExtra = {
-    pie: {
-        activeOpacity: 0.5,
-        activeRadius: 10,
-        offsetAngle: 0,
-        labelWidth: 15,
-        border: true,
-        borderWidth: 3,
-        borderColor: '#FFFFFF',
-        linearType: 'custom',
-    },
-    markLine: {
-        type: 'dash',
+    bar: {
+        type: 'stack',
+        width: 30,
+        meterBorde: 1,
+        meterFillColor: '#FFFFFF',
+        activeBgColor: '#000000',
+        activeBgOpacity: 0.08,
+        categoryGap: 2,
     },
 };
-
 onMounted(() => {
     getServerData();
 });
@@ -57,25 +50,19 @@ function getServerData() {
 <template>
     <page-layout title="条状图">
         <view class="description margin-view">
-            <view class="cmp-name">PieChart 条状图</view>
-            <view class="cmp-desc">主要用于表现不同类目的数据在总和中的占比。每个的弧度表示数据数量的比例。</view>
+            <view class="cmp-name">BarChart 条状图</view>
+            <view class="cmp-desc">一种通过不同长度的条形展示分类数据大小的统计图表，适用于直观比较各类别间的数值差异。</view>
         </view>
         <view class="demo-item">
             <view class="title margin-view">默认配置</view>
             <view class="item-block">
-                <ste-pie-chart :series="series1" width="420" height="420" :enableScroll="false"></ste-pie-chart>
+                <ste-bar-chart :series="series1" width="660" height="400" :categories="['2018', '2019', '2020']"></ste-bar-chart>
             </view>
         </view>
         <view class="demo-item">
-            <view class="title margin-view">带分割线+渐变色</view>
+            <view class="title margin-view">堆叠图</view>
             <view class="item-block">
-                <ste-pie-chart :series="series2" width="420" height="420" :extra="extra"></ste-pie-chart>
-            </view>
-        </view>
-        <view class="demo-item">
-            <view class="title margin-view">显示Label</view>
-            <view class="item-block">
-                <ste-pie-chart :series="series1" width="420" height="420" dataLabel></ste-pie-chart>
+                <ste-bar-chart :series="series1" width="660" height="400" :categories="['2018', '2019', '2020']" :extra="extra"></ste-bar-chart>
             </view>
         </view>
     </page-layout>

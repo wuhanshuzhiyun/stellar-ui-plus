@@ -12,12 +12,12 @@ export const propsData = utils.deepMerge(propsDefault(), {
     dataLabel: { type: [Boolean], default: false },
     // 图表数据
     series: {
-        type: Array as PropType<ChartsSerie<'pie'>[]>,
+        type: Array as PropType<ChartsSerie<'bar'>[]>,
         default: () => [],
     },
 });
 
-export const propsComponent: () => Partial<ChartsOptions<'pie'>> = () => ({
+export const propsComponent: Partial<ChartsOptions<'bar'>> = {
     legend: {
         show: false,
     },
@@ -25,16 +25,27 @@ export const propsComponent: () => Partial<ChartsOptions<'pie'>> = () => ({
         fontSize: 28,
         color: '#bbbbbb',
     },
+    xAxis: {
+        boundaryGap: 'justify',
+        disableGrid: false,
+        min: 0,
+        axisLine: false,
+        max: 40,
+    },
+    yAxis: {},
     // 额外配置
     extra: {
-        pie: {
-            activeOpacity: 0.5,
-            activeRadius: 10,
-            offsetAngle: 0,
-            labelWidth: 15,
-            border: false,
-            borderWidth: 3,
-            borderColor: '#FFFFFF',
+        bar: {
+            type: 'group',
+            width: 30,
+            meterBorde: 1,
+            meterFillColor: '#FFFFFF',
+            activeBgColor: '#000000',
+            activeBgOpacity: 0.08,
+            linearType: 'custom',
+            barBorderCircle: true,
+            seriesGap: 2,
+            categoryGap: 2,
         },
     },
-});
+};

@@ -92,7 +92,7 @@ export interface ChartsSerie<T extends ChartsType> {
     /** 仅限折线图阴影配置，格式为4位数组：[offsetX,offsetY,blur,color] */
     setShadow?: [number, number, number, string];
     /** 仅限折线图渐变色数组，格式为2维数组[起始位置，颜色值]，例如[[0,'#0EE2F8'],[0.3,'#2BDCA8'],[0.6,'#1890FF'],[1,'#9A60B4']] */
-    linearColor: [number, string][];
+    linearColor?: [number, string][];
     /** 暂时定义为混合图表折线图或区域图样式，可选值：'curve'曲线,'straight'直线 */
     style?: 'curve' | 'straight';
     /** 混合图中，是否增加折线或区域图上的标记点，仅针对line,area,mix有效 */
@@ -108,7 +108,7 @@ export interface ChartsSerie<T extends ChartsType> {
     /** 自定义显示数据内容，形参为(value,index,series,opts) */
     formatter?: (value: number, index: number, series: any, opts: any) => string;
     /** K线图自定义折线数据列表，内容同series，仅在opts.extra.candle.average.show为false时调用此数据，（默认调用此数据） */
-    seriesMA: ChartsSerieDataItem<T>[];
+    seriesMA?: ChartsSerieDataItem<T>[];
 }
 
 /** X轴配置 */
@@ -241,6 +241,50 @@ export interface ChartsYAxis {
     data?: ChartsYAxisDataItem[];
 }
 
+/** 图例配置 */
+export interface ChartsLegend {
+    /** 是否显示图例标识 */
+    show?: boolean;
+    /** 图例相对画布的显示位置，可选值：'bottom','top','left','right' */
+    position?: 'bottom' | 'top' | 'left' | 'right';
+    /** 图例位置对齐方向，可选值：'center','left','right','top','bottom' */
+    float?: 'center' | 'left' | 'right' | 'top' | 'bottom';
+    /** 图例内填充边距 */
+    padding?: number;
+    /** 图例外侧填充边距 */
+    margin?: number;
+    /** 图例背景颜色 */
+    backgroundColor?: string;
+    /** 图例边框颜色 */
+    borderColor?: string;
+    /** 图例边框线宽 */
+    borderWidth?: number;
+    /** 	字体大小 */
+    fontSize?: number;
+    /** 字体颜色 */
+    fontColor?: string;
+    /** 字体行高 */
+    lineHeight?: number;
+    /** 点击隐藏时图例标识及文字颜色 */
+    hiddenColor?: string;
+    /** 各个分类（类别）之间的间隔 */
+    itemGap?: number;
+}
+
+/** 标题配置 */
+export interface ChartsTitle {
+    /** 主标题内容 */
+    name?: string;
+    /** 主标题字体大小 */
+    fontSize?: number;
+    /** 主标题颜色 */
+    color?: string;
+    /** 横向位置偏移量（相对屏幕中心为原点可为负数 */
+    offsetX?: number;
+    /** 纵向位置偏移量（相对屏幕中心为原点可为负数） */
+    offsetY?: number;
+}
+
 /** 图表配置项 */
 export interface ChartsOptions<T extends ChartsType> {
     /** 图表类型 */
@@ -254,7 +298,7 @@ export interface ChartsOptions<T extends ChartsType> {
     /** 图表数据集，部分图表类型不需要categories */
     categories?: string[];
     /** 图表数据集 */
-    series: ChartsSerie<T>;
+    series: ChartsSerie<T>[];
     /** canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题 */
     canvas2d?: boolean;
     /** 设备像素比，解决开启canvas2d后画布模糊的问题 */
@@ -299,4 +343,10 @@ export interface ChartsOptions<T extends ChartsType> {
     yAxis?: ChartsYAxis;
     /** 额外配置 */
     extra?: ChartsExtra;
+    /** 图例配置 */
+    legend?: ChartsLegend;
+    /** 标题配置 */
+    title?: ChartsTitle;
+    /** 子标题配置 */
+    subtitle?: ChartsTitle;
 }

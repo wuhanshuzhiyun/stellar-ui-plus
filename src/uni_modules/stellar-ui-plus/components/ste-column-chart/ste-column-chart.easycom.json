@@ -1,8 +1,8 @@
 {
-    "name": "ste-donut-chart",
-    "description": "环形图",
-    "example": "<ste-donut-chart></ste-donut-chart>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=donut-chart",
+    "name": "ste-column-chart",
+    "description": "柱状图",
+    "example": "<ste-column-chart />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=column-chart",
     "attributes": [
         {
             "name": "width",
@@ -26,7 +26,7 @@
             "name": "pixelRatio",
             "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
             "type": "number",
-            "default": "微信小程序由具体设备决定，其余的默认为1"
+            "default": "具体设备决定"
         },
         {
             "name": "animation",

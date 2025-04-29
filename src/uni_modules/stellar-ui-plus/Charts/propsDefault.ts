@@ -170,4 +170,10 @@ export const propsDefault = () => ({
         type: Object as PropType<ChartsExtra>,
         default: () => ({}),
     },
+
+    // 图表数据集
+    categories: {
+        type: Array as PropType<string[]>,
+        default: () => [],
+    },
 });

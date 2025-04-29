@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-let uChartsInstance: { [key: string]: uCharts<'pie'> } = {};
+let uChartsInstance: { [key: string]: any } = {};
 import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
@@ -20,12 +20,12 @@ defineOptions({
 let props = defineProps(propsData);
 let cmpProps = computed(() => {
     return {
-        xAxis: utils.deepMerge(propsComponent().xAxis || {}, props.xAxis),
-        yAxis: utils.deepMerge(propsComponent().yAxis || {}, props.yAxis),
-        legend: utils.deepMerge(propsComponent().legend || {}, props.legend),
-        title: utils.deepMerge(propsComponent().title || {}, props.title),
-        subtitle: utils.deepMerge(propsComponent()?.subtitle || {}, props.subtitle),
-        extra: utils.deepMerge(propsComponent().extra || {}, props.extra),
+        xAxis: utils.deepMerge(utils.deepClone(propsComponent?.xAxis ?? {}), props.xAxis),
+        yAxis: utils.deepMerge(utils.deepClone(propsComponent?.yAxis ?? {}), props.yAxis),
+        legend: utils.deepMerge(utils.deepClone(propsComponent.legend), props.legend),
+        title: utils.deepMerge(utils.deepClone(propsComponent.title), props.title),
+        subtitle: utils.deepMerge(utils.deepClone(propsComponent?.subtitle ?? {}), props.subtitle),
+        extra: utils.deepMerge(utils.deepClone(propsComponent.extra), props.extra),
     };
 });
 
@@ -57,11 +57,11 @@ watch(
     }
 );
 
-function drawCharts(series: ChartsSerie<'pie'>[]) {
+function drawCharts(series: ChartsSerie<'bar'>[]) {
     // 默认配置项
     const ctx = uni.createCanvasContext(canvasId.value);
-    const options: ChartsOptions<'pie'> = {
-        type: 'pie',
+    const options: ChartsOptions<'bar'> = {
+        type: 'bar',
         context: ctx,
         width: cWidth.value,
         height: cHeight.value,
@@ -93,10 +93,9 @@ function drawCharts(series: ChartsSerie<'pie'>[]) {
         categories: props.categories,
     };
     console.log('options', options);
-    uChartsInstance[canvasId.value] = new uCharts<'pie'>(options);
+    uChartsInstance[canvasId.value] = new uCharts<'bar'>(options);
 }
 function tap(e: any) {
-    console.log('tap', e);
     uChartsInstance[e.target.id].touchLegend(e);
     uChartsInstance[e.target.id].showToolTip(e);
 }

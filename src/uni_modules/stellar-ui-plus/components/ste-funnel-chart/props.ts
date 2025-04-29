@@ -20,19 +20,7 @@ export const propsData = utils.deepMerge(propsDefault(), {
     },
     extra: {
         type: Object as any,
-        default: () => ({
-            funnel: {
-                ringWidth: 60,
-                activeOpacity: 0.5,
-                activeRadius: 10,
-                offsetAngle: 0,
-                labelWidth: 15,
-                border: true,
-                borderWidth: 3,
-                borderColor: '#FFFFFF',
-                linearType: 'custom',
-            },
-        }),
+        default: () => ({}),
     },
 });
 
@@ -51,6 +39,7 @@ export const propsComponent = {
             customRadius: 32,
             offsetAngle: -90,
             linearType: 'none',
+            minSize: 20,
         },
     },
 };

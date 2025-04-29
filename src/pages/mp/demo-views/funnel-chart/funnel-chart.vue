@@ -12,17 +12,6 @@ function getServerData() {
         series1.value = [
             {
                 data: [
-                    { name: '一班', centerText: '50', value: 50 },
-                    { name: '二班', centerText: '30', value: 30 },
-                    { name: '三班', centerText: '20', value: 20 },
-                    { name: '四班', centerText: '18', value: 18 },
-                    { name: '五班', centerText: '8', value: 8 },
-                ],
-            },
-        ];
-        series2.value = [
-            {
-                data: [
                     { name: '一班', value: 50 },
                     { name: '二班', value: 30 },
                     { name: '三班', value: 20 },
@@ -31,7 +20,18 @@ function getServerData() {
                 ],
             },
         ];
-    }, 500);
+        series2.value = [
+            {
+                data: [
+                    { name: '一班', centerText: '标签 50', value: 50, labelShow: false },
+                    { name: '二班', centerText: '30', value: 30, labelShow: false },
+                    { name: '三班', centerText: '20', value: 20, labelShow: false },
+                    { name: '四班', centerText: '18', value: 18, labelShow: false },
+                    { name: '五班', centerText: '8', value: 8, labelShow: false },
+                ],
+            },
+        ];
+    }, 100);
 }
 </script>
 
@@ -44,41 +44,25 @@ function getServerData() {
         <view class="demo-item">
             <view class="title margin-view">默认配置</view>
             <view class="item-block">
-                <ste-funnel-chart :series="series1" :color="['#0E42D2', '#165DFF', '#4080FF', '#6AA1FF', '#94BFFF']" :extra="{ funnel: { minSize: 10 } }"></ste-funnel-chart>
+                <ste-funnel-chart :series="series1"></ste-funnel-chart>
             </view>
         </view>
         <view class="demo-item">
-            <view class="title margin-view">默认颜色</view>
+            <view class="title margin-view">显示标签</view>
             <view class="item-block">
                 <ste-funnel-chart :series="series2"></ste-funnel-chart>
             </view>
         </view>
         <view class="demo-item">
-            <view class="title margin-view">标题配置</view>
+            <view class="title margin-view">显示类型</view>
             <view class="item-block">
-                <ste-funnel-chart :series="series1" :title="{ name: '指标名', fontSize: 12 }"></ste-funnel-chart>
+                <ste-funnel-chart :series="series1" :extra="{ funnel: { type: 'triangle', minSize: 0 } }"></ste-funnel-chart>
+            </view>
+            <view class="item-block">
+                <ste-funnel-chart :series="series1" :extra="{ funnel: { type: 'pyramid' } }"></ste-funnel-chart>
             </view>
         </view>
     </page-layout>
 </template>
 
-<style lang="scss" scoped>
-.loading-box {
-    flex-direction: column !important;
-    row-gap: 20rpx;
-    align-items: flex-start !important;
-    justify-content: center;
-}
-.item-block {
-    column-gap: 40rpx;
-}
-
-:deep(.page > .content) {
-    padding: 0;
-    margin: 0;
-}
-
-.margin-view {
-    margin: 0 40rpx;
-}
-</style>
+<style lang="scss" scoped></style>

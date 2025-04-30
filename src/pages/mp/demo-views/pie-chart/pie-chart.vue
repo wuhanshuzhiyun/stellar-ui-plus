@@ -48,16 +48,15 @@ function getServerData() {
     //模拟从服务器获取数据时的延时
     setTimeout(() => {
         // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-        // series1.value = { name: '默认配置', data: [10, 20, 30, 40] };
-        // series2.value = { name: '默认配置1', data: [10, 20, 30, 40] };
-    }, 500);
+        // series2.value = [];
+    }, 2000);
 }
 </script>
 
 <template>
-    <page-layout title="条状图">
+    <page-layout title="饼图">
         <view class="description margin-view">
-            <view class="cmp-name">PieChart 条状图</view>
+            <view class="cmp-name">PieChart 饼图</view>
             <view class="cmp-desc">主要用于表现不同类目的数据在总和中的占比。每个的弧度表示数据数量的比例。</view>
         </view>
         <view class="demo-item">

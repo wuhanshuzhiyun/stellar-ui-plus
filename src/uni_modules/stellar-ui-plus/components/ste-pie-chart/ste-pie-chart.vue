@@ -6,8 +6,7 @@
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-let uChartsInstance: { [key: string]: uCharts<'pie'> } = {};
-import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
+import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
 import type { ChartsOptions, ChartsSerie } from '../../Charts/types';
@@ -16,6 +15,7 @@ defineOptions({
     virtualHost: true,
 });
 
+const charth = ref<uCharts<'pie'>>();
 // 合并默认对象配置
 let props = defineProps(propsData);
 let cmpProps = computed(() => {
@@ -29,7 +29,7 @@ let cmpProps = computed(() => {
     };
 });
 
-let canvasId = ref('');
+let canvasId = ref(utils.guid());
 let cWidth = computed(() => {
     return utils.formatPx(props.width, 'num');
 });
@@ -45,7 +45,6 @@ const chartStyle = computed(() => {
 });
 
 onMounted(() => {
-    canvasId.value = utils.guid();
     // 赋予id，id不能为数字开头
     drawCharts(props.series);
 });
@@ -53,13 +52,14 @@ onMounted(() => {
 watch(
     () => props.series,
     series => {
+        console.log('series', series);
         drawCharts(series);
     }
 );
 
 function drawCharts(series: ChartsSerie<'pie'>[]) {
     // 默认配置项
-    const ctx = uni.createCanvasContext(canvasId.value);
+    const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
     const options: ChartsOptions<'pie'> = {
         type: 'pie',
         context: ctx,
@@ -90,15 +90,12 @@ function drawCharts(series: ChartsSerie<'pie'>[]) {
         title: cmpProps.value.title,
         subtitle: cmpProps.value.subtitle,
         extra: cmpProps.value.extra,
-        categories: props.categories,
     };
-    console.log('options', options);
-    uChartsInstance[canvasId.value] = new uCharts<'pie'>(options);
+    charth.value = new uCharts<'pie'>(options);
 }
 function tap(e: any) {
-    console.log('tap', e);
-    uChartsInstance[e.target.id].touchLegend(e);
-    uChartsInstance[e.target.id].showToolTip(e);
+    charth.value?.touchLegend(e);
+    charth.value?.showToolTip(e);
 }
 </script>
 

@@ -1,3 +1,5 @@
+import type Charts from '../Charts';
+
 /** 提示窗配置 */
 export interface ChartsTooltipExtra {
     /** 是否显示提示窗的方框及内部文字 */
@@ -339,7 +341,44 @@ export interface ChartsRoseExtra {
 /**
  * 雷达图
  */
-export interface ChartsRadarExtra {}
+export interface ChartsRadarExtra {
+    /** 雷达图网格类型，可选值："radar"蜘蛛网格样式,"circle"圆形背景网格 */
+    gridType?: 'radar' | 'circle';
+    /** 雷达图网格颜色 */
+    gridColor?: string;
+    /** 雷达图网格数量 */
+    gridCount?: number;
+    /** 数据点位网格抽希 */
+    gridEval?: number;
+    /** 自定义雷达图半径 */
+    radius?: number;
+    /** 刻度点值是否显示 */
+    axisLabel?: boolean;
+    /** 刻度点值小数位数 */
+    axisLabelTofix?: number;
+    /** 是否显示各项标识文案 */
+    labelShow?: boolean;
+    /** 各项标识文案的颜色 */
+    labelColor?: string;
+    /** 是否显示末端刻度圆点 */
+    labelPointShow?: boolean;
+    /** 刻度圆点的半径 */
+    labelPointRadius?: number;
+    /** 刻度圆点的颜色 */
+    labelPointColor?: string;
+    /** 主图区域透明度 */
+    opacity?: number;
+    /** 是否绘制主图区域描边线 */
+    border?: boolean;
+    /** 描边线的宽度 */
+    borderWidth?: number;
+    /** data的最大值，数据区间最大值，用于调整数据显示的比例 */
+    max?: number;
+    /** 渐变类型，可选值："none"关闭渐变,"custom"开启渐变 */
+    linearType?: 'none' | 'custom';
+    /** 自定义渐变颜色，数组类型对应series的数组长度以匹配不同series颜色的不同配色方案，例如["#FA7D8D", "#EB88E2"] */
+    customColor?: string[];
+}
 
 /** 漏斗图 */
 export interface ChartsFunnelExtra {
@@ -368,6 +407,80 @@ export interface ChartsFunnelExtra {
      * 例如["#FA7D8D", "#EB88E2"]
      */
     customColor?: string[];
+}
+
+/** 进度条 */
+export interface ChartsArcbarExtra {
+    /** 圆弧进度图样式，可选值："default"半圆弧模式,"circle"整圆模式 */
+    type?: 'default' | 'circle';
+    /** 动画方向（变换时需要注意起始与结束角度），可选值："cw"顺时针方向,"ccw"逆时针方向 */
+    direction?: 'cw' | 'ccw';
+    /** 圆弧进度图弧线宽度 */
+    width?: number;
+    /** 进度条两端样式，可选值："round"圆形线帽,"square"方形线帽,"butt"平直边缘 */
+    lineCap?: 'round' | 'square' | 'butt';
+    /** 圆弧进度图背景颜色 */
+    backgroundColor?: string;
+    /** 圆弧进度图起始角度，0-2之间，0为3点钟位置，0.5为6点钟，1为9点钟，1.5为12点钟，默认0.75 */
+    startAngle?: number;
+    /** 圆弧进度图结束角度，0-2之间，0为3点钟位置，0.5为6点钟，1为9点钟，1.5为12点钟，默认0.25 */
+    endAngle?: number;
+    /** 圆弧进度图自定义半径（最大半径）（无特殊需求无需填写） */
+    radius?: number;
+    /** 圆弧进度条的间隔单位px */
+    gap?: number;
+    /** 自定义圆心x坐标（无特殊需求无需填写） */
+    centerX?: number;
+    /** 自定义圆心y坐标（无特殊需求无需填写） */
+    centerY?: number;
+    /** 渐变类型，可选值："none"关闭渐变,"custom"开启渐变 */
+    linearType?: 'none' | 'custom';
+    /** 自定义渐变颜色，数组类型对应series的数组长度以匹配不同series颜色的不同配色方案，例如["#FA7D8D", "#EB88E2"] */
+    customColor?: string[];
+}
+
+/** 仪表盘 */
+export interface ChartsGaugeExtra {
+    /** 仪表盘样式 */
+    type?: 'default' | 'progress';
+    /** 仪表盘坐标轴（指示盘）线宽度 */
+    width?: number;
+    /** 仪表盘刻度尺标签文字颜色 */
+    labelColor?: string;
+    /** 仪表盘标签文字径向偏移距离 */
+    labelOffset?: number;
+    /** 仪表盘起始角度，0-2之间，0为3点钟位置，0.5为6点钟，1为9点钟，1.5为12点钟 */
+    startAngle?: number;
+    /** 仪表盘结束角度，0-2之间，0为3点钟位置，0.5为6点钟，1为9点钟，1.5为12点钟 */
+    endAngle?: number;
+    /** 仪表盘起始数值。说明：仪表盘指针指向的值为比例值，假设起始值是11，结束值是15，想指向12，那就是11-15之间的20%，所以series里的data应为0.2，这个值需要自己算好再传chartData里 */
+    startNumber?: number;
+    /** 仪表盘结束数值 */
+    endNumber?: number;
+    /** 仪表盘数据标签自定义，形参为(val,index,opts) */
+    formatter?: (val: number, index: number, opts: any) => string;
+    /** 仪表盘刻度线 */
+    splitLine?: {
+        /** 仪表盘刻度线径向偏移量 */
+        fixRadius?: number;
+        /** 仪表盘刻度线分段总数量 */
+        splitNumber?: number;
+        /** 仪表盘分割线长度 */
+        width?: number;
+        /** 仪表盘分割线颜色 */
+        color?: string;
+        /** 仪表盘子刻度线数量 */
+        childNumber?: number;
+        /** 仪表盘子刻度线长度 */
+        childWidth?: number;
+    };
+    /** 仪表盘指针 */
+    pointer?: {
+        /**仪表盘指针宽度 */
+        width?: number;
+        /** 仪表盘指针颜色，定义为auto时，随仪表盘背景颜色改变,或者可以指定颜色例如#7cb5ec */
+        color?: string | 'auto';
+    };
 }
 
 /** 额外配置 */
@@ -400,4 +513,10 @@ export interface ChartsExtra {
     rose?: ChartsRoseExtra;
     /** 雷达图 */
     radar?: ChartsRadarExtra;
+    /** 进度条 */
+    arcbar?: ChartsArcbarExtra;
+    /** 仪表盘 */
+    gauge?: ChartsGaugeExtra;
+    /**  漏斗图 */
+    funnel?: ChartsFunnelExtra;
 }

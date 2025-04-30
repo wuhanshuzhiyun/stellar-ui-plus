@@ -1,6 +1,6 @@
 import { type PropType } from 'vue';
-import type { ChartsType, ChartsOptions, ChartsXAxis, ChartsYAxis } from './types';
-import type { ChartsExtra } from './extra';
+import type { ChartsType, ChartsOptions, ChartsXAxis, ChartsYAxis } from './types/index';
+import type { ChartsExtra } from './types/extra';
 
 // 设备像素比
 let pixelRatio = uni.getSystemInfoSync();

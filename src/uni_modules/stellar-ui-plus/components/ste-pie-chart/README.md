@@ -17,7 +17,7 @@
     <ste-pie-chart :series="series1" width="420" height="420" :enableScroll="false"></ste-pie-chart>
 </template>
 <script setup lang="ts">
-    import type { ChartsSerie } from '@/uni_modules/stellar-ui-plus/Charts/types';
+    import type { ChartsSerie } from 'stellar-ui-plus/Charts/types/index';
     import { ref, onMounted } from 'vue';
     let series1 = ref<ChartsSerie<'pie'>[]>([
         {
@@ -41,8 +41,8 @@
     <ste-pie-chart :series="series2" width="420" height="420" :extra="extra"></ste-pie-chart>
 </template>
 <script setup lang="ts">
-    import type { ChartsExtra } from '@/uni_modules/stellar-ui-plus/Charts/extra';
-    import type { ChartsSerie } from '@/uni_modules/stellar-ui-plus/Charts/types';
+    import type { ChartsExtra } from 'stellar-ui-plus/Charts/types/extra';
+    import type { ChartsSerie } from 'stellar-ui-plus/Charts/types/index';
     import { ref, onMounted } from 'vue';
     let series1 = ref<ChartsSerie<'pie'>[]>([
         {
@@ -66,7 +66,7 @@
     <ste-pie-chart :series="series1" width="420" height="420" dataLabel></ste-pie-chart>
 </template>
 <script setup lang="ts">
-    import type { ChartsSerie } from '@/uni_modules/stellar-ui-plus/Charts/types';
+    import type { ChartsSerie } from 'stellar-ui-plus/Charts/types/index';
     import { ref, onMounted } from 'vue';
     let series1 = ref<ChartsSerie<'pie'>[]>([
         {

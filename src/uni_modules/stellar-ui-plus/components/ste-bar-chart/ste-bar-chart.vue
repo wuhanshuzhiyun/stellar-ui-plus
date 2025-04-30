@@ -6,10 +6,10 @@
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance, nextTick } from 'vue';
+import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
-import type { ChartsOptions, ChartsSerie } from '../../Charts/types';
+import type { ChartsOptions, ChartsSerie } from '../../Charts/types/index';
 defineOptions({
     name: 'ste-bar-chart',
     virtualHost: true,

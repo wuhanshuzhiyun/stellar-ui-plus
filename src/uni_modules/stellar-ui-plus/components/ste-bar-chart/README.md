@@ -42,8 +42,8 @@
     <ste-bar-chart :series="series1" :categories="['2018', '2019', '2020']" width="660" height="400" :extra="extra"></ste-bar-chart>
 </template>
 <script setup lang="ts">
-    import type { ChartsExtra } from 'stellar-ui-plus/Charts/extra';
-    import type { ChartsSerie } from 'stellar-ui-plus/Charts/types';
+    import type { ChartsExtra } from 'stellar-ui-plus/Charts/types/extra';
+    import type { ChartsSerie } from 'stellar-ui-plus/Charts/types/index';
     import { ref } from 'vue';
     let series1 = ref<ChartsSerie<'bar'>[]>([
         {

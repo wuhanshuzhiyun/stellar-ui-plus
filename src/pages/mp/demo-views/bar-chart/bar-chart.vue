@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChartsExtra } from '@/uni_modules/stellar-ui-plus/Charts/extra';
+import type { ChartsExtra } from '@/uni_modules/stellar-ui-plus/Charts/types/extra';
 import type { ChartsSerie } from '@/uni_modules/stellar-ui-plus/Charts/types';
 import { ref, onMounted } from 'vue';
 

@@ -44,6 +44,10 @@
             "type": "page"
         },
         {
+            "path": "pages/mp/demo-views/bar-chart/bar-chart",
+            "type": "page"
+        },
+        {
             "path": "pages/mp/demo-views/barcode/barcode",
             "type": "page"
         },
@@ -61,6 +65,10 @@
         },
         {
             "path": "pages/mp/demo-views/code-input/code-input",
+            "type": "page"
+        },
+        {
+            "path": "pages/mp/demo-views/column-chart/column-chart",
             "type": "page"
         },
         {
@@ -97,6 +105,10 @@
         },
         {
             "path": "pages/mp/demo-views/input/input",
+            "type": "page"
+        },
+        {
+            "path": "pages/mp/demo-views/line-chart/line-chart",
             "type": "page"
         },
         {

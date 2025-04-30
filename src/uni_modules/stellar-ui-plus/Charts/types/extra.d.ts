@@ -483,6 +483,64 @@ export interface ChartsGaugeExtra {
     };
 }
 
+/** 词云图 */
+export interface ChartsWordExtra {
+    /** 词云图样式，可选值："normal"水平排列,"vertical"垂直排列 */
+    type?: 'normal' | 'vertical';
+    /** 是否开启随机颜色，否的话使用opts.colors配色方案(暂未启用) */
+    autoColors?: boolean;
+}
+
+/** K线图 */
+export interface ChartsCandleExtra {
+    /** 颜色 */
+    color?: {
+        /** K线图为涨时线颜色 */
+        upLine?: string;
+        /** K线图为涨时填充颜色 */
+        upFill?: string;
+        /** K线图为跌时线颜色 */
+        downLine?: string;
+        /** K线图为跌时填充颜色 */
+        downFill?: string;
+    };
+    /** 均线 */
+    average?: {
+        /** 是否叠加显示均线 */
+        show?: boolean;
+        /** 均线名称（例如["MA5","MA20"]）用于下方图例显示 */
+        name?: string[];
+        /** 均线单位日期（例如[5,20]为显示5日及20日均线，主要看K线的单位是什么，也就是根据每隔5个或者20个K线值计算） */
+        day?: (number | string)[];
+        /** 均线颜色，例如["#1890ff", "#2fc25b"] */
+        color?: string[];
+    };
+}
+
+/** 地图 */
+export interface ChartsMapExtra {
+    /** 是否绘制各类别中间的分割线 */
+    border?: boolean;
+    /** 是否进行WGS84转墨卡托投影(开启后可能会造成tooltip不跟手，建议自行转换) */
+    mercator?: boolean;
+    /** 分割线的宽度 */
+    borderWidth?: number;
+    /** 分割线的颜色 */
+    borderColor?: string;
+    /** 区域内填充透明度 */
+    fillOpacity?: number;
+    /** 是否启用下面点击激活变色 */
+    active?: boolean;
+    /** 点击激活时文字的颜色 */
+    activeTextColor?: string;
+    /** 点击激活时分割线的颜色 */
+    activeBorderColor?: string;
+    /** 点击激活时分区域内填充颜色 */
+    activeFillColor?: string;
+    /** 点击激活时分区域内填充颜色透明度 */
+    activeFillOpacity?: number;
+}
+
 /** 额外配置 */
 export interface ChartsExtra {
     /** 提示窗配置 */
@@ -519,4 +577,10 @@ export interface ChartsExtra {
     gauge?: ChartsGaugeExtra;
     /**  漏斗图 */
     funnel?: ChartsFunnelExtra;
+    /** 词云图 */
+    word?: ChartsWordExtra;
+    /** K线图 */
+    candle?: ChartsCandleExtra;
+    /** 地图 */
+    map?: ChartsMapExtra;
 }

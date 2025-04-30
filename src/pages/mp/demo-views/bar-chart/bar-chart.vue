@@ -2,26 +2,18 @@
 import type { ChartsExtra } from '@/uni_modules/stellar-ui-plus/Charts/extra';
 import type { ChartsSerie } from '@/uni_modules/stellar-ui-plus/Charts/types';
 import { ref, onMounted } from 'vue';
-let series1 = ref<ChartsSerie<'bar'>[]>([
+
+const series = ref<ChartsSerie<'bar'>[]>([
     {
         name: '测试1',
         data: [35, 36, 31],
     },
     {
         name: '测试2',
-        data: [20, 16, 31],
+        data: [20, 16, 40],
     },
 ]);
-let series2 = ref<ChartsSerie<'bar'>[]>([
-    {
-        name: '测试1',
-        data: [35, 36, 31, 13, 34],
-    },
-    {
-        name: '测试2',
-        data: [20, 16, 31, 53, 24],
-    },
-]);
+const categories = ref<string[]>(['2022', '2023', '2024']);
 
 const extra: ChartsExtra = {
     bar: {
@@ -34,6 +26,7 @@ const extra: ChartsExtra = {
         categoryGap: 2,
     },
 };
+
 onMounted(() => {
     getServerData();
 });
@@ -41,9 +34,18 @@ function getServerData() {
     //模拟从服务器获取数据时的延时
     setTimeout(() => {
         // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-        // series1.value = { name: '默认配置', data: [10, 20, 30, 40] };
-        // series2.value = { name: '默认配置1', data: [10, 20, 30, 40] };
-    }, 500);
+        // categories.value = ['2022', '2023', '2024'];
+        // series.value = [
+        //     {
+        //         name: '测试1',
+        //         data: [35, 36, 31],
+        //     },
+        //     {
+        //         name: '测试2',
+        //         data: [20, 16, 40],
+        //     },
+        // ];
+    }, 2000);
 }
 </script>
 
@@ -56,13 +58,13 @@ function getServerData() {
         <view class="demo-item">
             <view class="title margin-view">默认配置</view>
             <view class="item-block">
-                <ste-bar-chart :series="series1" width="660" height="400" :categories="['2018', '2019', '2020']"></ste-bar-chart>
+                <ste-bar-chart :series="series" width="660" height="400" :categories="categories"></ste-bar-chart>
             </view>
         </view>
         <view class="demo-item">
             <view class="title margin-view">堆叠图</view>
             <view class="item-block">
-                <ste-bar-chart :series="series1" width="660" height="400" :categories="['2018', '2019', '2020']" :extra="extra"></ste-bar-chart>
+                <ste-bar-chart :series="series" width="660" height="400" :categories="categories" :extra="extra"></ste-bar-chart>
             </view>
         </view>
     </page-layout>
@@ -77,6 +79,8 @@ function getServerData() {
 }
 .item-block {
     column-gap: 40rpx;
+    display: flex;
+    justify-content: center;
 }
 
 :deep(.page > .content) {

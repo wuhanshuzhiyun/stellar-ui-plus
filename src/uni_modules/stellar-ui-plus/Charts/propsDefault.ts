@@ -28,7 +28,8 @@ export const propsDefault = () => ({
     pixelRatio: {
         type: Number as PropType<ChartsOptions<ChartsType>['pixelRatio']>,
         // #ifdef MP-WEIXIN
-        default: pixelRatio,
+        // default: pixelRatio?.pixelRatio || 1,
+        default: 1,
         // #endif
         // #ifndef MP-WEIXIN
         default: 1,
@@ -169,11 +170,5 @@ export const propsDefault = () => ({
     extra: {
         type: Object as PropType<ChartsExtra>,
         default: () => ({}),
-    },
-
-    // 图表数据集
-    categories: {
-        type: Array as PropType<string[]>,
-        default: () => [],
     },
 });

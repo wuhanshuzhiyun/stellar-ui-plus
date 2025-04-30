@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onUnmounted, onMounted } from 'vue';
+import { ref, computed, onUnmounted, onMounted, onActivated, onDeactivated } from 'vue';
 defineOptions({
     name: 'ste-toast',
 });
@@ -103,6 +103,15 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+    registEvent(false);
+});
+
+// 使用onActivated和onDeactivated来处理页面切换
+onActivated(() => {
+    registEvent();
+});
+
+onDeactivated(() => {
     registEvent(false);
 });
 

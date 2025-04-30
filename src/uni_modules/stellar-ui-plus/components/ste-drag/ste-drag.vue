@@ -15,7 +15,7 @@ let isMove = false;
 const props = defineProps(propsData);
 const emits = defineEmits<{
     (e: 'start'): void;
-    (e: 'end'): void;
+    (e: 'end', position: any): void;
 }>();
 
 const SCREEN_WIDTH = utils.System.getWindowWidth();
@@ -97,6 +97,7 @@ function attractFn() {
     if (state.left < centerX) state.left = state.boundary.left - state.initLeft;
     else state.left = state.screenWidth - state.elWidth - state.boundary.right - state.initLeft;
     state.attractTransition = true;
+    emits('end', getPositionStatus());
     setTimeout(() => {
         state.attractTransition = false;
     }, 400);
@@ -106,8 +107,8 @@ function touchEnd() {
     // #ifndef MP || APP
     removeListenner && removeListenner();
     // #endif
-    if (isMove) {
-        emits('end');
+    if (isMove && !props.attract) {
+        emits('end', getPositionStatus());
         isMove = false;
     }
     attractFn();
@@ -145,6 +146,28 @@ function getMoveObj(e: TouchEvent | MouseEvent): { clientX: number; clientY: num
         // e is HTMLMouseEvent
         return { clientX: e.pageX, clientY: e.pageY };
     }
+}
+
+// 边界判断函数
+function getPositionStatus() {
+    // 计算当前元素边界
+    const currentLeftPosition = state.left + state.initLeft;
+    const currentRightPosition = currentLeftPosition + state.elWidth;
+    const currentTopPosition = state.top + state.initTop;
+    const currentBottomPosition = currentTopPosition + state.elHeight;
+
+    // 边界判断
+    const isAtLeftBoundary = currentLeftPosition <= state.boundary.left;
+    const isAtRightBoundary = currentRightPosition >= state.screenWidth - state.boundary.right;
+    const isAtTopBoundary = currentTopPosition <= state.boundary.top;
+    const isAtBottomBoundary = currentBottomPosition >= state.screenHeight - state.boundary.bottom;
+
+    return {
+        isLeft: isAtLeftBoundary,
+        isRight: isAtRightBoundary,
+        isTop: isAtTopBoundary,
+        isBottom: isAtBottomBoundary,
+    };
 }
 </script>
 

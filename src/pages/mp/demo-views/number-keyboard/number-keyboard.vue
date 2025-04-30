@@ -50,7 +50,7 @@ const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () 
                 <text v-if="value1">{{ value1 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
-            <ste-number-keyboard v-model="value1" :show.sync="show1" />
+            <ste-number-keyboard v-model="value1" v-model:show="show1" />
         </view>
         <view class="demo-item">
             <view class="title">隐藏右侧功能键</view>
@@ -58,7 +58,7 @@ const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () 
                 <text v-if="value2">{{ value2 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
-            <ste-number-keyboard :rightKeys="false" v-model="value2" :show.sync="show2" />
+            <ste-number-keyboard :rightKeys="false" v-model="value2" v-model:show="show2" />
         </view>
         <view class="demo-item">
             <view class="title">隐藏清除按钮,value最大长度</view>
@@ -66,7 +66,7 @@ const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () 
                 <text v-if="value3">{{ value3 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
-            <ste-number-keyboard :showClear="false" v-model="value3" :show.sync="show3" maxlength="6" />
+            <ste-number-keyboard :showClear="false" v-model="value3" v-model:show="show3" maxlength="6" />
         </view>
         <view class="demo-item">
             <view class="title">自定义按键（建议不超过两个）</view>
@@ -74,7 +74,7 @@ const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () 
                 <text v-if="value4">{{ value4 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
-            <ste-number-keyboard :customKeys="['00', '.']" v-model="value4" :show.sync="show4" />
+            <ste-number-keyboard :customKeys="['00', '.']" v-model="value4" v-model:show="show4" />
         </view>
         <view class="demo-item">
             <view class="title">自定义颜色/字体大小/确认文本</view>
@@ -82,7 +82,7 @@ const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () 
                 <text v-if="value5">{{ value5 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
-            <ste-number-keyboard v-model="value5" :show.sync="show5" textColor="#f00" textSize="40" confirmBg="#f00" confirmColor="#0f0" confirmText="完成" />
+            <ste-number-keyboard v-model="value5" v-model:show="show5" textColor="#f00" textSize="40" confirmBg="#f00" confirmColor="#0f0" confirmText="完成" />
         </view>
         <view class="demo-item">
             <view class="title">点击前事件（自定义功能）</view>
@@ -90,7 +90,7 @@ const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () 
                 <text v-if="value6">{{ value6 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
-            <ste-number-keyboard :customKeys="['返回']" v-model="value6" :show.sync="show6" @beforeinput="beforeinput" />
+            <ste-number-keyboard :customKeys="['返回']" v-model="value6" v-model:show="show6" @beforeinput="beforeinput" />
         </view>
         <view class="demo-item">
             <view class="title">在文档流中展示</view>
@@ -108,12 +108,12 @@ const beforeinput = (v: string, suspend: () => void, next: () => void, stop: () 
                 <text v-if="inputValues.value1">{{ inputValues.value1 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
-            <view class="test-input" @click="activeInputRef = 'value2'">
+            <view class="test-input" style="margin-top: 8px" @click="activeInputRef = 'value2'">
                 <text v-if="inputValues.value2">{{ inputValues.value2 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
             <view style="padding: 30rpx; background-color: #f5f5f5; margin-top: 12rpx">
-                <ste-number-keyboard mode="page" :inputValues="inputValues" :activeInputRef="activeInputRef" />
+                <ste-number-keyboard mode="page" :inputValues="inputValues" :activeInputRef="activeInputRef" :rightKeys="false" />
             </view>
         </view>
     </page-layout>

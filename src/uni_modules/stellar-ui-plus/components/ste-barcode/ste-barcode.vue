@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import utils from '../../utils/utils';
-import { ref, onMounted, watch, getCurrentInstance, type ComponentPublicInstance } from 'vue';
+import { onMounted, watch, getCurrentInstance, type ComponentPublicInstance } from 'vue';
 import propsData from './props';
 import { PATTERNS, stringToCode128 } from './encode';
 

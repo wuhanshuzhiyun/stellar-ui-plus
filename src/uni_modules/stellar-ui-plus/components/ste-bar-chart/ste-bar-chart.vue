@@ -1,13 +1,12 @@
 <template>
-    <view>
-        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" :style="[chartStyle]" :canvas2d="props.canvas2d"></canvas>
+    <view v-if="updatedata">
+        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" :style="chartStyle"></canvas>
     </view>
 </template>
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-let uChartsInstance: { [key: string]: any } = {};
-import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
+import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance, nextTick } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
 import type { ChartsOptions, ChartsSerie } from '../../Charts/types';
@@ -16,20 +15,24 @@ defineOptions({
     virtualHost: true,
 });
 
+const charts = ref<uCharts<'bar'>>();
+
+const updatedata = ref(true);
+
 // 合并默认对象配置
 let props = defineProps(propsData);
 let cmpProps = computed(() => {
     return {
-        xAxis: utils.deepMerge(utils.deepClone(propsComponent?.xAxis ?? {}), props.xAxis),
-        yAxis: utils.deepMerge(utils.deepClone(propsComponent?.yAxis ?? {}), props.yAxis),
-        legend: utils.deepMerge(utils.deepClone(propsComponent.legend), props.legend),
-        title: utils.deepMerge(utils.deepClone(propsComponent.title), props.title),
-        subtitle: utils.deepMerge(utils.deepClone(propsComponent?.subtitle ?? {}), props.subtitle),
-        extra: utils.deepMerge(utils.deepClone(propsComponent.extra), props.extra),
+        xAxis: utils.deepMerge(propsComponent().xAxis || {}, props.xAxis),
+        yAxis: utils.deepMerge(propsComponent().yAxis || {}, props.yAxis),
+        legend: utils.deepMerge(propsComponent().legend || {}, props.legend),
+        title: utils.deepMerge(propsComponent().title || {}, props.title),
+        subtitle: utils.deepMerge(propsComponent().subtitle || {}, props.subtitle),
+        extra: utils.deepMerge(propsComponent().extra || {}, props.extra),
     };
 });
 
-let canvasId = ref('');
+let canvasId = ref(utils.guid(10));
 let cWidth = computed(() => {
     return utils.formatPx(props.width, 'num');
 });
@@ -45,27 +48,26 @@ const chartStyle = computed(() => {
 });
 
 onMounted(() => {
-    canvasId.value = utils.guid();
-    // 赋予id，id不能为数字开头
     drawCharts(props.series);
 });
 
-watch(
-    () => props.series,
-    series => {
+watch([() => props.series, () => props.categories], ([series]) => {
+    updatedata.value = false;
+    nextTick(() => {
+        updatedata.value = true;
         drawCharts(series);
-    }
-);
+    });
+});
 
 function drawCharts(series: ChartsSerie<'bar'>[]) {
-    // 默认配置项
-    const ctx = uni.createCanvasContext(canvasId.value);
+    const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
     const options: ChartsOptions<'bar'> = {
         type: 'bar',
         context: ctx,
         width: cWidth.value,
         height: cHeight.value,
         series,
+        canvas2d: props.canvas2d,
         pixelRatio: props.pixelRatio,
         animation: props.animation,
         timing: props.timing,
@@ -92,13 +94,10 @@ function drawCharts(series: ChartsSerie<'bar'>[]) {
         extra: cmpProps.value.extra,
         categories: props.categories,
     };
-    console.log('options', options);
-    uChartsInstance[canvasId.value] = new uCharts<'bar'>(options);
+    charts.value = new uCharts<'bar'>(options);
 }
 function tap(e: any) {
-    uChartsInstance[e.target.id].touchLegend(e);
-    uChartsInstance[e.target.id].showToolTip(e);
+    charts.value?.touchLegend(e);
+    charts.value?.showToolTip(e);
 }
 </script>
-
-<style scoped></style>

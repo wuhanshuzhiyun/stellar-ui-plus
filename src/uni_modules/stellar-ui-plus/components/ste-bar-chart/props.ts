@@ -15,12 +15,16 @@ export const propsData = utils.deepMerge(propsDefault(), {
         type: Array as PropType<ChartsSerie<'bar'>[]>,
         default: () => [],
     },
+    // 图表数据集
+    categories: {
+        type: Array as PropType<string[]>,
+        default: () => [],
+    },
 });
 
-export const propsComponent: Partial<ChartsOptions<'bar'>> = {
-    legend: {
-        show: false,
-    },
+export const propsComponent: () => Partial<ChartsOptions<'bar'>> = () => ({
+    legend: {},
+    padding: [10, 30, 0, 5],
     title: {
         fontSize: 28,
         color: '#bbbbbb',
@@ -48,4 +52,4 @@ export const propsComponent: Partial<ChartsOptions<'bar'>> = {
             categoryGap: 2,
         },
     },
-};
+});

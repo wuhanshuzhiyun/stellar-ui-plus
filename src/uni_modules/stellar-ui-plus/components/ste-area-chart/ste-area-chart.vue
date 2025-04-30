@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
 let uChartsInstance: { [key: string]: any } = {};
-import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
+import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
 defineOptions({
@@ -58,15 +58,16 @@ watch(
     }
 );
 
-function drawCharts(series: any) {
+function drawCharts(series: any, categories: any) {
     // 默认配置项
-    const ctx = uni.createCanvasContext(canvasId.value);
-    uChartsInstance[canvasId.value] = new uCharts<'ring'>({
-        type: 'ring',
+    const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
+    uChartsInstance[canvasId.value] = new uCharts<'area'>({
+        type: 'area',
         context: ctx,
         width: cWidth.value,
         height: cHeight.value,
         series: utils.deepClone(series),
+        categories: utils.deepClone(categories),
         pixelRatio: props.pixelRatio,
         animation: props.animation,
         timing: props.timing,

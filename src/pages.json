@@ -40,6 +40,10 @@
             "type": "page"
         },
         {
+            "path": "pages/mp/demo-views/area-chart/area-chart",
+            "type": "page"
+        },
+        {
             "path": "pages/mp/demo-views/badge/badge",
             "type": "page"
         },

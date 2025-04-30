@@ -1,5 +1,5 @@
 <template>
-    <view v-if="updatedata">
+    <view>
         <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" :style="chartStyle"></canvas>
     </view>
 </template>
@@ -17,11 +17,9 @@ defineOptions({
 
 const charts = ref<uCharts<'bar'>>();
 
-const updatedata = ref(true);
-
 // 合并默认对象配置
-let props = defineProps(propsData);
-let cmpProps = computed(() => {
+const props = defineProps(propsData);
+const cmpProps = computed(() => {
     return {
         xAxis: utils.deepMerge(propsComponent().xAxis || {}, props.xAxis),
         yAxis: utils.deepMerge(propsComponent().yAxis || {}, props.yAxis),
@@ -32,38 +30,35 @@ let cmpProps = computed(() => {
     };
 });
 
-let canvasId = ref(utils.guid(10));
-let cWidth = computed(() => {
+const canvasId = ref(utils.guid(10));
+const ctx = ref<UniNamespace.CanvasContext>();
+const cWidth = computed(() => {
     return utils.formatPx(props.width, 'num');
 });
-let cHeight = computed(() => {
+const cHeight = computed(() => {
     return utils.formatPx(props.height, 'num');
 });
 
 const chartStyle = computed(() => {
-    let style: CSSProperties = {};
+    const style: CSSProperties = {};
     style.width = cWidth.value + 'px';
     style.height = cHeight.value + 'px';
     return style;
 });
 
 onMounted(() => {
-    drawCharts(props.series);
+    ctx.value = uni.createCanvasContext(canvasId.value, getCurrentInstance());
+    if (props.series.length) drawCharts(props.series);
 });
 
 watch([() => props.series, () => props.categories], ([series]) => {
-    updatedata.value = false;
-    nextTick(() => {
-        updatedata.value = true;
-        drawCharts(series);
-    });
+    drawCharts(series);
 });
 
 function drawCharts(series: ChartsSerie<'bar'>[]) {
-    const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
     const options: ChartsOptions<'bar'> = {
         type: 'bar',
-        context: ctx,
+        context: ctx.value || uni.createCanvasContext(canvasId.value, getCurrentInstance()),
         width: cWidth.value,
         height: cHeight.value,
         series,
@@ -94,6 +89,7 @@ function drawCharts(series: ChartsSerie<'bar'>[]) {
         extra: cmpProps.value.extra,
         categories: props.categories,
     };
+    console.log('options', options);
     charts.value = new uCharts<'bar'>(options);
 }
 function tap(e: any) {

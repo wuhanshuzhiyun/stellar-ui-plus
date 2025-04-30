@@ -17,8 +17,8 @@ defineOptions({
 
 const charth = ref<uCharts<'pie'>>();
 // 合并默认对象配置
-let props = defineProps(propsData);
-let cmpProps = computed(() => {
+const props = defineProps(propsData);
+const cmpProps = computed(() => {
     return {
         xAxis: utils.deepMerge(propsComponent().xAxis || {}, props.xAxis),
         yAxis: utils.deepMerge(propsComponent().yAxis || {}, props.yAxis),
@@ -29,24 +29,25 @@ let cmpProps = computed(() => {
     };
 });
 
-let canvasId = ref(utils.guid());
-let cWidth = computed(() => {
+const canvasId = ref(utils.guid());
+const ctx = ref<UniNamespace.CanvasContext>();
+const cWidth = computed(() => {
     return utils.formatPx(props.width, 'num');
 });
-let cHeight = computed(() => {
+const cHeight = computed(() => {
     return utils.formatPx(props.height, 'num');
 });
 
 const chartStyle = computed(() => {
-    let style: CSSProperties = {};
+    const style: CSSProperties = {};
     style.width = cWidth.value + 'px';
     style.height = cHeight.value + 'px';
     return style;
 });
 
 onMounted(() => {
-    // 赋予id，id不能为数字开头
-    drawCharts(props.series);
+    ctx.value = uni.createCanvasContext(canvasId.value, getCurrentInstance());
+    if (props.series.length) drawCharts(props.series);
 });
 
 watch(
@@ -59,10 +60,9 @@ watch(
 
 function drawCharts(series: ChartsSerie<'pie'>[]) {
     // 默认配置项
-    const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
     const options: ChartsOptions<'pie'> = {
         type: 'pie',
-        context: ctx,
+        context: ctx.value || uni.createCanvasContext(canvasId.value, getCurrentInstance()),
         width: cWidth.value,
         height: cHeight.value,
         series,

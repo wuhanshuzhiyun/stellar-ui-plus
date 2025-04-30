@@ -89,6 +89,8 @@ function getServerData() {
 }
 .item-block {
     column-gap: 40rpx;
+    display: flex;
+    justify-content: center;
 }
 
 :deep(.page > .content) {

@@ -1,38 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 let series1: any = ref([]);
 let series2: any = ref([]);
-onMounted(() => {
-    getServerData();
-});
-function getServerData() {
-    //模拟从服务器获取数据时的延时
-    setTimeout(() => {
-        // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-        series1.value = [
-            {
-                data: [
-                    { name: '一班', value: 50 },
-                    { name: '二班', value: 30 },
-                    { name: '三班', value: 20 },
-                    { name: '四班', value: 18 },
-                    { name: '五班', value: 8 },
-                ],
-            },
-        ];
-        series2.value = [
-            {
-                data: [
-                    { name: '一班', centerText: '标签 50', value: 50, labelShow: false },
-                    { name: '二班', centerText: '30', value: 30, labelShow: false },
-                    { name: '三班', centerText: '20', value: 20, labelShow: false },
-                    { name: '四班', centerText: '18', value: 18, labelShow: false },
-                    { name: '五班', centerText: '8', value: 8, labelShow: false },
-                ],
-            },
-        ];
-    }, 100);
-}
+series1.value = [
+    {
+        data: [
+            { name: '一班', value: 50 },
+            { name: '二班', value: 30 },
+            { name: '三班', value: 20 },
+            { name: '四班', value: 18 },
+            { name: '五班', value: 8 },
+        ],
+    },
+];
+series2.value = [
+    {
+        data: [
+            { name: '一班', centerText: '标签 50', value: 50, labelShow: false },
+            { name: '二班', centerText: '30', value: 30, labelShow: false },
+            { name: '三班', centerText: '20', value: 20, labelShow: false },
+            { name: '四班', centerText: '18', value: 18, labelShow: false },
+            { name: '五班', centerText: '8', value: 8, labelShow: false },
+        ],
+    },
+];
 </script>
 
 <template>

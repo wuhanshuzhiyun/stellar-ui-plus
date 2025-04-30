@@ -1,6 +1,6 @@
 import { propsDefault } from '../../Charts/propsDefault';
 import type { PropType } from 'vue';
-import type { ChartsSerie } from '../../Charts/types';
+import type { ChartsSerie } from '../../Charts/types/index';
 import utils from '../../utils/utils';
 
 // 组件默认配置

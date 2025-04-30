@@ -1,4 +1,4 @@
-import type { ChartsOptions, ChartsType } from './types';
+import type { ChartsOptions, ChartsType } from './types/index';
 // @ts-ignore
 import Ucharts from './u-charts.min.js';
 

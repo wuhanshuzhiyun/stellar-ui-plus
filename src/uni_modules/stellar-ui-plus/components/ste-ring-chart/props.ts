@@ -1,7 +1,7 @@
 import type { PropType } from 'vue';
 import { propsDefault } from '../../Charts/propsDefault';
 import utils from '../../utils/utils';
-import type { ChartsSerie } from '../../Charts/types';
+import type { ChartsSerie } from '../../Charts/types/index';
 // 组件默认配置
 export const propsData = utils.deepMerge(propsDefault(), {
     // 图表宽度

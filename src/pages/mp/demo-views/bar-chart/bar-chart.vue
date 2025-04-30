@@ -1,19 +1,10 @@
 <script setup lang="ts">
-import type { ChartsExtra } from '@/uni_modules/stellar-ui-plus/Charts/extra';
+import type { ChartsExtra } from '@/uni_modules/stellar-ui-plus/Charts/types/extra';
 import type { ChartsSerie } from '@/uni_modules/stellar-ui-plus/Charts/types';
 import { ref, onMounted } from 'vue';
 
-const series = ref<ChartsSerie<'bar'>[]>([
-    {
-        name: '测试1',
-        data: [35, 36, 31],
-    },
-    {
-        name: '测试2',
-        data: [20, 16, 40],
-    },
-]);
-const categories = ref<string[]>(['2022', '2023', '2024']);
+const series = ref<ChartsSerie<'bar'>[]>([]);
+const categories = ref<string[]>([]);
 
 const extra: ChartsExtra = {
     bar: {
@@ -32,20 +23,20 @@ onMounted(() => {
 });
 function getServerData() {
     //模拟从服务器获取数据时的延时
-    // setTimeout(() => {
-    //     // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-    //     categories.value = ['2022', '2023', '2024'];
-    //     series.value = [
-    //         {
-    //             name: '测试1',
-    //             data: [35, 36, 31],
-    //         },
-    //         {
-    //             name: '测试2',
-    //             data: [20, 16, 40],
-    //         },
-    //     ];
-    // }, 2000);
+    setTimeout(() => {
+        // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
+        categories.value = ['2022', '2023', '2024'];
+        series.value = [
+            {
+                name: '测试1',
+                data: [35, 36, 31],
+            },
+            {
+                name: '测试2',
+                data: [20, 16, 40],
+            },
+        ];
+    }, 1000);
 }
 </script>
 
@@ -79,6 +70,8 @@ function getServerData() {
 }
 .item-block {
     column-gap: 40rpx;
+    display: flex;
+    justify-content: center;
 }
 
 :deep(.page > .content) {

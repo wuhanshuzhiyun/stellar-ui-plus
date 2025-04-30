@@ -27,12 +27,12 @@ export const propsDefault = () => ({
     // 设备像素比
     pixelRatio: {
         type: Number as PropType<ChartsOptions<ChartsType>['pixelRatio']>,
+        default: 1,
         // #ifdef MP-WEIXIN
         // default: pixelRatio?.pixelRatio || 1,
-        default: 1,
         // #endif
         // #ifndef MP-WEIXIN
-        default: 1,
+        // default: 1,
         // #endif
     },
 

@@ -11,7 +11,7 @@ import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
 defineOptions({
-    name: 'ste-donut-chart',
+    name: 'ste-ring-chart',
     virtualHost: true,
 });
 

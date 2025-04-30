@@ -11,7 +11,7 @@ import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
 import type { ChartsOptions, ChartsSerie } from '../../Charts/types';
 defineOptions({
-    name: 'ste-donut-chart',
+    name: 'ste-bar-chart',
     virtualHost: true,
 });
 

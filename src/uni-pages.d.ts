@@ -12,11 +12,13 @@ interface NavigateToOptions {
        "/pages/mp/font-size/font-size" |
        "/pages/mp/demo-views/animate/animate" |
        "/pages/mp/demo-views/badge/badge" |
+       "/pages/mp/demo-views/bar-chart/bar-chart" |
        "/pages/mp/demo-views/barcode/barcode" |
        "/pages/mp/demo-views/button/button" |
        "/pages/mp/demo-views/calendar/calendar" |
        "/pages/mp/demo-views/checkbox/checkbox" |
        "/pages/mp/demo-views/code-input/code-input" |
+       "/pages/mp/demo-views/column-chart/column-chart" |
        "/pages/mp/demo-views/date-picker/date-picker" |
        "/pages/mp/demo-views/drag/drag" |
        "/pages/mp/demo-views/dropdown-menu/dropdown-menu" |
@@ -26,6 +28,7 @@ interface NavigateToOptions {
        "/pages/mp/demo-views/image/image" |
        "/pages/mp/demo-views/index-list/index-list" |
        "/pages/mp/demo-views/input/input" |
+       "/pages/mp/demo-views/line-chart/line-chart" |
        "/pages/mp/demo-views/loading/loading" |
        "/pages/mp/demo-views/media-preview/media-preview" |
        "/pages/mp/demo-views/message-box/message-box" |

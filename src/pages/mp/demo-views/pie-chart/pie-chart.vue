@@ -12,18 +12,7 @@ let series1 = ref<ChartsSerie<'pie'>[]>([
         ],
     },
 ]);
-let series2 = ref<ChartsSerie<'pie'>[]>([
-    {
-        name: '测试2',
-        data: [
-            { name: '一班', value: 50 },
-            { name: '二班', value: 30 },
-            { name: '三班', value: 20 },
-            { name: '四班', value: 18 },
-            { name: '五班', value: 8 },
-        ],
-    },
-]);
+let series2 = ref<ChartsSerie<'pie'>[]>([]);
 
 const extra: ChartsExtra = {
     pie: {
@@ -48,8 +37,19 @@ function getServerData() {
     //模拟从服务器获取数据时的延时
     setTimeout(() => {
         // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-        // series2.value = [];
-    }, 2000);
+        series2.value = [
+            {
+                name: '测试2',
+                data: [
+                    { name: '一班', value: 50 },
+                    { name: '二班', value: 30 },
+                    { name: '三班', value: 20 },
+                    { name: '四班', value: 18 },
+                    { name: '五班', value: 8 },
+                ],
+            },
+        ];
+    }, 1000);
 }
 </script>
 

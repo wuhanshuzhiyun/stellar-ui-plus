@@ -24,7 +24,7 @@ let cmpProps = computed(() => {
         yAxis: utils.deepMerge(propsComponent().yAxis || {}, props.yAxis),
         legend: utils.deepMerge(propsComponent().legend || {}, props.legend),
         title: utils.deepMerge(propsComponent().title || {}, props.title),
-        subtitle: utils.deepMerge(propsComponent()?.subtitle || {}, props.subtitle),
+        subtitle: utils.deepMerge(propsComponent().subtitle || {}, props.subtitle),
         extra: utils.deepMerge(propsComponent().extra || {}, props.extra),
     };
 });

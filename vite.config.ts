@@ -39,12 +39,6 @@ export default defineConfig({
         // 如果你需要在产物中保留更多debug信息
         keepNames: true,
     },
-    esbuild: {
-        // 针对支付宝小程序特别处理
-        target: 'es2019',
-        // 如果你需要在产物中保留更多debug信息
-        keepNames: true,
-    },
     server: {
         // 允许CodeSandbox的主机访问
         allowedHosts: ['7rsqf4-5173.csb.app', '.csb.app'],

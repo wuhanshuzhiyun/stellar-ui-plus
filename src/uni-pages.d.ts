@@ -11,6 +11,7 @@ interface NavigateToOptions {
        "/pages/mp/color/color" |
        "/pages/mp/font-size/font-size" |
        "/pages/mp/demo-views/animate/animate" |
+       "/pages/mp/demo-views/area-chart/area-chart" |
        "/pages/mp/demo-views/badge/badge" |
        "/pages/mp/demo-views/bar-chart/bar-chart" |
        "/pages/mp/demo-views/barcode/barcode" |

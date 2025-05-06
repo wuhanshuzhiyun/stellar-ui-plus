@@ -1,5 +1,4 @@
-import type { ExtractPropTypes } from 'vue';
-import type Watermark from './ste-watermark.vue';
+import type { ExtractPropTypes, PropType } from 'vue';
 
 export interface WatermarkFontType {
     color?: string;
@@ -8,63 +7,90 @@ export interface WatermarkFontType {
     fontStyle?: 'none' | 'normal' | 'italic' | 'oblique';
     fontFamily?: string;
     textAlign?: 'start' | 'end' | 'left' | 'right' | 'center';
-    textBaseline?: 'top' | 'hanging' | 'middle' | 'alphabetic' | 'ideographic' | 'bottom';
 }
+
+export const defaultWatermarkFont: WatermarkFontType = {
+    color: 'rgba(0, 0, 0, 0.15)',
+    fontSize: 16,
+    fontFamily: 'sans-serif',
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    textAlign: 'center',
+};
 
 export const watermarkProps = {
     /**
-     * @description The z-index of the appended watermark element
+     * @description 水印元素的 z-index 值
      */
     zIndex: {
         type: Number,
         default: 9,
     },
     /**
-     * @description The rotation angle of the watermark
+     * @description 水印的旋转角度
      */
     rotate: {
         type: Number,
         default: -22,
     },
     /**
-     * @description The width of the watermark
+     * @description 单个水印宽度
      */
-    width: Number,
+    width: { type: Number, default: 120 },
     /**
-     * @description The height of the watermark
+     * @description 单个水印高度
      */
-    height: Number,
+    height: { type: Number, default: 64 },
     /**
-     * @description Image source, it is recommended to export 2x or 3x image, high priority (support base64 format)
+     * @description 图片链接
      */
     image: String,
     /**
-     * @description Watermark text content
+     * @description 水印文字内容
      */
     content: {
         type: [String, Array],
         default: 'ste-watermark',
     },
     /**
-     * @description Text style
+     * @description 文字样式
      */
     font: {
-        type: Object,
+        type: Object as PropType<WatermarkFontType>,
+        default: () => defaultWatermarkFont,
     },
     /**
-     * @description The spacing between watermarks
+     * @description 水印之间的水平间距
      */
-    gap: {
-        type: Array<number>,
-        default: () => [50, 50],
+    gapX: {
+        type: Number,
+        default: 50,
     },
     /**
-     * @description The offset of the watermark from the upper left corner of the container. The default is gap/2
+     * @description 水印之间的垂直间距
      */
-    offset: {
-        type: Array<number>,
+    gapY: {
+        type: Number,
+        default: 50,
     },
+    /**
+     * @description 使用图片水印时图片的宽度
+     */
+    imageWidth: {
+        type: Number,
+        default: 120,
+    },
+    /**
+     * @description 使用图片水印时图片的高度
+     */
+    imageHeight: {
+        type: Number,
+        default: 64,
+    },
+    /**
+     * @description 是否覆盖整个页面
+     */
+    fullPage: { type: Boolean, default: true },
 };
 
 export type WatermarkProps = ExtractPropTypes<typeof watermarkProps>;
-export type WatermarkInstance = InstanceType<typeof Watermark>;

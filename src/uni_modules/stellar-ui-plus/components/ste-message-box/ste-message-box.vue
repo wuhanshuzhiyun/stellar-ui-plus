@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { inject, watch, ref, computed, useSlots } from 'vue';
-import { messageBoxDefaultOptionsKey } from './ste-message-box';
+import { onMounted, onUnmounted, computed, useSlots, onActivated, onDeactivated } from 'vue';
+import { getMessageBoxKey } from './ste-message-box';
 import useData from './useData';
 import type { BaseEvent } from '../../types/event';
 import utils from '../../utils/utils';
@@ -37,8 +37,7 @@ const {
     showInputPlaceholder,
 } = useData();
 
-const injectKey = props.selector ? props.selector : messageBoxDefaultOptionsKey;
-const injectMessageBoxOption = ref<MessageBoxOptions>(inject(injectKey) || {});
+const msgKey = getMessageBoxKey(props.selector);
 
 // 用input自带占位符时，由于动画原因导致最终显示会有一个下降的效果
 function handleInputFocus() {
@@ -144,13 +143,33 @@ function loadMessageBoxParams(options: MessageBoxOptions) {
     complete.value = options.complete || complete.value;
 }
 
-watch(injectMessageBoxOption, val => {
-    if (val.show) {
-        loadMessageBoxParams(val);
-        showBox();
+const registEvent = (flag = true) => {
+    if (flag) {
+        // 注册事件
+        uni.$on(`${msgKey}:show`, showMsgBox);
+        uni.$on(`${msgKey}:hide`, hideMsgBox);
     } else {
-        closeBox();
+        // 卸载事件
+        uni.$off(`${msgKey}:show`, showMsgBox);
+        uni.$off(`${msgKey}:hide`, hideMsgBox);
     }
+};
+
+onMounted(() => {
+    registEvent();
+});
+
+onUnmounted(() => {
+    registEvent(false);
+});
+
+// 使用onActivated和onDeactivated来处理页面切换
+onActivated(() => {
+    registEvent();
+});
+
+onDeactivated(() => {
+    registEvent(false);
 });
 
 function showMsgBox(options: MessageBoxOptions) {

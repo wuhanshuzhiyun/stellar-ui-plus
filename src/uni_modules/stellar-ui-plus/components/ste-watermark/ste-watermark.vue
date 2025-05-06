@@ -1,221 +1,160 @@
 <template>
-    <div ref="containerRef" :style="[style]">
-        <slot />
-    </div>
+    <view :style="styles" :class="fullPage ? 'ste-watermark-root full-page' : 'ste-watermark-root'" />
 </template>
 
-<script lang="ts" setup>
-import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
-// import { useMutationObserver } from '@vueuse/core';
-import { watermarkProps } from './props';
-import type { WatermarkProps } from './props';
-import { getPixelRatio, getStyleStr, reRendering } from './utils';
-import useClips, { FontGap } from './useClips';
-import type { CSSProperties } from 'vue';
+<script setup lang="ts">
+import { computed, reactive, watch } from 'vue';
+import { watermarkProps, defaultWatermarkFont } from './props';
 
+import utils from '../../utils/utils';
+
+const componentName = `ste-watermark`;
 defineOptions({
-    name: 'LtWatermark',
+    name: componentName,
+    options: {
+        virtualHost: true,
+    },
 });
-
-const style: CSSProperties = {
-    position: 'relative',
-};
 
 const props = defineProps(watermarkProps);
-const color = computed(() => props.font?.color ?? 'rgba(0,0,0,.15)');
-const fontSize = computed(() => props.font?.fontSize ?? 16);
-const fontWeight = computed(() => props.font?.fontWeight ?? 'normal');
-const fontStyle = computed(() => props.font?.fontStyle ?? 'normal');
-const fontFamily = computed(() => props.font?.fontFamily ?? 'sans-serif');
-const textAlign = computed(() => props.font?.textAlign ?? 'center');
-const textBaseline = computed(() => props.font?.textBaseline ?? 'hanging');
 
-const gapX = computed(() => props.gap[0]);
-const gapY = computed(() => props.gap[1]);
-const gapXCenter = computed(() => gapX.value / 2);
-const gapYCenter = computed(() => gapY.value / 2);
-const offsetLeft = computed(() => props.offset?.[0] ?? gapXCenter.value);
-const offsetTop = computed(() => props.offset?.[1] ?? gapYCenter.value);
+const state = reactive({
+    base64Url: '',
+});
+const { zIndex, gapX, gapY, width, height, rotate, image, imageWidth, imageHeight, content } = props;
 
-const getMarkStyle = () => {
-    const markStyle: CSSProperties = {
-        zIndex: props.zIndex,
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        backgroundRepeat: 'repeat',
-    };
-
-    /** Calculate the style of the offset */
-    let positionLeft = offsetLeft.value - gapXCenter.value;
-    let positionTop = offsetTop.value - gapYCenter.value;
-    if (positionLeft > 0) {
-        markStyle.left = `${positionLeft}px`;
-        markStyle.width = `calc(100% - ${positionLeft}px)`;
-        positionLeft = 0;
-    }
-    if (positionTop > 0) {
-        markStyle.top = `${positionTop}px`;
-        markStyle.height = `calc(100% - ${positionTop}px)`;
-        positionTop = 0;
-    }
-    markStyle.backgroundPosition = `${positionLeft}px ${positionTop}px`;
-
-    return markStyle;
+const { fontStyle, fontWeight, color, fontSize, fontFamily, textAlign } = {
+    ...defaultWatermarkFont,
+    ...props.font,
 };
 
-const containerRef = shallowRef<HTMLDivElement | null>(null);
-const watermarkRef = shallowRef<HTMLDivElement>();
-const stopObservation = ref(false);
+const init = async () => {
+    let ratio = utils.System.getWindowInfo().pixelRatio;
 
-const destroyWatermark = () => {
-    if (watermarkRef.value) {
-        watermarkRef.value.remove();
-        watermarkRef.value = undefined;
-    }
-};
-const appendWatermark = (base64Url: string, markWidth: number) => {
-    if (containerRef.value && watermarkRef.value) {
-        stopObservation.value = true;
-        watermarkRef.value.setAttribute(
-            'style',
-            getStyleStr({
-                ...getMarkStyle(),
-                backgroundImage: `url('${base64Url}')`,
-                backgroundSize: `${Math.floor(markWidth)}px`,
-            })
-        );
-        containerRef.value?.append(watermarkRef.value);
-        // Delayed execution
-        setTimeout(() => {
-            stopObservation.value = false;
-        });
-    }
-};
+    const canvasWidth = `${(gapX + width) * ratio}`;
+    const canvasHeight = `${(gapY + height) * ratio}`;
+    const markWidth = width * ratio;
+    const markHeight = height * ratio;
+    const canvas: any = uni.createOffscreenCanvas({
+        type: '2d',
+        width: Number(canvasWidth),
+        height: Number(canvasHeight),
+    });
 
-/**
- * Get the width and height of the watermark. The default values are as follows
- * Image: [120, 64]; Content: It's calculated by content;
- */
-const getMarkSize = (ctx: CanvasRenderingContext2D) => {
-    let defaultWidth = 120;
-    let defaultHeight = 64;
-    const image = props.image;
-    const content = props.content;
-    const width = props.width;
-    const height = props.height;
-    if (!image && ctx.measureText) {
-        ctx.font = `${Number(fontSize.value)}px ${fontFamily.value}`;
-        const contents = Array.isArray(content) ? content : [content];
-        const sizes = contents.map(item => {
-            const metrics = ctx.measureText(item!);
-
-            return [
-                metrics.width,
-                // Using `actualBoundingBoxAscent` to be compatible with lower version browsers (eg: Firefox < 116)
-                metrics.fontBoundingBoxAscent !== undefined ? metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent : metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent,
-            ];
-        });
-        defaultWidth = Math.ceil(Math.max(...sizes.map(size => size[0])));
-        defaultHeight = Math.ceil(Math.max(...sizes.map(size => size[1]))) * contents.length + (contents.length - 1) * FontGap;
-    }
-    return [width ?? defaultWidth, height ?? defaultHeight] as const;
-};
-
-const getClips = useClips();
-
-const renderWatermark = () => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const image = props.image;
-    const content = props.content;
-    const rotate = props.rotate;
+    const ctx: any = canvas.getContext('2d');
 
     if (ctx) {
-        if (!watermarkRef.value) {
-            watermarkRef.value = document.createElement('div');
-        }
-
-        const ratio = getPixelRatio();
-        const [markWidth, markHeight] = getMarkSize(ctx);
-
-        const drawCanvas = (drawContent?: NonNullable<WatermarkProps['content']> | HTMLImageElement) => {
-            const [textClips, clipWidth] = getClips(
-                drawContent || '',
-                rotate,
-                ratio,
-                markWidth,
-                markHeight,
-                {
-                    color: color.value,
-                    fontSize: fontSize.value,
-                    fontStyle: fontStyle.value,
-                    fontWeight: fontWeight.value,
-                    fontFamily: fontFamily.value,
-                    textAlign: textAlign.value,
-                    textBaseline: textBaseline.value,
-                },
-                gapX.value,
-                gapY.value
-            );
-
-            appendWatermark(textClips, clipWidth);
-        };
-
         if (image) {
-            const img = new Image();
-            img.onload = () => {
-                drawCanvas(img);
-            };
-            img.onerror = () => {
-                drawCanvas(content);
-            };
-            img.crossOrigin = 'anonymous';
-            img.referrerPolicy = 'no-referrer';
-            img.src = image;
-        } else {
-            drawCanvas(content);
+            // 创建一个图片
+            const img = canvas.createImage() as HTMLImageElement;
+            dealWithImage(ctx, img, ratio, ctx.canvas, markWidth, markHeight);
+        } else if (content) {
+            dealWithText(ctx, ratio, ctx.canvas, markWidth, markHeight);
         }
+    } else {
+        throw new Error('当前环境不支持Canvas');
     }
 };
+const initH5 = () => {
+    const canvas = document.createElement('canvas');
+    const ratio = utils.System.getWindowInfo().pixelRatio;
 
-onMounted(() => {
-    renderWatermark();
-});
+    const ctx = canvas.getContext('2d');
+    const canvasWidth = `${(gapX + width) * ratio}px`;
+    const canvasHeight = `${(gapY + height) * ratio}px`;
+    const markWidth = width * ratio;
+    const markHeight = height * ratio;
+    canvas.setAttribute('width', canvasWidth);
+    canvas.setAttribute('height', canvasHeight);
+
+    if (ctx) {
+        if (image) {
+            const img = new Image();
+            dealWithImage(ctx, img, ratio, canvas, markWidth, markHeight);
+        } else if (content) {
+            dealWithText(ctx, ratio, canvas, markWidth, markHeight);
+        }
+    } else {
+        throw new Error('当前环境不支持Canvas');
+    }
+};
+const dealWithImage = (ctx: any, img: HTMLImageElement, ratio: number, canvas: HTMLCanvasElement, markWidth: number, markHeight: number) => {
+    ctx.translate(markWidth / 2, markHeight / 2);
+    ctx.rotate((Math.PI / 180) * Number(rotate));
+    img.crossOrigin = 'anonymous';
+    img.referrerPolicy = 'no-referrer';
+    img.src = image!; // 要加载的图片 url, 可以是base64
+    img.onload = () => {
+        ctx.drawImage(img, (-imageWidth * ratio) / 2, (-imageHeight * ratio) / 2, imageWidth * ratio, imageHeight * ratio);
+        ctx.restore();
+        state.base64Url = canvas.toDataURL();
+    };
+};
+const dealWithText = (ctx: any, ratio: number, canvas: HTMLCanvasElement, markWidth: number, markHeight: number) => {
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    // 文字绕中间旋转
+    ctx.translate(markWidth / 2, markHeight / 2);
+    ctx.rotate((Math.PI / 180) * Number(rotate));
+    const markSize = Number(fontSize) * ratio;
+    ctx.font = `${fontStyle} normal ${fontWeight} ${markSize}px/${markHeight}px ${fontFamily}`;
+    ctx.fillStyle = color;
+    ctx.textAlign = textAlign;
+    if (Array.isArray(content)) {
+        content?.forEach((item, index) => {
+            ctx.fillText(item, 0, (index - 1) * markSize);
+        });
+    } else {
+        ctx.fillText(content, 0, 0);
+    }
+    ctx.restore();
+
+    state.base64Url = canvas.toDataURL();
+};
+// #ifdef H5
+initH5();
+// #endif
+
+// #ifndef H5
+init();
+// #endif
 
 watch(
     () => props,
     () => {
-        renderWatermark();
-    },
-    {
-        deep: true,
-        flush: 'post',
+        // #ifdef H5
+        initH5();
+        // #endif
+
+        // #ifndef H5
+        init();
+        // #endif
     }
 );
 
-onBeforeUnmount(() => {
-    destroyWatermark();
+const styles = computed(() => {
+    return {
+        zIndex: zIndex,
+        backgroundSize: `${gapX + width}px`,
+        backgroundImage: `url('${state.base64Url}')`,
+    };
 });
-
-const onMutate = (mutations: MutationRecord[]) => {
-    if (stopObservation.value) {
-        return;
-    }
-    mutations.forEach(mutation => {
-        if (reRendering(mutation, watermarkRef.value)) {
-            destroyWatermark();
-            renderWatermark();
-        }
-    });
-};
-
-// useMutationObserver(containerRef, onMutate, {
-//     attributes: true,
-//     subtree: true,
-//     childList: true,
-// });
 </script>
+
+<style lang="scss">
+.ste-watermark-root {
+    // position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-repeat: repeat;
+
+    &.full-page {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+}
+</style>

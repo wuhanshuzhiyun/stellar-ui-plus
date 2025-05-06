@@ -1,13 +1,13 @@
 import type { PropType } from 'vue';
 import { propsDefault } from '../../Charts/propsDefault';
 import utils from '../../utils/utils';
-import type { ChartsSerie } from '../../Charts/types/index';
+import type { ChartsOptions, ChartsSerie } from '../../Charts/types/index';
 // 组件默认配置
 export const propsData = utils.deepMerge(propsDefault(), {
     // 图表宽度
     width: { type: [Number, String], default: '750' },
     // 图表高度
-    height: { type: [Number, String], default: '200' },
+    height: { type: [Number, String], default: '500' },
     // 是否显示图表区域内数据点上方的数据文案
     dataLabel: { type: [Boolean], default: false },
     // 图表数据
@@ -17,7 +17,7 @@ export const propsData = utils.deepMerge(propsDefault(), {
     },
 });
 
-export const propsComponent = {
+export const propsComponent: () => Partial<ChartsOptions<'area'>> = () => ({
     legend: {
         show: false,
     },
@@ -31,11 +31,13 @@ export const propsComponent = {
     },
     // 额外配置
     extra: {
-        ring: {
-            ringWidth: 6,
-            customRadius: 32,
-            offsetAngle: -90,
-            linearType: 'none',
+        area: {
+            type: 'straight',
+            opacity: 0.2,
+            addLine: true,
+            width: 2,
+            gradient: false,
+            activeType: 'hollow',
         },
     },
-};
+});

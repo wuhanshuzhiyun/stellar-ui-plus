@@ -30,6 +30,14 @@ export default defineConfig({
     build: {
         // 开启sourcemap
         sourcemap: true,
+        // 添加esbuild配置
+        target: ['es2019'], // 支付宝小程序支持的ES版本
+    },
+    esbuild: {
+        // 针对支付宝小程序特别处理
+        target: 'es2019',
+        // 如果你需要在产物中保留更多debug信息
+        keepNames: true,
     },
     esbuild: {
         // 针对支付宝小程序特别处理

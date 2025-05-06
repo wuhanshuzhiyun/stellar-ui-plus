@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
 let uChartsInstance: { [key: string]: any } = {};
-import { ref, onMounted, computed, type CSSProperties, watch } from 'vue';
+import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
 defineOptions({
@@ -27,8 +27,8 @@ let cmpProps = computed(() => {
         extra: utils.deepMerge(utils.deepClone(propsComponent.extra), props.extra),
     };
 });
-
-let canvasId = ref('');
+// 赋予id，id不能为数字开头
+let canvasId = ref(utils.guid());
 let cWidth = computed(() => {
     return utils.formatPx(Number(props.width), 'num');
 });
@@ -44,8 +44,6 @@ const chartStyle = computed(() => {
 });
 
 onMounted(() => {
-    canvasId.value = utils.guid();
-    // 赋予id，id不能为数字开头
     drawCharts(props.series);
 });
 
@@ -60,7 +58,7 @@ watch(
 
 function drawCharts(series: any) {
     // 默认配置项
-    const ctx = uni.createCanvasContext(canvasId.value);
+    const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
     uChartsInstance[canvasId.value] = new uCharts<'ring'>({
         type: 'ring',
         context: ctx,

@@ -20,13 +20,13 @@
             "name": "series",
             "description": "图表数据",
             "type": "Object",
-            "default": ""
+            "default": []
         },
         {
             "name": "categories",
             "description": "图表数据",
             "type": "Object",
-            "default": ""
+            "default": []
         },
         {
             "name": "canvas2d",
@@ -38,7 +38,7 @@
             "name": "pixelRatio",
             "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
             "type": "number",
-            "default": "微信小程序由具体设备决定，其余的默认为1"
+            "default": "1"
         },
         {
             "name": "animation",

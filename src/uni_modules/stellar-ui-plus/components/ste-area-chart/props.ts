@@ -20,7 +20,10 @@ export const propsData = utils.deepMerge(propsDefault(), {
         type: Array as PropType<string[]>,
         default: () => [],
     },
-    padding: [15, 15, 0, 5],
+    padding: {
+        type: Array as unknown as PropType<ChartsOptions<ChartsType>['padding']>,
+        default: () => [15, 15, 0, 5],
+    },
 });
 
 export const propsComponent: () => Partial<ChartsOptions<'area'>> = () => ({

@@ -1,6 +1,6 @@
 <template>
     <view>
-        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" :style="chartStyle"></canvas>
+        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" @mouseup="tap" :style="chartStyle"></canvas>
     </view>
 </template>
 
@@ -30,7 +30,7 @@ const cmpProps = computed(() => {
     };
 });
 
-const canvasId = ref(utils.guid(10));
+const canvasId = ref(utils.guid());
 const ctx = ref<UniNamespace.CanvasContext>();
 const cWidth = computed(() => {
     return utils.formatPx(props.width, 'num');
@@ -89,7 +89,6 @@ function drawCharts(series: ChartsSerie<'bar'>[]) {
         extra: cmpProps.value.extra,
         categories: props.categories,
     };
-    console.log('options', options);
     charts.value = new uCharts<'bar'>(options);
 }
 function tap(e: any) {

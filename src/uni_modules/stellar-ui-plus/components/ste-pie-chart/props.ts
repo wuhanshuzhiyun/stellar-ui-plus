@@ -8,8 +8,6 @@ export const propsData = utils.deepMerge(propsDefault(), {
     width: { type: [Number, String], default: '750' },
     // 图表高度
     height: { type: [Number, String], default: '200' },
-    // 是否显示图表区域内数据点上方的数据文案
-    dataLabel: { type: [Boolean], default: false },
     // 图表数据
     series: {
         type: Array as PropType<ChartsSerie<'pie'>[]>,

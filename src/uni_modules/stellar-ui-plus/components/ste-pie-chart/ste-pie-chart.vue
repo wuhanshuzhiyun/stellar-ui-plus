@@ -1,6 +1,6 @@
 <template>
     <view>
-        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" :style="[chartStyle]" :canvas2d="props.canvas2d"></canvas>
+        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" @mouseup="tap" :style="[chartStyle]" :canvas2d="props.canvas2d"></canvas>
     </view>
 </template>
 
@@ -15,7 +15,7 @@ defineOptions({
     virtualHost: true,
 });
 
-const charth = ref<uCharts<'pie'>>();
+const charts = ref<uCharts<'pie'>>();
 // 合并默认对象配置
 const props = defineProps(propsData);
 const cmpProps = computed(() => {
@@ -91,11 +91,11 @@ function drawCharts(series: ChartsSerie<'pie'>[]) {
         subtitle: cmpProps.value.subtitle,
         extra: cmpProps.value.extra,
     };
-    charth.value = new uCharts<'pie'>(options);
+    charts.value = new uCharts<'pie'>(options);
 }
 function tap(e: any) {
-    charth.value?.touchLegend(e);
-    charth.value?.showToolTip(e);
+    charts.value?.touchLegend(e);
+    charts.value?.showToolTip(e);
 }
 </script>
 

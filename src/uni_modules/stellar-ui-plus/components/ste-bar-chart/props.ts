@@ -1,7 +1,7 @@
 import type { PropType } from 'vue';
 import { propsDefault } from '../../Charts/propsDefault';
 import utils from '../../utils/utils';
-import type { ChartsOptions, ChartsSerie } from '../../Charts/types/index';
+import type { ChartsOptions, ChartsSerie, ChartsType } from '../../Charts/types/index';
 // 组件默认配置
 export const propsData = utils.deepMerge(propsDefault(), {
     // 图表宽度
@@ -20,11 +20,14 @@ export const propsData = utils.deepMerge(propsDefault(), {
         type: Array as PropType<string[]>,
         default: () => [],
     },
+    padding: {
+        type: Array as unknown as PropType<ChartsOptions<ChartsType>['padding']>,
+        default: () => [15, 15, 0, 5],
+    },
 });
 
 export const propsComponent: () => Partial<ChartsOptions<'bar'>> = () => ({
     legend: {},
-    padding: [10, 30, 0, 5],
     title: {
         fontSize: 28,
         color: '#bbbbbb',

@@ -1,6 +1,6 @@
 <template>
     <view>
-        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" :style="[chartStyle]" :canvas2d="props.canvas2d"></canvas>
+        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" @mouseup="tap" :style="[chartStyle]" :canvas2d="props.canvas2d"></canvas>
     </view>
 </template>
 
@@ -9,12 +9,13 @@ import uCharts from '../../Charts/Charts';
 import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
+import type { ChartsOptions } from '../../Charts/types/index';
 defineOptions({
     name: 'ste-area-chart',
     virtualHost: true,
 });
 
-const charth = ref<uCharts<'area'>>();
+const charts = ref<uCharts<'area'>>();
 // 合并默认对象配置
 let props = defineProps(propsData);
 let cmpProps = computed(() => {
@@ -28,7 +29,8 @@ let cmpProps = computed(() => {
     };
 });
 
-let canvasId = ref('');
+const canvasId = ref(utils.guid());
+const ctx = ref<UniNamespace.CanvasContext>();
 let cWidth = computed(() => {
     return utils.formatPx(Number(props.width), 'num');
 });
@@ -44,9 +46,8 @@ const chartStyle = computed(() => {
 });
 
 onMounted(() => {
-    canvasId.value = utils.guid();
+    ctx.value = uni.createCanvasContext(canvasId.value, getCurrentInstance());
     if (props.series.length) {
-        // 赋予id，id不能为数字开头
         drawCharts(props.series, props.categories);
     }
 });
@@ -60,10 +61,9 @@ watch(
 
 function drawCharts(series: any, categories: any) {
     // 默认配置项
-    const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
-    charth.value = new uCharts<'area'>({
+    const options: ChartsOptions<'area'> = {
         type: 'area',
-        context: ctx,
+        context: ctx.value || uni.createCanvasContext(canvasId.value, getCurrentInstance()),
         width: cWidth.value,
         height: cHeight.value,
         series: utils.deepClone(series),
@@ -92,11 +92,12 @@ function drawCharts(series: any, categories: any) {
         title: cmpProps.value.title,
         subtitle: cmpProps.value.subtitle,
         extra: cmpProps.value.extra,
-    });
+    };
+    charts.value = new uCharts<'area'>(options);
 }
 function tap(e: any) {
-    charth.value?.touchLegend(e);
-    charth.value?.showToolTip(e);
+    charts.value?.touchLegend(e);
+    charts.value?.showToolTip(e);
 }
 </script>
 

@@ -1,6 +1,6 @@
 import { propsDefault } from '../../Charts/propsDefault';
 import type { PropType } from 'vue';
-import type { ChartsSerie } from '../../Charts/types/index';
+import type { ChartsSerie, ChartsOptions } from '../../Charts/types/index';
 import utils from '../../utils/utils';
 
 // 组件默认配置
@@ -18,17 +18,13 @@ export const propsData = utils.deepMerge(propsDefault(), {
             show: false,
         }),
     },
-    extra: {
-        type: Object as any,
-        default: () => ({}),
-    },
     categories: {
         type: Object as any,
         default: () => [],
     },
 });
 
-export const propsComponent = {
+export const propsComponent: () => Partial<ChartsOptions<'column'>> = () => ({
     legend: {
         show: false,
     },
@@ -37,12 +33,10 @@ export const propsComponent = {
         color: '#bbbbbb',
     },
     xAxis: {
-        // disabled: true,
         disableGrid: true,
         gridType: 'dash',
     },
     yAxis: {
-        // disableGrid: true,
         gridType: 'dash',
         data: [
             {
@@ -61,4 +55,4 @@ export const propsComponent = {
             showLabel: false,
         },
     },
-};
+});

@@ -1,6 +1,6 @@
 <template>
     <view>
-        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" :style="[chartStyle]" :canvas2d="props.canvas2d"></canvas>
+        <canvas :canvas-id="canvasId" :id="canvasId" class="charts" @touchend="tap" @mouseup="tap" :style="[chartStyle]" :canvas2d="props.canvas2d"></canvas>
     </view>
 </template>
 
@@ -9,11 +9,12 @@ import uCharts from '../../Charts/Charts';
 import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
+import type { ChartsOptions } from '../../Charts/types/index';
 defineOptions({
     name: 'ste-ring-chart',
     virtualHost: true,
 });
-const charth = ref<uCharts<'ring'>>();
+const charts = ref<uCharts<'ring'>>();
 // 合并默认对象配置
 let props = defineProps(propsData);
 let cmpProps = computed(() => {
@@ -28,6 +29,7 @@ let cmpProps = computed(() => {
 });
 // 赋予id，id不能为数字开头
 let canvasId = ref(utils.guid());
+const ctx = ref<UniNamespace.CanvasContext>();
 let cWidth = computed(() => {
     return utils.formatPx(Number(props.width), 'num');
 });
@@ -43,6 +45,7 @@ const chartStyle = computed(() => {
 });
 
 onMounted(() => {
+    ctx.value = uni.createCanvasContext(canvasId.value, getCurrentInstance());
     drawCharts(props.series);
 });
 
@@ -55,10 +58,9 @@ watch(
 
 function drawCharts(series: any) {
     // 默认配置项
-    const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
-    charth.value = new uCharts<'ring'>({
+    const options: ChartsOptions<'ring'> = {
         type: 'ring',
-        context: ctx,
+        context: ctx.value || uni.createCanvasContext(canvasId.value, getCurrentInstance()),
         width: cWidth.value,
         height: cHeight.value,
         series: utils.deepClone(series),
@@ -86,13 +88,12 @@ function drawCharts(series: any) {
         title: cmpProps.value.title,
         subtitle: cmpProps.value.subtitle,
         extra: cmpProps.value.extra,
-    });
+    };
+    charts.value = new uCharts<'ring'>(options);
 }
 function tap(e: any) {
-    console.log('xx', charth?.value);
-    console.log('e', e);
-    charth?.value.touchLegend(e);
-    charth?.value.showToolTip(e);
+    charts?.value.touchLegend(e);
+    charts?.value.showToolTip(e);
 }
 </script>
 

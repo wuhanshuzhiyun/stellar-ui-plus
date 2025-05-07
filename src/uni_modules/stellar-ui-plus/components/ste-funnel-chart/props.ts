@@ -1,6 +1,6 @@
 import { propsDefault } from '../../Charts/propsDefault';
 import type { PropType } from 'vue';
-import type { ChartsSerie } from '../../Charts/types/index';
+import type { ChartsSerie, ChartsOptions } from '../../Charts/types/index';
 import utils from '../../utils/utils';
 
 // 组件默认配置
@@ -12,19 +12,9 @@ export const propsData = utils.deepMerge(propsDefault(), {
     },
     // 自定义配置
     color: { type: Array as PropType<string[]>, default: () => ['#0E42D2', '#165DFF', '#4080FF', '#6AA1FF', '#94BFFF'] },
-    legend: {
-        type: Object as any,
-        default: () => ({
-            show: false,
-        }),
-    },
-    extra: {
-        type: Object as any,
-        default: () => ({}),
-    },
 });
 
-export const propsComponent = {
+export const propsComponent: () => Partial<ChartsOptions<'funnel'>> = () => ({
     legend: {
         show: false,
     },
@@ -42,4 +32,4 @@ export const propsComponent = {
             minSize: 20,
         },
     },
-};
+});

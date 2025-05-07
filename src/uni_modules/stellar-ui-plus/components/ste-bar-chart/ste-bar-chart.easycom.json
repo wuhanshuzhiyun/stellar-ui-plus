@@ -26,7 +26,7 @@
             "name": "pixelRatio",
             "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
             "type": "number",
-            "default": "微信小程序由具体设备决定，其余的默认为1"
+            "default": "1"
         },
         {
             "name": "animation",
@@ -80,7 +80,7 @@
             "name": "padding",
             "description": "画布填充边距（顺序为上右下左），单位px",
             "type": "array",
-            "default": [5, 5, 5, 5]
+            "default": [15, 15, 0, 5]
         },
         {
             "name": "fontSize",

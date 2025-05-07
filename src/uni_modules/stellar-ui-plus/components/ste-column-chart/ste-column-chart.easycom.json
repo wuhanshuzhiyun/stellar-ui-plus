@@ -14,7 +14,7 @@
             "name": "height",
             "description": "图表高度，单位rpx",
             "type": "number | string",
-            "default": "200"
+            "default": "500"
         },
         {
             "name": "canvas2d",
@@ -26,7 +26,7 @@
             "name": "pixelRatio",
             "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
             "type": "number",
-            "default": "具体设备决定"
+            "default": "1"
         },
         {
             "name": "animation",
@@ -74,7 +74,7 @@
             "name": "color",
             "description": "主题颜色数组，16进制颜色格式",
             "type": "array",
-            "default": ["#165DFF", "#14C9C9", "#F7BA1E", "#3491FA", "#722ED1", "#9FDB1D"]
+            "default": ["#165DFF", "#14C9C9", "#F7BA1E"]
         },
         {
             "name": "padding",

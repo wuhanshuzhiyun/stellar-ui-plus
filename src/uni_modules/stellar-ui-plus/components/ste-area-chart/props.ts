@@ -1,9 +1,10 @@
 import type { PropType } from 'vue';
 import { propsDefault } from '../../Charts/propsDefault';
 import utils from '../../utils/utils';
-import type { ChartsOptions, ChartsSerie } from '../../Charts/types/index';
+import type { ChartsOptions, ChartsSerie, ChartsType } from '../../Charts/types/index';
 // 组件默认配置
 export const propsData = utils.deepMerge(propsDefault(), {
+    color: { type: Array as PropType<ChartsOptions<ChartsType>['color']>, default: () => ['#165DFF', '#14C9C9', '#F7BA1E', '#3491FA', '#F53F3F'] },
     // 图表宽度
     width: { type: [Number, String], default: '750' },
     // 图表高度
@@ -12,9 +13,14 @@ export const propsData = utils.deepMerge(propsDefault(), {
     dataLabel: { type: [Boolean], default: false },
     // 图表数据
     series: {
-        type: Object as PropType<ChartsSerie<'ring'>[]>,
-        default: () => ({}),
+        type: Object as PropType<ChartsSerie<'area'>[]>,
+        default: () => [],
     },
+    categories: {
+        type: Array as PropType<string[]>,
+        default: () => [],
+    },
+    padding: [15, 15, 0, 5],
 });
 
 export const propsComponent: () => Partial<ChartsOptions<'area'>> = () => ({
@@ -29,6 +35,20 @@ export const propsComponent: () => Partial<ChartsOptions<'area'>> = () => ({
         fontSize: 14,
         color: '#1D2129',
     },
+    xAxis: {
+        disableGrid: true,
+    },
+    yAxis: {
+        gridType: 'dash',
+        dashLength: 8,
+        data: [
+            {
+                min: 0,
+                disabled: false,
+                axisLine: false,
+            },
+        ],
+    },
     // 额外配置
     extra: {
         area: {
@@ -36,7 +56,7 @@ export const propsComponent: () => Partial<ChartsOptions<'area'>> = () => ({
             opacity: 0.2,
             addLine: true,
             width: 2,
-            gradient: false,
+            gradient: true,
             activeType: 'hollow',
         },
     },

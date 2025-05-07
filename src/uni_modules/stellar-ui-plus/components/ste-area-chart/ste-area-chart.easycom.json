@@ -86,13 +86,13 @@
             "name": "color",
             "description": "主题颜色数组，16进制颜色格式",
             "type": "array",
-            "default": ["#165DFF", "#14C9C9", "#F7BA1E", "#3491FA", "#722ED1", "#9FDB1D"]
+            "default": ["#165DFF", "#14C9C9", "#F7BA1E", "#3491FA", "#F53F3F"]
         },
         {
             "name": "padding",
             "description": "画布填充边距（顺序为上右下左），单位px",
             "type": "array",
-            "default": [5, 5, 5, 5]
+            "default": [15, 15, 0, 5]
         },
         {
             "name": "fontSize",

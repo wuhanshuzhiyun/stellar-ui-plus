@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-let uChartsInstance: { [key: string]: any } = {};
 import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
@@ -14,17 +13,17 @@ defineOptions({
     name: 'ste-ring-chart',
     virtualHost: true,
 });
-
+const charth = ref<uCharts<'ring'>>();
 // 合并默认对象配置
 let props = defineProps(propsData);
 let cmpProps = computed(() => {
     return {
-        xAxis: utils.deepMerge(utils.deepClone(propsComponent?.xAxis ?? {}), props.xAxis),
-        yAxis: utils.deepMerge(utils.deepClone(propsComponent?.yAxis ?? {}), props.yAxis),
-        legend: utils.deepMerge(utils.deepClone(propsComponent.legend), props.legend),
-        title: utils.deepMerge(utils.deepClone(propsComponent.title), props.title),
-        subtitle: utils.deepMerge(utils.deepClone(propsComponent?.subtitle ?? {}), props.subtitle),
-        extra: utils.deepMerge(utils.deepClone(propsComponent.extra), props.extra),
+        xAxis: utils.deepMerge(utils.deepClone(propsComponent()?.xAxis ?? {}), props.xAxis),
+        yAxis: utils.deepMerge(utils.deepClone(propsComponent()?.yAxis ?? {}), props.yAxis),
+        legend: utils.deepMerge(utils.deepClone(propsComponent()?.legend ?? {}), props.legend),
+        title: utils.deepMerge(utils.deepClone(propsComponent()?.title ?? {}), props.title),
+        subtitle: utils.deepMerge(utils.deepClone(propsComponent()?.subtitle ?? {}), props.subtitle),
+        extra: utils.deepMerge(utils.deepClone(propsComponent()?.extra ?? {}), props.extra),
     };
 });
 // 赋予id，id不能为数字开头
@@ -50,16 +49,14 @@ onMounted(() => {
 watch(
     () => props.series,
     (series: any) => {
-        uChartsInstance[canvasId.value].updateData({
-            series: utils.deepClone(series),
-        });
+        drawCharts(series);
     }
 );
 
 function drawCharts(series: any) {
     // 默认配置项
     const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
-    uChartsInstance[canvasId.value] = new uCharts<'ring'>({
+    charth.value = new uCharts<'ring'>({
         type: 'ring',
         context: ctx,
         width: cWidth.value,
@@ -92,8 +89,10 @@ function drawCharts(series: any) {
     });
 }
 function tap(e: any) {
-    uChartsInstance[e.target.id].touchLegend(e);
-    uChartsInstance[e.target.id].showToolTip(e);
+    console.log('xx', charth?.value);
+    console.log('e', e);
+    charth?.value.touchLegend(e);
+    charth?.value.showToolTip(e);
 }
 </script>
 

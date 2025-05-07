@@ -1,6 +1,6 @@
 # AreaChart 面积图
 
-区域面积图将折线到坐标轴的空间设置背景色，用区域面积表达数据。相比普通的折线图，区域面积图的视觉效果更加饱满丰富，在系列不多的场景下尤其适用。
+面积图积图将折线到坐标轴的空间设置背景色，用区域面积表达数据。相比普通的折线图，面积图的视觉效果更加饱满丰富，在系列不多的场景下尤其适用。
 
 ---$
 
@@ -15,92 +15,87 @@
 <script setup lang="ts">
     import { ref } from 'vue';
     let series1: any = ref([]);
+    let categories1: any = ref([]);
     series1.value = [
         {
-            data: [
-                { name: '成功率', value: 50 },
-                { name: '失败率', value: 50 },
-            ],
+            name: '成交量A',
+            data: [35, 8, 25, 37, 4, 20],
+        },
+        {
+            name: '成交量B',
+            data: [70, 40, 65, 100, 44, 68],
         },
     ];
+    categories1.value = ['2018', '2019', '2020', '2021', '2022', '2023'];
 </script>
 ```
 
 #### 默认颜色
 
-- 属性`color`: `['#165DFF', '#14C9C9', '#F7BA1E', '#3491FA', '#722ED1', '#9FDB1D']`
+- 属性`color`: `['#165DFF', '#14C9C9', '#F7BA1E', '#3491FA', '#F53F3F']`
 
 ```html
 <template>
-    <ste-ring-chart :series="series2"></ste-ring-chart>
+    <ste-area-chart :series="series2" :categories1="categories1"></ste-area-chart>
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';
-    let series1: any = ref([]);
+    let series2: any = ref([]);
+    let categories1: any = ref([]);
     series2.value = [
         {
-            data: [
-                { name: '一班', value: 50 },
-                { name: '二班', value: 30 },
-                { name: '三班', value: 20 },
-                { name: '四班', value: 18 },
-                { name: '五班', value: 8 },
-                { name: '六班', value: 5 },
-            ],
+            name: '成交量A',
+            data: [35, 8, 25, 37, 4, 20],
+        },
+        {
+            name: '成交量B',
+            data: [40, 35, 12, 44, 89, 14],
+        },
+        {
+            name: '成交量C',
+            data: [45, 27, 32, 100, 65, 20],
+        },
+        {
+            name: '成交量D',
+            data: [50, 25, 65, 100, 44, 68],
+        },
+        {
+            name: '成交量B',
+            data: [70, 35, 45, 89, 26, 54],
         },
     ];
+    categories1.value = ['2018', '2019', '2020', '2021', '2022', '2023'];
 </script>
 ```
 
-#### 副标题，标题+副标题
+#### 区域图类型
 
-- 属性`subtitle`: 副标题对象
-- 属性`title`: 标题对象
+- 属性`type`: 区域图类型
+    - `straight`: 尖角折线模式(默认)
+    - `curve` : 曲线圆滑模式
+    - `step` : 时序图模式
 
 ```html
 <template>
-    <ste-ring-chart :series="series1" :subtitle="{name: '50%'}"></ste-ring-chart>
-    <ste-ring-chart :series="series1" :title="{name: '指标名'}" :subtitle="{name: '50%'}"></ste-ring-chart>
+    <ste-area-chart :series="series1" :categories1="categories1"></ste-area-chart>
+    <ste-area-chart :series="series1" :categories1="categories1" :extra="{ area: { type: 'curve' } }"></ste-area-chart>
+    <ste-area-chart :series="series1" :categories1="categories1" :extra="{ area: { type: 'step' } }"></ste-area-chart>
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';
     let series1: any = ref([]);
+    let categories1: any = ref([]);
     series1.value = [
         {
-            data: [
-                { name: '成功率', value: 50 },
-                { name: '失败率', value: 50 },
-            ],
+            name: '成交量A',
+            data: [35, 8, 25, 37, 4, 20],
         },
-    ];
-</script>
-```
-
-#### 图例
-
-- 属性`legend`: 图例对象
-
-```html
-<template>
-    <ste-ring-chart
-        :series="series1"
-        :title="{name: '指标名'}"
-        :subtitle="{name: '50%'}"
-        :legend="{show: true,position: 'bottom'}"
-        :extra="{ ring: { ringWidth: 10.5, customRadius: 64, offsetAngle: -90, linearType: 'none' } }"
-    ></ste-ring-chart>
-</template>
-<script setup lang="ts">
-    import { ref } from 'vue';
-    let series1: any = ref([]);
-    series1.value = [
         {
-            data: [
-                { name: '成功率', value: 50 },
-                { name: '失败率', value: 50 },
-            ],
+            name: '成交量B',
+            data: [70, 40, 65, 100, 44, 68],
         },
     ];
+    categories1.value = ['2018', '2019', '2020', '2021', '2022', '2023'];
 </script>
 ```
 
@@ -109,4 +104,4 @@
 <!-- props -->
 
 ---$
-{{xuyajun}}
+{{qinpengfei}}

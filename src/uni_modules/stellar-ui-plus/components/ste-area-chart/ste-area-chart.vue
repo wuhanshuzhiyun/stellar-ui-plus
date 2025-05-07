@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-let uChartsInstance: { [key: string]: any } = {};
 import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
@@ -15,16 +14,17 @@ defineOptions({
     virtualHost: true,
 });
 
+const charth = ref<uCharts<'area'>>();
 // 合并默认对象配置
 let props = defineProps(propsData);
 let cmpProps = computed(() => {
     return {
-        xAxis: utils.deepMerge(utils.deepClone(propsComponent?.xAxis ?? {}), props.xAxis),
-        yAxis: utils.deepMerge(utils.deepClone(propsComponent?.yAxis ?? {}), props.yAxis),
-        legend: utils.deepMerge(utils.deepClone(propsComponent.legend), props.legend),
-        title: utils.deepMerge(utils.deepClone(propsComponent.title), props.title),
-        subtitle: utils.deepMerge(utils.deepClone(propsComponent?.subtitle ?? {}), props.subtitle),
-        extra: utils.deepMerge(utils.deepClone(propsComponent.extra), props.extra),
+        xAxis: utils.deepMerge(utils.deepClone(propsComponent()?.xAxis ?? {}), props.xAxis),
+        yAxis: utils.deepMerge(utils.deepClone(propsComponent()?.yAxis ?? {}), props.yAxis),
+        legend: utils.deepMerge(utils.deepClone(propsComponent()?.legend ?? {}), props.legend),
+        title: utils.deepMerge(utils.deepClone(propsComponent()?.title ?? {}), props.title),
+        subtitle: utils.deepMerge(utils.deepClone(propsComponent()?.subtitle ?? {}), props.subtitle),
+        extra: utils.deepMerge(utils.deepClone(propsComponent()?.extra ?? {}), props.extra),
     };
 });
 
@@ -45,23 +45,23 @@ const chartStyle = computed(() => {
 
 onMounted(() => {
     canvasId.value = utils.guid();
-    // 赋予id，id不能为数字开头
-    drawCharts(props.series);
+    if (props.series.length) {
+        // 赋予id，id不能为数字开头
+        drawCharts(props.series, props.categories);
+    }
 });
 
 watch(
-    () => props.series,
-    (series: any) => {
-        uChartsInstance[canvasId.value].updateData({
-            series: utils.deepClone(series),
-        });
+    () => [props.series, props.categories],
+    (value: any) => {
+        drawCharts(value[0], value[1]);
     }
 );
 
 function drawCharts(series: any, categories: any) {
     // 默认配置项
     const ctx = uni.createCanvasContext(canvasId.value, getCurrentInstance()?.proxy);
-    uChartsInstance[canvasId.value] = new uCharts<'area'>({
+    charth.value = new uCharts<'area'>({
         type: 'area',
         context: ctx,
         width: cWidth.value,
@@ -95,8 +95,8 @@ function drawCharts(series: any, categories: any) {
     });
 }
 function tap(e: any) {
-    uChartsInstance[e.target.id].touchLegend(e);
-    uChartsInstance[e.target.id].showToolTip(e);
+    charth.value?.touchLegend(e);
+    charth.value?.showToolTip(e);
 }
 </script>
 

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 let series1: any = ref([]);
 let categories: any = ref([]);
 let series2: any = ref([]);
-let categories2: any = ref([]);
 
 series1.value = [
     {

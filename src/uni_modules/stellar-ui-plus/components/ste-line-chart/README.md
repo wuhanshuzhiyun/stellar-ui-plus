@@ -9,103 +9,107 @@
 
 ```html
 <template>
-    <ste-funnel-chart :series="series"></ste-funnel-chart>
+    <ste-line-chart :series="series" :categories="categories"></ste-line-chart>
 </template>
 <script setup lang="ts">
-    import { ref, onMounted } from 'vue';
-    let series: any = ref([]);
+    import { ref } from 'vue';
+    const series: any = ref([]);
+    const categories: any = ref([]);
 
-    onMounted(() => {
-        getServerData();
-    });
-    function getServerData() {
-        //模拟从服务器获取数据时的延时
-        setTimeout(() => {
-            // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-            series.value = [
-                {
-                    data: [
-                        { name: '一班', value: 50 },
-                        { name: '二班', value: 30 },
-                        { name: '三班', value: 20 },
-                        { name: '四班', value: 18 },
-                        { name: '五班', value: 8 },
-                    ],
-                },
-            ];
-        }, 100);
-    }
+    series.value = [
+        {
+            name: '目标值',
+            data: [35, 36, 31, 33, 13, 34],
+        },
+    ];
+    categories.value = ['2018', '2019', '2020', '2021', '2022', '2023'];
 </script>
 ```
 
-#### 显示标签
+#### 多图例
 
 ```html
 <template>
-    <ste-funnel-chart :series="series"></ste-funnel-chart>
+    <ste-line-chart :series="series" :categories="categories" :dataLabel="true" :legend="{ show: true }"></ste-line-chart>
 </template>
 <script setup lang="ts">
-    import { ref, onMounted } from 'vue';
-    let series: any = ref([]);
+    import { ref } from 'vue';
+    const series: any = ref([]);
+    const categories: any = ref([]);
 
-    onMounted(() => {
-        getServerData();
-    });
-    function getServerData() {
-        //模拟从服务器获取数据时的延时
-        setTimeout(() => {
-            // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-            series.value = [
-                {
-                    data: [
-                        { name: '一班', centerText: '标签 50', value: 50, labelShow: false },
-                        { name: '二班', centerText: '30', value: 30, labelShow: false },
-                        { name: '三班', centerText: '20', value: 20, labelShow: false },
-                        { name: '四班', centerText: '18', value: 18, labelShow: false },
-                        { name: '五班', centerText: '8', value: 8, labelShow: false },
-                    ],
-                },
-            ];
-        }, 100);
-    }
+    series.value = [
+        {
+            name: '目标值',
+            data: [35, 36, 31, 33, 13, 34],
+        },
+        {
+            name: '完成量',
+            data: [18, 27, 21, 24, 6, 28],
+        },
+    ];
+    categories.value = ['2018', '2019', '2020', '2021', '2022', '2023'];
 </script>
 ```
 
-#### 显示类型
+#### 曲线
 
 ```html
 <template>
-    <view class="item-block">
-        <ste-funnel-chart :series="series" :extra="{ funnel: { type: 'triangle', minSize: 0 } }"></ste-funnel-chart>
-    </view>
-    <view class="item-block">
-        <ste-funnel-chart :series="series" :extra="{ funnel: { type: 'pyramid' } }"></ste-funnel-chart>
-    </view>
+    <ste-line-chart :series="series" :categories="categories" :dataLabel="false" :extra="{ line: { type: 'curve' } }"></ste-line-chart>
 </template>
 <script setup lang="ts">
-    import { ref, onMounted } from 'vue';
-    let series: any = ref([]);
+    import { ref } from 'vue';
+    const series: any = ref([]);
+    const categories: any = ref([]);
 
-    onMounted(() => {
-        getServerData();
-    });
-    function getServerData() {
-        //模拟从服务器获取数据时的延时
-        setTimeout(() => {
-            // 模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-            series.value = [
-                {
-                    data: [
-                        { name: '一班', value: 50 },
-                        { name: '二班', value: 30 },
-                        { name: '三班', value: 20 },
-                        { name: '四班', value: 18 },
-                        { name: '五班', value: 8 },
-                    ],
-                },
-            ];
-        }, 100);
-    }
+    series.value = [
+        {
+            name: '目标值',
+            data: [35, 36, 31, 33, 13, 34],
+        },
+        {
+            name: '完成量',
+            data: [18, 27, 21, 24, 6, 28],
+        },
+    ];
+    categories.value = ['2018', '2019', '2020', '2021', '2022', '2023'];
+</script>
+```
+
+#### 迷你图表
+
+```html
+<template>
+    <ste-line-chart
+        :series="series"
+        :categories="categories"
+        :dataLabel="false"
+        :xAxis="{ disabled: true, disableGrid: true, axisLine: false }"
+        :yAxis="{ disabled: true, disableGrid: true }"
+        width="300"
+    ></ste-line-chart>
+    <ste-line-chart
+        :series="series"
+        :categories="categories"
+        :dataLabel="false"
+        :xAxis="{ disabled: true, disableGrid: true, axisLine: false }"
+        :yAxis="{ disabled: true, disableGrid: true }"
+        :extra="{ line: { type: 'curve' } }"
+        width="300"
+    ></ste-line-chart>
+</template>
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const series: any = ref([]);
+    const categories: any = ref([]);
+
+    series.value = [
+        {
+            name: '目标值',
+            data: [35, 36, 31, 33, 13, 34],
+        },
+    ];
+    categories.value = ['2018', '2019', '2020', '2021', '2022', '2023'];
 </script>
 ```
 

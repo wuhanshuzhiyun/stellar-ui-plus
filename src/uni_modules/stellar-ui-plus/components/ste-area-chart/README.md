@@ -10,7 +10,7 @@
 
 ```html
 <template>
-    <ste-ring-chart :series="series1" :color="['#165DFF', '#DDDDDD']"></ste-ring-chart>
+    <ste-area-chart :series="series1" :categories1="categories1"></ste-area-chart>
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';

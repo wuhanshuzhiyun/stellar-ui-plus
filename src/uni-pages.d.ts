@@ -7,28 +7,35 @@ interface NavigateToOptions {
   url: "/pages/pc/index" |
        "/pages/mp/index" |
        "/pages/pc/login" |
+       "/pages/mp/charts/charts" |
        "/pages/mp/color/color" |
        "/pages/mp/font-size/font-size" |
        "/pages/mp/demo-views/animate/animate" |
+       "/pages/mp/demo-views/area-chart/area-chart" |
        "/pages/mp/demo-views/badge/badge" |
+       "/pages/mp/demo-views/bar-chart/bar-chart" |
        "/pages/mp/demo-views/barcode/barcode" |
        "/pages/mp/demo-views/button/button" |
        "/pages/mp/demo-views/calendar/calendar" |
        "/pages/mp/demo-views/checkbox/checkbox" |
        "/pages/mp/demo-views/code-input/code-input" |
+       "/pages/mp/demo-views/column-chart/column-chart" |
        "/pages/mp/demo-views/date-picker/date-picker" |
        "/pages/mp/demo-views/drag/drag" |
        "/pages/mp/demo-views/dropdown-menu/dropdown-menu" |
+       "/pages/mp/demo-views/funnel-chart/funnel-chart" |
        "/pages/mp/demo-views/icon/icon" |
        "/pages/mp/demo-views/icon-vertical-align/icon-vertical-align" |
        "/pages/mp/demo-views/image/image" |
        "/pages/mp/demo-views/index-list/index-list" |
        "/pages/mp/demo-views/input/input" |
+       "/pages/mp/demo-views/line-chart/line-chart" |
        "/pages/mp/demo-views/loading/loading" |
        "/pages/mp/demo-views/media-preview/media-preview" |
        "/pages/mp/demo-views/message-box/message-box" |
        "/pages/mp/demo-views/notice-bar/notice-bar" |
        "/pages/mp/demo-views/number-keyboard/number-keyboard" |
+       "/pages/mp/demo-views/pie-chart/pie-chart" |
        "/pages/mp/demo-views/popup/popup" |
        "/pages/mp/demo-views/price/price" |
        "/pages/mp/demo-views/progress/progress" |
@@ -37,6 +44,7 @@ interface NavigateToOptions {
        "/pages/mp/demo-views/rate/rate" |
        "/pages/mp/demo-views/read-more/read-more" |
        "/pages/mp/demo-views/rich-text/rich-text" |
+       "/pages/mp/demo-views/ring-chart/ring-chart" |
        "/pages/mp/demo-views/scroll-to/scroll-to" |
        "/pages/mp/demo-views/search/search" |
        "/pages/mp/demo-views/select/select" |

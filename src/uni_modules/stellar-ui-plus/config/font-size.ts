@@ -54,6 +54,9 @@ class FontSize {
         return FontSize.config.max;
     }
     constructor() {
+        if (process.env.NODE_ENV == 'test') {
+            return;
+        }
         const storage = uni.getStorageSync(storageKey) ? JSON.parse(uni.getStorageSync(storageKey)) : null;
         if (storage && storage.min) FontSize.config.min = storage.min;
         if (storage && storage.max) FontSize.config.max = storage.max;
@@ -71,6 +74,9 @@ export function normalizeFontSize<T extends boolean>(rpx: number, num?: T): ResN
 
 const fontSizeStyle = reactive<{ [key: string]: string }>({});
 function setFontSize() {
+    if (process.env.NODE_ENV == 'test') {
+        return;
+    }
     for (let i = FontSize.config.min; i <= FontSize.config.max; i++) fontSizeStyle[`--font-size-${i}`] = FontSize.rpx2px(i, false);
     uni.setStorageSync(storageKey, JSON.stringify(FontSize.config));
 }

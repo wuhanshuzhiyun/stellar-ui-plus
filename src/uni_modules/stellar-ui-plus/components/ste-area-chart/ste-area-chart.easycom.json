@@ -1,0 +1,209 @@
+{
+    "name": "ste-area-chart",
+    "description": "面积图",
+    "example": "<ste-area-chart></ste-area-chart>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=area-chart",
+    "attributes": [
+        {
+            "name": "width",
+            "description": "图表宽度，单位rpx",
+            "type": "number | string",
+            "default": "750"
+        },
+        {
+            "name": "height",
+            "description": "图表高度，单位rpx",
+            "type": "number | string",
+            "default": "500"
+        },
+        {
+            "name": "series",
+            "description": "图表数据",
+            "type": "Object",
+            "default": []
+        },
+        {
+            "name": "categories",
+            "description": "图表数据",
+            "type": "Object",
+            "default": []
+        },
+        {
+            "name": "canvas2d",
+            "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "pixelRatio",
+            "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+            "type": "number",
+            "default": "1"
+        },
+        {
+            "name": "animation",
+            "description": "是否动画展示图表",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "timing",
+            "description": "图表动画效果",
+            "type": "string",
+            "default": "easeOut",
+            "values": [
+                { "name": "easeOut", "description": "由快到慢" },
+                { "name": "easeIn", "description": "由慢到快" },
+                { "name": "easeInOut", "description": "慢快慢" },
+                { "name": "linear", "description": "匀速" }
+            ]
+        },
+        {
+            "name": "duration",
+            "description": "动画展示时长（单位：毫秒）",
+            "type": "string",
+            "default": "1000"
+        },
+        {
+            "name": "rotate",
+            "description": "横屏模式",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "rotateLock",
+            "description": "横屏锁定模式",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "background",
+            "description": "背景颜色，开启滚动条后请赋值",
+            "type": "string",
+            "default": "rgba(0,0,0,0)"
+        },
+        {
+            "name": "color",
+            "description": "主题颜色数组，16进制颜色格式",
+            "type": "array",
+            "default": ["#165DFF", "#14C9C9", "#F7BA1E", "#3491FA", "#F53F3F"]
+        },
+        {
+            "name": "padding",
+            "description": "画布填充边距（顺序为上右下左），单位px",
+            "type": "array",
+            "default": [15, 15, 0, 5]
+        },
+        {
+            "name": "fontSize",
+            "description": "全局默认字体大小，单位px",
+            "type": "number",
+            "default": 13
+        },
+        {
+            "name": "fontColor",
+            "description": "全局默认字体颜色",
+            "type": "string",
+            "default": "#666666"
+        },
+        {
+            "name": "dataLabel",
+            "description": "是否显示图表区域内数据点上方的数据文案",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "dataPointShape",
+            "description": "是否显示数据点的图形标识",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "dataPointShapeType",
+            "description": "图形标识点显示类型",
+            "type": "string",
+            "default": "solid",
+            "values": [
+                { "name": "solid", "description": "实心" },
+                { "name": "hollow", "description": "空心" }
+            ]
+        },
+        {
+            "name": "touchMoveLimit",
+            "description": "图表拖拽时每秒重新渲染的帧数",
+            "type": "number",
+            "default": 24
+        },
+        {
+            "name": "enableScroll",
+            "description": "开启滚动条功能",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "enableMarkLine",
+            "description": "是否启用标记线功能",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "scrollPosition",
+            "description": "连续更新数据时滚动条的位置",
+            "type": "string",
+            "default": "current",
+            "values": [
+                { "name": "current", "description": "当前位置" },
+                { "name": "left", "description": "左对齐" },
+                { "name": "right", "description": "右对齐" }
+            ]
+        },
+        {
+            "name": "series",
+            "description": "图表数据",
+            "type": "object",
+            "default": {}
+        },
+        {
+            "name": "xAxis",
+            "description": "X轴配置",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "yAxis",
+            "description": "Y轴配置",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "legend",
+            "description": "图例配置",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "title",
+            "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "subtitle",
+            "description": "副标题配置",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "extra",
+            "description": "额外配置项",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        },
+        {
+            "name": "event",
+            "description": "事件",
+            "type": "-",
+            "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+        }
+    ]
+}

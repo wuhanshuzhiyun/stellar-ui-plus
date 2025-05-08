@@ -1,7 +1,9 @@
+// useMessageBox.ts
 import { getMessageBoxKey } from './ste-message-box';
 import type { MessageBoxOptions } from './constants';
 
 export function useMessageBox(customKey?: string) {
+    // 获取基于当前页面路由的消息框key
     const msgKey = getMessageBoxKey(customKey);
 
     // 打开弹窗

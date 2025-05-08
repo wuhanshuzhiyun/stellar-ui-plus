@@ -1,17 +1,16 @@
 {
     "name": "stellar-ui-plus",
-    "version": "1.18.4",
+    "version": "1.18.6",
     "description": "",
     "author": "",
     "license": "MIT",
     "main": "index.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/wuhanshuzhiyun/stellar-ui-plus.git"
+        "url": "git+https://github.com/wuhanshuzhiyun/stellar-ui-plus.git"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "publish-vscode-plugin": "cd ../../../plugins/ste-helper & pnpm run publish",
-        "prepublishOnly": "pnpm run publish-vscode-plugin"
+        "publish-vscode-plugin": "cd ../../../plugins/ste-helper & pnpm run publish"
     }
 }

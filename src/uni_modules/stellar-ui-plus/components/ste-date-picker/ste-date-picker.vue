@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, nextTick, computed } from 'vue';
+import { ref, onMounted, nextTick, computed, watch } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import propsData from './props';
@@ -56,6 +56,7 @@ const emits = defineEmits<{
     (e: 'change', changeObj: any): void;
     (e: 'cancel'): void;
     (e: 'confirm', value: string | number): void;
+    (e: 'update:value', value: string | number): void;
 }>();
 
 const columns = ref<string[][]>([]);
@@ -64,6 +65,13 @@ const innerDefaultIndex = ref<number[]>([]);
 
 const show = ref(false);
 const innerFormatter = (type: string, value: string) => value;
+
+watch(
+    () => props.value,
+    () => {
+        init();
+    }
+);
 
 const init = () => {
     innerValue.value = correctValue(props.value);
@@ -266,6 +274,7 @@ const change = (e: { indexs: number[]; values: string[][] }) => {
 
     updateColumnValue(selectValue);
     emits('change', { value: selectValue, columnIndexs: indexs });
+    emits('update:value', selectValue);
 };
 
 const cancel = () => {

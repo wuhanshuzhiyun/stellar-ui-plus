@@ -1,0 +1,7 @@
+{
+    "name": "ste-filter-tool",
+    "description": "筛选选项",
+    "example": "<ste-filter-tool></ste-filter-tool>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=filter-tool",
+    "attributes": []
+}

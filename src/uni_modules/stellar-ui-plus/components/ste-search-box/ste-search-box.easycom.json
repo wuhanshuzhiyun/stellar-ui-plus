@@ -1,0 +1,7 @@
+{
+    "name": "ste-search-box",
+    "description": "搜索组件",
+    "example": "<ste-search-box></ste-search-box>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=search-box",
+    "attributes": []
+}

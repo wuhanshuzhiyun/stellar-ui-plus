@@ -34,7 +34,7 @@ interface FormatTreeOptions {
 const utils = {
     System,
     Color,
-    dayjs: dayjs.default,
+    dayjs: (t?: any, e?: any) => dayjs.default(t, e),
     config,
     /**
      * 节流

@@ -33,5 +33,10 @@
         "group": "图表组件",
         "key": "chart",
         "sort": 6
+    },
+    "业务组件": {
+        "group": "业务组件",
+        "key": "business",
+        "sort": 6
     }
 }

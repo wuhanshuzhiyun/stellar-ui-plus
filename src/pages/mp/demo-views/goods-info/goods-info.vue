@@ -1,34 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const data = ref([
-    {
-        label: '调价类型',
-        value: '促销调价',
-    },
-    {
-        label: '原售价',
-        value: '￥ 20.90',
-    },
-    {
-        label: '新售价',
-        value: '￥ 19.90',
-    },
-    {
-        label: '变更日期',
-        value: '2025-05-20',
-    },
-]);
+const data = ref({});
 </script>
 <template>
-    <page-layout title="商品列表" contentStyle="padding: 0">
+    <page-layout title="商品信息" contentStyle="padding: 0">
         <view class="description">
-            <view class="cmp-name">GoodsList 商品列表</view>
-            <view class="cmp-desc">商品列表组件用于展示商品信息</view>
+            <view class="cmp-name">GoodsList 商品信息</view>
+            <view class="cmp-desc">商品信息组件用于展示商品信息</view>
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
-            <ste-goods-list title="价格数据" :data="data" />
+            <ste-goods-info :data="data" />
         </view>
     </page-layout>
 </template>

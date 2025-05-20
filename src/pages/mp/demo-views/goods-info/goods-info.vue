@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const data = ref({});
+const data = ref({
+    image: 'https://img.alicdn.com/imgextra/i2/O1CN01KXjxYq1q2Y9jKZY5y_!!6000000001498-0-tps-200-200.png',
+    title: '商品名称',
+    tag: '新品',
+    barCode: '1234567890123',
+    code: '1234567890123',
+    price: '￥ 999.00',
+    originalPrice: '￥ 999.00',
+});
 </script>
 <template>
     <page-layout title="商品信息" contentStyle="padding: 0">

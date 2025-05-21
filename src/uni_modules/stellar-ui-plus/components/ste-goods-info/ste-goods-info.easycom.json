@@ -5,195 +5,96 @@
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=calendar",
     "attributes": [
         {
-            "name": "title",
-            "description": "尺寸",
+            "name": "data",
+            "description": "商品数据",
+            "type": "{ image: string; title: string; tag?: string; barCode: string; code: string; price: string | number; originalPrice?: string | number }",
+            "default": "{}"
+        },
+        {
+            "name": "tagBg",
+            "description": "标签背景色",
             "type": "string",
-            "default": "日期选择"
+            "default": "主题色"
         },
         {
-            "name": "showTitle",
-            "description": "是否显示标题",
-            "type": "boolean",
-            "default": true
-        },
-        {
-            "name": "list",
-            "description": "选中的日期列表",
-            "type": "number | string",
-            "default": []
-        },
-        {
-            "name": "mode",
-            "description": "选项的值",
+            "name": "checkbox",
+            "description": "选择框位置",
             "type": "string",
-            "default": "single",
+            "default": "none",
             "values": [
-                {
-                    "name": "single",
-                    "description": "选择单个日期（默认）"
-                },
-                {
-                    "name": "multiple",
-                    "description": "可以选择多个日期"
-                },
-                {
-                    "name": "range",
-                    "description": "可以选择日期范围"
-                }
+                { "name": "none", "description": "不显示选择框" },
+                { "name": "left", "description": "选择框在左侧" },
+                { "name": "right", "description": "选择框在右侧" }
             ]
         },
         {
-            "name": "startText",
-            "description": "开始日期文本",
-            "type": "string",
-            "default": "开始"
-        },
-        {
-            "name": "endText",
-            "description": "结束日期文本",
-            "type": "string",
-            "default": "结束"
-        },
-        {
-            "name": "color",
-            "description": "主题颜色（选中日期背景、周末文日期颜色和确定按钮）",
-            "type": "string",
-            "default": "#0090FF"
-        },
-        {
-            "name": "minDate",
-            "description": "最小可选日期",
-            "type": "number | string | Date",
-            "default": 0
-        },
-        {
-            "name": "maxDate",
-            "description": "最大可选日期",
-            "type": "number | string | Date",
-            "default": 0
-        },
-        {
-            "name": "maxCount",
-            "description": "mode=multiple时，最多可选多少个日期",
-            "type": "number",
-            "default": 0
-        },
-        {
-            "name": "formatter",
-            "description": "日期格式化(默认'YYYY-MM-DD')",
-            "type": "string",
-            "default": "YYYY-MM-DD"
-        },
-        {
-            "name": "showMark",
-            "description": "是否显示月份背景色",
-            "type": "boolean",
-            "default": true
-        },
-        {
-            "name": "readonly",
-            "description": "是否为只读状态，只读状态下禁止选择日期",
+            "name": "checked",
+            "description": "是否选中",
             "type": "boolean",
             "default": false
         },
         {
-            "name": "maxRange",
-            "description": "日期区间最多可选天数，默认无限制，mode = range时有效",
-            "type": "number"
-        },
-        {
-            "name": "rangePrompt",
-            "description": "范围选择超过最多可选天数时的提示文案，mode = range时有效",
-            "type": "string"
-        },
-        {
-            "name": "showRangePrompt",
-            "description": "范围选择超过最多可选天数时，是否展示提示文案，mode = range时有效",
-            "type": "boolean",
-            "default": true
-        },
-        {
-            "name": "allowSameDay",
-            "description": "是否允许日期范围的起止时间为同一天，mode = range时有效",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "showConfirm",
-            "description": "是否显示确定按钮",
-            "type": "boolean",
-            "default": true
-        },
-        {
-            "name": "width",
-            "description": "可视区域宽度",
-            "type": "number | string",
-            "default": "100%"
-        },
-        {
-            "name": "height",
-            "description": "可视区域高度",
-            "type": "number | string",
-            "default": "100%"
-        },
-        {
-            "name": "defaultDate",
-            "description": "默认展示的日期",
-            "type": "number | string | Date",
-            "default": "今天"
-        },
-        {
-            "name": "monthCount",
-            "description": "渲染的月份个数",
-            "type": "number",
-            "default": 12
-        },
-        {
-            "name": "weekendColor",
-            "description": "周末颜色，默认跟随主题色",
+            "name": "watermark",
+            "description": "水印URL",
             "type": "string",
             "default": ""
         },
         {
-            "name": "signs",
-            "description": "日历标签",
-            "type": "{[key:string]:SignType}",
-            "default": "{}"
+            "name": "number",
+            "description": "数量",
+            "type": "number",
+            "default": 1
         },
         {
-            "name": "[event]select",
-            "description": "选择日期时触发",
-            "type": "(days:(number|string)[],day:number|string) => void",
+            "name": "stepper",
+            "description": "是否显示步进器",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "precision",
+            "description": "数值精度",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "step",
+            "description": "步进器步长",
+            "type": "number",
+            "default": 1
+        },
+        {
+            "name": "min",
+            "description": "步进器最小值",
+            "type": "number",
+            "default": 1
+        },
+        {
+            "name": "max",
+            "description": "步进器最大值",
+            "type": "number",
+            "default": 9999
+        },
+
+        {
+            "name": "[event]change",
+            "description": "数值/选择改变时触发",
+            "type": "( data: { number?: number; checked?: boolean }) => void",
             "params": [
                 {
-                    "name": "days",
-                    "description": "选中的日期列表"
-                },
-                {
-                    "name": "day",
-                    "description": "当前选中的日期"
+                    "name": "data",
+                    "description": "最新数据"
                 }
             ]
         },
         {
-            "name": "[event]confirm",
+            "name": "[event]click",
             "description": "点击确定按钮时触发",
-            "type": "(days:(number|string)[]) => void",
+            "type": "(type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => void",
             "params": [
                 {
-                    "name": "days",
-                    "description": "当前选中的日期列表"
-                }
-            ]
-        },
-        {
-            "name": "[event]view-month",
-            "description": "页面展示月份发生变化时触发",
-            "type": "(month:string) => void",
-            "params": [
-                {
-                    "name": "month",
-                    "description": "当前页面上显示的月份"
+                    "name": "type",
+                    "description": "点击位置"
                 }
             ]
         }

@@ -2,24 +2,61 @@
 import { ref } from 'vue';
 
 const data = ref({
-    image: 'https://img.alicdn.com/imgextra/i2/O1CN01KXjxYq1q2Y9jKZY5y_!!6000000001498-0-tps-200-200.png',
-    title: '商品名称',
+    image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
+    title: '商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称',
     tag: '新品',
+    code: '123456',
     barCode: '1234567890123',
-    code: '1234567890123',
-    price: '￥ 999.00',
-    originalPrice: '￥ 999.00',
+    price: '99900',
+    originalPrice: '99900',
 });
+
+const onChange = (d: { number?: number; checked?: boolean }) => {
+    let msg = '';
+    if (d.number !== undefined) {
+        msg = `当前数量为：${d.number}`;
+    }
+    if (d.checked !== undefined) {
+        msg = `当前选中状态为：${d.checked}`;
+    }
+    uni.showToast({
+        title: msg,
+        icon: 'none',
+    });
+};
+
+const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => {
+    uni.showToast({
+        title: `点击了${type}`,
+        icon: 'none',
+    });
+};
 </script>
 <template>
-    <page-layout title="商品信息" contentStyle="padding: 0">
+    <page-layout title="商品信息" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
         <view class="description">
             <view class="cmp-name">GoodsList 商品信息</view>
             <view class="cmp-desc">商品信息组件用于展示商品信息</view>
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
-            <ste-goods-info :data="data" />
+            <ste-goods-info :data="data"></ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">显示选择框</view>
+            <ste-goods-info checkbox="right" :data="data" @change="onChange"></ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">显示进步器</view>
+            <ste-goods-info :data="data" stepper :number="10" @change="onChange"></ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">插槽</view>
+            <ste-goods-info :data="data">插槽内容</ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">点击位置</view>
+            <ste-goods-info :data="data" @click="onClick" />
         </view>
     </page-layout>
 </template>

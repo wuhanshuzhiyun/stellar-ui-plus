@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, computed, nextTick } from 'vue';
+import { ref, watch, computed } from 'vue';
 import setImage from '../ste-image/ste-image.vue';
 import setPrice from '../ste-price/ste-price.vue';
 import steStepper from '../ste-stepper/ste-stepper.vue';
@@ -128,14 +128,12 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            // 文字向下对其
-            vertical-align: bottom;
             .ste-goods-info-tag-box {
                 display: inline-flex;
-                height: 28rpx;
                 margin-right: 8rpx;
-                align-items: center;
+
                 .ste-goods-info-tag {
+                    transform: translateY(-2rpx);
                     height: 26rpx;
                     font-size: 18rpx;
                     padding: 0 8rpx;

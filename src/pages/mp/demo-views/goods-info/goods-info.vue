@@ -60,7 +60,7 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
             <ste-goods-info checkbox="right" v-model:checked="checked" :data="data" @change="onChange" />
         </view>
         <view class="demo-item">
-            <view class="title">### 显示步进器</view>
+            <view class="title">显示步进器</view>
             <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" />
         </view>
         <view class="demo-item">

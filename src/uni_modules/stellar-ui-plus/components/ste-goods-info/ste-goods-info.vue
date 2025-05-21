@@ -5,7 +5,7 @@ import setPrice from '../ste-price/ste-price.vue';
 import steStepper from '../ste-stepper/ste-stepper.vue';
 import setCheckbox from '../ste-checkbox/ste-checkbox.vue';
 import { useColorStore } from '../../store/color';
-import propsData from './props';
+import propsData, { type GoodsInfoType } from './props';
 
 let { getColor } = useColorStore();
 
@@ -14,7 +14,7 @@ const props = defineProps(propsData);
 const emits = defineEmits<{
     (e: 'update:number', number?: number): void;
     (e: 'update:checked', checked?: boolean): void;
-    (e: 'change', data: { number?: number; checked?: boolean }): void;
+    (e: 'change', change: { number?: number; checked?: boolean }, data: GoodsInfoType): void;
     (e: 'click', type: 'image' | 'title' | 'code' | 'price' | 'originalPrice'): void;
 }>();
 
@@ -54,12 +54,12 @@ const rootClass = computed(() => ({
 
 const numberChange = () => {
     emits('update:number', _number.value);
-    emits('change', { number: _number.value });
+    emits('change', { number: _number.value }, props.data);
 };
 
 const checkboxChange = () => {
     emits('update:checked', _checked.value);
-    emits('change', { checked: _checked.value });
+    emits('change', { checked: _checked.value }, props.data);
 };
 
 const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => {

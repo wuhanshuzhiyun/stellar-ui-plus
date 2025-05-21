@@ -1,9 +1,19 @@
 import type { PropType } from 'vue';
 
+export interface GoodsInfoType extends Record<string, any> {
+    image?: string;
+    title?: string;
+    tag?: string;
+    barCode?: string;
+    code?: string;
+    price?: string | number;
+    originalPrice?: string | number;
+}
+
 export default {
     /** 商品数据 */
     data: {
-        type: Object as PropType<{ image: string; title: string; tag?: string; barCode: string; code: string; price: string | number; originalPrice?: string | number; [key: string]: any }>,
+        type: Object as PropType<GoodsInfoType>,
         default: () => ({}),
     },
     /** 标签背景色 */

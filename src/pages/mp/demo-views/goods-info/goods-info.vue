@@ -7,7 +7,7 @@ const data = ref({
     tag: '新品',
     code: '123456',
     barCode: '1234567890123',
-    price: '99900',
+    price: '88800',
     originalPrice: '99900',
 });
 
@@ -40,22 +40,22 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
-            <ste-goods-info :data="data"></ste-goods-info>
+            <ste-goods-info :data="data" />
         </view>
         <view class="demo-item">
             <view class="title">显示选择框</view>
-            <ste-goods-info checkbox="right" :data="data" @change="onChange"></ste-goods-info>
+            <ste-goods-info checkbox="right" :data="data" @change="onChange" />
         </view>
         <view class="demo-item">
-            <view class="title">显示进步器</view>
-            <ste-goods-info :data="data" stepper :number="10" @change="onChange"></ste-goods-info>
+            <view class="title">### 显示步进器</view>
+            <ste-goods-info :data="data" stepper :number="10" @change="onChange" />
         </view>
         <view class="demo-item">
             <view class="title">插槽</view>
             <ste-goods-info :data="data">插槽内容</ste-goods-info>
         </view>
         <view class="demo-item">
-            <view class="title">点击位置</view>
+            <view class="title">点击事件</view>
             <ste-goods-info :data="data" @click="onClick" />
         </view>
     </page-layout>

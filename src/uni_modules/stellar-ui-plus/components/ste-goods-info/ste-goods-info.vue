@@ -92,7 +92,16 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
             <view class="ste-goods-info-price">
                 <view class="ste-goods-info-price-left">
                     <setPrice :value="data.price" :digits="2" bold :styleType="3" fontSize="26" @click="onClick('price')" />
-                    <setPrice v-if="data.originalPrice" :value="data.originalPrice" isSuggestPrice linePriceColor="#666666" marginLeft="16" fontSize="20" @click="onClick('originalPrice')" />
+                    <setPrice
+                        v-if="data.originalPrice"
+                        :digits="2"
+                        :value="data.originalPrice"
+                        isSuggestPrice
+                        linePriceColor="#666666"
+                        marginLeft="16"
+                        fontSize="20"
+                        @click="onClick('originalPrice')"
+                    />
                 </view>
                 <view class="ste-goods-info-price-right" v-if="stepper">
                     <steStepper v-model="_number" :precision="precision" :step="step" @change="numberChange" theme="line" :min="min" :max="max" />

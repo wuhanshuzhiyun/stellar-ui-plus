@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const data = ref({
     image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
@@ -10,7 +10,20 @@ const data = ref({
     price: '88800',
     originalPrice: '99900',
 });
-
+const number = ref(10);
+watch(
+    () => number.value,
+    v => {
+        console.log(v);
+    }
+);
+const checked = ref(false);
+watch(
+    () => checked.value,
+    v => {
+        console.log(v);
+    }
+);
 const onChange = (d: { number?: number; checked?: boolean }) => {
     let msg = '';
     if (d.number !== undefined) {
@@ -44,11 +57,11 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         </view>
         <view class="demo-item">
             <view class="title">显示选择框</view>
-            <ste-goods-info checkbox="right" :data="data" @change="onChange" />
+            <ste-goods-info checkbox="right" v-model:checked="checked" :data="data" @change="onChange" />
         </view>
         <view class="demo-item">
             <view class="title">### 显示步进器</view>
-            <ste-goods-info :data="data" stepper :number="10" @change="onChange" />
+            <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" />
         </view>
         <view class="demo-item">
             <view class="title">插槽</view>

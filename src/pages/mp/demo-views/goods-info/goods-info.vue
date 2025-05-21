@@ -26,7 +26,10 @@ const onChange = (d: { number?: number; checked?: boolean }) => {
 };
 
 const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => {
-    console.log('click', type);
+    uni.showToast({
+        title: `点击了${type}`,
+        icon: 'none',
+    });
 };
 </script>
 <template>
@@ -41,11 +44,19 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         </view>
         <view class="demo-item">
             <view class="title">显示选择框</view>
-            <ste-goods-info checkbox="right" :data="data" @change="onChange" @click="onClick"></ste-goods-info>
+            <ste-goods-info checkbox="right" :data="data" @change="onChange"></ste-goods-info>
         </view>
         <view class="demo-item">
             <view class="title">显示进步器</view>
-            <ste-goods-info :data="data" stepper :number="10" @change="onChange" @click="onClick"></ste-goods-info>
+            <ste-goods-info :data="data" stepper :number="10" @change="onChange"></ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">插槽</view>
+            <ste-goods-info :data="data">插槽内容</ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">点击位置</view>
+            <ste-goods-info :data="data" @click="onClick" />
         </view>
     </page-layout>
 </template>

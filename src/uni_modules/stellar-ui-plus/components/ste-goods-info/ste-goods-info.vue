@@ -122,7 +122,7 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
         .ste-goods-info-title {
             font-weight: bold;
             font-size: 28rpx;
-            line-height: 30rpx;
+            line-height: 28rpx;
             color: #1c1f23;
             // 文字溢出隐藏显示省略号
             overflow: hidden;
@@ -132,7 +132,7 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
             vertical-align: bottom;
             .ste-goods-info-tag-box {
                 display: inline-flex;
-                height: 30rpx;
+                height: 28rpx;
                 margin-right: 8rpx;
                 align-items: center;
                 .ste-goods-info-tag {

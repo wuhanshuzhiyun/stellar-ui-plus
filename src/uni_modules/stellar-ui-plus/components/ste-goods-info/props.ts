@@ -13,7 +13,7 @@ export default {
     /** 单选框位置 */
     checkboxPositions: {
         type: String as PropType<'left' | 'right' | 'none'>,
-        default: () => 'right',
+        default: () => 'none',
     },
     /** 是否选中 */
     checked: {
@@ -28,6 +28,7 @@ export default {
     /** 数量 */
     number: {
         type: Number,
+        default: () => 1,
     },
     /** 是否显示步进器 */
     stepper: {
@@ -43,5 +44,15 @@ export default {
     step: {
         type: Number,
         default: () => 1,
+    },
+    /** 最小值 */
+    min: {
+        type: Number,
+        default: () => 1,
+    },
+    /** 最大值 */
+    max: {
+        type: Number,
+        default: () => 9999,
     },
 };

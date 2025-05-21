@@ -28,7 +28,7 @@ const data = ref([
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
-            <ste-goods-list title="价格数据" :data="data" />
+            <ste-goods-list title="价格数据" :data="data" method methodText="查看详情" />
         </view>
     </page-layout>
 </template>

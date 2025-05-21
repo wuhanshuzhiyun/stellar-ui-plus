@@ -10,6 +10,18 @@ const data = ref({
     price: '99900',
     originalPrice: '99900',
 });
+
+const onChange = (d: { number?: number; checked?: boolean }) => {
+    console.log('change', d);
+    uni.showToast({
+        title: `【number:${d.number}】\t【checked:${d.checked}】`,
+        icon: 'none',
+    });
+};
+
+const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => {
+    console.log('click', type);
+};
 </script>
 <template>
     <page-layout title="商品信息" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
@@ -19,7 +31,11 @@ const data = ref({
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
-            <ste-goods-info :data="data" stepper :number="10"></ste-goods-info>
+            <ste-goods-info :data="data"></ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">显示进步器和选择框</view>
+            <ste-goods-info checkbox="right" :data="data" stepper :number="10" @change="onChange" @click="onClick"></ste-goods-info>
         </view>
     </page-layout>
 </template>

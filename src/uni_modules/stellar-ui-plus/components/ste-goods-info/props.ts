@@ -3,15 +3,15 @@ import type { PropType } from 'vue';
 export default {
     /** 商品数据 */
     data: {
-        type: Object as PropType<{ image: string; title: string; tag?: string; barCode: string; code: string; price: string | number; originalPrice?: string | number }>,
+        type: Object as PropType<{ image: string; title: string; tag?: string; barCode: string; code: string; price: string | number; originalPrice?: string | number; [key: string]: any }>,
         default: () => ({}),
     },
     /** 标签背景色 */
     tagBg: {
         type: String,
     },
-    /** 单选框位置 */
-    checkboxPositions: {
+    /** 选择框位置 */
+    checkbox: {
         type: String as PropType<'left' | 'right' | 'none'>,
         default: () => 'none',
     },

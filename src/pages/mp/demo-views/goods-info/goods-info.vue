@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 const data = ref({
-    image: 'https://image.whzb.com/chain/StellarUI/none.png',
+    image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
     title: '商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称',
     tag: '新品',
     code: '123456',
@@ -12,9 +12,15 @@ const data = ref({
 });
 
 const onChange = (d: { number?: number; checked?: boolean }) => {
-    console.log('change', d);
+    let msg = '';
+    if (d.number !== undefined) {
+        msg = `当前数量为：${d.number}`;
+    }
+    if (d.checked !== undefined) {
+        msg = `当前选中状态为：${d.checked}`;
+    }
     uni.showToast({
-        title: `【number:${d.number}】\t【checked:${d.checked}】`,
+        title: msg,
         icon: 'none',
     });
 };
@@ -34,8 +40,12 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
             <ste-goods-info :data="data"></ste-goods-info>
         </view>
         <view class="demo-item">
-            <view class="title">显示进步器和选择框</view>
-            <ste-goods-info checkbox="right" :data="data" stepper :number="10" @change="onChange" @click="onClick"></ste-goods-info>
+            <view class="title">显示选择框</view>
+            <ste-goods-info checkbox="right" :data="data" @change="onChange" @click="onClick"></ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">显示进步器</view>
+            <ste-goods-info :data="data" stepper :number="10" @change="onChange" @click="onClick"></ste-goods-info>
         </view>
     </page-layout>
 </template>

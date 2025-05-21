@@ -54,12 +54,12 @@ const rootClass = computed(() => ({
 
 const numberChange = () => {
     emits('update:number', _number.value);
-    emits('change', { number: _number.value, checked: _checked.value });
+    emits('change', { number: _number.value });
 };
 
 const checkboxChange = () => {
     emits('update:checked', _checked.value);
-    emits('change', { number: _number.value, checked: _checked.value });
+    emits('change', { checked: _checked.value });
 };
 
 const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => {

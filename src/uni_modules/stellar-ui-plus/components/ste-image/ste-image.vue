@@ -55,14 +55,12 @@ watch(
 );
 
 const onLoadOver = (e: BaseEvent) => {
-    console.log('onLoadOver', e);
     initializing.value = false;
     if (status.value !== 1) status.value = 1;
     emits('load', e);
 };
 
 const onFault = (e?: BaseEvent) => {
-    console.log('onFault', e);
     if (status.value !== 2) status.value = 2;
     emits('error', e);
 };

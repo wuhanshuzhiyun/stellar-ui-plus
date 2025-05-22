@@ -18,6 +18,8 @@ type PartType = 0 | 1 | 2;
 let throLast: number = 0;
 let throTimer: ReturnType<typeof setTimeout> | null = null;
 
+let windowWidth: number = 0;
+
 // 定义延迟选项接口
 interface DelayOption {
     delay?: number;
@@ -555,6 +557,16 @@ const utils = {
             return result;
         };
         return _flatten(tree);
+    },
+    /**
+     * px转rpx
+     * @param {number} px 待转换的px值
+     */
+    px2rpx(px: number) {
+        if (windowWidth === 0) windowWidth = this.System?.getWindowInfo()?.windowWidth ?? 750;
+
+        const rpx = (px * 750) / windowWidth;
+        return rpx;
     },
 };
 

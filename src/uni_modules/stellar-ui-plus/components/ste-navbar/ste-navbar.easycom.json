@@ -1,0 +1,129 @@
+{
+    "name": "ste-navbar",
+    "description": "提供导航功能，常用于页面顶部。",
+    "example": "<ste-navbar></ste-navbar>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=navbar",
+    "attributes": [
+        {
+            "name": "autoBack",
+            "description": "是否显示返回按钮",
+            "type": "Boolean",
+            "default": true
+        },
+        {
+            "name": "backColor",
+            "description": "返回按钮颜色",
+            "type": "String",
+            "default": "#000"
+        },
+        {
+            "name": "backCode",
+            "description": "返回按钮icon的code",
+            "type": "String",
+            "default": "&#xe673;"
+        },
+        {
+            "name": "backCode",
+            "description": "返回按钮icon的code",
+            "type": "String",
+            "default": "&#xe673;"
+        },
+        {
+            "name": "backBackgroundColor",
+            "description": "返回按钮的背景颜色",
+            "type": "String",
+            "default": "transparent"
+        },
+        {
+            "name": "backBorderColor",
+            "description": "返回按钮的边框颜色",
+            "type": "String",
+            "default": "transparent"
+        },
+        {
+            "name": "backOpacity",
+            "description": "返回按钮透明度",
+            "type": "Number",
+            "default": 1
+        },
+        {
+            "name": "stopNavigateBack",
+            "description": "是否阻止点击返回按钮后，返回到上一页",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "title",
+            "description": "标题文本",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "titleColor",
+            "description": "标题颜色",
+            "type": "String",
+            "default": "#181818"
+        },
+        {
+            "name": "titleAlignment",
+            "description": "标题对齐方式",
+            "type": "Number",
+            "default": 1,
+            "values": [
+                {
+                    "name": 1,
+                    "description": "居左"
+                },
+                {
+                    "name": 2,
+                    "description": "居中"
+                }
+            ]
+        },
+        {
+            "name": "fixed",
+            "description": "是否固定到顶部",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "safeAreaInsetTop",
+            "description": "是否开启顶部安全区适配",
+            "type": "Boolean",
+            "default": true
+        },
+        {
+            "name": "zIndex",
+            "description": "导航栏 z-index",
+            "type": "Number",
+            "default": 10
+        },
+        {
+            "name": "backgroundColor",
+            "description": "导航栏背景色",
+            "type": "String",
+            "default": "transparent"
+        },
+        {
+            "name": "colorType",
+            "description": "标题对齐方式",
+            "type": "Number|String",
+            "default": "left",
+            "values": [
+                {
+                    "name": 1,
+                    "description": "黑色"
+                },
+                {
+                    "name": 2,
+                    "description": "白色"
+                }
+            ]
+        },
+        {
+            "name": "[event]backClick",
+            "description": "返回按钮点击",
+            "type": "()=>void"
+        }
+    ]
+}

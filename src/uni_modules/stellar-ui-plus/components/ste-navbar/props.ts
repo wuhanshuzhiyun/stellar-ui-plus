@@ -1,0 +1,17 @@
+export default {
+    autoBack: { type: Boolean, default: true },
+    backColor: { type: String, default: '#000' },
+    backCode: { type: String, default: '&#xe673;' },
+    backBackgroundColor: { type: String, default: 'transparent' },
+    backBorderColor: { type: String, default: 'transparent' },
+    backOpacity: { type: Number, default: 1 },
+    stopNavigateBack: { type: Boolean, default: false },
+    title: { type: String, default: '' },
+    titleColor: { type: String, default: '#181818' },
+    titleAlignment: { type: Number, default: 1 },
+    fixed: { type: Boolean, default: false },
+    safeAreaInsetTop: { type: Boolean, default: true },
+    zIndex: { type: Number, default: 10 },
+    backgroundColor: { type: String, default: 'transparent' },
+    colorType: { type: [Number, String], default: 1 },
+};

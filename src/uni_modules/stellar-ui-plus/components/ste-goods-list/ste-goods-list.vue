@@ -40,6 +40,7 @@ const color = computed(() => getColor().steThemeColor);
     background-color: #fff;
     padding: 28rpx 40rpx;
     font-size: 28rpx;
+    border-radius: 12rpx;
 
     &.icon {
         padding-left: 16rpx;

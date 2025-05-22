@@ -21,7 +21,7 @@ const data = ref([
 ]);
 </script>
 <template>
-    <page-layout title="商品列表" contentStyle="padding: 0">
+    <page-layout title="商品列表" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
         <view class="description">
             <view class="cmp-name">GoodsList 商品列表</view>
             <view class="cmp-desc">商品列表组件用于展示商品信息</view>

@@ -87,6 +87,13 @@
             "default": "true"
         },
         {
+            "name": "allowSpace",
+            "description": "是否允许输入空格",
+            "type": "boolean",
+            "default": "true",
+            "version": "1.20.0"
+        },
+        {
             "name": "borderColor",
             "description": "边框颜色",
             "type": "string",

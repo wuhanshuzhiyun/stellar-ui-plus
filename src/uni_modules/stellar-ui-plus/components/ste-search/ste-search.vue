@@ -122,6 +122,7 @@ const handleSuggestionClick = (item: SearchSuggestion) => {
                     rootClass="ste-search-input"
                     placeholder-class="search-input-placeholder"
                     :disabled="props.disabled"
+                    :allowSpace="props.allowSpace"
                     :placeholder="cmpPlaceholder"
                     v-model="dataValue"
                     @input="onInput"

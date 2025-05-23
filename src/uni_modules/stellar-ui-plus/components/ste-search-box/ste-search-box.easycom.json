@@ -3,5 +3,85 @@
     "description": "搜索组件",
     "example": "<ste-search-box></ste-search-box>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=search-box",
-    "attributes": []
+
+    "attributes": [
+        {
+            "name": "value",
+            "description": "当前值（支持v-model双向绑定）",
+            "type": "string | number",
+            "default": ""
+        },
+        {
+            "name": "type",
+            "description": "头部操作类型",
+            "type": "string",
+            "values": [
+                {
+                    "name": "text",
+                    "description": "文本输入"
+                },
+                {
+                    "name": "date",
+                    "description": "日期选择"
+                },
+                {
+                    "name": "dateRange",
+                    "description": "日期范围选择"
+                }
+            ],
+            "default": "text"
+        },
+        {
+            "name": "headerValue",
+            "description": "头部显示的值",
+            "type": "string | number | string[] | number[]",
+            "default": ""
+        },
+        {
+            "name": "placeholder",
+            "description": "占位提示符",
+            "type": "string",
+            "default": "请输入"
+        },
+        {
+            "name": "height",
+            "description": "高度",
+            "type": "number | string"
+        },
+        {
+            "name": "textColor",
+            "description": "文字颜色",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "placeholderColor",
+            "description": "占位符字体颜色",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "clearable",
+            "description": "是否可清空",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "confirmType",
+            "description": "确认按钮类型",
+            "type": "string",
+            "default": "done"
+        },
+        {
+            "name": "[event]search",
+            "description": "确定搜索时触发",
+            "type": "(value: string) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "输入框的值"
+                }
+            ]
+        }
+    ]
 }

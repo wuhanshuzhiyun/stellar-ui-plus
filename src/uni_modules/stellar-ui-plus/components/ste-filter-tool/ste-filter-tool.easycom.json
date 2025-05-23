@@ -3,5 +3,70 @@
     "description": "筛选选项",
     "example": "<ste-filter-tool></ste-filter-tool>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=filter-tool",
-    "attributes": []
+    "attributes": [
+        {
+            "name": "value",
+            "description": "当前值（支持v-model双向绑定）",
+            "type": "string | number | (string | number)[]",
+            "default": ""
+        },
+        {
+            "name": "multiple",
+            "description": "是否支持多选",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "activeColor",
+            "description": "激活状态颜色",
+            "type": "string",
+            "default": "#0275FF"
+        },
+        {
+            "name": "inactiveColor",
+            "description": "非激活状态颜色",
+            "type": "string",
+            "default": "#555A61"
+        },
+        {
+            "name": "filterText",
+            "description": "筛选按钮文字",
+            "type": "string",
+            "default": "筛选"
+        },
+        {
+            "name": "menuData",
+            "description": "菜单数据列表",
+            "type": "FilterItem[]",
+            "default": "[]"
+        },
+        {
+            "name": "filterData",
+            "description": "筛选数据列表",
+            "type": "FilterItem[]",
+            "default": "[]"
+        },
+        {
+            "name": "[event]itemClick",
+            "description": "点击筛选项时触发",
+            "type": "(items: FilterItem[]) => void",
+            "params": [
+                {
+                    "name": "items",
+                    "description": "选中的筛选项列表"
+                }
+            ]
+        },
+        {
+            "name": "[event]menuChange",
+            "description": "菜单变化时触发",
+            "type": "(items: FilterItem[]) => void",
+            "params": [
+                {
+                    "name": "items",
+                    "description": "变化后的菜单项列表"
+                }
+            ]
+        }
+    ]
 }

@@ -28,9 +28,10 @@
     import { ref } from 'vue';
 
     const value = ref('');
+    const headerValue = ref(['2025-03-01', '2525-03-23']);
 </script>
 <template>
-    <ste-search-box type="dateRange" v-model:value="value">
+    <ste-search-box type="dateRange" v-model:value="value" v-model:headerValue="headerValue">
         <template #right>
             <view style="padding: 0 16rpx"><ste-icon code="&#xe69a;" color="#0275FF" size="36"></ste-icon></view>
         </template>

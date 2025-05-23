@@ -2,6 +2,8 @@
 import { ref, watch, computed } from 'vue';
 import propsData, { searchBoxEmits } from './props';
 import utils from '../../utils/utils';
+import { useColorStore } from '../../store/color';
+let { getColor } = useColorStore();
 
 const dayjs = utils.dayjs;
 const props = defineProps(propsData);

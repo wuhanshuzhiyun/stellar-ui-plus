@@ -20,9 +20,8 @@ const color = computed(() => getColor().steThemeColor);
                 </view>
                 <view class="ste-goods-list-title-text">{{ title }}</view>
             </view>
-            <view class="ste-goods-list-method" v-if="method">
-                {{ methodText }}
-                <ste-icon v-if="methodIcon" :code="methodIcon"></ste-icon>
+            <view class="ste-goods-list-method">
+                <slot name="method"></slot>
             </view>
         </view>
         <view class="ste-goods-list-body">

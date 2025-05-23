@@ -6,7 +6,4 @@ export default {
     titleIcon: { type: String },
     titleStyle: { type: Object, default: () => ({}) },
     data: { type: Array as PropType<{ label: string; value: string }[]>, default: () => [] },
-    method: { type: Boolean, default: () => false },
-    methodText: { type: String },
-    methodIcon: { type: String, default: () => '&#xe674;' },
 };

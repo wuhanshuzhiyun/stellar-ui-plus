@@ -28,7 +28,24 @@ const data = ref([
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
-            <ste-goods-list title="价格数据" title-icon="&#xe6a5;" :data="data" methodText="查看详情" />
+            <ste-goods-list title="价格数据" :data="data" />
+        </view>
+        <view class="demo-item">
+            <view class="title">自定义标题icon</view>
+            <ste-goods-list title="价格数据" title-icon="&#xe6a5;" :data="data" />
+        </view>
+        <view class="demo-item">
+            <view class="title">隐藏icon</view>
+            <ste-goods-list title="价格数据" hide-title-icon :data="data" />
+        </view>
+        <view class="demo-item">
+            <view class="title">标题右侧插槽</view>
+            <ste-goods-list title="价格数据" :data="data">
+                <template #method>
+                    更多操作
+                    <ste-icon code="&#xe674;" />
+                </template>
+            </ste-goods-list>
         </view>
     </page-layout>
 </template>

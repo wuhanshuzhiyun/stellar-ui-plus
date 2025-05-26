@@ -1,0 +1,42 @@
+{
+    "name": "ste-date-user",
+    "description": "提供日期和用户信息展示。",
+    "example": "<ste-date-user></ste-date-user>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=date-user",
+    "attributes": [
+        {
+            "name": "type",
+            "description": "组件类型",
+            "type": "String",
+            "default": "date",
+            "values": [
+                {
+                    "name": "date",
+                    "description": "日期"
+                },
+                {
+                    "name": "user",
+                    "description": "人员"
+                }
+            ]
+        },
+        {
+            "name": "date",
+            "description": "日期",
+            "type": "String",
+            "default": "new Date()"
+        },
+        {
+            "name": "avatar",
+            "description": "头像",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "nickname",
+            "description": "昵称",
+            "type": "String",
+            "default": ""
+        }
+    ]
+}

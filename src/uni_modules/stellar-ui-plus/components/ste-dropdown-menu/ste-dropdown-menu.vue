@@ -207,7 +207,7 @@ defineExpose({ close });
         <view class="menu-box" @click="handleMenuClick" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>
             <text class="title">{{ menuTitle || title }}</text>
             <view class="menu-title-icon">
-                <ste-icon code="&#xe699;" size="16" color="#bbbbbb"></ste-icon>
+                <ste-icon code="&#xe699;" size="16" :color="dropDownIconColor"></ste-icon>
             </view>
         </view>
         <view :class="hiddenContent ? 'dropdown-content hidden' : 'dropdown-content'" :style="[cmpMenuContentStyle]" @click="handleMaskClick" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>

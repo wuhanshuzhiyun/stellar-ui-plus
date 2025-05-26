@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted, computed, nextTick } from 'vue';
+import { computed } from 'vue';
 import steIcon from '../ste-icon/ste-icon.vue';
 import propsData from './props';
 import { useColorStore } from '../../store';
@@ -63,14 +63,14 @@ const color = computed(() => getColor().steThemeColor);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-weight: bold;
-        color: #1d2129;
 
         .ste-goods-list-title {
             height: 40rpx;
             display: flex;
             align-items: center;
             justify-content: flex-start;
+            font-weight: bold;
+            color: #1d2129;
 
             .ste-goods-list-title-icon {
                 height: 24rpx;

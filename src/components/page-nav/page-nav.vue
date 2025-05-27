@@ -54,7 +54,6 @@ function navBack() {
 <template>
     <div class="nav-box" :style="[pageStyle, { paddingTop: `${navbarTop}rpx` }]">
         <div class="nav" :style="{ width: `${navbarWidth}rpx`, height: `${navbarHeight}rpx` }">
-            <!-- #ifdef MP-WEIXIN || H5 || APP -->
             <div class="back-box">
                 <div class="back" :style="{ backgroundColor: 'transparent', borderColor: 'transparent' }">
                     <ste-icon v-if="isFirstPage" :code="'&#xe68d;'" weight="bold" :size="28" color="#000"></ste-icon>
@@ -62,11 +61,6 @@ function navBack() {
                 </div>
                 <div class="back-click-hot" @click="navBack" />
             </div>
-
-            <!-- #endif -->
-            <!-- #ifdef MP-ALIPAY -->
-            <div class="ali-back-box" />
-            <!-- #endif -->
             <div class="slot-default">
                 <slot name="default" />
             </div>

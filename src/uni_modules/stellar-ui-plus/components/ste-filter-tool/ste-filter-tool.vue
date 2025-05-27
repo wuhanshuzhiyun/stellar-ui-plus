@@ -170,7 +170,7 @@ const handleMenuConfirm = () => {
                 }
 
                 .filter-text {
-                    font-size: 28rpx;
+                    font-size: var(--font-size-24, 24rpx);
                     color: var(--inactive-color);
                 }
 
@@ -208,14 +208,14 @@ const handleMenuConfirm = () => {
                     width: 100%;
 
                     margin-bottom: 56rpx;
-                    font-size: 28rpx;
+                    font-size: var(--font-size-24, 24rpx);
 
                     .menu-item-block {
                         padding: 0 40rpx;
                         margin-bottom: 20rpx;
 
                         .menu-item-title {
-                            font-size: 24rpx;
+                            font-size: var(--font-size-24, 24rpx);
                             color: #888c92;
                             margin-bottom: 20rpx;
                         }
@@ -233,7 +233,7 @@ const handleMenuConfirm = () => {
                             }
                             .menu-item-child {
                                 padding: 10rpx 0;
-                                font-size: 28rpx;
+                                font-size: var(--font-size-24, 24rpx);
                                 color: var(--inactive-color);
                                 flex-shrink: 0;
                                 padding: 16rpx 40rpx;
@@ -259,7 +259,7 @@ const handleMenuConfirm = () => {
 
                     .btn {
                         flex: 1;
-                        font-size: 32rpx;
+                        font-size: var(--font-size-32, 32rpx);
                         display: flex;
                         align-items: center;
                         justify-content: center;

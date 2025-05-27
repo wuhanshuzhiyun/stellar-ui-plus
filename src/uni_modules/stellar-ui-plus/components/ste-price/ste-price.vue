@@ -66,7 +66,7 @@ const cmpUnitStyle = computed(() => {
         style.color = props.linePriceColor;
         style.fontSize = `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`;
     } else {
-        style.fontSize = `var(--font-size-${calcFontSize()},${calcFontSize()})`;
+        style.fontSize = `var(--font-size-${Math.floor(calcFontSize().replace('px', ''))},${calcFontSize()})`;
     }
     return style;
 });
@@ -94,7 +94,7 @@ const cmpFenPriceStyle = computed(() => {
 });
 
 function calcFontSize() {
-    let size = utils.formatPx(props.fontSize);
+    let size: any = utils.formatPx(props.fontSize);
     const fontSize = Number(props.fontSize);
     if (props.styleType == 1) {
         if (fontSize <= 40) {

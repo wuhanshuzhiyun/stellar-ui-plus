@@ -70,7 +70,7 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
 </script>
 <template>
     <view class="ste-goods-info-root" :class="rootClass">
-        <view class="ste-goods-info-checkbox left" v-if="checkbox === 'left'"><setCheckbox iconSize="30" v-model="_checked" @change="checkboxChange" /></view>
+        <view class="ste-goods-info-checkbox left" v-if="checkbox === 'left'"><setCheckbox :disabled="checkboxDisabled" iconSize="30" v-model="_checked" @change="checkboxChange" /></view>
         <view class="ste-goods-info-image">
             <setImage :src="data.image" width="160" height="160" @click="onClick('image')" />
         </view>
@@ -109,7 +109,7 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
                 </view>
             </view>
         </view>
-        <view class="ste-goods-info-checkbox right" v-if="checkbox === 'right'"><setCheckbox iconSize="30" v-model="_checked" @change="checkboxChange" /></view>
+        <view class="ste-goods-info-checkbox right" v-if="checkbox === 'right'"><setCheckbox :disabled="checkboxDisabled" iconSize="30" v-model="_checked" @change="checkboxChange" /></view>
     </view>
 </template>
 

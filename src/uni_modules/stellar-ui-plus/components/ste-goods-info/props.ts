@@ -25,6 +25,11 @@ export default {
         type: String as PropType<'left' | 'right' | 'none'>,
         default: () => 'none',
     },
+    /** 是否禁用选择框 */
+    checkboxDisabled: {
+        type: Boolean,
+        default: () => false,
+    },
     /** 是否选中 */
     checked: {
         type: Boolean,

@@ -28,6 +28,12 @@
             ]
         },
         {
+            "name": "checkboxDisabled",
+            "description": "是否禁用选择框",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "checked",
             "description": "是否选中",
             "type": "boolean",

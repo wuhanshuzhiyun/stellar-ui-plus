@@ -101,6 +101,7 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
                         marginLeft="16"
                         fontSize="20"
                         @click="onClick('originalPrice')"
+                        :showUnit="false"
                     />
                 </view>
                 <view class="ste-goods-info-price-right" v-if="stepper">

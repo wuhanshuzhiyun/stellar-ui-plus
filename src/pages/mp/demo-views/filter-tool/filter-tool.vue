@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { reactive } from 'vue';
 // 筛选选项
 const filterOptions = reactive([
     { title: '全部', value: 'all' },
@@ -9,7 +9,34 @@ const filterOptions = reactive([
     { title: '促销回调', value: 'callback' },
 ]);
 
+const filterOptions2 = reactive([
+    { title: '全部', value: 'all' },
+    { title: '已打印', value: 'printed' },
+    { title: '未打印', value: 'unprinted' },
+    { title: '促销调价', value: 'promotion' },
+    { title: '促销回调', value: 'callback' },
+]);
+
 const subFilters = reactive([
+    {
+        title: '调价类型',
+        children: [
+            { title: '促销调价', value: 'promotion' },
+            { title: '促销回调', value: 'callback' },
+            { title: '促销回', value: 'callba' },
+            { title: '促销回调3', value: 'callback3' },
+        ],
+    },
+    {
+        title: '打印状态',
+        children: [
+            { title: '已打印', value: 'printed' },
+            { title: '未打印', value: 'unprinted' },
+        ],
+    },
+]);
+
+const subFilters2 = reactive([
     {
         title: '调价类型',
         children: [
@@ -44,6 +71,12 @@ const handleFilterClick = (item: any) => {
             <view class="title">基础用法</view>
             <view class="item-block">
                 <ste-filter-tool :filterData="filterOptions" :menu-data="subFilters" @item-click="handleFilterClick" value="all" />
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">多选</view>
+            <view class="item-block">
+                <ste-filter-tool :filterData="filterOptions2" :menu-data="subFilters2" @item-click="handleFilterClick" value="all" multiple />
             </view>
         </view>
     </page-layout>

@@ -161,6 +161,7 @@ const handleMenuConfirm = () => {
                 border-radius: 8rpx;
                 background: rgba(230, 232, 234, 0.5);
                 transition: all 0.2s ease;
+                cursor: pointer;
 
                 &.active {
                     background: var(--active-color);
@@ -198,6 +199,7 @@ const handleMenuConfirm = () => {
     .filter-button {
         margin-left: 16rpx;
         color: #000;
+        cursor: pointer;
 
         :deep(.filter-box-menu) {
             .custom-menu-box {
@@ -240,6 +242,7 @@ const handleMenuConfirm = () => {
                                 border-radius: 8rpx;
                                 background: rgba(230, 232, 234, 0.5);
                                 transition: all 0.2s ease;
+                                cursor: pointer;
                                 &.active {
                                     color: var(--active-color);
                                 }

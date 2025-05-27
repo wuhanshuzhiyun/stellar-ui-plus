@@ -34,9 +34,9 @@
 
 <style lang="scss" scoped>
 .page {
-    background-color: #f0f2f5;
     .content {
         .demo-item {
+            background-color: #f0f2f5;
             .item-block {
                 > view {
                     margin: 0 36rpx 36rpx 0;

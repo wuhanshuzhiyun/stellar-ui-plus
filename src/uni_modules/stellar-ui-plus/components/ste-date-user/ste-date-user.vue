@@ -15,7 +15,6 @@ onMounted(async () => {
     let date = time.value.date.split('-');
     day.value = date[date.length - 1];
     year.value = `${date[0]}年${date[1]}月`;
-    console.log('time', time.value);
 });
 </script>
 

@@ -66,7 +66,7 @@ const cmpUnitStyle = computed(() => {
         style.color = props.linePriceColor;
         style.fontSize = `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`;
     } else {
-        style.fontSize = `var(--font-size-${Math.floor(calcFontSize().replace('px', ''))},${calcFontSize()})`;
+        style.fontSize = `var(--font-size-${Math.floor(utils.px2rpx(Number(calcFontSize().replace('px', ''))))},${calcFontSize()})`;
     }
     return style;
 });

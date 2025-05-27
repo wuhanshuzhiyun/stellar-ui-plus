@@ -82,7 +82,7 @@ onMounted(async () => {
             align-items: center;
 
             .day {
-                font-size: 40rpx;
+                font-size: var(--font-size-40, 40rpx);
                 color: #1c1f23;
                 line-height: 56rpx;
                 height: 56rpx;
@@ -101,7 +101,7 @@ onMounted(async () => {
             .year {
                 line-height: 40rpx;
                 height: 40rpx;
-                font-size: 28rpx;
+                font-size: var(--font-size-28, 28rpx);
                 color: #1c1f23;
             }
 
@@ -119,7 +119,7 @@ onMounted(async () => {
                 }
 
                 .time {
-                    font-size: 24rpx;
+                    font-size: var(--font-size-28, 28rpx);
                     color: #1c1f23;
                 }
 

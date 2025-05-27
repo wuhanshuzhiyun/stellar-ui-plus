@@ -40,6 +40,11 @@ export default {
         type: String,
         default: () => '',
     },
+    /** 水印样式 */
+    watermarkStyle: {
+        type: Object,
+        default: () => ({}),
+    },
     /** 数量 */
     number: {
         type: Number,

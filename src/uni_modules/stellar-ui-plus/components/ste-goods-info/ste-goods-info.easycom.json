@@ -46,6 +46,12 @@
             "default": ""
         },
         {
+            "name": "watermarkStyle",
+            "description": "水印样式",
+            "type": "Object",
+            "default": "{}"
+        },
+        {
             "name": "number",
             "description": "数量",
             "type": "number",

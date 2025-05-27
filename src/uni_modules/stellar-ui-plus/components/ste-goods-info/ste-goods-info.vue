@@ -110,6 +110,8 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
             </view>
         </view>
         <view class="ste-goods-info-checkbox right" v-if="checkbox === 'right'"><setCheckbox :disabled="checkboxDisabled" iconSize="30" v-model="_checked" @change="checkboxChange" /></view>
+
+        <image v-if="watermark" class="ste-goods-info-watermark" :style="watermarkStyle" :src="watermark" />
     </view>
 </template>
 
@@ -123,6 +125,8 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    position: relative;
+
     .ste-goods-info-image {
         width: 160rpx;
         height: 160rpx;
@@ -166,6 +170,16 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
             display: flex;
             justify-content: space-between;
         }
+    }
+
+    .ste-goods-info-watermark {
+        width: 80rpx;
+        height: 80rpx;
+        position: absolute;
+        right: 2rpx;
+        bottom: 12rpx;
+        opacity: 0.4;
+        z-index: 10;
     }
 
     &.checkbox {

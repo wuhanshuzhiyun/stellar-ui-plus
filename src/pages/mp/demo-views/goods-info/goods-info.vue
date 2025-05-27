@@ -68,6 +68,10 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
             <ste-goods-info :data="data">插槽内容</ste-goods-info>
         </view>
         <view class="demo-item">
+            <view class="title">水印</view>
+            <ste-goods-info :data="data" watermark="https://image.whzb.com/chain/StellarUI/已打印.png" />
+        </view>
+        <view class="demo-item">
             <view class="title">点击事件</view>
             <ste-goods-info :data="data" @click="onClick" />
         </view>

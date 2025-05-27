@@ -118,6 +118,29 @@
 </template>
 ```
 
+### 水印
+
+- 属性`watermark`接收水印图片URL，用于展示水印
+- 属性`watermarkStyle`用于控制水印样式
+
+```html
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const data = ref({
+        image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
+        title: '商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称',
+        tag: '新品',
+        code: '123456',
+        barCode: '1234567890123',
+        price: '88800',
+        originalPrice: '99900',
+    });
+</script>
+<template>
+    <ste-goods-info :data="data" watermark="https://image.whzb.com/chain/StellarUI/已打印.png" />
+</template>
+```
+
 ### 点击事件
 
 - 默认插槽内容为商品编码下的其他展示项

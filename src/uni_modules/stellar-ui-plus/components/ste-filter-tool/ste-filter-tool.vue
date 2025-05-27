@@ -199,83 +199,88 @@ const handleMenuConfirm = () => {
     .filter-button {
         margin-left: 16rpx;
         color: #000;
+
+        // #ifndef MP-WEIXIN || MP-ALIPAY || APP
         cursor: pointer;
+        // #endif
 
-        :deep(.filter-box-menu) {
-            .custom-menu-box {
-                background-color: #fff;
-                padding-top: 24rpx;
-                border-radius: 0 0 18rpx 18rpx;
-                .menu-box {
-                    width: 100%;
+        // :deep(.filter-box-menu) {
 
-                    margin-bottom: 56rpx;
-                    font-size: var(--font-size-24, 24rpx);
+        // }
 
-                    .menu-item-block {
-                        padding: 0 40rpx;
+        :deep(.custom-menu-box) {
+            background-color: #fff;
+            padding-top: 24rpx;
+            border-radius: 0 0 18rpx 18rpx;
+            .menu-box {
+                width: 100%;
+
+                margin-bottom: 56rpx;
+                font-size: var(--font-size-24, 24rpx);
+
+                .menu-item-block {
+                    padding: 0 40rpx;
+                    margin-bottom: 20rpx;
+
+                    .menu-item-title {
+                        font-size: var(--font-size-24, 24rpx);
+                        color: #888c92;
                         margin-bottom: 20rpx;
+                    }
 
-                        .menu-item-title {
-                            font-size: var(--font-size-24, 24rpx);
-                            color: #888c92;
-                            margin-bottom: 20rpx;
-                        }
+                    .menu-item-content {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 20rpx 32rpx;
 
-                        .menu-item-content {
-                            display: flex;
-                            flex-wrap: wrap;
-                            gap: 20rpx 32rpx;
-
-                            &.multiple {
-                                .menu-item-child.active {
-                                    background-color: var(--active-color);
-                                    color: #fff;
-                                }
+                        &.multiple {
+                            .menu-item-child.active {
+                                background-color: var(--active-color);
+                                color: #fff;
                             }
-                            .menu-item-child {
-                                padding: 10rpx 0;
-                                font-size: var(--font-size-24, 24rpx);
-                                color: var(--inactive-color);
-                                flex-shrink: 0;
-                                padding: 16rpx 40rpx;
-                                border-radius: 8rpx;
-                                background: rgba(230, 232, 234, 0.5);
-                                transition: all 0.2s ease;
-                                cursor: pointer;
-                                &.active {
-                                    color: var(--active-color);
-                                }
+                        }
+                        .menu-item-child {
+                            padding: 10rpx 0;
+                            font-size: var(--font-size-24, 24rpx);
+                            color: var(--inactive-color);
+                            flex-shrink: 0;
+                            padding: 16rpx 40rpx;
+                            border-radius: 8rpx;
+                            background: rgba(230, 232, 234, 0.5);
+                            transition: all 0.2s ease;
+                            cursor: pointer;
+                            &.active {
+                                color: var(--active-color);
                             }
                         }
                     }
                 }
+            }
 
-                .action-box {
-                    // padding: 0 40rpx;
+            .action-box {
+                // padding: 0 40rpx;
+                display: flex;
+                justify-content: space-between;
+
+                // padding-bottom: 20rpx;
+                height: 92rpx;
+                border-radius: 0 0 16rpx 16rpx;
+
+                .btn {
+                    flex: 1;
+                    font-size: var(--font-size-32, 32rpx);
                     display: flex;
-                    justify-content: space-between;
-
-                    // padding-bottom: 20rpx;
-                    height: 92rpx;
-                    border-radius: 0 0 16rpx 16rpx;
-
-                    .btn {
-                        flex: 1;
-                        font-size: var(--font-size-32, 32rpx);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        &.reset {
-                            background-color: #f4f5f6;
-                            border-radius: 0 0 0 16rpx;
-                            color: #1c1f23;
-                        }
-                        &.confirm {
-                            background-color: var(--active-color);
-                            border-radius: 0 0 16rpx 0;
-                            color: #fff;
-                        }
+                    align-items: center;
+                    justify-content: center;
+                    &.reset {
+                        background-color: #f4f5f6;
+                        border-radius: 0 0 0 16rpx;
+                        color: #1c1f23;
+                    }
+                    &.confirm {
+                        background-color: var(--active-color);
+                        border-radius: 0 0 16rpx 0;
+                        color: #fff;
                     }
                 }
             }

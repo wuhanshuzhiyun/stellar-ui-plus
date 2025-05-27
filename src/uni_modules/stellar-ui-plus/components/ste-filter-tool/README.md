@@ -37,7 +37,9 @@
     ]);
 </script>
 <template>
-    <ste-filter-tool :filterData="filterOptions" :menu-data="subFilters" @item-click="handleFilterClick" value="all" />
+    <view style="width: 100%">
+        <ste-filter-tool :filterData="filterOptions" :menu-data="subFilters" @item-click="handleFilterClick" value="all" />
+    </view>
 </template>
 ```
 
@@ -79,7 +81,9 @@
     ]);
 </script>
 <template>
-    <ste-filter-tool :filterData="filterOptions" :menu-data="subFilters" @item-click="handleFilterClick" value="all" multiple />
+    <view style="width: 100%">
+        <ste-filter-tool :filterData="filterOptions2" :menu-data="subFilters2" @item-click="handleFilterClick" value="all" multiple />
+    </view>
 </template>
 ```
 

@@ -37,17 +37,20 @@ watch(
     () => props.headerValue,
     newVal => {
         const now = new Date();
+        let values = [];
         if (props.type === 'dateRange') {
             if (newVal instanceof Array) {
                 for (let i = 0; i < 2; i++) {
-                    calendarValues.value[i] = dayjs(newVal[i] || now).format('YYYY-MM-DD');
+                    values[i] = dayjs(newVal[i] || now).format('YYYY-MM-DD');
                 }
             } else {
-                calendarValues.value = [dayjs(newVal || now).format('YYYY-MM-DD'), dayjs(now).format('YYYY-MM-DD')];
+                values = [dayjs(newVal || now).format('YYYY-MM-DD'), dayjs(now).format('YYYY-MM-DD')];
             }
         } else {
-            calendarValues.value = [dayjs(newVal || now).format('YYYY-MM-DD')];
+            values = [dayjs(newVal || now).format('YYYY-MM-DD')];
         }
+
+        calendarValues.value = values;
     },
     { immediate: true }
 );

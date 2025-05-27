@@ -13,14 +13,14 @@
 
 ```html
 <template>
-    <ste-date-user></ste-date-user>
+    <ste-date-user date="2025-10-01"></ste-date-user>
 </template>
 ```
 
 ### 返回按钮配置
 
 - 通过 `type`设置组件类型，值为`user`
-- 通过 `avatar` 属性来设置头像，默认`#`
+- 通过 `avatar` 属性来设置头像，默认``
 - 通过 `desc` 插槽来设置用户描述，默认``
 
 ```html

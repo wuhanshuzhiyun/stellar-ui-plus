@@ -111,7 +111,7 @@ onMounted(async () => {
                 align-items: center;
 
                 .line {
-                    border-left: 4rpx solid #000;
+                    border-left: 4rpx solid #1c1f23;
                     border-radius: 2rpx;
                     width: 0;
                     height: 22rpx;

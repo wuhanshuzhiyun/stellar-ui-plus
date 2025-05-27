@@ -12,6 +12,7 @@ let day = ref('');
 let year = ref('');
 onMounted(async () => {
     time.value = await getDateInfo(time.value);
+    console.log(' time.value', time.value);
     let date = time.value.date.split('-');
     day.value = date[date.length - 1];
     year.value = `${date[0]}年${date[1]}月`;

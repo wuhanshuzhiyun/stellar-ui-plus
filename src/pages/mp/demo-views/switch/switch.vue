@@ -1,5 +1,5 @@
 <template>
-    <page-layout>
+    <page-layout title="开关">
         <view class="description">
             <view class="cmp-name">Switch 开关</view>
             <view class="cmp-desc">用于控制某个功能的开启和关闭。</view>

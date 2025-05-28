@@ -182,7 +182,6 @@ function change(value: number) {
                 <ste-stepper v-model="val.value18" @plus="click1" @minus="click1" @change="change"></ste-stepper>
                 <text>在plus或minus事件后，执行change事件</text>
                 <ste-stepper v-model="val.value19" @plus="click2" @minus="click2" @change="change"></ste-stepper>
-                <text>在plus或minus事件后，阻止change事件</text>
             </view>
         </view>
     </page-layout>

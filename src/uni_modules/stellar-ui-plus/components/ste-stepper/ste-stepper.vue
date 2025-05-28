@@ -136,6 +136,7 @@ function blur(event: BaseEvent) {
         emits('update:modelValue', value);
         event.detail.value = value;
         emits('blur', event);
+        emits('change', value);
     });
 }
 function focus(event: BaseEvent) {

@@ -56,7 +56,6 @@ function backClick() {
 <template>
     <view class="ste-navbar-root" :style="[pageStyle, { paddingTop: `${navbarTop}rpx` }]">
         <view class="nav" :style="{ width: `${navbarWidth}rpx`, height: `${navbarHeight}rpx`, backgroundColor: backgroundColor }">
-            <!-- #ifdef MP-WEIXIN || H5 || APP -->
             <view class="back-box">
                 <view v-if="autoBack" class="back" :style="{ backgroundColor: backBackgroundColor, borderColor: backBorderColor, opacity: backOpacity }">
                     <ste-icon :code="backCode" weight="bold" :size="28" :color="backColor"></ste-icon>
@@ -64,10 +63,6 @@ function backClick() {
                 <view @click="backClick" class="back-click-hot" />
             </view>
 
-            <!-- #endif -->
-            <!-- #ifdef MP-ALIPAY -->
-            <view class="ali-back-box" />
-            <!-- #endif -->
             <view v-if="title && titleAlignment == 1" class="title" :style="{ color: titleColor }">{{ title }}</view>
             <view class="title slot-default"><slot name="default"></slot></view>
         </view>
@@ -118,12 +113,6 @@ function backClick() {
             height: 90rpx;
             transform: translateX(-30rpx);
         }
-    }
-
-    .ali-back-box {
-        width: 50rpx;
-        height: 50rpx;
-        padding-right: 10rpx;
     }
     .slot-default {
         display: flex;

@@ -50,6 +50,7 @@ onLoad(val => {
 
 // #ifndef H5
 onLoad(() => {
+    console.log('xxxx');
     uni.redirectTo({ url: '/pages/mp/index' });
 });
 // #endif

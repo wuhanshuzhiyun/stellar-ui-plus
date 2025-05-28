@@ -1,6 +1,6 @@
 {
     "name": "stellar-ui-plus",
-    "version": "1.20.2",
+    "version": "1.20.4",
     "description": "",
     "author": "",
     "license": "MIT",
@@ -12,8 +12,5 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "publish-vscode-plugin": "cd ../../../plugins/ste-helper & pnpm run publish"
-    },
-    "dependencies": {
-        "@swjs/chinese-holidays": "^1.1.0"
     }
 }

@@ -50,7 +50,6 @@ onLoad(val => {
 
 // #ifndef H5
 onLoad(() => {
-    console.log('xxxx');
     uni.redirectTo({ url: '/pages/mp/index' });
 });
 // #endif
@@ -61,7 +60,7 @@ onLoad(() => {
     <div class="pc-page-body">
         <view class="pc-page-header">
             <view class="left">
-                <image class="logo" src="../../static/logo.png" mode="widthFix"></image>
+                <image class="logo" src="https://image.whzb.com/chain/StellarUI/logo.png" mode="widthFix"></image>
                 <text class="logo-text">StellarUI-Plus</text>
             </view>
             <view class="right">

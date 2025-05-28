@@ -1,23 +1,19 @@
 <script setup lang="ts">
 import { inject } from 'vue';
 import type { MarkdownData } from '../types';
-import bg from '@/static/iPhone13.png';
 
 const datas = inject<MarkdownData>('datas');
-
-const style = {
-    backgroundImage: `url(${bg})`,
-};
 </script>
 
 <template>
-    <div class="h5-component" :style="style">
+    <div class="h5-component">
         <iframe :src="datas?.h5url.value" frameborder="0" width="100%" height="100%" />
     </div>
 </template>
 
 <style scoped lang="scss">
 .h5-component {
+    background-image: url('https://image.whzb.com/chain/StellarUI/iPhone13.png');
     position: fixed;
     z-index: 10;
     top: calc(var(--pc-header-nav-height) + 32px);
@@ -28,7 +24,6 @@ const style = {
     padding: 50px 14px 30px;
     overflow: hidden;
     border-radius: 16px;
-    background-image: url(/assets/iPhone13.0a51aa1d.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }

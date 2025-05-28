@@ -1,34 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" href="https://image.whzb.com/chain/StellarUI/logo.png" />
+        <script>
+            const coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') || CSS.supports('top: constant(a)'));
+            document.write(
+                `<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0${coverSupport ? ', viewport-fit=cover' : ''}" />`
+            );
+        </script>
+        <title></title>
+        <!--preload-links-->
+        <!--app-context-->
+        <!-- 添加全局样式 -->
+        <style>
+            /* 修改 uni-page-body 样式 */
+            uni-page-body {
+                /* 添加内边距 */
+                background: rgb(252, 252, 252);
+                padding: 26rpx;
+                display: flex !important;
+                column-gap: 26rpx !important;
+            }
+        </style>
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="static/logo.png">
-    <script>
-        const coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)')
-            || CSS.supports('top: constant(a)'))
-        document.write(
-            `<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0${coverSupport ? ', viewport-fit=cover' : ''}" />`)
-    </script>
-    <title></title>
-    <!--preload-links-->
-    <!--app-context-->
-    <!-- 添加全局样式 -->
-    <style>
-        /* 修改 uni-page-body 样式 */
-        uni-page-body {
-            /* 添加内边距 */
-            background: rgb(252, 252, 252);
-            padding: 26rpx;
-            display: flex !important;
-            column-gap: 26rpx !important;
-        }
-    </style>
-</head>
-
-<body>
-    <div id="app"><!--app-html--></div>
-    <script type="module" src="/src/main.ts"></script>
-</body>
-
+    <body>
+        <div id="app"><!--app-html--></div>
+        <script type="module" src="/src/main.ts"></script>
+    </body>
 </html>

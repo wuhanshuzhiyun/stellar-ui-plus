@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, defineComponent, onMounted } from 'vue';
-// import { getDateInfo } from '@swjs/chinese-holidays';
+import { getDateInfo } from '../../utils/time';
+
 import propsData from './props';
 defineComponent({
     name: 'ste-date-user',
@@ -11,9 +12,7 @@ let time: any = ref(props.date);
 let day = ref('');
 let year = ref('');
 onMounted(async () => {
-    // time.value = await getDateInfo(time.value);
-    time.value = { name: '工作日', date: '2025-05-27', day: '星期二', type: 1 };
-    console.log(' time.value', time.value);
+    time.value = await getDateInfo(time.value);
     let date = time.value.date.split('-');
     day.value = date[date.length - 1];
     year.value = `${date[0]}年${date[1]}月`;

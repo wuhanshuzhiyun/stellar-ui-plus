@@ -23,6 +23,11 @@ const _number = ref(1);
 const _checked = ref(false);
 
 watch(
+    () => _checked.value,
+    () => checkboxChange()
+);
+
+watch(
     () => props.number,
     v => {
         if (v < 1 || isNaN(v)) {
@@ -70,7 +75,9 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
 </script>
 <template>
     <view class="ste-goods-info-root" :class="rootClass">
-        <view class="ste-goods-info-checkbox left" v-if="checkbox === 'left'"><setCheckbox :disabled="checkboxDisabled" iconSize="30" v-model="_checked" @change="checkboxChange" /></view>
+        <view @click="_checked = !_checked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
+            <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
+        </view>
         <view class="ste-goods-info-image">
             <setImage :src="data.image" width="160" height="160" @click="onClick('image')" />
         </view>
@@ -109,7 +116,9 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
                 </view>
             </view>
         </view>
-        <view class="ste-goods-info-checkbox right" v-if="checkbox === 'right'"><setCheckbox :disabled="checkboxDisabled" iconSize="30" v-model="_checked" @change="checkboxChange" /></view>
+        <view @click="_checked = !_checked" class="ste-goods-info-checkbox right" v-if="checkbox === 'right'">
+            <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
+        </view>
 
         <image v-if="watermark" class="ste-goods-info-watermark" :style="watermarkStyle" :src="watermark" />
     </view>
@@ -184,14 +193,26 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
 
     &.checkbox {
         padding-left: 8rpx;
+
+        &.checkboxright {
+            padding-right: 8rpx;
+        }
+
+        &.checkboxleft {
+            padding-left: 0;
+        }
+
         .ste-goods-info-content {
             width: calc(100% - 222rpx);
         }
         .ste-goods-info-checkbox {
-            width: 30rpx;
+            width: 46rpx;
+            padding: 0 8rpx 8rpx 8rpx;
             display: flex;
+            overflow: hidden;
             &.right {
                 height: 100%;
+                padding: 8rpx;
                 align-items: flex-start;
             }
         }

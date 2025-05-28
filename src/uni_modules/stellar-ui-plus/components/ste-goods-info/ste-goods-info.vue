@@ -89,8 +89,8 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
             <view class="ste-goods-info-slot">
                 <slot></slot>
             </view>
-            <view class="ste-goods-info-price">
-                <view class="ste-goods-info-price-left">
+            <view class="ste-goods-info-price" v-if="!hidePrice || stepper">
+                <view class="ste-goods-info-price-left" v-if="!hidePrice">
                     <setPrice :value="data.price" :digits="2" bold :styleType="3" fontSize="26" @click="onClick('price')" />
                     <setPrice
                         v-if="data.originalPrice"

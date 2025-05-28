@@ -11,6 +11,12 @@
             "default": "{}"
         },
         {
+            "name": "hidePrice",
+            "description": "隐藏价格",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
             "name": "tagBg",
             "description": "标签背景色",
             "type": "string",

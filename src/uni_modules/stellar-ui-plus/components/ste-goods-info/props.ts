@@ -16,6 +16,11 @@ export default {
         type: Object as PropType<GoodsInfoType>,
         default: () => ({}),
     },
+    /** 是否隐藏价格 */
+    hidePrice: {
+        type: Boolean,
+        default: () => false,
+    },
     /** 标签背景色 */
     tagBg: {
         type: String,

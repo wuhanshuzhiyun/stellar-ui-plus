@@ -305,6 +305,9 @@ const suggestClick = () => (showSuggestList.value = !showSuggestList.value);
                         .ste-goods-info-suggest-content-title {
                             padding: 0 10rpx;
                             background: #f4f5f6;
+                            // #ifdef H5
+                            cursor: pointer;
+                            // #endif
                         }
                         .ste-goods-info-suggest-content-number {
                             margin-left: 4rpx;
@@ -321,14 +324,14 @@ const suggestClick = () => (showSuggestList.value = !showSuggestList.value);
                             display: flex;
                             align-items: center;
                             .ste-goods-info-apply-for-input {
-                                width: calc(100% - 34rpx);
+                                width: calc(100% - 32rpx);
                                 height: 30rpx;
                                 min-height: 30rpx;
                                 font-size: 22rpx;
                                 text-align: center;
                             }
                             .ste-goods-info-apply-for-back {
-                                width: 34rpx;
+                                width: 32rpx;
                                 border-left: 2rpx solid #e6e8ea;
                             }
                         }

@@ -73,7 +73,7 @@ export default function useMarkdown(): MarkdownData {
             }
             return '#/pages/mp/index';
         } else {
-            return `#/pages/mp/demo-views/${active.value}/${active.value}`;
+            return `#/subPackages_demo_view/${active.value}/${active.value}`;
         }
     });
 

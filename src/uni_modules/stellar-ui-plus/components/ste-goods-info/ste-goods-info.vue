@@ -180,6 +180,7 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
                     .ste-goods-info-tag {
                         transform: translateY(-2rpx);
                         height: 26rpx;
+                        line-height: 26rpx;
                         font-size: 18rpx;
                         padding: 0 8rpx;
                         background-color: #f5f5f5;

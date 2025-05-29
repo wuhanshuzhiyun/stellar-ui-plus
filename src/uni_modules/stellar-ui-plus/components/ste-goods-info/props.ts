@@ -10,6 +10,14 @@ export interface GoodsInfoType extends Record<string, any> {
     originalPrice?: string | number;
 }
 
+export interface SuggestData {
+    title: string;
+    number: number;
+    items: { label: string; value: string }[];
+}
+
+export const defaultSuggestData: () => SuggestData = () => ({ title: '建议', number: 0, items: [] });
+
 export default {
     /** 商品数据 */
     data: {
@@ -90,5 +98,15 @@ export default {
     max: {
         type: Number,
         default: () => 9999,
+    },
+    /** 显示建议 */
+    suggest: {
+        type: Boolean,
+        default: () => false,
+    },
+    /** 建议数据 */
+    suggestData: {
+        type: Object as PropType<SuggestData>,
+        default: () => defaultSuggestData(),
     },
 };

@@ -88,10 +88,17 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
 
 const plus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => emits('plus', value, suspend, next, stop);
 const minus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => emits('minus', value, suspend, next, stop);
+
+const clickChecked = () => {
+    if (props.checkboxDisabled) {
+        return;
+    }
+    _checked.value = !_checked.value;
+};
 </script>
 <template>
     <view class="ste-goods-info-root" :class="rootClass" :style="[rootStyle]">
-        <view @click="_checked = !_checked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
+        <view @click="clickChecked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
             <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
         </view>
         <view class="ste-goods-info-view">
@@ -106,7 +113,7 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
                         </view>
                         {{ data.title }}
                     </view>
-                    <view @click="_checked = !_checked" class="ste-goods-info-checkbox right" v-if="checkbox === 'right'">
+                    <view @click="clickChecked" class="ste-goods-info-checkbox right" v-if="checkbox === 'right'">
                         <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
                     </view>
                 </view>
@@ -148,6 +155,7 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
                         />
                     </view>
                 </view>
+                <view class="ste-goods-info-suggest"></view>
             </view>
         </view>
 

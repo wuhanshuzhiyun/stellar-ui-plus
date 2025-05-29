@@ -10,11 +10,26 @@ export interface GoodsInfoType extends Record<string, any> {
     originalPrice?: string | number;
 }
 
+export interface SuggestData {
+    title?: string;
+    number?: string | number;
+    applyForText?: string | null;
+    applyForNumber?: string | number;
+    items: { label: string; value: string | number }[];
+}
+
+export const defaultSuggestData: () => SuggestData = () => ({ title: '建议', number: 0, applyForText: '申请', applyForNumber: 0, items: [] });
+
 export default {
     /** 商品数据 */
     data: {
         type: Object as PropType<GoodsInfoType>,
         default: () => ({}),
+    },
+    /** image大小 */
+    imageSize: {
+        type: [Number, String],
+        default: () => 160,
     },
     /** 是否隐藏价格 */
     hidePrice: {
@@ -60,6 +75,12 @@ export default {
         type: Boolean,
         default: () => false,
     },
+    /** 是否显示步进器 */
+    disableInput: {
+        type: Boolean,
+        default: () => false,
+    },
+
     /** 数值精度 */
     precision: {
         type: Number,
@@ -79,5 +100,9 @@ export default {
     max: {
         type: Number,
         default: () => 9999,
+    },
+    /** 建议数据 */
+    suggestData: {
+        type: Object as PropType<SuggestData>,
     },
 };

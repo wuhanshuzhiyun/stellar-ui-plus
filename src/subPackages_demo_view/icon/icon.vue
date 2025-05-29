@@ -45,7 +45,7 @@ onMounted(() => {
 
 function nav() {
     uni.navigateTo({
-        url: '/pages/mp/demo-views/icon-vertical-align/icon-vertical-align',
+        url: '/subPackages_demo_view/icon-vertical-align/icon-vertical-align',
     });
 }
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMessageBox } from '@/uni_modules/stellar-ui-plus/composables';
 import { ref, watch } from 'vue';
 
 const data = ref({
@@ -44,6 +45,47 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         icon: 'none',
     });
 };
+
+const plus = (v: number | string, suspend: () => void, next: () => void, stop: () => void) => {
+    suspend();
+    uni.showModal({
+        title: '提示',
+        content: '确定增加数量？',
+        success: res => {
+            if (res.confirm) {
+                next();
+            } else {
+                stop();
+            }
+        },
+    });
+};
+
+const minus = (v: number | string, suspend: () => void, next: () => void, stop: () => void) => {
+    suspend();
+    uni.showModal({
+        title: '提示',
+        content: '确定减少数量？',
+        success: res => {
+            if (res.confirm) {
+                next();
+            } else {
+                stop();
+            }
+        },
+    });
+};
+
+const suggestData = ref({
+    title: '操作',
+    number: 200,
+    items: [
+        { label: '门店库存', value: '10000' },
+        { label: '日均销量', value: '20000' },
+        { label: '在途库存', value: '15000' },
+        { label: '上周销量', value: '30000' },
+    ],
+});
 </script>
 <template>
     <page-layout title="商品信息" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
@@ -53,7 +95,7 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
-            <ste-goods-info :data="data" />
+            <ste-goods-info :data="data" imageSize="110" />
         </view>
         <view class="demo-item">
             <view class="title">显示选择框</view>
@@ -61,7 +103,7 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         </view>
         <view class="demo-item">
             <view class="title">显示步进器</view>
-            <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" />
+            <ste-goods-info checkbox="right" :data="data" stepper v-model:number="number" @change="onChange" @plus="plus" @minus="minus" />
         </view>
         <view class="demo-item">
             <view class="title">插槽</view>
@@ -70,6 +112,10 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         <view class="demo-item">
             <view class="title">水印</view>
             <ste-goods-info :data="data" watermark="https://image.whzb.com/chain/StellarUI/已打印.png" />
+        </view>
+        <view class="demo-item">
+            <view class="title">建议</view>
+            <ste-goods-info :data="data" :suggestData="suggestData"></ste-goods-info>
         </view>
         <view class="demo-item">
             <view class="title">点击事件</view>

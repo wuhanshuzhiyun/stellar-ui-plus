@@ -237,6 +237,7 @@ async function minus() {
 
         .input-element {
             height: 100%;
+            min-height: 20rpx;
             font-size: var(--font-size-28, 28rpx);
         }
     }

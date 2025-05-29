@@ -130,51 +130,99 @@ const showCategory = computed(() => {
     return props.filterType !== 'checkbox' || (props.filterType === 'checkbox' && filtersData.length > 1);
 });
 
-// 计算每个分类项标题的偏移位置（兼容多端）
-const calculateItemOffsets = async () => {
-    await nextTick();
-    const offsets: number[] = [];
+const calculateItemOffsets = () => {
+    utils.debounce(calculateItemOffsetsCore, { delay: 50 })();
+};
+
+// 添加重试机制的位置计算 - 使用utils的防抖优化
+const calculateItemOffsetsCore = async (retryCount = 0): Promise<void> => {
+    const maxRetries = 3;
 
     try {
-        const scrollContainer = await utils.querySelector<false>('.menu-items', instance);
-        const containerTop = scrollContainer.top || 0;
+        await nextTick();
 
-        // 批量获取所有标题的位置信息
+        // 等待一帧确保DOM完全渲染
+        await new Promise(resolve => {
+            // #ifdef H5
+            requestAnimationFrame(() => resolve(void 0));
+            // #endif
+            // #ifndef H5
+            setTimeout(() => resolve(void 0), 16);
+            // #endif
+        });
+
+        const offsets: number[] = [];
+        let hasValidOffsets = true;
+
+        const scrollContainer = await utils.querySelector<false>('.menu-items', instance);
+        if (!scrollContainer || !scrollContainer.top) {
+            throw new Error('滚动容器未找到');
+        }
+
+        const containerTop = scrollContainer.top;
+
+        // 批量获取所有标题位置
         for (let i = 0; i < filtersData.length; i++) {
             try {
                 const titleRect = await utils.querySelector<false>(`.menu-item-block:nth-child(${i + 1}) .menu-item-title`, instance);
-                if (titleRect && typeof titleRect.top === 'number') {
-                    // 计算相对于滚动容器的偏移
+
+                if (titleRect && typeof titleRect.top === 'number' && titleRect.top > 0) {
                     offsets[i] = titleRect.top - containerTop;
                 } else {
-                    // 兜底：估算位置
-                    offsets[i] = i * 100;
+                    hasValidOffsets = false;
+                    break;
                 }
             } catch (error) {
-                console.warn(`Failed to get position for item ${i}:`, error);
-                offsets[i] = i * 100; // 兜底值
+                hasValidOffsets = false;
+                break;
             }
         }
 
-        itemOffsets.value = offsets;
-        console.log('Item offsets calculated:', offsets);
+        // 如果获取的位置无效且还有重试次数，则重试
+        if (!hasValidOffsets && retryCount < maxRetries) {
+            console.warn(`位置计算失败，第${retryCount + 1}次重试`);
+            setTimeout(
+                () => {
+                    calculateItemOffsetsCore(retryCount + 1);
+                },
+                100 * (retryCount + 1)
+            ); // 递增延迟
+            return;
+        }
+
+        // 验证offset的合理性
+        if (hasValidOffsets && offsets.length === filtersData.length) {
+            // 检查offsets是否递增（合理性检查）
+            const isValidSequence = offsets.every((offset, index) => index === 0 || offset >= offsets[index - 1]);
+
+            if (isValidSequence) {
+                itemOffsets.value = offsets;
+                console.log('位置计算成功:', offsets);
+                return;
+            }
+        }
+
+        // 兜底方案：使用估算值
+        console.warn('使用兜底位置估算');
+        const fallbackOffsets = filtersData.map((_, index) => index * 120); // 增加估算间距
+        itemOffsets.value = fallbackOffsets;
     } catch (error) {
-        console.error('Failed to calculate item offsets:', error);
-        // 兜底：使用估算值
-        const fallbackOffsets = filtersData.map((_, index) => index * 100);
+        console.error('位置计算失败:', error);
+        // 最终兜底
+        const fallbackOffsets = filtersData.map((_, index) => index * 120);
         itemOffsets.value = fallbackOffsets;
     }
 };
 
-// 初始化数据
-const init = () => {
+// 优化初始化方法
+const init = async () => {
     categoryData.length = 0;
     props.data.forEach((item, index) => {
         categoryData.push({
             title: item.title,
             value: item.value,
             children: item.children || [],
-            active: index === 0, // 默认激活第一个分类
+            active: index === 0,
         });
     });
 
@@ -183,10 +231,11 @@ const init = () => {
         checkboxData.value = props.data[0].children || [];
     }
 
-    // 计算位置
-    nextTick(() => {
-        calculateItemOffsets();
-    });
+    // 使用utils的防抖方法，多次尝试计算位置
+    await nextTick();
+    utils.debounce(() => calculateItemOffsetsCore(), { delay: 100 })();
+    utils.debounce(() => calculateItemOffsetsCore(), { delay: 300 })();
+    utils.debounce(() => calculateItemOffsetsCore(), { delay: 500 })();
 };
 
 // 监听数据变化
@@ -217,73 +266,90 @@ const handleCategoryClick = async (index: number) => {
 };
 
 const doScroll = async (index: number) => {
-    // 记录手动点击时间，用于防止滚动联动
     lastManualClickTime.value = Date.now();
 
     try {
-        // 重新计算位置（确保数据最新）
-        await calculateItemOffsets();
+        // 如果offsets为空或长度不匹配，重新计算
+        if (itemOffsets.value.length !== filtersData.length || itemOffsets.value.every(offset => offset === 0)) {
+            console.log('重新计算位置偏移');
+            await calculateItemOffsets();
 
-        // 滚动到对应标题位置
+            // 等待计算完成
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+
         const targetOffset = itemOffsets.value[index] || 0;
-        console.log(`Scrolling to offset: ${targetOffset}`);
+        console.log(`滚动到位置: ${targetOffset}, 目标索引: ${index}`);
 
         // 清除之前的定时器
         if (clickScrollTimer) clearTimeout(clickScrollTimer);
 
-        // 设置滚动位置
-        scrollTop.value = targetOffset;
+        // 添加小的偏移量，确保标题完全可见
+        const adjustedOffset = Math.max(0, targetOffset - 10);
 
-        // 延迟重置滚动标志，确保滚动完成
+        // 分两步设置滚动，确保滚动生效
+        scrollTop.value = adjustedOffset;
+
+        // 微调确保精确定位
+        setTimeout(() => {
+            scrollTop.value = adjustedOffset;
+        }, 50);
+
+        // 延长重置标志的时间
         clickScrollTimer = setTimeout(() => {
             isScrollingToTarget.value = false;
-            console.log('Scroll target flag reset');
-        }, 800); // 增加重置延迟时间
+            console.log('滚动标志重置');
+        }, 1000);
     } catch (error) {
-        console.error('Scroll to target failed:', error);
+        console.error('滚动失败:', error);
         isScrollingToTarget.value = false;
     }
 };
 
 // 处理滚动事件 - 根据滚动位置更新左侧激活状态（兼容多端）
+
+// 优化滚动事件处理，使用utils的防抖方法
+const handleScrollLogic = (currentScrollTop: number) => {
+    // 检查offsets是否有效
+    if (!itemOffsets.value.length || itemOffsets.value.length !== filtersData.length) {
+        console.warn('位置数据无效，跳过滚动联动');
+        return;
+    }
+
+    let targetIndex = 0;
+    const threshold = 50; // 增加阈值，减少误触
+
+    // 更精确的索引计算
+    for (let i = itemOffsets.value.length - 1; i >= 0; i--) {
+        if (currentScrollTop >= itemOffsets.value[i] - threshold) {
+            targetIndex = i;
+            break;
+        }
+    }
+
+    // 只有确实需要切换时才更新
+    if (currentActiveIndex.value !== targetIndex) {
+        console.log(`滚动联动: ${currentActiveIndex.value} -> ${targetIndex}, 位置: ${currentScrollTop}`);
+
+        categoryData.forEach((item, i) => {
+            item.active = i === targetIndex;
+        });
+        currentActiveIndex.value = targetIndex;
+    }
+};
+// 优化滚动事件处理，增加防抖和容错
 const handleScroll = (event: any) => {
-    // 如果正在程序滚动，直接返回
+    // 基础条件检查
     if (props.filterType === 'checkbox' || isScrollingToTarget.value) return;
 
-    // 如果刚刚手动点击过（500ms内），不处理滚动联动
     const now = Date.now();
-    if (now - lastManualClickTime.value < 500) return;
+    if (now - lastManualClickTime.value < 800) return; // 增加保护时间
 
-    // 兼容不同平台的事件参数
+    // 获取滚动位置
     const currentScrollTop = event.detail?.scrollTop || event.target?.scrollTop || 0;
-    console.log('滚动位置：', currentScrollTop);
 
-    // 防抖处理，避免频繁触发
-    if (scrollTimer) clearTimeout(scrollTimer);
-
-    scrollTimer = setTimeout(() => {
-        // 找到当前滚动位置对应的分类标题
-        let targetIndex = 0;
-
-        // 从后往前找，找到第一个标题位置小于等于当前滚动位置的
-        for (let i = itemOffsets.value.length - 1; i >= 0; i--) {
-            // 调整容错范围，让切换更准确
-            if (currentScrollTop >= itemOffsets.value[i] - 30) {
-                targetIndex = i;
-                break;
-            }
-        }
-
-        // 只有当目标索引真的不同时才更新
-        if (currentActiveIndex.value !== targetIndex) {
-            console.log(`Scroll triggered: ${currentActiveIndex.value} -> ${targetIndex}, scrollTop: ${currentScrollTop}`);
-
-            categoryData.forEach((item, i) => {
-                item.active = i === targetIndex;
-            });
-            currentActiveIndex.value = targetIndex;
-        }
-    }, 80); // 增加防抖时间，减少频繁触发
+    // 使用utils的防抖方法
+    utils.debounce(handleScrollLogic, currentScrollTop, { delay: 150 })();
 };
 
 // 滚动防抖定时器
@@ -331,19 +397,34 @@ const handleMenuConfirm = () => {
 
 // 切换展开状态的方法
 const toggleExpand = (item: FilterItem) => {
-    console.log('切换状态');
     item.expand = !item.expand;
 };
 
-// 监听显示状态，重新计算位置
-watch(showMenu, visible => {
+// 优化监听显示状态
+// 优化监听显示状态
+watch(showMenu, async visible => {
     if (visible) {
-        // 延迟计算，确保DOM已渲染
-        setTimeout(() => {
-            calculateItemOffsets();
-        }, 100);
+        // 重置状态
+        isScrollingToTarget.value = false;
+        scrollTop.value = 0;
+
+        // 使用utils的防抖方法，分多次计算确保准确
+        await nextTick();
+        utils.debounce(() => calculateItemOffsetsCore(), { delay: 50 })();
+        utils.debounce(() => calculateItemOffsetsCore(), { delay: 200 })();
+        utils.debounce(() => calculateItemOffsetsCore(), { delay: 500 })();
     }
 });
+
+// 添加resize监听（H5环境）- 使用utils的防抖
+// #ifdef H5
+const handleResize = () => {
+    if (showMenu.value) {
+        utils.debounce(() => calculateItemOffsetsCore(), { delay: 200 })();
+    }
+};
+window.addEventListener('resize', handleResize);
+// #endif
 
 // 组件销毁时清理定时器
 import { onUnmounted } from 'vue';

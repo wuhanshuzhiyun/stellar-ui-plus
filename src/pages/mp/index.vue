@@ -5,7 +5,7 @@ import config from '@/uni_modules/stellar-ui-plus/package.json';
 
 const datas = useComponents();
 function toDemo(item: Content) {
-    const url = `/pages/mp/demo-views/${item.key}/${item.key}`;
+    const url = `/subPackages_demo_view/${item.key}/${item.key}`;
     uni.navigateTo({ url });
 }
 function toConfig(url: string) {

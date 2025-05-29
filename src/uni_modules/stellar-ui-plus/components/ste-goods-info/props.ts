@@ -16,6 +16,11 @@ export default {
         type: Object as PropType<GoodsInfoType>,
         default: () => ({}),
     },
+    /** image大小 */
+    imageSize: {
+        type: [Number, String],
+        default: () => 160,
+    },
     /** 是否隐藏价格 */
     hidePrice: {
         type: Boolean,

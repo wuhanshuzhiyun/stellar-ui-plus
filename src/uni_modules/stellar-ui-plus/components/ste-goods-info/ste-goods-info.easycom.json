@@ -11,6 +11,12 @@
             "default": "{}"
         },
         {
+            "name": "imageSize",
+            "description": "图片大小",
+            "type": "string | number",
+            "default": "160"
+        },
+        {
             "name": "hidePrice",
             "description": "隐藏价格",
             "type": "boolean",

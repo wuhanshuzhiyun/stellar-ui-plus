@@ -6,6 +6,7 @@ import steStepper from '../ste-stepper/ste-stepper.vue';
 import setCheckbox from '../ste-checkbox/ste-checkbox.vue';
 import { useColorStore } from '../../store/color';
 import propsData, { type GoodsInfoType } from './props';
+import utils from '../../utils/utils';
 
 let { getColor } = useColorStore();
 
@@ -53,12 +54,22 @@ watch(
     { immediate: true }
 );
 
+const rootStyle = computed(() => {
+    let style: Record<string, string> = {
+        // 图片大小，默认插槽存在的情况下160rpx，否则为110rpx
+        '--image-size': utils.formatPx(props.imageSize, 'str'),
+    };
+
+    return style;
+});
+
 const rootClass = computed(() => ({
     checkbox: ['left', 'right'].includes(props.checkbox),
     checkboxleft: props.checkbox === 'left',
     checkboxright: props.checkbox === 'right',
 }));
 
+const showPriceRow = computed(() => props.stepper || !props.hidePrice);
 const numberChange = () => {
     emits('update:number', _number.value);
     emits('change', { number: _number.value }, props.data);
@@ -79,13 +90,13 @@ const plus = (value: number | string, suspend: () => void, next: () => void, sto
 const minus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => emits('minus', value, suspend, next, stop);
 </script>
 <template>
-    <view class="ste-goods-info-root" :class="rootClass">
+    <view class="ste-goods-info-root" :class="rootClass" :style="[rootStyle]">
         <view @click="_checked = !_checked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
             <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
         </view>
         <view class="ste-goods-info-view">
             <view class="ste-goods-info-image">
-                <setImage :src="data.image" width="160" height="160" @click="onClick('image')" />
+                <setImage :src="data.image" :width="imageSize" :height="imageSize" @click="onClick('image')" />
             </view>
             <view class="ste-goods-info-content">
                 <view class="ste-goods-info-title" @click="onClick('title')">
@@ -102,7 +113,7 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
                 <view class="ste-goods-info-slot">
                     <slot></slot>
                 </view>
-                <view class="ste-goods-info-price" v-if="!hidePrice || stepper">
+                <view class="ste-goods-info-price" v-if="showPriceRow">
                     <view class="ste-goods-info-price-left" v-if="!hidePrice">
                         <setPrice :value="data.price" :digits="2" bold :styleType="3" fontSize="26" @click="onClick('price')" />
                         <setPrice
@@ -159,11 +170,11 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
         flex-direction: row;
         justify-content: space-between;
         .ste-goods-info-image {
-            width: 160rpx;
-            height: 160rpx;
+            width: var(--image-size);
+            height: var(--image-size);
         }
         .ste-goods-info-content {
-            width: calc(100% - 168rpx);
+            width: calc(100% - var(--image-size) - 8rpx);
             .ste-goods-info-title {
                 font-weight: bold;
                 font-size: 28rpx;

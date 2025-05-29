@@ -7,6 +7,7 @@
 ### 基础用法
 
 - 属性`data`用于接收商品数据
+- 属性`imageSize`用于控制商品图片大小，默认值`160`，单位`rpx`
 
 ```html
 <script setup lang="ts">
@@ -22,7 +23,7 @@
     });
 </script>
 <template>
-    <ste-goods-info :data="data" />
+    <ste-goods-info :data="data" imageSize="110" />
 </template>
 ```
 
@@ -122,7 +123,7 @@
     };
 </script>
 <template>
-    <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" @plus="plus" @minus="minus" />
+    <ste-goods-info checkbox="right" :data="data" stepper v-model:number="number" @change="onChange" @plus="plus" @minus="minus" />
 </template>
 ```
 

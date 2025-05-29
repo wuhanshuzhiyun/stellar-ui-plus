@@ -88,7 +88,7 @@ const minus = (v: number | string, suspend: () => void, next: () => void, stop: 
         </view>
         <view class="demo-item">
             <view class="title">显示选择框</view>
-            <ste-goods-info checkbox="left" v-model:checked="checked" :data="data" @change="onChange" />
+            <ste-goods-info checkbox="right" v-model:checked="checked" :data="data" @change="onChange" />
         </view>
         <view class="demo-item">
             <view class="title">显示步进器</view>

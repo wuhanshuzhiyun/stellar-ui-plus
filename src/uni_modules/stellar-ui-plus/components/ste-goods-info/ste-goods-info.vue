@@ -99,20 +99,25 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
                 <setImage :src="data.image" :width="imageSize" :height="imageSize" @click="onClick('image')" />
             </view>
             <view class="ste-goods-info-content">
-                <view class="ste-goods-info-title" @click="onClick('title')">
-                    <view class="ste-goods-info-tag-box" v-if="data.tag">
-                        <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
+                <view class="ste-goods-info-header">
+                    <view class="ste-goods-info-title" @click="onClick('title')">
+                        <view class="ste-goods-info-tag-box" v-if="data.tag">
+                            <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
+                        </view>
+                        {{ data.title }}
                     </view>
-                    {{ data.title }}
+                    <view @click="_checked = !_checked" class="ste-goods-info-checkbox right" v-if="checkbox === 'right'">
+                        <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
+                    </view>
                 </view>
                 <view class="ste-goods-info-codes" @click="onClick('code')">
                     {{ data.code }}
                     <span>|</span>
                     {{ data.barCode }}
                 </view>
-                <view class="ste-goods-info-slot">
-                    <slot></slot>
-                </view>
+                <slot>
+                    <view class="ste-goods-info-slot"></view>
+                </slot>
                 <view class="ste-goods-info-price" v-if="showPriceRow">
                     <view class="ste-goods-info-price-left" v-if="!hidePrice">
                         <setPrice :value="data.price" :digits="2" bold :styleType="3" fontSize="26" @click="onClick('price')" />
@@ -145,9 +150,6 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
                 </view>
             </view>
         </view>
-        <view @click="_checked = !_checked" class="ste-goods-info-checkbox right" v-if="checkbox === 'right'">
-            <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
-        </view>
 
         <image v-if="watermark" class="ste-goods-info-watermark" :style="watermarkStyle" :src="watermark" />
     </view>
@@ -175,32 +177,38 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
         }
         .ste-goods-info-content {
             width: calc(100% - var(--image-size) - 8rpx);
-            .ste-goods-info-title {
-                font-weight: bold;
-                font-size: 28rpx;
-                line-height: 28rpx;
-                color: #1c1f23;
-                // 文字溢出隐藏显示省略号
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                .ste-goods-info-tag-box {
-                    display: inline-flex;
-                    margin-right: 8rpx;
+            .ste-goods-info-header {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .ste-goods-info-title {
+                    font-weight: bold;
+                    font-size: 28rpx;
+                    line-height: 28rpx;
+                    color: #1c1f23;
+                    // 文字溢出隐藏显示省略号
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    .ste-goods-info-tag-box {
+                        display: inline-flex;
+                        margin-right: 8rpx;
 
-                    .ste-goods-info-tag {
-                        transform: translateY(-2rpx);
-                        height: 26rpx;
-                        line-height: 26rpx;
-                        font-size: 18rpx;
-                        padding: 0 8rpx;
-                        background-color: #f5f5f5;
-                        color: #fff;
-                        border-radius: 4rpx;
+                        .ste-goods-info-tag {
+                            transform: translateY(-2rpx);
+                            height: 26rpx;
+                            line-height: 26rpx;
+                            font-size: 18rpx;
+                            padding: 0 8rpx;
+                            background-color: #f5f5f5;
+                            color: #fff;
+                            border-radius: 4rpx;
+                        }
                     }
                 }
             }
-            .ste-goods-info-slot,
+
             .ste-goods-info-codes {
                 font-size: 22rpx;
                 color: #555a61;
@@ -208,8 +216,14 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
                 margin-top: 8rpx;
             }
 
+            .ste-goods-info-slot + .ste-goods-info-price {
+                margin-top: 16rpx;
+            }
+
             .ste-goods-info-price {
                 margin-top: 24rpx;
+                width: 100%;
+                height: 34rpx;
                 display: flex;
                 justify-content: space-between;
             }
@@ -232,15 +246,19 @@ const minus = (value: number | string, suspend: () => void, next: () => void, st
         &.checkboxright {
             padding-right: 8rpx;
             align-items: flex-start;
+            .ste-goods-info-view .ste-goods-info-content .ste-goods-info-header .ste-goods-info-title {
+                width: calc(100% - 54rpx);
+            }
         }
 
         &.checkboxleft {
             padding-left: 0;
             align-items: center;
+            .ste-goods-info-view {
+                width: calc(100% - 54rpx);
+            }
         }
-        .ste-goods-info-view {
-            width: calc(100% - 54rpx);
-        }
+
         .ste-goods-info-checkbox {
             width: 46rpx;
             padding: 8rpx;

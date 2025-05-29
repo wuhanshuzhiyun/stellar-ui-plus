@@ -84,15 +84,15 @@ const minus = (v: number | string, suspend: () => void, next: () => void, stop: 
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>
-            <ste-goods-info :data="data" />
+            <ste-goods-info :data="data" imageSize="110" />
         </view>
         <view class="demo-item">
             <view class="title">显示选择框</view>
-            <ste-goods-info checkbox="right" v-model:checked="checked" :data="data" @change="onChange" />
+            <ste-goods-info checkbox="left" v-model:checked="checked" :data="data" @change="onChange" />
         </view>
         <view class="demo-item">
             <view class="title">显示步进器</view>
-            <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" @plus="plus" @minus="minus" />
+            <ste-goods-info checkbox="right" :data="data" stepper v-model:number="number" @change="onChange" @plus="plus" @minus="minus" />
         </view>
         <view class="demo-item">
             <view class="title">插槽</view>

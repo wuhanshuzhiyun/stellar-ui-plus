@@ -16,6 +16,8 @@ const emits = defineEmits<{
     (e: 'update:checked', checked?: boolean): void;
     (e: 'change', change: { number?: number; checked?: boolean }, data: GoodsInfoType): void;
     (e: 'click', type: 'image' | 'title' | 'code' | 'price' | 'originalPrice'): void;
+    (e: 'plus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
+    (e: 'minus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
 }>();
 
 const _number = ref(1);
@@ -72,47 +74,63 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
 };
 
 const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeColor));
+
+const plus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => emits('plus', value, suspend, next, stop);
+const minus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => emits('minus', value, suspend, next, stop);
 </script>
 <template>
     <view class="ste-goods-info-root" :class="rootClass">
         <view @click="_checked = !_checked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
             <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
         </view>
-        <view class="ste-goods-info-image">
-            <setImage :src="data.image" width="160" height="160" @click="onClick('image')" />
-        </view>
-        <view class="ste-goods-info-content">
-            <view class="ste-goods-info-title" @click="onClick('title')">
-                <view class="ste-goods-info-tag-box" v-if="data.tag">
-                    <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
+        <view class="ste-goods-info-view">
+            <view class="ste-goods-info-image">
+                <setImage :src="data.image" width="160" height="160" @click="onClick('image')" />
+            </view>
+            <view class="ste-goods-info-content">
+                <view class="ste-goods-info-title" @click="onClick('title')">
+                    <view class="ste-goods-info-tag-box" v-if="data.tag">
+                        <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
+                    </view>
+                    {{ data.title }}
                 </view>
-                {{ data.title }}
-            </view>
-            <view class="ste-goods-info-codes" @click="onClick('code')">
-                {{ data.code }}
-                <span>|</span>
-                {{ data.barCode }}
-            </view>
-            <view class="ste-goods-info-slot">
-                <slot></slot>
-            </view>
-            <view class="ste-goods-info-price" v-if="!hidePrice || stepper">
-                <view class="ste-goods-info-price-left" v-if="!hidePrice">
-                    <setPrice :value="data.price" :digits="2" bold :styleType="3" fontSize="26" @click="onClick('price')" />
-                    <setPrice
-                        v-if="data.originalPrice"
-                        :digits="2"
-                        :value="data.originalPrice"
-                        isSuggestPrice
-                        linePriceColor="#666666"
-                        marginLeft="16"
-                        fontSize="20"
-                        @click="onClick('originalPrice')"
-                        :showUnit="false"
-                    />
+                <view class="ste-goods-info-codes" @click="onClick('code')">
+                    {{ data.code }}
+                    <span>|</span>
+                    {{ data.barCode }}
                 </view>
-                <view class="ste-goods-info-price-right" v-if="stepper">
-                    <steStepper v-model="_number" :precision="precision" :step="step" @change="numberChange" theme="line" :min="min" :max="max" />
+                <view class="ste-goods-info-slot">
+                    <slot></slot>
+                </view>
+                <view class="ste-goods-info-price" v-if="!hidePrice || stepper">
+                    <view class="ste-goods-info-price-left" v-if="!hidePrice">
+                        <setPrice :value="data.price" :digits="2" bold :styleType="3" fontSize="26" @click="onClick('price')" />
+                        <setPrice
+                            v-if="data.originalPrice"
+                            :digits="2"
+                            :value="data.originalPrice"
+                            isSuggestPrice
+                            linePriceColor="#666666"
+                            marginLeft="16"
+                            fontSize="20"
+                            @click="onClick('originalPrice')"
+                            :showUnit="false"
+                        />
+                    </view>
+                    <view class="ste-goods-info-price-right" v-if="stepper">
+                        <steStepper
+                            v-model="_number"
+                            :precision="precision"
+                            :step="step"
+                            theme="line"
+                            :min="min"
+                            :max="max"
+                            :disableInput="disableInput"
+                            @change="numberChange"
+                            @plus="plus"
+                            @minus="minus"
+                        />
+                    </view>
                 </view>
             </view>
         </view>
@@ -135,49 +153,54 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
     flex-direction: row;
     justify-content: space-between;
     position: relative;
+    .ste-goods-info-view {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .ste-goods-info-image {
+            width: 160rpx;
+            height: 160rpx;
+        }
+        .ste-goods-info-content {
+            width: calc(100% - 168rpx);
+            .ste-goods-info-title {
+                font-weight: bold;
+                font-size: 28rpx;
+                line-height: 28rpx;
+                color: #1c1f23;
+                // 文字溢出隐藏显示省略号
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                .ste-goods-info-tag-box {
+                    display: inline-flex;
+                    margin-right: 8rpx;
 
-    .ste-goods-info-image {
-        width: 160rpx;
-        height: 160rpx;
-    }
-    .ste-goods-info-content {
-        width: calc(100% - 176rpx);
-        .ste-goods-info-title {
-            font-weight: bold;
-            font-size: 28rpx;
-            line-height: 28rpx;
-            color: #1c1f23;
-            // 文字溢出隐藏显示省略号
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            .ste-goods-info-tag-box {
-                display: inline-flex;
-                margin-right: 8rpx;
-
-                .ste-goods-info-tag {
-                    transform: translateY(-2rpx);
-                    height: 26rpx;
-                    font-size: 18rpx;
-                    padding: 0 8rpx;
-                    background-color: #f5f5f5;
-                    color: #fff;
-                    border-radius: 4rpx;
+                    .ste-goods-info-tag {
+                        transform: translateY(-2rpx);
+                        height: 26rpx;
+                        font-size: 18rpx;
+                        padding: 0 8rpx;
+                        background-color: #f5f5f5;
+                        color: #fff;
+                        border-radius: 4rpx;
+                    }
                 }
             }
-        }
-        .ste-goods-info-slot,
-        .ste-goods-info-codes {
-            font-size: 22rpx;
-            color: #555a61;
-            line-height: 26rpx;
-            margin-top: 8rpx;
-        }
+            .ste-goods-info-slot,
+            .ste-goods-info-codes {
+                font-size: 22rpx;
+                color: #555a61;
+                line-height: 26rpx;
+                margin-top: 8rpx;
+            }
 
-        .ste-goods-info-price {
-            margin-top: 24rpx;
-            display: flex;
-            justify-content: space-between;
+            .ste-goods-info-price {
+                margin-top: 24rpx;
+                display: flex;
+                justify-content: space-between;
+            }
         }
     }
 
@@ -196,24 +219,24 @@ const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeCo
 
         &.checkboxright {
             padding-right: 8rpx;
+            align-items: flex-start;
         }
 
         &.checkboxleft {
             padding-left: 0;
+            align-items: center;
         }
-
-        .ste-goods-info-content {
-            width: calc(100% - 222rpx);
+        .ste-goods-info-view {
+            width: calc(100% - 54rpx);
         }
         .ste-goods-info-checkbox {
             width: 46rpx;
-            padding: 0 8rpx 8rpx 8rpx;
+            padding: 8rpx;
             display: flex;
             overflow: hidden;
             &.right {
                 height: 100%;
-                padding: 8rpx;
-                align-items: flex-start;
+                padding: 0 8rpx 8rpx 8rpx;
             }
         }
     }

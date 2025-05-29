@@ -90,9 +90,39 @@
             icon: 'none',
         });
     };
+
+    const plus = (v: number | string, suspend: () => void, next: () => void, stop: () => void) => {
+        suspend();
+        uni.showModal({
+            title: '提示',
+            content: '确定增加数量？',
+            success: res => {
+                if (res.confirm) {
+                    next();
+                } else {
+                    stop();
+                }
+            },
+        });
+    };
+
+    const minus = (v: number | string, suspend: () => void, next: () => void, stop: () => void) => {
+        suspend();
+        uni.showModal({
+            title: '提示',
+            content: '确定减少数量？',
+            success: res => {
+                if (res.confirm) {
+                    next();
+                } else {
+                    stop();
+                }
+            },
+        });
+    };
 </script>
 <template>
-    <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" />
+    <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" @plus="plus" @minus="minus" />
 </template>
 ```
 

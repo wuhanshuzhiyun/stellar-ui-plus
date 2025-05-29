@@ -70,6 +70,12 @@
             "default": false
         },
         {
+            "name": "disableInput",
+            "description": "是否禁用步进器输入框",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "precision",
             "description": "数值精度",
             "type": "number",
@@ -113,6 +119,52 @@
                 {
                     "name": "type",
                     "description": "点击位置"
+                }
+            ]
+        },
+        {
+            "name": "[event]plus",
+            "description": "点击加号前置钩子函数",
+            "type": "(v: number | string, suspend: () => void, next: () => void, stop: () => void) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "改变后的绑定值"
+                },
+                {
+                    "name": "suspend",
+                    "description": "等待"
+                },
+                {
+                    "name": "next",
+                    "description": "继续"
+                },
+                {
+                    "name": "stop",
+                    "description": "停止"
+                }
+            ]
+        },
+        {
+            "name": "[event]minus",
+            "description": "点击减号前置钩子函数",
+            "type": "(v: number | string, suspend: () => void, next: () => void, stop: () => void) => void",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "改变后的绑定值"
+                },
+                {
+                    "name": "suspend",
+                    "description": "等待"
+                },
+                {
+                    "name": "next",
+                    "description": "继续"
+                },
+                {
+                    "name": "stop",
+                    "description": "停止"
                 }
             ]
         }

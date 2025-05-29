@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMessageBox } from '@/uni_modules/stellar-ui-plus/composables';
 import { ref, watch } from 'vue';
 
 const data = ref({
@@ -44,6 +45,36 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         icon: 'none',
     });
 };
+
+const plus = (v: number | string, suspend: () => void, next: () => void, stop: () => void) => {
+    suspend();
+    uni.showModal({
+        title: '提示',
+        content: '确定增加数量？',
+        success: res => {
+            if (res.confirm) {
+                next();
+            } else {
+                stop();
+            }
+        },
+    });
+};
+
+const minus = (v: number | string, suspend: () => void, next: () => void, stop: () => void) => {
+    suspend();
+    uni.showModal({
+        title: '提示',
+        content: '确定减少数量？',
+        success: res => {
+            if (res.confirm) {
+                next();
+            } else {
+                stop();
+            }
+        },
+    });
+};
 </script>
 <template>
     <page-layout title="商品信息" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
@@ -61,7 +92,7 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') =
         </view>
         <view class="demo-item">
             <view class="title">显示步进器</view>
-            <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" />
+            <ste-goods-info :data="data" stepper v-model:number="number" @change="onChange" @plus="plus" @minus="minus" />
         </view>
         <view class="demo-item">
             <view class="title">插槽</view>

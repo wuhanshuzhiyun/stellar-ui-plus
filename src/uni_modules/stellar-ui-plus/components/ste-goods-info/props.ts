@@ -60,6 +60,12 @@ export default {
         type: Boolean,
         default: () => false,
     },
+    /** 是否显示步进器 */
+    disableInput: {
+        type: Boolean,
+        default: () => false,
+    },
+
     /** 数值精度 */
     precision: {
         type: Number,

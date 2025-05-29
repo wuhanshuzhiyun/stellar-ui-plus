@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch, computed, ref, type CSSProperties, getCurrentInstance, type ComponentPublicInstance } from 'vue';
+import { watch, computed, ref, type CSSProperties, getCurrentInstance, onUnmounted, type ComponentPublicInstance } from 'vue';
 import { useProvide } from '../../utils/mixin';
 import { DEFAULT_DURATION, MAX_DURATION, MIN_DURATION, DEFAULT_ROOT_QUERY } from './constans';
 import propsData, { DEOP_DOWN_MENU_KEY, dropDownMenuEmits } from './props';
@@ -103,6 +103,17 @@ watch(
     { immediate: true }
 );
 
+watch(
+    () => props.showPopup,
+    (val: boolean) => {
+        if (val) {
+            open();
+        } else {
+            close();
+        }
+    }
+);
+
 let menuItems = ref<DropdownItem[]>([]);
 function updateItems() {
     let childrens = internalChildren;
@@ -122,10 +133,12 @@ function loadMenuTitle() {
         menuTitle.value = props.title;
     }
 }
+
 function touchmove(e: TouchEvent) {
     // TODO nvue 取消冒泡
     e.stopPropagation();
 }
+
 async function getContentHeight() {
     let windowHeight = System.getWindowInfo().windowHeight;
 
@@ -133,6 +146,7 @@ async function getContentHeight() {
     menuRootQuery.value = { height: res.height || 0, top: res.top || 0, bottom: res.bottom || 0, left: res.left || 0 };
     contentHeight.value = props.direction == 'down' ? windowHeight - menuRootQuery.value.bottom : menuRootQuery.value.top;
 }
+
 async function handleMenuClick() {
     if (!showMenu.value) {
         await getContentHeight();
@@ -141,23 +155,56 @@ async function handleMenuClick() {
         close();
     }
 }
+
+// 防抖定时器
+let openTimer: any = null;
+let closeTimer: any = null;
+
 function open() {
-    showMenu.value = true;
-    hiddenContent.value = false;
-    emits('open');
-}
-function close() {
-    showMenu.value = false;
-    setTimeout(
+    // 清除之前的定时器
+    if (openTimer) clearTimeout(openTimer);
+    if (closeTimer) clearTimeout(closeTimer);
+
+    openTimer = setTimeout(
         () => {
-            hiddenContent.value = true;
-            contentHeight.value = 0;
-            menuRootQuery.value = DEFAULT_ROOT_QUERY;
-            emits('close');
+            showMenu.value = true;
+            hiddenContent.value = false;
+            emits('open');
+            emits('update:showPopup', showMenu.value);
         },
-        Number(cmpDuration.value) * 1000
-    );
+        Number(cmpDuration.value) * 1000 + 10
+    ); //  防抖延迟，可根据需要调整
 }
+
+function close() {
+    // 清除之前的定时器
+    if (closeTimer) clearTimeout(closeTimer);
+    if (openTimer) clearTimeout(openTimer);
+
+    closeTimer = setTimeout(
+        () => {
+            showMenu.value = false;
+            setTimeout(
+                () => {
+                    hiddenContent.value = true;
+                    contentHeight.value = 0;
+                    menuRootQuery.value = DEFAULT_ROOT_QUERY;
+                    emits('close');
+                    emits('update:showPopup', showMenu.value);
+                },
+                Number(cmpDuration.value) * 1000
+            );
+        },
+        Number(cmpDuration.value) * 1000 + 10
+    ); //  防抖延迟
+}
+
+// 组件卸载时清理定时器
+onUnmounted(() => {
+    if (openTimer) clearTimeout(openTimer);
+    if (closeTimer) clearTimeout(closeTimer);
+});
+
 function choose(item: DropdownItem) {
     let temp = chooseItems;
     let index = temp.findIndex(e => e == item.value);
@@ -204,11 +251,15 @@ defineExpose({ close });
 <template>
     <view class="ste-dropdown-menu-root" :class="[cmpRootClass]" :style="[cmpRootStyle]" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>
         <view class="dropdown-placeholder" :style="[cmpMenuPlaceholderStyle]" @click="close" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent />
-        <view class="menu-box" @click="handleMenuClick" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>
-            <text class="title">{{ menuTitle || title }}</text>
-            <view class="menu-title-icon">
-                <ste-icon code="&#xe699;" size="16" :color="dropDownIconColor"></ste-icon>
-            </view>
+        <view @click="handleMenuClick" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>
+            <slot name="title">
+                <view class="menu-box">
+                    <text class="title">{{ menuTitle || title }}</text>
+                    <view class="menu-title-icon">
+                        <ste-icon code="&#xe699;" size="16" :color="dropDownIconColor"></ste-icon>
+                    </view>
+                </view>
+            </slot>
         </view>
         <view :class="hiddenContent ? 'dropdown-content hidden' : 'dropdown-content'" :style="[cmpMenuContentStyle]" @click="handleMaskClick" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>
             <view class="menu-item-content" @click.stop="handleMenuConentClick">

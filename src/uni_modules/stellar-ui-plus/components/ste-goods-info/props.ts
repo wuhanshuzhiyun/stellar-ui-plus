@@ -11,12 +11,14 @@ export interface GoodsInfoType extends Record<string, any> {
 }
 
 export interface SuggestData {
-    title: string;
-    number: number;
-    items: { label: string; value: string }[];
+    title?: string;
+    number?: string | number;
+    applyForText?: string | null;
+    applyForNumber?: string | number;
+    items: { label: string; value: string | number }[];
 }
 
-export const defaultSuggestData: () => SuggestData = () => ({ title: '建议', number: 0, items: [] });
+export const defaultSuggestData: () => SuggestData = () => ({ title: '建议', number: 0, applyForText: '申请', applyForNumber: 0, items: [] });
 
 export default {
     /** 商品数据 */
@@ -99,14 +101,8 @@ export default {
         type: Number,
         default: () => 9999,
     },
-    /** 显示建议 */
-    suggest: {
-        type: Boolean,
-        default: () => false,
-    },
     /** 建议数据 */
     suggestData: {
         type: Object as PropType<SuggestData>,
-        default: () => defaultSuggestData(),
     },
 };

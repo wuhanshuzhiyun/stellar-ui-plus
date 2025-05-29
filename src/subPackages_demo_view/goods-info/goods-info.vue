@@ -75,6 +75,21 @@ const minus = (v: number | string, suspend: () => void, next: () => void, stop: 
         },
     });
 };
+
+const suggestData = ref({
+    title: '操作',
+    number: 200,
+    items: [
+        { label: '门店库存', value: '10000' },
+        { label: '日均销量', value: '20000' },
+        { label: '在途库存', value: '15000' },
+        { label: '上周销量', value: '30000' },
+        { label: '门店库存', value: '10000' },
+        { label: '日均销量', value: '20000' },
+        { label: '在途库存', value: '15000' },
+        { label: '上周销量', value: '30000' },
+    ],
+});
 </script>
 <template>
     <page-layout title="商品信息" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
@@ -101,6 +116,10 @@ const minus = (v: number | string, suspend: () => void, next: () => void, stop: 
         <view class="demo-item">
             <view class="title">水印</view>
             <ste-goods-info :data="data" watermark="https://image.whzb.com/chain/StellarUI/已打印.png" />
+        </view>
+        <view class="demo-item">
+            <view class="title">建议</view>
+            <ste-goods-info :data="data" :suggestData="suggestData"></ste-goods-info>
         </view>
         <view class="demo-item">
             <view class="title">点击事件</view>

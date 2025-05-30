@@ -21,12 +21,6 @@
             ]
         },
         {
-            "name": "date",
-            "description": "日期",
-            "type": "String",
-            "default": "new Date()"
-        },
-        {
             "name": "avatar",
             "description": "头像",
             "type": "String",

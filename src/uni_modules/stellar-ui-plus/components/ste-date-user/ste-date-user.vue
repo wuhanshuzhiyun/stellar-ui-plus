@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, defineComponent, onMounted } from 'vue';
-import { getDateInfo } from '../../utils/time';
 
 import propsData from './props';
 defineComponent({
@@ -8,14 +7,23 @@ defineComponent({
 });
 
 const props = defineProps(propsData);
-let time: any = ref(props.date);
+let time: any = ref({});
 let day = ref('');
 let year = ref('');
 onMounted(async () => {
-    time.value = await getDateInfo(time.value);
-    let date = time.value.date.split('-');
-    day.value = date[date.length - 1];
-    year.value = `${date[0]}年${date[1]}月`;
+    uni.request({
+        url: 'https://zboa.whzb.com/inte-cloud-test/inte-tour-base/api/calendar/getCalendar',
+        method: 'get',
+        success: (res: any) => {
+            time.value = res.data.data;
+            let date = time.value.today.split('-');
+            day.value = date[date.length - 1];
+            year.value = `${date[0]}年${date[1]}月`;
+        },
+        fail: error => {
+            console.log('error', error);
+        },
+    });
 });
 </script>
 
@@ -31,9 +39,9 @@ onMounted(async () => {
                         <view class="year">{{ year }}</view>
                     </view>
                     <view class="bottom">
-                        <view class="time">{{ time.day }}</view>
-                        <view class="line" v-if="time.type == 3"></view>
-                        <view class="time" v-if="time.type == 3">{{ time.name }}</view>
+                        <view class="time">{{ time.weekDay }}</view>
+                        <view class="line" v-if="time.jieQiName"></view>
+                        <view class="time" v-if="time.jieQiName">{{ time.jieQiName }}</view>
                     </view>
                 </view>
             </template>
@@ -124,10 +132,11 @@ onMounted(async () => {
                 }
 
                 .desc {
-                    width: 96rpx;
+                    min-width: 96rpx;
                     height: 38rpx;
                     background: #ebf4ff;
                     border-radius: 4rpx;
+                    padding: 0 10rpx 0 4rpx;
                 }
             }
         }

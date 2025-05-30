@@ -6,18 +6,17 @@
 
 ### 域名配置
 
-如需使用日期时间类型，需在小程序后台配置域名`https://fastly.jsdelivr.net`合法，才可使用
+如需使用日期时间类型，需在小程序后台配置域名`https://zboa.whzb.com`合法，才可使用
 
 ## 代码演示
 
 ### 日期类型
 
-- 通过 `type`设置组件类型，默认为`date`
-- 通过 `date`设置日期时间，默认为`当天`
+- 通过 `type`设置组件类型，默认为`date`,取服务器上当天时间
 
 ```html
 <template>
-    <ste-date-user date="2025-10-01"></ste-date-user>
+    <ste-date-user></ste-date-user>
 </template>
 ```
 

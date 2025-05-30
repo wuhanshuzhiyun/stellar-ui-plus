@@ -6,6 +6,15 @@
 
 ### 基础用法
 
+- 筛选数据需按照下方`script`中的格式传入
+
+    - 分类需要传入`key`用于数据定位
+    - `children`为可选项
+        - 选项需传入`title`和`value`
+    - `expandCount`为折叠展示的行数，默认为0，不折叠
+    - `rowCount` 配置每行显示的选项数量，默认为3
+    - `multiple`配置当前分类项是否可以多选
+
 ```html
 <script lang="ts" setup>
     import { reactive } from 'vue';
@@ -15,7 +24,7 @@
             title: '商品分类',
             key: 'category',
             children: [
-                { title: '电子产品123123213123213', value: 'electronics' },
+                { title: '电子产品', value: 'electronics' },
                 { title: '服装鞋', value: 'clothing' },
                 { title: '家居用', value: 'home' },
                 { title: '运动户', value: 'sports' },
@@ -125,9 +134,10 @@
 </template>
 ```
 
-#### 多选
+#### 勾选项模式
 
-- 配置下拉筛选是否多选需要在对象中指定`multiple` 属性
+- `filterType`为`checkbox`
+- 此模式下只支持单选
 
 ```html
 <script lang="ts" setup>
@@ -198,14 +208,6 @@
 ---$
 
 ### API
-
-#### FilterItem
-
-| 事件名     | 说明                                               | 是否必须 |
-| ---------- | -------------------------------------------------- | -------- |
-| `title`    | 选择项显示的文字                                   | 是       |
-| `multiple` | 是否多选, 在更多筛选数据中需要用此字段标识是否多选 | -        |
-| `children` | 更多筛选数据选项组数据, 若不是则不需要             | -        |
 
 <!-- props -->
 

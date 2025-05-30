@@ -32,10 +32,10 @@
                             <view class="menu-item-block" v-for="(item, index) in filtersData" :key="index">
                                 <view class="menu-item-title">
                                     <text>{{ item.title }}</text>
-                                    <view style="display: flex; align-items: center; color: #000" v-if="(item.expandCount || 0) > 0">
+                                    <view @click.stop="toggleExpand(item)" style="display: flex; align-items: center; color: #000; font-size: 20rpx" v-if="(item.expandCount || 0) > 0">
                                         <text>展开</text>
-                                        <view class="expand-btn" @click.stop="toggleExpand(item)" :class="{ expanded: item.expand }">
-                                            <ste-icon code="&#xe676;" color="#000" size="24" />
+                                        <view class="expand-btn" :class="{ expanded: item.expand }">
+                                            <ste-icon code="&#xe676;" color="#000" size="20" />
                                         </view>
                                     </view>
                                 </view>
@@ -49,7 +49,7 @@
                                         :key="childIndex"
                                         class="menu-item-child"
                                         :class="[{ active: child.active }]"
-                                        @click="handleFilterClick(item, child)"
+                                        @click="handleFilterItemClick(item, child)"
                                     >
                                         {{ child.title }}
                                     </view>
@@ -63,11 +63,7 @@
                                 class="menu-item-checkbox"
                                 v-for="(item, index) in filtersData[currentActiveIndex].children"
                                 :key="index"
-                                @click="
-                                    () => {
-                                        filtersData[currentActiveIndex].activeValue = item.value;
-                                    }
-                                "
+                                @click="() => handleCheckboxItemClick(filtersData[currentActiveIndex], String(item.value))"
                             >
                                 <view>{{ item.title }}</view>
                                 <view class="checkbox-action">
@@ -92,12 +88,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, nextTick, getCurrentInstance, onUnmounted } from 'vue';
+import { ref, reactive, computed, watch, getCurrentInstance, onUnmounted } from 'vue';
 import type { ComponentPublicInstance } from 'vue';
 import propsData, { filterToolEmits } from './props';
 import type { FilterItem, CategoryItem } from './type';
 import { useColorStore } from '../../store/color';
 import { ScrollCalculator, ScrollController, InitializationManager, EventHandlerFactory } from './scrollUtil';
+import useData from './useData';
 
 // 组合式API和响应式数据
 const { getColor } = useColorStore();
@@ -122,6 +119,9 @@ const rootStyleVar = computed(() => ({
 const showCategory = computed(() => {
     return props.filterType !== 'checkbox' || (props.filterType === 'checkbox' && filtersData.length > 1);
 });
+
+// 使用简化的筛选逻辑组合式函数
+const { handleFilterClick, handleCheckboxChange, handleReset, handleConfirm } = useData(props, emits, filtersData);
 
 // 工具类实例
 const calculator = new ScrollCalculator(instance, filtersData);
@@ -150,30 +150,23 @@ const initializeData = () => {
     }
 };
 
-// 业务逻辑处理器
-const handleFilterClick = (item: FilterItem, child: FilterItem) => {
-    if (item.multiple) {
-        child.active = !child.active;
-    } else {
-        item.children?.forEach(filter => {
-            filter.active = false;
-        });
-        child.active = true;
-    }
+// 包装筛选逻辑的点击事件
+const handleFilterItemClick = (item: FilterItem, child: FilterItem) => {
+    handleFilterClick(item, child);
 };
 
+const handleCheckboxItemClick = (item: FilterItem, value: string) => {
+    handleCheckboxChange(item, value);
+};
+
+// 包装重置和确认事件
 const handleMenuReset = () => {
-    filtersData.forEach(item => {
-        item.children?.forEach(child => {
-            child.active = false;
-        });
-    });
-    emits('reset');
+    handleReset();
     showMenu.value = false;
 };
 
 const handleMenuConfirm = () => {
-    emits('confirm', []);
+    handleConfirm();
     showMenu.value = false;
 };
 

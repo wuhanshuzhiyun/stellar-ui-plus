@@ -249,9 +249,9 @@ defineExpose({ close });
 </script>
 
 <template>
-    <view class="ste-dropdown-menu-root" :class="[cmpRootClass]" :style="[cmpRootStyle]" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>
-        <view class="dropdown-placeholder" :style="[cmpMenuPlaceholderStyle]" @click="close" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent />
-        <view @click="handleMenuClick" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>
+    <view class="ste-dropdown-menu-root" :class="[cmpRootClass]" :style="[cmpRootStyle]" @touchmove.stop.prevent="touchmove">
+        <view class="dropdown-placeholder" :style="[cmpMenuPlaceholderStyle]" @click="close" @touchmove.stop.prevent="touchmove" />
+        <view @click="handleMenuClick" @touchmove.stop.prevent="touchmove">
             <slot name="title">
                 <view class="menu-box">
                     <text class="title">{{ menuTitle || title }}</text>
@@ -261,7 +261,7 @@ defineExpose({ close });
                 </view>
             </slot>
         </view>
-        <view :class="hiddenContent ? 'dropdown-content hidden' : 'dropdown-content'" :style="[cmpMenuContentStyle]" @click="handleMaskClick" @touchmove.stop.prevent="touchmove" @wheel.stop.prevent>
+        <view :class="hiddenContent ? 'dropdown-content hidden' : 'dropdown-content'" :style="[cmpMenuContentStyle]" @click="handleMaskClick" @touchmove.stop.prevent="touchmove">
             <view class="menu-item-content" @click.stop="handleMenuConentClick">
                 <slot></slot>
             </view>

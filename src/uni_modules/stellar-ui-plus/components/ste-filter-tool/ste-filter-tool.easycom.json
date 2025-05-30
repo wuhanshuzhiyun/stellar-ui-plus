@@ -6,15 +6,9 @@
     "attributes": [
         {
             "name": "value",
-            "description": "当前值（支持v-model双向绑定）",
-            "type": "string | number | (string | number)[]",
+            "description": "当前值，支持v-model:value双向绑定",
+            "type": "object[]",
             "default": ""
-        },
-        {
-            "name": "multiple",
-            "description": "是否支持多选",
-            "type": "boolean",
-            "default": "false"
         },
         {
             "name": "activeColor",
@@ -29,36 +23,19 @@
             "default": "#555A61"
         },
         {
-            "name": "filterText",
-            "description": "筛选按钮文字",
-            "type": "string",
-            "default": "筛选"
-        },
-        {
             "name": "menuData",
             "description": "菜单数据列表",
             "type": "FilterItem[]",
             "default": "[]"
         },
         {
-            "name": "filterData",
-            "description": "筛选数据列表",
-            "type": "FilterItem[]",
-            "default": "[]"
+            "name": "[event]reset",
+            "description": "点击重置时触发",
+            "type": "() => void",
+            "params": []
         },
         {
-            "name": "[event]itemClick",
-            "description": "点击筛选项时触发",
-            "type": "(items: FilterItem[]) => void",
-            "params": [
-                {
-                    "name": "items",
-                    "description": "选中的筛选项列表"
-                }
-            ]
-        },
-        {
-            "name": "[event]menuChange",
+            "name": "[event]confirm",
             "description": "菜单变化时触发",
             "type": "(items: FilterItem[]) => void",
             "params": [

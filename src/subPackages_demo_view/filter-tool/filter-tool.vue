@@ -18,7 +18,7 @@ const handleConfirm = (values: any) => {
 </script>
 
 <template>
-    <page-layout title="商品列表">
+    <page-layout title="筛选选项">
         <view class="description">
             <view class="cmp-name">FilterTool 筛选选项</view>
             <view class="cmp-desc">可配置多选选项组件</view>

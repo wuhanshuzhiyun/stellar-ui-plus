@@ -66,9 +66,9 @@
                             padding: 8rpx;
                             cursor: pointer;
                             transition: transform 0.3s ease;
-                            font-size: 20rpx;
+                            font-size: var(--font-size-20, 20rpx);
                             .expand-icon {
-                                font-size: 20rpx;
+                                font-size: var(--font-size-20, 20rpx);
                             }
 
                             &.expanded {

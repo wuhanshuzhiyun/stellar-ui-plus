@@ -56,7 +56,7 @@ export class ScrollCalculator {
 
             // 重试逻辑
             if (!hasValidOffsets && retryCount < maxRetries) {
-                console.warn(`位置计算失败，第${retryCount + 1}次重试`);
+                // console.warn(`位置计算失败，第${retryCount + 1}次重试`);
                 await this.delay(100 * (retryCount + 1));
                 return this.calculateItemOffsets(retryCount + 1);
             }
@@ -66,16 +66,16 @@ export class ScrollCalculator {
                 const isValidSequence = offsets.every((offset, index) => index === 0 || offset >= offsets[index - 1]);
 
                 if (isValidSequence) {
-                    console.log('位置计算成功:', offsets);
+                    // console.log('位置计算成功:', offsets);
                     return offsets;
                 }
             }
 
             // 兜底方案
-            console.warn('使用兜底位置估算');
+            // console.warn('使用兜底位置估算');
             return this.generateFallbackOffsets();
         } catch (error) {
-            console.error('位置计算失败:', error);
+            // console.error('位置计算失败:', error);
             return this.generateFallbackOffsets();
         }
     }
@@ -141,13 +141,13 @@ export class ScrollController {
         try {
             // 确保位置数据有效
             if (this.itemOffsets.length === 0 || this.itemOffsets.every(offset => offset === 0)) {
-                console.log('重新计算位置偏移');
+                // console.log('重新计算位置偏移');
                 this.itemOffsets = await calculator.calculateItemOffsets();
                 await this.delay(50);
             }
 
             const targetOffset = this.itemOffsets[index] || 0;
-            console.log(`滚动到位置: ${targetOffset}, 目标索引: ${index}`);
+            // console.log(`滚动到位置: ${targetOffset}, 目标索引: ${index}`);
 
             this.clearScrollTimer();
 
@@ -163,10 +163,10 @@ export class ScrollController {
             // 重置滚动标志
             this.clickScrollTimer = setTimeout(() => {
                 this.isScrollingToTarget = false;
-                console.log('滚动标志重置');
+                // console.log('滚动标志重置');
             }, 1000);
         } catch (error) {
-            console.error('滚动失败:', error);
+            // console.error('滚动失败:', error);
             this.isScrollingToTarget = false;
         }
     }
@@ -179,7 +179,7 @@ export class ScrollController {
         if (this.isScrollingToTarget) return;
         if (Date.now() - this.lastManualClickTime < 800) return;
         if (!this.itemOffsets.length) {
-            console.warn('位置数据无效，跳过滚动联动');
+            // console.warn('位置数据无效，跳过滚动联动');
             return;
         }
 
@@ -188,7 +188,7 @@ export class ScrollController {
 
         // 更新激活状态
         if (this.currentActiveIndexRef.value !== targetIndex) {
-            console.log(`滚动联动: ${this.currentActiveIndexRef.value} -> ${targetIndex}, 位置: ${currentScrollTop}`);
+            // console.log(`滚动联动: ${this.currentActiveIndexRef.value} -> ${targetIndex}, 位置: ${currentScrollTop}`);
             this.updateActiveCategory(targetIndex);
         }
     }

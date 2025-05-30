@@ -97,7 +97,8 @@
                     .menu-item-content {
                         display: grid;
                         grid-template-columns: repeat(3, 1fr);
-                        gap: 20rpx 32rpx;
+                        // gap: 20rpx 32rpx;
+                        margin: -10rpx -16rpx;
                         transition: height 0.3s ease;
 
                         &.collapsed {
@@ -129,7 +130,11 @@
 
                         &.row-4 {
                             grid-template-columns: repeat(4, 1fr);
-                            gap: 20rpx 20rpx;
+                            // gap: 20rpx 20rpx;
+                            margin: -10rpx -10rpx;
+                            .menu-item-child {
+                                margin: 10rpx 10rpx;
+                            }
                         }
 
                         .menu-item-child {
@@ -147,7 +152,7 @@
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
-
+                            margin: 10rpx 16rpx;
                             &.active {
                                 background-color: var(--active-color);
                                 color: #fff;

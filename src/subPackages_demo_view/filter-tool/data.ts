@@ -140,6 +140,7 @@ export const data2 = [
             { title: '促销回调', value: 'promotion_rollback' },
             { title: '批量调价', value: 'batch_adjustment' },
         ],
+        rowCount: 4,
     },
     {
         title: '供应商区域',

@@ -71,6 +71,14 @@ const handleConfirm = (values: any) => {
                         </view>
                     </ste-filter-tool>
                 </view>
+                <view>
+                    <ste-filter-tool filter-type="calendar" @confirm="handleConfirm">
+                        <view style="font-size: 24rpx">
+                            <text>日历筛选</text>
+                            <ste-icon code="&#xe6c7;" color="#000" size="24" />
+                        </view>
+                    </ste-filter-tool>
+                </view>
             </view>
         </view>
     </page-layout>

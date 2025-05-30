@@ -8,77 +8,86 @@
             </template>
 
             <view class="custom-menu-box">
-                <view class="menu-box" :class="[{ 'checkbox-mode': filterType === 'checkbox' }]">
-                    <!-- 左侧分类栏 -->
-                    <scroll-view scroll-y scroll-anchoring class="menu-category" :show-scrollbar="false" v-if="showCategory">
-                        <view
-                            class="category-item"
-                            v-for="(item, index) in categoryData"
-                            :key="index"
-                            :class="[{ active: currentActiveIndex === index, next: currentActiveIndex === index - 1, prev: currentActiveIndex === index + 1 }]"
-                            @click="handleCategoryClick(index)"
-                        >
-                            {{ item.title }}
-                        </view>
-                        <view class="category-item placeholder"></view>
-                    </scroll-view>
+                <view class="menu-box" :class="[{ 'checkbox-mode': filterType === 'checkbox', 'calendar-mode': filterType === 'calendar' }]">
+                    <template v-if="filterType === 'calendar'">
+                        <ste-calendar height="600" :showConfirm="false" :show-title="false" />
+                    </template>
+                    <template v-else>
+                        <!-- 左侧分类栏 -->
+                        <scroll-view scroll-y scroll-anchoring class="menu-category" :show-scrollbar="false" v-if="showCategory">
+                            <view
+                                class="category-item"
+                                v-for="(item, index) in categoryData"
+                                :key="index"
+                                :class="[{ active: currentActiveIndex === index, next: currentActiveIndex === index - 1, prev: currentActiveIndex === index + 1 }]"
+                                @click="handleCategoryClick(index)"
+                            >
+                                {{ item.title }}
+                            </view>
+                            <view class="category-item placeholder"></view>
+                        </scroll-view>
 
-                    <!-- 右侧内容区 -->
-                    <scroll-view
-                        scroll-y
-                        scroll-anchoring
-                        class="menu-items"
-                        :scroll-top="scrollTop"
-                        @scroll="handleScroll"
-                        :scroll-with-animation="true"
-                        :enable-back-to-top="false"
-                        :show-scrollbar="false"
-                    >
-                        <!-- 按钮模式 -->
-                        <template v-if="filterType === 'button'">
-                            <view class="menu-item-block" v-for="(item, index) in filtersData" :key="index">
-                                <view class="menu-item-title">
-                                    <text>{{ item.title }}</text>
-                                    <view @click.stop="toggleExpand(item)" style="display: flex; align-items: center; color: #000; font-size: 20rpx" v-if="(item.expandCount || 0) > 0">
-                                        <text>展开</text>
-                                        <view class="expand-btn" :class="{ expanded: item.expand }">
-                                            <ste-icon code="&#xe676;" color="#000" size="20" />
+                        <!-- 右侧内容区 -->
+                        <scroll-view
+                            scroll-y
+                            scroll-anchoring
+                            class="menu-items"
+                            :scroll-top="scrollTop"
+                            @scroll="handleScroll"
+                            :scroll-with-animation="true"
+                            :enable-back-to-top="false"
+                            :show-scrollbar="false"
+                        >
+                            <!-- 按钮模式 -->
+                            <template v-if="filterType === 'button'">
+                                <view class="menu-item-block" v-for="(item, index) in filtersData" :key="index">
+                                    <view class="menu-item-title">
+                                        <text>{{ item.title }}</text>
+                                        <view @click.stop="toggleExpand(item)" style="display: flex; align-items: center; color: #000; font-size: 20rpx" v-if="(item.expandCount || 0) > 0">
+                                            <text>展开</text>
+                                            <view class="expand-btn" :class="{ expanded: item.expand }">
+                                                <ste-icon code="&#xe676;" color="#000" size="20" />
+                                            </view>
+                                        </view>
+                                    </view>
+                                    <view
+                                        class="menu-item-content"
+                                        :style="[{ '--expand-count': item.expandCount }]"
+                                        :class="[
+                                            { multiple: item.multiple },
+                                            item.rowCount && item.rowCount > 1 ? `row-${item.rowCount}` : '',
+                                            { collapsed: !item.expand && (item.expandCount || 0) > 0 },
+                                        ]"
+                                    >
+                                        <view
+                                            v-for="(child, childIndex) in item.children"
+                                            :key="childIndex"
+                                            class="menu-item-child"
+                                            :class="[{ active: child.active }]"
+                                            @click="handleFilterItemClick(item, child)"
+                                        >
+                                            {{ child.title }}
                                         </view>
                                     </view>
                                 </view>
+                            </template>
+
+                            <!-- 复选框模式 -->
+                            <template v-if="filterType === 'checkbox'">
                                 <view
-                                    class="menu-item-content"
-                                    :style="[{ '--expand-count': item.expandCount }]"
-                                    :class="[{ multiple: item.multiple }, item.rowCount && item.rowCount > 1 ? `row-${item.rowCount}` : '', { collapsed: !item.expand && (item.expandCount || 0) > 0 }]"
+                                    class="menu-item-checkbox"
+                                    v-for="(item, index) in filtersData[currentActiveIndex].children"
+                                    :key="index"
+                                    @click="() => handleCheckboxItemClick(filtersData[currentActiveIndex], String(item.value))"
                                 >
-                                    <view
-                                        v-for="(child, childIndex) in item.children"
-                                        :key="childIndex"
-                                        class="menu-item-child"
-                                        :class="[{ active: child.active }]"
-                                        @click="handleFilterItemClick(item, child)"
-                                    >
-                                        {{ child.title }}
+                                    <view>{{ item.title }}</view>
+                                    <view class="checkbox-action">
+                                        <ste-radio v-model="filtersData[currentActiveIndex].activeValue" :name="item.value" />
                                     </view>
                                 </view>
-                            </view>
-                        </template>
-
-                        <!-- 复选框模式 -->
-                        <template v-if="filterType === 'checkbox'">
-                            <view
-                                class="menu-item-checkbox"
-                                v-for="(item, index) in filtersData[currentActiveIndex].children"
-                                :key="index"
-                                @click="() => handleCheckboxItemClick(filtersData[currentActiveIndex], String(item.value))"
-                            >
-                                <view>{{ item.title }}</view>
-                                <view class="checkbox-action">
-                                    <ste-radio v-model="filtersData[currentActiveIndex].activeValue" :name="item.value" />
-                                </view>
-                            </view>
-                        </template>
-                    </scroll-view>
+                            </template>
+                        </scroll-view>
+                    </template>
                 </view>
 
                 <view class="action-box">

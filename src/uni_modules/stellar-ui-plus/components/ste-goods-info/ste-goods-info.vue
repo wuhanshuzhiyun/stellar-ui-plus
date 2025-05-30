@@ -118,12 +118,21 @@ const showSuggestList = ref(false);
 
 // 记录applyForNumber变化历史
 const applyForNumberHistory = ref<number[]>([]);
+
+let timeout: any = 0;
+const setApplyForNumberHistory = (v: number) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        applyForNumberHistory.value.push(v);
+    }, 300);
+};
+
 watch(
     () => suggesData.value.applyForNumber,
     (v, old) => {
         emits('change', { applyForNumber: v }, props.data);
         if (old !== undefined && old !== v) {
-            applyForNumberHistory.value.push(old);
+            setApplyForNumberHistory(old);
         }
     }
 );

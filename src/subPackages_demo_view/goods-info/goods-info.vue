@@ -77,8 +77,10 @@ const minus = (v: number | string, suspend: () => void, next: () => void, stop: 
 };
 
 const suggestData = ref({
-    title: '操作',
+    title: '建议',
     number: 200,
+    applyForText: '申请', // 该字段为空时，申请模块不展示
+    applyForNumber: 200,
     items: [
         { label: '门店库存', value: 10000 },
         { label: '日均销量', value: 20000 },

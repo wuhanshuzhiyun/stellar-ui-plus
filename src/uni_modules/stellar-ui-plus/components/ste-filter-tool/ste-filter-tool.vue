@@ -1,5 +1,5 @@
 <template>
-    <view class="ste-filter-tool--root" :style="[rootStyleVar, { '--expand-count': 3 }]">
+    <view class="ste-filter-tool--root" :style="[rootStyleVar, { '--category-count': categoryData.length }]">
         <ste-dropdown-menu ref="steDropMenu" class="filter-box-menu" :activeColor="activeColor" dropDownIconColor="#000" v-model:showPopup="showMenu">
             <template #title>
                 <slot>
@@ -11,9 +11,16 @@
                 <view class="menu-box" :class="[{ 'checkbox-mode': filterType === 'checkbox' }]">
                     <!-- 左侧分类栏 -->
                     <scroll-view scroll-y scroll-anchoring class="menu-category" :show-scrollbar="false" v-if="showCategory">
-                        <view class="category-item" v-for="(item, index) in categoryData" :key="index" :class="{ active: currentActiveIndex === index }" @click="handleCategoryClick(index)">
+                        <view
+                            class="category-item"
+                            v-for="(item, index) in categoryData"
+                            :key="index"
+                            :class="[{ active: currentActiveIndex === index, next: currentActiveIndex === index - 1, prev: currentActiveIndex === index + 1 }]"
+                            @click="handleCategoryClick(index)"
+                        >
                             {{ item.title }}
                         </view>
+                        <view class="category-item placeholder"></view>
                     </scroll-view>
 
                     <!-- 右侧内容区 -->
@@ -115,10 +122,6 @@ const rootStyleVar = computed(() => ({
     '--active-color': props.activeColor || getColor().themeColor,
     '--inactive-color': props.inactiveColor,
 }));
-
-const showCategory = computed(() => {
-    return props.filterType !== 'checkbox' || (props.filterType === 'checkbox' && filtersData.length > 1);
-});
 
 // 使用简化的筛选逻辑组合式函数
 const { handleFilterClick, handleCheckboxChange, handleReset, handleConfirm } = useData(props, emits, filtersData);

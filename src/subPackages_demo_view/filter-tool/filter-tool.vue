@@ -64,7 +64,7 @@ const handleConfirm = (values: any) => {
                     </ste-filter-tool>
                 </view>
                 <view>
-                    <ste-filter-tool :data="checkboxFilters2" filter-type="checkbox" @confirm="handleConfirm">
+                    <ste-filter-tool :data="checkboxFilters2" filter-type="checkbox" @confirm="handleConfirm" :show-category="false">
                         <view style="font-size: 24rpx">
                             <text>无分类筛选</text>
                             <ste-icon code="&#xe6c7;" color="#000" size="24" />

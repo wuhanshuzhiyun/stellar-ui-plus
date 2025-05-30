@@ -10,7 +10,7 @@
             <view class="custom-menu-box">
                 <view class="menu-box" :class="[{ 'checkbox-mode': filterType === 'checkbox', 'calendar-mode': filterType === 'calendar' }]">
                     <template v-if="filterType === 'calendar'">
-                        <ste-calendar height="600" :showConfirm="false" :show-title="false" />
+                        <ste-calendar height="600" width="750" :showConfirm="false" :show-title="false" />
                     </template>
                     <template v-else>
                         <!-- 左侧分类栏 -->

@@ -54,6 +54,14 @@
                         height: calc(100% - (var(--category-count) * 82rpx));
                     }
                 }
+
+                .category-item.active + .category-item {
+                    border-top-right-radius: 16rpx;
+                }
+
+                // .category-item:has(+ .category-item.active) {
+                //     border-bottom-right-radius: 16rpx;
+                // }
             }
 
             .menu-items {

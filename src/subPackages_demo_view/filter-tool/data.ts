@@ -300,3 +300,28 @@ export const data4 = [
         ],
     },
 ];
+
+export const data5 = [
+    {
+        title: '补货日期',
+        key: 'date',
+        children: [
+            { title: '今|2025-01-02', value: '1' },
+            { title: '明|2025-01-03', value: '2' },
+            { title: '后|2025-01-04', value: '3' },
+        ],
+        random: true,
+    },
+    {
+        title: '补货批次',
+        key: 'count',
+        children: [
+            { title: '[1001]常温便次', value: '1001' },
+            { title: '[1002]冷藏酸奶便次', value: '10013' },
+            { title: '[1004]生鲜菜果干杂便次', value: '1002' },
+            { title: '[1003]鲜食豆制品冻品便次', value: '10013' },
+            { title: '[1005]生鲜肉食便次', value: '1004' },
+        ],
+        random: true,
+    },
+];

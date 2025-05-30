@@ -117,6 +117,12 @@
                         }
 
                         // 布局变体
+
+                        &.random-layout {
+                            display: flex;
+                            flex-wrap: wrap;
+                        }
+
                         &.row-2 {
                             grid-template-columns: repeat(2, 1fr);
                         }

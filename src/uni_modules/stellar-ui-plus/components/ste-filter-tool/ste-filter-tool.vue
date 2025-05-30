@@ -54,9 +54,8 @@
                                         class="menu-item-content"
                                         :style="[{ '--expand-count': item.expandCount }]"
                                         :class="[
-                                            { multiple: item.multiple },
+                                            { multiple: item.multiple, 'random-layout': item.random, collapsed: !item.expand && (item.expandCount || 0) > 0 },
                                             item.rowCount && item.rowCount > 1 ? `row-${item.rowCount}` : '',
-                                            { collapsed: !item.expand && (item.expandCount || 0) > 0 },
                                         ]"
                                     >
                                         <view

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { data1, data2, data3, data4, data21 } from './data';
+import { data1, data2, data3, data4, data21, data5 } from './data';
 
 const subFilters = reactive(data1);
 const subFilters2 = reactive(data2);
 const subFilters3 = reactive(data21);
 const checkboxFilters = reactive(data3);
 const checkboxFilters2 = reactive(data4);
+
+const randomFilters = reactive(data5);
 
 const handleFilterClick = (item: any) => {
     console.log('点击了筛选项:', item);
@@ -75,6 +77,19 @@ const handleConfirm = (values: any) => {
                     <ste-filter-tool filter-type="calendar" @confirm="handleConfirm">
                         <view style="font-size: 24rpx">
                             <text>日历筛选</text>
+                            <ste-icon code="&#xe6c7;" color="#000" size="24" />
+                        </view>
+                    </ste-filter-tool>
+                </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">无规则排列</view>
+            <view class="item-block">
+                <view>
+                    <ste-filter-tool :data="randomFilters" @confirm="handleConfirm" :show-category="false">
+                        <view style="font-size: 24rpx">
+                            <text>无规则</text>
                             <ste-icon code="&#xe6c7;" color="#000" size="24" />
                         </view>
                     </ste-filter-tool>

@@ -21,8 +21,8 @@ const data1 = reactive([
 <template>
     <page-layout title="分类列表">
         <view class="description">
-            <view class="cmp-name">FilterTool 筛选选项</view>
-            <view class="cmp-desc">可配置多选选项组件</view>
+            <view class="cmp-name">Category 分类列表</view>
+            <view class="cmp-desc">分类列表</view>
         </view>
         <view class="demo-item">
             <view class="title">基础用法</view>

@@ -18,3 +18,9 @@ export interface CategoryItem {
 }
 
 export type FilterType = 'button' | 'checkbox';
+
+export interface FilterValue {
+    title: string; // 筛选项标题
+    key: string; // 筛选项key
+    values: string[]; // 选中的值数组（单选也用数组，只有一个元素）
+}

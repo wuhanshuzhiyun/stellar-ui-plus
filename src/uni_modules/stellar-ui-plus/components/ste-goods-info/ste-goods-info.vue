@@ -15,10 +15,11 @@ const props = defineProps(propsData);
 const emits = defineEmits<{
     (e: 'update:number', number?: number): void;
     (e: 'update:checked', checked?: boolean): void;
-    (e: 'change', change: { number?: number; checked?: boolean }, data: GoodsInfoType): void;
+    (e: 'change', change: { number?: number; checked?: boolean; applyForNumber?: number }, data: GoodsInfoType): void;
     (e: 'click', type: 'image' | 'title' | 'code' | 'price' | 'originalPrice'): void;
     (e: 'plus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'minus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
+    (e: 'click-suggest', type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }): void;
 }>();
 
 const _number = ref(1);
@@ -115,7 +116,26 @@ watch(
 
 const showSuggestList = ref(false);
 
-const suggestClick = () => (showSuggestList.value = !showSuggestList.value);
+// 记录applyForNumber变化历史
+const applyForNumberHistory = ref<number[]>([]);
+watch(
+    () => suggesData.value.applyForNumber,
+    (v, old) => {
+        emits('change', { applyForNumber: v }, props.data);
+        if (old !== undefined && old !== v) {
+            applyForNumberHistory.value.push(old);
+        }
+    }
+);
+const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => {
+    if (type === 'method') {
+        showSuggestList.value = !showSuggestList.value;
+    }
+    if (type === 'back' && applyForNumberHistory.value.length > 0) {
+        suggesData.value.applyForNumber = applyForNumberHistory.value.pop();
+    }
+    emits('click-suggest', type, item);
+};
 </script>
 <template>
     <view class="ste-goods-info-root" :style="[rootStyle]">
@@ -179,15 +199,15 @@ const suggestClick = () => (showSuggestList.value = !showSuggestList.value);
                         </view>
                     </view>
                     <view class="ste-goods-info-suggest" v-if="showSuggest">
-                        <view class="ste-goods-info-suggest-content">
-                            <view class="ste-goods-info-suggest-content-title" @click="suggestClick">{{ suggesData.title }}</view>
-                            <view class="ste-goods-info-suggest-content-number">{{ suggesData.number }}</view>
+                        <view class="ste-goods-info-suggest-method">
+                            <view class="ste-goods-info-suggest-method-title" @click="clickSuggest('method')">{{ suggesData.title }}</view>
+                            <view class="ste-goods-info-suggest-method-number">{{ suggesData.number }}</view>
                         </view>
                         <view class="ste-goods-info-apply-for" v-if="suggesData.applyForText">
                             <view class="ste-goods-info-apply-for-text">{{ suggesData.applyForText }}：</view>
                             <view class="ste-goods-info-apply-for-number">
                                 <input class="ste-goods-info-apply-for-input" v-model="suggesData.applyForNumber" />
-                                <view class="ste-goods-info-apply-for-back">
+                                <view class="ste-goods-info-apply-for-back" @click="clickSuggest('back')">
                                     <ste-icon />
                                 </view>
                             </view>
@@ -202,13 +222,15 @@ const suggestClick = () => (showSuggestList.value = !showSuggestList.value);
                 <view class="ste-goods-info-suggest-items">
                     <block v-for="(item, index) in suggesData.items" :key="index">
                         <view class="ste-goods-info-suggest-list-line" v-if="index > 0" />
-                        <view class="ste-goods-info-suggest-list-item" :style="{ width: `${suggesData.items.length > 1 ? 100 / suggesData.items.length : 100}%` }">
+                        <view class="ste-goods-info-suggest-list-item" :style="{ width: `${suggesData.items.length > 1 ? 100 / suggesData.items.length : 100}%` }" @click="clickSuggest('item', item)">
                             <view class="ste-goods-info-suggest-list-item-label">{{ item.label }}</view>
                             <view class="ste-goods-info-suggest-list-item-value">{{ item.value }}</view>
                         </view>
                     </block>
                 </view>
-                <view class="ste-goods-info-suggest-icon"></view>
+                <view class="ste-goods-info-suggest-icon" @click="clickSuggest('right')">
+                    <ste-icon code="&#xe674;" />
+                </view>
             </view>
         </view>
         <image v-if="watermark" class="ste-goods-info-watermark" :style="watermarkStyle" :src="watermark" />
@@ -298,18 +320,18 @@ const suggestClick = () => (showSuggestList.value = !showSuggestList.value);
                     justify-content: space-between;
                     font-size: 20rpx;
                     color: #555a61;
-                    .ste-goods-info-suggest-content {
+                    .ste-goods-info-suggest-method {
                         display: flex;
                         flex-direction: row;
                         align-items: center;
-                        .ste-goods-info-suggest-content-title {
+                        .ste-goods-info-suggest-method-title {
                             padding: 0 10rpx;
                             background: #f4f5f6;
                             // #ifdef H5
                             cursor: pointer;
                             // #endif
                         }
-                        .ste-goods-info-suggest-content-number {
+                        .ste-goods-info-suggest-method-number {
                             margin-left: 4rpx;
                             font-size: 22rpx;
                         }

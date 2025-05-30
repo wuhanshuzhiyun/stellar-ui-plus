@@ -12,10 +12,10 @@ export interface GoodsInfoType extends Record<string, any> {
 
 export interface SuggestData {
     title?: string;
-    number?: string | number;
+    number?: number;
     applyForText?: string | null;
-    applyForNumber?: string | number;
-    items: { label: string; value: string | number }[];
+    applyForNumber?: number;
+    items: { label: string; value: number }[];
 }
 
 export const defaultSuggestData: () => SuggestData = () => ({ title: '建议', number: 0, applyForText: '申请', applyForNumber: 0, items: [] });

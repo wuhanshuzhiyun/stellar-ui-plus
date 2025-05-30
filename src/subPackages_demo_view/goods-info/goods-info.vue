@@ -80,10 +80,10 @@ const suggestData = ref({
     title: '操作',
     number: 200,
     items: [
-        { label: '门店库存', value: '10000' },
-        { label: '日均销量', value: '20000' },
-        { label: '在途库存', value: '15000' },
-        { label: '上周销量', value: '30000' },
+        { label: '门店库存', value: 10000 },
+        { label: '日均销量', value: 20000 },
+        { label: '在途库存', value: 15000 },
+        { label: '上周销量', value: 30000 },
     ],
 });
 </script>

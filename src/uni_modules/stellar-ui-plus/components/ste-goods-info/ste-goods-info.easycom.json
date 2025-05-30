@@ -76,8 +76,26 @@
             "default": false
         },
         {
+            "name": "disabledStepper",
+            "description": "禁用步进器",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "disableInput",
-            "description": "是否禁用步进器输入框",
+            "description": "禁用步进器输入框",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "disablePlus",
+            "description": "禁用步进器加号",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "disableMinus",
+            "description": "禁用步进器减号",
             "type": "boolean",
             "default": false
         },
@@ -129,11 +147,11 @@
         {
             "name": "[event]click",
             "description": "点击确定按钮时触发",
-            "type": "(type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => void",
+            "type": "(type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => void",
             "params": [
                 {
                     "name": "type",
-                    "description": "点击位置"
+                    "description": "点击位置:'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'"
                 }
             ]
         },

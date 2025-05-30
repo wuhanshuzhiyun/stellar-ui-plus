@@ -16,7 +16,7 @@ const emits = defineEmits<{
     (e: 'update:number', number?: number): void;
     (e: 'update:checked', checked?: boolean): void;
     (e: 'change', change: { number?: number; checked?: boolean; applyForNumber?: number }, data: GoodsInfoType): void;
-    (e: 'click', type: 'image' | 'title' | 'code' | 'price' | 'originalPrice'): void;
+    (e: 'click', type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'): void;
     (e: 'plus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'minus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'click-suggest', type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }): void;
@@ -81,7 +81,7 @@ const checkboxChange = () => {
     emits('change', { checked: _checked.value }, props.data);
 };
 
-const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => {
+const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => {
     emits('click', type);
 };
 
@@ -191,7 +191,7 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                                 :showUnit="false"
                             />
                         </view>
-                        <view class="ste-goods-info-price-right" v-if="stepper">
+                        <view class="ste-goods-info-price-right" v-if="stepper" @click="onClick('stepper')">
                             <steStepper
                                 v-model="_number"
                                 :precision="precision"
@@ -200,7 +200,10 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                                 :min="min"
                                 :max="max"
                                 btnSize="40"
+                                :disabled="disabledStepper"
                                 :disableInput="disableInput"
+                                :disablePlus="disablePlus"
+                                :disableMinus="disableMinus"
                                 @change="numberChange"
                                 @plus="plus"
                                 @minus="minus"

@@ -39,7 +39,7 @@ const onChange = (d: { number?: number; checked?: boolean }) => {
     });
 };
 
-const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice') => {
+const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => {
     uni.showToast({
         title: `点击了${type}`,
         icon: 'none',

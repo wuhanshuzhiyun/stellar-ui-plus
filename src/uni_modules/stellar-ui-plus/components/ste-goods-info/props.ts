@@ -75,12 +75,26 @@ export default {
         type: Boolean,
         default: () => false,
     },
-    /** 是否显示步进器 */
+    /** 禁用步进器 */
+    disabledStepper: {
+        type: Boolean,
+        default: () => false,
+    },
+    /** 禁用步进器输入框 */
     disableInput: {
         type: Boolean,
         default: () => false,
     },
-
+    /** 禁用步进器加号 */
+    disablePlus: {
+        type: Boolean,
+        default: () => false,
+    },
+    /** 禁用步进器减号 */
+    disableMinus: {
+        type: Boolean,
+        default: () => false,
+    },
     /** 数值精度 */
     precision: {
         type: Number,

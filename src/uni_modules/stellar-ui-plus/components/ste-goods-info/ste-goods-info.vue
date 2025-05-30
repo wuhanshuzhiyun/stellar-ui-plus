@@ -87,8 +87,12 @@ const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 
 
 const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeColor));
 
-const plus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => emits('plus', value, suspend, next, stop);
-const minus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => emits('minus', value, suspend, next, stop);
+const plus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => {
+    emits('plus', value, suspend, next, stop);
+};
+const minus = (value: number | string, suspend: () => void, next: () => void, stop: () => void) => {
+    emits('minus', value, suspend, next, stop);
+};
 
 const clickChecked = () => {
     if (props.checkboxDisabled) {
@@ -158,7 +162,7 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                 </view>
                 <view class="ste-goods-info-content">
                     <view class="ste-goods-info-header">
-                        <view class="ste-goods-info-title" @click="onClick('title')">
+                        <view class="ste-goods-info-title" :titleStyle="[titleStyle]" @click="onClick('title')">
                             <view class="ste-goods-info-tag-box" v-if="data.tag">
                                 <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
                             </view>
@@ -192,22 +196,24 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                             />
                         </view>
                         <view class="ste-goods-info-price-right" v-if="stepper" @click="onClick('stepper')">
-                            <steStepper
-                                v-model="_number"
-                                :precision="precision"
-                                :step="step"
-                                theme="line"
-                                :min="min"
-                                :max="max"
-                                btnSize="40"
-                                :disabled="disabledStepper"
-                                :disableInput="disableInput"
-                                :disablePlus="disablePlus"
-                                :disableMinus="disableMinus"
-                                @change="numberChange"
-                                @plus="plus"
-                                @minus="minus"
-                            />
+                            <view :class="{ readonly: readonlyStepper }" @click.stop="true">
+                                <steStepper
+                                    v-model="_number"
+                                    :precision="precision"
+                                    :step="step"
+                                    theme="line"
+                                    :min="min"
+                                    :max="max"
+                                    btnSize="40"
+                                    :disabled="disabledStepper"
+                                    :disableInput="disableInput"
+                                    :disablePlus="disablePlus"
+                                    :disableMinus="disableMinus"
+                                    @change="numberChange"
+                                    @plus="plus"
+                                    @minus="minus"
+                                />
+                            </view>
                         </view>
                     </view>
                     <view class="ste-goods-info-suggest" v-if="showSuggest">
@@ -322,6 +328,9 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                     height: 34rpx;
                     display: flex;
                     justify-content: space-between;
+                    .ste-goods-info-price-right .readonly {
+                        pointer-events: none;
+                    }
                 }
 
                 .ste-goods-info-suggest {

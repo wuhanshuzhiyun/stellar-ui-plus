@@ -76,6 +76,12 @@
             "default": false
         },
         {
+            "name": "readonlyStepper",
+            "description": "步进器只读",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "disabledStepper",
             "description": "禁用步进器",
             "type": "boolean",

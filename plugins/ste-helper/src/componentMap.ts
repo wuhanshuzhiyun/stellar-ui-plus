@@ -41,6 +41,254 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
+    "area-chart": {
+        "site": "ste-area-chart",
+        "attr": [
+            "width=''"
+        ],
+        "props": [
+            {
+                "name": "width",
+                "description": "图表宽度，单位rpx",
+                "type": "number | string",
+                "default": "750"
+            },
+            {
+                "name": "height",
+                "description": "图表高度，单位rpx",
+                "type": "number | string",
+                "default": "500"
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "Object",
+                "default": []
+            },
+            {
+                "name": "categories",
+                "description": "图表数据",
+                "type": "Object",
+                "default": []
+            },
+            {
+                "name": "canvas2d",
+                "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "pixelRatio",
+                "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+                "type": "number",
+                "default": "1"
+            },
+            {
+                "name": "animation",
+                "description": "是否动画展示图表",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "timing",
+                "description": "图表动画效果",
+                "type": "string",
+                "default": "easeOut",
+                "values": [
+                    {
+                        "name": "easeOut",
+                        "description": "由快到慢"
+                    },
+                    {
+                        "name": "easeIn",
+                        "description": "由慢到快"
+                    },
+                    {
+                        "name": "easeInOut",
+                        "description": "慢快慢"
+                    },
+                    {
+                        "name": "linear",
+                        "description": "匀速"
+                    }
+                ]
+            },
+            {
+                "name": "duration",
+                "description": "动画展示时长（单位：毫秒）",
+                "type": "string",
+                "default": "1000"
+            },
+            {
+                "name": "rotate",
+                "description": "横屏模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rotateLock",
+                "description": "横屏锁定模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "background",
+                "description": "背景颜色，开启滚动条后请赋值",
+                "type": "string",
+                "default": "rgba(0,0,0,0)"
+            },
+            {
+                "name": "color",
+                "description": "主题颜色数组，16进制颜色格式",
+                "type": "array",
+                "default": [
+                    "#165DFF",
+                    "#14C9C9",
+                    "#F7BA1E",
+                    "#3491FA",
+                    "#F53F3F"
+                ]
+            },
+            {
+                "name": "padding",
+                "description": "画布填充边距（顺序为上右下左），单位px",
+                "type": "array",
+                "default": [
+                    15,
+                    15,
+                    0,
+                    5
+                ]
+            },
+            {
+                "name": "fontSize",
+                "description": "全局默认字体大小，单位px",
+                "type": "number",
+                "default": 13
+            },
+            {
+                "name": "fontColor",
+                "description": "全局默认字体颜色",
+                "type": "string",
+                "default": "#666666"
+            },
+            {
+                "name": "dataLabel",
+                "description": "是否显示图表区域内数据点上方的数据文案",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "dataPointShape",
+                "description": "是否显示数据点的图形标识",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "dataPointShapeType",
+                "description": "图形标识点显示类型",
+                "type": "string",
+                "default": "solid",
+                "values": [
+                    {
+                        "name": "solid",
+                        "description": "实心"
+                    },
+                    {
+                        "name": "hollow",
+                        "description": "空心"
+                    }
+                ]
+            },
+            {
+                "name": "touchMoveLimit",
+                "description": "图表拖拽时每秒重新渲染的帧数",
+                "type": "number",
+                "default": 24
+            },
+            {
+                "name": "enableScroll",
+                "description": "开启滚动条功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "enableMarkLine",
+                "description": "是否启用标记线功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "scrollPosition",
+                "description": "连续更新数据时滚动条的位置",
+                "type": "string",
+                "default": "current",
+                "values": [
+                    {
+                        "name": "current",
+                        "description": "当前位置"
+                    },
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "object",
+                "default": {}
+            },
+            {
+                "name": "xAxis",
+                "description": "X轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "yAxis",
+                "description": "Y轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "legend",
+                "description": "图例配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "title",
+                "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "subtitle",
+                "description": "副标题配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "extra",
+                "description": "额外配置项",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "event",
+                "description": "事件",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            }
+        ],
+        "events": []
+    },
     "badge": {
         "site": "ste-badge",
         "attr": [
@@ -134,6 +382,237 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "display属性是否为inline-block",
                 "type": "boolean",
                 "default": false
+            }
+        ],
+        "events": []
+    },
+    "bar-chart": {
+        "site": "ste-bar-chart",
+        "attr": [
+            "width=''"
+        ],
+        "props": [
+            {
+                "name": "width",
+                "description": "图表宽度，单位rpx",
+                "type": "number | string",
+                "default": "750"
+            },
+            {
+                "name": "height",
+                "description": "图表高度，单位rpx",
+                "type": "number | string",
+                "default": "200"
+            },
+            {
+                "name": "canvas2d",
+                "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "pixelRatio",
+                "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+                "type": "number",
+                "default": "1"
+            },
+            {
+                "name": "animation",
+                "description": "是否动画展示图表",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "timing",
+                "description": "图表动画效果",
+                "type": "string",
+                "default": "easeOut",
+                "values": [
+                    {
+                        "name": "easeOut",
+                        "description": "由快到慢"
+                    },
+                    {
+                        "name": "easeIn",
+                        "description": "由慢到快"
+                    },
+                    {
+                        "name": "easeInOut",
+                        "description": "慢快慢"
+                    },
+                    {
+                        "name": "linear",
+                        "description": "匀速"
+                    }
+                ]
+            },
+            {
+                "name": "duration",
+                "description": "动画展示时长（单位：毫秒）",
+                "type": "string",
+                "default": "1000"
+            },
+            {
+                "name": "rotate",
+                "description": "横屏模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rotateLock",
+                "description": "横屏锁定模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "background",
+                "description": "背景颜色，开启滚动条后请赋值",
+                "type": "string",
+                "default": "rgba(0,0,0,0)"
+            },
+            {
+                "name": "color",
+                "description": "主题颜色数组，16进制颜色格式",
+                "type": "array",
+                "default": [
+                    "#165DFF",
+                    "#14C9C9",
+                    "#F7BA1E",
+                    "#3491FA",
+                    "#722ED1",
+                    "#9FDB1D"
+                ]
+            },
+            {
+                "name": "padding",
+                "description": "画布填充边距（顺序为上右下左），单位px",
+                "type": "array",
+                "default": [
+                    15,
+                    15,
+                    0,
+                    5
+                ]
+            },
+            {
+                "name": "fontSize",
+                "description": "全局默认字体大小，单位px",
+                "type": "number",
+                "default": 13
+            },
+            {
+                "name": "fontColor",
+                "description": "全局默认字体颜色",
+                "type": "string",
+                "default": "#666666"
+            },
+            {
+                "name": "dataLabel",
+                "description": "是否显示图表区域内数据点上方的数据文案",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "dataPointShape",
+                "description": "是否显示数据点的图形标识",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "dataPointShapeType",
+                "description": "图形标识点显示类型",
+                "type": "string",
+                "default": "solid",
+                "values": [
+                    {
+                        "name": "solid",
+                        "description": "实心"
+                    },
+                    {
+                        "name": "hollow",
+                        "description": "空心"
+                    }
+                ]
+            },
+            {
+                "name": "touchMoveLimit",
+                "description": "图表拖拽时每秒重新渲染的帧数",
+                "type": "number",
+                "default": 24
+            },
+            {
+                "name": "enableScroll",
+                "description": "开启滚动条功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "enableMarkLine",
+                "description": "是否启用标记线功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "scrollPosition",
+                "description": "连续更新数据时滚动条的位置",
+                "type": "string",
+                "default": "current",
+                "values": [
+                    {
+                        "name": "current",
+                        "description": "当前位置"
+                    },
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "object",
+                "default": {}
+            },
+            {
+                "name": "xAxis",
+                "description": "X轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "yAxis",
+                "description": "Y轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "legend",
+                "description": "图例配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "title",
+                "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "subtitle",
+                "description": "副标题配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "extra",
+                "description": "额外配置项",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
             }
         ],
         "events": []
@@ -816,6 +1295,234 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
+    "column-chart": {
+        "site": "ste-column-chart",
+        "attr": [
+            "width=''"
+        ],
+        "props": [
+            {
+                "name": "width",
+                "description": "图表宽度，单位rpx",
+                "type": "number | string",
+                "default": "750"
+            },
+            {
+                "name": "height",
+                "description": "图表高度，单位rpx",
+                "type": "number | string",
+                "default": "500"
+            },
+            {
+                "name": "canvas2d",
+                "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "pixelRatio",
+                "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+                "type": "number",
+                "default": "1"
+            },
+            {
+                "name": "animation",
+                "description": "是否动画展示图表",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "timing",
+                "description": "图表动画效果",
+                "type": "string",
+                "default": "easeOut",
+                "values": [
+                    {
+                        "name": "easeOut",
+                        "description": "由快到慢"
+                    },
+                    {
+                        "name": "easeIn",
+                        "description": "由慢到快"
+                    },
+                    {
+                        "name": "easeInOut",
+                        "description": "慢快慢"
+                    },
+                    {
+                        "name": "linear",
+                        "description": "匀速"
+                    }
+                ]
+            },
+            {
+                "name": "duration",
+                "description": "动画展示时长（单位：毫秒）",
+                "type": "string",
+                "default": "1000"
+            },
+            {
+                "name": "rotate",
+                "description": "横屏模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rotateLock",
+                "description": "横屏锁定模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "background",
+                "description": "背景颜色，开启滚动条后请赋值",
+                "type": "string",
+                "default": "rgba(0,0,0,0)"
+            },
+            {
+                "name": "color",
+                "description": "主题颜色数组，16进制颜色格式",
+                "type": "array",
+                "default": [
+                    "#165DFF",
+                    "#14C9C9",
+                    "#F7BA1E"
+                ]
+            },
+            {
+                "name": "padding",
+                "description": "画布填充边距（顺序为上右下左），单位px",
+                "type": "array",
+                "default": [
+                    5,
+                    5,
+                    5,
+                    5
+                ]
+            },
+            {
+                "name": "fontSize",
+                "description": "全局默认字体大小，单位px",
+                "type": "number",
+                "default": 13
+            },
+            {
+                "name": "fontColor",
+                "description": "全局默认字体颜色",
+                "type": "string",
+                "default": "#666666"
+            },
+            {
+                "name": "dataLabel",
+                "description": "是否显示图表区域内数据点上方的数据文案",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "dataPointShape",
+                "description": "是否显示数据点的图形标识",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "dataPointShapeType",
+                "description": "图形标识点显示类型",
+                "type": "string",
+                "default": "solid",
+                "values": [
+                    {
+                        "name": "solid",
+                        "description": "实心"
+                    },
+                    {
+                        "name": "hollow",
+                        "description": "空心"
+                    }
+                ]
+            },
+            {
+                "name": "touchMoveLimit",
+                "description": "图表拖拽时每秒重新渲染的帧数",
+                "type": "number",
+                "default": 24
+            },
+            {
+                "name": "enableScroll",
+                "description": "开启滚动条功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "enableMarkLine",
+                "description": "是否启用标记线功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "scrollPosition",
+                "description": "连续更新数据时滚动条的位置",
+                "type": "string",
+                "default": "current",
+                "values": [
+                    {
+                        "name": "current",
+                        "description": "当前位置"
+                    },
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "object",
+                "default": {}
+            },
+            {
+                "name": "xAxis",
+                "description": "X轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "yAxis",
+                "description": "Y轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "legend",
+                "description": "图例配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "title",
+                "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "subtitle",
+                "description": "副标题配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "extra",
+                "description": "额外配置项",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            }
+        ],
+        "events": []
+    },
     "date-picker": {
         "site": "ste-date-picker",
         "attr": [
@@ -953,6 +1660,55 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "点击取消按钮",
                 "type": "() => void"
             }
+        ]
+    },
+    "date-user": {
+        "site": "ste-date-user",
+        "attr": [
+            "type=''"
+        ],
+        "props": [
+            {
+                "name": "type",
+                "description": "组件类型",
+                "type": "String",
+                "default": "date",
+                "values": [
+                    {
+                        "name": "date",
+                        "description": "日期"
+                    },
+                    {
+                        "name": "user",
+                        "description": "人员"
+                    }
+                ]
+            },
+            {
+                "name": "date",
+                "description": "日期",
+                "type": "String",
+                "default": "new Date()"
+            },
+            {
+                "name": "avatar",
+                "description": "头像",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "nickname",
+                "description": "昵称",
+                "type": "String",
+                "default": ""
+            }
+        ],
+        "events": []
+    },
+    "ste-donut-chart": {
+        "site": "ste-donut-chart",
+        "attr": [
+            ""
         ]
     },
     "drag": {
@@ -1101,6 +1857,13 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "可选数量",
                 "type": "number",
                 "default": "1"
+            },
+            {
+                "name": "showPopup",
+                "description": "是否显示菜单弹窗",
+                "type": "boolean",
+                "default": "false",
+                "version": "1.21.0"
             }
         ],
         "events": [
@@ -1132,6 +1895,577 @@ export const componentMap: Record<string, ComponentDesc> = {
         "attr": [
             ""
         ]
+    },
+    "filter-tool": {
+        "site": "ste-filter-tool",
+        "attr": [
+            "value=''"
+        ],
+        "props": [
+            {
+                "name": "value",
+                "description": "当前值（支持v-model双向绑定）",
+                "type": "string | number | (string | number)[]",
+                "default": ""
+            },
+            {
+                "name": "multiple",
+                "description": "是否支持多选",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "activeColor",
+                "description": "激活状态颜色",
+                "type": "string",
+                "default": "#0275FF"
+            },
+            {
+                "name": "inactiveColor",
+                "description": "非激活状态颜色",
+                "type": "string",
+                "default": "#555A61"
+            },
+            {
+                "name": "filterText",
+                "description": "筛选按钮文字",
+                "type": "string",
+                "default": "筛选"
+            },
+            {
+                "name": "menuData",
+                "description": "菜单数据列表",
+                "type": "FilterItem[]",
+                "default": "[]"
+            },
+            {
+                "name": "filterData",
+                "description": "筛选数据列表",
+                "type": "FilterItem[]",
+                "default": "[]"
+            }
+        ],
+        "events": [
+            {
+                "name": "itemClick",
+                "description": "点击筛选项时触发",
+                "type": "(items: FilterItem[]) => void",
+                "params": [
+                    {
+                        "name": "items",
+                        "description": "选中的筛选项列表"
+                    }
+                ]
+            },
+            {
+                "name": "menuChange",
+                "description": "菜单变化时触发",
+                "type": "(items: FilterItem[]) => void",
+                "params": [
+                    {
+                        "name": "items",
+                        "description": "变化后的菜单项列表"
+                    }
+                ]
+            }
+        ]
+    },
+    "funnel-chart": {
+        "site": "ste-funnel-chart",
+        "attr": [
+            "width=''"
+        ],
+        "props": [
+            {
+                "name": "width",
+                "description": "图表宽度，单位rpx",
+                "type": "number | string",
+                "default": "750"
+            },
+            {
+                "name": "height",
+                "description": "图表高度，单位rpx",
+                "type": "number | string",
+                "default": "500"
+            },
+            {
+                "name": "canvas2d",
+                "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "pixelRatio",
+                "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+                "type": "number",
+                "default": "1"
+            },
+            {
+                "name": "animation",
+                "description": "是否动画展示图表",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "timing",
+                "description": "图表动画效果",
+                "type": "string",
+                "default": "easeOut",
+                "values": [
+                    {
+                        "name": "easeOut",
+                        "description": "由快到慢"
+                    },
+                    {
+                        "name": "easeIn",
+                        "description": "由慢到快"
+                    },
+                    {
+                        "name": "easeInOut",
+                        "description": "慢快慢"
+                    },
+                    {
+                        "name": "linear",
+                        "description": "匀速"
+                    }
+                ]
+            },
+            {
+                "name": "duration",
+                "description": "动画展示时长（单位：毫秒）",
+                "type": "string",
+                "default": "1000"
+            },
+            {
+                "name": "rotate",
+                "description": "横屏模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rotateLock",
+                "description": "横屏锁定模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "background",
+                "description": "背景颜色，开启滚动条后请赋值",
+                "type": "string",
+                "default": "rgba(0,0,0,0)"
+            },
+            {
+                "name": "color",
+                "description": "主题颜色数组，16进制颜色格式",
+                "type": "array",
+                "default": [
+                    "#0E42D2",
+                    "#165DFF",
+                    "#4080FF",
+                    "#6AA1FF",
+                    "#94BFFF"
+                ]
+            },
+            {
+                "name": "padding",
+                "description": "画布填充边距（顺序为上右下左），单位px",
+                "type": "array",
+                "default": [
+                    5,
+                    5,
+                    5,
+                    5
+                ]
+            },
+            {
+                "name": "fontSize",
+                "description": "全局默认字体大小，单位px",
+                "type": "number",
+                "default": 13
+            },
+            {
+                "name": "fontColor",
+                "description": "全局默认字体颜色",
+                "type": "string",
+                "default": "#666666"
+            },
+            {
+                "name": "dataLabel",
+                "description": "是否显示图表区域内数据点上方的数据文案",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "dataPointShape",
+                "description": "是否显示数据点的图形标识",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "dataPointShapeType",
+                "description": "图形标识点显示类型",
+                "type": "string",
+                "default": "solid",
+                "values": [
+                    {
+                        "name": "solid",
+                        "description": "实心"
+                    },
+                    {
+                        "name": "hollow",
+                        "description": "空心"
+                    }
+                ]
+            },
+            {
+                "name": "touchMoveLimit",
+                "description": "图表拖拽时每秒重新渲染的帧数",
+                "type": "number",
+                "default": 24
+            },
+            {
+                "name": "enableScroll",
+                "description": "开启滚动条功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "enableMarkLine",
+                "description": "是否启用标记线功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "scrollPosition",
+                "description": "连续更新数据时滚动条的位置",
+                "type": "string",
+                "default": "current",
+                "values": [
+                    {
+                        "name": "current",
+                        "description": "当前位置"
+                    },
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "object",
+                "default": {}
+            },
+            {
+                "name": "xAxis",
+                "description": "X轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "yAxis",
+                "description": "Y轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "legend",
+                "description": "图例配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "title",
+                "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "subtitle",
+                "description": "副标题配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "extra",
+                "description": "额外配置项",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            }
+        ],
+        "events": []
+    },
+    "goods-info": {
+        "site": "ste-goods-info",
+        "attr": [
+            "data=''"
+        ],
+        "props": [
+            {
+                "name": "data",
+                "description": "商品数据",
+                "type": "{ image: string; title: string; tag?: string; barCode: string; code: string; price: string | number; originalPrice?: string | number }",
+                "default": "{}"
+            },
+            {
+                "name": "imageSize",
+                "description": "图片大小",
+                "type": "string | number",
+                "default": "160"
+            },
+            {
+                "name": "hidePrice",
+                "description": "隐藏价格",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "tagBg",
+                "description": "标签背景色",
+                "type": "string",
+                "default": "主题色"
+            },
+            {
+                "name": "checkbox",
+                "description": "选择框位置",
+                "type": "string",
+                "default": "none",
+                "values": [
+                    {
+                        "name": "none",
+                        "description": "不显示选择框"
+                    },
+                    {
+                        "name": "left",
+                        "description": "选择框在左侧"
+                    },
+                    {
+                        "name": "right",
+                        "description": "选择框在右侧"
+                    }
+                ]
+            },
+            {
+                "name": "checkboxDisabled",
+                "description": "是否禁用选择框",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "checked",
+                "description": "是否选中",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "watermark",
+                "description": "水印URL",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "watermarkStyle",
+                "description": "水印样式",
+                "type": "Object",
+                "default": "{}"
+            },
+            {
+                "name": "number",
+                "description": "数量",
+                "type": "number",
+                "default": 1
+            },
+            {
+                "name": "stepper",
+                "description": "是否显示步进器",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "disabledStepper",
+                "description": "禁用步进器",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "disableInput",
+                "description": "禁用步进器输入框",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "disablePlus",
+                "description": "禁用步进器加号",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "disableMinus",
+                "description": "禁用步进器减号",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "precision",
+                "description": "数值精度",
+                "type": "number",
+                "default": 0
+            },
+            {
+                "name": "step",
+                "description": "步进器步长",
+                "type": "number",
+                "default": 1
+            },
+            {
+                "name": "min",
+                "description": "步进器最小值",
+                "type": "number",
+                "default": 1
+            },
+            {
+                "name": "max",
+                "description": "步进器最大值",
+                "type": "number",
+                "default": 9999
+            },
+            {
+                "name": "suggestData",
+                "description": "建议数据集,不传则不展示建议模块",
+                "type": "{title?: string;number?: number;applyForText?: string;applyForNumber?: number;items: { label: string; value: number }[];}"
+            }
+        ],
+        "events": [
+            {
+                "name": "change",
+                "description": "数值/选择改变时触发",
+                "type": "(data, goods) => void",
+                "params": [
+                    {
+                        "name": "data",
+                        "description": "正在发生改变的数据：{ number?: number; checked?: boolean; applyForNumber?: number }"
+                    },
+                    {
+                        "name": "goods",
+                        "description": "当前商品信息"
+                    }
+                ]
+            },
+            {
+                "name": "click",
+                "description": "点击确定按钮时触发",
+                "type": "(type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => void",
+                "params": [
+                    {
+                        "name": "type",
+                        "description": "点击位置:'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'"
+                    }
+                ]
+            },
+            {
+                "name": "plus",
+                "description": "点击加号前置钩子函数",
+                "type": "(v: number | string, suspend: () => void, next: () => void, stop: () => void) => void",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "改变后的绑定值"
+                    },
+                    {
+                        "name": "suspend",
+                        "description": "等待"
+                    },
+                    {
+                        "name": "next",
+                        "description": "继续"
+                    },
+                    {
+                        "name": "stop",
+                        "description": "停止"
+                    }
+                ]
+            },
+            {
+                "name": "minus",
+                "description": "点击减号前置钩子函数",
+                "type": "(v: number | string, suspend: () => void, next: () => void, stop: () => void) => void",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "改变后的绑定值"
+                    },
+                    {
+                        "name": "suspend",
+                        "description": "等待"
+                    },
+                    {
+                        "name": "next",
+                        "description": "继续"
+                    },
+                    {
+                        "name": "stop",
+                        "description": "停止"
+                    }
+                ]
+            },
+            {
+                "name": "click-suggest",
+                "description": "点击建议模块触发",
+                "type": "(type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => void",
+                "params": [
+                    {
+                        "name": "type",
+                        "description": "点击的区域：'method' | 'back' | 'item' | 'right'"
+                    },
+                    {
+                        "name": "item",
+                        "description": "type为item时，点击的item对象"
+                    }
+                ]
+            }
+        ]
+    },
+    "goods-list": {
+        "site": "ste-goods-list",
+        "attr": [
+            "title=''"
+        ],
+        "props": [
+            {
+                "name": "title",
+                "description": "标题",
+                "type": "string"
+            },
+            {
+                "name": "hideTitleIcon",
+                "description": "隐藏标题ICON",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "titleIcon",
+                "description": "标题icon",
+                "type": "string"
+            },
+            {
+                "name": "titleStyle",
+                "description": "标题样式",
+                "type": "Object",
+                "default": "{}"
+            },
+            {
+                "name": "data",
+                "description": "数据列表",
+                "type": "{label:string,value:string}[]",
+                "default": "[]"
+            }
+        ],
+        "events": []
     },
     "icon": {
         "site": "ste-icon",
@@ -1743,6 +3077,234 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
+    "line-chart": {
+        "site": "ste-line-chart",
+        "attr": [
+            "width=''"
+        ],
+        "props": [
+            {
+                "name": "width",
+                "description": "图表宽度，单位rpx",
+                "type": "number | string",
+                "default": "750"
+            },
+            {
+                "name": "height",
+                "description": "图表高度，单位rpx",
+                "type": "number | string",
+                "default": "500"
+            },
+            {
+                "name": "canvas2d",
+                "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "pixelRatio",
+                "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+                "type": "number",
+                "default": "具体设备决定"
+            },
+            {
+                "name": "animation",
+                "description": "是否动画展示图表",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "timing",
+                "description": "图表动画效果",
+                "type": "string",
+                "default": "easeOut",
+                "values": [
+                    {
+                        "name": "easeOut",
+                        "description": "由快到慢"
+                    },
+                    {
+                        "name": "easeIn",
+                        "description": "由慢到快"
+                    },
+                    {
+                        "name": "easeInOut",
+                        "description": "慢快慢"
+                    },
+                    {
+                        "name": "linear",
+                        "description": "匀速"
+                    }
+                ]
+            },
+            {
+                "name": "duration",
+                "description": "动画展示时长（单位：毫秒）",
+                "type": "string",
+                "default": "1000"
+            },
+            {
+                "name": "rotate",
+                "description": "横屏模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rotateLock",
+                "description": "横屏锁定模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "background",
+                "description": "背景颜色，开启滚动条后请赋值",
+                "type": "string",
+                "default": "rgba(0,0,0,0)"
+            },
+            {
+                "name": "color",
+                "description": "主题颜色数组，16进制颜色格式",
+                "type": "array",
+                "default": [
+                    "#165DFF",
+                    "#14C9C9",
+                    "#F7BA1E"
+                ]
+            },
+            {
+                "name": "padding",
+                "description": "画布填充边距（顺序为上右下左），单位px",
+                "type": "array",
+                "default": [
+                    5,
+                    5,
+                    5,
+                    5
+                ]
+            },
+            {
+                "name": "fontSize",
+                "description": "全局默认字体大小，单位px",
+                "type": "number",
+                "default": 13
+            },
+            {
+                "name": "fontColor",
+                "description": "全局默认字体颜色",
+                "type": "string",
+                "default": "#666666"
+            },
+            {
+                "name": "dataLabel",
+                "description": "是否显示图表区域内数据点上方的数据文案",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "dataPointShape",
+                "description": "是否显示数据点的图形标识",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "dataPointShapeType",
+                "description": "图形标识点显示类型",
+                "type": "string",
+                "default": "solid",
+                "values": [
+                    {
+                        "name": "solid",
+                        "description": "实心"
+                    },
+                    {
+                        "name": "hollow",
+                        "description": "空心"
+                    }
+                ]
+            },
+            {
+                "name": "touchMoveLimit",
+                "description": "图表拖拽时每秒重新渲染的帧数",
+                "type": "number",
+                "default": 24
+            },
+            {
+                "name": "enableScroll",
+                "description": "开启滚动条功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "enableMarkLine",
+                "description": "是否启用标记线功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "scrollPosition",
+                "description": "连续更新数据时滚动条的位置",
+                "type": "string",
+                "default": "current",
+                "values": [
+                    {
+                        "name": "current",
+                        "description": "当前位置"
+                    },
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "object",
+                "default": {}
+            },
+            {
+                "name": "xAxis",
+                "description": "X轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "yAxis",
+                "description": "Y轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "legend",
+                "description": "图例配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "title",
+                "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "subtitle",
+                "description": "副标题配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "extra",
+                "description": "额外配置项",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            }
+        ],
+        "events": []
+    },
     "loading": {
         "site": "ste-loading",
         "attr": [
@@ -1902,6 +3464,137 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ],
         "events": []
+    },
+    "navbar": {
+        "site": "ste-navbar",
+        "attr": [
+            "autoBack=''"
+        ],
+        "props": [
+            {
+                "name": "autoBack",
+                "description": "是否显示返回按钮",
+                "type": "Boolean",
+                "default": true
+            },
+            {
+                "name": "backColor",
+                "description": "返回按钮颜色",
+                "type": "String",
+                "default": "#000"
+            },
+            {
+                "name": "backCode",
+                "description": "返回按钮icon的code",
+                "type": "String",
+                "default": "&#xe673;"
+            },
+            {
+                "name": "backCode",
+                "description": "返回按钮icon的code",
+                "type": "String",
+                "default": "&#xe673;"
+            },
+            {
+                "name": "backBackgroundColor",
+                "description": "返回按钮的背景颜色",
+                "type": "String",
+                "default": "transparent"
+            },
+            {
+                "name": "backBorderColor",
+                "description": "返回按钮的边框颜色",
+                "type": "String",
+                "default": "transparent"
+            },
+            {
+                "name": "backOpacity",
+                "description": "返回按钮透明度",
+                "type": "Number",
+                "default": 1
+            },
+            {
+                "name": "stopNavigateBack",
+                "description": "是否阻止点击返回按钮后，返回到上一页",
+                "type": "Boolean",
+                "default": false
+            },
+            {
+                "name": "title",
+                "description": "标题文本",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "titleColor",
+                "description": "标题颜色",
+                "type": "String",
+                "default": "#181818"
+            },
+            {
+                "name": "titleAlignment",
+                "description": "标题对齐方式",
+                "type": "Number",
+                "default": 1,
+                "values": [
+                    {
+                        "name": 1,
+                        "description": "居左"
+                    },
+                    {
+                        "name": 2,
+                        "description": "居中"
+                    }
+                ]
+            },
+            {
+                "name": "fixed",
+                "description": "是否固定到顶部",
+                "type": "Boolean",
+                "default": false
+            },
+            {
+                "name": "safeAreaInsetTop",
+                "description": "是否开启顶部安全区适配",
+                "type": "Boolean",
+                "default": true
+            },
+            {
+                "name": "zIndex",
+                "description": "导航栏 z-index",
+                "type": "Number",
+                "default": 10
+            },
+            {
+                "name": "backgroundColor",
+                "description": "导航栏背景色",
+                "type": "String",
+                "default": "transparent"
+            },
+            {
+                "name": "colorType",
+                "description": "标题对齐方式",
+                "type": "Number|String",
+                "default": "left",
+                "values": [
+                    {
+                        "name": 1,
+                        "description": "黑色"
+                    },
+                    {
+                        "name": 2,
+                        "description": "白色"
+                    }
+                ]
+            }
+        ],
+        "events": [
+            {
+                "name": "backClick",
+                "description": "返回按钮点击",
+                "type": "()=>void"
+            }
+        ]
     },
     "notice-bar": {
         "site": "ste-notice-bar",
@@ -2197,6 +3890,237 @@ export const componentMap: Record<string, ComponentDesc> = {
         "attr": [
             ""
         ]
+    },
+    "pie-chart": {
+        "site": "ste-pie-chart",
+        "attr": [
+            "width=''"
+        ],
+        "props": [
+            {
+                "name": "width",
+                "description": "图表宽度，单位rpx",
+                "type": "number | string",
+                "default": "750"
+            },
+            {
+                "name": "height",
+                "description": "图表高度，单位rpx",
+                "type": "number | string",
+                "default": "200"
+            },
+            {
+                "name": "canvas2d",
+                "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "pixelRatio",
+                "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+                "type": "number",
+                "default": "1"
+            },
+            {
+                "name": "animation",
+                "description": "是否动画展示图表",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "timing",
+                "description": "图表动画效果",
+                "type": "string",
+                "default": "easeOut",
+                "values": [
+                    {
+                        "name": "easeOut",
+                        "description": "由快到慢"
+                    },
+                    {
+                        "name": "easeIn",
+                        "description": "由慢到快"
+                    },
+                    {
+                        "name": "easeInOut",
+                        "description": "慢快慢"
+                    },
+                    {
+                        "name": "linear",
+                        "description": "匀速"
+                    }
+                ]
+            },
+            {
+                "name": "duration",
+                "description": "动画展示时长（单位：毫秒）",
+                "type": "string",
+                "default": "1000"
+            },
+            {
+                "name": "rotate",
+                "description": "横屏模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rotateLock",
+                "description": "横屏锁定模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "background",
+                "description": "背景颜色，开启滚动条后请赋值",
+                "type": "string",
+                "default": "rgba(0,0,0,0)"
+            },
+            {
+                "name": "color",
+                "description": "主题颜色数组，16进制颜色格式",
+                "type": "array",
+                "default": [
+                    "#165DFF",
+                    "#14C9C9",
+                    "#F7BA1E",
+                    "#3491FA",
+                    "#722ED1",
+                    "#9FDB1D"
+                ]
+            },
+            {
+                "name": "padding",
+                "description": "画布填充边距（顺序为上右下左），单位px",
+                "type": "array",
+                "default": [
+                    5,
+                    5,
+                    5,
+                    5
+                ]
+            },
+            {
+                "name": "fontSize",
+                "description": "全局默认字体大小，单位px",
+                "type": "number",
+                "default": 13
+            },
+            {
+                "name": "fontColor",
+                "description": "全局默认字体颜色",
+                "type": "string",
+                "default": "#666666"
+            },
+            {
+                "name": "dataLabel",
+                "description": "是否显示图表区域内数据点上方的数据文案",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "dataPointShape",
+                "description": "是否显示数据点的图形标识",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "dataPointShapeType",
+                "description": "图形标识点显示类型",
+                "type": "string",
+                "default": "solid",
+                "values": [
+                    {
+                        "name": "solid",
+                        "description": "实心"
+                    },
+                    {
+                        "name": "hollow",
+                        "description": "空心"
+                    }
+                ]
+            },
+            {
+                "name": "touchMoveLimit",
+                "description": "图表拖拽时每秒重新渲染的帧数",
+                "type": "number",
+                "default": 24
+            },
+            {
+                "name": "enableScroll",
+                "description": "开启滚动条功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "enableMarkLine",
+                "description": "是否启用标记线功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "scrollPosition",
+                "description": "连续更新数据时滚动条的位置",
+                "type": "string",
+                "default": "current",
+                "values": [
+                    {
+                        "name": "current",
+                        "description": "当前位置"
+                    },
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "object",
+                "default": {}
+            },
+            {
+                "name": "xAxis",
+                "description": "X轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "yAxis",
+                "description": "Y轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "legend",
+                "description": "图例配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "title",
+                "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "subtitle",
+                "description": "副标题配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "extra",
+                "description": "额外配置项",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            }
+        ],
+        "events": []
     },
     "popup": {
         "site": "ste-popup",
@@ -2964,6 +4888,249 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
+    "ring-chart": {
+        "site": "ste-ring-chart",
+        "attr": [
+            "width=''"
+        ],
+        "props": [
+            {
+                "name": "width",
+                "description": "图表宽度，单位rpx",
+                "type": "number | string",
+                "default": "750"
+            },
+            {
+                "name": "height",
+                "description": "图表高度，单位rpx",
+                "type": "number | string",
+                "default": "200"
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "Object",
+                "default": ""
+            },
+            {
+                "name": "canvas2d",
+                "description": "canvas2d模式，用于解决小程序层级过高及拖拽卡顿问题",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "pixelRatio",
+                "description": "设备像素比，解决开启canvas2d后画布模糊的问题",
+                "type": "number",
+                "default": "1"
+            },
+            {
+                "name": "animation",
+                "description": "是否动画展示图表",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "timing",
+                "description": "图表动画效果",
+                "type": "string",
+                "default": "easeOut",
+                "values": [
+                    {
+                        "name": "easeOut",
+                        "description": "由快到慢"
+                    },
+                    {
+                        "name": "easeIn",
+                        "description": "由慢到快"
+                    },
+                    {
+                        "name": "easeInOut",
+                        "description": "慢快慢"
+                    },
+                    {
+                        "name": "linear",
+                        "description": "匀速"
+                    }
+                ]
+            },
+            {
+                "name": "duration",
+                "description": "动画展示时长（单位：毫秒）",
+                "type": "string",
+                "default": "1000"
+            },
+            {
+                "name": "rotate",
+                "description": "横屏模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rotateLock",
+                "description": "横屏锁定模式",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "background",
+                "description": "背景颜色，开启滚动条后请赋值",
+                "type": "string",
+                "default": "rgba(0,0,0,0)"
+            },
+            {
+                "name": "color",
+                "description": "主题颜色数组，16进制颜色格式",
+                "type": "array",
+                "default": [
+                    "#165DFF",
+                    "#14C9C9",
+                    "#F7BA1E",
+                    "#3491FA",
+                    "#722ED1",
+                    "#9FDB1D"
+                ]
+            },
+            {
+                "name": "padding",
+                "description": "画布填充边距（顺序为上右下左），单位px",
+                "type": "array",
+                "default": [
+                    5,
+                    5,
+                    5,
+                    5
+                ]
+            },
+            {
+                "name": "fontSize",
+                "description": "全局默认字体大小，单位px",
+                "type": "number",
+                "default": 13
+            },
+            {
+                "name": "fontColor",
+                "description": "全局默认字体颜色",
+                "type": "string",
+                "default": "#666666"
+            },
+            {
+                "name": "dataLabel",
+                "description": "是否显示图表区域内数据点上方的数据文案",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "dataPointShape",
+                "description": "是否显示数据点的图形标识",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "dataPointShapeType",
+                "description": "图形标识点显示类型",
+                "type": "string",
+                "default": "solid",
+                "values": [
+                    {
+                        "name": "solid",
+                        "description": "实心"
+                    },
+                    {
+                        "name": "hollow",
+                        "description": "空心"
+                    }
+                ]
+            },
+            {
+                "name": "touchMoveLimit",
+                "description": "图表拖拽时每秒重新渲染的帧数",
+                "type": "number",
+                "default": 24
+            },
+            {
+                "name": "enableScroll",
+                "description": "开启滚动条功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "enableMarkLine",
+                "description": "是否启用标记线功能",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "scrollPosition",
+                "description": "连续更新数据时滚动条的位置",
+                "type": "string",
+                "default": "current",
+                "values": [
+                    {
+                        "name": "current",
+                        "description": "当前位置"
+                    },
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "series",
+                "description": "图表数据",
+                "type": "object",
+                "default": {}
+            },
+            {
+                "name": "xAxis",
+                "description": "X轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "yAxis",
+                "description": "Y轴配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "legend",
+                "description": "图例配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "title",
+                "description": "标题配置（仅适用于 ring、arcbar、gauge）",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "subtitle",
+                "description": "副标题配置",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "extra",
+                "description": "额外配置项",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "event",
+                "description": "事件",
+                "type": "-",
+                "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            }
+        ],
+        "events": []
+    },
     "scroll-to": {
         "site": "ste-scroll-to",
         "attr": [
@@ -3084,6 +5251,13 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否可清空",
                 "type": "boolean",
                 "default": "true"
+            },
+            {
+                "name": "allowSpace",
+                "description": "是否允许输入空格",
+                "type": "boolean",
+                "default": "true",
+                "version": "1.20.0"
             },
             {
                 "name": "borderColor",
@@ -3226,6 +5400,94 @@ export const componentMap: Record<string, ComponentDesc> = {
                     {
                         "name": "item",
                         "description": "热词列表对象"
+                    }
+                ]
+            }
+        ]
+    },
+    "search-box": {
+        "site": "ste-search-box",
+        "attr": [
+            "value=''"
+        ],
+        "props": [
+            {
+                "name": "value",
+                "description": "当前值（支持v-model双向绑定）",
+                "type": "string | number",
+                "default": ""
+            },
+            {
+                "name": "type",
+                "description": "头部操作类型",
+                "type": "string",
+                "values": [
+                    {
+                        "name": "text",
+                        "description": "文本输入"
+                    },
+                    {
+                        "name": "date",
+                        "description": "日期选择"
+                    },
+                    {
+                        "name": "dateRange",
+                        "description": "日期范围选择"
+                    }
+                ],
+                "default": "text"
+            },
+            {
+                "name": "headerValue",
+                "description": "头部显示的值",
+                "type": "string | number | string[] | number[]",
+                "default": ""
+            },
+            {
+                "name": "placeholder",
+                "description": "占位提示符",
+                "type": "string",
+                "default": "请输入"
+            },
+            {
+                "name": "height",
+                "description": "高度",
+                "type": "number | string"
+            },
+            {
+                "name": "textColor",
+                "description": "文字颜色",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "placeholderColor",
+                "description": "占位符字体颜色",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "clearable",
+                "description": "是否可清空",
+                "type": "boolean",
+                "default": "true"
+            },
+            {
+                "name": "confirmType",
+                "description": "确认按钮类型",
+                "type": "string",
+                "default": "done"
+            }
+        ],
+        "events": [
+            {
+                "name": "search",
+                "description": "确定搜索时触发",
+                "type": "(value: string) => void",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "输入框的值"
                     }
                 ]
             }

@@ -1,31 +1,22 @@
 import type { PropType } from 'vue';
-
-export interface FilterItem {
-    title: string;
-    children?: FilterItem[];
-    multiple?: boolean;
-    [key: string]: any;
-}
+import type { FilterItem, FilterType } from './type';
 
 const props = {
     value: { type: [String, Number, Array] as unknown as PropType<string | number | (string | number)[]>, default: '' },
-    multiple: { type: Boolean, default: false },
     activeColor: { type: String, default: '#0275FF' },
     inactiveColor: { type: String, default: '#555A61' },
-    filterText: { type: String, default: '筛选' },
-    menuData: {
-        type: Array as PropType<FilterItem[]>,
-        default: () => [],
-    },
-    filterData: {
+    filterType: { type: String as PropType<FilterType>, default: 'button' },
+    data: {
         type: Array as PropType<FilterItem[]>,
         default: () => [],
     },
 };
 
 export const filterToolEmits = {
-    itemClick: (items: FilterItem[]) => typeof items === 'object',
-    menuChange: (_items: FilterItem[]) => true,
+    // itemClick: (items: FilterItem[]) => typeof items === 'object',
+    // menuChange: (_items: FilterItem[]) => true,
+    confirm: (items: FilterItem[]) => typeof items === 'object',
+    reset: () => true,
 };
 
 export default props;

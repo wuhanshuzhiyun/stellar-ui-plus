@@ -16,6 +16,7 @@ const dropDownMenuProps = {
     type: { type: String, default: 'block' },
     max: { type: Number, default: 1 },
     dropDownIconColor: { type: String, default: '#bbbbbb' },
+    showPopup: { type: Boolean, default: false },
 };
 
 export type DropDownMenuProps = ExtractPropTypes<typeof dropDownMenuProps>;
@@ -28,4 +29,5 @@ export const dropDownMenuEmits = {
     change: (value: Array<any>) => Array.isArray(value),
     'item-choose': (item: any) => item,
     'update:modelValue': (value: Array<any>) => Array.isArray(value),
+    'update:showPopup': (value: boolean) => typeof value === 'boolean',
 };

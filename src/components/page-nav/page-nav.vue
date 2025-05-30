@@ -8,16 +8,11 @@ export default defineComponent({
 <script setup lang="ts">
 import propsData from './props';
 const props = defineProps(propsData);
-const pages = getCurrentPages();
 
 function navBack() {
-    if (pages.length > 2) {
-        uni.navigateBack();
-    } else {
-        uni.redirectTo({
-            url: '/pages/mp/index',
-        });
-    }
+    uni.redirectTo({
+        url: '/pages/mp/index',
+    });
 }
 </script>
 

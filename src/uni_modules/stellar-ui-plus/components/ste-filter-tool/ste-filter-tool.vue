@@ -1,295 +1,224 @@
 <template>
-    <view class="ste-filter-tool--root" :style="[rootStyleVar]">
-        <!-- 左侧筛选项滚动区域 -->
-        <scroll-view class="filter-scroll" scroll-x :show-scrollbar="false" :scroll-left="scrollLeft">
-            <view class="filter-content" :class="{ multiple }">
-                <view v-for="(item, index) in mainFilters" :key="index" class="filter-item" :class="{ active: item.active }" @click="handleItemClick(item)">
-                    <text class="filter-text">{{ item.title }}</text>
-                </view>
-            </view>
-        </scroll-view>
+    <view class="ste-filter-tool--root" :style="[rootStyleVar, { '--expand-count': 3 }]">
+        <ste-dropdown-menu ref="steDropMenu" class="filter-box-menu" :activeColor="activeColor" dropDownIconColor="#000" v-model:showPopup="showMenu">
+            <template #title>
+                <slot>
+                    <view></view>
+                </slot>
+            </template>
 
-        <!-- 右侧筛选按钮 -->
-        <view class="filter-button" v-if="subFilters.length > 0">
-            <ste-dropdown-menu :title="filterText" ref="steDropMenu" class="filter-box-menu" :activeColor="activeColor" dropDownIconColor="#000">
-                <view class="custom-menu-box">
-                    <view class="menu-box">
-                        <view class="menu-item-block" v-for="(item, index) in subFilters" :key="index">
-                            <view class="menu-item-title">{{ item.title }}</view>
-                            <view class="menu-item-content" :class="{ multiple: item.multiple }">
-                                <view v-for="(child, childIndex) in item.children" :key="childIndex" class="menu-item-child" :class="{ active: child.active }" @click="handleMenuClick(item, child)">
-                                    {{ child.title }}
+            <view class="custom-menu-box">
+                <view class="menu-box" :class="[{ 'checkbox-mode': filterType === 'checkbox' }]">
+                    <!-- 左侧分类栏 -->
+                    <scroll-view scroll-y scroll-anchoring class="menu-category" :show-scrollbar="false" v-if="showCategory">
+                        <view class="category-item" v-for="(item, index) in categoryData" :key="index" :class="{ active: currentActiveIndex === index }" @click="handleCategoryClick(index)">
+                            {{ item.title }}
+                        </view>
+                    </scroll-view>
+
+                    <!-- 右侧内容区 -->
+                    <scroll-view
+                        scroll-y
+                        scroll-anchoring
+                        class="menu-items"
+                        :scroll-top="scrollTop"
+                        @scroll="handleScroll"
+                        :scroll-with-animation="true"
+                        :enable-back-to-top="false"
+                        :show-scrollbar="false"
+                    >
+                        <!-- 按钮模式 -->
+                        <template v-if="filterType === 'button'">
+                            <view class="menu-item-block" v-for="(item, index) in filtersData" :key="index">
+                                <view class="menu-item-title">
+                                    <text>{{ item.title }}</text>
+                                    <view style="display: flex; align-items: center; color: #000" v-if="(item.expandCount || 0) > 0">
+                                        <text>展开</text>
+                                        <view class="expand-btn" @click.stop="toggleExpand(item)" :class="{ expanded: item.expand }">
+                                            <ste-icon code="&#xe676;" color="#000" size="24" />
+                                        </view>
+                                    </view>
+                                </view>
+                                <view
+                                    class="menu-item-content"
+                                    :style="[{ '--expand-count': item.expandCount }]"
+                                    :class="[{ multiple: item.multiple }, item.rowCount && item.rowCount > 1 ? `row-${item.rowCount}` : '', { collapsed: !item.expand && (item.expandCount || 0) > 0 }]"
+                                >
+                                    <view
+                                        v-for="(child, childIndex) in item.children"
+                                        :key="childIndex"
+                                        class="menu-item-child"
+                                        :class="[{ active: child.active }]"
+                                        @click="handleFilterClick(item, child)"
+                                    >
+                                        {{ child.title }}
+                                    </view>
                                 </view>
                             </view>
-                        </view>
+                        </template>
+
+                        <!-- 复选框模式 -->
+                        <template v-if="filterType === 'checkbox'">
+                            <view
+                                class="menu-item-checkbox"
+                                v-for="(item, index) in filtersData[currentActiveIndex].children"
+                                :key="index"
+                                @click="
+                                    () => {
+                                        filtersData[currentActiveIndex].activeValue = item.value;
+                                    }
+                                "
+                            >
+                                <view>{{ item.title }}</view>
+                                <view class="checkbox-action">
+                                    <ste-radio v-model="filtersData[currentActiveIndex].activeValue" :name="item.value" />
+                                </view>
+                            </view>
+                        </template>
+                    </scroll-view>
+                </view>
+
+                <view class="action-box">
+                    <view class="btn reset" @click="handleMenuReset">
+                        <text class="btn-text">重置</text>
                     </view>
-                    <view class="action-box">
-                        <view class="btn reset" @click="handleMenuConfirm">
-                            <text class="btn-text">重置</text>
-                        </view>
-                        <view class="btn confirm" @click="handleMenuConfirm">
-                            <text class="btn-text">确认</text>
-                        </view>
+                    <view class="btn confirm" @click="handleMenuConfirm">
+                        <text class="btn-text">确认</text>
                     </view>
                 </view>
-            </ste-dropdown-menu>
-        </view>
+            </view>
+        </ste-dropdown-menu>
     </view>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch, nextTick, getCurrentInstance, onUnmounted } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 import propsData, { filterToolEmits } from './props';
-import type { FilterItem } from './props';
-import type { RefDropdownMenu } from '../../types/refComponents';
+import type { FilterItem, CategoryItem } from './type';
 import { useColorStore } from '../../store/color';
-let { getColor } = useColorStore();
+import { ScrollCalculator, ScrollController, InitializationManager, EventHandlerFactory } from './scrollUtil';
 
+// 组合式API和响应式数据
+const { getColor } = useColorStore();
+const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 const props = defineProps(propsData);
-
 const emits = defineEmits(filterToolEmits);
 
-const scrollLeft = ref(0);
+// 响应式状态
+const categoryData = reactive<CategoryItem[]>([]);
+const filtersData = reactive(props.data || []);
+const checkboxData = ref<FilterItem[]>([]);
+const showMenu = ref(false);
+const currentActiveIndex = ref(0);
+const scrollTop = ref(0);
 
-const initMainFilters = () => {
-    const data = props.filterData || [];
-    const value = props.value;
-    if (Array.isArray(value)) {
-        data.forEach(filter => {
-            filter.active = value.includes(filter.value);
-        });
-    } else {
-        data.forEach(filter => {
-            filter.active = filter.value === value;
-        });
-    }
-    return data;
-};
+// 计算属性
+const rootStyleVar = computed(() => ({
+    '--active-color': props.activeColor || getColor().themeColor,
+    '--inactive-color': props.inactiveColor,
+}));
 
-const mainFilters = reactive(initMainFilters());
-const subFilters = reactive(props.menuData || []);
-
-const rootStyleVar = computed(() => {
-    return {
-        '--active-color': props.activeColor || getColor().themeColor,
-        '--inactive-color': props.inactiveColor,
-    };
+const showCategory = computed(() => {
+    return props.filterType !== 'checkbox' || (props.filterType === 'checkbox' && filtersData.length > 1);
 });
 
-const handleItemClick = (item: FilterItem) => {
-    if (props.multiple) {
-        item.active = !item.active;
-    } else {
-        mainFilters.forEach(filter => {
-            filter.active = false;
-        });
-        item.active = true;
-    }
+// 工具类实例
+const calculator = new ScrollCalculator(instance, filtersData);
+const controller = new ScrollController(scrollTop, currentActiveIndex, categoryData);
+const initManager = new InitializationManager(calculator);
 
-    emits(
-        'itemClick',
-        mainFilters
-            .filter(filter => filter.active)
-            .map(filter => {
-                const { active, ...rest } = filter; // 使用解构赋值排除 active 属性
-                return rest;
-            })
-    );
+// 事件处理器
+const handleScroll = EventHandlerFactory.createScrollHandler(controller, props.filterType);
+const handleCategoryClick = EventHandlerFactory.createCategoryClickHandler(controller, calculator, categoryData, currentActiveIndex, props.filterType);
+
+// 初始化数据
+const initializeData = () => {
+    categoryData.length = 0;
+    props.data.forEach((item, index) => {
+        categoryData.push({
+            title: item.title,
+            value: item.value,
+            children: item.children || [],
+            active: index === 0,
+        });
+    });
+
+    if (props.filterType === 'checkbox') {
+        checkboxData.value.length = 0;
+        checkboxData.value = props.data[0]?.children || [];
+    }
 };
 
-const handleMenuClick = (item: FilterItem, child: FilterItem) => {
+// 业务逻辑处理器
+const handleFilterClick = (item: FilterItem, child: FilterItem) => {
     if (item.multiple) {
         child.active = !child.active;
     } else {
         item.children?.forEach(filter => {
             filter.active = false;
         });
-
         child.active = true;
     }
 };
 
-const steDropMenu = ref<RefDropdownMenu>();
-const handleMenuConfirm = () => {
-    // const selectedFilters = subFilters.map(item => {
-    //     item.children = item.children
-    //         ?.filter(child => child.active)
-    //         .map(filter => {
-    //             const { active, ...rest } = filter;
-    //             return rest;
-    //         });
-    //     return item;
-    // });
-
-    // emits('menuChange', selectedFilters);
-    steDropMenu.value?.close();
+const handleMenuReset = () => {
+    filtersData.forEach(item => {
+        item.children?.forEach(child => {
+            child.active = false;
+        });
+    });
+    emits('reset');
+    showMenu.value = false;
 };
+
+const handleMenuConfirm = () => {
+    emits('confirm', []);
+    showMenu.value = false;
+};
+
+const toggleExpand = (item: FilterItem) => {
+    item.expand = !item.expand;
+};
+
+// 监听器
+watch(
+    () => props.data,
+    newData => {
+        if (newData) {
+            initializeData();
+            initManager.initializeOffsets();
+        }
+    },
+    { immediate: true }
+);
+
+watch(showMenu, async visible => {
+    if (visible) {
+        scrollTop.value = 0;
+        await initManager.initializeOnMenuShow();
+
+        // 更新控制器的偏移数据
+        const offsets = await calculator.calculateItemOffsets();
+        controller.updateOffsets(offsets);
+    }
+});
+
+// H5环境resize监听
+// #ifdef H5
+const handleResize = EventHandlerFactory.createResizeHandler(calculator, showMenu);
+window.addEventListener('resize', handleResize);
+// #endif
+
+// 组件销毁时清理
+onUnmounted(() => {
+    controller.destroy();
+    // #ifdef H5
+    window.removeEventListener('resize', handleResize);
+    // #endif
+});
 </script>
 
 <style lang="scss" scoped>
-.ste-filter-tool--root {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    overflow: hidden;
-    background: #ffffff;
-
-    .filter-scroll {
-        flex: 1;
-        white-space: nowrap;
-        min-width: 0;
-        position: relative;
-        touch-action: pan-x;
-
-        .filter-content {
-            display: flex;
-            align-items: center;
-            margin: 0 16rpx;
-            &.multiple {
-                .filter-item.active {
-                    background: rgba(230, 232, 234, 0.5);
-                    .filter-text {
-                        color: var(--active-color);
-                    }
-                }
-            }
-
-            .filter-item {
-                flex-shrink: 0;
-                padding: 8rpx 20rpx;
-                margin-right: 16rpx;
-                border-radius: 8rpx;
-                background: rgba(230, 232, 234, 0.5);
-                transition: all 0.2s ease;
-                cursor: pointer;
-
-                &.active {
-                    background: var(--active-color);
-                    .filter-text {
-                        color: #fff;
-                    }
-                }
-
-                .filter-text {
-                    font-size: var(--font-size-24, 24rpx);
-                    color: var(--inactive-color);
-                }
-
-                &:last-child {
-                    margin-right: 0;
-                }
-            }
-        }
-        &::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            // left: 5%;
-            right: 5%;
-            bottom: 0;
-            border-radius: 10px;
-            transform: translate(0, -15%) rotate(-4deg);
-            transform-origin: center center;
-            box-shadow: 0 0 20px 15px rgba(255, 255, 255, 0.4);
-
-            z-index: 2;
-        }
-    }
-
-    .filter-button {
-        margin-left: 16rpx;
-        color: #000;
-
-        // #ifndef MP-WEIXIN || MP-ALIPAY || APP
-        cursor: pointer;
-        // #endif
-
-        // :deep(.filter-box-menu) {
-
-        // }
-
-        :deep(.custom-menu-box) {
-            background-color: #fff;
-            padding-top: 24rpx;
-            border-radius: 0 0 18rpx 18rpx;
-            .menu-box {
-                width: 100%;
-
-                margin-bottom: 56rpx;
-                font-size: var(--font-size-24, 24rpx);
-
-                .menu-item-block {
-                    padding: 0 40rpx;
-                    margin-bottom: 20rpx;
-
-                    .menu-item-title {
-                        font-size: var(--font-size-24, 24rpx);
-                        color: #888c92;
-                        margin-bottom: 20rpx;
-                    }
-
-                    .menu-item-content {
-                        display: flex;
-                        flex-wrap: wrap;
-                        gap: 20rpx 32rpx;
-
-                        &.multiple {
-                            .menu-item-child.active {
-                                background-color: var(--active-color);
-                                color: #fff;
-                            }
-                        }
-                        .menu-item-child {
-                            padding: 10rpx 0;
-                            font-size: var(--font-size-24, 24rpx);
-                            color: var(--inactive-color);
-                            flex-shrink: 0;
-                            padding: 16rpx 40rpx;
-                            border-radius: 8rpx;
-                            background: rgba(230, 232, 234, 0.5);
-                            transition: all 0.2s ease;
-                            cursor: pointer;
-                            &.active {
-                                color: var(--active-color);
-                            }
-                        }
-                    }
-                }
-            }
-
-            .action-box {
-                // padding: 0 40rpx;
-                display: flex;
-                justify-content: space-between;
-
-                // padding-bottom: 20rpx;
-                height: 92rpx;
-                border-radius: 0 0 16rpx 16rpx;
-
-                .btn {
-                    flex: 1;
-                    font-size: var(--font-size-32, 32rpx);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    &.reset {
-                        background-color: #f4f5f6;
-                        border-radius: 0 0 0 16rpx;
-                        color: #1c1f23;
-                    }
-                    &.confirm {
-                        background-color: var(--active-color);
-                        border-radius: 0 0 16rpx 0;
-                        color: #fff;
-                    }
-                }
-            }
-        }
-    }
-}
-
-/* 隐藏滚动条 */
-::-webkit-scrollbar {
-    display: none;
-}
+@import './ste-filter-tool.scss';
 </style>

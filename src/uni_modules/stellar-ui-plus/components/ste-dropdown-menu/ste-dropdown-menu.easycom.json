@@ -87,6 +87,13 @@
             "default": "1"
         },
         {
+            "name": "showPopup",
+            "description": "是否显示菜单弹窗",
+            "type": "boolean",
+            "default": "false",
+            "version": "1.21.0"
+        },
+        {
             "name": "[event]change",
             "description": "选项改变时触发",
             "type": "(value: any[]) => void",

@@ -1,4 +1,4 @@
-import type { PropType } from 'vue';
+import type { CSSProperties, PropType } from 'vue';
 
 export interface GoodsInfoType extends Record<string, any> {
     image?: string;
@@ -40,6 +40,10 @@ export default {
     tagBg: {
         type: String,
     },
+    titleStyle: {
+        type: Object as PropType<CSSProperties>,
+        default: () => ({}),
+    },
     /** 选择框位置 */
     checkbox: {
         type: String as PropType<'left' | 'right' | 'none'>,
@@ -62,7 +66,7 @@ export default {
     },
     /** 水印样式 */
     watermarkStyle: {
-        type: Object,
+        type: Object as PropType<CSSProperties>,
         default: () => ({}),
     },
     /** 数量 */
@@ -72,6 +76,11 @@ export default {
     },
     /** 是否显示步进器 */
     stepper: {
+        type: Boolean,
+        default: () => false,
+    },
+    /** 步进器只读 */
+    readonlyStepper: {
         type: Boolean,
         default: () => false,
     },

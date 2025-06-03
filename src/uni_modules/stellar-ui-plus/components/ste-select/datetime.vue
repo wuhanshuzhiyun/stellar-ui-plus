@@ -39,7 +39,7 @@ watch(
             values = [...v];
         } else {
             const str = ['date', 'datetime', 'month'].includes(props.mode) ? 'YYYY MM DD HH mm ss' : 'HH mm ss';
-            const value = utils.dayjs(v).format(str).split(' ');
+            const value: string[] = utils.dayjs(v).format(str).split(' ');
             values = value.map(item => Number(item));
         }
         setSelectValue(values as number[]);
@@ -52,7 +52,10 @@ const initOptions = (values = selectedValue.value) => {
     setDataOptions(options);
 };
 
+const viewloading = ref(false);
+
 const initSelectIndex = (values = selectedValue.value) => {
+    viewloading.value = true;
     nextTick(() => {
         const indexs: number[] = [];
         const _values = getNowDate(values, props.mode as DateMode);
@@ -67,14 +70,18 @@ const initSelectIndex = (values = selectedValue.value) => {
         setSelectValue(indexs.map((i, index) => dataOptions.value[index][i].value));
         emits('change', selectedValue.value);
         emits('update:modelValue', selectedValue.value);
+        viewloading.value = false;
     });
 };
 
+let changeTimeout: any = 0;
 const onChange = (e: any) => {
-    const indexs: number[] = e.detail.value;
-    const newValues = indexs.map((i, index) => dataOptions.value[index][i].value);
-    initOptions(newValues);
-    initSelectIndex(newValues);
+    clearTimeout(changeTimeout);
+    changeTimeout = setTimeout(() => {
+        const indexs: number[] = e.detail.value;
+        const newValues = indexs.map((i, index) => dataOptions.value[index][i].value);
+        initSelectIndex(newValues);
+    }, 100);
 };
 
 watch([() => props.minDate, () => props.maxDate], () => {
@@ -86,7 +93,7 @@ initOptions();
 initSelectIndex();
 </script>
 <template>
-    <picker-view style="height: 450rpx; width: 100%" indicator-style="height: 43px" immediate-change :value="selectedIndex" @change="onChange">
+    <picker-view v-if="!viewloading" style="height: 450rpx; width: 100%" indicator-style="height: 43px" immediate-change :value="selectedIndex" @change="onChange">
         <picker-view-column v-for="(col, index) in dataOptions" :key="index">
             <view class="time-item" v-for="(item, i) in col" style="height: 43px" :key="item.title">
                 <text>

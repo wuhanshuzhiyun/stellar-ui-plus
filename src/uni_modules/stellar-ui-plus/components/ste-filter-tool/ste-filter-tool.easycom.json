@@ -23,7 +23,7 @@
             "default": "#555A61"
         },
         {
-            "name": "menuData",
+            "name": "data",
             "description": "菜单数据列表",
             "type": "FilterItem[]",
             "default": "[]"

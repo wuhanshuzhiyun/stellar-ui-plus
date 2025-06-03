@@ -29,6 +29,12 @@
             "default": "[]"
         },
         {
+            "name": "showCategory",
+            "description": "是否显示分类",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
             "name": "[event]reset",
             "description": "点击重置时触发",
             "type": "() => void",

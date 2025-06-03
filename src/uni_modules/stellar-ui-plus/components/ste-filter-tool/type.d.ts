@@ -17,7 +17,7 @@ export interface CategoryItem {
     [key: string]: any;
 }
 
-export type FilterType = 'button' | 'checkbox';
+export type FilterType = 'button' | 'checkbox' | 'calendar';
 
 export interface FilterValue {
     title: string; // 筛选项标题

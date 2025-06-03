@@ -3,7 +3,12 @@
         <scroll-view scroll-y scroll-anchoring class="menu-category" :show-scrollbar="false">
             <view class="category-block" v-for="(item, index) in categoryData" :key="index">
                 <ste-badge :content="item.badge">
-                    <view class="category-item" :key="index" :class="{ active: currentActiveIndex === index }" @click="handleCategoryClick(item, index)">
+                    <view
+                        class="category-item"
+                        :key="index"
+                        :class="{ active: currentActiveIndex === index, next: currentActiveIndex === index - 1, prev: currentActiveIndex === index + 1 }"
+                        @click="handleCategoryClick(item, index)"
+                    >
                         <view class="title">{{ item.title }}</view>
                         <view class="sub-title">
                             <slot :item="item"></slot>
@@ -80,6 +85,14 @@ $default-width: 144rpx;
                 overflow: hidden;
                 /*! autoprefixer: off */
                 -webkit-box-orient: vertical;
+            }
+
+            &.prev {
+                border-bottom-right-radius: 16rpx;
+            }
+
+            &.next {
+                border-top-right-radius: 16rpx;
             }
 
             .sub-title {

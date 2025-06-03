@@ -22,6 +22,7 @@ const props = {
         type: Array as PropType<FilterItem[]>,
         default: () => [],
     },
+    showCategory: { type: Boolean, default: true },
 };
 
 export const filterToolEmits = {

@@ -1036,6 +1036,39 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
+    "category": {
+        "site": "ste-category",
+        "attr": [
+            "value=''"
+        ],
+        "props": [
+            {
+                "name": "value",
+                "description": "当前值，支持v-model:value双向绑定",
+                "type": "string | number",
+                "default": ""
+            },
+            {
+                "name": "data",
+                "description": "菜单数据列表",
+                "type": "CagegoryItem[]",
+                "default": "[]"
+            }
+        ],
+        "events": [
+            {
+                "name": "change",
+                "description": "分类变化时触发",
+                "type": "(item: CagegoryItem) => void",
+                "params": [
+                    {
+                        "name": "item",
+                        "description": "变化后的分类数据"
+                    }
+                ]
+            }
+        ]
+    },
     "checkbox": {
         "site": "ste-checkbox",
         "attr": [
@@ -1685,12 +1718,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                 ]
             },
             {
-                "name": "date",
-                "description": "日期",
-                "type": "String",
-                "default": "new Date()"
-            },
-            {
                 "name": "avatar",
                 "description": "头像",
                 "type": "String",
@@ -1704,12 +1731,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ],
         "events": []
-    },
-    "ste-donut-chart": {
-        "site": "ste-donut-chart",
-        "attr": [
-            ""
-        ]
     },
     "drag": {
         "site": "ste-drag",
@@ -1904,15 +1925,9 @@ export const componentMap: Record<string, ComponentDesc> = {
         "props": [
             {
                 "name": "value",
-                "description": "当前值（支持v-model双向绑定）",
-                "type": "string | number | (string | number)[]",
+                "description": "当前值，支持v-model:value双向绑定",
+                "type": "object[]",
                 "default": ""
-            },
-            {
-                "name": "multiple",
-                "description": "是否支持多选",
-                "type": "boolean",
-                "default": "false"
             },
             {
                 "name": "activeColor",
@@ -1927,38 +1942,21 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "#555A61"
             },
             {
-                "name": "filterText",
-                "description": "筛选按钮文字",
-                "type": "string",
-                "default": "筛选"
-            },
-            {
                 "name": "menuData",
                 "description": "菜单数据列表",
-                "type": "FilterItem[]",
-                "default": "[]"
-            },
-            {
-                "name": "filterData",
-                "description": "筛选数据列表",
                 "type": "FilterItem[]",
                 "default": "[]"
             }
         ],
         "events": [
             {
-                "name": "itemClick",
-                "description": "点击筛选项时触发",
-                "type": "(items: FilterItem[]) => void",
-                "params": [
-                    {
-                        "name": "items",
-                        "description": "选中的筛选项列表"
-                    }
-                ]
+                "name": "reset",
+                "description": "点击重置时触发",
+                "type": "() => void",
+                "params": []
             },
             {
-                "name": "menuChange",
+                "name": "confirm",
                 "description": "菜单变化时触发",
                 "type": "(items: FilterItem[]) => void",
                 "params": [
@@ -2283,6 +2281,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "stepper",
                 "description": "是否显示步进器",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "readonlyStepper",
+                "description": "步进器只读",
                 "type": "boolean",
                 "default": false
             },

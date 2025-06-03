@@ -1732,6 +1732,12 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
+    "ste-donut-chart": {
+        "site": "ste-donut-chart",
+        "attr": [
+            ""
+        ]
+    },
     "drag": {
         "site": "ste-drag",
         "attr": [
@@ -1946,6 +1952,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "菜单数据列表",
                 "type": "FilterItem[]",
                 "default": "[]"
+            },
+            {
+                "name": "showCategory",
+                "description": "是否显示分类",
+                "type": "boolean",
+                "default": "true"
             }
         ],
         "events": [
@@ -2227,6 +2239,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "标签背景色",
                 "type": "string",
                 "default": "主题色"
+            },
+            {
+                "name": "titleStyle",
+                "description": "标题样式",
+                "type": "Object",
+                "default": "{}"
             },
             {
                 "name": "checkbox",

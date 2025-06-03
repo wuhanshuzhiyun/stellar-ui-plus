@@ -162,7 +162,7 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                 </view>
                 <view class="ste-goods-info-content">
                     <view class="ste-goods-info-header">
-                        <view class="ste-goods-info-title" :titleStyle="[titleStyle]" @click="onClick('title')">
+                        <view class="ste-goods-info-title" :style="[titleStyle]" @click="onClick('title')">
                             <view class="ste-goods-info-tag-box" v-if="data.tag">
                                 <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
                             </view>

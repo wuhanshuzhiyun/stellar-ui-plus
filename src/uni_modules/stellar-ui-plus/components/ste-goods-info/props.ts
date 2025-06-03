@@ -40,6 +40,7 @@ export default {
     tagBg: {
         type: String,
     },
+    /** 标题样式 */
     titleStyle: {
         type: Object as PropType<CSSProperties>,
         default: () => ({}),

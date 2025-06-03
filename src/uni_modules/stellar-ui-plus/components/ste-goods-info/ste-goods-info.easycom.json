@@ -29,6 +29,12 @@
             "default": "主题色"
         },
         {
+            "name": "titleStyle",
+            "description": "标题样式",
+            "type": "Object",
+            "default": "{}"
+        },
+        {
             "name": "checkbox",
             "description": "选择框位置",
             "type": "string",

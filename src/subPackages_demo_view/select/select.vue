@@ -95,7 +95,7 @@ const list4 = [
 
 const list6 = ref<{ label: string; value: number }[]>([]);
 const loading6 = ref(false);
-const time6 = ref(0);
+let time6: any = 0;
 
 const pageSize = ref(10);
 const list7 = ref<{ label: string; value: number }[]>([]);
@@ -108,8 +108,8 @@ const onChange = (val: SelectValue, option: SelectOption) => {
 
 const onInputFilterable = (v: string) => {
     // 防抖
-    clearTimeout(time6.value);
-    time6.value = setTimeout(() => {
+    clearTimeout(time6);
+    time6 = setTimeout(() => {
         console.log('?????????????', v);
         if (loading6.value) return;
         loading6.value = true;

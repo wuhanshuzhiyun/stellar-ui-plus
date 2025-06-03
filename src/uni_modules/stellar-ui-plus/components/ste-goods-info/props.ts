@@ -36,6 +36,16 @@ export default {
         type: Boolean,
         default: () => false,
     },
+    /** 价格文本大小 */
+    priceSize: {
+        type: [Number, String],
+        default: () => 28,
+    },
+    /** 价格文本颜色 */
+    priceColor: {
+        type: String,
+        default: () => '#ea4335',
+    },
     /** 标签背景色 */
     tagBg: {
         type: String,

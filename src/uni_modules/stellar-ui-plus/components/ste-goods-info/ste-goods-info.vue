@@ -182,13 +182,13 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                     </slot>
                     <view class="ste-goods-info-price" v-if="showPriceRow">
                         <view class="ste-goods-info-price-left" v-if="!hidePrice">
-                            <setPrice :value="data.price" :digits="2" bold :styleType="3" fontSize="26" @click="onClick('price')" />
+                            <setPrice :value="data.price" :digits="2" bold :styleType="3" :line-price-color="priceColor" :fontSize="priceSize" @click="onClick('price')" />
                             <setPrice
                                 v-if="data.originalPrice"
                                 :digits="2"
                                 :value="data.originalPrice"
                                 isSuggestPrice
-                                linePriceColor="#666666"
+                                line-price-color="#666666"
                                 marginLeft="16"
                                 fontSize="20"
                                 @click="onClick('originalPrice')"

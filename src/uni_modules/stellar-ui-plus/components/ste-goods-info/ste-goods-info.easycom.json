@@ -23,6 +23,18 @@
             "default": "false"
         },
         {
+            "name": "priceSize",
+            "description": "价格文本大小",
+            "type": "string | number",
+            "default": "28"
+        },
+        {
+            "name": "priceColor",
+            "description": "价格文本颜色",
+            "type": "string",
+            "default": "#ea4335"
+        },
+        {
             "name": "tagBg",
             "description": "标签背景色",
             "type": "string",

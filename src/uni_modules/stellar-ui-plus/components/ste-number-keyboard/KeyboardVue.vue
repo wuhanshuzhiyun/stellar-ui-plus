@@ -14,6 +14,7 @@ const props = defineProps({
     disabled: { type: Boolean },
     showClear: { type: Boolean },
     textColor: { type: String },
+    keyBg: { type: String },
     textSize: { type: [Number, String] },
     rightKeys: { type: Boolean },
 });
@@ -59,6 +60,7 @@ const cmpRootStyle = computed(() => {
         '--ste-number-keyboard-item-height': `${itemH}px`,
         '--ste-number-keyboard-item-gap': `${gap}px`,
         '--ste-number-keyboard-right-confirm-height': `${itemH * confirmRows + gap * (confirmRows - 1)}px`,
+        '--ste-number-keyboard-item-bg': props.keyBg,
     };
 });
 
@@ -163,7 +165,7 @@ console.log(rows.value);
     .number-keyboard-item {
         width: var(--ste-number-keyboard-item-width);
         height: var(--ste-number-keyboard-item-height);
-        background-color: #fff;
+        background-color: var(--ste-number-keyboard-item-bg);
         display: flex;
         align-items: center;
         justify-content: center;

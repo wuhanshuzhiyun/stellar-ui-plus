@@ -15,6 +15,7 @@ export interface NumberKeyboardProps {
     textSize: string | number;
     confirmBg: string;
     confirmColor: string;
+    keyBg: string;
     activeInputRef: string;
     inputValues: Record<string, string>;
 }
@@ -34,6 +35,8 @@ export default {
     textSize: { type: [Number, String], default: () => 48 },
     confirmBg: { type: String, default: () => '' },
     confirmColor: { type: String, default: () => '#fff' },
+    // 按键背景颜色
+    keyBg: { type: String, default: () => '#fff' },
     // 多输入框支持 - 当前激活的输入引用名称
     activeInputRef: { type: String, default: '' },
     // 所有输入框的值对象，键为inputRef，值为对应输入值

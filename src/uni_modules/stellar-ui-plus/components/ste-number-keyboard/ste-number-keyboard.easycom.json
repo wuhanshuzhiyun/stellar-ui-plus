@@ -79,6 +79,12 @@
             "default": "#000000"
         },
         {
+            "name": "keyBg",
+            "description": "按键背景颜色",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
             "name": "textSize",
             "description": "按键文字大小",
             "type": "number | string",

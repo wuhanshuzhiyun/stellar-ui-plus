@@ -73,6 +73,7 @@ const cmpLeftButtonStyle = computed(() => {
     }
     if (props.theme == 'line') {
         style['border'] = `none`;
+        style['height'] = '100%';
     }
     style['background'] = '#ffffff';
     style['backgroundColor'] = '#ffffff';
@@ -93,6 +94,7 @@ const cmpRightButtonStyle = computed(() => {
     if (props.theme == 'line') {
         style['background'] = '#ffffff';
         style['backgroundColor'] = '#ffffff';
+        style['height'] = '100%';
     }
     return utils.deepMerge(utils.deepClone(cmpButtonStyle.value), style);
 });
@@ -112,6 +114,7 @@ const cmpInputStyle = computed(() => {
         style['margin'] = `0`;
         style['padding'] = `0 ${utils.formatPx(8)}`;
         style['width'] = utils.formatPx(Number(props.inputWidth) + 16);
+        style['height'] = '100%';
     }
     return style;
 });

@@ -1,6 +1,6 @@
 export interface InfoItem {
     name: string;
-    key?: string;
+    key?: string | number;
     value?: string;
     img?: string;
 }

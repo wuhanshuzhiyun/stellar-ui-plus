@@ -68,8 +68,6 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .ste-date-user-root {
-    background-color: 'red';
-
     .box {
         min-width: 336rpx;
         height: 128rpx;

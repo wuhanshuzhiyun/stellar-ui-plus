@@ -15,6 +15,7 @@ const props = defineProps({
     showClear: { type: Boolean },
     textColor: { type: String },
     keyBg: { type: String },
+    background: { type: String },
     textSize: { type: [Number, String] },
     rightKeys: { type: Boolean },
 });
@@ -61,6 +62,7 @@ const cmpRootStyle = computed(() => {
         '--ste-number-keyboard-item-gap': `${gap}px`,
         '--ste-number-keyboard-right-confirm-height': `${itemH * confirmRows + gap * (confirmRows - 1)}px`,
         '--ste-number-keyboard-item-bg': props.keyBg,
+        '--ste-number-keyboard-bg': props.background,
     };
 });
 
@@ -130,7 +132,7 @@ console.log(rows.value);
 .number-keyboard {
     width: 100%;
     display: flex;
-    background-color: #f9f9f9;
+    background-color: var(--ste-number-keyboard-bg);
     .number-keyboard-left {
         flex: 1;
         .number-keyboard-left-row {
@@ -176,7 +178,7 @@ console.log(rows.value);
         border-radius: 8rpx;
 
         &:active {
-            background-color: #f1f1f1;
+            background: rgba(200, 200, 200, 0.5);
         }
 
         &.clear {

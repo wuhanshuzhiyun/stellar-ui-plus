@@ -1,8 +1,8 @@
 {
-    "name": "ste-calendar",
+    "name": "ste-goods-info",
     "description": "按钮组件",
-    "example": "<ste-calendar></ste-calendar>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=calendar",
+    "example": "<ste-goods-info></ste-goods-info>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=goods-info",
     "attributes": [
         {
             "name": "data",

@@ -47,6 +47,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useDat
                         :textSize="textSize"
                         :rightKeys="rightKeys"
                         :keyBg="keyBg"
+                        :background="background"
                         @change="onChange"
                     />
                 </view>
@@ -62,6 +63,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useDat
                 :textSize="textSize"
                 :rightKeys="rightKeys"
                 :keyBg="keyBg"
+                :background="background"
                 @change="onChange"
             />
         </block>

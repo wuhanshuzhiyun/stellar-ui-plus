@@ -1,0 +1,29 @@
+{
+    "name": "ste-function-list",
+    "description": "功能列表",
+    "example": "<ste-function-list></ste-function-list>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=function-list",
+    "attributes": [
+        {
+            "name": "title",
+            "description": "尺寸",
+            "type": "string",
+            "default": "日期选择"
+        },
+        {
+            "name": "[event]select",
+            "description": "选择日期时触发",
+            "type": "(days:(number|string)[],day:number|string) => void",
+            "params": [
+                {
+                    "name": "days",
+                    "description": "选中的日期列表"
+                },
+                {
+                    "name": "day",
+                    "description": "当前选中的日期"
+                }
+            ]
+        }
+    ]
+}

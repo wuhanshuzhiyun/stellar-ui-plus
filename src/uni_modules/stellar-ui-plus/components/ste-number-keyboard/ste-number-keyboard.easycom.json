@@ -85,6 +85,12 @@
             "default": "#fff"
         },
         {
+            "name": "background",
+            "description": "背景颜色",
+            "type": "string",
+            "default": "#f9f9f9"
+        },
+        {
             "name": "textSize",
             "description": "按键文字大小",
             "type": "number | string",

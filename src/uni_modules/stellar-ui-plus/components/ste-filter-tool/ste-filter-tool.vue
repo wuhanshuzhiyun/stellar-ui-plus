@@ -127,7 +127,7 @@ const scrollTop = ref(0);
 
 // 计算属性
 const rootStyleVar = computed(() => ({
-    '--active-color': props.activeColor || getColor().themeColor,
+    '--active-color': props.activeColor || getColor().steThemeColor,
     '--inactive-color': props.inactiveColor,
 }));
 

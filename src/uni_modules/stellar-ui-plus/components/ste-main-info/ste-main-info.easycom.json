@@ -1,0 +1,62 @@
+{
+    "name": "ste-main-info",
+    "description": "主信息展示",
+    "example": "<ste-main-info></ste-main-info>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=main-info",
+    "attributes": [
+        {
+            "name": "mainColor",
+            "description": "主颜色",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "showAvatar",
+            "description": "是否显示头像，若未配置头像url也不显示头像",
+            "type": "boolean",
+            "default": "true"
+        },
+        {
+            "name": "avatarUrl",
+            "description": "头像url",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "infoUser",
+            "description": "用户数据",
+            "type": "InfoUser",
+            "default": "{}"
+        },
+        {
+            "name": "infoData",
+            "description": "中间数据",
+            "type": "InfoItem[]",
+            "default": "[]"
+        },
+        {
+            "name": "infoCode",
+            "description": "最后部分数据",
+            "type": "InfoItem",
+            "default": "{}"
+        },
+        {
+            "name": "[event]data-click",
+            "description": "中间数据点击时触发",
+            "type": "(item: InfoItem) => void",
+            "params": [{ "name": "item", "description": "点击的项" }]
+        },
+        {
+            "name": "[event]avatar-click",
+            "description": "头像点击时触发",
+            "type": "(]) => void",
+            "params": []
+        },
+        {
+            "name": "[event]user-click",
+            "description": "用户数据点击时触发",
+            "type": "(]) => void",
+            "params": []
+        }
+    ]
+}

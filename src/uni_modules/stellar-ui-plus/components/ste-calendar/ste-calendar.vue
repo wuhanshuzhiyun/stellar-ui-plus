@@ -59,7 +59,7 @@ const emits = defineEmits<{
     (e: 'confirm', days: (string | number)[]): void;
     (e: 'view-month', month: string): void;
 }>();
-let viewTimer = 0;
+let viewTimer: any = 0;
 const showMonth = (date?: DateType) => {
     const newDate: Dayjs = date ? utils.dayjs(date) : viewDate.value;
     if (newDate.format('YYYY-MM-DD') !== viewDate.value.format('YYYY-MM-DD')) {
@@ -153,9 +153,17 @@ watch(
     () => props.list,
     v => {
         dataList.value = (v || []).map(d => formatDate(d, props.formatter));
-        if (props.mode === 'range' && dataList.value.length >= 2) {
-            startDate.value = dataList.value[0];
-            endDate.value = dataList.value[dataList.value.length - 1];
+        if (props.mode === 'range') {
+            if (dataList.value.length >= 2) {
+                startDate.value = dataList.value[0];
+                endDate.value = dataList.value[dataList.value.length - 1];
+            } else if (dataList.value.length === 1) {
+                startDate.value = dataList.value[0];
+                endDate.value = dataList.value[0];
+            } else {
+                startDate.value = null;
+                endDate.value = null;
+            }
             rangeDates();
         }
     },

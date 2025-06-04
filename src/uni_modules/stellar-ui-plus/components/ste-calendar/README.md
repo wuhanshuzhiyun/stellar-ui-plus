@@ -84,7 +84,7 @@
 #### 日期范围
 
 - 属性`mode`用于设置日历的模式，可选值`single`、`multiple`、`range`，默认`single`
-    - 设置为`single`可以选择日期范围
+    - 设置为`range`可以选择日期范围
 
 ```html
 <script setup lang="ts">

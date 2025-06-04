@@ -1,13 +1,12 @@
 import type { PropType } from 'vue';
 
 export type FunctionListItem = {
-    id: string | number;
     title: string;
     subhead?: string;
     statusText?: string;
     image?: string;
-    buttonText: string;
-    buttonIcon: string;
+    buttonText?: string;
+    buttonIcon?: string;
 };
 
 export type Props = {
@@ -32,6 +31,10 @@ export default {
     subhead: { type: String, default: () => '' },
     /** 列表数据 */
     data: { type: Array as PropType<(FunctionListItem & { [key: string]: any })[]>, default: () => [] },
+    /** 列表操作按钮文字 */
+    buttonText: { type: String, default: () => '' },
+    /** 列表操作按钮图标 */
+    buttonIcon: { type: String, default: () => '' },
     /** 列表为空时显示的图片 */
     emptyImage: { type: String, default: () => '' },
     /** 列表为空时显示的文字 */

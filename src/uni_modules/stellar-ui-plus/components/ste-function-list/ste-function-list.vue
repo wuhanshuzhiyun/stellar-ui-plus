@@ -34,13 +34,27 @@ const rootStyle = computed(() => {
                 </slot>
             </view>
         </view>
-        <view class="ste-function-list-content">
-            <view class="content-list">
+        <view class="ste-function-list-content" v-if="data?.length">
+            <scroll-view scroll-x class="content-list" :class="{ multiple: data?.length > 1 }">
                 <view class="content-list-item" v-for="(item, index) in data" :key="index">
-                    <view class="content-list-item-image"></view>
-                    <view class="content-list-item-info">{{ item.title }}</view>
+                    <view class="content-list-item-image">
+                        <ste-image :src="item.image" mode="aspectFill"></ste-image>
+                    </view>
+                    <view class="content-list-item-info">
+                        <view class="content-list-item-info-title">{{ item.title }}</view>
+                        <view class="content-list-item-info-subhead" v-if="item.subhead">{{ item.subhead }}</view>
+                        <view class="content-list-item-info-footer">
+                            <view class="content-list-item-info-status">{{ item.statusText }}</view>
+                            <view class="content-list-item-info-button" v-if="item.buttonText || buttonText || item.buttonIcon || buttonIcon">
+                                <ste-button :rootStyle="{ height: '56rpx' }" type="primary">
+                                    <ste-icon :code="item.buttonIcon || buttonIcon" />
+                                    {{ item.buttonText || buttonText }}
+                                </ste-button>
+                            </view>
+                        </view>
+                    </view>
                 </view>
-            </view>
+            </scroll-view>
         </view>
     </view>
 </template>
@@ -78,10 +92,61 @@ const rootStyle = computed(() => {
         }
     }
     .ste-function-list-content {
-        background-color: var(--ste-function-list-content-bg);
-        padding: 24rpx 20rpx 20rpx 20rpx;
+        width: 100%;
         margin-top: 24rpx;
-        border-radius: 12rpx;
+        .content-list {
+            width: 100%;
+            white-space: nowrap;
+            .content-list-item {
+                width: 100%;
+                display: inline-flex;
+                border-radius: 12rpx;
+                padding: 24rpx 20rpx 20rpx 20rpx;
+                background-color: var(--ste-function-list-content-bg);
+                justify-content: space-between;
+                & + .content-list-item {
+                    margin-left: 20rpx;
+                }
+
+                .content-list-item-image {
+                    width: 140rpx;
+                    overflow: hidden;
+                    background: #dddddd;
+                    border-radius: 12rpx;
+                }
+                .content-list-item-info {
+                    width: calc(100% - 160rpx);
+                    white-space: normal;
+                    .content-list-item-info-title {
+                        font-weight: bold;
+                        font-size: 28rpx;
+                        color: #000000;
+                        line-height: 40rpx;
+                    }
+                    .content-list-item-info-subhead {
+                        font-size: 24rpx;
+                        color: #757575;
+                        line-height: 34rpx;
+                        margin-top: 12rpx;
+                    }
+                    .content-list-item-info-footer {
+                        font-size: 24rpx;
+                        color: #757575;
+                        height: 56rpx;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-top: 10rpx;
+                    }
+                }
+            }
+
+            &.multiple {
+                .content-list-item {
+                    width: calc(100% - 90rpx);
+                }
+            }
+        }
     }
 }
 </style>

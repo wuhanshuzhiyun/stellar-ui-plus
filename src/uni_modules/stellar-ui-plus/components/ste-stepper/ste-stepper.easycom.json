@@ -96,6 +96,12 @@
             "default": "false"
         },
         {
+            "name": "readonlyInput",
+            "description": "输入框只读",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
             "name": "background",
             "description": "徽标：背景",
             "type": "string",

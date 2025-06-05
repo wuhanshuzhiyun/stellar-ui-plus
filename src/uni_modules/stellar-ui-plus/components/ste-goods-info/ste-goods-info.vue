@@ -20,6 +20,7 @@ const emits = defineEmits<{
     (e: 'plus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'minus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'click-suggest', type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }): void;
+    (e: 'click-stepper-input'): void;
 }>();
 
 const _number = ref(1);
@@ -149,6 +150,8 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
     }
     emits('click-suggest', type, item);
 };
+
+const clickInput = () => emits('click-stepper-input');
 </script>
 <template>
     <view class="ste-goods-info-root" :style="[rootStyle]">
@@ -174,7 +177,7 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                     </view>
                     <view class="ste-goods-info-codes" @click="onClick('code')">
                         {{ data.code }}
-                        <span>|</span>
+                        <span style="color: #e6e8ea">|</span>
                         {{ data.barCode }}
                     </view>
                     <slot>
@@ -209,9 +212,11 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
                                     :disableInput="disableInput"
                                     :disablePlus="disablePlus"
                                     :disableMinus="disableMinus"
+                                    :readonlyInput="readonlyStepperInput"
                                     @change="numberChange"
                                     @plus="plus"
                                     @minus="minus"
+                                    @click-input="clickInput"
                                 />
                             </view>
                         </view>

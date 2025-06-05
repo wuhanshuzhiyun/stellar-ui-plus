@@ -95,6 +95,11 @@ export default {
         type: Boolean,
         default: () => false,
     },
+    /** 步进器输入框只读 */
+    readonlyStepperInput: {
+        type: Boolean,
+        default: () => false,
+    },
     /** 禁用步进器 */
     disabledStepper: {
         type: Boolean,

@@ -193,6 +193,7 @@ async function minus() {
         emits('change', value);
     }
 }
+const clickInput = () => emits('click-input');
 </script>
 
 <template>
@@ -207,8 +208,17 @@ async function minus() {
                 ></ste-icon>
             </view>
         </ste-button>
-        <view v-if="theme != 'add'" class="input" :style="[cmpInputStyle]">
-            <input class="input-element" :type="precision ? 'digit' : 'number'" :value="modelValue" @blur="blur" @focus="focus" :disabled="disabled || disableInput" data-test="input-el" />
+        <view v-if="theme != 'add'" class="input" :style="[cmpInputStyle]" @click="clickInput">
+            <input
+                class="input-element"
+                :class="{ readonly: readonlyInput }"
+                :type="precision ? 'digit' : 'number'"
+                :value="modelValue"
+                @blur="blur"
+                @focus="focus"
+                :disabled="disabled || disableInput"
+                data-test="input-el"
+            />
         </view>
         <ste-button v-if="theme != 'add'" :rootStyle="cmpRightButtonStyle" @click="plus" :disabled="cmpDisablePlus">
             <view class="button-icon">
@@ -242,6 +252,9 @@ async function minus() {
             height: 100%;
             min-height: 20rpx;
             font-size: var(--font-size-28, 28rpx);
+            &.readonly {
+                pointer-events: none;
+            }
         }
     }
 

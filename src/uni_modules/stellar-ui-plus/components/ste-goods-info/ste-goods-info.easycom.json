@@ -100,6 +100,12 @@
             "default": false
         },
         {
+            "name": "readonlyStepperInput",
+            "description": "步进器输入框只读",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "disabledStepper",
             "description": "禁用步进器",
             "type": "boolean",
@@ -239,6 +245,11 @@
                     "description": "type为item时，点击的item对象"
                 }
             ]
+        },
+        {
+            "name": "[event]click-stepper-input",
+            "description": "点击步进器输入框触发",
+            "type": "() => void"
         }
     ]
 }

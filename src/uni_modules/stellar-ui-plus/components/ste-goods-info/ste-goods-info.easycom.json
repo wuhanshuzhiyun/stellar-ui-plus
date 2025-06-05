@@ -11,6 +11,12 @@
             "default": "{}"
         },
         {
+            "name": "background",
+            "description": "组件背景色",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
             "name": "imageSize",
             "description": "图片大小",
             "type": "string | number",

@@ -58,6 +58,7 @@ watch(
 
 const rootStyle = computed(() => {
     let style: Record<string, string> = {
+        background: props.background,
         // 图片大小，默认插槽存在的情况下160rpx，否则为110rpx
         '--image-size': utils.formatPx(props.imageSize, 'str'),
     };
@@ -264,7 +265,6 @@ const clickInput = () => emits('click-stepper-input');
 .ste-goods-info-root {
     width: 100%;
     position: relative;
-    background-color: #fff;
     border-radius: 12rpx;
     .ste-goods-info-details {
         width: 100%;

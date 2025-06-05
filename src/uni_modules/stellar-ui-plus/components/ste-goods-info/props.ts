@@ -26,6 +26,11 @@ export default {
         type: Object as PropType<GoodsInfoType>,
         default: () => ({}),
     },
+    /** 组件背景色 */
+    background: {
+        type: String,
+        default: () => '#fff',
+    },
     /** image大小 */
     imageSize: {
         type: [Number, String],

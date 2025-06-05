@@ -97,6 +97,12 @@
             "default": 48
         },
         {
+            "name": "backspaceSize",
+            "description": "回退按钮图标大小",
+            "type": "number | string",
+            "default": 48
+        },
+        {
             "name": "confirmBg",
             "description": "确定按钮背景颜色",
             "type": "string",

@@ -17,6 +17,7 @@ const props = defineProps({
     keyBg: { type: String },
     background: { type: String },
     textSize: { type: [Number, String] },
+    backspaceSize: { type: [Number, String] },
     rightKeys: { type: Boolean },
 });
 
@@ -105,7 +106,7 @@ console.log(rows.value);
                         @click="onChange(num)"
                     >
                         <view v-if="['backspace', 'clear'].indexOf(num) !== -1">
-                            <ste-icon v-if="num === 'backspace'" code="&#xe6a7;" :color="textColor" :size="textSize" />
+                            <ste-icon v-if="num === 'backspace'" code="&#xe6a7;" :color="textColor" :size="backspaceSize" />
                             <text v-else-if="num === 'clear'">清除</text>
                         </view>
                         <view v-else>
@@ -117,7 +118,7 @@ console.log(rows.value);
         </view>
         <view class="number-keyboard-right" v-if="rightKeys">
             <view class="number-keyboard-item" @click="onChange('backspace')">
-                <ste-icon code="&#xe6a7;" :color="textColor" :size="textSize" />
+                <ste-icon code="&#xe6a7;" :color="textColor" :size="backspaceSize" />
             </view>
             <view class="number-keyboard-item clear" v-if="showClear" @click="onChange('clear')">清除</view>
             <view class="number-keyboard-item confirm" :class="{ disabled }" @click="onChange('confirm')">

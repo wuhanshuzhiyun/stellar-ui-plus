@@ -69,7 +69,7 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .ste-date-user-root {
     .box {
-        min-width: 336rpx;
+        width: 336rpx;
         height: 128rpx;
         border-radius: 12rpx;
         display: flex;
@@ -109,6 +109,10 @@ onMounted(async () => {
                 height: 40rpx;
                 font-size: var(--font-size-28, 28rpx);
                 color: #1c1f23;
+                width: 160rpx; /* 设置固定宽度，也可以是百分比或者其他单位 */
+                white-space: nowrap; /* 禁止换行 */
+                overflow: hidden; /* 隐藏溢出内容 */
+                text-overflow: ellipsis; /* 溢出时显示省略号 */
             }
 
             .bottom {

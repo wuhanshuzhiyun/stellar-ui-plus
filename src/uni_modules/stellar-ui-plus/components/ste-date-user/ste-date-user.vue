@@ -80,7 +80,7 @@ onMounted(async () => {
         .left {
             width: 80rpx;
             height: 80rpx;
-            background: #e6e8ea;
+            background: #f4f5f6;
             border-radius: 8rpx;
             margin: 0 28rpx;
             display: flex;

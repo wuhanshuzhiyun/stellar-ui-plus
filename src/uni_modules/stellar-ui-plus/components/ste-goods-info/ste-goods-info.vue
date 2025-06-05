@@ -422,7 +422,7 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 72px;
+            height: 72rpx;
             background: #f4f5f6;
             border-radius: 4px;
             .ste-goods-info-suggest-items {

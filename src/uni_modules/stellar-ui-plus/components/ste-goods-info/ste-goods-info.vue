@@ -161,7 +161,7 @@ const clickInput = () => emits('click-stepper-input');
             </view>
             <view class="ste-goods-info-view">
                 <view class="ste-goods-info-image">
-                    <setImage :src="data.image" :width="imageSize" :height="imageSize" @click="onClick('image')" />
+                    <setImage :radius="imageRadius" :src="data.image" :width="imageSize" :height="imageSize" @click="onClick('image')" />
                 </view>
                 <view class="ste-goods-info-content">
                     <view class="ste-goods-info-header">

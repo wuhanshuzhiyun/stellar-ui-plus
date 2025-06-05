@@ -31,6 +31,11 @@ export default {
         type: [Number, String],
         default: () => 160,
     },
+    /** 图片圆角 */
+    imageRadius: {
+        type: [String, Number],
+        default: () => 4,
+    },
     /** 是否隐藏价格 */
     hidePrice: {
         type: Boolean,

@@ -17,6 +17,12 @@
             "default": "160"
         },
         {
+            "name": "imageRadius",
+            "description": "图片圆角",
+            "type": "string | number",
+            "default": "4"
+        },
+        {
             "name": "hidePrice",
             "description": "隐藏价格",
             "type": "boolean",

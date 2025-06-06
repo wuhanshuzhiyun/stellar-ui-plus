@@ -211,26 +211,28 @@ const viewClass = computed(() => {
                                 />
                             </view>
                             <view class="ste-goods-info-price-right" v-if="stepper" @click="onClick('stepper')">
-                                <view :class="{ readonly: readonlyStepper }" @click.stop="true">
-                                    <steStepper
-                                        v-model="_number"
-                                        :precision="precision"
-                                        :step="step"
-                                        theme="line"
-                                        :min="min"
-                                        :max="max"
-                                        btnSize="40"
-                                        :disabled="disabledStepper"
-                                        :disableInput="disableInput"
-                                        :disablePlus="disablePlus"
-                                        :disableMinus="disableMinus"
-                                        :readonlyInput="readonlyStepperInput"
-                                        @change="numberChange"
-                                        @plus="plus"
-                                        @minus="minus"
-                                        @click-input="clickInput"
-                                    />
-                                </view>
+                                <slot name="stepper">
+                                    <view :class="{ readonly: readonlyStepper }" @click.stop="true">
+                                        <steStepper
+                                            v-model="_number"
+                                            :precision="precision"
+                                            :step="step"
+                                            theme="line"
+                                            :min="min"
+                                            :max="max"
+                                            btnSize="40"
+                                            :disabled="disabledStepper"
+                                            :disableInput="disableInput"
+                                            :disablePlus="disablePlus"
+                                            :disableMinus="disableMinus"
+                                            :readonlyInput="readonlyStepperInput"
+                                            @change="numberChange"
+                                            @plus="plus"
+                                            @minus="minus"
+                                            @click-input="clickInput"
+                                        />
+                                    </view>
+                                </slot>
                             </view>
                         </view>
                         <view class="ste-goods-info-suggest" v-if="showSuggest">
@@ -493,6 +495,7 @@ const viewClass = computed(() => {
         bottom: 12rpx;
         opacity: 0.4;
         z-index: 10;
+        pointer-events: none;
     }
 }
 </style>

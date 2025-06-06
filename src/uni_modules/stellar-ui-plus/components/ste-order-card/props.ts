@@ -9,9 +9,9 @@ export interface OrderGoods {
 export type Props = {
     background?: string;
     contentBg?: string;
-    headerImg?: string;
-    headerTitle?: string;
-    headerText?: string;
+    image?: string;
+    title?: string;
+    statusText?: string;
     tagText?: string;
     helperText?: string;
     data?: OrderGoods[];
@@ -31,11 +31,11 @@ export default {
     /** 内容区域背景 */
     contentBg: { type: String, default: () => '#f9f9f9' },
     /** 头部标题图片 */
-    headerImg: { type: String, default: () => '' },
+    image: { type: String, default: () => '' },
     /** 头部标题 */
-    headerTitle: { type: String, default: () => '' },
+    title: { type: String, default: () => '' },
     /** 头部状态文本 */
-    headerText: { type: String, default: () => '' },
+    statusText: { type: String, default: () => '' },
     /** 标签文本 */
     tagText: { type: String, default: () => '' },
     /** 辅助文本 */

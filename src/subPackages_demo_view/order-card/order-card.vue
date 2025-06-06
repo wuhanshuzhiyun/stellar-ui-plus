@@ -9,7 +9,7 @@ import { ref } from 'vue';
         </view>
         <view class="demo-item">
             <view class="title">基础用法(一条数据)</view>
-            <ste-order-card />
+            <ste-order-card title="梅姨家常菜馆" image="https://image.whzb.com/chain/StellarUI/bg1.jpg" rightText="待核销" tagText="标签" helperText="辅助信息：XXXX-XX-XX" />
         </view>
     </page-layout>
 </template>

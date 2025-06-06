@@ -28,8 +28,8 @@ export type Props = {
 export default {
     /** 背景色 */
     background: { type: String, default: () => '#fff' },
-    /** 内容区域背景 */
-    contentBg: { type: String, default: () => '#f9f9f9' },
+    /** 内容区域背景,默认跟随背景色 */
+    contentBg: { type: String },
     /** 头部标题图片 */
     image: { type: String, default: () => '' },
     /** 头部标题 */

@@ -71,7 +71,7 @@ export default class System {
             // #ifdef MP-WEIXIN
             let windowInfo = wx.getWindowInfo();
             windowInfo.safeAreaInsets = {
-                bottom: windowInfo.screenHeight - windowInfo.safeArea.bottom,
+                bottom: (windowInfo?.screenHeight ?? 812) - (windowInfo?.safeArea?.bottom ?? 778),
             };
             return windowInfo;
             // #endif

@@ -7,6 +7,8 @@ export type FunctionListItem = {
     image?: string;
     buttonText?: string;
     buttonIcon?: string;
+    buttonBg?: string;
+    buttonColor?: string;
 };
 
 export type Props = {
@@ -15,6 +17,8 @@ export type Props = {
     title: string;
     subhead: string;
     data: (FunctionListItem & { [key: string]: any })[];
+    buttonBg: string;
+    buttonColor: string;
     emptyImage: string;
     emptyText: string;
     emptyButtonText: string;
@@ -31,6 +35,10 @@ export default {
     subhead: { type: String, default: () => '' },
     /** 列表数据 */
     data: { type: Array as PropType<(FunctionListItem & { [key: string]: any })[]>, default: () => [] },
+    /** 按钮背景颜色 */
+    buttonBg: { type: String, default: () => '#EC3E1A' },
+    /** 按钮字体颜色 */
+    buttonColor: { type: String, default: () => '#fff' },
     /** 列表操作按钮文字 */
     buttonText: { type: String, default: () => '' },
     /** 列表操作按钮图标 */

@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { watch, onMounted, computed, nextTick } from 'vue';
-import propData from './props';
-import { useColorStore } from '../../store/color';
-
-let { getColor } = useColorStore();
+import { computed } from 'vue';
+import propData, { type FunctionListItem } from './props';
 
 const props = defineProps(propData);
 
@@ -13,13 +10,25 @@ const rootStyle = computed(() => {
         '--ste-function-list-content-bg': props.contentBg,
     };
 });
+
+const emits = defineEmits<{
+    (e: 'click-header', type: 'title' | 'subhead' | 'more'): void;
+    (e: 'click-item', type: 'image' | 'title' | 'subhead' | 'status' | 'button', item: FunctionListItem): void;
+    (e: 'click-empty', type: 'image' | 'text' | 'button'): void;
+}>();
+
+const onClickHeader = (type: 'title' | 'subhead' | 'more') => emits('click-header', type);
+
+const onClickItem = (type: 'image' | 'title' | 'subhead' | 'status' | 'button', item: FunctionListItem) => emits('click-item', type, item);
+
+const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty', type);
 </script>
 <template>
     <view class="ste-function-list-root" :style="[rootStyle]">
         <view class="ste-function-list-header">
             <view class="ste-function-list-header-l">
-                <view class="ste-function-list-title">{{ title }}</view>
-                <view class="ste-function-list-subhead">
+                <view class="ste-function-list-title" @click="onClickHeader('title')">{{ title }}</view>
+                <view class="ste-function-list-subhead" @click="onClickHeader('subhead')">
                     <slot name="subhead">
                         {{ subhead }}
                     </slot>
@@ -27,7 +36,7 @@ const rootStyle = computed(() => {
             </view>
             <view class="ste-function-list-header-r">
                 <slot name="header-right">
-                    <view class="ste-function-list-more">
+                    <view class="ste-function-list-more" @click="onClickHeader('more')">
                         更多
                         <ste-icon code="&#xe674;" color="#353535"></ste-icon>
                     </view>
@@ -37,17 +46,24 @@ const rootStyle = computed(() => {
         <view class="ste-function-list-content" v-if="data?.length">
             <scroll-view scroll-x class="content-list" :class="{ multiple: data?.length > 1 }">
                 <view class="content-list-item" v-for="(item, index) in data" :key="index">
-                    <view class="content-list-item-image">
+                    <view class="content-list-item-image" @click="onClickItem('image', item)">
                         <ste-image :src="item.image" mode="aspectFill"></ste-image>
                     </view>
                     <view class="content-list-item-info">
-                        <view class="content-list-item-info-title">{{ item.title }}</view>
-                        <view class="content-list-item-info-subhead" v-if="item.subhead">{{ item.subhead }}</view>
+                        <view class="content-list-item-info-title" @click="onClickItem('title', item)">{{ item.title }}</view>
+                        <view class="content-list-item-info-subhead" v-if="item.subhead" @click="onClickItem('subhead', item)">{{ item.subhead }}</view>
                         <view class="content-list-item-info-footer">
-                            <view class="content-list-item-info-status">{{ item.statusText }}</view>
+                            <view class="content-list-item-info-status" @click="onClickItem('status', item)">{{ item.statusText }}</view>
                             <view class="content-list-item-info-button" v-if="item.buttonText || buttonText || item.buttonIcon || buttonIcon">
-                                <ste-button :rootStyle="{ height: '56rpx' }" type="primary">
-                                    <ste-icon :code="item.buttonIcon || buttonIcon" />
+                                <ste-button
+                                    :mode="100"
+                                    :rootStyle="{ height: '56rpx' }"
+                                    type="primary"
+                                    @click="onClickItem('button', item)"
+                                    :background="item.buttonBg || buttonBg"
+                                    :color="item.buttonColor || buttonColor"
+                                >
+                                    <ste-icon :code="item.buttonIcon || buttonIcon" :color="item.buttonColor || buttonColor" />
                                     {{ item.buttonText || buttonText }}
                                 </ste-button>
                             </view>
@@ -55,6 +71,13 @@ const rootStyle = computed(() => {
                     </view>
                 </view>
             </scroll-view>
+        </view>
+        <view class="ste-function-list-empty" v-else>
+            <ste-image :src="emptyImage" width="96" height="96" @clicl="onClickEmpty('image')" />
+            <view class="empty-message" @click="onClickEmpty('text')">{{ emptyText }}</view>
+            <ste-button :mode="100" :rootStyle="{ height: '56rpx' }" type="primary" :background="buttonBg" :color="buttonColor" @click="onClickEmpty('button')">
+                {{ emptyButtonText }}
+            </ste-button>
         </view>
     </view>
 </template>
@@ -137,6 +160,10 @@ const rootStyle = computed(() => {
                         align-items: center;
                         justify-content: space-between;
                         margin-top: 10rpx;
+                        .content-list-item-info-status {
+                            flex: 1;
+                            padding-right: 20rpx;
+                        }
                     }
                 }
             }
@@ -146,6 +173,26 @@ const rootStyle = computed(() => {
                     width: calc(100% - 90rpx);
                 }
             }
+        }
+    }
+    .ste-function-list-empty {
+        width: 100%;
+        height: 120rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 12rpx;
+        background-color: var(--ste-function-list-content-bg);
+        padding: 0 20rpx;
+        margin-top: 24rpx;
+        .empty-message {
+            flex: 1;
+            padding: 0 20rpx;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 28rpx;
+            color: #000000;
         }
     }
 }

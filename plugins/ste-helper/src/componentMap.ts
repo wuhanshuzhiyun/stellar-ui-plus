@@ -1977,29 +1977,107 @@ export const componentMap: Record<string, ComponentDesc> = {
     "function-list": {
         "site": "ste-function-list",
         "attr": [
-            "title=''"
+            "background=''"
         ],
         "props": [
             {
-                "name": "title",
-                "description": "尺寸",
+                "name": "background",
+                "description": "组件背景色",
                 "type": "string",
-                "default": "日期选择"
+                "default": "#fff"
+            },
+            {
+                "name": "contentBg",
+                "description": "内容区域背景",
+                "type": "string",
+                "default": "#f9f9f9"
+            },
+            {
+                "name": "title",
+                "description": "组件标题",
+                "type": "string"
+            },
+            {
+                "name": "subhead",
+                "description": "组件副标题",
+                "type": "string"
+            },
+            {
+                "name": "data",
+                "description": "数据列表",
+                "type": "{title: string;    subhead?: string;    statusText?: string;    image?: string;    buttonText?: string;    buttonIcon?: string;    buttonBg?: string;    buttonColor?: string;}[]",
+                "default": "[]"
+            },
+            {
+                "name": "buttonBg",
+                "description": "列表操作按钮背景(如果数据项不提供则使用该属性)",
+                "type": "string",
+                "default": "#EC3E1A"
+            },
+            {
+                "name": "buttonColor",
+                "description": "列表操作按钮文本颜色(如果数据项不提供则使用该属性)",
+                "type": "string",
+                "default": "#fff"
+            },
+            {
+                "name": "buttonText",
+                "description": "列表操作按钮文字(如果数据项不提供则使用该属性)",
+                "type": "string"
+            },
+            {
+                "name": "buttonIcon",
+                "description": "列表操作按钮图标(如果数据项不提供则使用该属性)",
+                "type": "string",
+                "default": "#fff"
+            },
+            {
+                "name": "emptyImage",
+                "description": "列表为空时显示的图片",
+                "type": "string"
+            },
+            {
+                "name": "emptyText",
+                "description": "列表为空时显示的文字",
+                "type": "string"
+            },
+            {
+                "name": "emptyButtonText",
+                "description": "列表为空时显示的按钮文字",
+                "type": "string"
             }
         ],
         "events": [
             {
-                "name": "select",
-                "description": "选择日期时触发",
-                "type": "(days:(number|string)[],day:number|string) => void",
+                "name": "click-header",
+                "description": "点击列表头部触发",
+                "type": "(type: 'title' | 'subhead' | 'more') => void",
                 "params": [
                     {
-                        "name": "days",
-                        "description": "选中的日期列表"
-                    },
+                        "name": "type",
+                        "description": "点击的区域类型（可选值：`title`, `subhead`,`more`）"
+                    }
+                ]
+            },
+            {
+                "name": "click-item",
+                "description": "点击列表项触发",
+                "type": "(type: 'image' | 'title' | 'subhead' | 'status' | 'button') => void",
+                "params": [
                     {
-                        "name": "day",
-                        "description": "当前选中的日期"
+                        "name": "type",
+                        "description": "点击的区域类型（可选值：`image` , `title` , `subhead` , `status` , `button`）"
+                    }
+                ]
+            },
+            {
+                "name": "click-empty",
+                "description": "数据为空时点击内容触发",
+                "type": "(type: 'image' | 'text' | 'button') => void",
+                "params": [
+                    {
+                        "name": "type",
+                        "description": "点击的区域类型（可选值：`image` , `text` , `button`）"
                     }
                 ]
             }
@@ -4051,6 +4129,33 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "close",
                 "description": "关闭弹窗键盘触发",
                 "type": "() => void"
+            }
+        ]
+    },
+    "order-card": {
+        "site": "ste-order-card",
+        "attr": [
+            "background=''"
+        ],
+        "props": [
+            {
+                "name": "background",
+                "description": "组件背景色",
+                "type": "string",
+                "default": "#fff"
+            }
+        ],
+        "events": [
+            {
+                "name": "click-header",
+                "description": "点击列表头部触发",
+                "type": "(type: 'title' | 'subhead' | 'more') => void",
+                "params": [
+                    {
+                        "name": "type",
+                        "description": "点击的区域类型（可选值：`title`, `subhead`,`more`）"
+                    }
+                ]
             }
         ]
     },

@@ -13,9 +13,9 @@ const data1 = ref<FunctionListItem[]>([
 ]);
 </script>
 <template>
-    <page-layout title="商品信息" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
+    <page-layout title="功能列表" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
         <view class="description">
-            <view class="cmp-name">GoodsList 商品信息</view>
+            <view class="cmp-name">FunctionList 功能列表</view>
             <view class="cmp-desc">商品信息组件用于展示商品信息</view>
         </view>
         <view class="demo-item">

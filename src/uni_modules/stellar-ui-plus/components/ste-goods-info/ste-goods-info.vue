@@ -153,6 +153,12 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
 };
 
 const clickInput = () => emits('click-stepper-input');
+
+const contentClass = computed(() => {
+    return {
+        'big-image': utils.formatPx<'num'>(props.imageSize, 'num') > 60,
+    };
+});
 </script>
 <template>
     <view class="ste-goods-info-root" :style="[rootStyle]">
@@ -160,7 +166,7 @@ const clickInput = () => emits('click-stepper-input');
             <view @click="clickChecked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
                 <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
             </view>
-            <view class="ste-goods-info-view">
+            <view class="ste-goods-info-view" :class="contentClass">
                 <view class="ste-goods-info-image">
                     <setImage :radius="imageRadius" :src="data.image" :width="imageSize" :height="imageSize" @click="onClick('image')" />
                 </view>
@@ -278,6 +284,11 @@ const clickInput = () => emits('click-stepper-input');
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            &.big-image {
+                .ste-goods-info-content {
+                    width: calc(100% - var(--image-size) - 16rpx);
+                }
+            }
             .ste-goods-info-image {
                 width: var(--image-size);
                 height: var(--image-size);

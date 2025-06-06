@@ -1732,12 +1732,6 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
-    "ste-donut-chart": {
-        "site": "ste-donut-chart",
-        "attr": [
-            ""
-        ]
-    },
     "drag": {
         "site": "ste-drag",
         "attr": [
@@ -1948,7 +1942,7 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "#555A61"
             },
             {
-                "name": "menuData",
+                "name": "data",
                 "description": "菜单数据列表",
                 "type": "FilterItem[]",
                 "default": "[]"
@@ -1975,6 +1969,37 @@ export const componentMap: Record<string, ComponentDesc> = {
                     {
                         "name": "items",
                         "description": "变化后的菜单项列表"
+                    }
+                ]
+            }
+        ]
+    },
+    "function-list": {
+        "site": "ste-function-list",
+        "attr": [
+            "title=''"
+        ],
+        "props": [
+            {
+                "name": "title",
+                "description": "尺寸",
+                "type": "string",
+                "default": "日期选择"
+            }
+        ],
+        "events": [
+            {
+                "name": "select",
+                "description": "选择日期时触发",
+                "type": "(days:(number|string)[],day:number|string) => void",
+                "params": [
+                    {
+                        "name": "days",
+                        "description": "选中的日期列表"
+                    },
+                    {
+                        "name": "day",
+                        "description": "当前选中的日期"
                     }
                 ]
             }
@@ -2223,16 +2248,40 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "{}"
             },
             {
+                "name": "background",
+                "description": "组件背景色",
+                "type": "string",
+                "default": "#fff"
+            },
+            {
                 "name": "imageSize",
                 "description": "图片大小",
                 "type": "string | number",
                 "default": "160"
             },
             {
+                "name": "imageRadius",
+                "description": "图片圆角",
+                "type": "string | number",
+                "default": "4"
+            },
+            {
                 "name": "hidePrice",
                 "description": "隐藏价格",
                 "type": "boolean",
                 "default": "false"
+            },
+            {
+                "name": "priceSize",
+                "description": "价格文本大小",
+                "type": "string | number",
+                "default": "28"
+            },
+            {
+                "name": "priceColor",
+                "description": "价格文本颜色",
+                "type": "string",
+                "default": "#ea4335"
             },
             {
                 "name": "tagBg",
@@ -2305,6 +2354,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "readonlyStepper",
                 "description": "步进器只读",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "readonlyStepperInput",
+                "description": "步进器输入框只读",
                 "type": "boolean",
                 "default": false
             },
@@ -2449,6 +2504,11 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "description": "type为item时，点击的item对象"
                     }
                 ]
+            },
+            {
+                "name": "click-stepper-input",
+                "description": "点击步进器输入框触发",
+                "type": "() => void"
             }
         ]
     },
@@ -3382,6 +3442,75 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
+    "main-info": {
+        "site": "ste-main-info",
+        "attr": [
+            "mainColor=''"
+        ],
+        "props": [
+            {
+                "name": "mainColor",
+                "description": "主颜色",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "showAvatar",
+                "description": "是否显示头像，若未配置头像url也不显示头像",
+                "type": "boolean",
+                "default": "true"
+            },
+            {
+                "name": "avatarUrl",
+                "description": "头像url",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "infoUser",
+                "description": "用户数据",
+                "type": "InfoUser",
+                "default": "{}"
+            },
+            {
+                "name": "infoData",
+                "description": "中间数据",
+                "type": "InfoItem[]",
+                "default": "[]"
+            },
+            {
+                "name": "infoCode",
+                "description": "最后部分数据",
+                "type": "InfoItem",
+                "default": "{}"
+            }
+        ],
+        "events": [
+            {
+                "name": "data-click",
+                "description": "中间数据点击时触发",
+                "type": "(item: InfoItem) => void",
+                "params": [
+                    {
+                        "name": "item",
+                        "description": "点击的项"
+                    }
+                ]
+            },
+            {
+                "name": "avatar-click",
+                "description": "头像点击时触发",
+                "type": "(]) => void",
+                "params": []
+            },
+            {
+                "name": "user-click",
+                "description": "用户数据点击时触发",
+                "type": "(]) => void",
+                "params": []
+            }
+        ]
+    },
     "media-preview": {
         "site": "ste-media-preview",
         "attr": [
@@ -3810,8 +3939,26 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "#000000"
             },
             {
+                "name": "keyBg",
+                "description": "按键背景颜色",
+                "type": "string",
+                "default": "#fff"
+            },
+            {
+                "name": "background",
+                "description": "背景颜色",
+                "type": "string",
+                "default": "#f9f9f9"
+            },
+            {
                 "name": "textSize",
                 "description": "按键文字大小",
+                "type": "number | string",
+                "default": 48
+            },
+            {
+                "name": "backspaceSize",
+                "description": "回退按钮图标大小",
                 "type": "number | string",
                 "default": 48
             },
@@ -6115,6 +6262,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "false"
             },
             {
+                "name": "readonlyInput",
+                "description": "输入框只读",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
                 "name": "background",
                 "description": "徽标：背景",
                 "type": "string",
@@ -7951,6 +8104,79 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "close-preview",
                 "description": "关闭预览时触发",
                 "type": "()=>void"
+            }
+        ]
+    },
+    "user-info": {
+        "site": "ste-user-info",
+        "attr": [
+            "avatar=''"
+        ],
+        "props": [
+            {
+                "name": "avatar",
+                "description": "头像",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "nickname",
+                "description": "昵称",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "showUserInfo",
+                "description": "是否展示用户相关",
+                "type": "Boolean",
+                "default": true
+            },
+            {
+                "name": "list",
+                "description": "数据列表（最多三个）",
+                "type": "Array",
+                "default": []
+            },
+            {
+                "name": "codeSrc",
+                "description": "功能码图片",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "codeTitle",
+                "description": "功能码标题",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "codeTitleColor",
+                "description": "功能码标题颜色",
+                "type": "String",
+                "default": "主题色"
+            },
+            {
+                "name": "showCode",
+                "description": "是否展示功能码相关",
+                "type": "Boolean",
+                "default": true
+            }
+        ],
+        "events": [
+            {
+                "name": "userClick",
+                "description": "用户区域点击",
+                "type": "() => void"
+            },
+            {
+                "name": "dataClick",
+                "description": "数据点击",
+                "type": "(index : string | number) => void"
+            },
+            {
+                "name": "codeClick",
+                "description": "功能码区域点击",
+                "type": "() => void"
             }
         ]
     },

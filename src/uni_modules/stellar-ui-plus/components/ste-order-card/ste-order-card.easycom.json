@@ -1,0 +1,25 @@
+{
+    "name": "ste-function-list",
+    "description": "功能列表",
+    "example": "<ste-function-list></ste-function-list>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=function-list",
+    "attributes": [
+        {
+            "name": "background",
+            "description": "组件背景色",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
+            "name": "[event]click-header",
+            "description": "点击列表头部触发",
+            "type": "(type: 'title' | 'subhead' | 'more') => void",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "点击的区域类型（可选值：`title`, `subhead`,`more`）"
+                }
+            ]
+        }
+    ]
+}

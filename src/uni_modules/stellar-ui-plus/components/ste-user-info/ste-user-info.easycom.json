@@ -1,0 +1,71 @@
+{
+    "name": "ste-user-info",
+    "description": "提供用户信息展示。",
+    "example": "<ste-user-info></ste-user-info>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=user-info",
+    "attributes": [
+        {
+            "name": "avatar",
+            "description": "头像",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "nickname",
+            "description": "昵称",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "showUserInfo",
+            "description": "是否展示用户相关",
+            "type": "Boolean",
+            "default": true
+        },
+        {
+            "name": "list",
+            "description": "数据列表（最多三个）",
+            "type": "Array",
+            "default": []
+        },
+        {
+            "name": "codeSrc",
+            "description": "功能码图片",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "codeTitle",
+            "description": "功能码标题",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "codeTitleColor",
+            "description": "功能码标题颜色",
+            "type": "String",
+            "default": "主题色"
+        },
+        {
+            "name": "showCode",
+            "description": "是否展示功能码相关",
+            "type": "Boolean",
+            "default": true
+        },
+        {
+            "name": "[event]userClick",
+            "description": "用户区域点击",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]dataClick",
+            "description": "数据点击",
+            "type": "(index : string | number) => void"
+        },
+        {
+            "name": "[event]codeClick",
+            "description": "功能码区域点击",
+            "type": "() => void"
+        }
+    ]
+}

@@ -154,9 +154,11 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
 
 const clickInput = () => emits('click-stepper-input');
 
-const contentClass = computed(() => {
+const viewClass = computed(() => {
+    const imgSize = utils.formatPx<'num'>(props.imageSize, 'num');
     return {
-        'big-image': utils.formatPx<'num'>(props.imageSize, 'num') > 60,
+        'big-image': imgSize > 60,
+        '--image-size': `${imgSize}px`,
     };
 });
 </script>
@@ -166,79 +168,83 @@ const contentClass = computed(() => {
             <view @click="clickChecked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
                 <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
             </view>
-            <view class="ste-goods-info-view" :class="contentClass">
+            <view class="ste-goods-info-view" :class="viewClass">
                 <view class="ste-goods-info-image">
                     <setImage :radius="imageRadius" :src="data.image" :width="imageSize" :height="imageSize" @click="onClick('image')" />
                 </view>
                 <view class="ste-goods-info-content">
-                    <view class="ste-goods-info-header">
-                        <view class="ste-goods-info-title" :style="[titleStyle]" @click="onClick('title')">
-                            <view class="ste-goods-info-tag-box" v-if="data.tag">
-                                <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
+                    <view class="content-header">
+                        <view class="ste-goods-info-header">
+                            <view class="ste-goods-info-title" :style="[titleStyle]" @click="onClick('title')">
+                                <view class="ste-goods-info-tag-box" v-if="data.tag">
+                                    <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
+                                </view>
+                                {{ data.title }}
                             </view>
-                            {{ data.title }}
+                            <view @click="clickChecked" class="ste-goods-info-checkbox right" v-if="checkbox === 'right'">
+                                <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
+                            </view>
                         </view>
-                        <view @click="clickChecked" class="ste-goods-info-checkbox right" v-if="checkbox === 'right'">
-                            <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
+                        <view class="ste-goods-info-codes" @click="onClick('code')">
+                            {{ data.code }}
+                            <span style="color: #e6e8ea">|</span>
+                            {{ data.barCode }}
                         </view>
+                        <slot>
+                            <view class="ste-goods-info-slot"></view>
+                        </slot>
                     </view>
-                    <view class="ste-goods-info-codes" @click="onClick('code')">
-                        {{ data.code }}
-                        <span style="color: #e6e8ea">|</span>
-                        {{ data.barCode }}
-                    </view>
-                    <slot>
-                        <view class="ste-goods-info-slot"></view>
-                    </slot>
-                    <view class="ste-goods-info-price" v-if="showPriceRow">
-                        <view class="ste-goods-info-price-left" v-if="!hidePrice">
-                            <setPrice :value="data.price" :digits="2" bold :styleType="3" :line-price-color="priceColor" :fontSize="priceSize" @click="onClick('price')" />
-                            <setPrice
-                                v-if="data.originalPrice"
-                                :digits="2"
-                                :value="data.originalPrice"
-                                isSuggestPrice
-                                line-price-color="#666666"
-                                marginLeft="16"
-                                fontSize="20"
-                                @click="onClick('originalPrice')"
-                                :showUnit="false"
-                            />
-                        </view>
-                        <view class="ste-goods-info-price-right" v-if="stepper" @click="onClick('stepper')">
-                            <view :class="{ readonly: readonlyStepper }" @click.stop="true">
-                                <steStepper
-                                    v-model="_number"
-                                    :precision="precision"
-                                    :step="step"
-                                    theme="line"
-                                    :min="min"
-                                    :max="max"
-                                    btnSize="40"
-                                    :disabled="disabledStepper"
-                                    :disableInput="disableInput"
-                                    :disablePlus="disablePlus"
-                                    :disableMinus="disableMinus"
-                                    :readonlyInput="readonlyStepperInput"
-                                    @change="numberChange"
-                                    @plus="plus"
-                                    @minus="minus"
-                                    @click-input="clickInput"
+                    <view class="content-footer">
+                        <view class="ste-goods-info-price" v-if="showPriceRow">
+                            <view class="ste-goods-info-price-left" v-if="!hidePrice">
+                                <setPrice :value="data.price" :digits="2" bold :styleType="3" :line-price-color="priceColor" :fontSize="priceSize" @click="onClick('price')" />
+                                <setPrice
+                                    v-if="data.originalPrice"
+                                    :digits="2"
+                                    :value="data.originalPrice"
+                                    isSuggestPrice
+                                    line-price-color="#666666"
+                                    marginLeft="16"
+                                    fontSize="20"
+                                    @click="onClick('originalPrice')"
+                                    :showUnit="false"
                                 />
                             </view>
+                            <view class="ste-goods-info-price-right" v-if="stepper" @click="onClick('stepper')">
+                                <view :class="{ readonly: readonlyStepper }" @click.stop="true">
+                                    <steStepper
+                                        v-model="_number"
+                                        :precision="precision"
+                                        :step="step"
+                                        theme="line"
+                                        :min="min"
+                                        :max="max"
+                                        btnSize="40"
+                                        :disabled="disabledStepper"
+                                        :disableInput="disableInput"
+                                        :disablePlus="disablePlus"
+                                        :disableMinus="disableMinus"
+                                        :readonlyInput="readonlyStepperInput"
+                                        @change="numberChange"
+                                        @plus="plus"
+                                        @minus="minus"
+                                        @click-input="clickInput"
+                                    />
+                                </view>
+                            </view>
                         </view>
-                    </view>
-                    <view class="ste-goods-info-suggest" v-if="showSuggest">
-                        <view class="ste-goods-info-suggest-method">
-                            <view class="ste-goods-info-suggest-method-title" @click="clickSuggest('method')">{{ suggesData.title }}</view>
-                            <view class="ste-goods-info-suggest-method-number">{{ suggesData.number }}</view>
-                        </view>
-                        <view class="ste-goods-info-apply-for" v-if="suggesData.applyForText">
-                            <view class="ste-goods-info-apply-for-text">{{ suggesData.applyForText }}：</view>
-                            <view class="ste-goods-info-apply-for-number">
-                                <input class="ste-goods-info-apply-for-input" v-model="suggesData.applyForNumber" />
-                                <view class="ste-goods-info-apply-for-back" @click="clickSuggest('back')">
-                                    <ste-icon />
+                        <view class="ste-goods-info-suggest" v-if="showSuggest">
+                            <view class="ste-goods-info-suggest-method">
+                                <view class="ste-goods-info-suggest-method-title" @click="clickSuggest('method')">{{ suggesData.title }}</view>
+                                <view class="ste-goods-info-suggest-method-number">{{ suggesData.number }}</view>
+                            </view>
+                            <view class="ste-goods-info-apply-for" v-if="suggesData.applyForText">
+                                <view class="ste-goods-info-apply-for-text">{{ suggesData.applyForText }}：</view>
+                                <view class="ste-goods-info-apply-for-number">
+                                    <input class="ste-goods-info-apply-for-input" v-model="suggesData.applyForNumber" />
+                                    <view class="ste-goods-info-apply-for-back" @click="clickSuggest('back')">
+                                        <ste-icon />
+                                    </view>
                                 </view>
                             </view>
                         </view>
@@ -295,6 +301,9 @@ const contentClass = computed(() => {
             }
             .ste-goods-info-content {
                 width: calc(100% - var(--image-size) - 8rpx);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
                 .ste-goods-info-header {
                     width: 100%;
                     display: flex;
@@ -334,23 +343,21 @@ const contentClass = computed(() => {
                     margin-top: 8rpx;
                 }
 
-                .ste-goods-info-slot + .ste-goods-info-price {
-                    margin-top: 16rpx;
-                }
-
                 .ste-goods-info-price {
-                    margin-top: 24rpx;
                     width: 100%;
                     height: 34rpx;
                     display: flex;
                     justify-content: space-between;
+                    align-items: anchor-center;
                     .ste-goods-info-price-right .readonly {
                         pointer-events: none;
+                    }
+                    & + .ste-goods-info-suggest {
+                        margin-top: 16rpx;
                     }
                 }
 
                 .ste-goods-info-suggest {
-                    margin-top: 16rpx;
                     line-height: 34rpx;
                     display: flex;
                     align-items: center;

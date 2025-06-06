@@ -17,7 +17,16 @@ const data = ref([
         </view>
         <view class="demo-item">
             <view class="title">基础用法(一条数据)</view>
-            <ste-order-card title="梅姨家常菜馆" image="https://image.whzb.com/chain/StellarUI/bg1.jpg" :data="data" statusText="待核销" tagText="标签" helperText="辅助信息：XXXX-XX-XX" />
+            <ste-order-card
+                title="梅姨家常菜馆"
+                image="https://image.whzb.com/chain/StellarUI/bg1.jpg"
+                :data="data"
+                statusText="待核销"
+                tagText="标签"
+                helperText="辅助信息：XXXX-XX-XX"
+                subBtnText="次要功能"
+                mainBtnText="主要功能"
+            />
         </view>
     </page-layout>
 </template>

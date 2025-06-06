@@ -56,6 +56,19 @@ const oneData = computed(() => (props.data?.length === 1 ? props.data[0] : null)
             </view>
             <scroll-view scroll-x class="content-list" v-else></scroll-view>
         </view>
+        <view class="order-card-footer">
+            <view class="footer-data">
+                <view class="footer-count">共{{ count }}件</view>
+                <view class="footer-price">
+                    合计：
+                    <ste-price :value="price" color="#000000" fontSize="30" />
+                </view>
+            </view>
+            <view class="footer-btns">
+                <ste-button background="transparent" borderColor="#000" color="#353535">{{ subBtnText }}</ste-button>
+                <ste-button :background="mainBtnBg">{{ mainBtnText }}</ste-button>
+            </view>
+        </view>
     </view>
 </template>
 
@@ -149,6 +162,25 @@ const oneData = computed(() => (props.data?.length === 1 ? props.data[0] : null)
                     line-height: 34rpx;
                 }
             }
+        }
+    }
+    .order-card-footer {
+        margin-top: 8rpx;
+        padding: 0 28rpx 24rpx 28rpx;
+        .footer-data {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            font-size: 28rpx;
+            .footer-count {
+                margin-right: 14rpx;
+            }
+        }
+        .footer-btns {
+            display: flex;
+            justify-content: flex-end;
+            gap: 24rpx;
+            margin-top: 24rpx;
         }
     }
 }

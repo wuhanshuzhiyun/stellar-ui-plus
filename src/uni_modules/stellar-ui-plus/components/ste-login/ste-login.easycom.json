@@ -118,6 +118,17 @@
                     "description": "当前选项卡项"
                 }
             ]
+        },
+        {
+            "name": "[event]formDataChange",
+            "description": "复杂登录时输入框或者下拉框改变时触发",
+            "type": "(data: {}) => void",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "所有表单值"
+                }
+            ]
         }
     ]
 }

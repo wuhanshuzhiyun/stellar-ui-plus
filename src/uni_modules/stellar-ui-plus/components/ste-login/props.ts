@@ -27,6 +27,7 @@ export const loginEmits = {
     primaryBtnClick: (item: BtnItem) => item,
     secondaryBtnClick: (item: BtnItem) => item,
     tabChange: (item: BaseConfigItem) => item,
+    formDataChange: (data: Record<string, any>) => data,
 };
 
 export default loginProps;

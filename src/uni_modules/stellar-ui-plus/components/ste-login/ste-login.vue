@@ -44,10 +44,11 @@
                                         borderRadius="16rpx"
                                         borderColor="#EBEBEB"
                                         optionsPosition="bottom"
-                                        v-model="value1"
+                                        v-model="formData[i.key]"
                                         :list="i.selectData"
                                         labelKey="title"
                                         valueKey="key"
+                                        @change="formDataChange"
                                     ></ste-select>
                                 </view>
                             </view>
@@ -58,7 +59,16 @@
                             <view class="input-type number" v-if="i.type === 'number'">
                                 <view class="label">账号</view>
                                 <view class="account-number-input">
-                                    <ste-input placeholder="请输入账号" confirmType="next" rootClass="my-input-root" fontSize="27" border borderColor="#EBEBEB">
+                                    <ste-input
+                                        placeholder="请输入账号"
+                                        confirmType="next"
+                                        rootClass="my-input-root"
+                                        fontSize="27"
+                                        border
+                                        borderColor="#EBEBEB"
+                                        v-model="formData[i.key]"
+                                        @input="formDataChange"
+                                    >
                                         <template v-slot:prefix>
                                             <view style="margin-right: 20rpx">
                                                 <ste-icon code="&#xe631;" size="40" color="#92C9FF"></ste-icon>
@@ -70,7 +80,17 @@
                             <view class="input-type password" v-if="i.type === 'password'">
                                 <view class="label">密码</view>
                                 <view class="account-number-input">
-                                    <ste-input placeholder="请输入密码" type="password" confirmType="next" rootClass="my-input-root" fontSize="27" border borderColor="#EBEBEB">
+                                    <ste-input
+                                        placeholder="请输入密码"
+                                        type="password"
+                                        confirmType="next"
+                                        rootClass="my-input-root"
+                                        fontSize="27"
+                                        border
+                                        borderColor="#EBEBEB"
+                                        v-model="formData[i.key]"
+                                        @input="formDataChange"
+                                    >
                                         <template v-slot:prefix>
                                             <view style="margin-right: 20rpx">
                                                 <ste-icon code="&#xe630;" size="40" color="#92C9FF"></ste-icon>
@@ -109,16 +129,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, reactive, computed } from 'vue';
+import { ref, watch, reactive, nextTick, defineExpose } from 'vue';
 import propsData, { loginEmits } from './props';
-
-const value1 = ref(null);
 
 const props = defineProps(propsData);
 const emits = defineEmits(loginEmits);
 
 const protocolCheck = ref(props.protocolCheck);
 const loginGroup = reactive(props.loginGroup);
+
+const formData = reactive(
+    (function () {
+        const obj: { [key: string]: any } = {};
+        props.loginGroup.forEach(item => {
+            item.items.forEach(item => {
+                if (item.type !== 'txt') {
+                    obj[item.key] = item.value || item.type === 'select' ? null : '';
+                }
+            });
+        });
+        return obj;
+    })()
+);
 
 const loginCurrentTabIndex = ref(0);
 const loginCurrentTab = ref(props.loginGroup[0]?.key);
@@ -128,6 +160,12 @@ const changeTab = (tabKey: string, index: number) => {
     loginCurrentTabIndex.value = index;
     const curTab = props.loginGroup[index];
     emits('tabChange', { title: curTab.title, key: curTab.key });
+};
+
+const formDataChange = () => {
+    nextTick(() => {
+        emits('formDataChange', formData);
+    });
 };
 
 watch(
@@ -148,6 +186,8 @@ const handleBtnClick = (item: any, type: 'primary' | 'secondary') => {
         emits('secondaryBtnClick', item);
     }
 };
+
+defineExpose({ formData });
 </script>
 
 <style lang="scss" scoped>

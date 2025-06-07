@@ -2,6 +2,7 @@
     <page-layout title="登录示例2" contentStyle="padding: 0">
         <view class="demo-2">
             <ste-login
+                ref="myLogin"
                 mode="mode1"
                 :baseProtocol="base"
                 :protocolData="protocolData"
@@ -12,14 +13,21 @@
                 loginImgUrl="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg2.png?202408121"
                 loginBackground="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg1.png?202408121"
                 @tabChange="tabChange"
+                @primaryBtnClick="handleClick"
+                @secondary-btn-click="handleClick"
+                @protocol-click="protocolClick"
+                @form-data-change="formDataChange"
             />
         </view>
     </page-layout>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+import type { RefLogin } from '@/uni_modules/stellar-ui-plus/types/refComponents';
 const baseTip = '版本信息 V1.0.0';
+
+const myLogin = ref<RefLogin>();
 
 const base = '我已认真阅读、理解并同意';
 const protocolData = reactive([
@@ -97,6 +105,21 @@ const tabChange = (item: any) => {
     if (item.key === 'bind') {
         primaryBtnData[0].title = '去绑定';
     }
+};
+const handleClick = (item: any) => {
+    console.log(item);
+    if (item.key === 'wx') {
+        console.log('点击了微信登录');
+        console.log(myLogin.value?.formData);
+    }
+};
+
+const formDataChange = (data: any) => {
+    console.log(data);
+};
+
+const protocolClick = (item: any) => {
+    console.log(item);
 };
 </script>
 

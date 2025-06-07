@@ -15,7 +15,16 @@
 ```html
 <template>
     <view style="width: 100vw; height: 100vh;padding-top: 186rpx">
-        <ste-login :baseProtocol="base" :protocolData="protocolData" :primaryBtn="primaryBtnData" :secondaryBtn="secondaryBtnData" :bottomTip="baseTip" />
+        <ste-login
+            :baseProtocol="base"
+            :protocolData="protocolData"
+            :primaryBtn="primaryBtnData"
+            :secondaryBtn="secondaryBtnData"
+            :bottomTip="baseTip"
+            @primaryBtnClick="handleClick"
+            @secondary-btn-click="handleClick"
+            @protocol-click="protocolClick"
+        />
     </view>
 </template>
 <script lang="ts" setup>
@@ -45,6 +54,14 @@
             key: 'no',
         },
     ]);
+
+    const handleClick = (item: any) => {
+        console.log(item);
+    };
+
+    const protocolClick = (item: any) => {
+        console.log(item);
+    };
 </script>
 ```
 
@@ -52,11 +69,15 @@
 
 - `mode`值为`mode1`时为复杂登录
 - 此时`primaryBtnData`样式不变，`secondaryBtnData`为文字按钮
+- 若需要拿到表单数据
+    - `@form-data-change`事件监听，事件参数为表单数据
+    - 通过ref方式获取`formData`属性
 
 ```html
 <template>
     <view style="width: 100vw; height: 100vh;padding-top: 186rpx">
         <ste-login
+            ref="myLogin"
             mode="mode1"
             :baseProtocol="base"
             :protocolData="protocolData"
@@ -67,12 +88,18 @@
             loginImgUrl="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg2.png?202408121"
             loginBackgroundImg="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg1.png?202408121"
             @tabChange="tabChange"
+            @primaryBtnClick="handleClick"
+            @secondary-btn-click="handleClick"
+            @protocol-click="protocolClick"
+            @form-data-change="formDataChange"
         />
     </view>
 </template>
 <script lang="ts" setup>
     import { reactive } from 'vue';
+    import type { RefLogin } from 'stellar-ui-plus/types/refComponents';
     const baseTip = '版本信息 V1.0.0';
+    const myLogin = ref<RefLogin>();
 
     const base = '我已认真阅读、理解并同意';
     const protocolData = reactive([
@@ -150,6 +177,22 @@
         if (item.key === 'bind') {
             primaryBtnData[0].title = '去绑定';
         }
+    };
+
+    const handleClick = (item: any) => {
+        console.log(item);
+        if (item.key === 'wx') {
+            console.log('点击了微信登录');
+            console.log(myLogin.value?.formData);
+        }
+    };
+
+    const formDataChange = (data: any) => {
+        console.log(data);
+    };
+
+    const protocolClick = (item: any) => {
+        console.log(item);
     };
 </script>
 ```

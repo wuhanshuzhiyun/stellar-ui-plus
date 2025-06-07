@@ -1,7 +1,16 @@
 <template>
     <page-layout title="登录示例1" contentStyle="padding: 0">
         <view class="demo-1">
-            <ste-login :baseProtocol="base" :protocolData="protocolData" :primaryBtn="primaryBtnData" :secondaryBtn="secondaryBtnData" :bottomTip="baseTip" />
+            <ste-login
+                :baseProtocol="base"
+                :protocolData="protocolData"
+                :primaryBtn="primaryBtnData"
+                :secondaryBtn="secondaryBtnData"
+                :bottomTip="baseTip"
+                @primaryBtnClick="handleClick"
+                @secondary-btn-click="handleClick"
+                @protocol-click="protocolClick"
+            />
         </view>
     </page-layout>
 </template>
@@ -33,6 +42,14 @@ const secondaryBtnData = reactive([
         key: 'no',
     },
 ]);
+
+const handleClick = (item: any) => {
+    console.log(item);
+};
+
+const protocolClick = (item: any) => {
+    console.log(item);
+};
 </script>
 
 <style lang="scss" scoped>

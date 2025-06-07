@@ -134,7 +134,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, reactive, nextTick, defineExpose } from 'vue';
+import { ref, watch, reactive, nextTick } from 'vue';
 import propsData, { loginEmits } from './props';
 
 const props = defineProps(propsData);

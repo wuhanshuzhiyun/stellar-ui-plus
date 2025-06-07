@@ -11,9 +11,9 @@
                         <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" />
                     </view>
                 </view>
-                <view class="desc">
-                    <view class="desc-icon">
-                        <!-- <ste-icon :code="infoUser.subTitleIcon" size="26" :color="compMainColor" marginRight="4" /> -->
+                <view class="desc" v-if="subTitle || subTitleIcon">
+                    <view class="desc-icon" v-if="subTitleIcon">
+                        <ste-icon :code="subTitleIcon" size="26" :color="compMainColor" marginRight="4" />
                     </view>
                     <text>{{ subTitle }}</text>
                 </view>

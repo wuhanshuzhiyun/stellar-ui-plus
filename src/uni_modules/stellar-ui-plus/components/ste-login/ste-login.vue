@@ -49,6 +49,7 @@
                                         labelKey="title"
                                         valueKey="key"
                                         @change="formDataChange"
+                                        :disabled="i.disabled"
                                     ></ste-select>
                                 </view>
                             </view>
@@ -67,6 +68,8 @@
                                         border
                                         borderColor="#EBEBEB"
                                         v-model="formData[i.key]"
+                                        :maxlength="i.maxlength"
+                                        :disabled="i.disabled"
                                         @input="formDataChange"
                                     >
                                         <template v-slot:prefix>
@@ -89,6 +92,8 @@
                                         border
                                         borderColor="#EBEBEB"
                                         v-model="formData[i.key]"
+                                        :maxlength="i.maxlength"
+                                        :disabled="i.disabled"
                                         @input="formDataChange"
                                     >
                                         <template v-slot:prefix>

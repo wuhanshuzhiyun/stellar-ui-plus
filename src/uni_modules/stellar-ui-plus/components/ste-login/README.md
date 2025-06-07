@@ -201,6 +201,35 @@
 
 ### API
 
+#### BaseConfigItem & ProtocolItem & BtnItem
+
+| 属性名  | 说明       | 是否必填 | 类型     |
+| ------- | ---------- | -------- | -------- |
+| `title` | 显示的内容 | 是       | `string` |
+| `key`   | 标识符     | 是       | `string` |
+
+#### LoginGroupItem
+
+| 属性名  | 说明         | 是否必填 | 类型          |
+| ------- | ------------ | -------- | ------------- |
+| `title` | 显示的内容   | 是       | `string`      |
+| `key`   | 标识符       | 是       | `string`      |
+| `items` | 输入表单配置 | 是       | `LoginItem[]` |
+
+#### LoginItem
+
+| 属性名        | 说明                                               | 是否必填 | 类型               |
+| ------------- | -------------------------------------------------- | -------- | ------------------ |
+| `title`       | 显示的内容                                         | 是       | `string`           |
+| `key`         | 标识符                                             | 是       | `string`           |
+| `type`        | 输入类型，暂支持`number`/`password`/`select`/`txt` | 否       | `string`           |
+| `value`       | 默认值                                             | 否       | `string`           |
+| `selectData`  | 选项数据，仅当`type`为`select`时生效               | 否       | `BaseConfigItem[]` |
+| `maxLength`   | 最大长度                                           | 否       | `number`           |
+| `disabled`    | 禁用                                               | 否       | `boolean`          |
+| `icon`        | 输入框模式下对应的前缀图标code                     | 否       | `string`           |
+| `placeholder` | 输入框模式下对应的placeholder                      | 否       | `string`           |
+
 <!-- props -->
 
 ---$

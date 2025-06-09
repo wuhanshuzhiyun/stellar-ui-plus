@@ -14,7 +14,7 @@ let list3 = ref([{ title: '数据1', value: '100' }]);
 </script>
 
 <template>
-    <page-layout title="用户信息">
+    <page-layout title="用户信息" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
         <view class="description">
             <view class="cmp-name">UserInfo 用户信息</view>
             <view class="cmp-desc">提供用户信息展示。</view>
@@ -201,12 +201,15 @@ let list3 = ref([{ title: '数据1', value: '100' }]);
 <style lang="scss" scoped>
 .page {
     .content {
+        .description {
+            padding: 0 30rpx;
+        }
         .demo-item {
-            background-color: #f0f2f5;
-            width: 750rpx !important;
             .item-block {
+                justify-content: center;
+
                 > view {
-                    margin: 0 36rpx 36rpx 0;
+                    margin: 0 0 36rpx 0;
                 }
             }
             .desc {

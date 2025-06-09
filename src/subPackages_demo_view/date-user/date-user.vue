@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-    <page-layout title="人员信息以及日期">
+    <page-layout title="人员信息以及日期" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
         <view class="description">
             <view class="cmp-name">DateUser 人员信息以及日期</view>
             <view class="cmp-desc">提供日期和用户信息展示。</view>
@@ -35,11 +35,14 @@
 <style lang="scss" scoped>
 .page {
     .content {
+        .description {
+            padding: 0 30rpx;
+        }
+
         .demo-item {
-            background-color: #f0f2f5;
             .item-block {
                 > view {
-                    margin: 0 36rpx 36rpx 0;
+                    margin: 0 0 36rpx 0;
                 }
             }
             .desc {

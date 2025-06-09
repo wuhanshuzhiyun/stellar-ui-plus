@@ -12,23 +12,23 @@ const rootStyle = computed(() => {
 });
 
 const emits = defineEmits<{
-    (e: 'click-header', type: 'title' | 'subhead' | 'more'): void;
-    (e: 'click-item', type: 'image' | 'title' | 'subhead' | 'status' | 'button', item: FunctionListItem): void;
+    (e: 'click-header', type: 'empty' | 'title' | 'subhead' | 'more'): void;
+    (e: 'click-item', type: 'empty' | 'image' | 'title' | 'subhead' | 'status' | 'button', item: FunctionListItem): void;
     (e: 'click-empty', type: 'image' | 'text' | 'button'): void;
 }>();
 
-const onClickHeader = (type: 'title' | 'subhead' | 'more') => emits('click-header', type);
+const onClickHeader = (type: 'empty' | 'title' | 'subhead' | 'more') => emits('click-header', type);
 
-const onClickItem = (type: 'image' | 'title' | 'subhead' | 'status' | 'button', item: FunctionListItem) => emits('click-item', type, item);
+const onClickItem = (type: 'empty' | 'image' | 'title' | 'subhead' | 'status' | 'button', item: FunctionListItem) => emits('click-item', type, item);
 
 const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty', type);
 </script>
 <template>
     <view class="ste-function-list-root" :style="[rootStyle]">
-        <view class="ste-function-list-header">
+        <view class="ste-function-list-header" @click="onClickHeader('empty')">
             <view class="ste-function-list-header-l">
-                <view class="ste-function-list-title" @click="onClickHeader('title')">{{ title }}</view>
-                <view class="ste-function-list-subhead" @click="onClickHeader('subhead')">
+                <view class="ste-function-list-title" @click.stop="onClickHeader('title')">{{ title }}</view>
+                <view class="ste-function-list-subhead" @click.stop="onClickHeader('subhead')">
                     <slot name="subhead">
                         {{ subhead }}
                     </slot>
@@ -36,7 +36,7 @@ const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty',
             </view>
             <view class="ste-function-list-header-r">
                 <slot name="header-right">
-                    <view class="ste-function-list-more" @click="onClickHeader('more')">
+                    <view class="ste-function-list-more" @click.stop="onClickHeader('more')">
                         更多
                         <ste-icon code="&#xe674;" color="#353535"></ste-icon>
                     </view>
@@ -45,24 +45,17 @@ const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty',
         </view>
         <view class="ste-function-list-content" v-if="data?.length">
             <scroll-view scroll-x class="content-list" :class="{ multiple: data?.length > 1 }">
-                <view class="content-list-item" v-for="(item, index) in data" :key="index">
-                    <view class="content-list-item-image" @click="onClickItem('image', item)">
+                <view class="content-list-item" v-for="(item, index) in data" :key="index" @click="onClickItem('empty', item)">
+                    <view class="content-list-item-image" @click.stop="onClickItem('image', item)">
                         <ste-image :src="item.image" mode="aspectFill"></ste-image>
                     </view>
                     <view class="content-list-item-info">
-                        <view class="content-list-item-info-title" @click="onClickItem('title', item)">{{ item.title }}</view>
-                        <view class="content-list-item-info-subhead" v-if="item.subhead" @click="onClickItem('subhead', item)">{{ item.subhead }}</view>
+                        <view class="content-list-item-info-title" @click.stop="onClickItem('title', item)">{{ item.title }}</view>
+                        <view class="content-list-item-info-subhead" v-if="item.subhead" @click.stop="onClickItem('subhead', item)">{{ item.subhead }}</view>
                         <view class="content-list-item-info-footer">
-                            <view class="content-list-item-info-status" @click="onClickItem('status', item)">{{ item.statusText }}</view>
-                            <view class="content-list-item-info-button" v-if="item.buttonText || buttonText || item.buttonIcon || buttonIcon">
-                                <ste-button
-                                    :mode="100"
-                                    :rootStyle="{ height: '56rpx' }"
-                                    type="primary"
-                                    @click="onClickItem('button', item)"
-                                    :background="item.buttonBg || buttonBg"
-                                    :color="item.buttonColor || buttonColor"
-                                >
+                            <view class="content-list-item-info-status" @click.stop="onClickItem('status', item)">{{ item.statusText }}</view>
+                            <view class="content-list-item-info-button" v-if="item.buttonText || buttonText || item.buttonIcon || buttonIcon" @click.stop="onClickItem('button', item)">
+                                <ste-button :mode="100" :rootStyle="{ height: '56rpx' }" type="primary" :background="item.buttonBg || buttonBg" :color="item.buttonColor || buttonColor">
                                     <ste-icon :code="item.buttonIcon || buttonIcon" :color="item.buttonColor || buttonColor" />
                                     {{ item.buttonText || buttonText }}
                                 </ste-button>
@@ -73,7 +66,7 @@ const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty',
             </scroll-view>
         </view>
         <view class="ste-function-list-empty" v-else>
-            <ste-image :src="emptyImage" width="96" height="96" @clicl="onClickEmpty('image')" />
+            <ste-image :src="emptyImage" width="96" height="96" @click="onClickEmpty('image')" />
             <view class="empty-message" @click="onClickEmpty('text')">{{ emptyText }}</view>
             <ste-button :mode="100" :rootStyle="{ height: '56rpx' }" type="primary" :background="buttonBg" :color="buttonColor" @click="onClickEmpty('button')">
                 {{ emptyButtonText }}

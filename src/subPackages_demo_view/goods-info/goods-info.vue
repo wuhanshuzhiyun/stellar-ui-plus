@@ -39,7 +39,7 @@ const onChange = (d: { number?: number; checked?: boolean }) => {
     });
 };
 
-const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => {
+const onClick = (type: 'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => {
     uni.showToast({
         title: `点击了${type}`,
         icon: 'none',
@@ -114,7 +114,9 @@ const suggestData = ref({
         <view class="demo-item">
             <view class="title">替换步进器插槽（使用该插槽后步进器将无法生效）</view>
             <ste-goods-info :data="data">
-                <template v-slot:stepper>步进器</template>
+                <template v-slot:stepper>
+                    <ste-button>原步进器</ste-button>
+                </template>
             </ste-goods-info>
         </view>
         <view class="demo-item">

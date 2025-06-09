@@ -189,11 +189,11 @@
         {
             "name": "[event]click",
             "description": "点击确定按钮时触发",
-            "type": "(type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => void",
+            "type": "(type:'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => void",
             "params": [
                 {
                     "name": "type",
-                    "description": "点击位置:'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'"
+                    "description": "点击位置: `empty` , `image` , `title` , `code` , `price` , `originalPrice` , `stepper`"
                 }
             ]
         },
@@ -250,7 +250,7 @@
             "params": [
                 {
                     "name": "type",
-                    "description": "点击的区域：'method' | 'back' | 'item' | 'right'"
+                    "description": "点击的区域：`method`, `back`, `item`, `right`"
                 },
                 {
                     "name": "item",

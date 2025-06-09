@@ -1556,6 +1556,12 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
+    "ste-cub-box": {
+        "site": "ste-cub-box",
+        "attr": [
+            ""
+        ]
+    },
     "date-picker": {
         "site": "ste-date-picker",
         "attr": [
@@ -3520,8 +3526,143 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
-    "main-info": {
-        "site": "ste-main-info",
+    "login": {
+        "site": "ste-login",
+        "attr": [
+            "mode=''"
+        ],
+        "props": [
+            {
+                "name": "mode",
+                "description": "登录模式",
+                "type": "string",
+                "default": "base",
+                "values": [
+                    {
+                        "name": "base",
+                        "description": "基础登录"
+                    },
+                    {
+                        "name": "mode1",
+                        "description": "复杂登录"
+                    }
+                ]
+            },
+            {
+                "name": "protocolCheck",
+                "description": "是否勾选协议",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "baseProtocol",
+                "description": "协议可读部分内容",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "protocolData",
+                "description": "协议配置数据",
+                "type": "ProtocolItem[]",
+                "default": "[]"
+            },
+            {
+                "name": "loginImgUrl",
+                "description": "基础登录模式下是logo图url，复杂模式下是背景图url",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "primaryBtn",
+                "description": "主要按钮配置",
+                "type": "BtnItem[]",
+                "default": "[]"
+            },
+            {
+                "name": "secondaryBtn",
+                "description": "次要按钮配置",
+                "type": "BtnItem[]",
+                "default": "[]"
+            },
+            {
+                "name": "loginGroup",
+                "description": "登录表单配置",
+                "type": "LoginGroupItem[]",
+                "default": "[]"
+            },
+            {
+                "name": "loginBackground",
+                "description": "登录框背景",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "bottomTip",
+                "description": "底部提示",
+                "type": "string",
+                "default": ""
+            }
+        ],
+        "events": [
+            {
+                "name": "protocolClick",
+                "description": "协议点击时触发",
+                "type": "(item: ProtocolItem) => void",
+                "params": [
+                    {
+                        "name": "item",
+                        "description": "所点击的协议项"
+                    }
+                ]
+            },
+            {
+                "name": "primaryBtnClick",
+                "description": "主按钮点击时触发",
+                "type": "(item: BtnItem[]) => void",
+                "params": [
+                    {
+                        "name": "item",
+                        "description": "所点击的按钮项"
+                    }
+                ]
+            },
+            {
+                "name": "secondaryBtnClick",
+                "description": "次要按钮点击时触发",
+                "type": "(item: BtnItem[]) => void",
+                "params": [
+                    {
+                        "name": "item",
+                        "description": "所点击的按钮项"
+                    }
+                ]
+            },
+            {
+                "name": "tabChange",
+                "description": "复杂登录时tab切换时触发",
+                "type": "(item: BaseConfigItem[]) => void",
+                "params": [
+                    {
+                        "name": "item",
+                        "description": "当前选项卡项"
+                    }
+                ]
+            },
+            {
+                "name": "formDataChange",
+                "description": "复杂登录时输入框或者下拉框改变时触发",
+                "type": "(data: {}) => void",
+                "params": [
+                    {
+                        "name": "data",
+                        "description": "所有表单值"
+                    }
+                ]
+            }
+        ]
+    },
+    "login-info": {
+        "site": "ste-login-info",
         "attr": [
             "mainColor=''"
         ],
@@ -3587,6 +3728,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "(]) => void",
                 "params": []
             }
+        ]
+    },
+    "ste-main-info": {
+        "site": "ste-main-info",
+        "attr": [
+            ""
         ]
     },
     "media-preview": {

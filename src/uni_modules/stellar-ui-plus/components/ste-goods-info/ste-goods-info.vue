@@ -210,9 +210,9 @@ const viewClass = computed(() => {
                                     :showUnit="false"
                                 />
                             </view>
-                            <view class="ste-goods-info-price-right" v-if="stepper" @click="onClick('stepper')">
+                            <view class="ste-goods-info-price-right" @click="onClick('stepper')">
                                 <slot name="stepper">
-                                    <view :class="{ readonly: readonlyStepper }" @click.stop="true">
+                                    <view v-if="stepper" :class="{ readonly: readonlyStepper }" @click.stop="true">
                                         <steStepper
                                             v-model="_number"
                                             :precision="precision"

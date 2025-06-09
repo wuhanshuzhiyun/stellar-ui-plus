@@ -196,22 +196,24 @@ const viewClass = computed(() => {
                     </view>
                     <view class="content-footer">
                         <view class="ste-goods-info-price" v-if="showPriceRow">
-                            <view class="ste-goods-info-price-left" v-if="!hidePrice">
-                                <view @click.stop="onClick('price')">
-                                    <setPrice :value="data.price" :digits="2" bold :styleType="3" :line-price-color="priceColor" :fontSize="priceSize" />
-                                </view>
-                                <view @click.stop="onClick('originalPrice')">
-                                    <setPrice
-                                        v-if="data.originalPrice"
-                                        :digits="2"
-                                        :value="data.originalPrice"
-                                        isSuggestPrice
-                                        line-price-color="#666666"
-                                        marginLeft="16"
-                                        fontSize="20"
-                                        :showUnit="false"
-                                    />
-                                </view>
+                            <view class="ste-goods-info-price-left">
+                                <block v-if="!hidePrice">
+                                    <view @click.stop="onClick('price')">
+                                        <setPrice :value="data.price" :digits="2" bold :styleType="3" :line-price-color="priceColor" :fontSize="priceSize" />
+                                    </view>
+                                    <view @click.stop="onClick('originalPrice')">
+                                        <setPrice
+                                            v-if="data.originalPrice"
+                                            :digits="2"
+                                            :value="data.originalPrice"
+                                            isSuggestPrice
+                                            line-price-color="#666666"
+                                            marginLeft="16"
+                                            fontSize="20"
+                                            :showUnit="false"
+                                        />
+                                    </view>
+                                </block>
                             </view>
                             <view class="ste-goods-info-price-right" @click.stop="onClick('stepper')">
                                 <slot name="stepper">

@@ -204,6 +204,7 @@ let list3 = ref([{ title: '数据1', value: '100' }]);
         .description {
             padding: 0 30rpx;
         }
+
         .demo-item {
             .item-block {
                 justify-content: center;
@@ -212,6 +213,11 @@ let list3 = ref([{ title: '数据1', value: '100' }]);
                     margin: 0 0 36rpx 0;
                 }
             }
+
+            > .title {
+                padding: 0 30rpx;
+            }
+
             .desc {
                 display: flex;
                 align-items: center;

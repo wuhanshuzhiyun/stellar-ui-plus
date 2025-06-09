@@ -73,22 +73,26 @@
         {
             "name": "[event]click-header",
             "description": "点击列表头部触发",
-            "type": "(type: 'title' | 'subhead' | 'more') => void",
+            "type": "(type: 'empty' | 'title' | 'subhead' | 'more') => void",
             "params": [
                 {
                     "name": "type",
-                    "description": "点击的区域类型（可选值：`title`, `subhead`,`more`）"
+                    "description": "点击的区域类型（可选值：`empty`, `title`, `subhead`,`more`）"
                 }
             ]
         },
         {
             "name": "[event]click-item",
             "description": "点击列表项触发",
-            "type": "(type: 'image' | 'title' | 'subhead' | 'status' | 'button') => void",
+            "type": "(type: 'empty' | 'image' | 'title' | 'subhead' | 'status' | 'button'; item:FunctionListItem) => void",
             "params": [
                 {
                     "name": "type",
-                    "description": "点击的区域类型（可选值：`image` , `title` , `subhead` , `status` , `button`）"
+                    "description": "点击的区域类型（可选值：`empty`, `image` , `title` , `subhead` , `status` , `button`）"
+                },
+                {
+                    "name": "item",
+                    "description": "当前点击的数据项"
                 }
             ]
         },

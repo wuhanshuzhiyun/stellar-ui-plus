@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import propData from './props';
+import propData, { type OrderGoods } from './props';
 
 const props = defineProps(propData);
 
@@ -12,49 +12,59 @@ const rootStyle = computed(() => {
 });
 
 const emits = defineEmits<{
-    (e: 'click-header', type: 'title' | 'subhead' | 'more'): void;
-    (e: 'click-item', type: 'image' | 'title' | 'subhead' | 'status' | 'button'): void;
+    (e: 'click-header', type: 'empty' | 'title' | 'image' | 'status' | 'tag' | 'helper'): void;
+    (e: 'click-item', type: 'empty' | 'image' | 'title' | 'sub-title' | 'details', data: OrderGoods): void;
+    (e: 'click-button', type: 'primary' | 'secondary' | 'more'): void;
 }>();
 
-const onClickHeader = (type: 'title' | 'subhead' | 'more') => emits('click-header', type);
+const onClickHeader = (type: 'empty' | 'title' | 'image' | 'status' | 'tag' | 'helper') => emits('click-header', type);
 
-const onClickItem = (type: 'image' | 'title' | 'subhead' | 'status' | 'button') => emits('click-item', type);
+const onClickItem = (type: 'empty' | 'image' | 'title' | 'sub-title' | 'details', data: OrderGoods) => emits('click-item', type, data);
+const onClickBtns = (type: 'primary' | 'secondary' | 'more') => emits('click-button', type);
 
 const oneData = computed(() => (props.data?.length === 1 ? props.data[0] : null));
 </script>
 <template>
     <view class="ste-order-card-root" :style="[rootStyle]">
-        <view class="order-card-head">
+        <view class="order-card-head" @click="onClickHeader('empty')">
             <view class="order-card-head-l">
-                <view class="head-image">
+                <view class="head-image" @click.stop="onClickHeader('image')">
                     <slot name="head-image">
                         <image :src="image" class="head-image-img" mode="aspectFill" />
                     </slot>
                 </view>
-                <view class="head-title">{{ title }}</view>
+                <view class="head-title" @click.stop="onClickHeader('title')">{{ title }}</view>
             </view>
-            <view class="order-card-head-r">{{ statusText }}</view>
+            <view class="order-card-head-r" @click.stop="onClickHeader('status')">{{ statusText }}</view>
         </view>
-        <view class="order-card-sub-header">
-            <view class="sub-tag">{{ tagText }}</view>
-            <view class="sub-text">{{ helperText }}</view>
+        <view class="order-card-sub-header" v-if="tagText || helperText" @click="onClickHeader('empty')">
+            <view class="sub-tag" v-if="tagText" @click.stop="onClickHeader('tag')">{{ tagText }}</view>
+            <view class="sub-helper" v-if="helperText" @click.stop="onClickHeader('helper')">{{ helperText }}</view>
         </view>
         <view class="order-card-content">
-            <view class="content-info" v-if="oneData">
-                <ste-image :src="oneData.image" width="132" height="132" />
-
+            <view class="content-info" v-if="oneData" @click="onClickItem('empty', oneData)">
+                <view @click.stop="onClickItem('image', oneData)">
+                    <ste-image :src="oneData.image" width="132" height="132" radius="12" />
+                </view>
                 <view class="info-text">
                     <view class="info-t">
-                        <view class="info-title">{{ oneData.title }}</view>
-                        <view class="info-sub-title">{{ oneData.subTitle }}</view>
+                        <view class="info-title" @click.stop="onClickItem('title', oneData)">{{ oneData.title }}</view>
+                        <view class="info-sub-title" @click.stop="onClickItem('sub-title', oneData)">{{ oneData.subTitle }}</view>
                     </view>
-                    <view class="info-f">
+                    <view class="info-f" v-if="showDetail" @click.stop="onClickItem('details', oneData)">
                         详情
                         <ste-icon code="&#xe674;" />
                     </view>
                 </view>
             </view>
-            <scroll-view scroll-x class="content-list" v-else></scroll-view>
+            <scroll-view scroll-x class="content-list" v-else>
+                <view class="content-item" v-for="(item, index) in data" :key="index" @click="onClickItem('empty', item)">
+                    <view @click.stop="onClickItem('image', item)">
+                        <ste-image :src="item.image" width="132" height="132" radius="12" />
+                    </view>
+                    <view class="info-title" @click.stop="onClickItem('title', item)">{{ item.title }}</view>
+                </view>
+            </scroll-view>
         </view>
         <view class="order-card-footer">
             <view class="footer-data">
@@ -65,8 +75,11 @@ const oneData = computed(() => (props.data?.length === 1 ? props.data[0] : null)
                 </view>
             </view>
             <view class="footer-btns">
-                <ste-button background="transparent" borderColor="#000" color="#353535">{{ subBtnText }}</ste-button>
-                <ste-button :background="mainBtnBg">{{ mainBtnText }}</ste-button>
+                <view class="footer-btns-l" @click="onClickBtns('more')"><block v-if="showMore">更多</block></view>
+                <view class="footer-btns-r">
+                    <ste-button v-if="subBtnText" background="transparent" borderColor="#000" color="#353535" @click="onClickBtns('secondary')">{{ subBtnText }}</ste-button>
+                    <ste-button v-if="mainBtnText" :background="mainBtnBg" @click="onClickBtns('primary')">{{ mainBtnText }}</ste-button>
+                </view>
             </view>
         </view>
     </view>
@@ -119,7 +132,7 @@ const oneData = computed(() => (props.data?.length === 1 ? props.data[0] : null)
             color: #8a1100;
             line-height: 38rpx;
         }
-        .sub-text {
+        .sub-helper {
             flex: 1;
             padding-left: 16rpx;
             font-size: 28rpx;
@@ -160,6 +173,29 @@ const oneData = computed(() => (props.data?.length === 1 ? props.data[0] : null)
                     font-size: 24rpx;
                     color: #757575;
                     line-height: 34rpx;
+                    cursor: pointer;
+                }
+            }
+        }
+        .content-list {
+            // 不许换行
+            white-space: nowrap;
+            .content-item {
+                display: inline-block;
+                & + .content-item {
+                    margin-left: 24rpx;
+                }
+                .info-title {
+                    width: 132rpx;
+                    // 溢出显示省略号
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    margin-top: 8rpx;
+                    font-size: 24rpx;
+                    color: #757575;
+                    height: 34rpx;
+                    line-height: 34rpx;
                 }
             }
         }
@@ -178,9 +214,19 @@ const oneData = computed(() => (props.data?.length === 1 ? props.data[0] : null)
         }
         .footer-btns {
             display: flex;
-            justify-content: flex-end;
-            gap: 24rpx;
+            align-items: center;
+            justify-content: space-between;
             margin-top: 24rpx;
+            .footer-btns-l {
+                font-size: 28rpx;
+                color: #353535;
+                cursor: pointer;
+            }
+
+            .footer-btns-r {
+                display: flex;
+                gap: 24rpx;
+            }
         }
     }
 }

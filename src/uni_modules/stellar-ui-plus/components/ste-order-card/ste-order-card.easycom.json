@@ -11,13 +11,117 @@
             "default": "#fff"
         },
         {
+            "name": "contentBg",
+            "description": "内容区域背景,默认跟随背景色",
+            "type": "string"
+        },
+        {
+            "name": "image",
+            "description": "头部标题图片",
+            "type": "string"
+        },
+        {
+            "name": "title",
+            "description": "头部标题",
+            "type": "string"
+        },
+        {
+            "name": "statusText",
+            "description": "头部状态文本",
+            "type": "string"
+        },
+        {
+            "name": "tagText",
+            "description": "标签文本",
+            "type": "string"
+        },
+        {
+            "name": "helperText",
+            "description": "辅助文本",
+            "type": "string"
+        },
+        {
+            "name": "data",
+            "description": "商品信息",
+            "type": " {image?: string;    title?: string;    subTitle?: string;}[]",
+            "default": "[]"
+        },
+        {
+            "name": "count",
+            "description": "总数",
+            "type": "number",
+            "default": "0"
+        },
+        {
+            "name": "price",
+            "description": "订单金额（分）",
+            "type": "number",
+            "default": "0"
+        },
+        {
+            "name": "mainBtnText",
+            "description": "主要功能按钮文本",
+            "type": "string"
+        },
+        {
+            "name": "mainBtnBg",
+            "description": "主要功能按钮背景",
+            "type": "string",
+            "default": "#EC3E1A"
+        },
+        {
+            "name": "mainBtnTextColor",
+            "description": "主要功能按钮文本颜色",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
+            "name": "subBtnText",
+            "description": "次功能按钮文本",
+            "type": "string"
+        },
+        {
+            "name": "showDetail",
+            "description": "是否显示详情(单条数据时生效)",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "showMore",
+            "description": "是否显示更多",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
             "name": "[event]click-header",
-            "description": "点击列表头部触发",
-            "type": "(type: 'title' | 'subhead' | 'more') => void",
+            "description": "点击头部触发",
+            "type": "(type: 'empty' | 'title' | 'image' | 'status' | 'tag' | 'helper') => void",
             "params": [
                 {
                     "name": "type",
-                    "description": "点击的区域类型（可选值：`title`, `subhead`,`more`）"
+                    "description": "点击的区域类型（可选值：`empty`,`image`, `title`, `status`, `tag`, `helper`）"
+                }
+            ]
+        },
+        {
+            "name": "[event]click-item",
+            "description": "点击商品项触发",
+            "type": "(type: 'empty' | 'image' | 'title' | 'sub-title' | 'details') => void",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "点击的区域类型（可选值：`empty`,`image`, `title`, `sub-title`, `details`）"
+                }
+            ]
+        },
+        {
+            "name": "[event]click-button",
+            "description": "点击列表头部触发",
+            "type": "(type: 'primary' | 'secondary' | 'more') => void",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "点击的区域类型（可选值：`primary`,`secondary`, `more`）"
                 }
             ]
         }

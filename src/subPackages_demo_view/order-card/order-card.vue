@@ -8,6 +8,23 @@ const data = ref([
         subTitle: '商品描述',
     },
 ]);
+const data1 = ref([
+    {
+        image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
+        title: '梅姨家常菜馆',
+        subTitle: '商品描述',
+    },
+    {
+        image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
+        title: '梅姨家常菜馆',
+        subTitle: '商品描述',
+    },
+    {
+        image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
+        title: '梅姨家常菜馆',
+        subTitle: '商品描述',
+    },
+]);
 </script>
 <template>
     <page-layout title="订单卡片" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
@@ -26,6 +43,47 @@ const data = ref([
                 helperText="辅助信息：XXXX-XX-XX"
                 subBtnText="次要功能"
                 mainBtnText="主要功能"
+            />
+        </view>
+        <view class="demo-item">
+            <view class="title">显示详情(一条数据)</view>
+            <ste-order-card
+                title="梅姨家常菜馆"
+                image="https://image.whzb.com/chain/StellarUI/bg1.jpg"
+                :data="data"
+                statusText="待核销"
+                tagText="标签"
+                helperText="辅助信息：XXXX-XX-XX"
+                subBtnText="次要功能"
+                mainBtnText="主要功能"
+                show-detail
+            />
+        </view>
+        <view class="demo-item">
+            <view class="title">基础用法(多条数据)</view>
+            <ste-order-card
+                title="梅姨家常菜馆"
+                image="https://image.whzb.com/chain/StellarUI/bg1.jpg"
+                :data="data1"
+                statusText="待核销"
+                tagText="标签"
+                helperText="辅助信息：XXXX-XX-XX"
+                subBtnText="次要功能"
+                mainBtnText="主要功能"
+            />
+        </view>
+        <view class="demo-item">
+            <view class="title">显示更多</view>
+            <ste-order-card
+                title="梅姨家常菜馆"
+                image="https://image.whzb.com/chain/StellarUI/bg1.jpg"
+                :data="data1"
+                statusText="待核销"
+                tagText="标签"
+                helperText="辅助信息：XXXX-XX-XX"
+                subBtnText="次要功能"
+                mainBtnText="主要功能"
+                show-more
             />
         </view>
     </page-layout>

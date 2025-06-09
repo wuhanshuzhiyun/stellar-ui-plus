@@ -1556,12 +1556,6 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
-    "ste-cub-box": {
-        "site": "ste-cub-box",
-        "attr": [
-            ""
-        ]
-    },
     "date-picker": {
         "site": "ste-date-picker",
         "attr": [
@@ -1737,6 +1731,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ],
         "events": []
+    },
+    "ste-donut-chart": {
+        "site": "ste-donut-chart",
+        "attr": [
+            ""
+        ]
     },
     "drag": {
         "site": "ste-drag",
@@ -3730,12 +3730,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-main-info": {
-        "site": "ste-main-info",
-        "attr": [
-            ""
-        ]
-    },
     "media-preview": {
         "site": "ste-media-preview",
         "attr": [
@@ -4285,6 +4279,60 @@ export const componentMap: Record<string, ComponentDesc> = {
             "background=''"
         ],
         "props": [
+            {
+                "name": "background",
+                "description": "组件背景色",
+                "type": "string",
+                "default": "#fff"
+            },
+            {
+                "name": "contentBg",
+                "description": "内容区域背景,默认跟随背景色",
+                "type": "string"
+            },
+            {
+                "name": "image",
+                "description": "头部标题图片",
+                "type": "string"
+            },
+            {
+                "name": "title",
+                "description": "头部标题",
+                "type": "string"
+            },
+            {
+                "name": "statusText",
+                "description": "头部状态文本",
+                "type": "string"
+            },
+            {
+                "name": "tagText",
+                "description": "标签文本",
+                "type": "string"
+            },
+            {
+                "name": "helperText",
+                "description": "辅助文本",
+                "type": "string"
+            },
+            {
+                "name": "data",
+                "description": "商品信息",
+                "type": " {image?: string;    title?: string;    subTitle?: string;}[]",
+                "default": "[]"
+            },
+            {
+                "name": "background",
+                "description": "组件背景色",
+                "type": "string",
+                "default": "#fff"
+            },
+            {
+                "name": "background",
+                "description": "组件背景色",
+                "type": "string",
+                "default": "#fff"
+            },
             {
                 "name": "background",
                 "description": "组件背景色",

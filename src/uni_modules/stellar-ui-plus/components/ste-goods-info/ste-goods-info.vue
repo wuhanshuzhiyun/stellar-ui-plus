@@ -16,7 +16,7 @@ const emits = defineEmits<{
     (e: 'update:number', number?: number): void;
     (e: 'update:checked', checked?: boolean): void;
     (e: 'change', change: { number?: number; checked?: boolean; applyForNumber?: number }, data: GoodsInfoType): void;
-    (e: 'click', type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'): void;
+    (e: 'click', type: 'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'): void;
     (e: 'plus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'minus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'click-suggest', type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }): void;
@@ -83,7 +83,7 @@ const checkboxChange = () => {
     emits('change', { checked: _checked.value }, props.data);
 };
 
-const onClick = (type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => {
+const onClick = (type: 'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => {
     emits('click', type);
 };
 
@@ -168,14 +168,14 @@ const viewClass = computed(() => {
             <view @click="clickChecked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
                 <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
             </view>
-            <view class="ste-goods-info-view" :class="viewClass">
-                <view class="ste-goods-info-image">
-                    <setImage :radius="imageRadius" :src="data.image" :width="imageSize" :height="imageSize" @click="onClick('image')" />
+            <view class="ste-goods-info-view" :class="viewClass" @click="onClick('empty')">
+                <view class="ste-goods-info-image" @click.stop="onClick('image')">
+                    <setImage :radius="imageRadius" :src="data.image" :width="imageSize" :height="imageSize" />
                 </view>
                 <view class="ste-goods-info-content">
                     <view class="content-header">
                         <view class="ste-goods-info-header">
-                            <view class="ste-goods-info-title" :style="[titleStyle]" @click="onClick('title')">
+                            <view class="ste-goods-info-title" :style="[titleStyle]" @click.stop="onClick('title')">
                                 <view class="ste-goods-info-tag-box" v-if="data.tag">
                                     <view class="ste-goods-info-tag" :style="{ background: _tagBg }">{{ data.tag }}</view>
                                 </view>
@@ -185,7 +185,7 @@ const viewClass = computed(() => {
                                 <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
                             </view>
                         </view>
-                        <view class="ste-goods-info-codes" @click="onClick('code')">
+                        <view class="ste-goods-info-codes" @click.stop="onClick('code')">
                             {{ data.code }}
                             <span style="color: #e6e8ea">|</span>
                             {{ data.barCode }}
@@ -196,23 +196,28 @@ const viewClass = computed(() => {
                     </view>
                     <view class="content-footer">
                         <view class="ste-goods-info-price" v-if="showPriceRow">
-                            <view class="ste-goods-info-price-left" v-if="!hidePrice">
-                                <setPrice :value="data.price" :digits="2" bold :styleType="3" :line-price-color="priceColor" :fontSize="priceSize" @click="onClick('price')" />
-                                <setPrice
-                                    v-if="data.originalPrice"
-                                    :digits="2"
-                                    :value="data.originalPrice"
-                                    isSuggestPrice
-                                    line-price-color="#666666"
-                                    marginLeft="16"
-                                    fontSize="20"
-                                    @click="onClick('originalPrice')"
-                                    :showUnit="false"
-                                />
+                            <view class="ste-goods-info-price-left">
+                                <block v-if="!hidePrice">
+                                    <view @click.stop="onClick('price')">
+                                        <setPrice :value="data.price" :digits="2" bold :styleType="3" :line-price-color="priceColor" :fontSize="priceSize" />
+                                    </view>
+                                    <view @click.stop="onClick('originalPrice')">
+                                        <setPrice
+                                            v-if="data.originalPrice"
+                                            :digits="2"
+                                            :value="data.originalPrice"
+                                            isSuggestPrice
+                                            line-price-color="#666666"
+                                            marginLeft="16"
+                                            fontSize="20"
+                                            :showUnit="false"
+                                        />
+                                    </view>
+                                </block>
                             </view>
-                            <view class="ste-goods-info-price-right" v-if="stepper" @click="onClick('stepper')">
+                            <view class="ste-goods-info-price-right" @click.stop="onClick('stepper')">
                                 <slot name="stepper">
-                                    <view :class="{ readonly: readonlyStepper }" @click.stop="true">
+                                    <view v-if="stepper" :class="{ readonly: readonlyStepper }" @click.stop="true">
                                         <steStepper
                                             v-model="_number"
                                             :precision="precision"
@@ -347,10 +352,16 @@ const viewClass = computed(() => {
 
                 .ste-goods-info-price {
                     width: 100%;
-                    height: 34rpx;
+                    line-height: 34rpx;
                     display: flex;
                     justify-content: space-between;
-                    align-items: anchor-center;
+                    align-items: center;
+                    .ste-goods-info-price-left {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: flex-end;
+                    }
+
                     .ste-goods-info-price-right .readonly {
                         pointer-events: none;
                     }

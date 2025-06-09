@@ -127,7 +127,7 @@
 </template>
 ```
 
-### 插槽
+### 默认插槽
 
 - 默认插槽内容为商品编码下的其他展示项
 
@@ -146,6 +146,28 @@
 </script>
 <template>
     <ste-goods-info :data="data">插槽内容</ste-goods-info>
+</template>
+```
+
+### 替换步进器插槽
+
+- 使用该插槽后步进器将无法生效
+
+```html
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const data = ref({
+        image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
+        title: '商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称',
+        tag: '新品',
+        code: '123456',
+        barCode: '1234567890123',
+        price: '88800',
+        originalPrice: '99900',
+    });
+</script>
+<template>
+    <ste-goods-info :data="data"><template v-slot:stepper>步进器</template></ste-goods-info>
 </template>
 ```
 
@@ -208,10 +230,10 @@
 
 #### 组件插槽(Slots)
 
-| 名称    | 说明                               | 支持版本 |
-| ------- | ---------------------------------- | -------- |
-| default | 默认插槽，在编码下方出现的其他内容 | -        |
-| stepper | 步进器插槽，替换掉自带步进器       | -        |
+| 名称    | 说明                                       | 支持版本 |
+| ------- | ------------------------------------------ | -------- |
+| default | 默认插槽，在编码下方出现的其他内容         | -        |
+| stepper | 步进器位置插槽，使用该插槽后将替换掉步进器 | -        |
 
 ---$
 {{xuyajun}}

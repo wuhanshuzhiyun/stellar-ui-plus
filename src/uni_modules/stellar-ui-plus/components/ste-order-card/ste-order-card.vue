@@ -13,13 +13,13 @@ const rootStyle = computed(() => {
 
 const emits = defineEmits<{
     (e: 'click-header', type: 'empty' | 'title' | 'image' | 'status' | 'tag' | 'helper'): void;
-    (e: 'click-item', type: 'empty' | 'image' | 'title' | 'sub-title' | 'details', data: OrderGoods): void;
+    (e: 'click-item', type: 'empty' | 'image' | 'title' | 'sub-title' | 'details', item: OrderGoods): void;
     (e: 'click-button', type: 'primary' | 'secondary' | 'more'): void;
 }>();
 
 const onClickHeader = (type: 'empty' | 'title' | 'image' | 'status' | 'tag' | 'helper') => emits('click-header', type);
 
-const onClickItem = (type: 'empty' | 'image' | 'title' | 'sub-title' | 'details', data: OrderGoods) => emits('click-item', type, data);
+const onClickItem = (type: 'empty' | 'image' | 'title' | 'sub-title' | 'details', item: OrderGoods) => emits('click-item', type, item);
 const onClickBtns = (type: 'primary' | 'secondary' | 'more') => emits('click-button', type);
 
 const oneData = computed(() => (props.data?.length === 1 ? props.data[0] : null));

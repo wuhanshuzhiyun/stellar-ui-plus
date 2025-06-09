@@ -35,10 +35,6 @@
 <style lang="scss" scoped>
 .page {
     .content {
-        .description {
-            padding: 0 30rpx;
-        }
-
         .demo-item {
             .item-block {
                 > view {

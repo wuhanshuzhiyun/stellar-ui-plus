@@ -26,7 +26,10 @@ const viewDemo = (demo: string) => {
             <view class="title">复杂登录</view>
             <view class="item-block">
                 <view style="width: 100%">
-                    <ste-button @click="viewDemo('demo2')">复杂登录</ste-button>
+                    <ste-button @click="viewDemo('demo2')">复杂登录1</ste-button>
+                </view>
+                <view style="width: 100%">
+                    <ste-button @click="viewDemo('demo3')">复杂登录2</ste-button>
                 </view>
             </view>
         </view>
@@ -38,7 +41,7 @@ const viewDemo = (demo: string) => {
     .item-block {
         // margin: 0 -30rpx;
         > view {
-            // margin: 0 8rpx 8rpx 0;
+            margin: 0 8rpx 8rpx 0;
         }
     }
 }

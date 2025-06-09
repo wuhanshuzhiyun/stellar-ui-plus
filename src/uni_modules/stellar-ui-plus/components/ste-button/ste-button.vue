@@ -203,7 +203,14 @@ function handleClick(e: any) {
     background-size: cover;
     border-radius: 10rpx;
     margin: 0;
+
+    // #ifndef MP-ALIPAY
     border-width: 10rpx;
+    // #endif
+
+    // #ifdef MP-ALIPAY
+    border-width: 2rpx;
+    // #endif
 
     .btn-box {
         width: 100%;

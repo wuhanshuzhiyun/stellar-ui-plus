@@ -1,9 +1,9 @@
 <template>
-    <view class="ste-login--root">
+    <view class="ste-login--root" :style="[compRootStyle]">
         <view class="login mode-base" v-if="mode === 'base'">
             <ste-image src="https://image.whzb.com/chain/StellarUI/image/banner2.png" height="120" mode="heightFix" />
             <view class="protocol-box">
-                <ste-checkbox v-model="protocolCheck" />
+                <ste-checkbox v-model="protocolCheck" iconSize="32" :checkedColor="mainColor" />
                 <text>
                     {{ baseProtocol }}
                     <text class="protocol" v-for="(item, k) in protocolData" :key="k" @click="handleProtocolClick(item)">《{{ item.title }}》</text>
@@ -11,12 +11,12 @@
             </view>
             <view class="btn-group">
                 <view class="btn-item primary" v-for="(item, k) in primaryBtn" :key="k">
-                    <ste-button width="100%" :mode="300" @click="handleBtnClick(item, 'primary')">
+                    <ste-button width="100%" :mode="300" @click="handleBtnClick(item, 'primary')" :round="item.round" :background="mainColor">
                         <text class="btn-text">{{ item.title }}</text>
                     </ste-button>
                 </view>
                 <view class="btn-item secondary" v-for="(item, k) in secondaryBtn" :key="k">
-                    <ste-button width="100%" :mode="300" background="#fff" borderColor="#CCCCCC" color="#000000" @click="handleBtnClick(item, 'secondary')">
+                    <ste-button width="100%" :mode="300" background="#fff" borderColor="#CCCCCC" color="#000000" @click="handleBtnClick(item, 'secondary')" :round="item.round">
                         <text class="btn-text">{{ item.title }}</text>
                     </ste-button>
                 </view>
@@ -24,8 +24,8 @@
         </view>
 
         <view class="login mode-1" v-else-if="mode === 'mode1'" :style="[{ backgroundImage: `url(${loginImgUrl})` }]">
-            <view class="login-box" :style="[{ backgroundImage: `url(${loginBackground})` }]">
-                <view class="tab-box">
+            <view class="login-box" :style="[compLoginBoxStyle]">
+                <view class="tab-box" v-if="loginGroup.length > 1">
                     <view :class="['tab', item.key === loginCurrentTab ? 'active-tab' : 'normal-tab']" @click="changeTab(item.key, index)" v-for="(item, index) in loginGroup" :key="item.title">
                         {{ item.title }}
                         <view :class="[item.key === loginCurrentTab ? 'bar-line' : '']"></view>
@@ -34,80 +34,11 @@
                 <view class="login-tabs-item">
                     <view class="login-module">
                         <template v-for="i in loginGroup[loginCurrentTabIndex].items" :key="i.key">
-                            <view class="input-type select" v-if="i.type === 'select'">
-                                <view class="label">选择账号</view>
-                                <view class="system-account-number">
-                                    <ste-select
-                                        height="94"
-                                        width="580"
-                                        fontSize="32"
-                                        borderRadius="16rpx"
-                                        borderColor="#EBEBEB"
-                                        optionsPosition="bottom"
-                                        v-model="formData[i.key]"
-                                        :list="i.selectData"
-                                        labelKey="title"
-                                        valueKey="key"
-                                        @change="formDataChange"
-                                        :disabled="i.disabled"
-                                    ></ste-select>
-                                </view>
-                            </view>
-                            <view class="input-type txt" v-if="i.type === 'txt'">
-                                <view class="label">提示</view>
-                                <view class="tips">若账号列表为空或要登录的门店不在列表中，请先绑定账号。</view>
-                            </view>
-                            <view class="input-type number" v-if="i.type === 'number'">
-                                <view class="label">账号</view>
-                                <view class="account-number-input">
-                                    <ste-input
-                                        placeholder="请输入账号"
-                                        confirmType="next"
-                                        rootClass="my-input-root"
-                                        fontSize="27"
-                                        border
-                                        borderColor="#EBEBEB"
-                                        v-model="formData[i.key]"
-                                        :maxlength="i.maxlength"
-                                        :disabled="i.disabled"
-                                        @input="formDataChange"
-                                    >
-                                        <template v-slot:prefix>
-                                            <view style="margin-right: 20rpx">
-                                                <ste-icon code="&#xe631;" size="40" color="#92C9FF"></ste-icon>
-                                            </view>
-                                        </template>
-                                    </ste-input>
-                                </view>
-                            </view>
-                            <view class="input-type password" v-if="i.type === 'password'">
-                                <view class="label">密码</view>
-                                <view class="account-number-input">
-                                    <ste-input
-                                        placeholder="请输入密码"
-                                        type="password"
-                                        confirmType="next"
-                                        rootClass="my-input-root"
-                                        fontSize="27"
-                                        border
-                                        borderColor="#EBEBEB"
-                                        v-model="formData[i.key]"
-                                        :maxlength="i.maxlength"
-                                        :disabled="i.disabled"
-                                        @input="formDataChange"
-                                    >
-                                        <template v-slot:prefix>
-                                            <view style="margin-right: 20rpx">
-                                                <ste-icon code="&#xe630;" size="40" color="#92C9FF"></ste-icon>
-                                            </view>
-                                        </template>
-                                    </ste-input>
-                                </view>
-                            </view>
+                            <login-form-item :config="i" v-model="formData[i.key]" @change="formDataChange($event, i.key)" :color="mainColor" />
                         </template>
                     </view>
                     <view class="protocol-box">
-                        <ste-checkbox v-model="protocolCheck" />
+                        <ste-checkbox v-model="protocolCheck" iconSize="32" :checkedColor="mainColor" />
                         <text>
                             {{ baseProtocol }}
                             <text class="protocol" v-for="(item, k) in protocolData" :key="k" @click="handleProtocolClick(item)">《{{ item.title }}》</text>
@@ -115,7 +46,7 @@
                     </view>
                     <view class="btn-group">
                         <view class="btn-item primary" v-for="(item, k) in primaryBtn" :key="k">
-                            <ste-button width="100%" :mode="300" @click="handleBtnClick(item, 'primary')" :round="false">
+                            <ste-button width="100%" :mode="300" @click="handleBtnClick(item, 'primary')" :round="item.round" :background="mainColor">
                                 <text class="btn-text">{{ item.title }}</text>
                             </ste-button>
                         </view>
@@ -134,9 +65,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, reactive, nextTick } from 'vue';
+import { ref, watch, reactive, nextTick, computed, type CSSProperties } from 'vue';
 import propsData, { loginEmits } from './props';
+import LoginFormItem from './components/loginFormItem.vue';
+import { useColorStore } from '../../store/color';
+import utils from '../../utils/utils';
 
+const { getColor } = useColorStore();
 const props = defineProps(propsData);
 const emits = defineEmits(loginEmits);
 
@@ -160,6 +95,22 @@ const formData = reactive(
 const loginCurrentTabIndex = ref(0);
 const loginCurrentTab = ref(props.loginGroup[0]?.key);
 
+const mainColor = computed(() => props.color || getColor().steThemeColor);
+
+const compRootStyle = computed(() => {
+    const style: CSSProperties = {
+        '--main-color': mainColor.value,
+    };
+    return style;
+});
+
+const compLoginBoxStyle = computed(() => {
+    const style: CSSProperties = {
+        ...utils.bg2style(props.loginBackground || '#ffffff'),
+    };
+    return style;
+});
+
 const changeTab = (tabKey: string, index: number) => {
     loginCurrentTab.value = tabKey;
     loginCurrentTabIndex.value = index;
@@ -167,7 +118,8 @@ const changeTab = (tabKey: string, index: number) => {
     emits('tabChange', { title: curTab.title, key: curTab.key });
 };
 
-const formDataChange = () => {
+const formDataChange = (value: any, key: string) => {
+    formData[key] = value;
     nextTick(() => {
         emits('formDataChange', formData);
     });
@@ -213,7 +165,7 @@ defineExpose({ formData });
             font-size: var(--font-size-24, 24rpx);
             color: #a0a0a0;
             .protocol {
-                color: #198cff;
+                color: var(--main-color);
             }
         }
 
@@ -242,19 +194,20 @@ defineExpose({ formData });
             background-size: 100% auto;
             .login-box {
                 width: 710rpx;
-                height: 65%;
+                height: 67%;
                 position: absolute;
                 bottom: 0;
                 left: 20rpx;
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
                 z-index: 1;
+                border-radius: 40rpx 40rpx 0 0;
                 .tab-box {
                     height: 96rpx;
                     display: flex;
                     align-items: center;
                     justify-content: space-around;
-                    font-size: 28rpx;
+                    font-size: var(--font-size-28, 28rpx);
                     .tab {
                         display: flex;
                         flex-direction: column;
@@ -263,12 +216,12 @@ defineExpose({ formData });
                         .bar-line {
                             width: 18rpx;
                             height: 6rpx;
-                            background: #077edb;
+                            background: var(--main-color);
                             border-radius: 18rpx;
                         }
                     }
                     .active-tab {
-                        color: #077edb;
+                        color: var(--main-color);
                         font-weight: bold;
                     }
                     .normal-tab {
@@ -281,47 +234,6 @@ defineExpose({ formData });
 
                     padding: 0 66rpx;
                     padding-top: 60rpx;
-
-                    .login-module {
-                        // margin: 60rpx 66rpx 0;
-                        .label {
-                            width: 112rpx;
-                            height: 40rpx;
-                            font-size: 28rpx;
-                        }
-                        .system-account-number {
-                            margin: 12rpx 0 24rpx;
-                        }
-                        .tips {
-                            width: 580rpx;
-                            // height: 120rpx;
-                            background: #f5f8fb;
-                            border-radius: 16rpx;
-                            padding: 20rpx;
-                            font-size: 28rpx;
-                            margin-top: 20rpx;
-                        }
-                        .account-number-input {
-                            width: 580rpx;
-                            height: 92rpx;
-                            background: #ffffff;
-                            border-radius: 16rpx;
-                            margin: 12rpx 0 24rpx;
-                            :deep(.my-input-root) {
-                                height: 92rpx;
-                                line-height: 92rpx;
-                                .content {
-                                    padding: 0 0 0 24rpx !important;
-                                    .input-box {
-                                        height: 92rpx;
-                                        input {
-                                            height: 100%;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
 
                 .protocol-box {
@@ -345,7 +257,7 @@ defineExpose({ formData });
                         margin-top: 24rpx;
                         display: flex;
                         justify-content: space-between;
-                        color: #077edb;
+                        color: var(--main-color);
 
                         &.one {
                             justify-content: center;

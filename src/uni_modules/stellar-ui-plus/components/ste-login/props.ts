@@ -3,6 +3,8 @@ import type { LoginMode, ProtocolItem, BtnItem, LoginGroupItem, BaseConfigItem }
 
 const loginProps = {
     mode: { type: String as PropType<LoginMode>, default: 'base' },
+    // 按钮、协议等颜色，默认为空跟随主题色
+    color: { type: String, default: '' },
     // 是否勾选协议
     protocolCheck: { type: Boolean, default: false },
     baseProtocol: { type: String, default: '' },

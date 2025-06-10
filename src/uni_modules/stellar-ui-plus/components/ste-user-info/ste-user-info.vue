@@ -11,6 +11,7 @@ const emits = defineEmits<{
     (e: 'userClick'): void;
     (e: 'codeClick'): void;
     (e: 'dataClick', index: Number): Number;
+    (e: 'loginBtnClick'): void;
 }>();
 
 const props = defineProps(propsData);
@@ -28,6 +29,10 @@ const cmpRootStyle = computed(() => {
     // 用户信息区域存在
     if (props.showUserInfo && !props.showCode) {
         style.padding = '0 48rpx 0 18rpx';
+    }
+    // 用户登录
+    if (props.showUserInfo && props.loginStatus == 0) {
+        style['justify-content'] = 'space-between';
     }
     return style;
 });
@@ -81,6 +86,10 @@ const cmpCodeStyle = computed(() => {
     return style;
 });
 
+const cmpLoginBtnBg = computed(() => {
+    return props.loginBtnBg ? props.loginBtnBg : getColor().steThemeColor;
+});
+
 function userClick() {
     emits('userClick');
 }
@@ -90,6 +99,9 @@ function codeClick() {
 function dataClick(index: Number) {
     emits('dataClick', index);
 }
+function loginBtnClick() {
+    emits('loginBtnClick');
+}
 </script>
 
 <template>
@@ -97,29 +109,38 @@ function dataClick(index: Number) {
         <view class="box" :style="[cmpRootStyle]">
             <view class="user-box" v-if="showUserInfo" @click="userClick">
                 <view class="left">
-                    <ste-image :width="80" :height="80" :src="avatar"></ste-image>
+                    <ste-image :width="80" :height="80" :src="loginStatus == 1 ? avatar : loginSrc"></ste-image>
                 </view>
                 <view class="right">
-                    <view class="name">{{ nickname }}</view>
-                    <view class="desc">
+                    <view class="name" v-if="loginStatus == 1">{{ nickname }}</view>
+                    <view class="title" v-else>{{ loginTitle }}</view>
+                    <view class="desc" v-if="loginStatus == 1">
                         <slot name="desc"></slot>
                     </view>
+                    <view v-else class="info">{{ loginInfo }}</view>
                 </view>
             </view>
-            <view class="data-box" :style="[cmpDataStyle]">
+            <view class="data-box" :style="[cmpDataStyle]" v-if="!(showUserInfo && loginStatus == 0)">
                 <view class="item" v-for="(item, index) in list" :key="index" @click="dataClick(index)">
-                    <view class="value">{{ item.value }}</view>
+                    <view class="value">{{ loginStatus == 1 ? item.value : '-' }}</view>
                     <view class="title">{{ item.title }}</view>
                 </view>
             </view>
-            <view class="line" v-if="showUserInfo && showCode" :style="[cmpLineStyle]"></view>
-            <view class="code-box" v-if="showCode" @click="codeClick">
+            <view class="line" v-if="showUserInfo && showCode && loginStatus == 1" :style="[cmpLineStyle]"></view>
+            <view class="code-box" v-if="showCode && !(showUserInfo && loginStatus == 0)" @click="codeClick">
                 <view class="top">
                     <ste-image :src="codeSrc" :height="60" :width="60"></ste-image>
                 </view>
                 <view class="bottom" :style="[cmpCodeStyle]">
                     {{ codeTitle }}
                 </view>
+            </view>
+            <view v-if="showUserInfo && loginStatus == 0" class="login-btn" @click="loginBtnClick">
+                <ste-button :background="cmpLoginBtnBg" :rootStyle="{ width: '184rpx', height: '72rpx', padding: 0 }">
+                    <view class="text">
+                        {{ loginBtnText }}
+                    </view>
+                </ste-button>
             </view>
         </view>
     </view>
@@ -134,7 +155,6 @@ function dataClick(index: Number) {
         border-radius: 12rpx;
         display: flex;
         align-items: center;
-        justify-content: space-around;
 
         .user-box {
             display: flex;
@@ -158,8 +178,27 @@ function dataClick(index: Number) {
                     overflow: hidden; /* 隐藏溢出内容 */
                     text-overflow: ellipsis; /* 溢出时显示省略号 */
                 }
+
+                .title {
+                    color: #000;
+                    font-size: var(--font-size-24, 24rpx);
+                    font-weight: Bold;
+                    width: 340rpx; /* 设置固定宽度，也可以是百分比或者其他单位 */
+                    white-space: nowrap; /* 禁止换行 */
+                    overflow: hidden; /* 隐藏溢出内容 */
+                    text-overflow: ellipsis; /* 溢出时显示省略号 */
+                }
+
                 .desc {
                     margin-top: 14rpx;
+                }
+
+                .info {
+                    font-size: 24rpx;
+                    color: #757575;
+                    height: 34rpx;
+                    line-height: 34rpx;
+                    margin-top: 8rpx;
                 }
             }
         }
@@ -213,6 +252,16 @@ function dataClick(index: Number) {
                 color: #ec3e1a;
                 text-align: center;
             }
+        }
+    }
+
+    .login-btn {
+        .text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28rpx;
+            color: #ffffff;
         }
     }
 }

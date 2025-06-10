@@ -7,4 +7,10 @@ export default {
     codeTitle: { type: String, default: '' },
     codeTitleColor: { type: String, default: '' },
     showCode: { type: Boolean, default: true },
+    loginStatus: { type: Number, default: 1 },
+    loginSrc: { type: String, default: '' },
+    loginTitle: { type: String, default: '' },
+    loginInfo: { type: String, default: '' },
+    loginBtnText: { type: String, default: '注册/登录' },
+    loginBtnBg: { type: String, default: '' },
 };

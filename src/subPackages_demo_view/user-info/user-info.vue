@@ -195,6 +195,49 @@ let list3 = ref([{ title: '数据1', value: '100' }]);
                 </view>
             </view>
         </view>
+        <view class="demo-item">
+            <view class="title">未登录(带用户头像)</view>
+            <view class="item-block">
+                <ste-user-info
+                    :loginStatus="0"
+                    loginSrc="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手头像.png"
+                    loginTitle="欢迎来到中百食堂~"
+                    loginInfo="马上登录，在线即点"
+                    loginBtnBg="#EC3E1A"
+                >
+                    <template v-slot:desc>
+                        <view class="desc">
+                            <ste-icon code="&#xe670;" color="#EC3E1A" size="26"></ste-icon>
+                            <view class="title">中百食堂</view>
+                        </view>
+                    </template>
+                </ste-user-info>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">未登录(隐藏用户头像)</view>
+            <view class="item-block">
+                <ste-user-info
+                    :loginStatus="0"
+                    loginSrc="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手头像.png"
+                    loginTitle="欢迎来到中百食堂~"
+                    loginInfo="马上登录，在线即点"
+                    loginBtnBg="#EC3E1A"
+                    :showUserInfo="false"
+                    :list="list2"
+                    codeSrc="https://image.whzb.com/chain/StellarUI/image/code1.png"
+                    codeTitle="核销码"
+                    codeTitleColor="#EC3E1A"
+                >
+                    <template v-slot:desc>
+                        <view class="desc">
+                            <ste-icon code="&#xe670;" color="#EC3E1A" size="26"></ste-icon>
+                            <view class="title">中百食堂</view>
+                        </view>
+                    </template>
+                </ste-user-info>
+            </view>
+        </view>
     </page-layout>
 </template>
 

@@ -53,6 +53,52 @@
             "default": true
         },
         {
+            "name": "loginStatus",
+            "description": "登录状态",
+            "type": "Number",
+            "default": 1,
+            "values": [
+                {
+                    "name": 0,
+                    "description": "未登录"
+                },
+                {
+                    "name": 1,
+                    "description": "登录"
+                }
+            ]
+        },
+        {
+            "name": "loginSrc",
+            "description": "未登录头像",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "loginTitle",
+            "description": "未登录标题",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "loginInfo",
+            "description": "未登录提示语",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "loginBtnText",
+            "description": "登录按钮文本",
+            "type": "String",
+            "default": "注册/登录"
+        },
+        {
+            "name": "loginBtnBg",
+            "description": "登录按钮背景色",
+            "type": "String",
+            "default": "主题色"
+        },
+        {
             "name": "[event]userClick",
             "description": "用户区域点击",
             "type": "() => void"
@@ -65,6 +111,11 @@
         {
             "name": "[event]codeClick",
             "description": "功能码区域点击",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]loginBtnClick",
+            "description": "登录按钮点击",
             "type": "() => void"
         }
     ]

@@ -334,6 +334,69 @@
 </style>
 ```
 
+### 未登录状态
+
+- 通过 `loginStatus`设置登录状态，`0`：未登录，`1`：登录，默认为`1`
+- 通过 `loginSrc`设置未登录头像，默认为``
+- 通过 `loginTitle`设置未登录标题，默认为``
+- 通过 `loginInfo`设置未登录提示语，默认为``
+- 通过 `loginBtnText`设置登录按钮文本，默认为`注册/登录`
+- 通过 `loginBtnBg`设置登录按钮背景色，默认为`主题色`
+
+```html
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    let list2 = ref([
+        { title: '数据1', value: '100' },
+        { title: '数据2', value: '8' },
+        { title: '数据3', value: '8' },
+    ]);
+</script>
+<template>
+    <view class="demo-item">
+        <view class="title">未登录(隐藏用户头像)</view>
+        <view class="item-block">
+            <ste-user-info
+                :loginStatus="0"
+                loginSrc="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手头像.png"
+                loginTitle="欢迎来到中百食堂~"
+                loginInfo="马上登录，在线即点"
+                loginBtnBg="#EC3E1A"
+                :showUserInfo="false"
+                :list="list2"
+                codeSrc="https://image.whzb.com/chain/StellarUI/image/code1.png"
+                codeTitle="核销码"
+                codeTitleColor="#EC3E1A"
+            >
+                <template v-slot:desc>
+                    <view class="desc">
+                        <ste-icon code="&#xe670;" color="#EC3E1A" size="26"></ste-icon>
+                        <view class="title">中百食堂</view>
+                    </view>
+                </template>
+            </ste-user-info>
+        </view>
+    </view>
+</template>
+<style>
+    .item-block {
+        > view {
+            margin: 0 36rpx 36rpx 0;
+        }
+    }
+    .desc {
+        display: flex;
+        align-items: center;
+        .title {
+            font-size: 24rpx;
+            color: #ec3e1a;
+            margin: 4rpx;
+            margin-right: 14rpx;
+        }
+    }
+</style>
+```
+
 ---$
 
 ### API

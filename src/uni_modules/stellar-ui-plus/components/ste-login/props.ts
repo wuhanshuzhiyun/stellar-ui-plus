@@ -18,7 +18,9 @@ const loginProps = {
     // 登录表单配置
     loginGroup: { type: Array as PropType<LoginGroupItem[]>, default: () => [] },
     //登录框背景图
-    loginBackground: { type: String, default: '' },
+    loginBoxBackground: { type: String, default: '' },
+    // 登录框高度
+    loginBoxHeight: { type: [Number, String], default: '67%' },
     // 底部提示
     bottomTip: { type: String, default: '' },
 };
@@ -30,6 +32,7 @@ export const loginEmits = {
     secondaryBtnClick: (item: BtnItem) => item,
     tabChange: (item: BaseConfigItem) => item,
     formDataChange: (data: Record<string, any>) => data,
+    getCode: () => true,
 };
 
 export default loginProps;

@@ -65,13 +65,15 @@
 </script>
 ```
 
-#### 复杂登录
+#### 复杂登录 - 示例1
 
 - `mode`值为`mode1`时为复杂登录
 - 此时`primaryBtnData`样式不变，`secondaryBtnData`为文字按钮
 - 若需要拿到表单数据
     - `@form-data-change`事件监听，事件参数为表单数据
     - 通过ref方式获取`formData`属性
+- 根据`loginGroup`属性动态生成tab栏和表单
+- 其中`items`属性配置具体输入，其中`type` 支持`number`/`password`/`select`/`txt`/`validate`（数字、密码、下拉框、文本提示、验证码）
 
 ```html
 <template>
@@ -86,7 +88,7 @@
             :bottomTip="baseTip"
             :loginGroup="loginGroup"
             loginImgUrl="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg2.png?202408121"
-            loginBackgroundImg="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg1.png?202408121"
+            loginBoxBackground="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg1.png?202408121"
             @tabChange="tabChange"
             @primaryBtnClick="handleClick"
             @secondary-btn-click="handleClick"
@@ -197,16 +199,111 @@
 </script>
 ```
 
+#### 复杂登录 - 示例2
+
+- 当`loginGroup`配置为一个数据时，顶部tab栏会隐藏显示
+- 可在单个表单中配置`iconColor`改变图标颜色
+
+```html
+<template>
+    <view style="width: 100vw; height: 100vh;padding-top: 186rpx">
+        <ste-login
+            ref="myLogin"
+            mode="mode1"
+            color="#EC3E1A"
+            :baseProtocol="base"
+            :protocolData="protocolData"
+            :primaryBtn="primaryBtnData"
+            :secondaryBtn="secondaryBtnData"
+            :bottomTip="baseTip"
+            :loginGroup="loginGroup"
+            loginImgUrl="https://image.whzb.com/chain/StellarUI/image/食堂登录.png"
+            loginBoxBackground="rgba(255, 255, 255, .75)"
+            @primaryBtnClick="handleClick"
+            @secondary-btn-click="handleClick"
+            @protocol-click="protocolClick"
+            @form-data-change="formDataChange"
+        />
+    </view>
+</template>
+<script lang="ts" setup>
+    import { reactive, ref } from 'vue';
+    import type { RefLogin } from '@/uni_modules/stellar-ui-plus/types/refComponents';
+    const baseTip = '版本信息 V1.0.0';
+
+    const myLogin = ref<RefLogin>();
+
+    const base = '登录即同意';
+    const protocolData = reactive([{ title: '中百食堂隐私郑策', key: 'p1' }]);
+
+    const loginGroup = reactive([
+        {
+            title: '登陆',
+            key: 'bind',
+            items: [
+                {
+                    title: '手机号',
+                    key: 'username',
+                    type: 'number' as const,
+                    style: {
+                        iconColor: '#FFAFA4',
+                    },
+                },
+                {
+                    title: '验证码',
+                    key: 'validate',
+                    type: 'validate' as const,
+                    style: {
+                        iconColor: '#FFAFA4',
+                    },
+                },
+            ],
+        },
+    ]);
+
+    const primaryBtnData = reactive([
+        {
+            title: '登录',
+            key: 'wx',
+        },
+    ]);
+
+    const secondaryBtnData = reactive([
+        {
+            title: '微信一键登录',
+            key: 'wxOneKey',
+        },
+    ]);
+
+    const handleClick = (item: any) => {
+        console.log(item);
+        if (item.key === 'wx') {
+            console.log('点击了微信登录');
+            console.log(myLogin.value?.formData);
+        }
+    };
+
+    const formDataChange = (data: any) => {
+        console.log(data);
+    };
+
+    const protocolClick = (item: any) => {
+        console.log(item);
+    };
+</script>
+```
+
 ---$
 
 ### API
 
 #### BaseConfigItem & ProtocolItem & BtnItem
 
-| 属性名  | 说明       | 是否必填 | 类型     |
-| ------- | ---------- | -------- | -------- |
-| `title` | 显示的内容 | 是       | `string` |
-| `key`   | 标识符     | 是       | `string` |
+| 属性名  | 说明                           | 是否必填 | 类型     |
+| ------- | ------------------------------ | -------- | -------- |
+| `title` | 显示的内容                     | 是       | `string` |
+| `key`   | 标识符                         | 是       | `string` |
+| `style` | 对应配置的样式(暂时只支持部分) | 否       | `object` |
 
 #### LoginGroupItem
 
@@ -218,17 +315,17 @@
 
 #### LoginItem
 
-| 属性名        | 说明                                               | 是否必填 | 类型               |
-| ------------- | -------------------------------------------------- | -------- | ------------------ |
-| `title`       | 显示的内容                                         | 是       | `string`           |
-| `key`         | 标识符                                             | 是       | `string`           |
-| `type`        | 输入类型，暂支持`number`/`password`/`select`/`txt` | 否       | `string`           |
-| `value`       | 默认值                                             | 否       | `string`           |
-| `selectData`  | 选项数据，仅当`type`为`select`时生效               | 否       | `BaseConfigItem[]` |
-| `maxLength`   | 最大长度                                           | 否       | `number`           |
-| `disabled`    | 禁用                                               | 否       | `boolean`          |
-| `icon`        | 输入框模式下对应的前缀图标code                     | 否       | `string`           |
-| `placeholder` | 输入框模式下对应的placeholder                      | 否       | `string`           |
+| 属性名        | 说明                                                          | 是否必填 | 类型               |
+| ------------- | ------------------------------------------------------------- | -------- | ------------------ |
+| `title`       | 显示的内容                                                    | 是       | `string`           |
+| `key`         | 标识符                                                        | 是       | `string`           |
+| `type`        | 输入类型，暂支持`number`/`password`/`select`/`txt`/`validate` | 否       | `string`           |
+| `value`       | 默认值                                                        | 否       | `string`           |
+| `selectData`  | 选项数据，仅当`type`为`select`时生效                          | 否       | `BaseConfigItem[]` |
+| `maxLength`   | 最大长度                                                      | 否       | `number`           |
+| `disabled`    | 禁用                                                          | 否       | `boolean`          |
+| `icon`        | 输入框模式下对应的前缀图标code                                | 否       | `string`           |
+| `placeholder` | 输入框模式下对应的placeholder                                 | 否       | `string`           |
 
 <!-- props -->
 

@@ -21,6 +21,12 @@
             ]
         },
         {
+            "name": "color",
+            "description": "颜色统一设置，包括按钮、输入框图标、协议超链接等，默认跟随主题色",
+            "type": "string",
+            "default": ""
+        },
+        {
             "name": "protocolCheck",
             "description": "是否勾选协议",
             "type": "boolean",
@@ -64,10 +70,16 @@
             "default": "[]"
         },
         {
-            "name": "loginBackground",
+            "name": "loginBoxBackground",
             "description": "登录框背景",
             "type": "string",
             "default": ""
+        },
+        {
+            "name": "loginBoxHeight",
+            "description": "登录框高度，默认占整个高度的67%，也可以为具体像素值",
+            "type": "string",
+            "default": "67%"
         },
         {
             "name": "bottomTip",
@@ -129,6 +141,12 @@
                     "description": "所有表单值"
                 }
             ]
+        },
+        {
+            "name": "[event]getCode",
+            "description": "当配置输入类型为验证码时，点击获取验证码时触发",
+            "type": "() => void",
+            "params": []
         }
     ]
 }

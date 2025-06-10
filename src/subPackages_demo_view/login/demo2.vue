@@ -11,7 +11,7 @@
                 :bottomTip="baseTip"
                 :loginGroup="loginGroup"
                 loginImgUrl="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg2.png?202408121"
-                loginBackground="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg1.png?202408121"
+                loginBoxBackground="https://image.whzb.com/chain/inte-cloud-tour-uniapp/00-普通图片/00-开发版//login/bg1.png?202408121"
                 @tabChange="tabChange"
                 @primaryBtnClick="handleClick"
                 @secondary-btn-click="handleClick"

@@ -12,8 +12,7 @@
                 :bottomTip="baseTip"
                 :loginGroup="loginGroup"
                 loginImgUrl="https://image.whzb.com/chain/StellarUI/image/食堂登录.png"
-                loginBackground="rgba(255, 255, 255, .75)"
-                @tabChange="tabChange"
+                loginBoxBackground="rgba(255, 255, 255, .75)"
                 @primaryBtnClick="handleClick"
                 @secondary-btn-click="handleClick"
                 @protocol-click="protocolClick"
@@ -42,11 +41,17 @@ const loginGroup = reactive([
                 title: '手机号',
                 key: 'username',
                 type: 'number' as const,
+                style: {
+                    iconColor: '#FFAFA4',
+                },
             },
             {
                 title: '验证码',
                 key: 'validate',
                 type: 'validate' as const,
+                style: {
+                    iconColor: '#FFAFA4',
+                },
             },
         ],
     },
@@ -66,15 +71,6 @@ const secondaryBtnData = reactive([
     },
 ]);
 
-const tabChange = (item: any) => {
-    console.log(item);
-    if (item.key === 'account') {
-        primaryBtnData[0].title = '去登录';
-    }
-    if (item.key === 'bind') {
-        primaryBtnData[0].title = '去绑定';
-    }
-};
 const handleClick = (item: any) => {
     console.log(item);
     if (item.key === 'wx') {

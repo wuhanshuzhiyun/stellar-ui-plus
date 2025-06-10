@@ -40,7 +40,7 @@
                 >
                     <template v-slot:prefix>
                         <view :style="[inputIconStyle]">
-                            <ste-icon code="&#xe631;" size="40" :color="config.style?.color || color"></ste-icon>
+                            <ste-icon :code="config.icon || '&#xe631;'" size="40" :color="config.style?.iconColor || color"></ste-icon>
                         </view>
                     </template>
                 </ste-input>
@@ -64,7 +64,7 @@
                 >
                     <template v-slot:prefix>
                         <view :style="[inputIconStyle]">
-                            <ste-icon code="&#xe630;" size="40" :color="config.style?.color || color"></ste-icon>
+                            <ste-icon :code="config.icon || '&#xe630;'" size="40" :color="config.style?.iconColor || color"></ste-icon>
                         </view>
                     </template>
                 </ste-input>
@@ -87,7 +87,7 @@
                 >
                     <template v-slot:prefix>
                         <view :style="[inputIconStyle]">
-                            <ste-icon code="&#xe630;" size="40" :color="config.style?.color || color"></ste-icon>
+                            <ste-icon :code="config.icon || '&#xe630;'" size="40" :color="config.style?.iconColor || color"></ste-icon>
                         </view>
                     </template>
                     <template v-slot:suffix>
@@ -110,7 +110,9 @@ const props = defineProps({
     config: { type: Object as PropType<LoginItem>, default: () => {} },
     modelValue: { type: [String], default: '' },
 });
-const emits = defineEmits(['update:modelValue', 'change']);
+const emits = defineEmits(['update:modelValue', 'change', 'getCode']);
+
+console.log('config is ', props.config);
 
 const defaultConfig = {
     placeholder: '请输入',
@@ -143,6 +145,7 @@ let codeTimer: any;
 const getCode = () => {
     if (count.value > 0) return;
     count.value = defaultCountValue;
+    emits('getCode');
     codeTimer = setInterval(() => {
         if (count.value <= 0) {
             clearInterval(codeTimer);

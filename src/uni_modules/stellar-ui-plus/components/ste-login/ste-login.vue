@@ -34,7 +34,7 @@
                 <view class="login-tabs-item">
                     <view class="login-module">
                         <template v-for="i in loginGroup[loginCurrentTabIndex].items" :key="i.key">
-                            <login-form-item :config="i" v-model="formData[i.key]" @change="formDataChange($event, i.key)" :color="mainColor" />
+                            <login-form-item :config="i" v-model="formData[i.key]" @change="formDataChange($event, i.key)" :color="mainColor" @get-code="emits('getCode')" />
                         </template>
                     </view>
                     <view class="protocol-box">
@@ -106,8 +106,20 @@ const compRootStyle = computed(() => {
 
 const compLoginBoxStyle = computed(() => {
     const style: CSSProperties = {
-        ...utils.bg2style(props.loginBackground || '#ffffff'),
+        ...utils.bg2style(props.loginBoxBackground || '#ffffff'),
     };
+
+    // 宽度 width
+    // if (props.width == '100%' || props.width == 'auto') {
+    //     style.width = props.width;
+    // } else {
+    //     style.width = utils.formatPx(props.width);
+    // }
+    if (typeof props.loginBoxHeight === 'number' || typeof Number(props.loginBoxHeight) === 'number') {
+        style.height = utils.formatPx(props.loginBoxHeight);
+    } else {
+        style.height = props.loginBoxHeight;
+    }
     return style;
 });
 
@@ -193,8 +205,7 @@ defineExpose({ formData });
         &.mode-1 {
             background-size: 100% auto;
             .login-box {
-                width: 710rpx;
-                height: 67%;
+                width: calc(100% - 40rpx);
                 position: absolute;
                 bottom: 0;
                 left: 20rpx;

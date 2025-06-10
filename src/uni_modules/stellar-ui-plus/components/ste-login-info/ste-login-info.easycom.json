@@ -23,28 +23,22 @@
             "default": ""
         },
         {
-            "name": "infoUser",
-            "description": "用户数据",
-            "type": "InfoUser",
-            "default": "{}"
+            "name": "title",
+            "description": "主标题",
+            "type": "string",
+            "default": ""
         },
         {
-            "name": "infoData",
-            "description": "中间数据",
-            "type": "InfoItem[]",
-            "default": "[]"
+            "name": "subTitle",
+            "description": "副标题",
+            "type": "string",
+            "default": ""
         },
         {
-            "name": "infoCode",
-            "description": "最后部分数据",
-            "type": "InfoItem",
-            "default": "{}"
-        },
-        {
-            "name": "[event]data-click",
-            "description": "中间数据点击时触发",
-            "type": "(item: InfoItem) => void",
-            "params": [{ "name": "item", "description": "点击的项" }]
+            "name": "subTitleIcon",
+            "description": "副标题图标code",
+            "type": "string",
+            "default": ""
         },
         {
             "name": "[event]avatar-click",

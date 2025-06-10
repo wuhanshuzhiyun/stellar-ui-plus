@@ -40,7 +40,7 @@ const initData = () => {
     });
 };
 
-watch(() => props.data, initData, { immediate: true });
+watch(() => props.data, initData, { immediate: true, deep: true });
 
 const handleCategoryClick = (item: CategoryItem, index: number) => {
     categoryData.forEach((item, i) => {

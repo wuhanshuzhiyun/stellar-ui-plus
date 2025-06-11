@@ -5,6 +5,10 @@ import utils from '@/common/utils';
 const props = defineProps({
     title: String,
     contentStyle: [String, Object],
+    isHome: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const cmpContentStyle = computed(() => {
@@ -22,7 +26,7 @@ const cmpContentStyle = computed(() => {
 
 <template>
     <view class="page">
-        <page-nav :title="props.title"></page-nav>
+        <page-nav :title="props.title" :isHome="isHome"></page-nav>
         <view class="content" :style="[cmpContentStyle, props.contentStyle]">
             <slot></slot>
         </view>

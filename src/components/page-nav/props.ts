@@ -1,3 +1,7 @@
 export default {
-  title: String,
-}
+    title: String,
+    isHome: {
+        type: Boolean,
+        default: true,
+    },
+};

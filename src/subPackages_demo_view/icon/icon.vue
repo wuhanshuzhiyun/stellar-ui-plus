@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
-const iconUrl = ref('https://at.alicdn.com/t/c/font_4457057_f7j9wsh9d4h.json?spm=a313x.manage_type_myprojects.i1.11.2ba93a81on7sxn&file=font_4457057_f7j9wsh9d4h.json');
+const iconUrl = ref('https://at.alicdn.com/t/c/font_4457057_yv7ztjy747.json?spm=a313x.manage_type_myprojects.i1.13.539c3a81Bn8IBV&file=font_4457057_yv7ztjy747.json');
 const glyphs = ref<Array<any>>([]);
 const tabIndex = ref(0);
 const isShowUnicode = ref(false);

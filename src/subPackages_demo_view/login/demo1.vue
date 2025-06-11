@@ -1,5 +1,5 @@
 <template>
-    <page-layout title="登录示例1" contentStyle="padding: 0">
+    <page-layout title="登录示例1" contentStyle="padding: 0" :isHome="false">
         <view class="demo-1">
             <ste-login
                 :baseProtocol="base"

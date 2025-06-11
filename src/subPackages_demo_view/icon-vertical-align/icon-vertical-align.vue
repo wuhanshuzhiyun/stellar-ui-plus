@@ -49,7 +49,7 @@ function preview() {
 </script>
 
 <template>
-    <page-layout title="图标对齐预览">
+    <page-layout title="图标对齐预览" :isHome="false">
         <view class="font-title">字体地址</view>
         <view class="font-sample">
             <view>例子：</view>

@@ -10,14 +10,18 @@ import propsData from './props';
 const props = defineProps(propsData);
 
 function navBack() {
-    uni.redirectTo({
-        url: '/pages/mp/index',
-    });
+    if (props.isHome) {
+        uni.redirectTo({
+            url: '/pages/mp/index',
+        });
+    } else {
+        uni.navigateBack();
+    }
 }
 </script>
 
 <template>
-    <ste-navbar :title="title" @backClick="navBack"></ste-navbar>
+    <ste-navbar :title="title" @backClick="navBack" :isHome="isHome"></ste-navbar>
 </template>
 
 <style lang="scss" scoped></style>

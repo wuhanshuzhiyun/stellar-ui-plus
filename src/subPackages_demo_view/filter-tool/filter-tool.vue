@@ -29,7 +29,17 @@ const handleConfirm = (values: any) => {
             <view class="title">基础用法</view>
             <view class="item-block">
                 <view>
-                    <ste-filter-tool :data="subFilters" @item-click="handleFilterClick" @confirm="handleConfirm">
+                    <ste-filter-tool
+                        :data="subFilters"
+                        @item-click="handleFilterClick"
+                        @confirm="handleConfirm"
+                        :value="[
+                            {
+                                key: 'category',
+                                values: ['beauty'],
+                            },
+                        ]"
+                    >
                         <view style="font-size: 24rpx">
                             <text>基础筛选</text>
                             <ste-icon code="&#xe6c7;" color="#000" size="24" />

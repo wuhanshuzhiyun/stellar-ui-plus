@@ -30,7 +30,7 @@ const data1 = ref([
     <page-layout title="订单卡片" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
         <view class="description">
             <view class="cmp-name">OrderCard 订单卡片</view>
-            <view class="cmp-desc">商品信息组件用于展示商品信息</view>
+            <view class="cmp-desc">此组件用于展示订单卡片</view>
         </view>
         <view class="demo-item">
             <view class="title">基础用法(一条数据)</view>

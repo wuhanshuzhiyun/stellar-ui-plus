@@ -5,6 +5,7 @@ const loginInfoProps = {
     title: { type: String, default: '' },
     subTitle: { type: String, default: '' },
     subTitleIcon: { type: String, default: '' },
+    fontFamily: { type: String, default: 'ste-iconfont-1709689042473' },
 };
 
 export const loginInfoEmits = {

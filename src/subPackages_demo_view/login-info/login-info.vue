@@ -24,7 +24,7 @@ const handleUserClick = () => {
 <template>
     <page-layout title="登录信息展示" contentStyle="background: #F2F3F5;">
         <view class="description">
-            <view class="cmp-name">LoginInfo 登录信息展示</view>
+            <view class="cmp-name">LoginInfo 登录信息</view>
             <view class="cmp-desc">登录信息展示</view>
         </view>
 

@@ -38,7 +38,7 @@ const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty',
                 <slot name="header-right">
                     <view class="ste-function-list-more" @click.stop="onClickHeader('more')">
                         更多
-                        <ste-icon code="&#xe674;" color="#353535"></ste-icon>
+                        <ste-icon code="&#xe674;" color="#353535" :fontFamily="fontFamily"></ste-icon>
                     </view>
                 </slot>
             </view>
@@ -56,7 +56,7 @@ const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty',
                             <view class="content-list-item-info-status" @click.stop="onClickItem('status', item)">{{ item.statusText }}</view>
                             <view class="content-list-item-info-button" v-if="item.buttonText || buttonText || item.buttonIcon || buttonIcon" @click.stop="onClickItem('button', item)">
                                 <ste-button :mode="100" :rootStyle="{ height: '56rpx' }" type="primary" :background="item.buttonBg || buttonBg" :color="item.buttonColor || buttonColor">
-                                    <ste-icon :code="item.buttonIcon || buttonIcon" :color="item.buttonColor || buttonColor" />
+                                    <ste-icon :code="item.buttonIcon || buttonIcon" :color="item.buttonColor || buttonColor" :fontFamily="fontFamily" />
                                     {{ item.buttonText || buttonText }}
                                 </ste-button>
                             </view>

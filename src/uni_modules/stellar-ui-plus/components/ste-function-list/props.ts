@@ -22,6 +22,7 @@ export type Props = {
     emptyImage: string;
     emptyText: string;
     emptyButtonText: string;
+    fontFamily: string;
 };
 
 export default {
@@ -49,4 +50,6 @@ export default {
     emptyText: { type: String, default: () => '' },
     /** 列表为空时显示的按钮文字 */
     emptyButtonText: { type: String, default: () => '' },
+    /** icon的字体名 */
+    fontFamily: { type: String, default: () => 'ste-iconfont-1709689042473' },
 };

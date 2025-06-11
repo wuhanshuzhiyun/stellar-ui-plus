@@ -2045,6 +2045,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "emptyButtonText",
                 "description": "列表为空时显示的按钮文字",
                 "type": "string"
+            },
+            {
+                "name": "fontFamily",
+                "description": "icon的字体名",
+                "type": "string",
+                "default": "ste-iconfont-1709689042473’"
             }
         ],
         "events": [

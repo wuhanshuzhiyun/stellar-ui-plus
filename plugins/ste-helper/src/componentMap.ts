@@ -2687,7 +2687,7 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "fontFamily",
                 "description": "字体名",
                 "type": "string",
-                "default": ""
+                "default": "ste-iconfont-1709689042473"
             },
             {
                 "name": "inlineBlock",
@@ -3718,6 +3718,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "副标题图标code",
                 "type": "string",
                 "default": ""
+            },
+            {
+                "name": "fontFamily",
+                "description": "icon的字体名",
+                "type": "string",
+                "default": "ste-iconfont-1709689042473"
             }
         ],
         "events": [
@@ -3729,7 +3735,7 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "user-click",
-                "description": "用户数据点击时触发",
+                "description": "用户信息点击时触发",
                 "type": "(]) => void",
                 "params": []
             }
@@ -8582,7 +8588,13 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "dataClick",
                 "description": "数据点击",
-                "type": "(index : string | number) => void"
+                "type": "(index : string | number) => void",
+                "params": [
+                    {
+                        "name": "index",
+                        "description": "当前点击的数据排序"
+                    }
+                ]
             },
             {
                 "name": "codeClick",

@@ -2,7 +2,7 @@
     "name": "ste-helper",
     "displayName": "ste-helper",
     "description": "StellarUI-Plus组件库的代码提示",
-    "version": "0.0.120",
+    "version": "0.0.121",
     "icon": "src/assets/logo.png",
     "engines": {
         "vscode": "^1.56.0"

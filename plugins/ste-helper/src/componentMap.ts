@@ -1732,12 +1732,6 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
-    "ste-donut-chart": {
-        "site": "ste-donut-chart",
-        "attr": [
-            ""
-        ]
-    },
     "drag": {
         "site": "ste-drag",
         "attr": [
@@ -2057,22 +2051,26 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-header",
                 "description": "点击列表头部触发",
-                "type": "(type: 'title' | 'subhead' | 'more') => void",
+                "type": "(type: 'empty' | 'title' | 'subhead' | 'more') => void",
                 "params": [
                     {
                         "name": "type",
-                        "description": "点击的区域类型（可选值：`title`, `subhead`,`more`）"
+                        "description": "点击的区域类型（可选值：`empty`, `title`, `subhead`,`more`）"
                     }
                 ]
             },
             {
                 "name": "click-item",
                 "description": "点击列表项触发",
-                "type": "(type: 'image' | 'title' | 'subhead' | 'status' | 'button') => void",
+                "type": "(type: 'empty' | 'image' | 'title' | 'subhead' | 'status' | 'button'; item:FunctionListItem) => void",
                 "params": [
                     {
                         "name": "type",
-                        "description": "点击的区域类型（可选值：`image` , `title` , `subhead` , `status` , `button`）"
+                        "description": "点击的区域类型（可选值：`empty`, `image` , `title` , `subhead` , `status` , `button`）"
+                    },
+                    {
+                        "name": "item",
+                        "description": "当前点击的数据项"
                     }
                 ]
             },
@@ -2520,11 +2518,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "点击确定按钮时触发",
-                "type": "(type: 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => void",
+                "type": "(type:'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => void",
                 "params": [
                     {
                         "name": "type",
-                        "description": "点击位置:'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'"
+                        "description": "点击位置: `empty` , `image` , `title` , `code` , `price` , `originalPrice` , `stepper`"
                     }
                 ]
             },
@@ -2581,7 +2579,7 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "params": [
                     {
                         "name": "type",
-                        "description": "点击的区域：'method' | 'back' | 'item' | 'right'"
+                        "description": "点击的区域：`method`, `back`, `item`, `right`"
                     },
                     {
                         "name": "item",
@@ -3549,6 +3547,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 ]
             },
             {
+                "name": "color",
+                "description": "颜色统一设置，包括按钮、输入框图标、协议超链接等，默认跟随主题色",
+                "type": "string",
+                "default": ""
+            },
+            {
                 "name": "protocolCheck",
                 "description": "是否勾选协议",
                 "type": "boolean",
@@ -3591,10 +3595,16 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "[]"
             },
             {
-                "name": "loginBackground",
+                "name": "loginBoxBackground",
                 "description": "登录框背景",
                 "type": "string",
                 "default": ""
+            },
+            {
+                "name": "loginBoxHeight",
+                "description": "登录框高度，默认占整个高度的67%，也可以为具体像素值",
+                "type": "string",
+                "default": "67%"
             },
             {
                 "name": "bottomTip",
@@ -3658,6 +3668,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "description": "所有表单值"
                     }
                 ]
+            },
+            {
+                "name": "getCode",
+                "description": "当配置输入类型为验证码时，点击获取验证码时触发",
+                "type": "() => void",
+                "params": []
             }
         ]
     },
@@ -3686,36 +3702,25 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": ""
             },
             {
-                "name": "infoUser",
-                "description": "用户数据",
-                "type": "InfoUser",
-                "default": "{}"
+                "name": "title",
+                "description": "主标题",
+                "type": "string",
+                "default": ""
             },
             {
-                "name": "infoData",
-                "description": "中间数据",
-                "type": "InfoItem[]",
-                "default": "[]"
+                "name": "subTitle",
+                "description": "副标题",
+                "type": "string",
+                "default": ""
             },
             {
-                "name": "infoCode",
-                "description": "最后部分数据",
-                "type": "InfoItem",
-                "default": "{}"
+                "name": "subTitleIcon",
+                "description": "副标题图标code",
+                "type": "string",
+                "default": ""
             }
         ],
         "events": [
-            {
-                "name": "data-click",
-                "description": "中间数据点击时触发",
-                "type": "(item: InfoItem) => void",
-                "params": [
-                    {
-                        "name": "item",
-                        "description": "点击的项"
-                    }
-                ]
-            },
             {
                 "name": "avatar-click",
                 "description": "头像点击时触发",
@@ -3728,6 +3733,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "(]) => void",
                 "params": []
             }
+        ]
+    },
+    "ste-main-info": {
+        "site": "ste-main-info",
+        "attr": [
+            ""
         ]
     },
     "media-preview": {
@@ -4322,33 +4333,87 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "[]"
             },
             {
-                "name": "background",
-                "description": "组件背景色",
+                "name": "count",
+                "description": "总数",
+                "type": "number",
+                "default": "0"
+            },
+            {
+                "name": "price",
+                "description": "订单金额（分）",
+                "type": "number",
+                "default": "0"
+            },
+            {
+                "name": "mainBtnText",
+                "description": "主要功能按钮文本",
+                "type": "string"
+            },
+            {
+                "name": "mainBtnBg",
+                "description": "主要功能按钮背景",
+                "type": "string",
+                "default": "#EC3E1A"
+            },
+            {
+                "name": "mainBtnTextColor",
+                "description": "主要功能按钮文本颜色",
                 "type": "string",
                 "default": "#fff"
             },
             {
-                "name": "background",
-                "description": "组件背景色",
-                "type": "string",
-                "default": "#fff"
+                "name": "subBtnText",
+                "description": "次功能按钮文本",
+                "type": "string"
             },
             {
-                "name": "background",
-                "description": "组件背景色",
-                "type": "string",
-                "default": "#fff"
+                "name": "showDetail",
+                "description": "是否显示详情(单条数据时生效)",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "showMore",
+                "description": "是否显示更多",
+                "type": "boolean",
+                "default": "false"
             }
         ],
         "events": [
             {
                 "name": "click-header",
-                "description": "点击列表头部触发",
-                "type": "(type: 'title' | 'subhead' | 'more') => void",
+                "description": "点击头部触发",
+                "type": "(type: 'empty' | 'title' | 'image' | 'status' | 'tag' | 'helper') => void",
                 "params": [
                     {
                         "name": "type",
-                        "description": "点击的区域类型（可选值：`title`, `subhead`,`more`）"
+                        "description": "点击的区域类型（可选值：`empty`,`image`, `title`, `status`, `tag`, `helper`）"
+                    }
+                ]
+            },
+            {
+                "name": "click-item",
+                "description": "点击商品项触发",
+                "type": "(type: 'empty' | 'image' | 'title' | 'sub-title' | 'details'; item: OrderGoods) => void",
+                "params": [
+                    {
+                        "name": "type",
+                        "description": "点击的区域类型（可选值：`empty`,`image`, `title`, `sub-title`, `details`）"
+                    },
+                    {
+                        "name": "item",
+                        "description": "当前点击的数据项"
+                    }
+                ]
+            },
+            {
+                "name": "click-button",
+                "description": "点击底部按钮触发",
+                "type": "(type: 'primary' | 'secondary' | 'more') => void",
+                "params": [
+                    {
+                        "name": "type",
+                        "description": "点击的按钮类型（可选值：`primary`,`secondary`, `more`）"
                     }
                 ]
             }
@@ -8460,6 +8525,52 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否展示功能码相关",
                 "type": "Boolean",
                 "default": true
+            },
+            {
+                "name": "loginStatus",
+                "description": "登录状态",
+                "type": "Number",
+                "default": 1,
+                "values": [
+                    {
+                        "name": 0,
+                        "description": "未登录"
+                    },
+                    {
+                        "name": 1,
+                        "description": "登录"
+                    }
+                ]
+            },
+            {
+                "name": "loginSrc",
+                "description": "未登录头像",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "loginTitle",
+                "description": "未登录标题",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "loginInfo",
+                "description": "未登录提示语",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "loginBtnText",
+                "description": "登录按钮文本",
+                "type": "String",
+                "default": "注册/登录"
+            },
+            {
+                "name": "loginBtnBg",
+                "description": "登录按钮背景色",
+                "type": "String",
+                "default": "主题色"
             }
         ],
         "events": [
@@ -8476,6 +8587,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "codeClick",
                 "description": "功能码区域点击",
+                "type": "() => void"
+            },
+            {
+                "name": "loginBtnClick",
+                "description": "登录按钮点击",
                 "type": "() => void"
             }
         ]

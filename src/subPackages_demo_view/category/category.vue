@@ -28,7 +28,7 @@ const data1 = reactive([
             <view class="title">基础用法</view>
             <view class="item-block">
                 <view>
-                    <ste-category :data="data1"></ste-category>
+                    <ste-category :data="data1" value="roulei"></ste-category>
                 </view>
                 <view>
                     <ste-category :data="data1">

@@ -28,6 +28,23 @@ const props = defineProps(propsData);
 const emits = defineEmits(categoryEmits);
 const currentActiveIndex = ref(0);
 const categoryData = reactive<CategoryItem[]>([]);
+
+const getIndex = () => {
+    const { value } = props;
+    const defaultIndex = 0;
+
+    if (!value) {
+        return defaultIndex;
+    }
+    const index = props.data.findIndex(item => item.value === value);
+
+    if (index <= -1) {
+        return defaultIndex;
+    } else {
+        currentActiveIndex.value = index;
+        return index;
+    }
+};
 const initData = () => {
     categoryData.length = 0;
     props.data.forEach((item, index) => {
@@ -35,7 +52,7 @@ const initData = () => {
             ...item,
             title: item.title,
             value: item.value,
-            active: index === 0,
+            active: index === getIndex(),
         });
     });
 };

@@ -91,7 +91,7 @@
                         </view>
                     </template>
                     <template v-slot:suffix>
-                        <view :style="[{ color, opacity: count > 0 ? 1 : 0.35, fontSize: 'var(--font-size-28, 28rpx)' }]" @click="getCode">
+                        <view :style="[{ color, opacity: count > 0 ? 0.35 : 1, fontSize: 'var(--font-size-28, 28rpx)' }]" @click="getCode">
                             {{ count <= 0 ? '获取验证码' : count + '秒后获取' }}
                         </view>
                     </template>

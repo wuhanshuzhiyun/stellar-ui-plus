@@ -106,7 +106,13 @@
         {
             "name": "[event]dataClick",
             "description": "数据点击",
-            "type": "(index : string | number) => void"
+            "type": "(index : string | number) => void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "当前点击的数据排序"
+                }
+            ]
         },
         {
             "name": "[event]codeClick",

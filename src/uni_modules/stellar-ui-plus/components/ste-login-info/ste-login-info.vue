@@ -7,14 +7,10 @@
             <view class="user-info" @click="handleUserClick">
                 <view class="name">
                     <text class="name-text">{{ title }}</text>
-                    <view>
-                        <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" />
-                    </view>
+                    <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" />
                 </view>
                 <view class="desc" v-if="subTitle || subTitleIcon">
-                    <view class="desc-icon" v-if="subTitleIcon">
-                        <ste-icon :code="subTitleIcon" size="26" :color="compMainColor" marginRight="4" />
-                    </view>
+                    <ste-icon v-if="subTitleIcon" :code="subTitleIcon" size="26" :color="compMainColor" marginRight="4" :fontFamily="fontFamily" />
                     <text>{{ subTitle }}</text>
                 </view>
             </view>

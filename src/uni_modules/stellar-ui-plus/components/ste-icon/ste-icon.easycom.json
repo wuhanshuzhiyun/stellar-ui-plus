@@ -54,7 +54,7 @@
             "name": "fontFamily",
             "description": "字体名",
             "type": "string",
-            "default": ""
+            "default": "ste-iconfont-1709689042473"
         },
         {
             "name": "inlineBlock",

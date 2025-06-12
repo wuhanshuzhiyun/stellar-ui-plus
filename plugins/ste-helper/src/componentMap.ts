@@ -3686,50 +3686,38 @@ export const componentMap: Record<string, ComponentDesc> = {
     "login-info": {
         "site": "ste-login-info",
         "attr": [
-            "mainColor=''"
+            "avatar=''"
         ],
         "props": [
             {
-                "name": "mainColor",
-                "description": "主颜色",
-                "type": "string",
-                "default": ""
-            },
-            {
-                "name": "showAvatar",
-                "description": "是否显示头像，若未配置头像url也不显示头像",
-                "type": "boolean",
-                "default": "true"
-            },
-            {
-                "name": "avatarUrl",
+                "name": "avatar",
                 "description": "头像url",
                 "type": "string",
                 "default": ""
             },
             {
-                "name": "title",
-                "description": "主标题",
+                "name": "nickname",
+                "description": "昵称",
                 "type": "string",
                 "default": ""
             },
             {
-                "name": "subTitle",
-                "description": "副标题",
-                "type": "string",
-                "default": ""
+                "name": "loginStatus",
+                "description": "登录状态 0未登录 1已登录",
+                "type": "number",
+                "default": 0
             },
             {
-                "name": "subTitleIcon",
-                "description": "副标题图标code",
-                "type": "string",
-                "default": ""
+                "name": "showTitleIcon",
+                "description": "是否显示主标题后面的图标",
+                "type": "boolean",
+                "default": false
             },
             {
                 "name": "fontFamily",
                 "description": "icon的字体名",
                 "type": "string",
-                "default": "ste-iconfont-1709689042473"
+                "default": ""
             },
             {
                 "name": "loginStatus",
@@ -6002,10 +5990,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "头部操作类型",
                 "type": "string",
                 "values": [
-                    {
-                        "name": "text",
-                        "description": "文本输入"
-                    },
                     {
                         "name": "date",
                         "description": "日期选择"

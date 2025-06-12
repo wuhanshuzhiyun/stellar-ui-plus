@@ -2,9 +2,9 @@
     <view class="ste-main-info--root" :style="[compRootStyle]">
         <view class="user-block">
             <view class="avatar" @click="handleAvatarClick">
-                <ste-image :src="avatarUrl" width="92" height="92" radius="50%" />
+                <ste-image :src="loginStatus == 1 ? avatarUrl : loginSrc" width="92" height="92" radius="50%" />
             </view>
-            <view class="user-info" @click="handleUserClick">
+            <view class="user-info" @click="handleUserClick" v-if="loginStatus == 1">
                 <view class="name">
                     <text class="name-text">{{ title }}</text>
                     <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" />
@@ -12,6 +12,12 @@
                 <view class="desc" v-if="subTitle || subTitleIcon">
                     <ste-icon v-if="subTitleIcon" :code="subTitleIcon" size="26" :color="compMainColor" marginRight="4" :fontFamily="fontFamily" />
                     <text>{{ subTitle }}</text>
+                </view>
+            </view>
+            <view class="user-info" @click="loginTitleClick" v-else>
+                <view class="name">
+                    <text class="name-text">{{ loginTitle }}</text>
+                    <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" />
                 </view>
             </view>
         </view>
@@ -45,6 +51,10 @@ const handleAvatarClick = () => {
 
 const handleUserClick = () => {
     emits('user-click');
+};
+
+const loginTitleClick = () => {
+    emits('login-title-click');
 };
 </script>
 

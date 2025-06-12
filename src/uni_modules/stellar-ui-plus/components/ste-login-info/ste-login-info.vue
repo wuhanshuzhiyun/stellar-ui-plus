@@ -14,6 +14,12 @@
                     <text v-else>{{ loginInfo }}</text>
                 </view>
             </view>
+            <view class="user-info" @click="loginTitleClick" v-else>
+                <view class="name">
+                    <text class="name-text">{{ loginTitle }}</text>
+                    <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" />
+                </view>
+            </view>
         </view>
     </view>
 </template>
@@ -52,6 +58,10 @@ const handleAvatarClick = () => {
 
 const handleUserClick = () => {
     emits('user-click');
+};
+
+const loginTitleClick = () => {
+    emits('login-title-click');
 };
 </script>
 

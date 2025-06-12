@@ -3730,6 +3730,34 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "icon的字体名",
                 "type": "string",
                 "default": "ste-iconfont-1709689042473"
+            },
+            {
+                "name": "loginStatus",
+                "description": "登录状态",
+                "type": "Number",
+                "default": 1,
+                "values": [
+                    {
+                        "name": 0,
+                        "description": "未登录"
+                    },
+                    {
+                        "name": 1,
+                        "description": "登录"
+                    }
+                ]
+            },
+            {
+                "name": "loginSrc",
+                "description": "未登录头像",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "loginTitle",
+                "description": "未登录标题",
+                "type": "string",
+                "default": ""
             }
         ],
         "events": [
@@ -3742,6 +3770,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "user-click",
                 "description": "用户信息点击时触发",
+                "type": "(]) => void",
+                "params": []
+            },
+            {
+                "name": "loginTitleClick",
+                "description": "未登录文本点击时触发",
                 "type": "(]) => void",
                 "params": []
             }

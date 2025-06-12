@@ -21,6 +21,7 @@ const loginInfoProps = {
 export const loginInfoEmits = {
     'avatar-click': () => true,
     'user-click': () => true,
+    'login-title-click': () => true,
 };
 
 export default loginInfoProps;

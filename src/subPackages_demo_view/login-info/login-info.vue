@@ -58,6 +58,22 @@ const handleUserClick = () => {
                 </view>
             </view>
         </view>
+        <view class="demo-item">
+            <view class="title">未登录</view>
+            <view class="item-block">
+                <view style="width: 100%">
+                    <ste-login-info
+                        mainColor="#757575"
+                        :title="data1.title"
+                        :subTitle="data1.subTitle"
+                        :avatarUrl="data1.avatarUrl"
+                        :loginStatus="0"
+                        loginSrc="https://image.whzb.com/chain/StellarUI/%E5%9B%BE%E7%89%87.jpg"
+                        loginTitle="请登录"
+                    />
+                </view>
+            </view>
+        </view>
     </page-layout>
 </template>
 

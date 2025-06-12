@@ -17,10 +17,6 @@
             "type": "string",
             "values": [
                 {
-                    "name": "text",
-                    "description": "文本输入"
-                },
-                {
                     "name": "date",
                     "description": "日期选择"
                 },

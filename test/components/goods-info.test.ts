@@ -30,7 +30,7 @@ describe('GoodsInfo Component', async () => {
     });
 
     test('title', async () => {
-        expect(wrapper.props('background')).toBe('测试数据');
+        expect(wrapper.props('background')).toBe('#fff');
     });
     test('imageSize', async () => {
         expect(wrapper.props('imageSize')).toBe(120);

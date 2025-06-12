@@ -8,7 +8,7 @@ const props = {
     // 头部操作类型
     type: {
         type: String as PropType<InputType>,
-        default: 'text' as InputType,
+        default: 'date' as InputType,
     },
     headerValue: {
         type: [String, Number, Array] as unknown as PropType<string | number | (string | number)[]>,

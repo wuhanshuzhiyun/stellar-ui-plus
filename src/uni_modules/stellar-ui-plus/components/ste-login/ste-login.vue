@@ -34,7 +34,7 @@
                 <view class="login-tabs-item">
                     <view class="login-module">
                         <template v-for="i in loginGroup[loginCurrentTabIndex].items" :key="i.key">
-                            <login-form-item :config="i" v-model="formData[i.key]" @change="formDataChange($event, i.key)" :color="mainColor" @get-code="emits('getCode')" />
+                            <login-form-item :config="i" v-model="formData[i.key]" @change="formDataChange($event, i.key)" :color="mainColor" @get-code="handleGetCode" />
                         </template>
                     </view>
                     <view class="protocol-box">
@@ -154,6 +154,11 @@ const handleBtnClick = (item: any, type: 'primary' | 'secondary') => {
     } else if (type === 'secondary') {
         emits('secondaryBtnClick', item);
     }
+};
+
+const handleGetCode = (suspend: () => void, next: () => void, reject: () => void) => {
+    // 向更上层组件发出事件
+    emits('getCode', suspend, next, reject);
 };
 
 defineExpose({ formData });

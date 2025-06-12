@@ -112,8 +112,6 @@ const props = defineProps({
 });
 const emits = defineEmits(['update:modelValue', 'change', 'getCode']);
 
-console.log('config is ', props.config);
-
 const defaultConfig = {
     placeholder: '请输入',
 };
@@ -142,10 +140,28 @@ const handleChange = () => {
 
 const defaultCountValue = 60;
 let codeTimer: any;
-const getCode = () => {
+const getCode = async () => {
     if (count.value > 0) return;
+
+    let next = true;
+    const stop = new Promise<void>((resolve, reject) => {
+        emits(
+            'getCode',
+            () => (next = false),
+            () => resolve(),
+            () => reject()
+        );
+    });
+
+    if (!next) {
+        try {
+            await stop;
+        } catch (e) {
+            return;
+        }
+    }
+
     count.value = defaultCountValue;
-    emits('getCode');
     codeTimer = setInterval(() => {
         if (count.value <= 0) {
             clearInterval(codeTimer);

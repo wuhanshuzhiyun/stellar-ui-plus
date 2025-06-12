@@ -1,20 +1,19 @@
 <template>
-    <view class="ste-main-info--root">
+    <view class="ste-main-info--root" :style="[compRootStyle]">
         <view class="user-block">
             <view class="avatar" @click="handleAvatarClick">
-                <ste-image :src="compAvatarSrc" width="92" height="92" radius="50%" />
+                <ste-image :src="loginStatus == 1 ? avatar : loginSrc" width="92" height="92" radius="50%" />
             </view>
-            <view class="user-info">
-                <view class="name" @click="handleUserClick">
-                    <text class="name-text">{{ compLoginTitle }}</text>
-                    <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" v-if="showTitleIcon" />
+            <view class="user-info" @click="handleUserClick" v-if="loginStatus == 1">
+                <view class="name">
+                    <text class="name-text">{{ nickname }}</text>
                 </view>
-                <view class="desc" v-if="compShowDesc">
-                    <template v-if="loginStatus === 1"><slot name="desc"></slot></template>
-                    <text v-else>{{ loginInfo }}</text>
+                <view class="desc">
+                    <ste-icon v-if="subTitleIcon" :code="subTitleIcon" size="26" :color="compMainColor" marginRight="4" :fontFamily="fontFamily" />
+                    <text>{{ subTitle }}</text>
                 </view>
             </view>
-            <view class="user-info" @click="loginTitleClick" v-else>
+            <view class="user-info user-info-login" @click="loginTitleClick" v-else>
                 <view class="name">
                     <text class="name-text">{{ loginTitle }}</text>
                     <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" />
@@ -25,31 +24,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, useSlots } from 'vue';
+import { computed } from 'vue';
+import { useColorStore } from '../../store/color';
+// import utils from '../../utils/utils';
 
 import propsData, { loginInfoEmits } from './props';
 const props = defineProps(propsData);
 const emits = defineEmits(loginInfoEmits);
-const slots = useSlots();
 
-const compAvatarSrc = computed(() => {
-    if (props.loginStatus === 0) {
-        return props.loginSrc;
-    } else {
-        return props.avatar;
-    }
+const { getColor } = useColorStore();
+
+const compMainColor = computed(() => {
+    return props.mainColor || getColor().steThemeColor;
 });
 
-const compLoginTitle = computed(() => {
-    if (props.loginStatus === 0) {
-        return props.loginTitle;
-    } else {
-        return props.nickname;
-    }
-});
-
-const compShowDesc = computed(() => {
-    return (props.loginStatus === 0 && props.loginInfo) || (props.loginStatus === 1 && slots.desc);
+const compRootStyle = computed(() => {
+    return {
+        '--main-color': compMainColor.value,
+    };
 });
 
 const handleAvatarClick = () => {
@@ -84,11 +76,17 @@ const loginTitleClick = () => {
             border-radius: 50%;
             margin-right: 24rpx;
         }
+        .user-info-login {
+            justify-content: center;
+        }
         .user-info {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
             .name {
                 display: flex;
-                flex-wrap: nowrap;
                 align-items: center;
                 .name-text {
                     overflow: hidden;
@@ -102,8 +100,7 @@ const loginTitleClick = () => {
             .desc {
                 display: inline-flex;
                 align-items: center;
-                margin-top: 10rpx;
-                color: #757575;
+                color: var(--main-color);
                 font-size: var(--font-size-24, 24rpx);
             }
         }

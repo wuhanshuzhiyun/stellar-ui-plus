@@ -6,7 +6,7 @@ import { useColorStore } from '../../store';
 
 let { getColor } = useColorStore();
 
-const props = defineProps(propsData);
+defineProps(propsData);
 
 const color = computed(() => getColor().steThemeColor);
 </script>

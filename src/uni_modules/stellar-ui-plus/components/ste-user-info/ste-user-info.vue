@@ -169,6 +169,10 @@ function loginBtnClick() {
                 margin-right: 12rpx;
             }
             .right {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
                 .name {
                     color: #000;
                     font-size: var(--font-size-24, 24rpx);
@@ -190,7 +194,6 @@ function loginBtnClick() {
                 }
 
                 .desc {
-                    margin-top: 14rpx;
                 }
 
                 .info {
@@ -198,7 +201,6 @@ function loginBtnClick() {
                     color: #757575;
                     height: 34rpx;
                     line-height: 34rpx;
-                    margin-top: 8rpx;
                 }
             }
         }

@@ -39,6 +39,7 @@ const cmpPageStyle = computed(() => {
         backgroundColor: props.showMask ? 'rgba(0, 0, 0, 0.6)' : 'transparent',
         '--content-border-radius': utils.formatPx(props.round ? DEFAULT_BORDER_RADIUS : 0),
         '--content-height': utils.addUnit(Number(props.height) / 2),
+        '--content-offset-x': utils.addUnit(Number(props.width) / 2),
     };
 });
 const cmpContentStyle = computed(() => {
@@ -224,7 +225,7 @@ function touchmove(e: TouchEvent) {
 
     &.bottom {
         transform: translateY(100%);
-        left: 0;
+        left: calc(50% - var(--content-offset-x));
         bottom: 0;
         border-top-left-radius: var(--content-border-radius);
         border-top-right-radius: var(--content-border-radius);
@@ -232,7 +233,7 @@ function touchmove(e: TouchEvent) {
 
     &.top {
         transform: translateY(-100%);
-        left: 0;
+        left: calc(50% - var(--content-offset-x));
         top: 0;
         border-bottom-left-radius: var(--content-border-radius);
         border-bottom-right-radius: var(--content-border-radius);

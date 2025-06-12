@@ -4,13 +4,11 @@ import steLoginInfo from '../../src/uni_modules/stellar-ui-plus/components/ste-l
 import { nextTick } from 'vue';
 
 describe('LoginInfo', async () => {
-    test('text', async () => {
+    test('login', async () => {
         const propsData = {
-            avatarUrl: 'https://image.whzb.com/chain/StellarUI/头像/付宇威1.png',
-            title: '小百食的名称',
-            subTitle: '武汉数智云科技有限公司',
-            subTitleIcon: '&#xe677;',
-            mainColor: '#EC3E1A',
+            avatar: 'https://image.whzb.com/chain/StellarUI/头像/付宇威1.png',
+            nickname: '小百食的名称',
+            loginStatus: 1 as const,
         };
         const wrapper = mount(steLoginInfo, {
             propsData,
@@ -18,8 +16,21 @@ describe('LoginInfo', async () => {
 
         await nextTick();
 
-        expect(wrapper.get('.name-text').text()).toBe(propsData.title);
-        expect(wrapper.get('.desc').text()).toContain(propsData.subTitle);
-        expect(wrapper.element.style.getPropertyValue('--main-color')).toBe(propsData.mainColor);
+        expect(wrapper.get('.name-text').text()).toBe(propsData.nickname);
+    });
+
+    test('no-login', async () => {
+        const propsData = {
+            loginUrl: 'https://image.whzb.com/chain/StellarUI/头像/付宇威1.png',
+            loginTitle: '欢迎来到中百食堂~',
+            loginInfo: '马上登录，在线即点',
+        };
+        const wrapper = mount(steLoginInfo, {
+            propsData,
+        });
+
+        await nextTick();
+
+        expect(wrapper.get('.name-text').text()).toBe(propsData.loginTitle);
     });
 });

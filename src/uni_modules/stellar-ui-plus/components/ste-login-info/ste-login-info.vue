@@ -1,17 +1,17 @@
 <template>
-    <view class="ste-main-info--root" :style="[compRootStyle]">
+    <view class="ste-main-info--root">
         <view class="user-block">
             <view class="avatar" @click="handleAvatarClick">
-                <ste-image :src="avatarUrl" width="92" height="92" radius="50%" />
+                <ste-image :src="compAvatarSrc" width="92" height="92" radius="50%" />
             </view>
-            <view class="user-info" @click="handleUserClick">
-                <view class="name">
-                    <text class="name-text">{{ title }}</text>
-                    <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" />
+            <view class="user-info">
+                <view class="name" @click="handleUserClick">
+                    <text class="name-text">{{ compLoginTitle }}</text>
+                    <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" v-if="showTitleIcon" />
                 </view>
-                <view class="desc" v-if="subTitle || subTitleIcon">
-                    <ste-icon v-if="subTitleIcon" :code="subTitleIcon" size="26" :color="compMainColor" marginRight="4" :fontFamily="fontFamily" />
-                    <text>{{ subTitle }}</text>
+                <view class="desc" v-if="compShowDesc">
+                    <template v-if="loginStatus === 1"><slot name="desc"></slot></template>
+                    <text v-else>{{ loginInfo }}</text>
                 </view>
             </view>
         </view>
@@ -19,24 +19,31 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-import { useColorStore } from '../../store/color';
-// import utils from '../../utils/utils';
+import { computed, useSlots } from 'vue';
 
 import propsData, { loginInfoEmits } from './props';
 const props = defineProps(propsData);
 const emits = defineEmits(loginInfoEmits);
+const slots = useSlots();
 
-const { getColor } = useColorStore();
-
-const compMainColor = computed(() => {
-    return props.mainColor || getColor().steThemeColor;
+const compAvatarSrc = computed(() => {
+    if (props.loginStatus === 0) {
+        return props.loginSrc;
+    } else {
+        return props.avatar;
+    }
 });
 
-const compRootStyle = computed(() => {
-    return {
-        '--main-color': compMainColor.value,
-    };
+const compLoginTitle = computed(() => {
+    if (props.loginStatus === 0) {
+        return props.loginTitle;
+    } else {
+        return props.nickname;
+    }
+});
+
+const compShowDesc = computed(() => {
+    return (props.loginStatus === 0 && props.loginInfo) || (props.loginStatus === 1 && slots.desc);
 });
 
 const handleAvatarClick = () => {
@@ -71,7 +78,7 @@ const handleUserClick = () => {
             flex: 1;
             .name {
                 display: flex;
-                flex-warp: nowrap;
+                flex-wrap: nowrap;
                 align-items: center;
                 .name-text {
                     overflow: hidden;
@@ -86,7 +93,7 @@ const handleUserClick = () => {
                 display: inline-flex;
                 align-items: center;
                 margin-top: 10rpx;
-                color: var(--main-color);
+                color: #757575;
                 font-size: var(--font-size-24, 24rpx);
             }
         }

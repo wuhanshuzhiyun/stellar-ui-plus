@@ -28,22 +28,16 @@
 </script>
 ```
 
-#### 类型1
+#### 未登录
+
+- 通过 `loginStatus`设置登录状态，`0`：未登录，`1`：登录，默认为`1`
+- 通过 `loginSrc`设置未登录头像，默认为``
+- 通过 `loginTitle`设置未登录标题，默认为``
 
 ```html
 <template>
     <view style="width: 100%">
-        <ste-login-info loginSrc="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手头像.png" loginTitle="欢迎来到中百食堂~" loginInfo="马上登录，在线即点" />
-    </view>
-</template>
-```
-
-#### 类型2
-
-```html
-<template>
-    <view style="width: 100%">
-        <ste-login-info loginSrc="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手头像.png" loginTitle="请登录" show-title-icon />
+        <ste-login-info mainColor="#757575" :loginStatus="0" loginSrc="https://image.whzb.com/chain/StellarUI/%E5%9B%BE%E7%89%87.jpg" loginTitle="请登录" />
     </view>
 </template>
 ```

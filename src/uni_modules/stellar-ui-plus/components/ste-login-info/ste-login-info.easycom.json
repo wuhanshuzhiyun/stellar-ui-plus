@@ -23,28 +23,16 @@
             "default": 0
         },
         {
-            "name": "loginSrc",
-            "description": "未登录头像",
-            "type": "string",
-            "default": ""
-        },
-        {
-            "name": "loginTitle",
-            "description": "未登录标题",
-            "type": "string",
-            "default": ""
-        },
-        {
-            "name": "loginInfo",
-            "description": "未登录提示语",
-            "type": "string",
-            "default": ""
-        },
-        {
             "name": "showTitleIcon",
             "description": "是否显示主标题后面的图标",
             "type": "boolean",
             "default": false
+        },
+        {
+            "name": "fontFamily",
+            "description": "icon的字体名",
+            "type": "string",
+            "default": ""
         },
         {
             "name": "loginStatus",

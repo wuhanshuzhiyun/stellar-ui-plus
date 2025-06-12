@@ -19,42 +19,14 @@ const handleUserClick = () => {
             <view class="title">完整展示</view>
             <view class="item-block">
                 <view style="width: 100%">
-                    <ste-login-info nickname="小百食的名称" avatar="https://image.whzb.com/chain/StellarUI/图片.jpg" :login-status="1" @avatar-click="handleAvatarClick" @user-click="handleUserClick">
-                        <template #desc>
-                            <view class="desc">
-                                <ste-icon code="&#xe670;" color="#EC3E1A" size="26" margin-bottom="2"></ste-icon>
-                                <view class="title">中百食堂</view>
-                            </view>
-                        </template>
-                    </ste-login-info>
-                </view>
-            </view>
-        </view>
-        <view class="demo-item">
-            <view class="title">类型1</view>
-            <view class="item-block">
-                <view style="width: 100%">
                     <ste-login-info
-                        loginSrc="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手头像.png"
-                        loginTitle="欢迎来到中百食堂~"
-                        loginInfo="马上登录，在线即点"
+                        nickname="中百食堂"
+                        avatar="https://image.whzb.com/chain/StellarUI/图片.jpg"
+                        sub-title="中百食堂厨师"
+                        subTitleIcon="&#xe670;"
                         @avatar-click="handleAvatarClick"
                         @user-click="handleUserClick"
-                    />
-                </view>
-            </view>
-        </view>
-        <view class="demo-item">
-            <view class="title">类型2</view>
-            <view class="item-block">
-                <view style="width: 100%">
-                    <ste-login-info
-                        loginSrc="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手头像.png"
-                        loginTitle="请登录"
-                        show-title-icon
-                        @avatar-click="handleAvatarClick"
-                        @user-click="handleUserClick"
-                    />
+                    ></ste-login-info>
                 </view>
             </view>
         </view>
@@ -62,15 +34,7 @@ const handleUserClick = () => {
             <view class="title">未登录</view>
             <view class="item-block">
                 <view style="width: 100%">
-                    <ste-login-info
-                        mainColor="#757575"
-                        :title="data1.title"
-                        :subTitle="data1.subTitle"
-                        :avatarUrl="data1.avatarUrl"
-                        :loginStatus="0"
-                        loginSrc="https://image.whzb.com/chain/StellarUI/%E5%9B%BE%E7%89%87.jpg"
-                        loginTitle="请登录"
-                    />
+                    <ste-login-info mainColor="#757575" :loginStatus="0" loginSrc="https://image.whzb.com/chain/StellarUI/%E5%9B%BE%E7%89%87.jpg" loginTitle="请登录" />
                 </view>
             </view>
         </view>

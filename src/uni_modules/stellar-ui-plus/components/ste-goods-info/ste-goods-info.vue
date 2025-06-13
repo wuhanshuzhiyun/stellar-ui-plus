@@ -19,7 +19,7 @@ const emits = defineEmits<{
     (e: 'click', type: 'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'): void;
     (e: 'plus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'minus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
-    (e: 'click-suggest', type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }): void;
+    (e: 'click-suggest', type: 'method' | 'input' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }): void;
     (e: 'click-stepper-input'): void;
 }>();
 
@@ -142,7 +142,7 @@ watch(
         }
     }
 );
-const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => {
+const clickSuggest = (type: 'method' | 'input' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => {
     if (type === 'method') {
         showSuggestList.value = !showSuggestList.value;
     }
@@ -248,9 +248,11 @@ const viewClass = computed(() => {
                             <view class="ste-goods-info-apply-for" v-if="suggesData.applyForText">
                                 <view class="ste-goods-info-apply-for-text">{{ suggesData.applyForText }}：</view>
                                 <view class="ste-goods-info-apply-for-number">
-                                    <input class="ste-goods-info-apply-for-input" v-model="suggesData.applyForNumber" />
+                                    <view class="ste-goods-info-apply-for-input" @click.stop="clickSuggest('input')">
+                                        <input class="ste-goods-info-apply-for-input" :class="{ readonly: readonlySuggestInput }" v-model="suggesData.applyForNumber" />
+                                    </view>
                                     <view class="ste-goods-info-apply-for-back" @click="clickSuggest('back')">
-                                        <ste-icon />
+                                        <ste-icon code="&#xe632;" size="16" />
                                     </view>
                                 </view>
                             </view>
@@ -408,10 +410,17 @@ const viewClass = computed(() => {
                                 min-height: 30rpx;
                                 font-size: 22rpx;
                                 text-align: center;
+                                &.readonly {
+                                    pointer-events: none;
+                                }
                             }
                             .ste-goods-info-apply-for-back {
                                 width: 32rpx;
                                 border-left: 2rpx solid #e6e8ea;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
                             }
                         }
                     }

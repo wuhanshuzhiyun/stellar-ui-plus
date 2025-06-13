@@ -125,7 +125,7 @@ const suggestData = ref({
         </view>
         <view class="demo-item">
             <view class="title">建议</view>
-            <ste-goods-info :data="data" :suggestData="suggestData"></ste-goods-info>
+            <ste-goods-info :data="data" :suggestData="suggestData" readonlySuggestInput></ste-goods-info>
         </view>
         <view class="demo-item">
             <view class="title">点击事件</view>

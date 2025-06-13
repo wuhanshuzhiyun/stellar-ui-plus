@@ -1,22 +1,22 @@
 /* #ifdef APP */
 /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
 @font-face {
-    font-family: 'ste-iconfont-1709689042473';
-    /* Project id 4457057 */
-    src: url('https://at.alicdn.com/t/c/font_4457057_yv7ztjy747.woff2?t=1749632798789') format('woff2'),
-        url('https://at.alicdn.com/t/c/font_4457057_yv7ztjy747.woff?t=1749632798789') format('woff'),
-        url('https://at.alicdn.com/t/c/font_4457057_yv7ztjy747.ttf?t=1749632798789') format('truetype');
+    font-family: 'ste-iconfont-1709689042473'; /* Project id 4457057 */
+    src:
+        url('https://at.alicdn.com/t/c/font_4457057_74vgslmjyas.woff2?t=1749781466318') format('woff2'),
+        url('https://at.alicdn.com/t/c/font_4457057_74vgslmjyas.woff?t=1749781466318') format('woff'),
+        url('https://at.alicdn.com/t/c/font_4457057_74vgslmjyas.ttf?t=1749781466318') format('truetype');
 }
-
 /* #endif */
 /* #ifndef APP */
 /* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
 @font-face {
-    font-family: 'ste-iconfont-1709689042473';
-    /* Project id 4457057 */
-    src: url('//at.alicdn.com/t/c/font_4457057_yv7ztjy747.woff2?t=1749632798789') format('woff2'),
-        url('//at.alicdn.com/t/c/font_4457057_yv7ztjy747.woff?t=1749632798789') format('woff'),
-        url('//at.alicdn.com/t/c/font_4457057_yv7ztjy747.ttf?t=1749632798789') format('truetype');
+    font-family: 'ste-iconfont-1709689042473'; /* Project id 4457057 */
+    src:
+        url('//at.alicdn.com/t/c/font_4457057_74vgslmjyas.woff2?t=1749781466318') format('woff2'),
+        url('//at.alicdn.com/t/c/font_4457057_74vgslmjyas.woff?t=1749781466318') format('woff'),
+        url('//at.alicdn.com/t/c/font_4457057_74vgslmjyas.ttf?t=1749781466318') format('truetype');
 }
 
 /* #endif */

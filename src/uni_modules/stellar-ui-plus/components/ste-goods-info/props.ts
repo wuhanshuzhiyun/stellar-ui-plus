@@ -154,4 +154,9 @@ export default {
     suggestData: {
         type: Object as PropType<SuggestData>,
     },
+    /** 建议右侧的申请输入框只读 */
+    readonlySuggestInput: {
+        type: Boolean,
+        default: () => false,
+    },
 };

@@ -41,7 +41,7 @@ export default {
                 describe: '1. 修复已知问题<br>2. 优化用户体验',
                 edition_url: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-6bef1fe3-e3e3-4909-9f0c-6ed9bd11c93b/aae2360a-6628-4c93-b873-ce1600b9a852.apk', //安装包下载地址或者通用应用市场地址
                 edition_force: 1, //是否强制更新 0代表否 1代表是
-                package_type: 0, //0是整包升级 1是wgt升级
+                package_type: 0, //0 是整包升级 1是wgt升级
                 edition_name: '1.0.1', //后端返回的版本名称
             }),
         },

@@ -1,6 +1,5 @@
 import type { PropType } from 'vue';
 export default {
-    Authorization: { type: String, default: () => 'Basic c2FiZXIzOnNhYmVyM19zZWNyZXQ=' },
     BladeAuth: {
         type: String,
         default: () =>

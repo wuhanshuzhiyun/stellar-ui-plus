@@ -24,13 +24,15 @@ describe('LoginInfo', async () => {
             loginUrl: 'https://image.whzb.com/chain/StellarUI/头像/付宇威1.png',
             loginTitle: '欢迎来到中百食堂~',
             loginInfo: '马上登录，在线即点',
+            loginStatus: 0 as const,
         };
         const wrapper = mount(steLoginInfo, {
             propsData,
         });
 
         await nextTick();
-
+        // console.log(' ******** ', wrapper.html());
+        // console.log('sisi ja ******* ', wrapper.get('.name-text').text());
         expect(wrapper.get('.name-text').text()).toBe(propsData.loginTitle);
     });
 });

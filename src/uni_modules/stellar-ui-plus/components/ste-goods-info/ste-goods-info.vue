@@ -19,7 +19,8 @@ const emits = defineEmits<{
     (e: 'click', type: 'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper'): void;
     (e: 'plus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'minus', value: number | string, suspend: () => void, next: () => void, stop: () => void): void;
-    (e: 'click-suggest', type: 'method' | 'input' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }): void;
+    (e: 'click-suggest', type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }): void;
+    (e: 'click-suggest-input'): void;
     (e: 'click-stepper-input'): void;
 }>();
 
@@ -142,7 +143,7 @@ watch(
         }
     }
 );
-const clickSuggest = (type: 'method' | 'input' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => {
+const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => {
     if (type === 'method') {
         showSuggestList.value = !showSuggestList.value;
     }
@@ -152,7 +153,8 @@ const clickSuggest = (type: 'method' | 'input' | 'back' | 'item' | 'right', item
     emits('click-suggest', type, item);
 };
 
-const clickInput = () => emits('click-stepper-input');
+const clickStepperInput = () => emits('click-stepper-input');
+const clickSuggestInput = () => emits('click-suggest-input');
 
 const viewClass = computed(() => {
     const imgSize = utils.formatPx<'num'>(props.imageSize, 'num');
@@ -234,7 +236,7 @@ const viewClass = computed(() => {
                                             @change="numberChange"
                                             @plus="plus"
                                             @minus="minus"
-                                            @click-input="clickInput"
+                                            @click-input="clickStepperInput"
                                         />
                                     </view>
                                 </slot>
@@ -248,7 +250,7 @@ const viewClass = computed(() => {
                             <view class="ste-goods-info-apply-for" v-if="suggesData.applyForText">
                                 <view class="ste-goods-info-apply-for-text">{{ suggesData.applyForText }}：</view>
                                 <view class="ste-goods-info-apply-for-number">
-                                    <view class="ste-goods-info-apply-for-input" @click.stop="clickSuggest('input')">
+                                    <view class="ste-goods-info-apply-for-input" @click.stop="clickSuggestInput">
                                         <input class="ste-goods-info-apply-for-input" :class="{ readonly: readonlySuggestInput }" v-model="suggesData.applyForNumber" />
                                     </view>
                                     <view class="ste-goods-info-apply-for-back" @click="clickSuggest('back')">

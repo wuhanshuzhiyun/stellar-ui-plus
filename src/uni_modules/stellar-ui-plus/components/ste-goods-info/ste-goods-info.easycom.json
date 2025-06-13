@@ -170,6 +170,11 @@
             "description": "建议数据集,不传则不展示建议模块",
             "type": "{title?: string;number?: number;applyForText?: string;applyForNumber?: number;items: { label: string; value: number }[];}"
         },
+        {
+            "name": "readonlySuggestInput",
+            "description": "建议右侧申请输入框只读",
+            "type": "boolean"
+        },
 
         {
             "name": "[event]change",
@@ -246,11 +251,11 @@
         {
             "name": "[event]click-suggest",
             "description": "点击建议模块触发",
-            "type": "(type: 'method' | 'input' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => void",
+            "type": "(type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => void",
             "params": [
                 {
                     "name": "type",
-                    "description": "点击的区域：`method`, `input` ,`back`, `item`, `right`"
+                    "description": "点击的区域：`method`, `back`, `item`, `right`"
                 },
                 {
                     "name": "item",
@@ -261,6 +266,11 @@
         {
             "name": "[event]click-stepper-input",
             "description": "点击步进器输入框触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]click-suggest-input",
+            "description": "点击建议输入框触发",
             "type": "() => void"
         }
     ]

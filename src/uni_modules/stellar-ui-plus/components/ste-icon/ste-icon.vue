@@ -40,7 +40,7 @@ const cmpCssVar = computed(() => {
         '--margin-top': utils.formatPx(props.marginTop),
         '--margin-bottom': utils.formatPx(props.marginBottom),
         '--font-family': props.fontFamily ? props.fontFamily : defaultFontFamily,
-        '--display': props.inlineBlock ? 'inline-block' : 'inline-flex',
+        '--display': props.inlineBlock ? 'inline-block' : 'block',
     };
 });
 

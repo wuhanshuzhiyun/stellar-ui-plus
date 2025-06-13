@@ -17,6 +17,7 @@
                 @secondary-btn-click="handleClick"
                 @protocol-click="protocolClick"
                 @form-data-change="formDataChange"
+                @get-code="getCode"
             />
         </view>
     </page-layout>
@@ -85,6 +86,16 @@ const formDataChange = (data: any) => {
 
 const protocolClick = (item: any) => {
     console.log(item);
+};
+
+const getCode = (suspend: () => {}, next: () => {}) => {
+    suspend();
+    console.log('调用获取验证码接口');
+
+    setTimeout(() => {
+        console.log('验证码发送成功，开始倒计时');
+        next();
+    }, 2000);
 };
 </script>
 

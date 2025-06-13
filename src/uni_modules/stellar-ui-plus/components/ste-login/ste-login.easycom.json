@@ -145,8 +145,21 @@
         {
             "name": "[event]getCode",
             "description": "当配置输入类型为验证码时，点击获取验证码时触发",
-            "type": "() => void",
-            "params": []
+            "type": "(suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
+            "params": [
+                {
+                    "name": "suspend",
+                    "description": "等待"
+                },
+                {
+                    "name": "next",
+                    "description": "继续"
+                },
+                {
+                    "name": "stop",
+                    "description": "停止"
+                }
+            ]
         }
     ]
 }

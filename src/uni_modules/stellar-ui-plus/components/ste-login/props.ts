@@ -32,7 +32,7 @@ export const loginEmits = {
     secondaryBtnClick: (item: BtnItem) => item,
     tabChange: (item: BaseConfigItem) => item,
     formDataChange: (data: Record<string, any>) => data,
-    getCode: () => true,
+    getCode: (suspend: () => void, next: () => void, stop: () => void) => typeof suspend === 'function' && typeof next === 'function' && typeof stop === 'function',
 };
 
 export default loginProps;

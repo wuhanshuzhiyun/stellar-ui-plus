@@ -54,7 +54,7 @@ function backClick() {
 </script>
 
 <template>
-    <view class="ste-navbar-root" :style="[pageStyle, { paddingTop: `${navbarTop}rpx` }]">
+    <view class="ste-navbar-root" :style="[pageStyle, { paddingTop: `${navbarTop}rpx` }]" data-test="navbar">
         <view class="nav" :style="{ width: `${navbarWidth}rpx`, height: `${navbarHeight}rpx`, backgroundColor: backgroundColor }">
             <view class="back-box">
                 <view v-if="autoBack" class="back" :style="{ backgroundColor: backBackgroundColor, borderColor: backBorderColor, opacity: backOpacity }">

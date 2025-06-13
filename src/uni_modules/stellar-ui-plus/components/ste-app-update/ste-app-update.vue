@@ -1,50 +1,61 @@
 <script setup lang="ts">
-import { watch, onMounted, computed, nextTick, ref, reactive } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import propsData from './props';
 import { type ClientData, type ResponseData, download } from './method';
 
 const props = defineProps(propsData);
 
 const data = reactive<ClientData>({
-    describe: '1. 修复已知问题<br>2. 优化用户体验',
-    edition_url: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-6bef1fe3-e3e3-4909-9f0c-6ed9bd11c93b/aae2360a-6628-4c93-b873-ce1600b9a852.apk', //安装包下载地址或者通用应用市场地址
-    edition_force: 1, //是否强制更新 0代表否 1代表是
+    content: '1. 修复已知问题<br>2. 优化用户体验',
+    updateFile: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-6bef1fe3-e3e3-4909-9f0c-6ed9bd11c93b/aae2360a-6628-4c93-b873-ce1600b9a852.apk', //安装包下载地址或者通用应用市场地址
+    entireFile: '',
+    isForce: false, //是否强制更新 0代表否 1代表是
     package_type: 0, //0 是整包升级 1是wgt升级
-    edition_name: '1.0.1', //后端返回的版本名称
+    name: '1.0.1', // 版本名称
+    code: '100', // 版本号
 });
+
+const open = ref(true);
+const version = ref(uni.getSystemInfoSync().version);
+const percent = ref(0);
+const updateBtn = ref(true);
+const downloadedSize = ref('0');
+const packageFileSize = ref('0');
 const getData = () => {
     uni.request({
-        url: 'http://172.16.118.216:30043/blade-system/api/inte/client/ver/currentDetail',
+        url: 'http://172.16.118.216:30000/blade-system/api/inte/client/ver/currentDetail',
         method: 'GET',
         header: {
-            'Blade-Auth': props.BladeAuth,
+            Authorization: `Basic ${btoa(props.clientId + ':' + props.clientSecret)}`,
         },
         success: (res: any) => {
-            const data: {
+            const _data: {
                 code: number;
                 success: boolean;
                 msg: string;
                 data: ResponseData;
             } = res.data;
-            if (data.code == 200) {
-                console.log(data.data);
+            if (_data.code == 200) {
+                data.code = _data.data.code;
+                data.name = _data.data.name;
+                data.content = _data.data.content;
+                data.updateFile = _data.data.updateFile;
+                data.entireFile = _data.data.entireFile;
+                data.isForce = _data.data.isForce;
+                data.package_type = _data.data.entireFile ? 0 : 1;
+                console.log(_data.data);
             } else {
-                console.log(data.msg);
+                console.log(_data.msg);
             }
         },
     });
 };
 
-const open = ref(false);
-const version = ref(uni.getSystemInfoSync().version);
-const percent = ref(0);
-const updateBtn = ref(true);
-const cancleBtn = ref(true);
-const downloadedSize = ref('0');
-const packageFileSize = ref('0');
-
 onMounted(() => {
     getData();
+    plus.runtime.getProperty(plus.runtime.appid || '', inf => {
+        version.value = inf.version || '';
+    });
 });
 
 const onProgressUpdate = (res: UniApp.OnProgressDownloadResult) => {
@@ -55,32 +66,36 @@ const onProgressUpdate = (res: UniApp.OnProgressDownloadResult) => {
 const confirm = () => {
     if (data.package_type == 0) {
         //apk整包升级 下载地址必须以.apk结尾
-        if (data.edition_url.includes('.apk')) {
+        if (data.updateFile.includes('.apk')) {
             updateBtn.value = false;
-            cancleBtn.value = false;
             download(data, { onProgressUpdate });
         } else {
             //外部下载 一般是手机应用市场或者其他h5页面
-            data.edition_force = 0; // 解决跳转外部链接后，更新提示还在的问题
-            plus.runtime.openURL(data.edition_url);
+            data.isForce = false; // 解决跳转外部链接后，更新提示还在的问题
+            plus.runtime.openURL(data.updateFile);
             uni.navigateBack({
                 delta: 1,
             });
         }
     } else {
         updateBtn.value = false;
-        cancleBtn.value = false;
         //wgt资源包升级 下载地址必须以.wgt结尾
         download(data, { onProgressUpdate });
     }
 };
+
+defineExpose({
+    onHide() {
+        data.isForce = false;
+    },
+});
 </script>
 <template>
     <view class="update-mask flex-center" v-if="open">
         <view class="content botton-radius">
             <view class="content-top">
                 <view class="content-top-text">
-                    <text class="">发现新版本 v{{ data.edition_name }}</text>
+                    <text class="">发现新版本 v{{ data.code }}</text>
                     <text class="version">当前版本：{{ version }}</text>
                 </view>
                 <image class="content-top" style="top: 0" width="100%" height="100%" src="../../static/bg_top.png"></image>
@@ -89,7 +104,7 @@ const confirm = () => {
             <view class="content-body">
                 <view class="title"><text>更新内容</text></view>
                 <view class="body">
-                    <scroll-view class="box-des-scroll" scroll-y><rich-text :nodes="data.describe"></rich-text></scroll-view>
+                    <scroll-view class="box-des-scroll" scroll-y><rich-text :nodes="data.content"></rich-text></scroll-view>
                 </view>
                 <view class="footer flex-center">
                     <view class="progress-box flex-column" v-if="!updateBtn">
@@ -104,7 +119,7 @@ const confirm = () => {
                 </view>
             </view>
 
-            <image v-if="cancleBtn" class="close-img" src="../../static/app_update_close.png" @click.stop="open = false"></image>
+            <image v-if="!data.isForce" class="close-img" src="../../static/app_update_close.png" @click.stop="open = false"></image>
         </view>
     </view>
 </template>

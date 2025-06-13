@@ -41,6 +41,21 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
+    "app-update": {
+        "site": "ste-app-update",
+        "attr": [
+            "title=''"
+        ],
+        "props": [
+            {
+                "name": "title",
+                "description": "尺寸",
+                "type": "string",
+                "default": "日期选择"
+            }
+        ],
+        "events": []
+    },
     "area-chart": {
         "site": "ste-area-chart",
         "attr": [
@@ -2503,6 +2518,11 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "suggestData",
                 "description": "建议数据集,不传则不展示建议模块",
                 "type": "{title?: string;number?: number;applyForText?: string;applyForNumber?: number;items: { label: string; value: number }[];}"
+            },
+            {
+                "name": "readonlySuggestInput",
+                "description": "建议右侧申请输入框只读",
+                "type": "boolean"
             }
         ],
         "events": [
@@ -2596,6 +2616,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-stepper-input",
                 "description": "点击步进器输入框触发",
+                "type": "() => void"
+            },
+            {
+                "name": "click-suggest-input",
+                "description": "点击建议输入框触发",
                 "type": "() => void"
             }
         ]
@@ -3678,8 +3703,21 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "getCode",
                 "description": "当配置输入类型为验证码时，点击获取验证码时触发",
-                "type": "() => void",
-                "params": []
+                "type": "(suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
+                "params": [
+                    {
+                        "name": "suspend",
+                        "description": "等待"
+                    },
+                    {
+                        "name": "next",
+                        "description": "继续"
+                    },
+                    {
+                        "name": "stop",
+                        "description": "停止"
+                    }
+                ]
             }
         ]
     },

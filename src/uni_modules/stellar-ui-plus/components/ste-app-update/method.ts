@@ -34,11 +34,20 @@ export interface ResponseData {
 }
 
 export interface ClientData {
-    describe: string;
-    edition_url: string;
-    edition_force: number;
+    /** 版本更新内容 */
+    content: string;
+    /** 版本更新文件地址 */
+    updateFile: string;
+    /** 版本完整文件地址 */
+    entireFile: string;
+    /** 是否强制更新 */
+    isForce: boolean;
+    /** 0 是整包升级 1是wgt升级 */
     package_type: number;
-    edition_name: string;
+    /** 版本名称 */
+    name: string;
+    /** 版本号 */
+    code: string;
 }
 
 export function download(
@@ -47,7 +56,7 @@ export function download(
 ) {
     const package_type = data.package_type;
     const downloadTask = uni.downloadFile({
-        url: data.edition_url,
+        url: data.updateFile,
         success: res => {
             if (res.statusCode === 200) {
                 plus.runtime.install(
@@ -71,7 +80,7 @@ export function download(
                     },
                     e => {
                         //提示部分wgt包无法安装的问题
-                        data.edition_force = 0;
+                        data.isForce = false;
                         uni.showModal({
                             title: '提示',
                             content: e.message,
@@ -85,7 +94,7 @@ export function download(
                 // 整包升级
                 if (package_type == 0) {
                     // 解决安装app点击取消，更新还在的问题
-                    data.edition_force = 0;
+                    data.isForce = false;
                     success && success();
                 }
             }

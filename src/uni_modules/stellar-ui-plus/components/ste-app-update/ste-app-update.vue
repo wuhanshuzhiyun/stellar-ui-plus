@@ -26,7 +26,7 @@ const getData = () => {
         url: 'http://172.16.118.216:30000/blade-system/api/inte/client/ver/currentDetail',
         method: 'GET',
         header: {
-            Authorization: props.Authorization,
+            Authorization: `Basic ${btoa(props.clientId + ':' + props.clientSecret)}`,
         },
         success: (res: any) => {
             const _data: {

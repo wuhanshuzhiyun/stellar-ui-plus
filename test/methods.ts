@@ -29,3 +29,31 @@ export function style2obj(el: any): { [key: string]: string } {
     Object.assign(style, window.getComputedStyle(el.element));
     return style;
 }
+
+/*RGB转换为16进制*/
+export function colorRgbToHex(rgbStr: string) {
+    //十六进制颜色值的正则表达式
+    const reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6}|[0-9a-fA-f]{8}|[0-9a-fA-f]{6}[0-9]{2})$/;
+    if (reg.test(rgbStr)) {
+        return rgbStr;
+    } else {
+        const rgbArray = rgbStr.replace(/(?:\(|\)|rgba|rgb|RGBA|RGB)*/g, '').split(',');
+        let strHex = '#';
+        for (let i = 0; i < rgbArray.length; i++) {
+            if (i !== 3) {
+                if (rgbArray[i] == '0') {
+                    strHex += '00';
+                } else {
+                    let newItem = Number(rgbArray[i]).toString(16);
+                    if (newItem.length < 2) {
+                        newItem = '0' + newItem;
+                    }
+                    strHex += newItem;
+                }
+            } else {
+                strHex += rgbArray[i] == '0' ? '' : Number(rgbArray[i]) * 100;
+            }
+        }
+        return strHex;
+    }
+}

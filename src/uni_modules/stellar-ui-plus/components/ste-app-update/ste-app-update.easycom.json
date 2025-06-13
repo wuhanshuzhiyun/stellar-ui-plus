@@ -1,0 +1,14 @@
+{
+    "name": "ste-app-update",
+    "description": "按钮组件",
+    "example": "<ste-app-update></ste-app-update>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=app-update",
+    "attributes": [
+        {
+            "name": "title",
+            "description": "尺寸",
+            "type": "string",
+            "default": "日期选择"
+        }
+    ]
+}

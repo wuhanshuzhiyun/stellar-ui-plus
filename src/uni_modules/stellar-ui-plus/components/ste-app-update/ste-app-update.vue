@@ -95,7 +95,7 @@ defineExpose({
         <view class="content botton-radius">
             <view class="content-top">
                 <view class="content-top-text">
-                    <text class="">发现新版本 v{{ data.name }}</text>
+                    <text class="">发现新版本 v{{ data.code }}</text>
                     <text class="version">当前版本：{{ version }}</text>
                 </view>
                 <image class="content-top" style="top: 0" width="100%" height="100%" src="../../static/bg_top.png"></image>

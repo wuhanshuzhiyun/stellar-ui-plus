@@ -59,7 +59,7 @@ describe('Icon', async () => {
     });
 
     test('inlineBlock', () => {
-        let inlineBlock1 = inlineBlock ? 'inline-block' : 'inline-flex';
+        let inlineBlock1 = inlineBlock ? 'inline-block' : 'block';
         expect(icon.element.style._values['--display']).toBe(inlineBlock1);
     });
 });

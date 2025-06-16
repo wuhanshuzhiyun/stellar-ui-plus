@@ -20,7 +20,7 @@ const percent = ref(0);
 const updateBtn = ref(true);
 const downloadedSize = ref('0');
 const packageFileSize = ref('0');
-const getData = () => {
+const getData = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
     uni.request({
         url: 'http://172.16.118.216:30000/blade-system/api/inte/client/ver/currentDetail',
         method: 'GET',
@@ -41,26 +41,33 @@ const getData = () => {
                 data.isForce = _data.data.isForce;
                 // 强制更新使用全量包，否则如果增量包存在使用增量包，不存在则使用全量
                 data.updateFile = data.isForce ? _data.data.entireFile : _data.data.updateFile || _data.data.entireFile;
+                callback && callback({ code: _data.data.code, name: _data.data.name, updateFile: data.updateFile }, version.value);
                 data.package_type = data.isForce ? 0 : 1 || 0;
-                console.log('data===========', data);
-                if (data.code > version.value) {
+                if (data.updateFile && data.code > version.value) {
                     open.value = true;
                 }
             } else {
                 console.log(_data.msg);
             }
         },
+        fail: (err: any) => {
+            console.log('err===========', err);
+        },
     });
 };
 
-const start = () => {
+const start = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
+    // #ifdef APP-PLUS
     plus.runtime.getProperty(plus.runtime.appid || '', inf => {
-        console.log('inf===========', inf);
         version.value = inf.version || '';
-        getData();
+        getData(callback);
     });
+    // #endif
+    // #ifndef APP-PLUS
+    getData(callback);
+    // #endif
 };
-start();
+
 const onProgressUpdate = (res: UniApp.OnProgressDownloadResult) => {
     percent.value = res.progress;
     downloadedSize.value = (res.totalBytesWritten / Math.pow(1024, 2)).toFixed(2);
@@ -144,6 +151,7 @@ defineExpose({
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.65);
+    z-index: 9999;
 }
 
 .botton-radius {

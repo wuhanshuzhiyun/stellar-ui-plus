@@ -14,7 +14,7 @@ const data = reactive<ClientData>({
     code: '100', // 版本号
 });
 
-const open = ref(true);
+const open = ref(false);
 const version = ref(uni.getSystemInfoSync().version);
 const percent = ref(0);
 const updateBtn = ref(true);
@@ -42,7 +42,10 @@ const getData = () => {
                 // 强制更新使用全量包，否则如果增量包存在使用增量包，不存在则使用全量
                 data.updateFile = data.isForce ? _data.data.entireFile : _data.data.updateFile || _data.data.entireFile;
                 data.package_type = data.isForce ? 0 : 1 || 0;
-                console.log(_data.data);
+                console.log('data===========', data);
+                if (data.code > version.value) {
+                    open.value = true;
+                }
             } else {
                 console.log(_data.msg);
             }
@@ -51,14 +54,13 @@ const getData = () => {
 };
 
 const start = () => {
-    getData();
     plus.runtime.getProperty(plus.runtime.appid || '', inf => {
+        console.log('inf===========', inf);
         version.value = inf.version || '';
+        getData();
     });
 };
-
-onMounted(start);
-
+start();
 const onProgressUpdate = (res: UniApp.OnProgressDownloadResult) => {
     percent.value = res.progress;
     downloadedSize.value = (res.totalBytesWritten / Math.pow(1024, 2)).toFixed(2);

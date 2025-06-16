@@ -105,7 +105,7 @@ function loginBtnClick() {
 </script>
 
 <template>
-    <view class="ste-user-info-root">
+    <view class="ste-user-info-root" data-test="user-info">
         <view class="box" :style="[cmpRootStyle]">
             <view class="user-box" v-if="showUserInfo" @click="userClick">
                 <view class="left">
@@ -191,9 +191,6 @@ function loginBtnClick() {
                     white-space: nowrap; /* 禁止换行 */
                     overflow: hidden; /* 隐藏溢出内容 */
                     text-overflow: ellipsis; /* 溢出时显示省略号 */
-                }
-
-                .desc {
                 }
 
                 .info {

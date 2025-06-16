@@ -187,9 +187,9 @@ const viewClass = computed(() => {
                                 <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
                             </view>
                         </view>
-                        <view class="ste-goods-info-codes" @click.stop="onClick('code')">
+                        <view class="ste-goods-info-codes" v-if="data.code || data.barCode" @click.stop="onClick('code')">
                             {{ data.code }}
-                            <span style="color: #e6e8ea">|</span>
+                            <span style="color: #e6e8ea" v-if="data.code && data.barCode">|</span>
                             {{ data.barCode }}
                         </view>
                         <slot>

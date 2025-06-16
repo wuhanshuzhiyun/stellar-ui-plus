@@ -6,9 +6,8 @@ import { type ClientData, type ResponseData, download } from './method';
 const props = defineProps(propsData);
 
 const data = reactive<ClientData>({
-    content: '1. 修复已知问题<br>2. 优化用户体验',
-    updateFile: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-6bef1fe3-e3e3-4909-9f0c-6ed9bd11c93b/aae2360a-6628-4c93-b873-ce1600b9a852.apk', //安装包下载地址或者通用应用市场地址
-    entireFile: '',
+    content: '',
+    updateFile: '', //安装包
     isForce: false, //是否强制更新 0代表否 1代表是
     package_type: 0, //0 是整包升级 1是wgt升级
     name: '1.0.1', // 版本名称
@@ -39,10 +38,10 @@ const getData = () => {
                 data.code = _data.data.code;
                 data.name = _data.data.name;
                 data.content = _data.data.content;
-                data.updateFile = _data.data.updateFile;
-                data.entireFile = _data.data.entireFile;
                 data.isForce = _data.data.isForce;
-                data.package_type = _data.data.entireFile ? 0 : 1;
+                // 强制更新使用全量包，否则如果增量包存在使用增量包，不存在则使用全量
+                data.updateFile = data.isForce ? _data.data.entireFile : _data.data.updateFile || _data.data.entireFile;
+                data.package_type = data.isForce ? 0 : 1 || 0;
                 console.log(_data.data);
             } else {
                 console.log(_data.msg);
@@ -51,12 +50,14 @@ const getData = () => {
     });
 };
 
-onMounted(() => {
+const start = () => {
     getData();
     plus.runtime.getProperty(plus.runtime.appid || '', inf => {
         version.value = inf.version || '';
     });
-});
+};
+
+onMounted(start);
 
 const onProgressUpdate = (res: UniApp.OnProgressDownloadResult) => {
     percent.value = res.progress;
@@ -85,7 +86,8 @@ const confirm = () => {
 };
 
 defineExpose({
-    onHide() {
+    start,
+    stop() {
         data.isForce = false;
     },
 });

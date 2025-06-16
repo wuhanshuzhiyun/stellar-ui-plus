@@ -38,8 +38,6 @@ export interface ClientData {
     content: string;
     /** 版本更新文件地址 */
     updateFile: string;
-    /** 版本完整文件地址 */
-    entireFile: string;
     /** 是否强制更新 */
     isForce: boolean;
     /** 0 是整包升级 1是wgt升级 */

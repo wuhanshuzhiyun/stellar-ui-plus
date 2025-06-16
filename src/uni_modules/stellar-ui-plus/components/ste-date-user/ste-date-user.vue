@@ -28,7 +28,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <view class="ste-date-user-root">
+    <view class="ste-date-user-root" data-test="date-user">
         <view class="box">
             <template v-if="type == 'date'">
                 <view class="left">

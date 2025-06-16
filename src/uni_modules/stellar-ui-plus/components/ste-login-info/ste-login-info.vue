@@ -35,7 +35,7 @@ const emits = defineEmits(loginInfoEmits);
 const { getColor } = useColorStore();
 
 const compMainColor = computed(() => {
-    return props.mainColor || getColor().steThemeColor;
+    return getColor().steThemeColor;
 });
 
 const compRootStyle = computed(() => {

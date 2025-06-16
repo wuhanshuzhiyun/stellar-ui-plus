@@ -24,7 +24,7 @@ const onClickItem = (type: 'empty' | 'image' | 'title' | 'subhead' | 'status' | 
 const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty', type);
 </script>
 <template>
-    <view class="ste-function-list-root" :style="[rootStyle]">
+    <view class="ste-function-list-root" :style="[rootStyle]" data-test="function-list">
         <view class="ste-function-list-header" @click="onClickHeader('empty')">
             <view class="ste-function-list-header-l">
                 <view class="ste-function-list-title" @click.stop="onClickHeader('title')">{{ title }}</view>

@@ -1,23 +1,16 @@
 <script lang="ts" setup>
 import type { RefAppUpdate } from '@/uni_modules/stellar-ui-plus/types/refComponents';
 import { onHide } from '@dcloudio/uni-app';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 const appUpdate = ref<RefAppUpdate>();
-onMounted(() => {
-    console.log('appUpdate.value', appUpdate.value);
-    appUpdate.value?.start(({ code, name, updateFile }, version) => {
-        console.log(`服务器版本号：${code}；服务器版本名称${name}；更新文件地址：${updateFile}`);
+// 监听检查更新结果
+const checkForUpdates = () => {
+    appUpdate.value?.start(({ code, name }, version) => {
         console.log(`当前版本号：${version}`);
-        if (code == version) {
-            uni.showToast({
-                title: '已经是最新版本',
-                icon: 'none',
-                duration: 2000,
-            });
-        }
+        console.log(`服务器版本号：${code}；服务器版本名称${name}`);
     });
-});
+};
 onHide(() => appUpdate.value?.stop());
 </script>
 
@@ -34,6 +27,7 @@ onHide(() => appUpdate.value?.stop());
             <view class="title">基础使用</view>
             <view class="item-block">
                 <ste-app-update ref="appUpdate" clientId="workbench_android" clientSecret="gkS6lEEncqAocYK2qsrvPQZykm3ISeMx"></ste-app-update>
+                <ste-button @click="checkForUpdates">检查更新</ste-button>
             </view>
         </view>
     </page-layout>

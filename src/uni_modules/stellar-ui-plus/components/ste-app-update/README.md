@@ -8,22 +8,28 @@
 
 - 属性`clientId`用于设置APP的应用编码
 - 属性`clientSecret`用于设置APP的应用密钥
+- 函数`start`用于开始检查更新
+- 函数`stop`用于取消强制更新
 
 ```html
 <script setup lang="ts">
     import type { RefAppUpdate } from '@/uni_modules/stellar-ui-plus/types/refComponents';
-    import { onMounted, ref } from 'vue';
+    import { onHide } from '@dcloudio/uni-app';
+    import { ref } from 'vue';
 
     const appUpdate = ref<RefAppUpdate>();
-    onMounted(() => {
+    // 监听检查更新结果
+    const checkForUpdates = () => {
         appUpdate.value?.start(({ code, name }, version) => {
             console.log(`当前版本号：${version}`);
             console.log(`服务器版本号：${code}；服务器版本名称${name}`);
         });
-    });
+    };
+    onHide(() => appUpdate.value?.stop());
 </script>
 <template>
     <ste-app-update ref="appUpdate" clientId="workbench_android" clientSecret="gkS6lEEncqAocYK2qsrvPQZykm3ISeMx"></ste-app-update>
+    <button @click="checkForUpdates">检查更新</button>
 </template>
 ```
 

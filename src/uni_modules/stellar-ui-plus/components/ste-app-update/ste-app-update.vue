@@ -37,7 +37,7 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
             if (_data.code == 200) {
                 data.code = _data.data.code;
                 data.name = _data.data.name;
-                data.content = _data.data.content;
+                data.content = _data.data.content + _data.data.desc;
                 data.isForce = _data.data.isForce;
                 // 强制更新使用全量包，否则如果增量包存在使用增量包，不存在则使用全量
                 data.updateFile = data.isForce ? _data.data.entireFile : _data.data.updateFile || _data.data.entireFile;

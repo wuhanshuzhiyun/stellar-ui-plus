@@ -56,8 +56,8 @@ const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty',
                             <view class="content-list-item-info-status" @click.stop="onClickItem('status', item)">{{ item.statusText }}</view>
                             <view class="content-list-item-info-button" v-if="item.buttonText || buttonText || item.buttonIcon || buttonIcon" @click.stop="onClickItem('button', item)">
                                 <ste-button :mode="100" :rootStyle="{ height: '56rpx' }" type="primary" :background="item.buttonBg || buttonBg" :color="item.buttonColor || buttonColor">
-                                    <ste-icon :code="item.buttonIcon || buttonIcon" :color="item.buttonColor || buttonColor" :fontFamily="fontFamily" />
-                                    {{ item.buttonText || buttonText }}
+                                    <ste-icon :code="item.buttonIcon || buttonIcon" :color="item.buttonColor || buttonColor" size="24.5" :fontFamily="fontFamily" />
+                                    <text style="margin-left: 8rpx">{{ item.buttonText || buttonText }}</text>
                                 </ste-button>
                             </view>
                         </view>

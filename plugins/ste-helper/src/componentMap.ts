@@ -1759,12 +1759,6 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
-    "ste-donut-chart": {
-        "site": "ste-donut-chart",
-        "attr": [
-            ""
-        ]
-    },
     "drag": {
         "site": "ste-drag",
         "attr": [
@@ -3758,10 +3752,22 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": ""
             },
             {
-                "name": "loginStatus",
-                "description": "登录状态 0未登录 1已登录",
-                "type": "number",
-                "default": 0
+                "name": "subTitle",
+                "description": "描述",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "subTitleIcon",
+                "description": "描述icon",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "subColor",
+                "description": "描述和描述icon的颜色",
+                "type": "string",
+                "default": "主题色"
             },
             {
                 "name": "showTitleIcon",
@@ -3823,6 +3829,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "(]) => void",
                 "params": []
             }
+        ]
+    },
+    "ste-main-info": {
+        "site": "ste-main-info",
+        "attr": [
+            ""
         ]
     },
     "media-preview": {

@@ -1,5 +1,6 @@
 <template>
     <view class="ste-login--root" :style="[compRootStyle]">
+        <slot name="header"></slot>
         <view class="login mode-base" v-if="mode === 'base'">
             <ste-image src="https://image.whzb.com/chain/StellarUI/image/banner2.png" height="120" mode="heightFix" />
             <view class="protocol-box">
@@ -23,7 +24,7 @@
             </view>
         </view>
 
-        <view class="login mode-1" v-else-if="mode === 'mode1'" :style="[{ backgroundImage: `url(${loginImgUrl})` }]">
+        <view class="login mode-1" v-else-if="mode === 'mode1'">
             <view class="login-box" :style="[compLoginBoxStyle]">
                 <view class="tab-box" v-if="loginGroup.length > 1">
                     <view :class="['tab', item.key === loginCurrentTab ? 'active-tab' : 'normal-tab']" @click="changeTab(item.key, index)" v-for="(item, index) in loginGroup" :key="item.title">
@@ -101,6 +102,10 @@ const compRootStyle = computed(() => {
     const style: CSSProperties = {
         '--main-color': mainColor.value,
     };
+    if (props.mode === 'mode1') {
+        style.backgroundImage = `url(${props.loginImgUrl})`;
+        style.backgroundSize = '100% auto';
+    }
     return style;
 });
 
@@ -169,7 +174,7 @@ defineExpose({ formData });
     position: relative;
     height: 100%;
     width: 100%;
-
+    overflow: hidden;
     .login {
         height: 100%;
         width: 100%;

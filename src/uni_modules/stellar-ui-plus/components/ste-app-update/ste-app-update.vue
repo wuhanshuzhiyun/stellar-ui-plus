@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import propsData from './props';
 import { type ClientData, type ResponseData, download } from './method';
 
@@ -22,7 +22,7 @@ const downloadedSize = ref('0');
 const packageFileSize = ref('0');
 const getData = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
     uni.request({
-        url: 'http://172.16.118.216:30000/blade-system/api/inte/client/ver/currentDetail',
+        url: props.apiUrl,
         method: 'GET',
         header: {
             Authorization: `Basic ${btoa(props.clientId + ':' + props.clientSecret)}`,

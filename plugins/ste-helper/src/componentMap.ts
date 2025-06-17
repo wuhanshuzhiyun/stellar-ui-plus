@@ -44,14 +44,20 @@ export const componentMap: Record<string, ComponentDesc> = {
     "app-update": {
         "site": "ste-app-update",
         "attr": [
-            "title=''"
+            "clientId=''"
         ],
         "props": [
             {
-                "name": "title",
-                "description": "尺寸",
+                "name": "clientId",
+                "description": "应用编码",
                 "type": "string",
-                "default": "日期选择"
+                "default": ""
+            },
+            {
+                "name": "clientSecret",
+                "description": "应用密钥",
+                "type": "string",
+                "default": ""
             }
         ],
         "events": []

@@ -239,7 +239,6 @@ function loginBtnClick() {
                 text-align: center;
                 width: 60rpx;
                 height: 60rpx;
-                background: #dddddd;
                 border-radius: 12rpx;
             }
 

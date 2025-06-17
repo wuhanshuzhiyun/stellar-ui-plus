@@ -28,12 +28,11 @@ const props = {
 export const filterToolEmits = {
     // 确认选择 - 返回 FilterValue[] 格式
     confirm: (values: FilterValue[]) => Array.isArray(values),
-
     // 重置
     reset: () => true,
-
     // 值变化（实时）
     'update:value': (values: FilterValue[]) => Array.isArray(values),
+    itemClick: (item: FilterValue) => item instanceof Object,
 };
 
 export type FilterToolProps = ExtractPropTypes<typeof props>;

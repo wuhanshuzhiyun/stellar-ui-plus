@@ -143,10 +143,9 @@ async function getContentHeight() {
     let windowHeight = System.getWindowInfo().windowHeight;
 
     const res = await utils.querySelector<false>('.ste-dropdown-menu-root', instance);
-    console.log('menuRootQuery is ', res);
+
     menuRootQuery.value = { height: res.height || 0, top: res.top || 0, bottom: res.bottom || 0, left: res.left || 0 };
     contentHeight.value = props.direction == 'down' ? windowHeight - menuRootQuery.value.bottom : menuRootQuery.value.top;
-    console.log('contentHeight is ', contentHeight.value);
 }
 
 async function handleMenuClick() {

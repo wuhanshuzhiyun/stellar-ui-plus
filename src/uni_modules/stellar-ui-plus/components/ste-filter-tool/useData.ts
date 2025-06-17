@@ -75,9 +75,10 @@ export default function useSimpleFilterLogic(props: FilterToolProps, emits: Setu
     /**
      * 更新值并触发事件
      */
-    const updateAndEmitValues = () => {
+    const updateAndEmitValues = (item: FilterItem) => {
         const currentValues = collectCurrentValues();
         emits('update:value', currentValues);
+        emits('itemClick', currentValues.find(e => e.key === item.key) as FilterValue);
     };
 
     /**
@@ -95,7 +96,7 @@ export default function useSimpleFilterLogic(props: FilterToolProps, emits: Setu
             child.active = true;
         }
 
-        updateAndEmitValues();
+        updateAndEmitValues(item);
     };
 
     /**
@@ -103,7 +104,7 @@ export default function useSimpleFilterLogic(props: FilterToolProps, emits: Setu
      */
     const handleCheckboxChange = (item: FilterItem, value: string) => {
         item.activeValue = value;
-        updateAndEmitValues();
+        updateAndEmitValues(item);
     };
 
     /**

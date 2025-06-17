@@ -11,7 +11,6 @@ const checkForUpdates = () => {
         console.log(`服务器版本号：${code}；服务器版本名称${name}`);
     });
 };
-onHide(() => appUpdate.value?.stop());
 </script>
 
 <template>

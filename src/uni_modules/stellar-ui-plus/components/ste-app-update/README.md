@@ -9,7 +9,6 @@
 - 属性`clientId`用于设置APP的应用编码
 - 属性`clientSecret`用于设置APP的应用密钥
 - 函数`start`用于开始检查更新
-- 函数`stop`用于取消强制更新
 
 ```html
 <script setup lang="ts">
@@ -25,7 +24,6 @@
             console.log(`服务器版本号：${code}；服务器版本名称${name}`);
         });
     };
-    onHide(() => appUpdate.value?.stop());
 </script>
 <template>
     <ste-app-update ref="appUpdate" clientId="workbench_android" clientSecret="gkS6lEEncqAocYK2qsrvPQZykm3ISeMx"></ste-app-update>

@@ -38,7 +38,7 @@ const onClickEmpty = (type: 'image' | 'text' | 'button') => emits('click-empty',
                 <slot name="header-right">
                     <view class="ste-function-list-more" @click.stop="onClickHeader('more')">
                         更多
-                        <ste-icon code="&#xe674;" color="#353535" :fontFamily="fontFamily"></ste-icon>
+                        <ste-icon code="&#xe674;" color="#353535"></ste-icon>
                     </view>
                 </slot>
             </view>

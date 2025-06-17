@@ -58,6 +58,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "应用密钥",
                 "type": "string",
                 "default": ""
+            },
+            {
+                "name": "apiUrl",
+                "description": "更新API地址",
+                "type": "string",
+                "default": "https://zboa.whzb.com/inte-cloud-dev/blade-system/api/inte/client/ver/currentDetail"
             }
         ],
         "events": []

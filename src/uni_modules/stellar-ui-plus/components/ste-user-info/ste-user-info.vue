@@ -109,7 +109,7 @@ function loginBtnClick() {
         <view class="box" :style="[cmpRootStyle]">
             <view class="user-box" v-if="showUserInfo" @click="userClick">
                 <view class="left">
-                    <ste-image :width="80" :height="80" :src="loginStatus == 1 ? avatar : loginSrc"></ste-image>
+                    <ste-image :width="92" :height="92" :src="loginStatus == 1 ? avatar : loginSrc"></ste-image>
                 </view>
                 <view class="right">
                     <view class="name" v-if="loginStatus == 1">{{ nickname }}</view>
@@ -161,12 +161,12 @@ function loginBtnClick() {
             flex-direction: row;
 
             .left {
-                width: 80rpx;
-                height: 80rpx;
+                width: 92rpx;
+                height: 92rpx;
                 background: #dddddd;
-                border-radius: 40rpx;
+                border-radius: 50%;
                 overflow: hidden;
-                margin-right: 12rpx;
+                margin-right: 24rpx;
             }
             .right {
                 display: flex;
@@ -175,7 +175,7 @@ function loginBtnClick() {
 
                 .name {
                     color: #000;
-                    font-size: var(--font-size-24, 24rpx);
+                    font-size: var(--font-size-32, 32rpx);
                     font-weight: Bold;
                     width: 140rpx; /* 设置固定宽度，也可以是百分比或者其他单位 */
                     white-space: nowrap; /* 禁止换行 */
@@ -185,7 +185,7 @@ function loginBtnClick() {
 
                 .title {
                     color: #000;
-                    font-size: var(--font-size-24, 24rpx);
+                    font-size: var(--font-size-32, 32rpx);
                     font-weight: Bold;
                     width: 340rpx; /* 设置固定宽度，也可以是百分比或者其他单位 */
                     white-space: nowrap; /* 禁止换行 */

@@ -17,10 +17,22 @@
             "default": ""
         },
         {
-            "name": "loginStatus",
-            "description": "登录状态 0未登录 1已登录",
-            "type": "number",
-            "default": 0
+            "name": "subTitle",
+            "description": "描述",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "subTitleIcon",
+            "description": "描述icon",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "subColor",
+            "description": "描述和描述icon的颜色",
+            "type": "string",
+            "default": "主题色"
         },
         {
             "name": "showTitleIcon",

@@ -11,7 +11,6 @@ defineOptions({
 const props = defineProps(propsData);
 
 const cmpStyle = computed(() => {
-    console.log('props', props);
     let style: CSSProperties = {};
     style['width'] = utils.formatPx(Number(props.size) * 2 + 4);
     style['height'] = utils.formatPx(Number(props.size) + 4);

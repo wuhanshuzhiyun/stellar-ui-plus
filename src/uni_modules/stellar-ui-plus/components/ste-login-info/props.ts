@@ -8,6 +8,7 @@ const loginInfoProps = {
     nickname: { type: String, default: '' },
     subTitle: { type: String, default: '' },
     subTitleIcon: { type: String, default: '' },
+    subColor: { type: String, default: '' },
     fontFamily: { type: String, default: 'ste-iconfont-1709689042473' },
     /** 登录状态 0未登录 1已登录 */
     loginStatus: { type: Number as PropType<LoginStatus>, default: 1 },

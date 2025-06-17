@@ -26,7 +26,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useColorStore } from '../../store/color';
-// import utils from '../../utils/utils';
 
 import propsData, { loginInfoEmits } from './props';
 const props = defineProps(propsData);
@@ -35,7 +34,7 @@ const emits = defineEmits(loginInfoEmits);
 const { getColor } = useColorStore();
 
 const compMainColor = computed(() => {
-    return getColor().steThemeColor;
+    return props.subColor ? props.subColor : getColor().steThemeColor;
 });
 
 const compRootStyle = computed(() => {

@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import utils from '../../utils/utils.js';
-import { ref, computed, type CSSProperties, watch, nextTick, getCurrentInstance, type ComponentPublicInstance, type Ref } from 'vue';
+import utils from '../../utils/utils';
+import { createOptions } from '../../utils/mixin';
+import { ref, computed, type CSSProperties, watch, nextTick, getCurrentInstance, type ComponentPublicInstance, type Ref, onMounted } from 'vue';
 import propsData from './props';
 
-defineOptions({
-    name: 'ste-notice-bar',
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions('ste-notice-bar'));
 
 const props = defineProps(propsData);
 
@@ -68,6 +64,10 @@ watch(
         immediate: true,
     }
 );
+
+onMounted(() => {
+    handleAnimation();
+});
 // 执行滚动动画
 const id = ref(utils.guid());
 let cardMsgClass = ref('');
@@ -76,6 +76,7 @@ async function handleAnimation() {
     if (props.direction == 'across') {
         // 获取滚动消息的长度来计算动画的执行时间
         const dom = await utils.querySelector<false>('#' + id.value, instance);
+        if (!dom) return;
         acrossDuration.value = ((Number(dom.width) + textTranslate.value) / Number(props.acrossSpeed)) * 1000;
         cardMsgClass.value = 'across-play-infinite';
     } else {
@@ -203,6 +204,9 @@ function handleClick() {
         justify-content: flex-start;
         flex: 1;
         height: 100%;
+        // #ifdef MP-TOUTIAO
+        overflow-y: hidden;
+        // #endif
     }
 
     .left {

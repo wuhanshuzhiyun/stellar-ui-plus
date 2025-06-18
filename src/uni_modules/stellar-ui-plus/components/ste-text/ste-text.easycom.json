@@ -5,6 +5,11 @@
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=text",
     "attributes": [
         {
+            "name": "value",
+            "description": "文本内容，使用该值时插槽失效",
+            "type": "string"
+        },
+        {
             "name": "selectable",
             "description": "文本是否可选 默认 false",
             "type": "boolean",

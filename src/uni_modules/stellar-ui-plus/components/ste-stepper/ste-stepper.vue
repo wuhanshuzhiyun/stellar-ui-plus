@@ -1,23 +1,25 @@
 <script lang="ts" setup>
 import type { BaseEvent } from '@uni-helper/uni-app-types';
-import { computed, type CSSProperties, nextTick } from 'vue';
+import { computed, type CSSProperties, nextTick, watch } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import propsData, { type StepperEmits } from './props';
 import utils from '../../utils/utils';
+import { createOptions } from '../../utils/mixin';
 
-const componentName = `ste-stepper`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions('ste-stepper'));
 
 const props = defineProps(propsData);
 const emits = defineEmits<StepperEmits>();
 
 // const model = defineModel<number>({ default: 0 });
+
+watch(
+    () => props.modelValue,
+    val => {
+        console.log('步进器值变化。。。', val);
+    }
+);
 
 const cmpBtnSize = computed(() => {
     return props.btnSize ? Number(props.btnSize) : props.theme == 'card' ? 48 : 60;
@@ -146,6 +148,7 @@ function focus(event: BaseEvent) {
     emits('focus', event);
 }
 async function plus() {
+    console.log('步进器增加。。。');
     if (!props.disabled && !cmpDisablePlus.value) {
         let next = true;
         const stop = new Promise((resolve, reject) => {

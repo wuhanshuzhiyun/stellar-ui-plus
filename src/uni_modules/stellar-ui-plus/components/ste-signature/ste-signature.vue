@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, getCurrentInstance, ref } from 'vue';
+import { computed, onMounted, getCurrentInstance, ref, type ComponentPublicInstance } from 'vue';
 import utils from '../../utils/utils';
 import type { Stroke } from './types';
 import type { HTMLMouseEvent, UniTouchEvent } from '../../types/event.d';
 import propsData from './props';
+import { createOptions } from '../../utils/mixin';
 
-defineOptions({
-    name: 'ste-signature',
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions('ste-signature'));
 
 const props = defineProps(propsData);
 const emits = defineEmits<{
@@ -30,7 +26,7 @@ const ctx = ref<UniNamespace.CanvasContext>();
 
 const strokeing = ref<Stroke[]>([]);
 const strokes = ref<Stroke[][]>([]);
-const thas = ref<globalThis.ComponentPublicInstance | null>();
+const thas = ref<ComponentPublicInstance | null>();
 
 const initCtx = () => {
     thas.value = getCurrentInstance()?.proxy;
@@ -101,6 +97,9 @@ const onTouchStart = async (e: UniTouchEvent) => {
     // #ifdef MP
     strokeing.value = [{ x: e.changedTouches[0]?.x || 0, y: e.changedTouches[0]?.y || 0 }];
     // #endif
+    // #ifdef MP-TOUTIAO
+    strokeing.value = [{ x: e.changedTouches[0]?.clientX || 0, y: e.changedTouches[0]?.clientY || 0 }];
+    // #endif
     // #ifdef APP
     strokeing.value = [{ x: e.touches[0]?.x || 0, y: e.touches[0]?.y || 0 }];
     // #endif
@@ -109,12 +108,16 @@ const onTouchStart = async (e: UniTouchEvent) => {
 };
 
 const onTouchMove = async (e: UniTouchEvent) => {
+    console.log('签名 移动 ', e);
     if (!strokeing.value.length) return;
     // #ifdef H5
     strokeing.value.push(await getH5MousePosition(e as unknown as HTMLMouseEvent));
     // #endif
     // #ifdef MP
     strokeing.value.push({ x: e.changedTouches[0].x || 0, y: e.changedTouches[0].y || 0 });
+    // #endif
+    // #ifdef MP-TOUTIAO
+    strokeing.value.push({ x: e.changedTouches[0].clientX || 0, y: e.changedTouches[0].clientY || 0 });
     // #endif
     // #ifdef APP
     strokeing.value.push({ x: e.touches[0]?.x || 0, y: e.touches[0]?.y || 0 });
@@ -178,7 +181,7 @@ defineExpose({ save, clear, back });
 </script>
 
 <template>
-    <view class="ste-signature-root" :style="cmpRootStyle" @mousedown="onMousedown" @mousemove="onMousemove" @mouseup="onTouchEnd" @mosueleave="onTouchEnd">
+    <view class="ste-signature-root" :style="cmpRootStyle" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
         <canvas :id="canvasId" :canvas-id="canvasId" :style="cmpRootStyle" disable-scroll @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd" />
     </view>
 </template>

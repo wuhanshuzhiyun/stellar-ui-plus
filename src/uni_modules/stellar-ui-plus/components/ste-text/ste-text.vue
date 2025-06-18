@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import propsData from './props';
+import { createOptions } from '../../utils/mixin';
 
-const componentName = `ste-text`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions('ste-text'));
+
 const props = defineProps(propsData);
 
 const cmpRootCssVar = computed(() => {
@@ -29,14 +25,19 @@ const cmpRootCssVar = computed(() => {
         :number-of-lines="lines"
         data-test="text"
     >
-        <slot></slot>
+        <template v-if="!value">
+            <slot></slot>
+        </template>
+        <text v-else class="text-value">
+            {{ value }}
+        </text>
     </text>
 </template>
 
 <style lang="scss" scoped>
 .ste-text-root {
     &.ste-text-lines {
-        /* #ifdef MP-WEIXIN || H5 */
+        /* #ifdef MP-WEIXIN || H5 || MP-TOUTIAO */
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: var(--overflow-lines);

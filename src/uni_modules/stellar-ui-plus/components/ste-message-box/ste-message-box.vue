@@ -4,11 +4,10 @@ import { getMessageBoxKey } from './ste-message-box';
 import useData from './useData';
 import type { BaseEvent } from '../../types/event';
 import utils from '../../utils/utils';
+import { createOptions } from '../../utils/mixin';
 import { ICON_OBJ, ANIMATION_PROP, DURATION, type MessageBoxOptions } from './constants';
 
-defineOptions({
-    name: 'ste-message-box',
-});
+defineOptions(createOptions('ste-message-box'));
 
 const slots = useSlots();
 

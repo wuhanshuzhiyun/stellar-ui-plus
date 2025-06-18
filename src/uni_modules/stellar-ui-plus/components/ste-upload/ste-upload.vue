@@ -5,10 +5,9 @@ import { readMediaFile, readFile } from './ReadFile';
 import utils from '../../utils/utils';
 import propsData from './props';
 import useData from './useData';
+import { createOptions } from '../../utils/mixin';
 
-defineOptions({
-    name: 'ste-upload',
-});
+defineOptions(createOptions('ste-upload'));
 
 const emits = defineEmits<{
     (e: 'beforeRead', list: UploadFileType[], suspend: () => void, next: () => void, stop: () => void): void;

@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 
 const data = ref({
     image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
-    title: '商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称',
+    title: '商品名称商品名称商品名称商品名称g商品名称商品名称商品名称商品名称商品名称',
     tag: '新品',
     code: '123456',
     barCode: '1234567890123',
@@ -134,7 +134,7 @@ const data1 = ref({
         </view>
         <view class="demo-item">
             <view class="title">建议</view>
-            <ste-goods-info :data="data" :suggestData="suggestData"></ste-goods-info>
+            <ste-goods-info :data="data" hidePrice :suggestData="suggestData"></ste-goods-info>
         </view>
         <view class="demo-item">
             <view class="title">食堂业务</view>

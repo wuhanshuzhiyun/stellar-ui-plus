@@ -246,8 +246,8 @@ const cmpMore = computed(() => props.mode === 'more');
                             </view>
                         </view>
                         <view class="ste-goods-info-suggest" v-if="cmpMore && showSuggest">
-                            <view class="ste-goods-info-suggest-method">
-                                <view class="ste-goods-info-suggest-method-title" @click="clickSuggest('method')">
+                            <view class="ste-goods-info-suggest-method" @click="clickSuggest('method')">
+                                <view class="ste-goods-info-suggest-method-title">
                                     <text class="suggest-method-title-text">
                                         {{ suggesData.title }}
                                     </text>
@@ -262,7 +262,7 @@ const cmpMore = computed(() => props.mode === 'more');
                                         <input
                                             class="ste-goods-info-apply-for-input"
                                             placeholder="请输入"
-                                            placeholder-style="color:#e6e8ea"
+                                            placeholder-style="font-size:22rpx;color:#ccc"
                                             :class="{ readonly: readonlySuggestInput }"
                                             type="number"
                                             v-model="suggesData.applyForNumber"
@@ -342,6 +342,7 @@ const cmpMore = computed(() => props.mode === 'more');
                         color: #1c1f23;
                         // 文字溢出隐藏显示省略号
                         overflow: hidden;
+                        padding-bottom: 2rpx;
                         white-space: nowrap;
                         text-overflow: ellipsis;
                         .ste-goods-info-tag-box {
@@ -366,7 +367,7 @@ const cmpMore = computed(() => props.mode === 'more');
                     font-size: 22rpx;
                     color: #555a61;
                     line-height: 26rpx;
-                    margin-top: 8rpx;
+                    margin-top: 6rpx;
                 }
 
                 .ste-goods-info-sub-title {
@@ -404,13 +405,14 @@ const cmpMore = computed(() => props.mode === 'more');
                 }
 
                 .ste-goods-info-suggest {
-                    line-height: 34rpx;
+                    line-height: 40rpx;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    font-size: 20rpx;
+                    font-size: 22rpx;
                     color: #555a61;
                     .ste-goods-info-suggest-method {
+                        min-width: 180rpx;
                         display: flex;
                         flex-direction: row;
                         align-items: center;
@@ -429,33 +431,33 @@ const cmpMore = computed(() => props.mode === 'more');
                             .suggest-method-title-icon {
                                 position: absolute;
                                 z-index: 5;
-                                width: 8rpx;
-                                height: 8rpx;
+                                width: 12rpx;
+                                height: 12rpx;
                                 background: #555a61;
-                                bottom: -4rpx;
-                                right: -4rpx;
+                                bottom: -6rpx;
+                                right: -6rpx;
                                 transform: rotate(45deg);
                             }
                         }
                         .ste-goods-info-suggest-method-number {
                             margin-left: 4rpx;
-                            font-size: 22rpx;
+                            font-size: 24rpx;
                         }
                     }
                     .ste-goods-info-apply-for {
                         display: flex;
                         .ste-goods-info-apply-for-number {
-                            width: 124rpx;
-                            height: 34rpx;
+                            width: 150rpx;
+                            height: 40rpx;
                             border-radius: 4rpx;
                             border: 2rpx solid #e6e8ea;
                             display: flex;
                             align-items: center;
                             .ste-goods-info-apply-for-input {
-                                width: calc(100% - 32rpx);
-                                height: 30rpx;
-                                min-height: 30rpx;
-                                font-size: 22rpx;
+                                width: calc(100% - 48rpx);
+                                height: 40rpx;
+                                min-height: 40rpx;
+                                font-size: 24rpx;
                                 text-align: center;
                                 &.readonly {
                                     pointer-events: none;
@@ -465,7 +467,7 @@ const cmpMore = computed(() => props.mode === 'more');
                                 }
                             }
                             .ste-goods-info-apply-for-back {
-                                width: 32rpx;
+                                width: 48rpx;
                                 border-left: 2rpx solid #e6e8ea;
                                 display: flex;
                                 align-items: center;
@@ -517,7 +519,7 @@ const cmpMore = computed(() => props.mode === 'more');
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 72rpx;
+            height: 90rpx;
             background: #f4f5f688;
             border-radius: 4px;
             .ste-goods-info-suggest-items {
@@ -537,20 +539,20 @@ const cmpMore = computed(() => props.mode === 'more');
                     min-width: 120rpx;
 
                     .ste-goods-info-suggest-list-item-label {
-                        font-size: 16rpx;
+                        font-size: 20rpx;
                         color: #888c92;
-                        line-height: 22rpx;
+                        line-height: 24rpx;
                     }
                     .ste-goods-info-suggest-list-item-value {
-                        font-size: 22rpx;
+                        font-size: 24rpx;
                         color: #1c1f23;
-                        line-height: 22rpx;
+                        line-height: 26rpx;
                         margin-top: 6rpx;
                     }
                 }
             }
             .ste-goods-info-suggest-icon {
-                width: 34rpx;
+                width: 48rpx;
                 height: 50rpx;
                 border-left: 2rpx solid #e6e8ea;
                 display: flex;

@@ -1,25 +1,25 @@
 <script lang="ts" setup>
-import { useSlots, computed, type CSSProperties } from 'vue';
+import { useSlots, computed, type CSSProperties, onMounted, ref } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import utils from '../../utils/utils';
 import propsData, { RADIO_KEY, type RadioEmits } from './props';
 import type { RadioGroupProps } from '../ste-radio-group/props';
-import { useInject } from '../../utils/mixin';
+import { useInject, createOptions } from '../../utils/mixin';
 const componentName = `ste-radio`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions(componentName));
 const props = defineProps(propsData);
 const emits = defineEmits<RadioEmits>();
 const slots = useSlots();
 
-const Parent = useInject<{ props: Required<RadioGroupProps>; updateValue: (value: string) => void }>(RADIO_KEY);
+let Parent = ref<any>(null);
+onMounted(() => {
+    Parent.value = useInject<{ props: Required<RadioGroupProps>; updateValue: (value: string) => void }>(RADIO_KEY);
+});
 
-const parentProps = computed(() => Parent?.parent?.props);
+// const Parent = useInject<{ props: Required<RadioGroupProps>; updateValue: (value: string) => void }>(RADIO_KEY);
+
+const parentProps = computed(() => Parent.value?.parent?.props);
 
 const cmpReadonly = computed(() => getDefaultData('readonly', false));
 const cmpShape = computed(() => getDefaultData('shape', 'circle'));
@@ -97,35 +97,61 @@ const cmpChecked = computed(() => {
 });
 
 async function click() {
-    if (!cmpDisabled.value && !cmpReadonly.value) {
-        let next = true;
-        const stop = new Promise((resolve, reject) => {
+    if (cmpDisabled.value || cmpReadonly.value) {
+        return;
+    }
+
+    utils.asyncEvent(
+        (pause, resolve, reject) => {
             emits(
                 'click',
                 props.modelValue,
-                () => (next = false),
+                () => pause(),
                 () => resolve(props.modelValue),
                 () => reject()
             );
-        });
-        if (!next) {
-            try {
-                await stop;
-            } catch (e) {
-                return;
+        },
+        () => {
+            if (!cmpChecked.value) {
+                let value = String(props.name);
+                if (parentProps.value) {
+                    Parent.value.parent?.updateValue(value);
+                } else {
+                    emits('update:modelValue', value);
+                }
+                emits('change', value);
             }
         }
+    );
+    // if (!cmpDisabled.value && !cmpReadonly.value) {
+    //     let next = true;
+    //     const stop = new Promise((resolve, reject) => {
+    //         emits(
+    //             'click',
+    //             props.modelValue,
+    //             () => (next = false),
+    //             () => resolve(props.modelValue),
+    //             () => reject()
+    //         );
+    //     });
+    //     if (!next) {
+    //         try {
+    //             await stop;
+    //         } catch (e) {
+    //             return;
+    //         }
+    //     }
 
-        if (!cmpChecked.value) {
-            let value = String(props.name);
-            if (parentProps.value) {
-                Parent.parent?.updateValue(value);
-            } else {
-                emits('update:modelValue', value);
-            }
-            emits('change', value);
-        }
-    }
+    //     if (!cmpChecked.value) {
+    //         let value = String(props.name);
+    //         if (parentProps.value) {
+    //             Parent.value.parent?.updateValue(value);
+    //         } else {
+    //             emits('update:modelValue', value);
+    //         }
+    //         emits('change', value);
+    //     }
+    // }
 }
 
 type PropsKeyTypee = keyof typeof props;

@@ -22,7 +22,9 @@ const componentName = `ste-button`;
 defineOptions({
     name: componentName,
     options: {
+        // #ifndef MP-TOUTIAO
         virtualHost: true,
+        // #endif
     },
 });
 

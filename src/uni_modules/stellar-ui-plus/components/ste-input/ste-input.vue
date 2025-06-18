@@ -2,16 +2,12 @@
 import { computed, ref, watch, nextTick, type CSSProperties } from 'vue';
 
 import utils from '../../utils/utils';
+import { createOptions } from '../../utils/mixin';
 import propsData, { type InputEmits } from './props';
 import type { BaseEvent } from '../../types/event';
 import type { InputType } from '@uni-helper/uni-app-types';
 const componentName = `ste-input`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions(componentName));
 
 const props = defineProps(propsData);
 const emits = defineEmits<InputEmits>();
@@ -174,7 +170,7 @@ function inputClick() {
                         @blur="onBlur"
                         @confirm="onConfirm"
                     />
-                    <!-- #ifdef H5 || MP-WEIXIN || APP -->
+                    <!-- #ifdef H5 || MP-WEIXIN || APP || MP-TOUTIAO -->
                     <text
                         class="count-text"
                         :style="{

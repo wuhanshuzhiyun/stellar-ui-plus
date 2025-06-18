@@ -3,6 +3,7 @@ import type { TreeNode } from '../types';
 import config from '../config';
 import System from './System';
 import Color from './Color';
+import { asyncEvent } from './event';
 
 import { type ComponentPublicInstance } from 'vue';
 
@@ -38,6 +39,7 @@ const utils = {
     Color,
     dayjs: (t?: any, e?: any) => dayjs.default(t, e),
     config,
+    asyncEvent,
     /**
      * 节流
      * @param fn 要节流的方法
@@ -247,7 +249,11 @@ const utils = {
                 } else {
                     const func = all ? 'selectAll' : 'select';
                     uni.createSelectorQuery()
+
+                        // #ifndef MP-TOUTIAO
                         .in(component)
+
+                        // #endif
                         [func](selectors)
                         .boundingClientRect(data => {
                             resolve(data as ReturnBasedOnBool<T>);

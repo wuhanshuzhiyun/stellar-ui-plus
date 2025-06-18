@@ -1,19 +1,14 @@
 <script lang="ts" setup>
-import { useSlots, computed, ref, nextTick, markRaw, type CSSProperties } from 'vue';
+import { useSlots, computed, ref, nextTick, markRaw, type CSSProperties, onMounted } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import utils from '../../utils/utils';
 import propsData, { CHECKBOX_KEY, type CheckboxEmits } from './props';
 import type { CheckboxGroupProps } from '../ste-checkbox-group/props';
-import { useInject } from '../../utils/mixin';
+import { useInject, createOptions } from '../../utils/mixin';
 
 const componentName = `ste-checkbox`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions(componentName));
 
 const props = defineProps(propsData);
 const emits = defineEmits<CheckboxEmits>();
@@ -25,8 +20,11 @@ const staticConfig = markRaw({
     borderWidth: 2,
 });
 
-const Parent = useInject<{ props: Required<CheckboxGroupProps>; updateValue: (value: any[]) => void }>(CHECKBOX_KEY);
-const parentProps = computed(() => Parent?.parent?.props);
+let Parent = ref<any>(null);
+onMounted(() => {
+    Parent.value = useInject<{ props: Required<CheckboxGroupProps>; updateValue: (value: any[]) => void }>(CHECKBOX_KEY);
+});
+const parentProps = computed(() => Parent.value?.parent?.props);
 
 // 基础计算属性
 const cmpReadonly = computed(() => getDefaultData('readonly', false));
@@ -199,43 +197,33 @@ const handleClick = async () => {
         return;
     }
 
-    let next = true;
-    const stop = new Promise((resolve, reject) => {
-        emits(
-            'click',
-            props.modelValue,
-            () => (next = false),
-            () => resolve(props.modelValue),
-            () => reject()
+    try {
+        await utils.asyncEvent(
+            // 事件函数
+            (pauseFn, resolveFn, rejectFn) => {
+                emits('click', props.modelValue, pauseFn, resolveFn, rejectFn);
+            },
+            // 成功处理函数
+            () => {
+                let value: boolean | any[];
+                if (parentProps.value) {
+                    value = [...parentProps.value.modelValue];
+                    if (cmpChecked.value) {
+                        value = value.filter(v => v !== props.name);
+                    } else {
+                        value.push(props.name);
+                    }
+                    Parent.value.parent?.updateValue(value);
+                    num.value++;
+                } else {
+                    value = !cmpChecked.value;
+                    emits('update:modelValue', value);
+                }
+                emits('change', value);
+            }
         );
-    });
-
-    if (!next) {
-        try {
-            await stop;
-        } catch (e) {
-            return;
-        }
-    }
-
-    let value: boolean | any[];
-    if (parentProps.value) {
-        // 使用浅拷贝避免直接修改原数组
-        value = [...parentProps.value.modelValue];
-        if (cmpChecked.value) {
-            value = value.filter(v => v !== props.name);
-        } else {
-            value.push(props.name);
-        }
-        Parent.parent?.updateValue(value);
-        num.value++;
-    } else {
-        value = !cmpChecked.value;
-        emits('update:modelValue', value);
-    }
-    emits('change', value);
+    } catch (error) {}
 };
-
 const click = () => {
     batchedUpdate(handleClick);
 };

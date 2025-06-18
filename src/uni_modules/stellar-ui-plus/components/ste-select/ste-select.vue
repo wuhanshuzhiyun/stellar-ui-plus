@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { getCurrentInstance, onMounted, ref } from 'vue';
+import { getCurrentInstance, onMounted, ref, type ComponentPublicInstance } from 'vue';
 import propsData, { type SelectOption, type SelectValue } from './props';
 import useData from './useData';
 import DateTime from './datetime.vue';
 import DatapagerVue from './datapager.vue';
+import { createOptions } from '../../utils/mixin';
 
-defineOptions({
-    name: 'ste-select',
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions('ste-select'));
 
 const props = defineProps(propsData);
 const emits = defineEmits<{
@@ -21,10 +17,11 @@ const emits = defineEmits<{
     (e: 'inputFilterable', value: string): void;
     (e: 'loadMore'): void;
 }>();
-const thas = ref<globalThis.ComponentPublicInstance | null>();
+const thas = ref<ComponentPublicInstance | null>();
 
 onMounted(() => {
     thas.value = getCurrentInstance()?.proxy;
+    console.log('thas is ', thas.value);
 });
 
 const {
@@ -55,6 +52,7 @@ const {
     clickCancel,
     clickConfirm,
     clickClearable,
+    rootGuid,
 } = useData({ props, emits, thas });
 const stop = () => {};
 const loadMore = () => {
@@ -63,7 +61,7 @@ const loadMore = () => {
 };
 </script>
 <template>
-    <view class="ste-select-root" :class="{ open: showOptions, disabled }" :style="[cmpRootStyle]">
+    <view :id="rootGuid" class="ste-select-root" :class="{ open: showOptions, disabled }" :style="[cmpRootStyle]">
         <view class="select-mask" @click="clickMask" @touchmove.stop="stop">
             <view class="select-content" :style="[contentStyle]" @click.stop="openOptions">
                 <slot>

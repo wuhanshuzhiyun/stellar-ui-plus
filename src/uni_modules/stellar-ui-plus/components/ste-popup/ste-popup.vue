@@ -62,6 +62,7 @@ const cmpContentStyle = computed(() => {
 watch(
     () => props.show,
     val => {
+        console.log('监听show ', val);
         if (val) {
             beginAnimation();
         } else {
@@ -105,7 +106,7 @@ async function beginAnimation() {
     if (process.env.NODE_ENV == 'test') {
         return;
     }
-
+    console.log('执行弹出动画');
     pageDisplay.value = 'flex';
     await utils.sleep(50);
     let animation = uni.createAnimation(animationProp);

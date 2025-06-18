@@ -259,7 +259,14 @@ const cmpMore = computed(() => props.mode === 'more');
                                 <view class="ste-goods-info-apply-for-text">{{ suggesData.applyForText }}：</view>
                                 <view class="ste-goods-info-apply-for-number">
                                     <view class="ste-goods-info-apply-for-input" @click.stop="clickSuggestInput">
-                                        <input class="ste-goods-info-apply-for-input" :class="{ readonly: readonlySuggestInput }" v-model="suggesData.applyForNumber" />
+                                        <input
+                                            class="ste-goods-info-apply-for-input"
+                                            placeholder="请输入"
+                                            placeholder-style="color:#e6e8ea"
+                                            :class="{ readonly: readonlySuggestInput }"
+                                            type="number"
+                                            v-model="suggesData.applyForNumber"
+                                        />
                                     </view>
                                     <view class="ste-goods-info-apply-for-back" @click="clickSuggest('back')">
                                         <ste-icon code="&#xe632;" size="16" />
@@ -511,7 +518,7 @@ const cmpMore = computed(() => props.mode === 'more');
             align-items: center;
             justify-content: space-between;
             height: 72rpx;
-            background: #f4f5f6;
+            background: #f4f5f688;
             border-radius: 4px;
             .ste-goods-info-suggest-items {
                 width: calc(100% - 34rpx);

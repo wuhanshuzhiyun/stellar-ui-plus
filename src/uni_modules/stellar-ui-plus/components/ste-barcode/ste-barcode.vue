@@ -3,14 +3,9 @@ import utils from '../../utils/utils';
 import { onMounted, watch, getCurrentInstance, type ComponentPublicInstance } from 'vue';
 import propsData from './props';
 import { PATTERNS, stringToCode128 } from './encode';
+import { createOptions } from '../../utils/mixin';
 
-const componentName = `ste-barcode`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions('ste-barcode'));
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 const props = defineProps(propsData);
 const canvasId = 'ste-barcode-' + utils.guid(8);
@@ -34,15 +29,19 @@ const initCanvas = () => {
     drawBarcodeH5(context);
     // #endif
 
-    // #ifdef MP-WEIXIN  || MP-ALIPAY
+    // #ifdef MP
     uni.createSelectorQuery()
+        // #ifndef MP-TOUTIAO
         .in(instance)
+        // #endif
         .select(`#${canvasId}`)
         .node(res => {
-            const context = res.node.getContext('2d');
+            console.log('111 是什么', res);
+            const node = Array.isArray(res.node) ? res.node[0] : res.node;
+            const context = node.getContext('2d');
             const dpr = utils.System.getWindowInfo().pixelRatio;
-            res.node.width = props.width * dpr;
-            res.node.height = props.height * dpr;
+            node.width = props.width * dpr;
+            node.height = props.height * dpr;
             context.scale(dpr, dpr);
             drawBarcodeMP(context);
         })
@@ -140,7 +139,7 @@ const drawBarcodeMP = (context: UniApp.CanvasContext) => {
         <canvas :style="{ width: width + 'px', height: height + 'px' }" :canvas-id="canvasId" :id="canvasId" class="h5-canvas"></canvas>
         <!-- #endif -->
 
-        <!-- #ifdef MP-WEIXIN || MP-ALIPAY -->
+        <!-- #ifdef MP -->
         <canvas type="2d" :id="canvasId" :style="{ width: width + 'px', height: height + 'px' }" class="mp-canvas"></canvas>
         <!-- #endif -->
     </view>

@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import utils from '../../utils/utils';
+import { createOptions } from '../../utils/mixin';
 import { nextTick, onMounted, watch, getCurrentInstance, ref, computed, type ComponentPublicInstance } from 'vue';
 import propsData from './props';
 
 import UQRCode, { type URCodeCanvasContext } from './uqrcode';
 
-const componentName = `ste-qrcode`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions('ste-qrcode'));
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 const props = defineProps(propsData);
 const canvasId = 'ste-qrcode-' + utils.guid(8);
@@ -46,13 +41,16 @@ const initCanvas = () => {
         draw(context);
         // #endif
 
-        // #ifdef MP-WEIXIN  || MP-ALIPAY
+        // #ifdef MP
         uni.createSelectorQuery()
+            // #ifndef MP-TOUTIAO
             .in(instance)
+            // #endif
             .select(`#${canvasId}`)
             .node(res => {
-                const context = res.node.getContext('2d');
-                draw(context, res.node);
+                const node = Array.isArray(res.node) ? res.node[0] : res.node;
+                const context = node.getContext('2d');
+                draw(context, node);
             })
             .exec();
         // #endif
@@ -75,7 +73,7 @@ const draw = (ctx: URCodeCanvasContext, canvas: any = null) => {
     // 调用制作二维码方法
     qr.make();
 
-    // #ifdef MP-WEIXIN || MP-ALIPAY
+    // #ifdef MP
     const context = canvas.getContext('2d');
     const dpr = utils.System.getWindowInfo().pixelRatio;
     canvas.width = qr.dynamicSize * dpr;
@@ -136,7 +134,7 @@ const draw = (ctx: URCodeCanvasContext, canvas: any = null) => {
             <canvas :style="[compCanvasStyle]" :canvas-id="canvasId" :id="canvasId" class="h5-canvas"></canvas>
             <!-- #endif -->
 
-            <!-- #ifdef MP-WEIXIN || MP-ALIPAY -->
+            <!-- #ifdef MP -->
             <canvas type="2d" :id="canvasId" :style="[compCanvasStyle]" class="mp-canvas"></canvas>
             <!-- #endif -->
         </view>

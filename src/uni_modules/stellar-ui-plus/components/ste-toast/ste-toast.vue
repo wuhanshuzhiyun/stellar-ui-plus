@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted, onMounted, onActivated, onDeactivated } from 'vue';
-defineOptions({
-    name: 'ste-toast',
-});
+import { createOptions } from '../../utils/mixin';
+defineOptions(createOptions('ste-toast'));
 
 let show = ref(false);
 let title = ref('');
@@ -26,6 +25,7 @@ const cmpIcon = computed(() => {
 
 // 打开弹窗
 function showToast(params: any) {
+    console.log('显示弹窗');
     // 关闭前面的弹窗
     show.value = false;
     // 关闭系统的弹窗
@@ -134,7 +134,7 @@ defineExpose({
                         <ste-loading v-else :size="72" color="#FFFFFF"></ste-loading>
                     </block>
                 </view>
-                <ste-text clas="title" space="nbsp">{{ title }}</ste-text>
+                <ste-text clas="title" space="nbsp" :value="title">{{ title }}</ste-text>
             </view>
         </view>
         <view class="mask" v-if="mask"></view>

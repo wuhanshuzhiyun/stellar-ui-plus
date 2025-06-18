@@ -455,8 +455,8 @@ const cmpMore = computed(() => props.mode === 'more');
                             align-items: center;
                             .ste-goods-info-apply-for-input {
                                 width: calc(100% - 48rpx);
-                                height: 40rpx;
-                                min-height: 40rpx;
+                                height: 36rpx;
+                                min-height: 36rpx;
                                 font-size: 24rpx;
                                 text-align: center;
                                 &.readonly {

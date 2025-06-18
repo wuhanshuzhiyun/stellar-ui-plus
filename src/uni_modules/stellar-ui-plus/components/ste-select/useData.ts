@@ -24,6 +24,7 @@ export default function useData({
     };
     thas: Ref<ComponentPublicInstance | null | undefined>;
 }) {
+    const rootGuid = utils.guid();
     const inputView = ref('');
     const setInputView = (value: string) => {
         inputView.value = value;
@@ -273,7 +274,7 @@ export default function useData({
             setSelected(selected);
         }
 
-        const el = await utils.querySelector<false>('.ste-select-root', thas.value);
+        const el = await utils.querySelector<false>(`#${rootGuid}` + '.ste-select-root', thas.value);
         const { width = 0, height = 0, top = 0, left = 0, bottom = 0 } = el;
         setContentStyle({
             position: 'absolute',
@@ -441,5 +442,6 @@ export default function useData({
         clickCancel,
         clickConfirm,
         clickClearable,
+        rootGuid,
     };
 }

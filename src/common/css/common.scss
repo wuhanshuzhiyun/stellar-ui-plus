@@ -16,7 +16,6 @@
 
 /* #endif */
 
-
 /* #ifdef H5 */
 html,
 body {
@@ -26,8 +25,6 @@ body {
 html {
     scroll-behavior: smooth;
 }
-
-
 
 .pc-page-body {
     min-width: 1100px;
@@ -66,7 +63,6 @@ h4:hover .header-anchor {
 
 /* #endif */
 
-
 /*
   demo页通用样式 
 */
@@ -90,7 +86,7 @@ h4:hover .header-anchor {
     }
 
     /* #endif */
-    >.content {
+    > .content {
         padding: 0 40rpx;
         flex: 1;
         overflow-y: auto;
@@ -117,16 +113,16 @@ h4:hover .header-anchor {
             color: #000000;
         }
 
-        &>.demo-item {
+        .demo-item {
             margin-bottom: 16px;
 
-            &>.title {
+            .title {
                 font-size: 14px;
                 color: #8f9ca2;
                 margin-bottom: 8px;
             }
 
-            &>.item-block {
+            .item-block {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
@@ -159,7 +155,6 @@ h4:hover .header-anchor {
     height: 90px !important;
     border-radius: 50%;
 }
-
 
 .con-box .name {
     color: #1989fa !important;

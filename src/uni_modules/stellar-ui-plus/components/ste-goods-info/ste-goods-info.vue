@@ -523,7 +523,7 @@ const cmpMore = computed(() => props.mode === 'more');
             background: #f4f5f688;
             border-radius: 4px;
             .ste-goods-info-suggest-items {
-                width: calc(100% - 34rpx);
+                width: calc(100% - 48rpx);
                 height: 100%;
                 display: flex;
                 align-items: center;

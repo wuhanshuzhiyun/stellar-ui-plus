@@ -194,6 +194,32 @@
 </template>
 ```
 
+### 食堂业务
+
+- 属性`mode`用于设置模式，可选值为`more`/`less`,默认`more`
+    - `more`: 门店信息较多，支持全部商品信息属性
+    - `less`: 食堂业务信息较少，仅支持展示以下6条商品属性`image`/`title`/`subTitle`/`tag`/`price`/`originalPrice`
+- 插槽`stepper`用于自定义展示价格右侧内容
+
+```html
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const data = ref({
+        image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
+        title: '商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称商品名称',
+        subTitle: '商品描述；商品描述；商品描述；商品描述；商品描述；商品描述；商品描述；商品描述；商品描述；',
+        tag: '新品',
+        price: '88800',
+        originalPrice: '99900',
+    });
+</script>
+<template>
+    <ste-goods-info mode="less" :data="data1">
+        <template v-slot:stepper>stepper插槽</template>
+    </ste-goods-info>
+</template>
+```
+
 ### 点击事件
 
 - 默认插槽内容为商品编码下的其他展示项

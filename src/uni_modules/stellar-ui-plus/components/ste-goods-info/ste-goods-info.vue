@@ -163,16 +163,19 @@ const viewClass = computed(() => {
         '--image-size': `${imgSize}px`,
     };
 });
+
+const cmpMore = computed(() => props.mode === 'more');
 </script>
 <template>
-    <view class="ste-goods-info-root" :style="[rootStyle]">
+    <view class="ste-goods-info-root" :class="{ less: mode === 'less' }" :style="[rootStyle]">
         <view class="ste-goods-info-details" :class="detailClass">
-            <view @click="clickChecked" class="ste-goods-info-checkbox left" v-if="checkbox === 'left'">
+            <view v-if="cmpMore && checkbox === 'left'" @click="clickChecked" class="ste-goods-info-checkbox left">
                 <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
             </view>
             <view class="ste-goods-info-view" :class="viewClass" @click="onClick('empty')">
                 <view class="ste-goods-info-image" @click.stop="onClick('image')">
-                    <setImage :radius="imageRadius" :src="data.image" :width="imageSize" :height="imageSize" />
+                    <setImage v-if="cmpMore" :radius="imageRadius" :src="data.image" :width="imageSize" :height="imageSize" />
+                    <setImage v-else :radius="imageRadius" :src="data.image" width="176" height="240" />
                 </view>
                 <view class="ste-goods-info-content">
                     <view class="content-header">
@@ -183,17 +186,17 @@ const viewClass = computed(() => {
                                 </view>
                                 {{ data.title }}
                             </view>
-                            <view @click="clickChecked" class="ste-goods-info-checkbox right" v-if="checkbox === 'right'">
+                            <view v-if="cmpMore && checkbox === 'right'" @click="clickChecked" class="ste-goods-info-checkbox right">
                                 <setCheckbox :disabled="checkboxDisabled" iconSize="30" :model-value="_checked" />
                             </view>
                         </view>
-                        <view class="ste-goods-info-codes" v-if="data.code || data.barCode" @click.stop="onClick('code')">
+                        <view class="ste-goods-info-codes" v-if="cmpMore && (data.code || data.barCode)" @click.stop="onClick('code')">
                             {{ data.code }}
                             <span style="color: #e6e8ea" v-if="data.code && data.barCode">|</span>
                             {{ data.barCode }}
                         </view>
                         <slot>
-                            <view class="ste-goods-info-slot"></view>
+                            <view class="ste-goods-info-sub-title">{{ data.subTitle }}</view>
                         </slot>
                     </view>
                     <view class="content-footer">
@@ -210,8 +213,8 @@ const viewClass = computed(() => {
                                             :value="data.originalPrice"
                                             isSuggestPrice
                                             line-price-color="#666666"
-                                            marginLeft="16"
-                                            fontSize="20"
+                                            :marginLeft="cmpMore ? 16 : 10"
+                                            :fontSize="cmpMore ? 20 : 24"
                                             :showUnit="false"
                                         />
                                     </view>
@@ -242,9 +245,14 @@ const viewClass = computed(() => {
                                 </slot>
                             </view>
                         </view>
-                        <view class="ste-goods-info-suggest" v-if="showSuggest">
+                        <view class="ste-goods-info-suggest" v-if="cmpMore && showSuggest">
                             <view class="ste-goods-info-suggest-method">
-                                <view class="ste-goods-info-suggest-method-title" @click="clickSuggest('method')">{{ suggesData.title }}</view>
+                                <view class="ste-goods-info-suggest-method-title" @click="clickSuggest('method')">
+                                    <text class="suggest-method-title-text">
+                                        {{ suggesData.title }}
+                                    </text>
+                                    <view class="suggest-method-title-icon" />
+                                </view>
                                 <view class="ste-goods-info-suggest-method-number">{{ suggesData.number }}</view>
                             </view>
                             <view class="ste-goods-info-apply-for" v-if="suggesData.applyForText">
@@ -264,7 +272,7 @@ const viewClass = computed(() => {
             </view>
         </view>
 
-        <view class="ste-goods-info-suggest-list" v-show="showSuggestList">
+        <view v-if="cmpMore" class="ste-goods-info-suggest-list" v-show="showSuggestList">
             <view class="ste-goods-info-suggest-list-view">
                 <view class="ste-goods-info-suggest-items">
                     <block v-for="(item, index) in suggesData.items" :key="index">
@@ -276,11 +284,11 @@ const viewClass = computed(() => {
                     </block>
                 </view>
                 <view class="ste-goods-info-suggest-icon" @click="clickSuggest('right')">
-                    <ste-icon code="&#xe674;" />
+                    <ste-icon code="&#xe674;" size="20" />
                 </view>
             </view>
         </view>
-        <image v-if="watermark" class="ste-goods-info-watermark" :style="watermarkStyle" :src="watermark" />
+        <image v-if="cmpMore && watermark" class="ste-goods-info-watermark" :style="watermarkStyle" :src="watermark" />
     </view>
 </template>
 
@@ -354,6 +362,20 @@ const viewClass = computed(() => {
                     margin-top: 8rpx;
                 }
 
+                .ste-goods-info-sub-title {
+                    font-weight: 500;
+                    font-size: 24rpx;
+                    color: #757575;
+                    margin-top: 12rpx;
+                    line-height: 36rpx;
+                    // 三行溢出隐藏
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                }
+
                 .ste-goods-info-price {
                     width: 100%;
                     line-height: 34rpx;
@@ -391,6 +413,22 @@ const viewClass = computed(() => {
                             // #ifdef H5
                             cursor: pointer;
                             // #endif
+                            position: relative;
+                            overflow: hidden;
+                            .suggest-method-title-text {
+                                position: relative;
+                                z-index: 5;
+                            }
+                            .suggest-method-title-icon {
+                                position: absolute;
+                                z-index: 5;
+                                width: 8rpx;
+                                height: 8rpx;
+                                background: #555a61;
+                                bottom: -4rpx;
+                                right: -4rpx;
+                                transform: rotate(45deg);
+                            }
                         }
                         .ste-goods-info-suggest-method-number {
                             margin-left: 4rpx;
@@ -414,6 +452,9 @@ const viewClass = computed(() => {
                                 text-align: center;
                                 &.readonly {
                                     pointer-events: none;
+                                }
+                                .ste-goods-info-apply-for-input {
+                                    width: 100%;
                                 }
                             }
                             .ste-goods-info-apply-for-back {
@@ -505,6 +546,9 @@ const viewClass = computed(() => {
                 width: 34rpx;
                 height: 50rpx;
                 border-left: 2rpx solid #e6e8ea;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     }
@@ -518,6 +562,43 @@ const viewClass = computed(() => {
         opacity: 0.4;
         z-index: 10;
         pointer-events: none;
+    }
+}
+</style>
+<style lang="scss" scoped>
+.ste-goods-info-root.less {
+    .ste-goods-info-details {
+        padding: 16rpx !important;
+
+        .ste-goods-info-view {
+            .ste-goods-info-image {
+                width: 176rpx;
+                height: 240rpx;
+            }
+            .ste-goods-info-content {
+                width: calc(100% - 200rpx);
+
+                .ste-goods-info-header {
+                    .ste-goods-info-title {
+                        color: #171717;
+                    }
+                }
+            }
+        }
+
+        &.checkbox {
+            &.checkboxright {
+                .ste-goods-info-view .ste-goods-info-content .ste-goods-info-header .ste-goods-info-title {
+                    width: 100%;
+                }
+            }
+
+            &.checkboxleft {
+                .ste-goods-info-view {
+                    width: 100%;
+                }
+            }
+        }
     }
 }
 </style>

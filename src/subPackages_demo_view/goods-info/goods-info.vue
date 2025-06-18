@@ -88,6 +88,15 @@ const suggestData = ref({
         { label: '上周销量', value: 30000 },
     ],
 });
+
+const data1 = ref({
+    image: 'https://image.whzb.com/chain/StellarUI/bg1.jpg',
+    title: '早餐三',
+    subTitle: '豪华牛肉炒面、煎鸡蛋、黑椒烤香肠',
+    tag: '新品',
+    price: '400',
+    originalPrice: '2000',
+});
 </script>
 <template>
     <page-layout title="商品信息" contentStyle="padding: 12rpx;background-color: #f5f5f5;">
@@ -125,7 +134,13 @@ const suggestData = ref({
         </view>
         <view class="demo-item">
             <view class="title">建议</view>
-            <ste-goods-info :data="data" :suggestData="suggestData" readonlySuggestInput></ste-goods-info>
+            <ste-goods-info :data="data" :suggestData="suggestData"></ste-goods-info>
+        </view>
+        <view class="demo-item">
+            <view class="title">食堂业务</view>
+            <ste-goods-info mode="less" :data="data1">
+                <template v-slot:stepper>stepper插槽</template>
+            </ste-goods-info>
         </view>
         <view class="demo-item">
             <view class="title">点击事件</view>

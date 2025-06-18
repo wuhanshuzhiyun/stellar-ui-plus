@@ -3,6 +3,7 @@ import type { CSSProperties, PropType } from 'vue';
 export interface GoodsInfoType extends Record<string, any> {
     image?: string;
     title?: string;
+    subTitle?: string;
     tag?: string;
     barCode?: string;
     code?: string;
@@ -25,6 +26,11 @@ export default {
     data: {
         type: Object as PropType<GoodsInfoType>,
         default: () => ({}),
+    },
+    /** 模式：more-(门店)数据多的，less-(食堂)数据少的 */
+    mode: {
+        type: String as PropType<'more' | 'less'>,
+        default: () => 'more',
     },
     /** 组件背景色 */
     background: {

@@ -1,42 +1,11 @@
 {
-    "基础组件": {
-        "group": "基础组件",
-        "key": "basic",
-        "sort": 0
-    },
-    "表单组件": {
-        "group": "表单组件",
-        "key": "form",
-        "sort": 1
-    },
-    "展示组件": {
-        "group": "展示组件",
-        "key": "preview",
-        "sort": 2
-    },
-    "导航组件": {
-        "group": "导航组件",
-        "key": "navigation",
-        "sort": 3
-    },
-    "电商组件": {
-        "group": "电商组件",
-        "key": "ecommerce",
-        "sort": 4
-    },
-    "数据组件": {
-        "group": "数据组件",
-        "key": "data",
-        "sort": 5
-    },
-    "图表组件": {
-        "group": "图表组件",
-        "key": "chart",
-        "sort": 6
-    },
-    "业务组件": {
-        "group": "业务组件",
-        "key": "business",
-        "sort": 6
-    }
+    "基础组件": { "group": "基础组件", "key": "basic", "sort": 0 },
+    "表单组件": { "group": "表单组件", "key": "form", "sort": 1 },
+    "展示组件": { "group": "展示组件", "key": "preview", "sort": 2 },
+    "导航组件": { "group": "导航组件", "key": "navigation", "sort": 3 },
+    "电商组件": { "group": "电商组件", "key": "ecommerce", "sort": 4 },
+    "数据组件": { "group": "数据组件", "key": "data", "sort": 5 },
+    "图表组件": { "group": "图表组件", "key": "chart", "sort": 6 },
+    "业务组件": { "group": "业务组件", "key": "business", "sort": 7 },
+    "标准页面": { "group": "标准页面", "key": "standard-page", "sort": 8 }
 }

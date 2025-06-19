@@ -11,8 +11,9 @@ import AppendLink from './components/append-link.vue';
 import useMarkdown from './composables/useMarkdown';
 import config from '@/common/config';
 import type { NavItem } from './types';
-import { rests, components } from './markdown';
+import { rests, components, pages } from './markdown';
 
+console.log(components);
 const datas = useMarkdown();
 provide('datas', datas);
 const navActive = ref(config.NAV_KEY_DEV);
@@ -26,6 +27,7 @@ const cmpShowH5 = computed(() => {
 });
 
 const handleHeaderNavChange = (item: NavItem) => {
+    console.log('handleHeaderNavChange', item);
     if (item.key === config.NAV_KEY_DEV) {
         // 开发指南
         datas.contents.value = rests;
@@ -34,13 +36,19 @@ const handleHeaderNavChange = (item: NavItem) => {
         // 组件
         datas.contents.value = components;
         datas.setActive(components[0].contents[0].key);
+    } else if (item.key === config.NAV_KEY_PAGE) {
+        // 页面
+        datas.contents.value = pages;
+        datas.setActive(pages[0].contents[0].key);
     }
 };
 
 onLoad(val => {
     if (val?.active) {
-        if (val.active.indexOf('handbook') > -1) {
+        if (val.active.indexOf('handbook') === 0) {
             navActive.value = config.NAV_KEY_DEV;
+        } else if (val.active.indexOf('page_') === 0) {
+            navActive.value = config.NAV_KEY_PAGE;
         } else {
             navActive.value = config.NAV_KEY_COMP;
         }

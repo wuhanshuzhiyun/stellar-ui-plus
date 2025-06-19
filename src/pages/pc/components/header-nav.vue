@@ -32,6 +32,8 @@ watch(
     () => props.mode,
     val => {
         active.value = val;
+        const item = navData.value.find(item => item.key === val);
+        emits('change', item);
     },
     {
         immediate: true,

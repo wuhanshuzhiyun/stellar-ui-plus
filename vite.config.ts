@@ -19,7 +19,7 @@ export default defineConfig({
             homePage: 'pages/pc/index',
             dts: 'src/uni-pages.d.ts',
             exclude: ['**/components/**/*.*'],
-            subPackages: ['src/subPackages_demo_view'],
+            subPackages: ['src/subPackages_demo_view', 'src/subPackages_pages_view'],
         }),
         UniHelperComponents({
             dts: 'src/components.d.ts',

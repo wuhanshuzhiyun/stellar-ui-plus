@@ -3,6 +3,7 @@ const path = require('node:path')
 const { getDir } = require('./utils')
 const componentsType = require('./components-type')
 const propsMd = require('./props-md')
+const viewPages = require('./view-pages')
 
 module.exports = function () {
   return {
@@ -12,6 +13,7 @@ module.exports = function () {
       const components = fs.readdirSync(comdir).filter(item => item.indexOf('ste-') === 0)
       componentsType(components)
       propsMd(components)
+      viewPages()
     },
   }
 }

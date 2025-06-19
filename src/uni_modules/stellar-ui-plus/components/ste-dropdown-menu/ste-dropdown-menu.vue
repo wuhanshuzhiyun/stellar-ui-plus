@@ -1,24 +1,20 @@
 <script lang="ts" setup>
-import { watch, computed, ref, type CSSProperties, getCurrentInstance, onUnmounted, type ComponentPublicInstance } from 'vue';
-import { useProvide } from '../../utils/mixin';
+import { watch, computed, ref, type CSSProperties, getCurrentInstance, onUnmounted, type ComponentPublicInstance, onMounted } from 'vue';
+import { useProvide, createOptions } from '../../utils/mixin';
 import { DEFAULT_DURATION, MAX_DURATION, MIN_DURATION, DEFAULT_ROOT_QUERY } from './constans';
 import propsData, { DEOP_DOWN_MENU_KEY, dropDownMenuEmits } from './props';
 import type { DropdownItem } from '../ste-dropdown-menu-item/type';
 import { type DropdownMenuItemProps } from '../ste-dropdown-menu-item/props';
 import utils from '../../utils/utils';
 import System from '../../utils/System.js';
+
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 
 const props = defineProps(propsData);
 const emits = defineEmits(dropDownMenuEmits);
-const componentName = `ste-dropdown-menu`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+
+defineOptions(createOptions('ste-dropdown-menu'));
 
 const addPx = (val: string | number) => {
     if (utils.isNumber(String(val))) {
@@ -27,6 +23,8 @@ const addPx = (val: string | number) => {
         return 0;
     }
 };
+
+const classGuid = utils.guid();
 
 const showMenu = ref(false);
 const menuRootQuery = ref<typeof DEFAULT_ROOT_QUERY>(DEFAULT_ROOT_QUERY);
@@ -38,7 +36,7 @@ let chooseItems: any[] = [];
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 
 const cmpRootClass = computed(() => {
-    let classArr = [props.direction, showMenu.value ? 'open' : 'close', props.type];
+    let classArr = [props.direction, showMenu.value ? 'open' : 'close', props.type, classGuid];
     return classArr.join(' ');
 });
 
@@ -128,7 +126,7 @@ function loadMenuTitle() {
         let item = internalChildren.find(e => {
             return chooseItems.find(v => v == e.props.value);
         });
-        menuTitle.value = (item?.props as DropdownMenuItemProps).title;
+        menuTitle.value = (item?.props as DropdownMenuItemProps)?.title;
     } else {
         menuTitle.value = props.title;
     }
@@ -142,7 +140,7 @@ function touchmove(e: TouchEvent) {
 async function getContentHeight() {
     let windowHeight = System.getWindowInfo().windowHeight;
 
-    const res = await utils.querySelector<false>('.ste-dropdown-menu-root', instance);
+    const res = await utils.querySelector<false>('.ste-dropdown-menu-root' + '.' + classGuid, instance);
 
     menuRootQuery.value = { height: res.height || 0, top: res.top || 0, bottom: res.bottom || 0, left: res.left || 0 };
     contentHeight.value = props.direction == 'down' ? windowHeight - menuRootQuery.value.bottom : menuRootQuery.value.top;
@@ -245,7 +243,10 @@ function triggerChildLoadStatus() {
     });
 }
 
-const { internalChildren } = useProvide(DEOP_DOWN_MENU_KEY, 'ste-checkbox')({ props, chooseItems, cmpDuration, choose, updateItems });
+let { internalChildren } = useProvide(DEOP_DOWN_MENU_KEY, 'ste-checkbox')({ props, chooseItems, cmpDuration, choose, updateItems });
+onMounted(() => {
+    internalChildren = useProvide(DEOP_DOWN_MENU_KEY, 'ste-checkbox')({ props, chooseItems, cmpDuration, choose, updateItems }).internalChildren;
+});
 defineExpose({ close });
 </script>
 

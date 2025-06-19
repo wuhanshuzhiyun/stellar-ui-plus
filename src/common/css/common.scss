@@ -116,13 +116,13 @@ h4:hover .header-anchor {
         .demo-item {
             margin-bottom: 16px;
 
-            .title {
+            > .title {
                 font-size: 14px;
                 color: #8f9ca2;
                 margin-bottom: 8px;
             }
 
-            .item-block {
+            > .item-block {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;

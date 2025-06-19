@@ -7,14 +7,14 @@ import { useInject } from '../../utils/mixin';
 
 const props = defineProps(propsData);
 const emits = defineEmits(dropdownMenuItemEmits);
-const Parent = useInject<{ props: Required<DropDownMenuProps>; chooseItems: any[]; cmpDuration: ComputedRef; choose: (item: DropdownItem) => void; updateItems: () => void }>(DEOP_DOWN_MENU_KEY);
-const parent = Parent.parent;
-const parentProps = Parent.parent?.props as DropDownMenuProps;
+let Parent = ref(useInject<{ props: Required<DropDownMenuProps>; chooseItems: any[]; cmpDuration: ComputedRef; choose: (item: DropdownItem) => void; updateItems: () => void }>(DEOP_DOWN_MENU_KEY));
+let parent = computed(() => Parent.value.parent);
+let parentProps = computed(() => Parent.value.parent?.props as DropDownMenuProps);
 
 const status = ref(false); // 是否选中状态 true: 选中，false: 未选中
 
 const cmpRootClass = computed(() => {
-    let classArr = [parentProps.direction];
+    let classArr = [parentProps.value?.direction];
     if (status.value) {
         classArr.push('active');
     }
@@ -24,12 +24,14 @@ const cmpRootClass = computed(() => {
     if (props.disabled) {
         classArr.push('disabled');
     }
-    classArr.push(parentProps.type);
+    classArr.push(parentProps.value?.type);
     return classArr.join(' ');
 });
 
 onMounted(() => {
-    parent?.updateItems();
+    Parent.value = useInject<{ props: Required<DropDownMenuProps>; chooseItems: any[]; cmpDuration: ComputedRef; choose: (item: DropdownItem) => void; updateItems: () => void }>(DEOP_DOWN_MENU_KEY);
+
+    parent.value?.updateItems();
     loadStatus();
     // this.parent.$on('item-choose', value => {
     //     this.loadStatus();
@@ -37,8 +39,8 @@ onMounted(() => {
 });
 
 function loadStatus() {
-    if (parent?.chooseItems) {
-        status.value = !!parent.chooseItems.find(e => e == props.value);
+    if (parent.value?.chooseItems) {
+        status.value = !!parent.value.chooseItems.find(e => e == props.value);
     }
 }
 
@@ -60,11 +62,11 @@ async function handleClick() {
         if (!next) {
             await clickTask;
         }
-        parent?.choose({ title: props.title, value: props.value });
+        parent.value?.choose({ title: props.title, value: props.value });
         setTimeout(() => {
             clickTask = null;
             loadStatus();
-        }, parent?.cmpDuration.value * 1000);
+        }, parent.value?.cmpDuration.value * 1000);
     }
 }
 
@@ -74,7 +76,7 @@ defineExpose({ loadStatus });
 <template>
     <view class="ste-dropdown-menu-item-root" :class="[cmpRootClass]" @click="handleClick">
         <text class="text">{{ title }}</text>
-        <view class="menu-item-icon" v-if="parentProps.type == 'block'">
+        <view class="menu-item-icon">
             <ste-icon code="&#xe67a;" size="32"></ste-icon>
         </view>
     </view>

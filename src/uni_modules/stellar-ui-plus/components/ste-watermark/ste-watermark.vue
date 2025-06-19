@@ -1,9 +1,12 @@
 <template>
     <view :style="styles" :class="fullPage ? 'ste-watermark-root full-page' : 'ste-watermark-root'" />
+    <!-- #ifdef MP-TOUTIAO -->
+    <canvas :id="tempCanvsId" type="2d" style="width: 0; height: 0" />
+    <!-- #endif -->
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, watch, ref, onMounted } from 'vue';
 import { watermarkProps, defaultWatermarkFont } from './props';
 
 import utils from '../../utils/utils';
@@ -15,6 +18,17 @@ defineOptions({
         virtualHost: true,
     },
 });
+
+const tempCanvsId = ref(`ste-watermark-temp-${utils.guid()}`);
+
+const querySelect = (selectors: string): Promise<any> => {
+    return new Promise((resolve, _reject) => {
+        uni.createSelectorQuery()
+            .select(selectors)
+            .node(res => resolve(res))
+            .exec();
+    });
+};
 
 const props = defineProps(watermarkProps);
 
@@ -41,12 +55,26 @@ const init = async () => {
         height: Number(canvasHeight),
     });
 
-    const ctx: any = canvas.getContext('2d');
+    let ctx: any = canvas.getContext('2d');
+
+    // #ifdef MP-TOUTIAO
+    const offCanvas = tt.createOffscreenCanvas();
+    offCanvas.width = Number(canvasWidth);
+    offCanvas.height = Number(canvasHeight);
+    ctx = offCanvas.getContext('2d');
+    // #endif
 
     if (ctx) {
         if (image) {
             // 创建一个图片
-            const img = canvas.createImage() as HTMLImageElement;
+            let img = canvas.createImage ? (canvas.createImage() as HTMLImageElement) : ({} as HTMLImageElement);
+
+            // #ifdef MP-TOUTIAO
+            const res = await querySelect(`#${tempCanvsId.value}`);
+            const tmpCanvas = Array.isArray(res?.node) ? res?.node[0] : res?.node;
+            img = tmpCanvas.createImage();
+            // #endif
+
             dealWithImage(ctx, img, ratio, ctx.canvas, markWidth, markHeight);
         } else if (content) {
             dealWithText(ctx, ratio, ctx.canvas, markWidth, markHeight);
@@ -116,7 +144,9 @@ initH5();
 // #endif
 
 // #ifndef H5
-init();
+onMounted(() => {
+    init();
+});
 // #endif
 
 watch(

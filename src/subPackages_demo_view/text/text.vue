@@ -16,7 +16,7 @@ const text3 = ref('是你   是你');
             <view class="title">可选</view>
             <view class="item-block">
                 <view>
-                    <ste-text selectable>Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水</ste-text>
+                    <ste-text selectable value="Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水">Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水</ste-text>
                 </view>
             </view>
         </view>
@@ -24,13 +24,13 @@ const text3 = ref('是你   是你');
             <view class="title">空格</view>
             <view class="item-block">
                 <view style="width: 30%" space="ensp">
-                    <ste-text>{{ text1 }}</ste-text>
+                    <ste-text :value="text1">{{ text1 }}</ste-text>
                 </view>
                 <view style="width: 30%" space="emsp">
-                    <ste-text>{{ text2 }}</ste-text>
+                    <ste-text :value="text2">{{ text2 }}</ste-text>
                 </view>
                 <view style="width: 30%" space="nbsp">
-                    <ste-text>{{ text3 }}</ste-text>
+                    <ste-text :value="text3">{{ text3 }}</ste-text>
                 </view>
             </view>
         </view>
@@ -38,7 +38,7 @@ const text3 = ref('是你   是你');
             <view class="title">解码</view>
             <view class="item-block">
                 <view>
-                    <ste-text decode>Stellar&nbsp;UI</ste-text>
+                    <ste-text decode value="Stellar&nbsp;UI">Stellar&nbsp;UI</ste-text>
                 </view>
                 <view>
                     <!-- <ste-text decode>Stellar&lt;UI</ste-text> -->
@@ -47,16 +47,16 @@ const text3 = ref('是你   是你');
                     <!-- <ste-text decode>Stellar&gt;UI</ste-text> -->
                 </view>
                 <view>
-                    <ste-text decode>Stellar&amp;UI</ste-text>
+                    <ste-text decode value="Stellar&amp;UI">Stellar&amp;UI</ste-text>
                 </view>
                 <view>
-                    <ste-text decode>Stellar&apos;UI</ste-text>
+                    <ste-text decode value="Stellar'UI">Stellar&apos;UI</ste-text>
                 </view>
                 <view>
-                    <ste-text decode>Stellar&ensp;UI</ste-text>
+                    <ste-text decode value="Stellar&ensp;UI">Stellar&ensp;UI</ste-text>
                 </view>
                 <view>
-                    <ste-text decode>Stellar&emsp;UI</ste-text>
+                    <ste-text decode value="Stellar&emsp;UI">Stellar&emsp;UI</ste-text>
                 </view>
             </view>
         </view>
@@ -64,13 +64,19 @@ const text3 = ref('是你   是你');
             <view class="title">换行省略</view>
             <view class="item-block">
                 <view style="width: 30%">
-                    <ste-text>Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。</ste-text>
+                    <ste-text value="Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。">
+                        Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。
+                    </ste-text>
                 </view>
                 <view style="width: 30%">
-                    <ste-text :lines="2">Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。</ste-text>
+                    <ste-text :lines="2" value="Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。">
+                        Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。
+                    </ste-text>
                 </view>
                 <view style="width: 30%">
-                    <ste-text :lines="3">Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。</ste-text>
+                    <ste-text :lines="3" value="Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。">
+                        Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。Stellar UI，全面的组件和便捷的工具会让您信手拈来，如鱼得水。
+                    </ste-text>
                 </view>
             </view>
         </view>

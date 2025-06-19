@@ -249,10 +249,8 @@ const utils = {
                 } else {
                     const func = all ? 'selectAll' : 'select';
                     uni.createSelectorQuery()
-
                         // #ifndef MP-TOUTIAO
                         .in(component)
-
                         // #endif
                         [func](selectors)
                         .boundingClientRect(data => {

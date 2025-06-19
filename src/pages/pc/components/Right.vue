@@ -6,7 +6,7 @@ import config from '@/common/config';
 import CommentVue from './Comment.vue';
 
 const props = defineProps<{
-    isCompView: boolean;
+    mode: 'page' | 'component' | 'handbook';
 }>();
 
 const datas = inject<MarkdownData>('datas');
@@ -21,9 +21,12 @@ const compMarkdonwHtml = ref<Content>();
 watch(
     () => datas?.active.value,
     (value: any) => {
+        console.log('compMarkdonwHtml', datas);
         if (['handbook-介绍', 'handbook-其他插件'].includes(value)) {
             loading.value = true;
             markdown.value = '';
+        } else if (props.mode === 'page') {
+            compMarkdonwHtml.value = datas?.viewMarkdown.value;
         } else {
             compMarkdonwHtml.value = datas?.viewMarkdown.value;
             compNavActive.value = config.NAV_COMP_KEY_DEMO;
@@ -65,7 +68,7 @@ const load = () => {
 
 <template>
     <div class="right-component">
-        <template v-if="props.isCompView">
+        <template v-if="mode === 'component'">
             <div v-html="compMarkdonwHtml?.htmlDesc" class="markdown-view"></div>
             <comp-nav v-model:mode="compNavActive" style="margin-bottom: 10px"></comp-nav>
             <div v-html="compMarkdonwHtml?.htmlDemo" v-if="compNavActive === config.NAV_COMP_KEY_DEMO" class="markdown-view content"></div>
@@ -73,7 +76,14 @@ const load = () => {
             <div v-html="compMarkdonwHtml?.htmlGuide" v-if="compNavActive === config.NAV_COMP_KEY_GUIDE" class="markdown-view content"></div>
             <comment-vue />
         </template>
-        <template v-else>
+        <template v-if="mode === 'page'">
+            <div class="markdown-view content">
+                <code class="hljs language-html">
+                    <pre>{{ compMarkdonwHtml?.code }}</pre>
+                </code>
+            </div>
+        </template>
+        <template v-else-if="mode === 'handbook'">
             <div v-if="!show" v-html="markdown" class="markdown-view render" />
             <iframe
                 v-show="show && loading"

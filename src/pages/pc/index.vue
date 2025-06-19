@@ -17,13 +17,27 @@ console.log(components);
 const datas = useMarkdown();
 provide('datas', datas);
 const navActive = ref(config.NAV_KEY_DEV);
-
+// 标识当前是否在组件预览页面
 const isCompView = computed(() => {
     return navActive.value === config.NAV_KEY_COMP;
-}); // 标识当前是否在组件预览页面
+});
+
+const isPageView = computed(() => {
+    return navActive.value === config.NAV_KEY_PAGE;
+});
 
 const cmpShowH5 = computed(() => {
-    return isCompView.value || config.SHOW_H5_PAGE.find(e => datas?.active.value.indexOf(e) > -1);
+    return isPageView || isCompView.value || config.SHOW_H5_PAGE.find(e => datas?.active.value.indexOf(e) > -1);
+});
+
+const viewType = computed(() => {
+    if (datas.active.value.indexOf('handbook') === 0) {
+        return 'handbook';
+    }
+    if (datas.active.value.indexOf('page_') === 0) {
+        return 'page';
+    }
+    return 'component';
 });
 
 const handleHeaderNavChange = (item: NavItem) => {
@@ -82,7 +96,7 @@ onLoad(() => {
                 <Left />
             </div>
             <div class="right">
-                <Right :is-comp-view="isCompView" />
+                <Right :mode="viewType" />
             </div>
             <div class="content-h5">
                 <H5 v-if="cmpShowH5" />

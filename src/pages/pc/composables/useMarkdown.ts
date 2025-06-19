@@ -72,6 +72,9 @@ export default function useMarkdown(): MarkdownData {
                 return '#/pages/mp/font-size/font-size';
             }
             return '#/pages/mp/index';
+        } else if (active.value.indexOf('page_') === 0) {
+            const name = active.value.replace('page_', '');
+            return `#/subPackages_pages_view/${name}/${name}`;
         } else {
             return `#/subPackages_demo_view/${active.value}/${active.value}`;
         }

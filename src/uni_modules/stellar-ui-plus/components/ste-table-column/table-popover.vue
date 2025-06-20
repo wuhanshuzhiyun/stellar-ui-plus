@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch, getCurrentInstance, type ComponentPublicInstance, nextTick } from 'vue';
-import utils from '../../utils/utils.js';
+import utils from '../../utils/utils';
+import { createOptions } from '../../utils/mixin';
+
+defineOptions(createOptions('ste-table-cell-popover', { virtualHost: true }));
+
 const DURATION = 200;
 const ANIMATION_PROP: UniApp.CreateAnimationOptions = { duration: DURATION, timingFunction: 'ease-out' };
 
@@ -17,6 +21,7 @@ const props = defineProps({
 
 const instance = getCurrentInstance() as unknown as ComponentPublicInstance;
 
+const rootClass = ref('ste-table-cell-popover-' + utils.guid());
 const pressTimer = ref();
 const showPopover = ref(false);
 const popoverLeft = ref(0);
@@ -38,8 +43,8 @@ watch(
     }
 );
 const checkTextOverflow = async () => {
-    const containerData = await utils.querySelector<false>('.ellipsis-box', instance);
-    let textData = await utils.querySelector<false>('.measure-text', instance);
+    const containerData = await utils.querySelector<false>('.' + rootClass.value + ' .ellipsis-box', instance);
+    let textData = await utils.querySelector<false>('.' + rootClass.value + ' .measure-text', instance);
 
     if (containerData && textData && textData.width && containerData.width) {
         isTextOverflow.value = textData.width > containerData.width * Number(props.line);
@@ -61,8 +66,8 @@ const handleTouchStart = (e: TouchEvent | MouseEvent) => {
 };
 
 const updatePopoverPosition = async () => {
-    const containerData = await utils.querySelector<false>('.ellipsis-box', instance);
-    const popoverData = await utils.querySelector<false>('.popover', instance);
+    const containerData = await utils.querySelector<false>('.' + rootClass.value + ' .ellipsis-box', instance);
+    const popoverData = await utils.querySelector<false>('.' + rootClass.value + ' .popover', instance);
     if (!containerData || !popoverData || !containerData.left || !containerData.width || !popoverData.width || !containerData.top || !popoverData.height) return;
 
     const systemInfo = utils.System;
@@ -123,7 +128,7 @@ const doHide = () => {
 </script>
 
 <template>
-    <view class="wrapper">
+    <view class="wrapper root" :class="[rootClass]">
         <view class="ellipsis-box" @touchstart="handleTouchStart" @touchend="handleTouchEnd" @mousedown="handleTouchStart">
             {{ text }}
         </view>

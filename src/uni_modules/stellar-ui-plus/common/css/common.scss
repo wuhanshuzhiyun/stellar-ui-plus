@@ -17,3 +17,15 @@ textarea {
 }
 
 /* #endif */
+
+/* #ifdef MP-TOUTIAO */
+.ste-table-root
+    .ste-table-content
+    .ste-table-body
+    .ste-table-row
+    view:not(.ste-table-cell):not(.cell-box):not(.ellipsis-box):not(.wrapper):not(.popover):not(.popover):not(.popover-content):not(.popover-arrow) {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+/* #endif */

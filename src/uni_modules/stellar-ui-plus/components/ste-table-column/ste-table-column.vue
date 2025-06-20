@@ -1,31 +1,31 @@
 <script lang="ts" setup>
-import { computed, ref, type CSSProperties, type Ref } from 'vue';
+import { computed, ref, type CSSProperties, type Ref, onMounted } from 'vue';
 import type { Obj } from '../../types';
 import propsData from './props';
 import utils from '../../utils/utils';
 import { getStyleOrClass } from '../ste-table/utils';
-import { useInject } from '../../utils/mixin';
+import { useInject, createOptions } from '../../utils/mixin';
 import { TABLE_KEY, SELECTION_COLOR_CONFIG, type TableProps } from '../ste-table/props';
 import CheckBoxIcon from './checkbox-icon.vue';
 import RadioIcon from './radio-icon.vue';
 import TablePopover from './table-popover.vue';
 
-const componentName = `ste-table-column`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions('ste-table-column`', { virtualHost: true }));
 
 const props = defineProps(propsData);
 
-const Parent = useInject<{ props: Required<TableProps>; checkStates: Ref<number[]>; handleCheck: (...args: any[]) => void; cellClick: (...args: any[]) => void }>(TABLE_KEY);
-const parent = Parent.parent;
-const parentProps = Parent.parent?.props as TableProps;
+const Parent = ref(useInject<{ props: Required<TableProps>; checkStates: Ref<number[]>; handleCheck: (...args: any[]) => void; cellClick: (...args: any[]) => void }>(TABLE_KEY));
+let parent = computed(() => Parent.value.parent);
+let parentProps = computed(() => Parent.value.parent?.props as TableProps);
+
+// #ifdef MP-TOUTIAO
+onMounted(() => {
+    Parent.value = useInject<{ props: Required<TableProps>; checkStates: Ref<number[]>; handleCheck: (...args: any[]) => void; cellClick: (...args: any[]) => void }>(TABLE_KEY);
+});
+// #endif
 
 const row = ref<Obj>({});
-const selectionIconColor = ref<typeof SELECTION_COLOR_CONFIG>(parentProps.selectionIconColor);
+const selectionIconColor = ref<typeof SELECTION_COLOR_CONFIG>(parentProps.value?.selectionIconColor);
 
 defineExpose({ row });
 
@@ -50,7 +50,7 @@ const cmpCellStyle = computed(() => {
         row: row.value.row,
         rowIndex: row.value.rowIndex,
     };
-    return getStyleOrClass<object>(parentProps.cellStyle, cellClassParam);
+    return getStyleOrClass<object>(parentProps.value?.cellStyle, cellClassParam);
 });
 
 const cmpRootClass = computed(() => {
@@ -61,11 +61,11 @@ const cmpRootClass = computed(() => {
         classArr.push('align-' + props.align);
     }
 
-    if (parentProps.border) {
+    if (parentProps.value?.border) {
         classArr.push('border');
     }
 
-    if (parentProps.isPopover) {
+    if (parentProps.value?.isPopover) {
         classArr.push('popover');
     }
 
@@ -75,14 +75,14 @@ const cmpRootClass = computed(() => {
         row: row.value.row,
         rowIndex: row.value.rowIndex,
     };
-    classArr.push(getStyleOrClass<string>(parentProps.cellClassName as any, cellClassParam));
+    classArr.push(getStyleOrClass<string>(parentProps.value?.cellClassName as any, cellClassParam));
 
     return classArr.join(' ');
 });
 
 const cmpShowCheck = computed(() => {
-    if (!parent?.checkStates.value || parent.checkStates.value.length == 0) return false;
-    let item = parent.checkStates.value.find((e: number) => e == row.value.rowIndex);
+    if (!parent?.value?.checkStates || parent.value?.checkStates.length == 0) return false;
+    let item = parent.value?.checkStates.find((e: number) => e == row.value.rowIndex);
     if (item != undefined) {
         return true;
     }
@@ -90,28 +90,28 @@ const cmpShowCheck = computed(() => {
 });
 
 const cmpDisableCheck = computed(() => {
-    if (parentProps.selectable && props.type) {
-        return !parentProps.selectable(row.value, row.value.rowIndex);
+    if (parentProps.value?.selectable && props.type) {
+        return !parentProps.value?.selectable(row.value, row.value.rowIndex);
     }
     return false;
 });
 
 const cmpReadonlyCheck = computed(() => {
-    if (parentProps.readable && props.type) {
-        return parentProps.readable(row.value, row.value.rowIndex);
+    if (parentProps.value?.readable && props.type) {
+        return parentProps.value?.readable(row.value, row.value.rowIndex);
     }
     return false;
 });
 
 function changeCheck() {
     if (!cmpDisableCheck.value && !cmpReadonlyCheck.value) {
-        parent?.handleCheck(row.value);
+        parent?.value?.handleCheck(row.value);
     }
 }
 
 function cellText() {
-    if (parentProps.formatter) {
-        let text = parentProps.formatter(row.value, props.customKey);
+    if (parentProps.value?.formatter) {
+        let text = parentProps.value?.formatter(row.value, props.customKey);
         if (!text) {
             text = row.value[props.prop];
         }
@@ -120,13 +120,13 @@ function cellText() {
         if (row.value[props.prop]) {
             return row.value[props.prop];
         } else {
-            return parentProps.emptyText || '-';
+            return parentProps.value?.emptyText || '-';
         }
     }
 }
 
 function cellClick(event: any) {
-    parent?.cellClick(row.value, props, event);
+    parent?.value?.cellClick(row.value, props, event);
     // 扩大选中热区
     if (props.type == 'checkbox' || props.type == 'radio') {
         changeCheck();
@@ -150,10 +150,10 @@ function cellClick(event: any) {
         <template v-else>
             <slot v-if="row[prop] || !$slots.empty">
                 <view class="cell-box">
-                    <template v-if="!parentProps.isPopover">
+                    <template v-if="!parentProps?.isPopover">
                         {{ cellText() }}
                     </template>
-                    <table-popover v-else :text="cellText()" :line="parentProps.popoverLine"></table-popover>
+                    <table-popover v-else :text="cellText()" :line="parentProps?.popoverLine"></table-popover>
                 </view>
             </slot>
             <view class="cell-box" v-else>

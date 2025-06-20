@@ -231,7 +231,7 @@ function fullscreenchange(e: BaseEvent) {
 
 <template>
     <view class="ste-video-root" :class="cmpRootClass" :style="[cmpRootStyleVar]" data-test="video">
-        <!-- #ifndef MP-ALIPAY || APP -->
+        <!-- #ifndef MP-ALIPAY || APP ||  MP-TOUTIAO -->
         <video
             class="ste-video"
             :id="id"
@@ -370,7 +370,7 @@ function fullscreenchange(e: BaseEvent) {
             <!-- </view> -->
         </video>
         <!-- #endif -->
-        <!-- #ifdef MP-ALIPAY || APP -->
+        <!-- #ifdef MP-ALIPAY || APP || MP-TOUTIAO -->
         <video class="ste-video" :id="id" :src="src" />
         <!-- #endif -->
     </view>

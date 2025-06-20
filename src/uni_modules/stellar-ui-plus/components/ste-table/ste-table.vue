@@ -1,21 +1,15 @@
 <script lang="ts" setup>
-import { computed, watch, ref, type CSSProperties, toRaw, nextTick } from 'vue';
+import { computed, watch, ref, type CSSProperties, toRaw, onMounted } from 'vue';
 import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG, type TableProps } from './props';
 import utils from '../../utils/utils';
-import { useProvide } from '../../utils/mixin';
+import { useProvide, createOptions } from '../../utils/mixin';
 import useData from './useData';
 import type { TableColumnProps } from '../ste-table-column/props';
 import { groupByKeys } from './utils';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 
-const componentName = `ste-table`;
-defineOptions({
-    name: componentName,
-    options: {
-        virtualHost: true,
-    },
-});
+defineOptions(createOptions(`ste-table`));
 
 const emits = defineEmits(tableEmits);
 
@@ -49,17 +43,19 @@ const {
     getSelection,
 } = useData(props, emits);
 
-const { internalChildren } = useProvide(
-    TABLE_KEY,
-    'ste-table-column'
-)({
-    props,
-    checkStates,
-    handleCheck,
-    cellClick,
-});
+const internalChildren = ref(
+    useProvide(
+        TABLE_KEY,
+        'ste-table-column'
+    )({
+        props,
+        checkStates,
+        handleCheck,
+        cellClick,
+    }).internalChildren
+);
 
-const refChilds = ref(internalChildren);
+const refChilds = computed(() => internalChildren.value);
 
 const cmpRootStyle = computed(() => {
     let style: CSSProperties = {
@@ -121,7 +117,7 @@ let lastChildrenCount = 0;
 let lastChangeTime = 0;
 let processTimer: any = null;
 watch(
-    () => internalChildren,
+    () => internalChildren.value,
     val => {
         const currentTime = Date.now();
         const currentCount = val.length;
@@ -131,8 +127,6 @@ watch(
 
         // 如果内容没有变化，并且距离上次变化已经超过300ms
         if (currentCount === lastChildrenCount && currentTime - lastChangeTime > 300 && currentCount > 0) {
-            console.log('内容已稳定，执行初始化');
-
             initColumns();
             initRowData();
         } else {

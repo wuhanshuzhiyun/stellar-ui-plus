@@ -31,7 +31,7 @@ let navbarTop = ref(utils.px2rpx(16));
 let navbarWidth = ref(utils.px2rpx(281));
 let navbarHeight = ref(utils.px2rpx(26));
 
-// #ifdef MP-WEIXIN || MP-ALIPAY
+// #ifdef MP-WEIXIN || MP-ALIPAY || MP-TOUTIAO
 const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 const addHeight = 16;
 navbarTop.value = utils.px2rpx(menuButtonInfo.top - uni.upx2px(addHeight));

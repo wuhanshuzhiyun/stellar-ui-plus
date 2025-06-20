@@ -13,7 +13,6 @@ import config from '@/common/config';
 import type { NavItem } from './types';
 import { rests, components, pages } from './markdown';
 
-console.log(components);
 const datas = useMarkdown();
 provide('datas', datas);
 const navActive = ref(config.NAV_KEY_DEV);

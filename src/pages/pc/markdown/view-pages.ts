@@ -23,7 +23,7 @@ export default function viewPages() {
         const { code } = codes[`../../../subPackages_pages_view/${dir}/page_code.json`];
         const com: Com = {
             key: `page_${dir}`,
-            name: dir,
+            name: json.title,
             title: json.title,
             icon: json.icon,
             group: json.group,

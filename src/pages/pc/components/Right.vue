@@ -78,9 +78,10 @@ const load = () => {
         </template>
         <template v-if="mode === 'page'">
             <div class="markdown-view content">
-                <code class="hljs language-html">
+                <code class="hljs language-html" style="max-height: 600px; overflow-y: auto">
                     <pre>{{ compMarkdonwHtml?.code }}</pre>
                 </code>
+                <comment-vue />
             </div>
         </template>
         <template v-else-if="mode === 'handbook'">

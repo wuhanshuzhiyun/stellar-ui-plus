@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 const form = ref({
     name: '王小百',
+    sex: '',
     phone: '',
     address: '',
 });
@@ -14,10 +15,12 @@ const form = ref({
                 <view class="form-item">
                     <view class="form-item-label">收货人</view>
                     <view class="form-item-value">
-                        <ste-input placeholder="请输入收货人姓名" v-model="form.name"></ste-input>
-
-                        <view class="form-item-value-icon">
-                            <ste-icon size="20" code="&#xe674;" />
+                        <input class="form-item-input" style="width: 240rpx" placeholder="请输入收货人姓名" v-model="form.name" />
+                        <view class="form-item-radio">
+                            <ste-radio v-model="form.sex" name="a">先生</ste-radio>
+                        </view>
+                        <view class="form-item-radio">
+                            <ste-radio v-model="form.sex" name="b">女士</ste-radio>
                         </view>
                     </view>
                 </view>
@@ -81,18 +84,49 @@ const form = ref({
             .form-item {
                 display: flex;
                 justify-content: space-between;
-                padding: 28rpx 8rpx;
-                height: 96rpx;
-                line-height: 40rpx;
+                padding: 32rpx 0;
                 font-weight: 400;
                 font-size: 28rpx;
                 color: #000000;
+                line-height: 44rpx;
                 & + .form-item {
                     border-top: 1rpx solid #f8f8f8;
                 }
+                // 第一个上内边距36rpx
+                &:first-child {
+                    padding-top: 36rpx;
+                }
+                // 最后一个下内边距36rpx
+                &:last-child {
+                    padding-bottom: 36rpx;
+                }
+                .form-item-label {
+                    width: 156rpx;
+                    font-weight: 500;
+                    font-size: 32rpx;
+                    color: #000000;
+                    height: 44rpx;
+                }
                 .form-item-value {
+                    width: calc(100% - 156rpx);
                     display: flex;
                     align-items: flex-start;
+                    height: 44rpx;
+
+                    .form-item-input {
+                        font-weight: bold;
+                        font-size: 32rpx;
+                        height: 100%;
+                        line-height: 44rpx;
+                        color: #000000;
+                        flex: 1;
+                    }
+                    .form-item-radio {
+                        flex-shrink: 0;
+                        & + .form-item-radio {
+                            margin-left: 32rpx;
+                        }
+                    }
                     .form-item-value-icon {
                         margin-left: 14rpx;
                         line-height: 36rpx;

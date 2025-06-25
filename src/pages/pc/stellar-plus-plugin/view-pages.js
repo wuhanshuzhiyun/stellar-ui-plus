@@ -48,8 +48,6 @@ async function viewPages() {
 
                 // 格式化JSON输出
                 await writeFile(outputFile, JSON.stringify({ code: encoded }, null, 2));
-
-                console.log(`成功处理: ${name}`);
             } catch (error) {
                 console.error(`处理页面 ${name} 失败:`, error);
             }

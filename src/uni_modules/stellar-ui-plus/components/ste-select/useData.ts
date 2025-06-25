@@ -97,18 +97,21 @@ export default function useData({
 
     const cmpAllowCreate = computed(() => props.allowCreate && cmpFilterable.value);
 
-    const cmpRootStyle = computed(() => ({
-        '--ste-select-font-size': `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`,
-        '--ste-select-width': utils.formatPx(props.width),
-        '--ste-select-height': utils.formatPx(props.height),
-        '--ste-select-line-height': `${utils.formatPx(props.height, 'num') - 2}px`,
-        '--ste-select-multiple-placeholder-height': `${utils.formatPx(props.height, 'num') - 6}px`,
-        '--ste-select-multiple-line-height': `${utils.formatPx(props.height, 'num') - 8}px`,
-        '--ste-select-background': props.background,
-        '--ste-select-border': `1px solid ${props.borderColor}`,
-        '--ste-select-border-radius': utils.formatPx(props.borderRadius),
-        '--ste-theme-color': getColor().steThemeColor,
-    }));
+    const cmpRootStyle = computed(() => {
+        return {
+            '--ste-select-font-size': `var(--font-size-${props.fontSize},${utils.formatPx(props.fontSize)})`,
+            '--ste-select-width': utils.formatPx(props.width),
+            '--ste-select-height': utils.formatPx(props.height),
+            '--ste-select-line-height': `${utils.formatPx(props.height, 'num') - 2}px`,
+            '--ste-select-padding-left': utils.formatPx(props.paddingLeft || 0),
+            '--ste-select-multiple-placeholder-height': `${utils.formatPx(props.height, 'num') - 6}px`,
+            '--ste-select-multiple-line-height': `${utils.formatPx(props.height, 'num') - 8}px`,
+            '--ste-select-background': props.background,
+            '--ste-select-border': `1px solid ${props.borderColor}`,
+            '--ste-select-border-radius': utils.formatPx(props.borderRadius),
+            '--ste-theme-color': getColor().steThemeColor,
+        };
+    });
 
     const cmpMultiseriateValue = computed(() => {
         if (cmpShowDate.value) return [];

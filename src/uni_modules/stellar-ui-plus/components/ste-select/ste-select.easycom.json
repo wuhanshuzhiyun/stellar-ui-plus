@@ -83,6 +83,12 @@
             "default": 64
         },
         {
+            "name": "paddingLeft",
+            "description": "左侧内边距，单位rpx",
+            "type": "number | string",
+            "default": "20"
+        },
+        {
             "name": "fontSize",
             "description": "字体大小，单位rpx",
             "type": "number | string",

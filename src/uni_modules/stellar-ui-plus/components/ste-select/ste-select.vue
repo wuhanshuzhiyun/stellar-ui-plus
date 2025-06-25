@@ -95,7 +95,7 @@ const loadMore = () => {
                                         </view>
                                     </block>
                                 </block>
-                                <text v-else>{{ cmpViewValue }}</text>
+                                <block v-else>{{ cmpViewValue }}</block>
                             </block>
                             <view class="placeholder-text" v-else>{{ placeholder }}</view>
                         </block>
@@ -205,10 +205,10 @@ const loadMore = () => {
         background-color: var(--ste-select-background);
         border: var(--ste-select-border);
         border-radius: var(--ste-select-border-radius);
-        padding-right: var(--ste-select-multiple-line-height);
+        padding-right: var(--ste-select-multiple-line-height); // 调整内边距，以适应不同的选项高度。
         position: relative;
         z-index: 1;
-        padding-left: 20rpx; // 调整内边距，以适应不同的选项高度。
+        padding-left: var(--ste-select-padding-left);
         overflow: hidden;
 
         .content-text {

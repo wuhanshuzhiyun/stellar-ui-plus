@@ -7,7 +7,9 @@ const datas = inject<MarkdownData>('datas');
 
 <template>
     <div class="h5-component">
-        <iframe :src="datas?.h5url.value" frameborder="0" width="100%" height="100%" />
+        <div class="h5-component-view">
+            <iframe :src="datas?.h5url.value" frameborder="0" width="100%" height="100%" />
+        </div>
     </div>
 </template>
 
@@ -21,10 +23,16 @@ const datas = inject<MarkdownData>('datas');
     width: calc(var(--pc-view-width) + 28px);
     min-width: calc(var(--pc-view-width) + 28px);
     height: calc(var(--pc-view-height));
-    padding: 50px 14px 30px;
+    padding: 41px 14px 23px;
     overflow: hidden;
     border-radius: 16px;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    .h5-component-view {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 4px 4px 20px 20px / 30px 30px 34px 34px;
+    }
 }
 </style>

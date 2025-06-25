@@ -4,6 +4,7 @@ import type { MarkdownData, Content } from '../types';
 import CompNav from './comp-nav.vue';
 import config from '@/common/config';
 import CommentVue from './Comment.vue';
+import { btnCopy, btnDebug } from '../markdown/utils';
 
 const props = defineProps<{
     mode: 'page' | 'component' | 'handbook';
@@ -64,6 +65,13 @@ const load = () => {
         }, 300);
     }
 };
+
+const copyCode = (e: MouseEvent) => {
+    btnCopy(e.target as HTMLButtonElement);
+};
+const debugCode = (e: MouseEvent) => {
+    btnDebug(e.target as HTMLButtonElement);
+};
 </script>
 
 <template>
@@ -81,6 +89,16 @@ const load = () => {
                 <code class="hljs language-html" style="max-height: 600px; overflow-y: auto">
                     <pre>{{ compMarkdonwHtml?.code }}</pre>
                 </code>
+                <div class="btn-box" :content="compMarkdonwHtml?.code">
+                    <a class="btn debug" @click="debugCode">
+                        <img class="img" src="https://image.whzb.com/chain/StellarUI/image/debug.png" />
+                        <div class="tip">debug</div>
+                    </a>
+                    <a class="btn copy" @click="copyCode">
+                        <img class="img" src="https://image.whzb.com/chain/StellarUI/image/copy.png" />
+                        <div class="tip">复制</div>
+                    </a>
+                </div>
                 <comment-vue />
             </div>
         </template>

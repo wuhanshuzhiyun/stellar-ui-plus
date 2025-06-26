@@ -3,7 +3,7 @@ import System from '@/uni_modules/stellar-ui-plus/utils/System';
 import { computed, ref } from 'vue';
 const form = ref({
     name: '王小百',
-    sex: '',
+    sex: '1',
     prefix: '+86',
     phone: '18866886868',
     address: '',
@@ -39,10 +39,10 @@ const footerStyle = computed(() => ({
                     <view class="form-item-value">
                         <input class="form-item-input" style="width: 240rpx" placeholder="请输入收货人姓名" v-model="form.name" />
                         <view class="form-item-radio">
-                            <ste-radio v-model="form.sex" name="a">先生</ste-radio>
+                            <ste-radio v-model="form.sex" name="1">先生</ste-radio>
                         </view>
                         <view class="form-item-radio">
-                            <ste-radio v-model="form.sex" name="b">女士</ste-radio>
+                            <ste-radio v-model="form.sex" name="2">女士</ste-radio>
                         </view>
                     </view>
                 </view>
@@ -75,7 +75,7 @@ const footerStyle = computed(() => ({
                 <view class="form-item">
                     <view class="form-item-label">地址</view>
                     <view class="form-item-value">
-                        <view class="value-placeholder">请选择收货地址</view>
+                        <view class="value-placeholder">选择收货地址</view>
                         <view class="form-item-value-icon">
                             <ste-icon size="20" code="&#xe674;" />
                         </view>
@@ -152,7 +152,7 @@ const footerStyle = computed(() => ({
                 &:last-child {
                     padding-bottom: 36rpx;
                 }
-
+                // 设为默认地址居中对齐，高度跟随内容自适应
                 &.center {
                     .form-item-label,
                     .form-item-value {
@@ -166,7 +166,7 @@ const footerStyle = computed(() => ({
                         margin-top: 8rpx;
                     }
                 }
-
+                // 选择标签上对齐，高度跟随内容自适应
                 &.start {
                     align-items: flex-start;
                     padding: 0;

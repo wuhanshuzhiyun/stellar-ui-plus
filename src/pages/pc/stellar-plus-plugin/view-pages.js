@@ -1,6 +1,6 @@
-const path = require("path");
-const fs = require("fs");
-const { promisify } = require("util");
+const path = require('path');
+const fs = require('fs');
+const { promisify } = require('util');
 
 // 转换为Promise形式以便使用async/await
 const readdir = promisify(fs.readdir);
@@ -27,7 +27,7 @@ function base64Encode(str) {
 }
 
 async function viewPages() {
-    const dir = path.join(process.cwd(), "src/subPackages_pages_view");
+    const dir = path.join(process.cwd(), 'src/subPackages_pages_view');
 
     try {
         // 检查目录是否存在
@@ -37,22 +37,24 @@ async function viewPages() {
 
         const pages = await readdir(dir);
 
-        await Promise.all(pages.map(async (name) => {
-            try {
-                const vueFile = path.join(dir, name, `${name}.vue`);
-                const outputFile = path.join(dir, name, `page_code.json`);
+        await Promise.all(
+            pages.map(async name => {
+                try {
+                    const vueFile = path.join(dir, name, `${name}.vue`);
+                    const outputFile = path.join(dir, name, `page_code.json`);
 
-                // 读取文件时明确指定utf8编码
-                const code = await readFile(vueFile, 'utf8');
-                const encoded = base64Encode(code);
+                    // 读取文件时明确指定utf8编码
+                    let code = await readFile(vueFile, 'utf8');
+                    code = code.replace(/@\/uni_modules\/stellar-ui-plus/g, 'stellar-ui-plus');
+                    const encoded = base64Encode(code);
 
-                // 格式化JSON输出
-                await writeFile(outputFile, JSON.stringify({ code: encoded }, null, 2));
-            } catch (error) {
-                console.error(`处理页面 ${name} 失败:`, error);
-            }
-        }));
-
+                    // 格式化JSON输出
+                    await writeFile(outputFile, JSON.stringify({ code: encoded }, null, 2));
+                } catch (error) {
+                    console.error(`处理页面 ${name} 失败:`, error);
+                }
+            })
+        );
     } catch (error) {
         console.error('处理页面失败:', error);
         throw error;

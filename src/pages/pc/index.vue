@@ -26,7 +26,7 @@ const isPageView = computed(() => {
 });
 
 const cmpShowH5 = computed(() => {
-    return isPageView || isCompView.value || config.SHOW_H5_PAGE.find(e => datas?.active.value.indexOf(e) > -1);
+    return isPageView.value || isCompView.value || config.SHOW_H5_PAGE.find(e => datas?.active.value.indexOf(e) > -1);
 });
 
 const viewType = computed(() => {

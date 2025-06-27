@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TabProps } from '@/uni_modules/stellar-ui-plus/components/ste-tab/props';
 import System from '@/uni_modules/stellar-ui-plus/utils/System';
+import utils from '@/uni_modules/stellar-ui-plus/utils/utils';
 import { computed, ref } from 'vue';
 const form = ref({
     name: '王小百',
@@ -27,7 +28,11 @@ const tags = ref([
 // 获取底部安全距离
 const safeBottom = System.getSystemSetting().safeAreaInsets.bottom;
 const footerStyle = computed(() => ({
-    paddingBottom: safeBottom ? `${safeBottom + 12}px` : '12px',
+    paddingBottom: safeBottom ? `${safeBottom + utils.formatPx(24, 'num')}px` : '24rpx',
+}));
+
+const contentStyle = computed(() => ({
+    paddingBottom: safeBottom ? `${safeBottom + utils.formatPx(150, 'num')}px` : '150rpx',
 }));
 const currentTab = ref(0);
 const changeTab = (e: TabProps) => {
@@ -39,7 +44,7 @@ const copyView = ref(false);
 <template>
     <view class="page-user-info-view">
         <ste-navbar title="编辑收货地址" :titleAlignment="2" backgroundColor="#fff"></ste-navbar>
-        <view class="page-content">
+        <view class="page-content" :style="[contentStyle]">
             <view class="page-block">
                 <view class="form-item">
                     <view class="form-item-label">收货人</view>
@@ -153,7 +158,7 @@ const copyView = ref(false);
                 </view>
             </view>
         </view>
-        <view class="page-footer" style="[footerStyle]">
+        <view class="page-footer" :style="[footerStyle]">
             <ste-button class="submit-btn" background="#EC3E1A" width="100%" :mode="300">
                 <text style="color: #ffffff">确定</text>
             </ste-button>
@@ -165,14 +170,17 @@ const copyView = ref(false);
     width: 750rpx;
     min-height: 100vh;
     background-color: #f5f5f5;
+
     .page-content {
         width: 100%;
         padding: 20rpx 24rpx 0 24rpx;
+
         .page-block {
             width: 100%;
             padding: 0 24rpx;
             background: #ffffff;
             border-radius: 12rpx;
+
             & + .page-block {
                 margin-top: 20rpx;
             }
@@ -186,17 +194,21 @@ const copyView = ref(false);
                 font-size: 28rpx;
                 color: #000000;
                 line-height: 44rpx;
+
                 & + .form-item {
                     border-top: 1rpx solid #f8f8f8;
                 }
+
                 // 第一个上内边距36rpx
                 &:first-child {
                     padding-top: 36rpx;
                 }
+
                 // 最后一个下内边距36rpx
                 &:last-child {
                     padding-bottom: 36rpx;
                 }
+
                 .form-item-label {
                     width: 156rpx;
                     font-weight: 500;
@@ -204,6 +216,7 @@ const copyView = ref(false);
                     color: #000000;
                     height: 44rpx;
                 }
+
                 .form-item-value {
                     width: calc(100% - 156rpx);
                     display: flex;
@@ -217,12 +230,15 @@ const copyView = ref(false);
                         height: 44rpx;
                         color: #000000;
                     }
+
                     .form-item-radio {
                         flex-shrink: 0;
+
                         & + .form-item-radio {
                             margin-left: 32rpx;
                         }
                     }
+
                     .form-item-value-icon {
                         margin-left: 14rpx;
                         line-height: 36rpx;
@@ -235,6 +251,7 @@ const copyView = ref(false);
                         // #endif
                     }
                 }
+
                 .value-placeholder {
                     font-weight: 500;
                     font-size: 32rpx;
@@ -248,6 +265,7 @@ const copyView = ref(false);
                         width: initial;
                         height: initial;
                     }
+
                     .form-item-label .reminder {
                         font-weight: 500;
                         font-size: 28rpx;
@@ -255,20 +273,24 @@ const copyView = ref(false);
                         margin-top: 8rpx;
                     }
                 }
+
                 // 选择标签上对齐，高度跟随内容自适应
                 &.start,
                 &.address-map {
                     align-items: flex-start;
                     padding: 0;
+
                     .form-item-label {
                         padding: 32rpx 0;
                         height: 108rpx;
                     }
+
                     .form-item-value {
                         height: initial;
                         padding-top: 32rpx;
                         flex-wrap: wrap;
                         justify-content: flex-start;
+
                         .tag-item {
                             width: 132rpx;
                             height: 60rpx;
@@ -280,10 +302,12 @@ const copyView = ref(false);
                             margin: 0 42rpx 20rpx 0;
                             // #ifdef H5
                             cursor: pointer;
+
                             // #endif
                             &.right {
                                 margin-right: 0;
                             }
+
                             &.active {
                                 background: #ffffff;
                                 border-color: #e32b11;
@@ -292,16 +316,19 @@ const copyView = ref(false);
                         }
                     }
                 }
+
                 &.address-map {
                     .form-item-value {
                         display: block;
                         padding-top: 0;
                         padding-bottom: 0;
+
                         .addr-select-row {
                             display: flex;
                             align-items: center;
                             justify-content: space-between;
                         }
+
                         .addr-select-value {
                             width: 100%;
                             background: #f5f5f5;
@@ -311,11 +338,13 @@ const copyView = ref(false);
                             flex-direction: row;
                             align-items: center;
                             justify-content: space-between;
+
                             .addr-value {
                                 width: calc(100% - 150rpx);
                                 font-weight: 500;
                                 font-size: 32rpx;
                                 color: #000000;
+
                                 .addr-value-area {
                                     font-weight: 500;
                                     font-size: 28rpx;
@@ -326,14 +355,17 @@ const copyView = ref(false);
                         }
                     }
                 }
+
                 // 地址粘贴板
                 &.addr-copy {
                     flex-direction: column;
+
                     .addr-copy-view {
                         & + .copy-buttoin {
                             margin-top: 32rpx;
                         }
                     }
+
                     .copy-buttoin {
                         width: 100%;
                         font-weight: 500;
@@ -347,10 +379,12 @@ const copyView = ref(false);
                 }
             }
         }
+
         .submit-btn {
             margin-top: 48rpx;
         }
     }
+
     .page-footer {
         position: fixed;
         bottom: 0;

@@ -90,7 +90,7 @@ const copyView = ref(false);
                         <view class="form-item-value">
                             <view class="addr-select-row">
                                 <view class="value-placeholder">选择收货地址</view>
-                                <ste-image width="224" height="108" />
+                                <ste-image src="https://image.whzb.com/chain/StellarUI/map.png" width="224" height="108" />
                             </view>
                             <view class="addr-select-value">
                                 <view class="addr-value">

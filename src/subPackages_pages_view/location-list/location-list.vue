@@ -133,15 +133,22 @@ const setDefaultLocation = (i: number) => {
                         font-weight: 500;
                         font-size: 28rpx;
                         color: #666666;
+                        // #ifdef H5
+                        cursor: pointer;
+                        // #endif
                     }
                     .methods-button {
                         height: 56rpx;
+                        line-height: 54rpx;
                         background: #f5f5f5;
                         border-radius: 8rpx;
                         padding: 0 28rpx;
                         font-weight: 500;
                         font-size: 28rpx;
                         color: #000000;
+                        // #ifdef H5
+                        cursor: pointer;
+                        // #endif
                         & + .methods-button {
                             margin-left: 24rpx;
                         }

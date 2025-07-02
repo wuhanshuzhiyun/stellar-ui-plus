@@ -33,6 +33,7 @@ const footerStyle = computed(() => ({
 .privacy-policy-view {
     width: 750rpx;
     background-color: #fff;
+    min-height: 100vh;
     .page-content {
         padding: 10rpx 30rpx;
         .test-item {

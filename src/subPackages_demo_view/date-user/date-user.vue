@@ -44,6 +44,7 @@
             .desc {
                 display: flex;
                 align-items: center;
+                padding: 0 10rpx 0 4rpx;
                 .title {
                     font-size: 24rpx;
                     color: #0275ff;

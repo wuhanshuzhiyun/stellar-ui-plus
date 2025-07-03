@@ -138,7 +138,6 @@ onMounted(async () => {
                     height: 38rpx;
                     background: #ebf4ff;
                     border-radius: 4rpx;
-                    padding: 0 10rpx 0 4rpx;
                 }
             }
         }

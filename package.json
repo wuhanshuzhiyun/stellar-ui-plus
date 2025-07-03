@@ -1,12 +1,11 @@
 {
     "name": "stellar-ui-plus",
-    "version": "1.21.16",
+    "version": "1.21.20",
     "keywords": [
         "ui",
         "uniApp",
         "vu3"
     ],
-    "packageManager": "pnpm@8.14.1",
     "license": "MIT",
     "repository": {
         "type": "git",

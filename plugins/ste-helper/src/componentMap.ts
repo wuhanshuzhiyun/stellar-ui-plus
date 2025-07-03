@@ -2359,8 +2359,24 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "data",
                 "description": "商品数据",
-                "type": "{ image: string; title: string; tag?: string; barCode: string; code: string; price: string | number; originalPrice?: string | number }",
+                "type": "{ image: string; title: string; subTitle: string; tag?: string; barCode: string; code: string; price: string | number; originalPrice?: string | number }",
                 "default": "{}"
+            },
+            {
+                "name": "mode",
+                "description": "模式",
+                "type": "string",
+                "default": "more",
+                "values": [
+                    {
+                        "name": "more",
+                        "description": "门店，展示所有字段"
+                    },
+                    {
+                        "name": "less",
+                        "description": "食堂，仅展示部分字段"
+                    }
+                ]
             },
             {
                 "name": "background",
@@ -2412,7 +2428,7 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "checkbox",
-                "description": "选择框位置",
+                "description": "选择框位置（mode='more'时有效）",
                 "type": "string",
                 "default": "none",
                 "values": [
@@ -2432,31 +2448,31 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "checkboxDisabled",
-                "description": "是否禁用选择框",
+                "description": "是否禁用选择框（mode='more'时有效）",
                 "type": "boolean",
                 "default": false
             },
             {
                 "name": "checked",
-                "description": "是否选中",
+                "description": "是否选中（mode='more'时有效）",
                 "type": "boolean",
                 "default": false
             },
             {
                 "name": "watermark",
-                "description": "水印URL",
+                "description": "水印URL（mode='more'时有效）",
                 "type": "string",
                 "default": ""
             },
             {
                 "name": "watermarkStyle",
-                "description": "水印样式",
+                "description": "水印样式（mode='more'时有效）",
                 "type": "Object",
                 "default": "{}"
             },
             {
                 "name": "number",
-                "description": "数量",
+                "description": "数量（mode='more'时有效）",
                 "type": "number",
                 "default": 1
             },
@@ -2528,12 +2544,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "suggestData",
-                "description": "建议数据集,不传则不展示建议模块",
+                "description": "建议数据集,不传则不展示建议模块（mode='more'时有效）",
                 "type": "{title?: string;number?: number;applyForText?: string;applyForNumber?: number;items: { label: string; value: number }[];}"
             },
             {
                 "name": "readonlySuggestInput",
-                "description": "建议右侧申请输入框只读",
+                "description": "建议右侧申请输入框只读（mode='more'时有效）",
                 "type": "boolean"
             }
         ],
@@ -6202,6 +6218,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "高度，单位rpx",
                 "type": "number | string",
                 "default": 64
+            },
+            {
+                "name": "paddingLeft",
+                "description": "左侧内边距，单位rpx",
+                "type": "number | string",
+                "default": "20"
             },
             {
                 "name": "fontSize",

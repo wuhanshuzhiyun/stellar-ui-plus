@@ -212,6 +212,7 @@ function loginBtnClick() {
                     color: #000000;
                     text-align: center;
                     margin-top: 12rpx;
+                    word-break: keep-all;
                 }
 
                 .value {
@@ -249,6 +250,7 @@ function loginBtnClick() {
                 font-size: 24rpx;
                 color: #ec3e1a;
                 text-align: center;
+                word-break: keep-all;
             }
         }
     }

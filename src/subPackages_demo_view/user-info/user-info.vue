@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 let list1 = ref([
     { title: '余额', value: '100' },
-    { title: '订餐数', value: '8' },
+    { title: '订餐数', value: '10000' },
 ]);
 
 let list2 = ref([
@@ -34,7 +34,7 @@ let list3 = ref([{ title: '数据1', value: '100' }]);
                         <template v-slot:desc>
                             <view class="desc">
                                 <ste-icon code="&#xe670;" color="#EC3E1A" size="26"></ste-icon>
-                                <view class="title">中百食堂</view>
+                                <view class="title">中百食堂111225x</view>
                             </view>
                         </template>
                     </ste-user-info>
@@ -269,6 +269,10 @@ let list3 = ref([{ title: '数据1', value: '100' }]);
                     color: #ec3e1a;
                     margin: 4rpx;
                     margin-right: 14rpx;
+                    white-space: nowrap; /* 禁止换行 */
+                    overflow: hidden; /* 隐藏溢出内容 */
+                    text-overflow: ellipsis; /* 溢出时显示省略号 */
+                    width: 120rpx;
                 }
             }
         }

@@ -42,15 +42,15 @@ const cmpDataStyle = computed(() => {
     if (props.showUserInfo && props.showCode) {
         if (props.list.length == 1) {
             style['justify-content'] = 'center';
-            style.margin = '0 0 0 54rpx';
+            style.margin = '0 0 0 24rpx';
         }
         if (props.list.length == 2) {
             style['justify-content'] = 'space-between';
-            style.margin = '0 0 0 54rpx';
+            style.margin = '0 0 0 24rpx';
         }
         if (props.list.length == 3) {
             style['justify-content'] = 'space-between';
-            style.margin = '0 0 0 24rpx';
+            style.margin = '0 0 0 12rpx';
         }
     }
     if (!props.showUserInfo && props.showCode) {
@@ -59,7 +59,7 @@ const cmpDataStyle = computed(() => {
     }
     if (props.showUserInfo && !props.showCode) {
         style['justify-content'] = 'space-between';
-        style.margin = '0 0 0 54rpx';
+        style.margin = '0 0 0 24rpx';
     }
     if (!props.showUserInfo && !props.showCode) {
         style['justify-content'] = 'space-around';
@@ -159,6 +159,8 @@ function loginBtnClick() {
         .user-box {
             display: flex;
             flex-direction: row;
+            width: 280rpx;
+            align-items: center;
 
             .left {
                 width: 92rpx;
@@ -167,6 +169,7 @@ function loginBtnClick() {
                 border-radius: 50%;
                 overflow: hidden;
                 margin-right: 24rpx;
+                flex-shrink: 0;
             }
             .right {
                 display: flex;

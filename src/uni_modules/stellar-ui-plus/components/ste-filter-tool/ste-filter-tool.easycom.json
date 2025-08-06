@@ -5,10 +5,10 @@
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=filter-tool",
     "attributes": [
         {
-            "name": "value",
-            "description": "当前值，支持v-model:value双向绑定",
-            "type": "object[]",
-            "default": ""
+            "name": "v-model:value",
+            "description": "当前选中值，支持双向绑定",
+            "type": "FilterValue[]",
+            "default": "[]"
         },
         {
             "name": "activeColor",
@@ -23,31 +23,49 @@
             "default": "#555A61"
         },
         {
+            "name": "filterType",
+            "description": "筛选类型",
+            "type": "string",
+            "options": "button | checkbox | calendar",
+            "default": "button"
+        },
+        {
             "name": "data",
-            "description": "菜单数据列表",
+            "description": "筛选数据源，详细配置见文档",
             "type": "FilterItem[]",
             "default": "[]"
         },
         {
             "name": "showCategory",
-            "description": "是否显示分类",
+            "description": "是否显示左侧的分类栏",
             "type": "boolean",
             "default": "true"
         },
         {
+            "name": "[event]confirm",
+            "description": "点击确认按钮时触发",
+            "type": "(values: FilterValue[]) => void",
+            "params": [
+                {
+                    "name": "values",
+                    "description": "当前所有选中的值"
+                }
+            ]
+        },
+        {
             "name": "[event]reset",
-            "description": "点击重置时触发",
+            "description": "点击重置按钮时触发",
             "type": "() => void",
             "params": []
         },
         {
-            "name": "[event]confirm",
-            "description": "菜单变化时触发",
-            "type": "(items: FilterItem[]) => void",
+            "name": "[event]itemClick",
+            "description": "点击任意筛选项时触发（实时）",
+            "type": "(item: FilterValue) => void",
             "params": [
                 {
-                    "name": "items",
-                    "description": "变化后的菜单项列表"
+                    "name": "item",
+                    "description": "当前操作的筛选项数据"
                 }
             ]
         }

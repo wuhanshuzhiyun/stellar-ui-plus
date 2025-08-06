@@ -1,12 +1,26 @@
-export interface FilterItem {
+type FilterToolType = 'button' | 'input';
+interface FilterToolProps {
+    value?: string; // 控件默认值
+    placeholder?: string;
+    maxLength?: number;
+    [key: string]: any;
+}
+
+interface BaseFilterItem {
     title: string;
-    children?: FilterItem[];
-    multiple?: boolean;
     value?: string | number;
+    [key: string]: any;
+}
+
+export interface FilterItem extends BaseFilterItem {
+    children?: BaseFilterItem[];
+    multiple?: boolean;
     id?: string | number;
     rowCount?: number;
     expand?: boolean;
     expandCount?: number;
+    type?: FilterToolType;
+    config?: FilterToolProps; // 控件额外配置
     [key: string]: any;
 }
 

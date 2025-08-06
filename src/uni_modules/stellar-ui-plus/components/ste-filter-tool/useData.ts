@@ -1,5 +1,5 @@
 import { watch, nextTick, type SetupContext } from 'vue';
-import type { FilterItem, FilterValue } from './type';
+import type { BaseFilterItem, FilterItem, FilterValue } from './type';
 import type { FilterToolProps, FilterToolEmits } from './props';
 
 /**
@@ -55,8 +55,13 @@ export default function useSimpleFilterLogic(props: FilterToolProps, emits: Setu
                 }
             } else {
                 // 按钮模式
-                const activeChildren = item.children?.filter(child => child.active) || [];
-                selectedValues = activeChildren.map(child => String(child.value));
+                if (item.type === 'input') {
+                    selectedValues = item.config?.value ? [String(item.config.value)] : [];
+                } else {
+                    // 默认为按钮
+                    const activeChildren = item.children?.filter(child => child.active) || [];
+                    selectedValues = activeChildren.map(child => String(child.value));
+                }
             }
 
             // 只有选中了值才加入结果
@@ -84,7 +89,7 @@ export default function useSimpleFilterLogic(props: FilterToolProps, emits: Setu
     /**
      * 处理按钮模式的筛选项点击
      */
-    const handleFilterClick = (item: FilterItem, child: FilterItem) => {
+    const handleFilterClick = (item: FilterItem, child: BaseFilterItem) => {
         if (item.multiple) {
             // 多选：切换状态
             child.active = !child.active;

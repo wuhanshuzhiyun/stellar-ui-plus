@@ -50,7 +50,20 @@
                                             </view>
                                         </view>
                                     </view>
+                                    <view v-if="item.type === 'input'" class="menu-item-input" :style="[{ width: utils.formatPx(item.config?.width || '100%') }]">
+                                        <ste-input
+                                            :font-size="24"
+                                            background="#F4F5F6"
+                                            :value="item.config?.value"
+                                            :placeholder="item.config?.placeholder || '请输入内容'"
+                                            :maxlength="item.config?.maxLength || 100"
+                                            :clearable="item.config?.clearable || false"
+                                            class="input-field"
+                                            @input="value => handleFilterItemInput(item, value)"
+                                        />
+                                    </view>
                                     <view
+                                        v-else
                                         class="menu-item-content"
                                         :style="[{ '--expand-count': item.expandCount }]"
                                         :class="[
@@ -106,9 +119,10 @@
 import { ref, reactive, computed, watch, getCurrentInstance, onUnmounted } from 'vue';
 import type { ComponentPublicInstance } from 'vue';
 import propsData, { filterToolEmits } from './props';
-import type { FilterItem, CategoryItem } from './type';
+import type { BaseFilterItem, FilterItem, CategoryItem } from './type';
 import { useColorStore } from '../../store/color';
 import { ScrollCalculator, ScrollController, InitializationManager, EventHandlerFactory } from './scrollUtil';
+import utils from '../../utils/utils';
 import useData from './useData';
 
 // 组合式API和响应式数据
@@ -162,12 +176,21 @@ const initializeData = () => {
 };
 
 // 包装筛选逻辑的点击事件
-const handleFilterItemClick = (item: FilterItem, child: FilterItem) => {
+const handleFilterItemClick = (item: FilterItem, child: BaseFilterItem) => {
     handleFilterClick(item, child);
 };
 
 const handleCheckboxItemClick = (item: FilterItem, value: string) => {
     handleCheckboxChange(item, value);
+};
+
+const handleFilterItemInput = (item: FilterItem, value: any) => {
+    if (item.config) {
+        item.config = {
+            ...item.config,
+            value: value,
+        };
+    }
 };
 
 // 包装重置和确认事件

@@ -18,6 +18,8 @@ type PartType = 0 | 1 | 2;
 let throLast: number = 0;
 let throTimer: ReturnType<typeof setTimeout> | null = null;
 
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
 let windowWidth: number = 0;
 
 // 定义延迟选项接口
@@ -75,7 +77,7 @@ const utils = {
      * @param args 要防抖方法的参数，如果最后一个参数是 {delay:2000}，则该参数为防抖时间参数，不记入方法参数
      * @returns 返回一个新的函数
      */
-    debounce<T extends (...args: any[]) => any>(fn: T, ...args: any[]): () => void {
+    debounce<T extends (...args: any[]) => any>(fn: T, ...args: any[]): void {
         let delay: number = 500;
         let lastArg: any = null;
 
@@ -87,16 +89,22 @@ const utils = {
             }
         }
 
-        let timer: ReturnType<typeof setTimeout> | null = null;
+        // let timer: ReturnType<typeof setTimeout> | null = null;
 
-        return function (this: any): void {
-            if (timer !== null) {
-                clearTimeout(timer);
-            }
-            timer = setTimeout(() => {
-                fn.call(this, ...args);
-            }, delay);
-        };
+        // return function (this: any): void {
+        //     if (debounceTimer !== null) {
+        //         clearTimeout(debounceTimer);
+        //     }
+        //     debounceTimer = setTimeout(() => {
+        //         fn.call(this, ...args);
+        //     }, delay);
+        // };
+        if (debounceTimer !== null) {
+            clearTimeout(debounceTimer);
+        }
+        debounceTimer = setTimeout(() => {
+            fn.call(this, ...args);
+        }, delay);
     },
     isNaN(value: number | string | null | undefined): boolean {
         const deg = /^-?\d+(\.\d+)?$/i;

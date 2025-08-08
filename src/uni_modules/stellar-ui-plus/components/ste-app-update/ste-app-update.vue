@@ -20,6 +20,12 @@ const percent = ref(0);
 const updateBtn = ref(true);
 const downloadedSize = ref('0');
 const packageFileSize = ref('0');
+
+const emits = defineEmits<{
+    (e: 'cancel', event?: any): void;
+    (e: 'complete', event?: any): void;
+}>();
+
 const getData = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
     uni.request({
         url: props.apiUrl,
@@ -46,6 +52,7 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 if (data.updateFile && data.code > version.value) {
                     open.value = true;
                 }
+                emits('complete');
             } else {
                 console.log(_data.msg);
             }
@@ -94,6 +101,12 @@ const confirm = () => {
     }
 };
 
+function close() {
+    open.value = false;
+    emits('cancel');
+    emits('complete');
+}
+
 defineExpose({
     start,
     stop() {
@@ -130,7 +143,7 @@ defineExpose({
                 </view>
             </view>
 
-            <image v-if="!data.isForce" class="close-img" src="../../static/app_update_close.png" @click.stop="open = false"></image>
+            <image v-if="!data.isForce" class="close-img" src="../../static/app_update_close.png" @click.stop="close"></image>
         </view>
     </view>
 </template>

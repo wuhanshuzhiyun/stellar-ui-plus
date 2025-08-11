@@ -28,8 +28,13 @@
             "type": "() => void"
         },
         {
-            "name": "[event]complete",
-            "description": "取消，成功更新都会执行",
+            "name": "[event]update",
+            "description": "发现新版时本触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]no-update",
+            "description": "没有新版时本触发",
             "type": "() => void"
         }
     ]

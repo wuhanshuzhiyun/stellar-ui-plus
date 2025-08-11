@@ -22,8 +22,9 @@ const downloadedSize = ref('0');
 const packageFileSize = ref('0');
 
 const emits = defineEmits<{
-    (e: 'cancel', event?: any): void;
-    (e: 'complete', event?: any): void;
+    (e: 'cancel'): void;
+    (e: 'update'): void;
+    (e: 'no-update'): void;
 }>();
 
 const getData = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
@@ -51,15 +52,19 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 data.package_type = data.isForce ? 0 : 1 || 0;
                 if (data.updateFile && data.code > version.value) {
                     open.value = true;
+                    emits('update');
+                    return;
                 }
             } else {
                 console.log(_data.msg);
             }
-            emits('complete');
+            // 无需升级
+
+            emits('no-update');
         },
         fail: (err: any) => {
             console.log('err===========', err);
-            emits('complete');
+            emits('no-update');
         },
     });
 };
@@ -105,7 +110,6 @@ const confirm = () => {
 function close() {
     open.value = false;
     emits('cancel');
-    emits('complete');
 }
 
 defineExpose({

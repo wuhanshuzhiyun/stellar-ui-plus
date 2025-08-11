@@ -26,7 +26,6 @@
             "name": "filterType",
             "description": "筛选类型",
             "type": "string",
-            "options": "button | checkbox | calendar",
             "default": "button"
         },
         {

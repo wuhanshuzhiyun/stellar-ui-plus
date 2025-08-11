@@ -52,13 +52,14 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 if (data.updateFile && data.code > version.value) {
                     open.value = true;
                 }
-                emits('complete');
             } else {
                 console.log(_data.msg);
             }
+            emits('complete');
         },
         fail: (err: any) => {
             console.log('err===========', err);
+            emits('complete');
         },
     });
 };

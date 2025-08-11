@@ -1983,7 +1983,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "filterType",
                 "description": "筛选类型",
                 "type": "string",
-                "options": "button | checkbox | calendar",
                 "default": "button"
             },
             {
@@ -3874,12 +3873,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "(]) => void",
                 "params": []
             }
-        ]
-    },
-    "ste-main-info": {
-        "site": "ste-main-info",
-        "attr": [
-            ""
         ]
     },
     "media-preview": {

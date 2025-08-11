@@ -190,6 +190,8 @@ const handleFilterItemInput = (item: FilterItem, value: any) => {
             ...item.config,
             value: value,
         };
+    } else {
+        item.config = { value: value };
     }
 };
 

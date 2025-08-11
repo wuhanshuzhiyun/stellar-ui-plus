@@ -66,7 +66,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "https://zboa.whzb.com/inte-cloud-dev/blade-system/api/inte/client/ver/currentDetail"
             }
         ],
-        "events": []
+        "events": [
+            {
+                "name": "cancel",
+                "description": "取消更新",
+                "type": "() => void"
+            },
+            {
+                "name": "complete",
+                "description": "取消，成功更新都会执行",
+                "type": "() => void"
+            }
+        ]
     },
     "area-chart": {
         "site": "ste-area-chart",
@@ -1947,14 +1958,14 @@ export const componentMap: Record<string, ComponentDesc> = {
     "filter-tool": {
         "site": "ste-filter-tool",
         "attr": [
-            "value=''"
+            "v-model:value=''"
         ],
         "props": [
             {
-                "name": "value",
-                "description": "当前值，支持v-model:value双向绑定",
-                "type": "object[]",
-                "default": ""
+                "name": "v-model:value",
+                "description": "当前选中值，支持双向绑定",
+                "type": "FilterValue[]",
+                "default": "[]"
             },
             {
                 "name": "activeColor",
@@ -1969,33 +1980,51 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "#555A61"
             },
             {
+                "name": "filterType",
+                "description": "筛选类型",
+                "type": "string",
+                "options": "button | checkbox | calendar",
+                "default": "button"
+            },
+            {
                 "name": "data",
-                "description": "菜单数据列表",
+                "description": "筛选数据源，详细配置见文档",
                 "type": "FilterItem[]",
                 "default": "[]"
             },
             {
                 "name": "showCategory",
-                "description": "是否显示分类",
+                "description": "是否显示左侧的分类栏",
                 "type": "boolean",
                 "default": "true"
             }
         ],
         "events": [
             {
+                "name": "confirm",
+                "description": "点击确认按钮时触发",
+                "type": "(values: FilterValue[]) => void",
+                "params": [
+                    {
+                        "name": "values",
+                        "description": "当前所有选中的值"
+                    }
+                ]
+            },
+            {
                 "name": "reset",
-                "description": "点击重置时触发",
+                "description": "点击重置按钮时触发",
                 "type": "() => void",
                 "params": []
             },
             {
-                "name": "confirm",
-                "description": "菜单变化时触发",
-                "type": "(items: FilterItem[]) => void",
+                "name": "itemClick",
+                "description": "点击任意筛选项时触发（实时）",
+                "type": "(item: FilterValue) => void",
                 "params": [
                     {
-                        "name": "items",
-                        "description": "变化后的菜单项列表"
+                        "name": "item",
+                        "description": "当前操作的筛选项数据"
                     }
                 ]
             }

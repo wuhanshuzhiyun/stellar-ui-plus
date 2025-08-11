@@ -21,6 +21,16 @@
             "description": "更新API地址",
             "type": "string",
             "default": "https://zboa.whzb.com/inte-cloud-dev/blade-system/api/inte/client/ver/currentDetail"
+        },
+        {
+            "name": "[event]cancel",
+            "description": "取消更新",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]complete",
+            "description": "取消，成功更新都会执行",
+            "type": "() => void"
         }
     ]
 }

@@ -20,6 +20,7 @@ const percent = ref(0);
 const updateBtn = ref(true);
 const downloadedSize = ref('0');
 const packageFileSize = ref('0');
+const tempFilePath = ref('');
 
 const emits = defineEmits<{
     (e: 'cancel'): void;
@@ -59,7 +60,6 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 console.log(_data.msg);
             }
             // 无需升级
-
             emits('no-update');
         },
         fail: (err: any) => {
@@ -91,10 +91,12 @@ const confirm = () => {
         //apk整包升级 下载地址必须以.apk结尾
         if (data.updateFile.includes('.apk')) {
             updateBtn.value = false;
-            download(data, { onProgressUpdate });
+            download(data, {
+                onProgressUpdate,
+                downloadSuccess: path => (tempFilePath.value = path),
+            });
         } else {
             //外部下载 一般是手机应用市场或者其他h5页面
-            data.isForce = false; // 解决跳转外部链接后，更新提示还在的问题
             plus.runtime.openURL(data.updateFile);
             uni.navigateBack({
                 delta: 1,
@@ -103,7 +105,7 @@ const confirm = () => {
     } else {
         updateBtn.value = false;
         //wgt资源包升级 下载地址必须以.wgt结尾
-        download(data, { onProgressUpdate });
+        download(data, { onProgressUpdate, downloadSuccess: path => (tempFilePath.value = path) });
     }
 };
 
@@ -112,11 +114,38 @@ function close() {
     emits('cancel');
 }
 
+const install = () => {
+    plus.runtime.install(
+        tempFilePath.value,
+        { force: true },
+        () => {
+            // wgt升级
+            if (data.package_type == 1) {
+                uni.showModal({
+                    title: '提示',
+                    content: '升级成功，请重新启动！',
+                    confirmText: '确定',
+                    showCancel: false,
+                    success: () => {
+                        plus.runtime.restart();
+                    },
+                });
+            }
+        },
+        e => {
+            //提示部分wgt包无法安装的问题
+            uni.showModal({
+                title: '提示',
+                content: e.message,
+                showCancel: false,
+                success: () => {},
+            });
+        }
+    );
+};
+
 defineExpose({
     start,
-    stop() {
-        data.isForce = false;
-    },
 });
 </script>
 <template>
@@ -145,6 +174,7 @@ defineExpose({
                     </view>
 
                     <button class="content-button" style="border: none; color: #fff" plain @click="confirm" v-if="updateBtn">立即升级</button>
+                    <button class="content-button" style="border: none; color: #fff" plain @click="install" v-else-if="tempFilePath">即刻安装</button>
                 </view>
             </view>
 

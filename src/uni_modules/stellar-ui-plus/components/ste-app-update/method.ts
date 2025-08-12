@@ -50,16 +50,21 @@ export interface ClientData {
 
 export function download(
     data: ClientData,
-    { success, error, onProgressUpdate }: { success?: () => void; error?: (e: any) => void; onProgressUpdate?: (res: UniApp.OnProgressDownloadResult) => void }
+    {
+        success,
+        error,
+        onProgressUpdate,
+        downloadSuccess,
+    }: { success?: () => void; error?: (e: any) => void; downloadSuccess?: (tempFilePath: string) => void; onProgressUpdate?: (res: UniApp.OnProgressDownloadResult) => void }
 ) {
     const package_type = data.package_type;
     const downloadTask = uni.downloadFile({
         url: data.updateFile,
         success: res => {
             if (res.statusCode === 200) {
+                downloadSuccess && downloadSuccess(res.tempFilePath);
                 plus.runtime.install(
                     res.tempFilePath,
-                    //true表示强制安装，不进行版本号的校验；false则需要版本号校验，
                     { force: true },
                     () => {
                         // wgt升级
@@ -78,7 +83,6 @@ export function download(
                     },
                     e => {
                         //提示部分wgt包无法安装的问题
-                        data.isForce = false;
                         uni.showModal({
                             title: '提示',
                             content: e.message,
@@ -92,7 +96,6 @@ export function download(
                 // 整包升级
                 if (package_type == 0) {
                     // 解决安装app点击取消，更新还在的问题
-                    data.isForce = false;
                     success && success();
                 }
             }

@@ -169,6 +169,7 @@ defineExpose({
                 <view class="footer">
                     <view class="progress-box flex-column" v-if="!updateBtn">
                         <progress class="progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" show-info stroke-width="10" />
+                        <!-- <u-line-progress :striped="true" :percent="percent" :striped-active="true"></u-line-progress> -->
                         <view>
                             <text class="fs24">正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}M)</text>
                         </view>
@@ -185,6 +186,14 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+.flex-center {
+    /* #ifndef APP-NVUE */
+    display: flex;
+    /* #endif */
+    justify-content: center;
+    align-items: center;
+}
+
 .update-mask {
     position: fixed;
     left: 0;
@@ -251,10 +260,7 @@ defineExpose({
 }
 
 .footer {
-    height: 150rpx;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    min-height: 150rpx;
 }
 
 .box-des-scroll {

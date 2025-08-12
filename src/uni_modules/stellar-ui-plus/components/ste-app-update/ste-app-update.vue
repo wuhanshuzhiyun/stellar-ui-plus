@@ -54,6 +54,8 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 if (data.updateFile && data.code > version.value) {
                     open.value = true;
                     emits('update');
+                    // 如果是强制更新，直接开始下载
+                    if (data.isForce) confirm();
                     return;
                 }
             } else {
@@ -164,10 +166,9 @@ defineExpose({
                 <view class="body">
                     <scroll-view class="box-des-scroll" scroll-y><rich-text :nodes="data.content"></rich-text></scroll-view>
                 </view>
-                <view class="footer flex-center">
+                <view class="footer">
                     <view class="progress-box flex-column" v-if="!updateBtn">
                         <progress class="progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" show-info stroke-width="10" />
-                        <!-- <u-line-progress :striped="true" :percent="percent" :striped-active="true"></u-line-progress> -->
                         <view>
                             <text class="fs24">正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}M)</text>
                         </view>
@@ -184,14 +185,6 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.flex-center {
-    /* #ifndef APP-NVUE */
-    display: flex;
-    /* #endif */
-    justify-content: center;
-    align-items: center;
-}
-
 .update-mask {
     position: fixed;
     left: 0;

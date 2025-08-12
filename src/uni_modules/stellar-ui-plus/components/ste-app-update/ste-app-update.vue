@@ -169,14 +169,14 @@ defineExpose({
                 <view class="footer">
                     <view class="progress-box flex-column" v-if="!updateBtn">
                         <progress class="progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" show-info stroke-width="10" />
-                        <!-- <u-line-progress :striped="true" :percent="percent" :striped-active="true"></u-line-progress> -->
                         <view>
-                            <text class="fs24">正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}M)</text>
+                            <text class="fs24" v-if="tempFilePath">下载完成</text>
+                            <text class="fs24" v-else>正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}M)</text>
                         </view>
                     </view>
 
                     <button class="content-button" style="border: none; color: #fff" plain @click="confirm" v-if="updateBtn">立即升级</button>
-                    <button class="content-button" style="border: none; color: #fff" plain @click="install" v-else-if="tempFilePath">即刻安装</button>
+                    <button class="content-button" style="border: none; color: #fff" plain @click="install" v-else-if="tempFilePath">安装</button>
                 </view>
             </view>
 
@@ -261,6 +261,7 @@ defineExpose({
 
 .footer {
     min-height: 150rpx;
+    padding-bottom: 12rpx;
 }
 
 .box-des-scroll {

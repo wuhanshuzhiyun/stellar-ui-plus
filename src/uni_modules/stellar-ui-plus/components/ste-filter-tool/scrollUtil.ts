@@ -254,7 +254,7 @@ export class InitializationManager {
         const delays = [100, 300, 500];
 
         for (const delay of delays) {
-            utils.debounce(() => this.calculator.calculateItemOffsets(), { delay })();
+            utils.debounce(() => this.calculator.calculateItemOffsets(), { delay });
         }
     }
 
@@ -266,7 +266,7 @@ export class InitializationManager {
         const delays = [50, 200, 500];
 
         for (const delay of delays) {
-            utils.debounce(() => this.calculator.calculateItemOffsets(), { delay })();
+            utils.debounce(() => this.calculator.calculateItemOffsets(), { delay });
         }
     }
 }
@@ -282,7 +282,7 @@ export class EventHandlerFactory {
             const currentScrollTop = event.detail?.scrollTop || event.target?.scrollTop || 0;
 
             // 使用防抖处理滚动事件
-            utils.debounce(() => controller.handleScrollSync(currentScrollTop), { delay: 150 })();
+            utils.debounce(() => controller.handleScrollSync(currentScrollTop), { delay: 150 });
         };
     }
 
@@ -312,7 +312,7 @@ export class EventHandlerFactory {
     static createResizeHandler(calculator: ScrollCalculator, showMenu: { value: boolean }) {
         return () => {
             if (showMenu.value) {
-                utils.debounce(() => calculator.calculateItemOffsets(), { delay: 200 })();
+                utils.debounce(() => calculator.calculateItemOffsets(), { delay: 200 });
             }
         };
     }

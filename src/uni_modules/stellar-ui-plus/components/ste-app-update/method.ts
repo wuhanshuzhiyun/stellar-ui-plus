@@ -79,6 +79,9 @@ export function download(
                                     plus.runtime.restart();
                                 },
                             });
+                        } else {
+                            // 整包升级
+                            success && success();
                         }
                     },
                     e => {
@@ -93,11 +96,6 @@ export function download(
                         });
                     }
                 );
-                // 整包升级
-                if (package_type == 0) {
-                    // 解决安装app点击取消，更新还在的问题
-                    success && success();
-                }
             }
         },
     });

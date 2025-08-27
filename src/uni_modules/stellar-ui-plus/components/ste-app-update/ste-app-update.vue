@@ -175,7 +175,7 @@ defineExpose({
                     </view>
 
                     <button class="content-button" style="border: none; color: #fff" plain @click="confirm" v-if="updateBtn">立即升级</button>
-                    <button class="content-button" style="border: none; color: #fff" plain @click="install" v-else-if="tempFilePath">安装</button>
+                    <button class="content-button" style="border: none; color: #fff" plain @click="install" v-else-if="data.package_type === 0 && tempFilePath">安装</button>
                 </view>
             </view>
 

@@ -47,8 +47,7 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 data.name = _data.data.name;
                 data.content = _data.data.content + _data.data.desc;
                 data.isForce = _data.data.isForce;
-                // 强制更新使用全量包，否则如果增量包存在使用增量包，不存在则使用全量
-                data.updateFile = data.isForce ? _data.data.entireFile : _data.data.updateFile || _data.data.entireFile;
+                data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;
                 callback && callback({ code: _data.data.code, name: _data.data.name, updateFile: data.updateFile }, version.value);
                 data.package_type = data.isForce ? 0 : 1 || 0;
                 if (data.updateFile && data.code > version.value) {

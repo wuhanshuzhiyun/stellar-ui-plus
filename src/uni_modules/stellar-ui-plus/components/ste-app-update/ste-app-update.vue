@@ -48,8 +48,8 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 data.content = _data.data.content + _data.data.desc;
                 data.isForce = _data.data.isForce;
                 data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;
+                data.package_type = _data.data.entireFile ? 0 : 1;
                 callback && callback({ code: _data.data.code, name: _data.data.name, updateFile: data.updateFile }, version.value);
-                data.package_type = data.isForce ? 0 : 1 || 0;
                 if (data.updateFile && data.code > version.value) {
                     open.value = true;
                     emits('update');

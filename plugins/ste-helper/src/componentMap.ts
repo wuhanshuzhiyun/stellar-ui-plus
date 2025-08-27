@@ -73,8 +73,13 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "() => void"
             },
             {
-                "name": "complete",
-                "description": "取消，成功更新都会执行",
+                "name": "update",
+                "description": "发现新版时本触发",
+                "type": "() => void"
+            },
+            {
+                "name": "no-update",
+                "description": "没有新版时本触发",
                 "type": "() => void"
             }
         ]
@@ -1769,6 +1774,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ],
         "events": []
+    },
+    "ste-donut-chart": {
+        "site": "ste-donut-chart",
+        "attr": [
+            ""
+        ]
     },
     "drag": {
         "site": "ste-drag",

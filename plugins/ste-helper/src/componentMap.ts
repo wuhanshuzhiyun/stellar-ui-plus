@@ -1775,12 +1775,6 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
-    "ste-donut-chart": {
-        "site": "ste-donut-chart",
-        "attr": [
-            ""
-        ]
-    },
     "drag": {
         "site": "ste-drag",
         "attr": [

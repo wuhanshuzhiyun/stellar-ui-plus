@@ -50,17 +50,14 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;
                 data.package_type = _data.data.entireFile ? 0 : 1;
                 callback && callback({ code: _data.data.code, name: _data.data.name, updateFile: data.updateFile }, version.value);
-                const vs = version.value.split('.');
-                // 如果第一栏大于等于7位数，表示为特殊版本号，需要特殊处理
-                if (vs[0]?.length >= 7) {
-                    const nvs = data.code.split('.');
+                if (props.appType) {
+                    const nvs = data.name.split('.');
                     // 版本号的最后一位是环境，比较版本号最后一位版本号是否一致，不一致弹错误窗口提示
-                    const evn = vs[vs.length - 1];
                     const nevn = nvs[nvs.length - 1];
-                    if (!nevn || evn !== nevn) {
+                    if (props.appType !== nevn) {
                         uni.showModal({
                             title: '提示',
-                            content: '新版本环境和当前环境不一致',
+                            content: `新版本环境：${nevn}和当前环境${props.appType}不一致`,
                             showCancel: false,
                         });
                         return;

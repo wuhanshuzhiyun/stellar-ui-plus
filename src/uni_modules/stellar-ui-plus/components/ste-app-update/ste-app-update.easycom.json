@@ -23,6 +23,12 @@
             "default": "https://zboa.whzb.com/inte-cloud-dev/blade-system/api/inte/client/ver/currentDetail"
         },
         {
+            "name": "appType",
+            "description": "APP环境,版本号的最后一位为环境标识",
+            "type": "string",
+            "default": ""
+        },
+        {
             "name": "[event]cancel",
             "description": "取消更新",
             "type": "() => void"

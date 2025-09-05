@@ -63,7 +63,7 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                         return;
                     }
                 }
-                if (data.updateFile && data.code > version.value) {
+                if (data.updateFile && data.code !== version.value) {
                     open.value = true;
                     emits('update');
                     // 如果是强制更新，直接开始下载

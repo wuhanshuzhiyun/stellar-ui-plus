@@ -32,7 +32,10 @@ const headRight = computed(() => {
                     <view class="comment-head-info">
                         <image class="comment-head-avatar" :src="item.userAvatar" mode="aspectFill" />
                         <view class="comment-head-right">
-                            <view class="comment-head-name">{{ item.userName }}</view>
+                            <view class="comment-head-name">
+                                {{ item.userName }}
+                                <image class="good-tag" v-if="item.type === 1" src="https://image.whzb.com/chain/StellarUI/component-icons/好评.png" />
+                            </view>
                             <view class="comment-head-time">{{ item.date }}</view>
                         </view>
                     </view>
@@ -112,7 +115,7 @@ const headRight = computed(() => {
                     }
                     .comment-head-right {
                         font-size: 24rpx;
-                        line-height: 24rpx;
+                        line-height: 32rpx;
                         padding-left: 16rpx;
                         height: 64rpx;
                         display: flex;
@@ -121,6 +124,14 @@ const headRight = computed(() => {
                         .comment-head-name {
                             color: #000000;
                             font-weight: bold;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            .good-tag {
+                                width: 84rpx;
+                                height: 32rpx;
+                                margin-left: 16rpx;
+                            }
                         }
                         .comment-head-time {
                             color: #999999;

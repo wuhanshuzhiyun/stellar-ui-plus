@@ -79,9 +79,9 @@ const debugCode = (e: MouseEvent) => {
         <template v-if="mode === 'component'">
             <div v-html="compMarkdonwHtml?.htmlDesc" class="markdown-view"></div>
             <comp-nav v-model:mode="compNavActive" style="margin-bottom: 10px"></comp-nav>
-            <div v-html="compMarkdonwHtml?.htmlDemo" v-if="compNavActive === config.NAV_COMP_KEY_DEMO" class="markdown-view content"></div>
-            <div v-html="compMarkdonwHtml?.htmlApi" v-if="compNavActive === config.NAV_COMP_KEY_API" class="markdown-view content"></div>
-            <div v-html="compMarkdonwHtml?.htmlGuide" v-if="compNavActive === config.NAV_COMP_KEY_GUIDE" class="markdown-view content"></div>
+            <div v-html="compMarkdonwHtml?.htmlDemo" v-show="compNavActive === config.NAV_COMP_KEY_DEMO" class="markdown-view content"></div>
+            <div v-html="compMarkdonwHtml?.htmlApi" v-show="compNavActive === config.NAV_COMP_KEY_API" class="markdown-view content"></div>
+            <div v-html="compMarkdonwHtml?.htmlGuide" v-show="compNavActive === config.NAV_COMP_KEY_GUIDE" class="markdown-view content"></div>
             <comment-vue />
         </template>
         <template v-if="mode === 'page'">

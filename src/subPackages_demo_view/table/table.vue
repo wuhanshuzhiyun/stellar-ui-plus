@@ -308,7 +308,7 @@ function cellStyle(data: { column: any; columnIndex: number; row: any; rowIndex:
             <view class="title">表格方法</view>
             <view class="item-block">
                 <view style="width: 100%">
-                    <ste-table :data="rows" ref="steTable" @select="select" @selectAll="selectAll" @cellClick="cellClick" @rowClick="rowClick" @headerClick="headerClick">
+                    <ste-table :data="rows" ref="methodTable" @select="select" @selectAll="selectAll" @cellClick="cellClick" @rowClick="rowClick" @headerClick="headerClick">
                         <template v-slot="{ row }">
                             <ste-table-column label="选择" type="checkbox" align="center" customKey="checkbox"></ste-table-column>
                             <ste-table-column label="姓名" prop="name" align="right"></ste-table-column>

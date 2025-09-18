@@ -1,0 +1,58 @@
+{
+    "name": "ste-guide-qa",
+    "description": "引导服务区组件",
+    "example": "<ste-guide-qa :data=\"data\"></ste-guide-qa>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=guide-qa",
+    "attributes": [
+        {
+            "name": "data",
+            "description": "问答数据列表",
+            "type": "GuideQaItem[]",
+            "default": "[]"
+        },
+        {
+            "name": "mode",
+            "description": "显示模式",
+            "type": "string",
+            "values": [
+                {
+                    "name": "1",
+                    "description": "简单模式"
+                },
+                {
+                    "name": "2",
+                    "description": "完整模式"
+                }
+            ],
+            "default": "1"
+        },
+        {
+            "name": "title",
+            "description": "标题文本",
+            "type": "string",
+            "default": "常见问题"
+        },
+        {
+            "name": "actionTitle",
+            "description": "操作按钮文本",
+            "type": "string",
+            "default": "全部"
+        },
+        {
+            "name": "showNum",
+            "description": "是否显示问答数量",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "[event]click-item",
+            "description": "点击问题或答案时触发",
+            "type": "(type: 'q' | 'a', item: GuideQaItem) => void"
+        },
+        {
+            "name": "[event]click-all",
+            "description": "点击查看全部时触发",
+            "type": "() => void"
+        }
+    ]
+}

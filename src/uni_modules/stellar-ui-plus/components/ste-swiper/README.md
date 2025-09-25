@@ -58,6 +58,14 @@
         </ste-swiper-item>
     </ste-swiper>
 </template>
+<script setup lang="ts">
+    const list1 = [
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+    ];
+</script>
 ```
 
 #### 首尾衔接轮播
@@ -73,6 +81,14 @@
         </ste-swiper-item>
     </ste-swiper>
 </template>
+<script setup lang="ts">
+    const list1 = [
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+    ];
+</script>
 ```
 
 #### 自动轮播
@@ -89,6 +105,14 @@
         </ste-swiper-item>
     </ste-swiper>
 </template>
+<script setup lang="ts">
+    const list1 = [
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+    ];
+</script>
 ```
 
 #### 显示指示器
@@ -99,14 +123,18 @@
 ```html
 <template>
     <ste-swiper circular autoplay indicatorDots>
-        <ste-swiper-item v-for="(m, index) in list2" :key="index">
+        <ste-swiper-item v-for="(m, index) in list1" :key="index">
             <view class="item">{{ m }}</view>
         </ste-swiper-item>
     </ste-swiper>
 </template>
-<script lang="ts" setup>
-    import { ref } from 'vue';
-    const list2 = ref(['1111', '2222', '3333', '4444']);
+<script setup lang="ts">
+    const list1 = [
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+    ];
 </script>
 ```
 
@@ -119,11 +147,19 @@
 ```html
 <template>
     <ste-swiper circular autoplay indicatorDots indicatorColor="#0f0" indicatorActiveColor="#f00">
-        <ste-swiper-item v-for="(m, index) in list2" :key="index">
+        <ste-swiper-item v-for="(m, index) in list1" :key="index">
             <view class="item">{{ m }}</view>
         </ste-swiper-item>
     </ste-swiper>
 </template>
+<script setup lang="ts">
+    const list1 = [
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+    ];
+</script>
 ```
 
 #### 显示前后页部分
@@ -135,11 +171,42 @@
 ```html
 <template>
     <ste-swiper circular autoplay previousMargin="60" nextMargin="60">
-        <ste-swiper-item v-for="(m, index) in list2" :key="index">
+        <ste-swiper-item v-for="(m, index) in list1" :key="index">
             <view class="item">{{ m }}</view>
         </ste-swiper-item>
     </ste-swiper>
 </template>
+<script setup lang="ts">
+    const list1 = [
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+    ];
+</script>
+```
+
+#### 突出显示
+
+需要搭配 `perviousMargin` 和 `nextMargin`属性给内容前后留出空间
+`highlightActive` 为 `true` 可突出显示当前内容（横向滑动时有效）
+
+```html
+<template>
+    <ste-swiper circular autoplay previousMargin="120" nextMargin="120" highlightActive>
+        <ste-swiper-item v-for="(m, index) in list1" :index="index" :key="index">
+            <image :src="m" class="item" />
+        </ste-swiper-item>
+    </ste-swiper>
+</template>
+<script setup lang="ts">
+    const list1 = [
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner1.png',
+        'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+    ];
+</script>
 ```
 
 ---$

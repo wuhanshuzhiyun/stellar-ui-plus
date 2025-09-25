@@ -105,6 +105,13 @@
             "default": 0
         },
         {
+            "name": "highlightActive",
+            "description": "是否启用突出显示模式（当前项正常大小，非当前项缩小）",
+            "type": "boolean",
+            "default": false,
+            "version": "1.22.20"
+        },
+        {
             "name": "[event]change",
             "description": "监听item切换",
             "type": "(index:number,source:'autoplay'| 'touch')=>void",

@@ -93,6 +93,16 @@ const onChange = (index: number, source: 'touch' | 'autoplay') => {
                 </ste-swiper>
             </view>
         </view>
+        <view class="demo-item">
+            <view class="title">突出显示</view>
+            <view class="item-view">
+                <ste-swiper autoplay circular highlightActive previousMargin="120" nextMargin="120">
+                    <ste-swiper-item v-for="(m, index) in list2" :index="index" :key="index">
+                        <image :src="m" class="item" />
+                    </ste-swiper-item>
+                </ste-swiper>
+            </view>
+        </view>
     </page-layout>
 </template>
 <style lang="scss" scoped>

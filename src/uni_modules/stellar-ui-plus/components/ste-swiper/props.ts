@@ -18,6 +18,7 @@ export interface SwiperProps {
   circular: boolean
   previousMargin: number | string
   nextMargin: number | string
+  highlightActive: boolean
 }
 
 export default {
@@ -38,4 +39,5 @@ export default {
   circular: { type: Boolean, default: () => false },
   previousMargin: { type: [Number, String], default: () => 0 },
   nextMargin: { type: [Number, String], default: () => 0 },
+  highlightActive: { type: Boolean, default: () => false },
 }

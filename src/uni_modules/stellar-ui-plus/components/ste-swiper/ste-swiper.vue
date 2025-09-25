@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getCurrentInstance, ref } from 'vue';
+import { getCurrentInstance, ref, type ComponentPublicInstance } from 'vue';
 import propsData, { SWIPER_KEY } from './props';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
@@ -12,7 +12,7 @@ const emits = defineEmits<{
     (e: 'change', index: number, source: 'autoplay' | 'touch'): void;
 }>();
 
-const thas = ref<globalThis.ComponentPublicInstance | null | undefined>(getCurrentInstance()?.proxy);
+const thas = ref<ComponentPublicInstance | null | undefined>(getCurrentInstance()?.proxy);
 
 const { internalChildren } = useProvide(SWIPER_KEY, 'ste-swiper-item')();
 
@@ -38,7 +38,7 @@ const { initializing, dataIndex, cmpRootStyle, cmpBoxStyle, cmpBoxTransform, onT
                 <slot></slot>
             </view>
         </view>
-        <view class="ste-swiper-dots" v-if="indicatorDots">
+        <view class="ste-swiper-dots" v-if="props.indicatorDots">
             <view
                 class="swiper-dots-item"
                 v-for="(m, index) in internalChildren"

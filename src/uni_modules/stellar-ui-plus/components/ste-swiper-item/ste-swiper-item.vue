@@ -13,10 +13,11 @@ defineOptions({
 const transformX = ref(0);
 const transformY = ref(0);
 const transformZ = ref(0);
+const scale = ref(1);
 
 const cmpStyle = computed(() => {
     return {
-        transform: `translate3d(${transformX.value}px, ${transformY.value}px, ${transformZ.value}px)`,
+        transform: `translate3d(${transformX.value}px, ${transformY.value}px, ${transformZ.value}px) scale(${scale.value})`,
     };
 });
 
@@ -26,7 +27,11 @@ const setTransform = ({ x = 0, y = 0, z = 0 }) => {
     if (transformZ.value !== z) transformZ.value = z;
 };
 
-useInject(SWIPER_KEY, { setTransform });
+const setLinearScale = (scaleValue: number) => {
+    if (scale.value !== scaleValue) scale.value = scaleValue;
+};
+
+useInject(SWIPER_KEY, { setTransform, setLinearScale });
 </script>
 <template>
     <view class="ste-swiper-item-root" :style="[cmpStyle]">

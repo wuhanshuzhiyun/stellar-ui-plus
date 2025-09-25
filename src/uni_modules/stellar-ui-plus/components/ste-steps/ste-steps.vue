@@ -20,7 +20,7 @@ function onClickStep(index: number) {
 </script>
 
 <template>
-    <view class="ste-steps-root" :class="[`ste-steps-${direction}`]">
+    <view class="ste-steps-root" :class="[`ste-steps-${direction}`, reverse ? 'reverse' : '']">
         <slot></slot>
     </view>
 </template>
@@ -34,10 +34,16 @@ function onClickStep(index: number) {
 .ste-steps-column {
     flex-flow: column;
     height: 100%;
+    &.reverse {
+        flex-direction: column-reverse;
+    }
 }
 
 .ste-steps-row {
     flex-direction: row;
     flex: 1;
+    &.reverse {
+        flex-direction: row-reverse;
+    }
 }
 </style>

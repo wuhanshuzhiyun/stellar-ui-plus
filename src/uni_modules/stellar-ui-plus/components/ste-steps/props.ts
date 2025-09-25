@@ -7,6 +7,7 @@ const stepsProps = {
   active: { type: Number, default: 0 },
   direction: { type: String as PropType<directionType>, default: 'row' },
   dot: { type: Boolean, default: false },
+  reverse: { type: Boolean, default: false },
 }
 
 export type StepsProps = ExtractPropTypes<typeof stepsProps>

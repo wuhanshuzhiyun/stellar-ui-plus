@@ -26,6 +26,7 @@ const stepIndex = ref(0);
 
 const cmpDirection = computed(() => parentProps.direction);
 const cmpDot = computed(() => parentProps.dot);
+const cmpReverse = computed(() => parentProps.reverse);
 
 watch(
     () => parent?.internalChildren,
@@ -87,7 +88,7 @@ function clickStep() {
 </script>
 
 <template>
-    <view class="ste-step" :class="[`ste-step-${cmpDirection}`]" :style="[cmpRootStyle]">
+    <view class="ste-step" :class="[`ste-step-${cmpDirection}`, cmpReverse ? 'reverse' : '']" :style="[cmpRootStyle]">
         <view class="ste-step-head" :class="cmpDot ? 'head-is-dot' : ''">
             <view class="ste-step-line" v-if="stepIndex < childrenLen"></view>
             <view class="ste-step-icon" :class="[!cmpDot ? ($slots.icon || icon ? '' : cmpStatusObj.icon ? 'is-icon' : 'is-text') : 'is-dot']" @click="clickStep">

@@ -1,9 +1,22 @@
 .ste-step-row {
     display: block;
+
+    &.reverse {
+        .ste-step-line {
+            left: -50% !important;
+            right: 50% !important;
+        }
+    }
 }
 
 .ste-step-column {
     display: flex;
+
+    &.reverse {
+        .ste-step-line {
+            top: -100% !important;
+        }
+    }
 
     .ste-step-line {
         height: calc(4rpx + 100%) !important;

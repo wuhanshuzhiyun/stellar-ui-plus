@@ -32,6 +32,12 @@
             "default": "false"
         },
         {
+            "name": "reverse",
+            "description": "方向反转",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
             "name": "[event]clickStep",
             "description": "点击步骤的标题或图标时触发",
             "type": "(index: number) => void",

@@ -82,10 +82,23 @@ export default function useData({
         }, time);
     };
 
-    onBeforeUnmount(() => {
-        clearInterval(autoplayTimeout);
-        clearTimeout(durationTimeout);
+    let boundaryTimeout: any = null;
+
+    const setBoundaryTimeout = (callback: () => void, time: number) => {
+        clearTimeout(boundaryTimeout);
+        boundaryTimeout = setTimeout(callback, time);
+    };
+
+    // 清理所有定时器
+    const clearAllTimeouts = () => {
         clearTimeout(childrenTimeout);
+        clearTimeout(durationTimeout);
+        clearTimeout(boundaryTimeout);
+        clearInterval(autoplayTimeout);
+    };
+
+    onBeforeUnmount(() => {
+        clearAllTimeouts();
     });
 
     const source = ref<'autoplay' | 'touch'>('autoplay');
@@ -195,37 +208,36 @@ export default function useData({
     };
 
     const resetBoundary = () => {
-        setReseting(true);
-        setTimeout(() => {
-            let change = false;
-            if (dataIndex.value === -1) {
-                setDataIndex(children.length - 1);
-                change = true;
-            } else if (dataIndex.value === children.length) {
-                setDataIndex(0);
-                change = true;
-            }
-            if (change) emits('change', dataIndex.value, source.value);
-
-            const length = children.length;
-            children.forEach((component, index) => {
-                let x = 0;
-                let y = 0;
-                if (props.circular) {
-                    if (index === length - 1 && dataIndex.value === 0 && length > 2) {
-                        x = props.direction === 'horizontal' ? -length * Number(boxWidth.value) : 0;
-                        y = props.direction === 'vertical' ? -length * Number(boxHeight.value) : 0;
-                    } else if (index === 0 && dataIndex.value === length - 1 && length > 2) {
-                        x = props.direction === 'horizontal' ? length * Number(boxWidth.value) : 0;
-                        y = props.direction === 'vertical' ? length * Number(boxHeight.value) : 0;
-                    }
+        let change = false;
+        if (dataIndex.value === -1) {
+            setDataIndex(children.length - 1);
+            change = true;
+        } else if (dataIndex.value === children.length) {
+            setDataIndex(0);
+            change = true;
+        }
+        if (change) {
+            emits('change', dataIndex.value, source.value);
+            setReseting(true);
+        }
+        const length = children.length;
+        children.forEach((component, index) => {
+            let x = 0;
+            let y = 0;
+            if (props.circular) {
+                if (index === length - 1 && dataIndex.value === 0 && length > 2) {
+                    x = props.direction === 'horizontal' ? -length * Number(boxWidth.value) : 0;
+                    y = props.direction === 'vertical' ? -length * Number(boxHeight.value) : 0;
+                } else if (index === 0 && dataIndex.value === length - 1 && length > 2) {
+                    x = props.direction === 'horizontal' ? length * Number(boxWidth.value) : 0;
+                    y = props.direction === 'vertical' ? length * Number(boxHeight.value) : 0;
                 }
-                component.selfValue?.setTransform({ x, y });
-            });
-            setTimeout(() => {
-                setReseting(false);
-            }, 50);
-        }, 50);
+            }
+            component.selfValue?.setTransform({ x, y });
+        });
+        setBoundaryTimeout(() => {
+            setReseting(false);
+        }, cmpDuration.value);
     };
 
     const setAutoplay = () => {
@@ -241,20 +253,20 @@ export default function useData({
                 if (props.highlightActive) {
                     setTimeout(() => {
                         updateLinearScale();
-                    }, cmpDuration.value / 3);
+                    });
                 }
-            }, cmpDuration.value - 20);
+            }, cmpDuration.value);
         }, props.interval);
     };
 
     const init = () => {
+        clearAllTimeouts();
         setChildrenTimeout(async () => {
             await getBoxSize();
             setTransform();
             resetBoundary();
             setAutoplay();
-
-            setTimeout(() => {
+            setChildrenTimeout(() => {
                 setInitializing(false);
             }, 25);
         }, 25);
@@ -289,7 +301,7 @@ export default function useData({
         if (children.length < 2) return;
         setMoveing(true);
         await getBoxSize();
-        clearInterval(autoplayTimeout);
+        clearAllTimeouts();
         resetBoundary();
         touch.touchStart(e as UniTouchEvent);
     };

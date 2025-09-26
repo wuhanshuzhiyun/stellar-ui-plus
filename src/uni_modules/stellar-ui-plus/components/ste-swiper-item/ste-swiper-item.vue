@@ -42,5 +42,7 @@ useInject(SWIPER_KEY, { setTransform, setLinearScale });
 .ste-swiper-item-root {
     width: 100%;
     height: 100%;
+    /* 添加此行以确保在循环播放时不会出现闪烁 */
+    will-change: transform;
 }
 </style>

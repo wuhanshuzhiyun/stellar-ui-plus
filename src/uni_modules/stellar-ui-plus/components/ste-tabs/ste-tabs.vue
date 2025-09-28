@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, getCurrentInstance } from 'vue';
+import { ref, computed, onMounted, getCurrentInstance, type ComponentPublicInstance } from 'vue';
 import { useProvide } from '../../utils/mixin';
 import { type TabProps } from '../ste-tab/props';
 import propsData, { TAB_KEY } from './props';
@@ -16,7 +16,7 @@ const emits = defineEmits<{
 }>();
 
 const props = defineProps(propsData);
-const thas = ref<globalThis.ComponentPublicInstance | null>();
+const thas = ref<ComponentPublicInstance | null>();
 const { internalChildren } = useProvide(TAB_KEY, 'ste-tab')({ activeKey: computed(() => props.active || 0) });
 
 const {
@@ -55,7 +55,7 @@ onMounted(() => {
 </script>
 <template>
     <view class="ste-tabs-root" :class="type" :style="[cmpRootStyle]">
-        <view class="tab-list-box" :style="[cmpListBackground, { paddingRight: cmpPullDown ? '70rpx' : 0 }]">
+        <view class="tab-list-box" :style="[cmpListBackground]">
             <scroll-view
                 class="tab-list view-list"
                 :class="{ 'open-down': openPullDown }"
@@ -94,7 +94,7 @@ onMounted(() => {
                     <view class="tab-line" :style="[cmpLineStyle]"></view>
                 </view>
             </scroll-view>
-            <view v-if="cmpPullDown" class="tab-pull-down" @click="onOpenDown">
+            <view v-if="cmpPullDown" class="tab-pull-down-icon-box" @click="onOpenDown">
                 <ste-icon code="&#xe676;" size="10px" :color="titleColor" />
             </view>
             <view v-if="cmpPullDown" class="tab-pull-down-box" :class="{ open: openPullDown }">
@@ -129,6 +129,9 @@ onMounted(() => {
                     </view>
                 </view>
             </view>
+            <view class="tab-list-slot">
+                <slot name="header-suffix"></slot>
+            </view>
         </view>
         <view class="content">
             <!-- 内容区域 -->
@@ -162,11 +165,13 @@ onMounted(() => {
         border-radius: var(--tabs-radius);
         overflow: hidden;
 
+        display: flex;
+
         .tab-list {
             width: 100%;
             white-space: nowrap;
             overflow-x: auto;
-
+            flex: 1;
             .tab-space {
                 display: inline-flex;
                 vertical-align: top;
@@ -295,6 +300,16 @@ onMounted(() => {
                 opacity: 0;
                 pointer-events: none;
             }
+        }
+
+        .tab-pull-down-icon-box {
+            width: 70rpx;
+            background-color: rgba(255, 255, 255, 0.45);
+            box-shadow: -5px 0 5px rgba(245, 245, 245, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
         .tab-pull-down {

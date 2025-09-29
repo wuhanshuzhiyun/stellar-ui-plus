@@ -91,7 +91,7 @@
                         </view>
                     </template>
                     <template v-slot:suffix>
-                        <view :style="[{ color, opacity: count > 0 ? 0.35 : 1, fontSize: 'var(--font-size-28, 28rpx)' }]" @click="getCode">
+                        <view :style="[{ color, opacity: count > 0 ? 0.35 : 1, fontSize: 'var(--font-size-28, 28rpx)' }]" @click="handleGetCode">
                             {{ count <= 0 ? '获取验证码' : count + '秒后获取' }}
                         </view>
                     </template>
@@ -105,6 +105,8 @@
 import type { LoginItem } from '../type';
 import type { PropType } from 'vue';
 import { ref, nextTick, computed } from 'vue';
+import utils from '../../../utils/utils';
+
 const props = defineProps({
     color: { type: String, default: '' },
     config: { type: Object as PropType<LoginItem>, default: () => {} },
@@ -140,8 +142,9 @@ const handleChange = () => {
 
 const defaultCountValue = 60;
 let codeTimer: any;
-const getCode = async () => {
+const requestCode = async () => {
     if (count.value > 0) return;
+    console.log('获取验证码。。。');
 
     let next = true;
     const stop = new Promise<void>((resolve, reject) => {
@@ -168,6 +171,10 @@ const getCode = async () => {
         }
         count.value--;
     }, 1000);
+};
+
+const handleGetCode = () => {
+    utils.debounce(requestCode, { delay: 500 });
 };
 </script>
 

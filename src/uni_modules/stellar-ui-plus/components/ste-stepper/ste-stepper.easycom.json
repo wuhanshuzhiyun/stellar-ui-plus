@@ -62,6 +62,14 @@
                 {
                     "name": "add",
                     "description": "纯加购按钮"
+                },
+                {
+                    "name": "simple",
+                    "description": "简单类型，只有图标"
+                },
+                {
+                    "name": "cirlce",
+                    "description": "圆形"
                 }
             ]
         },

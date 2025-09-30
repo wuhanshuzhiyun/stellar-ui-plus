@@ -197,8 +197,14 @@ const clickInput = () => emits('click-input');
 </script>
 
 <template>
-    <view class="ste-stepper-root" :style="[cmpRootStyle]" data-test="stepper">
-        <ste-button class="btn-minus" v-if="theme != 'add'" :rootStyle="cmpLeftButtonStyle" @click="minus" :disabled="cmpDisableMinus">
+    <view class="ste-stepper-root" :class="[theme]" :style="[cmpRootStyle]" data-test="stepper">
+        <!-- Simple 和 Circle 模式使用 view -->
+        <view v-if="theme != 'add' && (theme == 'simple' || theme == 'circle')" class="btn-view minus" @click="minus">
+            <ste-icon code="&#xe67c;" :size="cmpBtnSize * 0.8 * 0.65" :color="cmpDisableMinus ? '#cccccc' : cmpMainColor" :inlineBlock="false"></ste-icon>
+        </view>
+
+        <!-- 其他模式使用 ste-button -->
+        <ste-button v-else-if="theme != 'add'" class="btn-minus" :rootStyle="cmpLeftButtonStyle" @click="minus" :disabled="cmpDisableMinus">
             <view class="button-icon">
                 <ste-icon
                     code="&#xe67c;"
@@ -220,7 +226,13 @@ const clickInput = () => emits('click-input');
                 data-test="input-el"
             />
         </view>
-        <ste-button v-if="theme != 'add'" :rootStyle="cmpRightButtonStyle" @click="plus" :disabled="cmpDisablePlus">
+        <!-- Simple 和 Circle 模式使用 view -->
+        <view v-if="theme != 'add' && (theme == 'simple' || theme == 'circle')" class="btn-view plus" @click="plus">
+            <ste-icon code="&#xe67e;" :size="cmpBtnSize * 0.8 * 0.65" :color="cmpDisablePlus ? '#cccccc' : cmpMainColor" :inlineBlock="false"></ste-icon>
+        </view>
+
+        <!-- 其他模式使用 ste-button -->
+        <ste-button v-else-if="theme != 'add'" :rootStyle="cmpRightButtonStyle" @click="plus" :disabled="cmpDisablePlus">
             <view class="button-icon">
                 <ste-icon
                     code="&#xe67e;"
@@ -242,7 +254,7 @@ const clickInput = () => emits('click-input');
 <style lang="scss" scoped>
 .ste-stepper-root {
     display: flex;
-
+    align-items: center;
     .input {
         font-weight: bold;
         color: #000000;
@@ -255,6 +267,30 @@ const clickInput = () => emits('click-input');
             &.readonly {
                 pointer-events: none;
             }
+        }
+    }
+
+    &.simple {
+        .btn-view {
+            border: none;
+            background-color: transparent;
+        }
+    }
+    &.circle {
+        .btn-view {
+            padding: 5rpx;
+            background-color: transparent;
+            border-radius: 50%;
+            border: solid 4rpx #f5f5f5;
+        }
+    }
+    .btn-view {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:active {
+            opacity: 0.7;
         }
     }
 

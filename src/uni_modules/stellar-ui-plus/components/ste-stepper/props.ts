@@ -1,8 +1,8 @@
 import type { BaseEvent } from '@uni-helper/uni-app-types';
-import type { PropType } from 'vue';
+import type { PropType, ExtractPropTypes } from 'vue';
 import type { AroundPositionType } from '../../types';
 
-type CardType = 'card' | 'line' | 'add';
+type CardType = 'card' | 'line' | 'simple' | 'circle' | 'add';
 
 const stepperProps = {
     modelValue: { type: [Number, String], default: 1 },

@@ -46,7 +46,7 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                 data.code = _data.data.code;
                 data.name = _data.data.name;
 
-                data.content = (_data.data.desc || '').replaceAll('\n', '<br />');
+                data.content = (_data.data.desc || '').replace(/\n+/g, '<br />');
 
                 data.isForce = _data.data.isForce;
                 data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;

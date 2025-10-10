@@ -45,7 +45,7 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
             if (_data.code == 200) {
                 data.code = _data.data.code;
                 data.name = _data.data.name;
-                data.content = _data.data.content + _data.data.desc;
+                data.content = `${_data.data.content}${_data.data.desc ? '\n' + _data.data.desc : ''}`.replaceAll('\n', '<br />');
                 data.isForce = _data.data.isForce;
                 data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;
                 data.package_type = _data.data.entireFile ? 0 : 1;
@@ -167,8 +167,8 @@ defineExpose({
         <view class="content botton-radius">
             <view class="content-top">
                 <view class="content-top-text">
-                    <text class="">发现新版本 v{{ data.code }}</text>
-                    <text class="version">当前版本：{{ version }}</text>
+                    <text class="">发现新版本 v{{ data.name }}</text>
+                    <!--                         <text class="version">当前版本：{{ version }}</text>                     -->
                 </view>
                 <image class="content-top" style="top: 0" width="100%" height="100%" src="../../static/bg_top.png"></image>
             </view>
@@ -176,8 +176,12 @@ defineExpose({
             <view class="content-body">
                 <view class="title"><text>更新内容</text></view>
                 <view class="body">
-                    <scroll-view class="box-des-scroll" scroll-y><rich-text :nodes="data.content"></rich-text></scroll-view>
+                    <scroll-view class="box-des-scroll" scroll-y>
+                        <rich-text v-if="data.content" :nodes="data.content"></rich-text>
+                        <text v-else>-</text>
+                    </scroll-view>
                 </view>
+
                 <view class="footer">
                     <view class="progress-box flex-column" v-if="!updateBtn">
                         <progress class="progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" show-info stroke-width="10" />
@@ -274,6 +278,7 @@ defineExpose({
 .footer {
     min-height: 150rpx;
     padding-bottom: 12rpx;
+    margin-top: 24rpx;
 }
 
 .box-des-scroll {

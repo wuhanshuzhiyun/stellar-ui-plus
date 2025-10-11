@@ -29,6 +29,12 @@
             "default": ""
         },
         {
+            "name": "btnText",
+            "description": "立即体验按钮文本",
+            "type": "string",
+            "default": "立即体验"
+        },
+        {
             "name": "[event]cancel",
             "description": "取消更新",
             "type": "() => void"

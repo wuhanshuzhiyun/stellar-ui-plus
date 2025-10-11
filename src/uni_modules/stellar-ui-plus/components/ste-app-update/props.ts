@@ -19,4 +19,9 @@ export default {
         type: String,
         default: () => '',
     },
+    /** 立即体验按钮文本 */
+    btnText: {
+        type: String,
+        default: () => '立即体验',
+    },
 };

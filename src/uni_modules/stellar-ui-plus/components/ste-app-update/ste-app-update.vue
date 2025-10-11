@@ -166,48 +166,35 @@ defineExpose({
 </script>
 <template>
     <view class="update-mask flex-center" v-if="open">
-        <view class="content botton-radius">
-            <view class="content-top">
-                <view class="content-top-text">
-                    <text class="">发现新版本 v{{ data.name }}</text>
-                    <!--                         <text class="version">当前版本：{{ version }}</text>                     -->
-                </view>
-                <image class="content-top" style="top: 0" width="100%" height="100%" src="../../static/bg_top.png"></image>
-            </view>
-            <view class="content-header"></view>
-            <view class="content-body">
-                <view class="title"><text>更新内容</text></view>
-                <view class="body">
-                    <scroll-view class="box-des-scroll" scroll-y>
-                        <rich-text v-if="data.content" :nodes="data.content"></rich-text>
-                        <text v-else>-</text>
-                    </scroll-view>
-                </view>
+        <view class="update-content">
+            <image class="update-image" src="../../static/app_update_img.png"></image>
 
-                <view class="footer">
-                    <view class="progress-box flex-column" v-if="!updateBtn">
-                        <progress class="progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" show-info stroke-width="10" />
-                        <view>
-                            <text class="fs24" v-if="tempFilePath">下载完成</text>
-                            <text class="fs24" v-else>正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}M)</text>
-                        </view>
+            <view class="update-title">发现新版本</view>
+            <view class="update-version">v{{ data.name }}</view>
+            <scroll-view scroll-y class="update-desc">
+                <view class="update-desc-title">更新内容</view>
+                <view class="update-desc-message"><rich-text :nodes="data.content"></rich-text></view>
+            </scroll-view>
+            <view class="update-footer">
+                <view class="update-progress-box" v-if="!updateBtn">
+                    <progress class="update-progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" show-info stroke-width="10" />
+                    <view>
+                        <text class="update-down-msg" v-if="tempFilePath">下载完成</text>
+                        <text class="update-down-msg" v-else>正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}M)</text>
                     </view>
-
-                    <button class="content-button" style="border: none; color: #fff" plain @click="confirm" v-if="updateBtn">立即升级</button>
-                    <button class="content-button" style="border: none; color: #fff" plain @click="install" v-else-if="data.package_type === 0 && tempFilePath">安装</button>
                 </view>
+                <button class="update-button" plain @click="confirm" v-if="updateBtn">{{ btnText }}</button>
+                <button class="update-button" plain @click="install" v-else-if="data.package_type === 0 && tempFilePath">安装</button>
             </view>
 
-            <image v-if="!data.isForce" class="close-img" src="../../static/app_update_close.png" @click.stop="close"></image>
+            <view class="update-close" v-if="!data.isForce" @click.stop="close">✖</view>
         </view>
     </view>
 </template>
 
 <style lang="scss" scoped>
 .flex-center {
-    /* #ifndef APP-NVUE */
     display: flex;
-    /* #endif */
     justify-content: center;
     align-items: center;
 }
@@ -218,129 +205,81 @@ defineExpose({
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 9999;
-}
+    .update-content {
+        width: 694rpx;
+        background-color: #fff;
+        border-radius: 16rpx;
+        padding: 72rpx 40rpx 40rpx 40rpx;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1.5;
+        position: relative;
+        .update-image {
+            width: 201rpx;
+            height: 201rpx;
+        }
+        .update-title {
+            margin-top: 28rpx;
+            font-weight: 500;
+            font-size: 48rpx;
+            color: #000000;
+        }
+        .update-version {
+            font-weight: 400;
+            font-size: 34rpx;
+            color: #a7abb0;
+        }
+        .update-desc {
+            width: 100%;
+            max-height: 350rpx;
+            margin-top: 24rpx;
+            .update-desc-title {
+                font-weight: 500;
+                font-size: 32rpx;
+                color: #000000;
+            }
+            .update-desc-message {
+                font-weight: 400;
+                font-size: 28rpx;
+                color: #555a61;
+            }
+        }
 
-.botton-radius {
-    border-bottom-left-radius: 30rpx;
-    border-bottom-right-radius: 30rpx;
-}
-
-.content {
-    position: relative;
-    top: 0;
-    width: 600rpx;
-    background-color: #fff;
-    box-sizing: border-box;
-    padding: 0 50rpx;
-    font-family: Source Han Sans CN;
-}
-
-.text {
-    /* #ifndef APP-NVUE */
-    display: block;
-    /* #endif */
-    line-height: 200px;
-    text-align: center;
-    color: #ffffff;
-}
-
-.content-top {
-    position: absolute;
-    top: -195rpx;
-    left: 0;
-    width: 600rpx;
-    height: 270rpx;
-}
-
-.content-top-text {
-    font-size: 40rpx;
-    font-weight: bold;
-    color: #f8f8fa;
-    position: absolute;
-    top: 120rpx;
-    left: 50rpx;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.content-header {
-    height: 70rpx;
-}
-
-.title {
-    font-size: 33rpx;
-    font-weight: bold;
-    color: #3da7ff;
-    line-height: 38px;
-}
-
-.footer {
-    min-height: 150rpx;
-    padding-bottom: 12rpx;
-    margin-top: 24rpx;
-}
-
-.box-des-scroll {
-    box-sizing: border-box;
-    padding: 0 40rpx;
-    text-align: left;
-}
-
-.box-des {
-    font-size: 26rpx;
-    color: #000000;
-    line-height: 50rpx;
-}
-
-.progress-box {
-    width: 100%;
-}
-
-.progress {
-    width: 83%;
-    height: 40rpx;
-    border-radius: 35px;
-}
-
-.close-img {
-    width: 70rpx;
-    height: 70rpx;
-    z-index: 1000;
-    position: absolute;
-    bottom: -120rpx;
-    left: calc(50% - 70rpx / 2);
-}
-
-.content-button {
-    text-align: center;
-    flex: 1;
-    font-size: 30rpx;
-    font-weight: 400;
-    color: #ffffff;
-    border-radius: 40rpx;
-    margin: 0 18rpx;
-
-    height: 80rpx;
-    line-height: 80rpx;
-
-    background: linear-gradient(to right, #1785ff, #3da7ff);
-}
-
-.flex-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.fs24 {
-    font-size: 24rpx;
-}
-.version {
-    font-size: 24rpx;
-    margin-top: 10rpx;
-    color: #eeeeee;
-    text-decoration: underline;
+        .update-footer {
+            width: 100%;
+            margin-top: 48rpx;
+            .update-progress-box {
+                text-align: center;
+                font-weight: 400;
+                font-size: 34rpx;
+                color: #a7abb0;
+            }
+            .update-button {
+                width: 100%;
+                height: 96rpx;
+                line-height: 88rpx;
+                background: #1388f7;
+                border-radius: 16rpx;
+                border: 4rpx solid #1388f7;
+                font-weight: 500;
+                font-size: 32rpx;
+                color: #ffffff;
+            }
+        }
+        .update-close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 30rpx;
+            color: #555a61;
+            width: 104rpx;
+            height: 96rpx;
+            line-height: 96rpx;
+            text-align: center;
+        }
+    }
 }
 </style>

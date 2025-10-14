@@ -44,7 +44,6 @@ const emits = defineEmits<{
     (e: 'subscribe', event?: ButtonOnSubscribeEvent): void;
     (e: 'login', event?: ButtonOnLoginEvent): void;
     (e: 'getrealtimephonenumber', event?: any): void;
-    (e: 'greeprivacyauthorization', event?: any): void;
     (e: 'getAuthorize', event?: any): void;
     (e: 'followLifestyle', event?: any): void;
 }>();
@@ -149,7 +148,7 @@ function handleClick(e: any) {
         @getphonenumber="emits('getphonenumber', $event)"
         @getrealtimephonenumber="emits('getrealtimephonenumber', $event)"
         @agreeprivacyauthorization="emits('agreeprivacyauthorization', $event)"
-        @error="emits('error', $event)"
+        @error="emits('error')"
         @opensetting="emits('opensetting', $event)"
         @launchapp="emits('launchapp', $event)"
         @chooseavatar="emits('chooseavatar', $event)"
@@ -176,7 +175,7 @@ function handleClick(e: any) {
         @getphonenumber="emits('getphonenumber', $event)"
         @getrealtimephonenumber="emits('getrealtimephonenumber', $event)"
         @agreeprivacyauthorization="emits('agreeprivacyauthorization', $event)"
-        @error="emits('error', $event)"
+        @error="emits('error')"
         @opensetting="emits('opensetting', $event)"
         @launchapp="emits('launchapp', $event)"
         @chooseavatar="emits('chooseavatar', $event)"

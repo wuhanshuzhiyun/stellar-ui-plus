@@ -64,7 +64,8 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                         });
                         return;
                     }
-                    data.name = nvs.splice(nvs.length - 1).join('.');
+                    nvs.splice(nvs.length - 1);
+                    data.name = nvs.join('.');
                 }
                 if (data.updateFile && data.code !== version.value) {
                     open.value = true;

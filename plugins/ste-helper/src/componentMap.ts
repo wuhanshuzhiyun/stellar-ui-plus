@@ -64,6 +64,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "更新API地址",
                 "type": "string",
                 "default": "https://zboa.whzb.com/inte-cloud-dev/blade-system/api/inte/client/ver/currentDetail"
+            },
+            {
+                "name": "appType",
+                "description": "APP环境,版本号的最后一位为环境标识",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "btnText",
+                "description": "立即体验按钮文本",
+                "type": "string",
+                "default": "立即体验"
             }
         ],
         "events": [
@@ -1599,6 +1611,33 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
+    "comment": {
+        "site": "ste-comment",
+        "attr": [
+            "tags=''"
+        ],
+        "props": [
+            {
+                "name": "tags",
+                "description": "标签数组",
+                "type": "string[]",
+                "default": "[]"
+            },
+            {
+                "name": "total",
+                "description": "总数",
+                "type": "number",
+                "default": 0
+            },
+            {
+                "name": "comments",
+                "description": "评价数组",
+                "type": "CommentType[]",
+                "default": "[]"
+            }
+        ],
+        "events": []
+    },
     "date-picker": {
         "site": "ste-date-picker",
         "attr": [
@@ -2722,6 +2761,66 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ],
         "events": []
+    },
+    "guide-qa": {
+        "site": "ste-guide-qa",
+        "attr": [
+            "data=''"
+        ],
+        "props": [
+            {
+                "name": "data",
+                "description": "问答数据列表",
+                "type": "GuideQaItem[]",
+                "default": "[]"
+            },
+            {
+                "name": "mode",
+                "description": "显示模式",
+                "type": "string",
+                "values": [
+                    {
+                        "name": "1",
+                        "description": "简单模式"
+                    },
+                    {
+                        "name": "2",
+                        "description": "完整模式"
+                    }
+                ],
+                "default": "1"
+            },
+            {
+                "name": "title",
+                "description": "标题文本",
+                "type": "string",
+                "default": "常见问题"
+            },
+            {
+                "name": "actionTitle",
+                "description": "操作按钮文本",
+                "type": "string",
+                "default": "全部"
+            },
+            {
+                "name": "showNum",
+                "description": "是否显示问答数量",
+                "type": "boolean",
+                "default": true
+            }
+        ],
+        "events": [
+            {
+                "name": "click-item",
+                "description": "点击问题或答案时触发",
+                "type": "(type: 'q' | 'a', item: GuideQaItem) => void"
+            },
+            {
+                "name": "click-all",
+                "description": "点击查看全部时触发",
+                "type": "() => void"
+            }
+        ]
     },
     "icon": {
         "site": "ste-icon",
@@ -6734,6 +6833,14 @@ export const componentMap: Record<string, ComponentDesc> = {
                     {
                         "name": "add",
                         "description": "纯加购按钮"
+                    },
+                    {
+                        "name": "simple",
+                        "description": "简单类型，只有图标"
+                    },
+                    {
+                        "name": "cirlce",
+                        "description": "圆形"
                     }
                 ]
             },
@@ -6929,6 +7036,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "dot",
                 "description": "点状步骤条",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "reverse",
+                "description": "方向反转",
                 "type": "boolean",
                 "default": "false"
             }
@@ -7270,6 +7383,13 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "后边距，可用于露出后一项的一小部分，单位rpx",
                 "type": "number | string",
                 "default": 0
+            },
+            {
+                "name": "highlightActive",
+                "description": "是否启用突出显示模式（当前项正常大小，非当前项缩小）",
+                "type": "boolean",
+                "default": false,
+                "version": "1.22.20"
             }
         ],
         "events": [

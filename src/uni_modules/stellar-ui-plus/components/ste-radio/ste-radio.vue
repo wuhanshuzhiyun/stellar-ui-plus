@@ -6,6 +6,7 @@ import utils from '../../utils/utils';
 import propsData, { RADIO_KEY, type RadioEmits } from './props';
 import type { RadioGroupProps } from '../ste-radio-group/props';
 import { useInject } from '../../utils/mixin';
+
 const componentName = `ste-radio`;
 defineOptions({
     name: componentName,
@@ -21,83 +22,97 @@ const Parent = useInject<{ props: Required<RadioGroupProps>; updateValue: (value
 
 const parentProps = computed(() => Parent?.parent?.props);
 
-const cmpReadonly = computed(() => getDefaultData('readonly', false));
-const cmpShape = computed(() => getDefaultData('shape', 'circle'));
-const cmpIconSize = computed(() => getDefaultData('iconSize', 36));
-const cmpCheckedColor = computed(() => getDefaultData('checkedColor', getColor().steThemeColor));
-const cmpTextPosition = computed(() => getDefaultData('textPosition', 'right'));
-const cmpTextSize = computed(() => getDefaultData('textSize', 28));
-const cmpTextInactiveColor = computed(() => getDefaultData('textInactiveColor', '#000000'));
-const cmpTextActiveColor = computed(() => getDefaultData('textActiveColor', '#000000'));
-const cmpTextDisabled = computed(() => getDefaultData('textDisabled', false));
-const cmpMarginLeft = computed(() => getDefaultData('marginLeft', '0'));
-const cmpMarginRight = computed(() => getDefaultData('marginRight', '0'));
-const cmpColumnGap = computed(() => getDefaultData('columnGap', '16'));
-const cmpDisabled = computed(() => getDefaultData('disabled', false));
-const cmpSlotProps = computed(() => ({ checked: cmpChecked.value, disabled: cmpDisabled.value, readonly: cmpReadonly.value }));
+// 🚀 优化: 缓存 themeColor,避免每次调用 getColor()
+const themeColor = getColor().steThemeColor;
 
+// 🚀 优化: 只保留必要的 computed
+const cmpChecked = computed(() => {
+    return parentProps.value ? parentProps.value.modelValue == props.name : props.modelValue == props.name;
+});
+
+// 🚀 优化: 合并所有样式计算,直接调用 getDefaultData
 const cmpRootStyle = computed(() => {
-    let style: CSSProperties = {};
-    style['fontSize'] = `var(--font-size-${cmpTextSize.value},${utils.formatPx(cmpTextSize.value)})`;
-    style['color'] = cmpChecked.value ? cmpTextActiveColor.value : cmpTextInactiveColor.value;
-    style['flexDirection'] = cmpTextPosition.value == 'right' ? 'row' : 'row-reverse';
-    style['marginLeft'] = utils.formatPx(cmpMarginLeft.value);
-    style['marginRight'] = utils.formatPx(cmpMarginRight.value);
+    const textSize = getDefaultData('textSize', 28);
+    const textPosition = getDefaultData('textPosition', 'right');
+    const readonly = getDefaultData('readonly', false);
+    const disabled = getDefaultData('disabled', false);
+    const textDisabled = getDefaultData('textDisabled', false);
+
+    const style: CSSProperties = {
+        fontSize: `var(--font-size-${textSize},${utils.formatPx(textSize)})`,
+        color: cmpChecked.value ? getDefaultData('textActiveColor', '#000000') : getDefaultData('textInactiveColor', '#000000'),
+        flexDirection: textPosition === 'right' ? 'row' : 'row-reverse',
+        marginLeft: utils.formatPx(getDefaultData('marginLeft', '0')),
+        marginRight: utils.formatPx(getDefaultData('marginRight', '0')),
+    };
+
     // #ifdef H5
-    if (cmpDisabled.value || cmpReadonly.value) {
+    if (disabled || readonly) {
         style['cursor'] = 'not-allowed';
-    } else if (cmpTextDisabled.value) {
+    } else if (textDisabled) {
         style['cursor'] = 'default';
     } else {
         style['cursor'] = 'pointer';
     }
     // #endif
-    if (cmpTextDisabled.value) {
+
+    if (textDisabled) {
         style['pointerEvents'] = 'none';
     }
     return style;
 });
 
 const cmpIconStyle = computed(() => {
-    let style: CSSProperties = {};
-    style['marginRight'] = utils.formatPx(cmpColumnGap.value);
-    return style;
+    return {
+        marginRight: utils.formatPx(getDefaultData('columnGap', '16')),
+    } as CSSProperties;
 });
 
 const cmpInputStyle = computed(() => {
-    let style: CSSProperties = {};
-    // 没有icon 则默认样式
-    style['borderRadius'] = cmpShape.value == 'circle' ? '50%' : '0';
-    style['border'] = `${utils.formatPx(2)} solid ${cmpChecked.value ? cmpCheckedColor.value : '#BBBBBB'}`;
-    style['background'] = cmpChecked.value ? cmpCheckedColor.value : '#FFFFFF';
-    style['width'] = `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`;
-    style['height'] = `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`;
-    style['lineHeight'] = `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`;
+    const shape = getDefaultData('shape', 'circle');
+    const iconSize = getDefaultData('iconSize', 36);
+    const checkedColor = getDefaultData('checkedColor', themeColor);
+    const readonly = getDefaultData('readonly', false);
+    const disabled = getDefaultData('disabled', false);
+    const checked = cmpChecked.value;
+
+    const style: CSSProperties = {
+        borderRadius: shape === 'circle' ? '50%' : '0',
+        border: `${utils.formatPx(2)} solid ${checked ? checkedColor : '#BBBBBB'}`,
+        background: checked ? checkedColor : '#FFFFFF',
+        width: `var(--font-size-${iconSize},${utils.formatPx(iconSize)})`,
+        height: `var(--font-size-${iconSize},${utils.formatPx(iconSize)})`,
+        lineHeight: `var(--font-size-${iconSize},${utils.formatPx(iconSize)})`,
+    };
+
     // #ifdef H5
-    if (cmpDisabled.value || cmpReadonly.value) {
-        style['cursor'] = 'not-allowed';
-    } else {
-        style['cursor'] = 'pointer';
-    }
+    style['cursor'] = disabled || readonly ? 'not-allowed' : 'pointer';
     // #endif
-    if (cmpDisabled.value) {
+
+    if (disabled) {
         style['background'] = '#eeeeee';
         style['borderColor'] = '#bbbbbb';
     }
 
     // 在没有使用插槽内容时去掉边距
     if (!slots.default) {
-        style['columnGap'] = 0;
+        style['columnGap'] = '0';
     }
     return style;
 });
 
-const cmpChecked = computed(() => {
-    return parentProps.value ? parentProps.value.modelValue == props.name : props.modelValue == props.name;
-});
+// 🚀 优化: slotProps 也直接计算
+const cmpSlotProps = computed(() => ({
+    checked: cmpChecked.value,
+    disabled: getDefaultData('disabled', false),
+    readonly: getDefaultData('readonly', false),
+}));
 
 async function click() {
-    if (!cmpDisabled.value && !cmpReadonly.value) {
+    const readonly = getDefaultData('readonly', false);
+    const disabled = getDefaultData('disabled', false);
+
+    if (!disabled && !readonly) {
         let next = true;
         const stop = new Promise((resolve, reject) => {
             emits(
@@ -128,20 +143,11 @@ async function click() {
     }
 }
 
-type PropsKeyTypee = keyof typeof props;
-function getDefaultData(key: PropsKeyTypee, value: any) {
-    try {
-        if (Object.prototype.hasOwnProperty.call(props, key)) {
-            if (props[key]) {
-                return props[key];
-            } else {
-                return value;
-            }
-        }
-    } catch (e) {
-        return value;
-    }
-}
+type PropsKeyType = keyof typeof props;
+const getDefaultData = <T,>(key: PropsKeyType, defaultValue: T): T => {
+    const value = props[key];
+    return value !== undefined && value !== '' ? (value as T) : defaultValue;
+};
 </script>
 
 <template>
@@ -149,7 +155,7 @@ function getDefaultData(key: PropsKeyTypee, value: any) {
         <view class="icon" :style="[cmpIconStyle]">
             <slot name="icon" :slotProps="cmpSlotProps">
                 <view class="input-icon" :style="[cmpInputStyle]">
-                    <ste-icon v-if="cmpChecked && cmpIconSize" :size="cmpIconSize * 0.8" code="&#xe67a;" :color="cmpDisabled ? '#bbbbbb' : '#fff'" bold></ste-icon>
+                    <ste-icon v-if="cmpChecked" :size="getDefaultData('iconSize', 36) * 0.8" code="&#xe67a;" :color="getDefaultData('disabled', false) ? '#bbbbbb' : '#fff'" bold></ste-icon>
                 </view>
             </slot>
         </view>

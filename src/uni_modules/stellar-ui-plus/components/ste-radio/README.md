@@ -4,63 +4,9 @@
 
 ---$
 
+- 由于性能不如原生组件，若数据量较多时推荐使用虚拟列表的形式渲染或者直接使用原生组件
+
 ### 代码演示
-
-后面的演示代码中涉及到的变量和方法都使用该代码
-
-```html
-<script lang="ts" setup>
-    import { reactive } from 'vue';
-    const val = reactive({
-        value1: 'a',
-        value2: 'a',
-        value3: 'a',
-        value4: 'a',
-        value5: 'a',
-        value6: 'a',
-        value7: 'a',
-        value8: '',
-        value9: 'a',
-        value10: 'a',
-        value11: '',
-        value12: '',
-        value13: '',
-        value14: '',
-        value15: '',
-    });
-    function click1(value: any, suspend: () => void, next: () => void) {
-        uni.showToast({
-            icon: 'none',
-            title: `点击：${value} 复选框的值`,
-        });
-        suspend(); // 阻止操作
-
-        setTimeout(() => {
-            next(); // 异步操作后，执行操作
-        }, 1500);
-    }
-    function click2(value: any, suspend: () => void, _next: any, stop: () => void) {
-        uni.showToast({
-            icon: 'none',
-            title: `点击：${value} 复选框的值`,
-        });
-        suspend(); // 阻止操作
-        setTimeout(() => {
-            // 异步操作后，停止操作
-            stop();
-        }, 200);
-    }
-
-    function change(value: any) {
-        setTimeout(() => {
-            uni.showToast({
-                icon: 'none',
-                title: `改变：${value} 复选框的值`,
-            });
-        }, 1000);
-    }
-</script>
-```
 
 #### 基础用法
 

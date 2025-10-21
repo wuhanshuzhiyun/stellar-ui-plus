@@ -200,6 +200,7 @@ function handleClick() {
         display: flex;
         align-items: center;
         overflow-x: hidden;
+        overflow-y: hidden;
         justify-content: flex-start;
         flex: 1;
         height: 100%;

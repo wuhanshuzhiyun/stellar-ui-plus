@@ -27,6 +27,7 @@ const stepIndex = ref(0);
 const cmpDirection = computed(() => parentProps.direction);
 const cmpDot = computed(() => parentProps.dot);
 const cmpReverse = computed(() => parentProps.reverse);
+const cmpLineStyle = computed(() => parentProps.lineStyle);
 
 watch(
     () => parent?.internalChildren,
@@ -90,18 +91,17 @@ function clickStep() {
 <template>
     <view class="ste-step" :class="[`ste-step-${cmpDirection}`, cmpReverse ? 'reverse' : '']" :style="[cmpRootStyle]">
         <view class="ste-step-head" :class="cmpDot ? 'head-is-dot' : ''">
-            <view class="ste-step-line" v-if="stepIndex < childrenLen"></view>
+            <view class="ste-step-line" v-if="stepIndex < childrenLen" :style="{ borderTopStyle: cmpLineStyle }"></view>
             <view class="ste-step-icon" :class="[!cmpDot ? ($slots.icon || icon ? '' : cmpStatusObj.icon ? 'is-icon' : 'is-text') : 'is-dot']" @click="clickStep">
-                <template v-if="$slots.icon">
-                    <slot name="icon"></slot>
-                </template>
-                <template v-else-if="cmpDot"></template>
-                <template v-else-if="cmpStatusObj.icon">
-                    <ste-icon class="ste-step-icon-inner" :code="cmpStatusObj.icon" :size="icon ? 40 : 20" :color="cmpStatusObj.color"></ste-icon>
-                </template>
-                <template v-else>
-                    <view class="ste-step-inner">{{ stepIndex }}</view>
-                </template>
+                <slot name="icon">
+                    <template v-if="cmpDot"></template>
+                    <template v-else-if="cmpStatusObj.icon">
+                        <ste-icon class="ste-step-icon-inner" :code="cmpStatusObj.icon" :size="icon ? 40 : 20" :color="cmpStatusObj.color"></ste-icon>
+                    </template>
+                    <template v-else>
+                        <view class="ste-step-inner">{{ stepIndex }}</view>
+                    </template>
+                </slot>
             </view>
         </view>
         <view class="ste-step-content" :class="[`ste-step-content-${parentProps.direction}`]">
@@ -112,8 +112,7 @@ function clickStep() {
                 <slot name="title"></slot>
             </view>
             <view class="ste-step-desc" v-if="description || $slots.description">
-                <span v-if="!$slots.description" v-html="description"></span>
-                <slot name="description"></slot>
+                <slot name="description"><span v-html="description"></span></slot>
             </view>
         </view>
     </view>

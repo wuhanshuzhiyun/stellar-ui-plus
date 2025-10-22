@@ -62,13 +62,17 @@
         position: relative;
 
         .ste-step-line {
-            background: var(---line-color);
+            // background: var(---line-color);
             display: inline-block;
             position: absolute;
             height: 2rpx;
             left: 50%;
             right: -50%;
             top: 20rpx;
+            border-top-width: 2rpx;
+            border-top-color: var(---line-color);
+            border-top-style: solid;
+            box-sizing: border-box;
         }
         .ste-step-icon.is-icon {
             border-radius: 50%;

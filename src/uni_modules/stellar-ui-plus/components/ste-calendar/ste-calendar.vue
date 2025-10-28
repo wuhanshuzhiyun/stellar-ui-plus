@@ -215,7 +215,15 @@ const onScroll = (e: any) => {
                 </view>
             </view>
         </view>
-        <scroll-view class="date-content" :class="{ 'show-confirm': cmpShowConfirm, 'show-title': showTitle }" scroll-y :scroll-top="contentScrollTop" @scroll="onScroll">
+        <scroll-view
+            class="date-content"
+            :class="{ 'show-confirm': cmpShowConfirm, 'show-title': showTitle }"
+            scroll-y
+            :scroll-top="contentScrollTop"
+            @scroll="onScroll"
+            :show-scrollbar="showScrollbar"
+            enhanced
+        >
             <view class="month-item" v-for="m in cmpDates.monthDatas" :key="m.key" :id="`month-${m.key}`">
                 <view class="month-bg" v-if="showMark">
                     {{ m.month }}
@@ -304,7 +312,6 @@ const onScroll = (e: any) => {
 
     .date-content {
         width: 100%;
-        overflow-y: auto;
         height: calc(100% - var(--font-size-80, 80rpx));
         padding-bottom: 12rpx;
 

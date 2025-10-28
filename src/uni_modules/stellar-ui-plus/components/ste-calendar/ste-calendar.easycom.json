@@ -161,6 +161,13 @@
             "default": "{}"
         },
         {
+            "name": "showScrollbar",
+            "description": "是否显示滚动条",
+            "type": "boolean",
+            "default": "true",
+            "version": "1.22.27"
+        },
+        {
             "name": "[event]select",
             "description": "选择日期时触发",
             "type": "(days:(number|string)[],day:number|string) => void",

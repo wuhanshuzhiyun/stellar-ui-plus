@@ -7,5 +7,6 @@
     "数据组件": { "group": "数据组件", "key": "data", "sort": 5 },
     "图表组件": { "group": "图表组件", "key": "chart", "sort": 6 },
     "业务组件": { "group": "业务组件", "key": "business", "sort": 7 },
-    "标准页面": { "group": "标准页面", "key": "standard-page", "sort": 8 }
+    "标准页面": { "group": "标准页面", "key": "standard-page", "sort": 8 },
+    "设置管理": { "group": "设置管理", "key": "setting-manage", "sort": 9 }
 }

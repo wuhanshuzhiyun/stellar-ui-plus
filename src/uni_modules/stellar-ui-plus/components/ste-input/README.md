@@ -129,15 +129,48 @@
 ```html
 <template>
     <ste-input placeholder="请输入内容" confirmType="next" rootClass="root-my-input" shape="line">
-        <view slot="prefix" style="margin-right: 28rpx">
-            <ste-icon code="&#xe68c;" size="28" />
-            <text>文本</text>
-        </view>
-        <view slot="suffix">
-            <ste-icon code="&#xe672;" size="28" />
-        </view>
+        <template v-slot:prefix>
+            <view style="margin-right: 28rpx">
+                <ste-icon code="&#xe68c;" size="28" />
+                <text>文本</text>
+            </view>
+        </template>
+        <template v-slot:suffix>
+            <view>
+                <ste-icon code="&#xe672;" size="28" />
+            </view>
+        </template>
     </ste-input>
 </template>
+```
+
+#### 前后插槽-验证码
+
+```html
+<template>
+    <ste-input placeholder="请输入验证码" confirmType="next" rootClass="root-my-input" shape="line">
+        <template v-slot:suffix>
+            <view>
+                <ste-button :mode="100" :round="false" @click="getCode" :disabled="count > 0">{{ count <= 0 ? '获取验证码' : count + '秒后获取' }}</ste-button>
+            </view>
+        </template>
+    </ste-input>
+</template>
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const count = ref(0);
+    let codeTimer: any;
+
+    function getCode() {
+        count.value = 20;
+        codeTimer = setInterval(() => {
+            if (count.value <= 0) {
+                clearInterval(codeTimer);
+            }
+            count.value--;
+        }, 1000);
+    }
+</script>
 ```
 
 #### 前置过滤

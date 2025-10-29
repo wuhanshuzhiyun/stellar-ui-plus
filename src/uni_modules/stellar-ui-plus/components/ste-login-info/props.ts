@@ -16,6 +16,10 @@ const loginInfoProps = {
     loginSrc: { type: String, default: '' },
     /** 未登录标题 */
     loginTitle: { type: String, default: '' },
+    showTitleIcon: {
+        type: Boolean as PropType<boolean>,
+        default: false,
+    },
 };
 
 export const loginInfoEmits = {

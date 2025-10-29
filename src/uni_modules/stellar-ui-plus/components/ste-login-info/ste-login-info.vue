@@ -13,7 +13,7 @@
                     <text>{{ subTitle }}</text>
                 </view>
             </view>
-            <view class="user-info user-info-login" @click="loginTitleClick" v-else>
+            <view class="user-info user-info-login" @click="loginTitleClick" v-if="loginStatus == 0 || showTitleIcon">
                 <view class="name">
                     <text class="name-text">{{ loginTitle }}</text>
                     <ste-icon code="&#xe674;" size="28" color="#000" marginLeft="8" :fontFamily="fontFamily" />
@@ -76,13 +76,11 @@ const loginTitleClick = () => {
             margin-right: 24rpx;
         }
         .user-info-login {
-            justify-content: center;
+            // justify-content: center;
+            flex: 0 !important;
         }
         .user-info {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
 
             .name {
                 display: flex;

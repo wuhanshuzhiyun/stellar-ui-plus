@@ -55,7 +55,8 @@
                 // letter-spacing: 10rpx;
 
                 &.textarea {
-                    height: 160rpx;
+                    min-height: 160rpx;
+                    height: 100%;
                 }
             }
 

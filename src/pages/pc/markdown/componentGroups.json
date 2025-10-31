@@ -9,5 +9,6 @@
     "业务组件": { "group": "业务组件", "key": "business", "sort": 7 },
     "标准页面": { "group": "标准页面", "key": "standard-page", "sort": 8 },
     "设置管理": { "group": "设置管理", "key": "setting-manage", "sort": 9 },
-    "帮助中心": { "group": "帮助中心", "key": "help-center", "sort": 9 }
+    "帮助中心": { "group": "帮助中心", "key": "help-center", "sort": 10 },
+    "版本更新": { "group": "版本更新", "key": "help-center", "sort": 11 }
 }

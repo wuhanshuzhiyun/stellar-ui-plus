@@ -1049,6 +1049,13 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "日历标签",
                 "type": "{[key:string]:SignType}",
                 "default": "{}"
+            },
+            {
+                "name": "showScrollbar",
+                "description": "是否显示滚动条",
+                "type": "boolean",
+                "default": "true",
+                "version": "1.22.27"
             }
         ],
         "events": [
@@ -1813,6 +1820,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ],
         "events": []
+    },
+    "ste-donut-chart": {
+        "site": "ste-donut-chart",
+        "attr": [
+            ""
+        ]
     },
     "drag": {
         "site": "ste-drag",
@@ -7043,7 +7056,15 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "reverse",
                 "description": "方向反转",
                 "type": "boolean",
-                "default": "false"
+                "default": "false",
+                "version": "1.22.27"
+            },
+            {
+                "name": "lineStyle",
+                "description": "线条样式（支持border-style全部属性）",
+                "type": "string",
+                "default": "solid",
+                "version": "1.22.27"
             }
         ],
         "events": [

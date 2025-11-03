@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useSlots, computed, ref, nextTick, type CSSProperties } from 'vue';
+import { useSlots, computed, ref, nextTick, onMounted, onUnmounted, type CSSProperties } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import utils from '../../utils/utils';
@@ -19,8 +19,28 @@ const props = defineProps(propsData);
 const emits = defineEmits<CheckboxEmits>();
 const slots = useSlots();
 
-const Parent = useInject<{ props: Required<CheckboxGroupProps>; updateValue: (value: any[]) => void }>(CHECKBOX_KEY);
+const Parent = useInject<{
+    props: Required<CheckboxGroupProps>;
+    updateValue: (value: any[]) => void;
+    registerChild: () => number;
+    unregisterChild: () => void;
+}>(CHECKBOX_KEY);
 const parentProps = computed(() => Parent?.parent?.props);
+
+// 记录当前组件在 group 中的索引
+const childIndex = ref<number>(-1);
+
+onMounted(() => {
+    if (Parent?.parent?.registerChild) {
+        childIndex.value = Parent.parent.registerChild();
+    }
+});
+
+onUnmounted(() => {
+    if (Parent?.parent?.unregisterChild) {
+        Parent.parent.unregisterChild();
+    }
+});
 
 // 🚀 优化: 缓存 themeColor,避免每次调用 getColor()
 const themeColor = getColor().steThemeColor;
@@ -52,13 +72,34 @@ const cmpRootStyle = computed(() => {
     const readonly = getDefaultData('readonly', false);
     const textDisabled = getDefaultData('textDisabled', false);
 
+    let marginLeft = getDefaultData('marginLeft', '0');
+    let marginRight = getDefaultData('marginRight', '0');
+
+    // 如果在 checkbox-group 中，并且不是第一个元素，自动应用间距
+    if (parentProps.value && childIndex.value > 0 && marginLeft === '0') {
+        const direction = parentProps.value.direction || 'column';
+
+        if (direction === 'row') {
+            // 横向排列时，设置左间距 16rpx
+            marginLeft = '16';
+        }
+    }
+
     const style: CSSProperties = {
         fontSize: `var(--font-size-${textSize},${utils.formatPx(textSize)})`,
         color: cmpChecked.value ? getDefaultData('textActiveColor', '#000000') : getDefaultData('textInactiveColor', '#000000'),
         flexDirection: textPosition === 'right' ? 'row' : 'row-reverse',
-        marginLeft: utils.formatPx(getDefaultData('marginLeft', '0')),
-        marginRight: utils.formatPx(getDefaultData('marginRight', '0')),
+        marginLeft: utils.formatPx(marginLeft),
+        marginRight: utils.formatPx(marginRight),
     };
+
+    // 纵向排列时，设置上间距 16rpx
+    if (parentProps.value && childIndex.value > 0) {
+        const direction = parentProps.value.direction || 'column';
+        if (direction === 'column') {
+            style.marginTop = '16rpx';
+        }
+    }
 
     // #ifdef H5
     if (cmpDisabled.value || readonly) {

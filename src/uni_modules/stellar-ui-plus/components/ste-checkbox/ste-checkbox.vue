@@ -164,6 +164,16 @@ const cmpSlotProps = computed(() => ({
     readonly: getDefaultData('readonly', false),
 }));
 
+const cmpIconMargin = computed(() => {
+    // #ifdef APP-PLUS
+    return 2;
+    // #endif
+
+    // #ifndef APP-PLUS
+    return 0;
+    // #endif
+});
+
 // 批处理更新相关
 const isBatchUpdating = ref(false);
 const pendingUpdate = ref(false);
@@ -257,7 +267,7 @@ const getDefaultData = <T,>(key: PropsKeyType, defaultValue: T): T => {
         <view class="icon" :style="[cmpIconStyle]">
             <slot name="icon" :slotProps="cmpSlotProps">
                 <view class="input-icon" :style="[cmpInputStyle]">
-                    <ste-icon v-if="cmpChecked" :size="getDefaultData('iconSize', 36) * 0.8" code="&#xe67a;" :color="cmpDisabled ? '#bbbbbb' : '#fff'" bold />
+                    <ste-icon v-if="cmpChecked" :size="getDefaultData('iconSize', 36) * 0.8" code="&#xe67a;" :color="cmpDisabled ? '#bbbbbb' : '#fff'" bold :marginBottom="cmpIconMargin" />
                 </view>
             </slot>
         </view>

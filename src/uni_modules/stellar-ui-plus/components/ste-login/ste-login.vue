@@ -47,13 +47,21 @@
                     </view>
                     <view class="btn-group">
                         <view class="btn-item primary" v-for="(item, k) in primaryBtn" :key="k">
-                            <ste-button width="100%" :mode="300" @click="handleBtnClick(item, 'primary')" :round="item.round" :background="mainColor">
-                                <text class="btn-text">{{ item.title }}</text>
+                            <ste-button
+                                width="100%"
+                                :mode="300"
+                                @click="handleBtnClick(item, 'primary')"
+                                :round="item.round"
+                                :background="item.style?.background ? item.style?.background : mainColor"
+                                :border-color="item.style?.borderColor"
+                                :color="item.style?.color"
+                            >
+                                <text class="btn-text" :style="{ fontSize: item.style?.fontSize }">{{ item.title }}</text>
                             </ste-button>
                         </view>
                         <view class="secondary-box" :class="[{ two: secondaryBtn.length === 2, one: secondaryBtn.length === 1 }]">
-                            <view v-for="(item, k) in secondaryBtn" :key="k" class="btn-item secondary">
-                                <text class="btn-text">{{ item.title }}</text>
+                            <view v-for="(item, k) in secondaryBtn" :key="k" class="btn-item secondary" @click="handleBtnClick(item, 'secondary')">
+                                <text class="btn-text" :style="{ color: item.style?.color, fontSize: item.style?.fontSize }">{{ item.title }}</text>
                             </view>
                         </view>
                     </view>

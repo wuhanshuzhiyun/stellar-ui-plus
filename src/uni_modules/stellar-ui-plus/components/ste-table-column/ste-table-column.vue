@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, type CSSProperties, type Ref } from 'vue';
+import { computed, ref, watch, type CSSProperties, type Ref } from 'vue';
 import type { Obj } from '../../types';
 import propsData from './props';
 import utils from '../../utils/utils';
@@ -9,6 +9,7 @@ import { TABLE_KEY, SELECTION_COLOR_CONFIG, type TableProps } from '../ste-table
 import CheckBoxIcon from './checkbox-icon.vue';
 import RadioIcon from './radio-icon.vue';
 import TablePopover from './table-popover.vue';
+import SubTable from './sub-table.vue';
 
 const componentName = `ste-table-column`;
 defineOptions({
@@ -26,8 +27,20 @@ const parentProps = Parent.parent?.props as TableProps;
 
 const row = ref<Obj>({});
 const selectionIconColor = ref<typeof SELECTION_COLOR_CONFIG>(parentProps.selectionIconColor);
+const rowSpan = ref(false);
 
 defineExpose({ row });
+
+// 监听 row 数据变化，判断是否需要合并单元格
+watch(
+    () => row.value[props.prop],
+    val => {
+        if (Array.isArray(val)) {
+            rowSpan.value = true;
+        }
+    },
+    { immediate: true }
+);
 
 const cmpRootStyle = computed(() => {
     let style: CSSProperties = {};
@@ -69,6 +82,10 @@ const cmpRootClass = computed(() => {
         classArr.push('popover');
     }
 
+    if (rowSpan.value) {
+        classArr.push('row-span');
+    }
+
     const cellClassParam = {
         column: props,
         columnIndex: row.value.colIndex,
@@ -101,6 +118,10 @@ const cmpReadonlyCheck = computed(() => {
         return parentProps.readable(row.value, row.value.rowIndex);
     }
     return false;
+});
+
+const cmpBorder = computed(() => {
+    return parentProps.border;
 });
 
 function changeCheck() {
@@ -149,7 +170,8 @@ function cellClick(event: any) {
         </template>
         <template v-else>
             <slot v-if="row[prop] || !$slots.empty">
-                <view class="cell-box">
+                <sub-table :rows="row[prop]" v-if="rowSpan" :border="cmpBorder" />
+                <view class="cell-box" v-else>
                     <template v-if="!parentProps.isPopover">
                         {{ cellText() }}
                     </template>

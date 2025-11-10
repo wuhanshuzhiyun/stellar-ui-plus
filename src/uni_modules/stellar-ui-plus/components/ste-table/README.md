@@ -618,6 +618,58 @@
 </template>
 ```
 
+#### 合并单元格
+
+当某列的数据为数组类型时，该列会自动触发合并单元格模式，将数组中的每个元素作为一行展示。这在需要展示一对多关系的数据时非常有用。
+
+**功能特点：**
+- 自动检测数组类型数据
+- 自动合并显示为多行
+- 支持边框样式
+- 自动统一行高，保持视觉一致
+
+```html
+<script lang="ts" setup>
+    import { ref } from 'vue';
+    const rows = ref([
+        {
+            project: '入店时的寒暄语',
+            desc: [
+                '打招呼的声音很小，听不到，没有看着顾客一方等。',
+                '店员看着顾客一方，可以听到响亮且有朝气的问候声。',
+                '「感觉普通」店员看着顾客一方有问候，但是声音不响亮无朝气。',
+            ],
+            score: [5, 11, 1],
+            sum: 0,
+        },
+        {
+            project: '收银机前的引导',
+            desc: [
+                '・POS收银机前排队等待的顾客≦3人(不含正在结账的顾客)。',
+                '其他店员没有注意到有3位以上的顾客在排队，或收银的店员不向其他收银台引导。'
+            ],
+            score: [5, 1],
+            sum: 0,
+        },
+    ]);
+</script>
+<template>
+    <ste-table :data="rows" border>
+        <template v-slot="{ row }">
+            <ste-table-column label="评价项目" prop="project"></ste-table-column>
+            <ste-table-column label="评价标准" prop="desc"></ste-table-column>
+            <ste-table-column label="分值" prop="score" width="150"></ste-table-column>
+            <ste-table-column label="得分" prop="sum" width="150"></ste-table-column>
+        </template>
+    </ste-table>
+</template>
+```
+
+在上面的示例中：
+- `desc` 和 `score` 列的值是数组，会自动合并显示为多行
+- `project` 和 `sum` 列的值是普通类型，会正常显示单行
+- 建议配合 `border` 属性使用，可以更清晰地展示单元格边界
+
 ---$
 
 ### API

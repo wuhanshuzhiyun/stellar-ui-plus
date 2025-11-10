@@ -5,10 +5,82 @@
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=message-box",
     "attributes": [
         {
-            "name": "selector",
-            "description": "用于自定义插槽时的选择器",
+            "name": "title",
+            "description": "提示的标题",
             "type": "String",
             "default": ""
+        },
+        {
+            "name": "content",
+            "description": "提示的内容",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "icon",
+            "description": "提示区域显示图标，此时content会失效",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "showCancel",
+            "description": "是否显示取消按钮",
+            "type": "Boolean",
+            "default": true
+        },
+        {
+            "name": "cancelText",
+            "description": "提示的内容",
+            "type": "String",
+            "default": "取消"
+        },
+        {
+            "name": "cancelColor",
+            "description": "取消按钮的文字颜色",
+            "type": "String",
+            "default": "#333333"
+        },
+        {
+            "name": "confirmText",
+            "description": "确认按钮的文字，最多4个字符",
+            "type": "String",
+            "default": "确认"
+        },
+        {
+            "name": "confirmColor",
+            "description": "确认按钮的文字颜色",
+            "type": "String",
+            "default": "#0090FF"
+        },
+        {
+            "name": "editable",
+            "description": "是否显示输入框",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "placeholderText",
+            "description": "显示输入框时的提示文本",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "confirm",
+            "description": "点击确认的回调函数",
+            "type": "Function",
+            "default": null
+        },
+        {
+            "name": "cancel",
+            "description": "点击取消的回调函数",
+            "type": "Function",
+            "default": null
+        },
+        {
+            "name": "complete",
+            "description": "弹框关闭的回调函数（无论是确认关闭还是取消关闭）",
+            "type": "Function",
+            "default": null
         }
     ]
 }

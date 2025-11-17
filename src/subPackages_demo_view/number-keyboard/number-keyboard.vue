@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { nextTick, reactive, ref, watch } from 'vue';
 const value1 = ref('');
 const show1 = ref(false);
 const value2 = ref('');
@@ -13,6 +13,16 @@ const show5 = ref(false);
 const value6 = ref('');
 const show6 = ref(false);
 const value7 = ref('');
+watch(
+    () => value7.value,
+    v => {
+        nextTick(() => {
+            if (Number(v) > 100) {
+                value7.value = '100';
+            }
+        });
+    }
+);
 
 const inputValues = reactive({
     value1: '123',

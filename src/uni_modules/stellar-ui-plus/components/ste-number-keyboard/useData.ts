@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import utils from '../../utils/utils';
 import { useColorStore } from '../../store/color';
 import type { NumberKeyboardProps } from './props';
@@ -31,7 +31,15 @@ export default function useData({
         if (value === null || value === undefined) dataValue.value = '';
         else if (typeof value === 'string') dataValue.value = value;
         else dataValue.value = String(value);
+
     };
+
+    watch(() => dataValue.value, (v) => {
+        nextTick(() => {
+            emits('update:modelValue', v);
+            emits('change', v);
+        })
+    }, { immediate: true });
 
     const dataShow = ref(false);
     const setDataShow = (value: boolean) => {
@@ -131,8 +139,7 @@ export default function useData({
                     break;
             }
             emits('input', dataValue.value);
-            emits('change', dataValue.value);
-            emits('update:modelValue', dataValue.value);
+
 
             if (props.activeInputRef) {
                 const values = props.inputValues;

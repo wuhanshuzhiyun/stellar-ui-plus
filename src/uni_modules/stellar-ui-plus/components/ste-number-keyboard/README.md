@@ -244,6 +244,18 @@
 <script setup lang="ts">
     import { ref } from 'vue';
     const value7 = ref('');
+    // 控制最大值为100
+    watch(
+        () => value7.value,
+        v => {
+            // 必须在下一帧执行，否则会因为数据未更新而报错
+            nextTick(() => {
+                if (Number(v) > 100) {
+                    value7.value = '100';
+                }
+            });
+        }
+    );
 </script>
 <style lang="scss" scoped>
     .test-input {

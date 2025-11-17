@@ -89,7 +89,6 @@ const rows = computed(() => {
 
     return list;
 });
-console.log(rows.value);
 </script>
 <template>
     <view class="number-keyboard" :style="[cmpRootStyle]" data-test="number-keyboard-item">

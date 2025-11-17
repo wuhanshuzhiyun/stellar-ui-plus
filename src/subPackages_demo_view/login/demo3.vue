@@ -63,12 +63,24 @@ const primaryBtnData = reactive([
         title: '登录',
         key: 'wx',
     },
+    {
+        title: '暂不登录',
+        key: 'no-login',
+        style: {
+            background: '#FEFEFE',
+            color: '#333333',
+            borderColor: '#000',
+        },
+    },
 ]);
 
 const secondaryBtnData = reactive([
     {
         title: '微信一键登录',
         key: 'wxOneKey',
+        style: {
+            color: '#333',
+        },
     },
 ]);
 

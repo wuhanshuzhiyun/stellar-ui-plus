@@ -5,7 +5,6 @@ import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
 import type { TableColumnProps } from '../ste-table-column/props';
-import { groupByKeys } from './utils';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 
@@ -131,8 +130,6 @@ watch(
 
         // 如果内容没有变化，并且距离上次变化已经超过300ms
         if (currentCount === lastChildrenCount && currentTime - lastChangeTime > 300 && currentCount > 0) {
-            console.log('内容已稳定，执行初始化');
-
             initColumns();
             initRowData();
         } else {
@@ -153,47 +150,67 @@ watch(
     { immediate: true, deep: true }
 );
 
-function initRowData() {
-    const rowNums = tableData.value.length; // 有多少行
-    let colNums = refChilds.value.length / rowNums; // 有多少列
-    // #ifdef MP-WEIXIN
-    // 由于uni-app 编译到微信小程序时，如果使用循环插槽导致插槽节点不会消失，子节点完全异常
-    colNums = groupByKeys(refChilds.value.map(e => e.props) as any).length;
-    // #endif
+/**
+ * 获取列信息的公共函数
+ * 返回：唯一的列子组件数组、列索引映射
+ */
+function getColumnInfo() {
+    if (!refChilds.value || refChilds.value.length <= 0) {
+        return { uniqueColumns: [], columnKeyMap: new Map<string, number>() };
+    }
 
-    refChilds.value.forEach((child, index) => {
-        const rowIndex = Math.floor(index / colNums); // 计算出当前元素属于哪一行
-        const colIndex = index % colNums; // 计算出当前元素属于哪一列
+    // 计算预期的列数（用于优化性能）
+    const expectedColCount = Math.ceil(refChilds.value.length / tableData.value.length);
+
+    // 提取唯一的列（提前退出优化）
+    const uniqueColumns: any[] = [];
+    const columnKeyMap = new Map<string, number>();
+
+    for (let i = 0; i < refChilds.value.length && uniqueColumns.length < expectedColCount; i++) {
+        const child = refChilds.value[i];
+        const key = `${child.props.label}-${child.props.prop}`;
+
+        // 如果是新列，记录列索引并添加到结果
+        if (!columnKeyMap.has(key)) {
+            columnKeyMap.set(key, uniqueColumns.length);
+            uniqueColumns.push(child);
+        }
+    }
+
+    return { uniqueColumns, columnKeyMap };
+}
+
+function initRowData() {
+    // 获取列信息（复用公共函数）
+    const { columnKeyMap } = getColumnInfo();
+
+    // 为每列的子组件计数，用于确定行索引
+    const columnCounters = new Map<string, number>();
+
+    // 遍历所有子组件，计算正确的行列索引
+    refChilds.value.forEach(child => {
+        const key = `${child.props.label}-${child.props.prop}`;
+        const colIndex = columnKeyMap.get(key) ?? 0;
+
+        // 获取当前列已处理的行数，即为当前元素的行索引
+        const rowIndex = columnCounters.get(key) ?? 0;
+        columnCounters.set(key, rowIndex + 1);
+
         const row = tableData.value[rowIndex];
         (child.exposed as any).row.value = { ...row, rowIndex, colIndex };
     });
 }
 
 function initColumns() {
-    if (!refChilds.value || refChilds.value.length <= 0) return;
-    const result = [];
-    const partSize = Math.ceil(refChilds.value.length / tableData.value.length);
-    for (let i = 0; i < partSize; i++) {
-        result.push(refChilds.value[i]);
-    }
-
-    // 解决某些情况下列重复
-    const tempResult: any[] = [];
-    result.forEach(e => {
-        if (
-            !tempResult.find(r => {
-                return r.props.label === e.props.label && r.props.prop === e.props.prop;
-            })
-        ) {
-            tempResult.push(e);
-        }
-    });
+    // 获取列信息（复用公共函数）
+    const { uniqueColumns } = getColumnInfo();
+    if (uniqueColumns.length === 0) return;
 
     // 创建一个全新的数组，包含全新的普通对象
     const finalColumns = [];
 
-    for (let i = 0; i < tempResult.length; i++) {
-        const e = tempResult[i];
+    for (let i = 0; i < uniqueColumns.length; i++) {
+        const e = uniqueColumns[i];
         const propsData = toRaw(e.props);
 
         // 创建一个全新的对象
@@ -400,7 +417,8 @@ $default-border: 2rpx solid #ebebeb;
     }
 
     .ste-table-content {
-        width: 100%;
+        width: fit-content; /* 让表格内容宽度自适应，使斑马条纹能延伸到所有列 */
+        min-width: 100%; /* 至少占满容器宽度 */
         // display: table;
         // border-collapse: collapse;
         // table-layout: fixed;
@@ -412,7 +430,6 @@ $default-border: 2rpx solid #ebebeb;
             width: 100%;
             // display: table-row;
             display: flex;
-            justify-content: space-between;
             background-color: var(--ste-theme-color);
 
             .ste-table-cell {
@@ -477,7 +494,6 @@ $default-border: 2rpx solid #ebebeb;
             .ste-table-row {
                 // display: table-row;
                 display: flex;
-                justify-content: space-between;
 
                 /* #ifdef MP-WEIXIN */
                 > :deep(view:not(.ste-table-cell)) {

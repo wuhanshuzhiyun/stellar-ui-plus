@@ -2,7 +2,7 @@
     "name": "ste-text",
     "description": "文本",
     "example": "<ste-text>文本</ste-text>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=text",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-text",
     "attributes": [
         {
             "name": "selectable",

@@ -2,7 +2,7 @@
     "name": "ste-loading",
     "description": "加载组件，用于表示加载中的过渡状态。",
     "example": "<ste-loading></ste-loading>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=loading",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-loading",
     "attributes": [
         {
             "name": "color",

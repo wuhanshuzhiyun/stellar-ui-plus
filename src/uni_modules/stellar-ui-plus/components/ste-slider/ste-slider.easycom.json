@@ -2,7 +2,7 @@
     "name": "ste-slider",
     "description": "滑块组件",
     "example": "<ste-slider />",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=slider",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-slider",
     "attributes": [
         {
             "name": "value",

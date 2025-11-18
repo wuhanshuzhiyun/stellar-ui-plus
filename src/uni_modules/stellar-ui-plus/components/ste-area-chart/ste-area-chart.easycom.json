@@ -2,7 +2,7 @@
     "name": "ste-area-chart",
     "description": "面积图",
     "example": "<ste-area-chart></ste-area-chart>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=area-chart",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-area-chart",
     "attributes": [
         {
             "name": "width",

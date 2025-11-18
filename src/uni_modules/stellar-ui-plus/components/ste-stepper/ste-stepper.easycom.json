@@ -1,7 +1,7 @@
 {
     "name": "ste-stepper",
     "description": "步进器组件, 步进器由增加按钮、减少按钮和输入框组成，用于在一定范围内输入、调整数字。",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=stepper",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-stepper",
     "attributes": [
         {
             "name": "v-model",

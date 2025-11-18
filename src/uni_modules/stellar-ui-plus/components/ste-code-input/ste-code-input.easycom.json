@@ -2,7 +2,7 @@
     "name": "ste-code-input",
     "description": "验证码输入",
     "example": "<ste-code-input></ste-code-input>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=code-input",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-code-input",
     "attributes": [
         {
             "name": "value",

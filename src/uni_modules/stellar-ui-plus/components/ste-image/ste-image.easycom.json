@@ -1,189 +1,189 @@
 {
-  "name": "ste-image",
-  "description": "图片",
-  "example": "<ste-image src=\"https://image.whzb.com/chain/StellarUI/图片.jpg\" width=\"200\" height=\"200\" />",
-  "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=image",
-  "attributes": [
-    {
-      "name": "src",
-      "description": "图片地址",
-      "type": "string",
-      "version": "1.0.0"
-    },
-    {
-      "name": "width",
-      "description": "宽度",
-      "type": "string | number",
-      "default": "100%"
-    },
-    {
-      "name": "height",
-      "description": "高度",
-      "type": "string | number",
-      "default": "100%"
-    },
-    {
-      "name": "radius",
-      "description": "圆角",
-      "type": "string | number",
-      "default": "0"
-    },
-    {
-      "name": "mode",
-      "description": "图片裁剪、缩放的模式",
-      "type": "string",
-      "default": "scaleToFill",
-      "values": [
+    "name": "ste-image",
+    "description": "图片",
+    "example": "<ste-image src=\"https://image.whzb.com/chain/StellarUI/图片.jpg\" width=\"200\" height=\"200\" />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-image",
+    "attributes": [
         {
-          "name": "scaleToFill",
-          "description": "不保持纵横比缩放图片，使图片的宽高完全拉伸至填满 image 元素。"
+            "name": "src",
+            "description": "图片地址",
+            "type": "string",
+            "version": "1.0.0"
         },
         {
-          "name": "aspectFit",
-          "description": "保持纵横比缩放图片，使图片的长边能完全显示出来。也就是说，可以完整地将图片显示出来。"
+            "name": "width",
+            "description": "宽度",
+            "type": "string | number",
+            "default": "100%"
         },
         {
-          "name": "aspectFill",
-          "description": "保持纵横比缩放图片，只保证图片的短边能完全显示出来。也就是说，图片通常只在水平或垂直方向是完整的，另一个方向将会发生截取"
+            "name": "height",
+            "description": "高度",
+            "type": "string | number",
+            "default": "100%"
         },
         {
-          "name": "widthFix",
-          "description": "宽度不变，高度自动变化，保持原图宽高比不变"
+            "name": "radius",
+            "description": "圆角",
+            "type": "string | number",
+            "default": "0"
         },
         {
-          "name": "heightFix",
-          "description": "高度不变，宽度自动变化，保持原图宽高比不变"
+            "name": "mode",
+            "description": "图片裁剪、缩放的模式",
+            "type": "string",
+            "default": "scaleToFill",
+            "values": [
+                {
+                    "name": "scaleToFill",
+                    "description": "不保持纵横比缩放图片，使图片的宽高完全拉伸至填满 image 元素。"
+                },
+                {
+                    "name": "aspectFit",
+                    "description": "保持纵横比缩放图片，使图片的长边能完全显示出来。也就是说，可以完整地将图片显示出来。"
+                },
+                {
+                    "name": "aspectFill",
+                    "description": "保持纵横比缩放图片，只保证图片的短边能完全显示出来。也就是说，图片通常只在水平或垂直方向是完整的，另一个方向将会发生截取"
+                },
+                {
+                    "name": "widthFix",
+                    "description": "宽度不变，高度自动变化，保持原图宽高比不变"
+                },
+                {
+                    "name": "heightFix",
+                    "description": "高度不变，宽度自动变化，保持原图宽高比不变"
+                },
+                {
+                    "name": "top",
+                    "description": "不缩放图片，只显示图片的顶部区域"
+                },
+                {
+                    "name": "bottom",
+                    "description": "不缩放图片，只显示图片的底部区域"
+                },
+                {
+                    "name": "center",
+                    "description": "不缩放图片，只显示图片的中间区域"
+                },
+                {
+                    "name": "left",
+                    "description": "不缩放图片，只显示图片的左边区域"
+                },
+                {
+                    "name": "right",
+                    "description": "不缩放图片，只显示图片的右边区域"
+                },
+                {
+                    "name": "top left",
+                    "description": "不缩放图片，只显示图片的左上边区域"
+                },
+                {
+                    "name": "top right",
+                    "description": "不缩放图片，只显示图片的右上边区域"
+                },
+                {
+                    "name": "bottom left",
+                    "description": "不缩放图片，只显示图片的左下边区域"
+                },
+                {
+                    "name": "bottom right",
+                    "description": "不缩放图片，只显示图片的右下边区域"
+                }
+            ]
         },
         {
-          "name": "top",
-          "description": "不缩放图片，只显示图片的顶部区域"
+            "name": "display",
+            "description": "盒子模型",
+            "type": "string",
+            "default": "inline-flex",
+            "values": [
+                {
+                    "name": "block",
+                    "description": "块级元素"
+                },
+                {
+                    "name": "inline-block",
+                    "description": "行内块级元素"
+                },
+                {
+                    "name": "inline",
+                    "description": "行内元素"
+                },
+                {
+                    "name": "flex",
+                    "description": "弹性布局"
+                },
+                {
+                    "name": "inline-flex",
+                    "description": "行内弹性布局"
+                },
+                {
+                    "name": "none",
+                    "description": "none"
+                },
+                {
+                    "name": "inherit",
+                    "description": "继承父元素"
+                }
+            ]
         },
         {
-          "name": "bottom",
-          "description": "不缩放图片，只显示图片的底部区域"
+            "name": "hiddenLoading",
+            "description": "是否隐藏图片未加载的占位内容",
+            "type": "boolean",
+            "default": false
         },
         {
-          "name": "center",
-          "description": "不缩放图片，只显示图片的中间区域"
+            "name": "hiddenError",
+            "description": "是否隐藏图片加载失败的占位内容",
+            "type": "boolean",
+            "default": false
         },
         {
-          "name": "left",
-          "description": "不缩放图片，只显示图片的左边区域"
+            "name": "showMenuByLongpress",
+            "description": "长按图片显示发送给朋友、收藏、保存图片、搜一搜、打开名片/前往群聊/打开小程序（若图片中包含对应二维码或小程序码）的菜单",
+            "type": "boolean",
+            "default": false
         },
         {
-          "name": "right",
-          "description": "不缩放图片，只显示图片的右边区域"
+            "name": "lazyLoad",
+            "description": "图片懒加载，在即将进入一定范围（上下三屏）时才开始加载",
+            "type": "boolean",
+            "default": false
         },
         {
-          "name": "top left",
-          "description": "不缩放图片，只显示图片的左上边区域"
+            "name": "[event]click",
+            "description": "图片点击触发",
+            "type": "(event: UniEvent) => void",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "当前图片Event"
+                }
+            ]
         },
         {
-          "name": "top right",
-          "description": "不缩放图片，只显示图片的右上边区域"
+            "name": "[event]load",
+            "description": "图片加载成功触发",
+            "type": "(event: UniEvent) => void",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "当前图片Event"
+                }
+            ]
         },
         {
-          "name": "bottom left",
-          "description": "不缩放图片，只显示图片的左下边区域"
-        },
-        {
-          "name": "bottom right",
-          "description": "不缩放图片，只显示图片的右下边区域"
+            "name": "[event]error",
+            "description": "图片加载失败触发",
+            "type": "(event: UniEvent) => void",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "当前图片Event"
+                }
+            ]
         }
-      ]
-    },
-    {
-      "name": "display",
-      "description": "盒子模型",
-      "type": "string",
-      "default": "inline-flex",
-      "values": [
-        {
-          "name": "block",
-          "description": "块级元素"
-        },
-        {
-          "name": "inline-block",
-          "description": "行内块级元素"
-        },
-        {
-          "name": "inline",
-          "description": "行内元素"
-        },
-        {
-          "name": "flex",
-          "description": "弹性布局"
-        },
-        {
-          "name": "inline-flex",
-          "description": "行内弹性布局"
-        },
-        {
-          "name": "none",
-          "description": "none"
-        },
-        {
-          "name": "inherit",
-          "description": "继承父元素"
-        }
-      ]
-    },
-    {
-      "name": "hiddenLoading",
-      "description": "是否隐藏图片未加载的占位内容",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "hiddenError",
-      "description": "是否隐藏图片加载失败的占位内容",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "showMenuByLongpress",
-      "description": "长按图片显示发送给朋友、收藏、保存图片、搜一搜、打开名片/前往群聊/打开小程序（若图片中包含对应二维码或小程序码）的菜单",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "lazyLoad",
-      "description": "图片懒加载，在即将进入一定范围（上下三屏）时才开始加载",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "[event]click",
-      "description": "图片点击触发",
-      "type": "(event: UniEvent) => void",
-      "params": [
-        {
-          "name": "event",
-          "description": "当前图片Event"
-        }
-      ]
-    },
-    {
-      "name": "[event]load",
-      "description": "图片加载成功触发",
-      "type": "(event: UniEvent) => void",
-      "params": [
-        {
-          "name": "event",
-          "description": "当前图片Event"
-        }
-      ]
-    },
-    {
-      "name": "[event]error",
-      "description": "图片加载失败触发",
-      "type": "(event: UniEvent) => void",
-      "params": [
-        {
-          "name": "event",
-          "description": "当前图片Event"
-        }
-      ]
-    }
-  ]
+    ]
 }

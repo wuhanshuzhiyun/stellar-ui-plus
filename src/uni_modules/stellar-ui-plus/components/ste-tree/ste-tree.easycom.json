@@ -2,7 +2,7 @@
     "name": "ste-tree",
     "description": "Tree 树形控件",
     "example": "<ste-tree></ste-tree>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=tree",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-tree",
     "attributes": [
         {
             "name": "options",

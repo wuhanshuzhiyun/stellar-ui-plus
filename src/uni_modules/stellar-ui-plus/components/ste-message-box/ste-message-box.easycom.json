@@ -2,7 +2,7 @@
     "name": "ste-message-box",
     "description": "模拟系统的消息提示框而实现的一套模态对话框组件，用于消息提示、确认消息和提交内容。",
     "example": "<ste-message-box></ste-message-box>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=message-box",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-message-box",
     "attributes": [
         {
             "name": "title",

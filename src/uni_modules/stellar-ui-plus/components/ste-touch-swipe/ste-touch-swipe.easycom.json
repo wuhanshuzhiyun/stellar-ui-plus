@@ -2,7 +2,7 @@
     "name": "ste-touch-swipe",
     "description": "手势切屏",
     "example": "<ste-touch-swipe><ste-touch-swipe-item>111</ste-touch-swipe-item><ste-touch-swipe-item>222</ste-touch-swipe-item></ste-touch-swipe>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=touch-swipe",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-touch-swipe",
     "attributes": [
         {
             "name": "index",

@@ -1,7 +1,7 @@
 {
     "name": "ste-steps",
     "description": "步骤条组件, 拆分展示某项流程的步骤，引导用户按流程完成任务或向用户展示当前状态。",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/pc/index/index?name=ste-steps",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-steps",
     "attributes": [
         {
             "name": "active",

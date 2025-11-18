@@ -2,7 +2,7 @@
     "name": "ste-funnel-chart",
     "description": "漏斗图",
     "example": "<ste-funnel-chart />",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=funnel-chart",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-funnel-chart",
     "attributes": [
         {
             "name": "width",

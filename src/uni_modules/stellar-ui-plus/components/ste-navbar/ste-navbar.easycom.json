@@ -2,7 +2,7 @@
     "name": "ste-navbar",
     "description": "提供导航功能，常用于页面顶部。",
     "example": "<ste-navbar></ste-navbar>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=navbar",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-navbar",
     "attributes": [
         {
             "name": "autoBack",

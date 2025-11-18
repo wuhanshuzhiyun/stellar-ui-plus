@@ -2,7 +2,7 @@
     "name": "ste-login",
     "description": "登录组件",
     "example": "<ste-login></ste-login>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=login",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-login",
     "attributes": [
         {
             "name": "mode",

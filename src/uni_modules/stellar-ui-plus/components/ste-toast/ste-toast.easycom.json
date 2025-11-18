@@ -2,7 +2,7 @@
     "name": "ste-toast",
     "description": "在页面中间弹出黑色半透明提示，用于消息通知、加载提示、操作结果提示等场景。",
     "example": "<ste-toast></ste-toast>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=toast",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-toast",
     "attributes": [
         {
             "name": "title",

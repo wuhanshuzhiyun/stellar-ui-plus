@@ -1,8 +1,8 @@
 {
     "name": "ste-calendar",
-    "description": "按钮组件",
+    "description": "日历组件",
     "example": "<ste-calendar></ste-calendar>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=calendar",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-calendar",
     "attributes": [
         {
             "name": "title",

@@ -2,7 +2,7 @@
     "name": "ste-price",
     "description": "价格",
     "example": "<ste-price value='123456.78'/>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=price",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-price",
     "attributes": [
         {
             "name": "value",

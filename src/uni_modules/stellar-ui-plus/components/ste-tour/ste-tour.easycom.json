@@ -2,7 +2,7 @@
     "name": "ste-tour",
     "description": "指引",
     "example": "<ste-tour></ste-tour>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=tour",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-tour",
     "attributes": [
         {
             "name": "show",

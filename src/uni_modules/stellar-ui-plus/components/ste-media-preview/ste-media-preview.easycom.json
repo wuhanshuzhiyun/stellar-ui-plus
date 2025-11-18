@@ -1,88 +1,88 @@
 {
-  "name": "ste-media-preview",
-  "description": "媒体预览",
-  "example": "<ste-media-preview />",
-  "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=media-preview",
-  "attributes": [
-    {
-      "name": "show",
-      "description": "是否显示",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "urls",
-      "description": "图片路径列表",
-      "type": "Array<string>",
-      "default": []
-    },
-    {
-      "name": "autoplay",
-      "description": "自动轮播时长，为0不自动轮播，单位ms",
-      "type": "number",
-      "default": 0
-    },
-    {
-      "name": "loop",
-      "description": "是否前后衔接播放",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "index",
-      "description": "默认展示的资源下标",
-      "type": "number",
-      "default": 0
-    },
-    {
-      "name": "showIndex",
-      "description": "是否显示左下角索引",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "scale",
-      "description": "是否支持双指缩放",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "name": "showmenu",
-      "description": "是否开启图片长按菜单",
-      "type": "boolean",
-      "default": true
-    },
-    {
-      "name": "[event]beforeClose",
-      "description": "关闭前触发",
-      "type": "() => void"
-    },
-    {
-      "name": "[event]close",
-      "description": "关闭后触发",
-      "type": "() => void"
-    },
-    {
-      "name": "[event]change",
-      "description": "切换时触发",
-      "type": "(index: number) => void",
-      "params": [
+    "name": "ste-media-preview",
+    "description": "媒体预览",
+    "example": "<ste-media-preview />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-media-preview",
+    "attributes": [
         {
-          "name": "index",
-          "description": "切换后的下标"
-        }
-      ]
-    },
-    {
-      "name": "[event]longpress",
-      "description": "长按时触发",
-      "type": "(index: number) => void",
-      "params": [
+            "name": "show",
+            "description": "是否显示",
+            "type": "boolean",
+            "default": false
+        },
         {
-          "name": "index",
-          "description": "当前下标"
+            "name": "urls",
+            "description": "图片路径列表",
+            "type": "Array<string>",
+            "default": []
+        },
+        {
+            "name": "autoplay",
+            "description": "自动轮播时长，为0不自动轮播，单位ms",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "loop",
+            "description": "是否前后衔接播放",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "index",
+            "description": "默认展示的资源下标",
+            "type": "number",
+            "default": 0
+        },
+        {
+            "name": "showIndex",
+            "description": "是否显示左下角索引",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "scale",
+            "description": "是否支持双指缩放",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "showmenu",
+            "description": "是否开启图片长按菜单",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "[event]beforeClose",
+            "description": "关闭前触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]close",
+            "description": "关闭后触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]change",
+            "description": "切换时触发",
+            "type": "(index: number) => void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "切换后的下标"
+                }
+            ]
+        },
+        {
+            "name": "[event]longpress",
+            "description": "长按时触发",
+            "type": "(index: number) => void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "当前下标"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

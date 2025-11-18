@@ -1,8 +1,8 @@
 {
-    "name": "ste-scroll-to",
-    "description": "ScrollTo滚动锚点",
-    "example": "<ste-scroll-to><ste-scroll-to-item>节点1</ste-scroll-to-item></ste-scroll-to>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=scroll-to",
+    "name": "ste-index-list",
+    "description": "IndexList 索引列表",
+    "example": "<ste-index-list><ste-index-item>节点1</ste-index-item></ste-index-list>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-index-list",
     "attributes": [
         {
             "name": "active",

@@ -2,7 +2,7 @@
     "name": "ste-goods-list",
     "description": "按钮组件",
     "example": "<ste-goods-list></ste-goods-list>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=goods-list",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-goods-list",
     "attributes": [
         {
             "name": "title",

@@ -1,8 +1,8 @@
 {
-    "name": "ste-main-info",
-    "description": "主信息展示",
-    "example": "<ste-main-info></ste-main-info>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=main-info",
+    "name": "ste-login-info",
+    "description": "登录信息",
+    "example": "<ste-login-info></ste-login-info>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-login-info",
     "attributes": [
         {
             "name": "avatar",

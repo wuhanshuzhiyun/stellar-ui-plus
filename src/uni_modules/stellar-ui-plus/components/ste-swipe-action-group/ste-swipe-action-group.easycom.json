@@ -2,7 +2,7 @@
     "name": "ste-swipe-action-group",
     "description": "滑动单元格组",
     "example": "<ste-swipe-action-group><ste-swipe-action>塞下秋来风景异，衡阳雁去无留意</ste-swipe-action></ste-swipe-action-group>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=swipe-action",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-swipe-action",
     "attributes": [
         {
             "name": "mode",

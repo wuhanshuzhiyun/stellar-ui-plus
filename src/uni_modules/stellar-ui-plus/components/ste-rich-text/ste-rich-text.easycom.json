@@ -2,7 +2,7 @@
     "name": "ste-rich-text",
     "description": "阅读更多",
     "example": "<ste-rich-text>文本文本文本文本文本文本文本文本文本</ste-rich-text>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=rich-text",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-rich-text",
     "attributes": [
         {
             "name": "text",

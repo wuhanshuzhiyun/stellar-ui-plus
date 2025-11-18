@@ -2,7 +2,7 @@
     "name": "ste-swiper",
     "description": "Swiper 轮播组件",
     "example": "<ste-swiper><ste-swiper-item>塞下秋来风景异，衡阳雁去无留意</ste-swiper-item></ste-swiper>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=swiper",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-swiper",
     "attributes": [
         {
             "name": "current",

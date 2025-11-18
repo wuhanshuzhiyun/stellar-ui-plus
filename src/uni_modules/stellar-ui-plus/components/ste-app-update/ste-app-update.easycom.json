@@ -2,7 +2,7 @@
     "name": "ste-app-update",
     "description": "按钮组件",
     "example": "<ste-app-update></ste-app-update>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=app-update",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-app-update",
     "attributes": [
         {
             "name": "clientId",

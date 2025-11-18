@@ -2,7 +2,7 @@
     "name": "ste-media-preview",
     "description": "媒体预览",
     "example": "<ste-media-preview />",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=media-preview",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-number-keyboard",
     "attributes": [
         {
             "name": "mode",

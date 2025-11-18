@@ -2,7 +2,7 @@
     "name": "ste-category",
     "description": "分类选项",
     "example": "<ste-category></ste-category>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=category",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-category",
     "attributes": [
         {
             "name": "value",

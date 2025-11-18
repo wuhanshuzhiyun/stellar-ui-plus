@@ -2,7 +2,7 @@
     "name": "ste-popup",
     "description": "验证码输入",
     "example": "<ste-popup v-model:show='show'></ste-popup>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=popup",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-popup",
     "attributes": [
         {
             "name": "show",

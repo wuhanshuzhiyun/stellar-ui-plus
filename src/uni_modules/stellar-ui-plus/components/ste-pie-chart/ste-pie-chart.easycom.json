@@ -2,7 +2,7 @@
     "name": "ste-pie-chart",
     "description": "饼图",
     "example": "<ste-pie-chart></ste-pie-chart>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=pie-chart",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-pie-chart",
     "attributes": [
         {
             "name": "width",

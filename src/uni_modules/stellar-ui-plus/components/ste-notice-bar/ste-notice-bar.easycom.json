@@ -2,7 +2,7 @@
     "name": "ste-notice-bar",
     "description": "用于循环播放展示一组消息通知。",
     "example": "<ste-notice-bar :list='list'></ste-notice-bar>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=notice-bar",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-notice-bar",
     "attributes": [
         {
             "name": "list",

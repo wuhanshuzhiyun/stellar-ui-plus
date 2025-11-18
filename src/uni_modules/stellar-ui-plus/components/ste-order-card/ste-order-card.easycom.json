@@ -1,8 +1,8 @@
 {
-    "name": "ste-function-list",
-    "description": "功能列表",
-    "example": "<ste-function-list></ste-function-list>",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=function-list",
+    "name": "ste-order-card",
+    "description": "OrderCard 订单卡片",
+    "example": "<ste-order-card></ste-order-card>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-order-card",
     "attributes": [
         {
             "name": "background",

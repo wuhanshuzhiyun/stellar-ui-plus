@@ -2,7 +2,7 @@
     "name": "ste-line-chart",
     "description": "折线图",
     "example": "<ste-column-chart />",
-    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=line-chart",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-line-chart",
     "attributes": [
         {
             "name": "width",

@@ -125,16 +125,14 @@ const doHide = () => {
 <template>
     <view class="wrapper">
         <view class="ellipsis-box" @touchstart="handleTouchStart" @touchend="handleTouchEnd" @mousedown="handleTouchStart">
-            <slot>{{ text }}</slot>
+            {{ text }}
         </view>
         <!-- 不做展示，正常显示文字长度，用于判断是否超过长度 -->
-        <text class="measure-text">
-            <slot>{{ text }}</slot>
-        </text>
+        <text class="measure-text">{{ text }}</text>
 
         <view class="popover" :class="showPopover ? 'show' : 'hidden'" :style="{ left: popoverLeft + 'px', top: popoverTop + 'px' }" :animation="animationData">
             <view class="popover-content">
-                <slot>{{ text }}</slot>
+                {{ text }}
             </view>
             <view class="popover-arrow" :style="{ left: arrowLeft + '%' }"></view>
         </view>

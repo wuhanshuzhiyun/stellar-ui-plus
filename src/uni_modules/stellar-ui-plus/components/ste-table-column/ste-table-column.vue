@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch, h, type CSSProperties, type Ref } from 'vue';
+import { computed, ref, watch, type CSSProperties, type Ref } from 'vue';
 import type { Obj } from '../../types';
 import propsData from './props';
 import utils from '../../utils/utils';
@@ -179,21 +179,7 @@ const finalPopoverLine = computed(() => {
             </view>
         </template>
         <template v-else>
-            <!-- 优先级1：text 插槽 - 纯文本内容，自动应用 popover -->
-            <template v-if="$slots.text">
-                <view class="cell-box">
-                    <template v-if="!finalShowPopover">
-                        <slot name="text" :row="row.row" :column="props"></slot>
-                    </template>
-                    <table-popover v-else :line="finalPopoverLine">
-                        <slot name="text" :row="row.row" :column="props"></slot>
-                    </table-popover>
-                </view>
-            </template>
-
-            <!-- 优先级2：default 插槽 - 完全自定义，不应用 popover -->
-            <slot v-else-if="row[prop] || !$slots.empty" :row="row.row" :column="props">
-                <!-- 优先级3：默认渲染 -->
+            <slot v-if="row[prop] || !$slots.empty">
                 <sub-table :rows="row[prop]" v-if="rowSpan" :border="cmpBorder" />
                 <view class="cell-box" v-else>
                     <template v-if="!finalShowPopover">
@@ -202,8 +188,6 @@ const finalPopoverLine = computed(() => {
                     <table-popover v-else :text="cellText()" :line="finalPopoverLine"></table-popover>
                 </view>
             </slot>
-
-            <!-- 空状态 -->
             <view class="cell-box" v-else>
                 <slot name="empty"><text>暂无数据</text></slot>
             </view>

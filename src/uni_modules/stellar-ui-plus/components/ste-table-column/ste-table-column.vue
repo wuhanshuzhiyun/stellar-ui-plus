@@ -153,6 +153,16 @@ function cellClick(event: any) {
         changeCheck();
     }
 }
+
+// 计算最终是否使用 popover（列级别优先于表格级别）
+const finalShowPopover = computed(() => {
+    return props.showPopover !== undefined ? props.showPopover : parentProps.isPopover;
+});
+
+// 计算最终 popover 行数
+const finalPopoverLine = computed(() => {
+    return props.popoverLine !== undefined ? props.popoverLine : parentProps.popoverLine;
+});
 </script>
 
 <template>
@@ -172,10 +182,10 @@ function cellClick(event: any) {
             <slot v-if="row[prop] || !$slots.empty">
                 <sub-table :rows="row[prop]" v-if="rowSpan" :border="cmpBorder" />
                 <view class="cell-box" v-else>
-                    <template v-if="!parentProps.isPopover">
+                    <template v-if="!finalShowPopover">
                         {{ cellText() }}
                     </template>
-                    <table-popover v-else :text="cellText()" :line="parentProps.popoverLine"></table-popover>
+                    <table-popover v-else :text="cellText()" :line="finalPopoverLine"></table-popover>
                 </view>
             </slot>
             <view class="cell-box" v-else>

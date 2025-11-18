@@ -42,7 +42,7 @@ const checkTextOverflow = async () => {
     let textData = await utils.querySelector<false>('.measure-text', instance);
 
     if (containerData && textData && textData.width && containerData.width) {
-        isTextOverflow.value = textData.width > containerData.width * Number(props.line);
+        isTextOverflow.value = textData.width > containerData.width * Number(props.line) - 4;
     }
 };
 

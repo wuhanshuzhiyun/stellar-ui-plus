@@ -179,14 +179,14 @@ const finalPopoverLine = computed(() => {
             </view>
         </template>
         <template v-else>
-            <!-- 优先级1：content 插槽 - 纯文本内容，自动应用 popover -->
-            <template v-if="$slots.content">
+            <!-- 优先级1：text 插槽 - 纯文本内容，自动应用 popover -->
+            <template v-if="$slots.text">
                 <view class="cell-box">
                     <template v-if="!finalShowPopover">
-                        <slot name="content" :row="row.row" :column="props"></slot>
+                        <slot name="text" :row="row.row" :column="props"></slot>
                     </template>
                     <table-popover v-else :line="finalPopoverLine">
-                        <slot name="content" :row="row.row" :column="props"></slot>
+                        <slot name="text" :row="row.row" :column="props"></slot>
                     </table-popover>
                 </view>
             </template>

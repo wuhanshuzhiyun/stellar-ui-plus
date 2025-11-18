@@ -42,7 +42,7 @@ const checkTextOverflow = async () => {
     let textData = await utils.querySelector<false>('.measure-text', instance);
 
     if (containerData && textData && textData.width && containerData.width) {
-        isTextOverflow.value = textData.width > containerData.width * Number(props.line);
+        isTextOverflow.value = textData.width > containerData.width * Number(props.line) - 4;
     }
 };
 
@@ -125,14 +125,16 @@ const doHide = () => {
 <template>
     <view class="wrapper">
         <view class="ellipsis-box" @touchstart="handleTouchStart" @touchend="handleTouchEnd" @mousedown="handleTouchStart">
-            {{ text }}
+            <slot>{{ text }}</slot>
         </view>
         <!-- 不做展示，正常显示文字长度，用于判断是否超过长度 -->
-        <text class="measure-text">{{ text }}</text>
+        <text class="measure-text">
+            <slot>{{ text }}</slot>
+        </text>
 
         <view class="popover" :class="showPopover ? 'show' : 'hidden'" :style="{ left: popoverLeft + 'px', top: popoverTop + 'px' }" :animation="animationData">
             <view class="popover-content">
-                {{ text }}
+                <slot>{{ text }}</slot>
             </view>
             <view class="popover-arrow" :style="{ left: arrowLeft + '%' }"></view>
         </view>

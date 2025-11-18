@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch, type CSSProperties, type Ref } from 'vue';
+import { computed, ref, watch, h, type CSSProperties, type Ref } from 'vue';
 import type { Obj } from '../../types';
 import propsData from './props';
 import utils from '../../utils/utils';
@@ -153,6 +153,16 @@ function cellClick(event: any) {
         changeCheck();
     }
 }
+
+// 计算最终是否使用 popover（列级别优先于表格级别）
+const finalShowPopover = computed(() => {
+    return props.showPopover !== undefined ? props.showPopover : parentProps.isPopover;
+});
+
+// 计算最终 popover 行数
+const finalPopoverLine = computed(() => {
+    return props.popoverLine !== undefined ? props.popoverLine : parentProps.popoverLine;
+});
 </script>
 
 <template>
@@ -169,15 +179,31 @@ function cellClick(event: any) {
             </view>
         </template>
         <template v-else>
-            <slot v-if="row[prop] || !$slots.empty">
+            <!-- 优先级1：content 插槽 - 纯文本内容，自动应用 popover -->
+            <template v-if="$slots.content">
+                <view class="cell-box">
+                    <template v-if="!finalShowPopover">
+                        <slot name="content" :row="row.row" :column="props"></slot>
+                    </template>
+                    <table-popover v-else :line="finalPopoverLine">
+                        <slot name="content" :row="row.row" :column="props"></slot>
+                    </table-popover>
+                </view>
+            </template>
+
+            <!-- 优先级2：default 插槽 - 完全自定义，不应用 popover -->
+            <slot v-else-if="row[prop] || !$slots.empty" :row="row.row" :column="props">
+                <!-- 优先级3：默认渲染 -->
                 <sub-table :rows="row[prop]" v-if="rowSpan" :border="cmpBorder" />
                 <view class="cell-box" v-else>
-                    <template v-if="!parentProps.isPopover">
+                    <template v-if="!finalShowPopover">
                         {{ cellText() }}
                     </template>
-                    <table-popover v-else :text="cellText()" :line="parentProps.popoverLine"></table-popover>
+                    <table-popover v-else :text="cellText()" :line="finalPopoverLine"></table-popover>
                 </view>
             </slot>
+
+            <!-- 空状态 -->
             <view class="cell-box" v-else>
                 <slot name="empty"><text>暂无数据</text></slot>
             </view>

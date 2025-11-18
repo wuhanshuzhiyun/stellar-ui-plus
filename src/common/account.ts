@@ -25,7 +25,7 @@ export async function getInfo(pull = false) {
     const token = getToken()
     if (!token)
       return null
-    info = await request('/account/info')
+    info = await request('/client/account/info')
     uni.setStorageSync('user-info', JSON.stringify(info))
     return info
   }
@@ -40,19 +40,20 @@ export async function login() {
     const {
       code,
     } = await wx.login()
-    const token = await request('/account/login', {
+    const token = await request('/client/account/login', {
       code,
     }, 'POST')
+    console.log("ttttttttttttt", token)
     setToken(token)
-  }
-  catch (e) {
+  } catch (e) {
+    console.log(e)
     return false
   }
 }
 
 export async function logout() {
   try {
-    await request('/account/logout')
+    await request('/client/account/logout')
     removeToken()
   }
   catch (e) {

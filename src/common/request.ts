@@ -22,7 +22,7 @@ interface RequestSuccessCallbackResult {
 export default function (url: string, data?: any, method: 'GET' | 'OPTIONS' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT' = 'GET', header = {}): Promise<any> {
     return new Promise((resolve, reject) => {
         const token = getToken();
-
+        console.log(url, token);
         const _header: { [key: string]: string } = {};
         if (token) _header.token = token;
         uni.request({
@@ -32,7 +32,7 @@ export default function (url: string, data?: any, method: 'GET' | 'OPTIONS' | 'H
             data,
             success(res: RequestSuccessCallbackResult) {
                 const data = res.data as { code: number; message: string; data: any };
-                if (data.code === 200) {
+                if (!data.code) {
                     resolve(data.data);
                     return;
                 } else if (data.code === 401) {

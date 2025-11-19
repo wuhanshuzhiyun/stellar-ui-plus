@@ -1,0 +1,7 @@
+{
+    "name": "ste-tooltip",
+    "description": "用于扩展文字信息",
+    "example": "<ste-tooltip></ste-tooltip>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=tooltip",
+    "attributes": []
+}

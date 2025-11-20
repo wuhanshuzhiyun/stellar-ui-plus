@@ -151,7 +151,7 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
         showSuggestList.value = !showSuggestList.value;
     }
     if (type === 'back' && applyForNumberHistory.value.length > 0) {
-        backText.value = applyForNumberHistory.value.pop();
+        backText.value = applyForNumberHistory.value.length > 1 ? applyForNumberHistory.value.pop() : applyForNumberHistory.value[0];
         suggesData.value.applyForNumber = backText.value;
     }
     emits('click-suggest', type, item);

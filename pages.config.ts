@@ -5,9 +5,10 @@ export default defineUniPages({
         config: {
             toast: "<ste-toast ref='steToast'></ste-toast>",
             messageBox: "<ste-message-box ref='steMessageBox'></ste-message-box>",
+            tooltip: "<ste-tooltip ref='steTooltip'></ste-tooltip>",
         },
         // 全局配置
-        label: ['toast', 'messageBox'],
+        label: ['toast', 'messageBox', 'tooltip'],
         rootEle: '.*',
     },
     pages: [],

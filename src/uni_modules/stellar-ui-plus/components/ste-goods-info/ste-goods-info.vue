@@ -134,10 +134,13 @@ const setApplyForNumberHistory = (v: number) => {
     }, 300);
 };
 
+const backText = ref('');
+
 watch(
     () => suggesData.value.applyForNumber,
     (v, old) => {
         emits('change', { applyForNumber: v }, props.data);
+        if (v === backText.value) return;
         if (old !== undefined && old !== v) {
             setApplyForNumberHistory(old);
         }
@@ -148,7 +151,8 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
         showSuggestList.value = !showSuggestList.value;
     }
     if (type === 'back' && applyForNumberHistory.value.length > 0) {
-        suggesData.value.applyForNumber = applyForNumberHistory.value.pop();
+        backText.value = applyForNumberHistory.value.pop();
+        suggesData.value.applyForNumber = backText.value;
     }
     emits('click-suggest', type, item);
 };

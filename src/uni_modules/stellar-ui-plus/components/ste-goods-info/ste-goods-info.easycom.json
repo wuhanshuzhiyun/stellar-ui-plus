@@ -185,6 +185,12 @@
             "description": "建议右侧申请输入框只读（mode='more'时有效）",
             "type": "boolean"
         },
+        {
+            "name": "showOriginalUnit",
+            "description": "划线价格是否显示￥符号",
+            "type": "boolean",
+            "version": "1.23.8"
+        },
 
         {
             "name": "[event]change",

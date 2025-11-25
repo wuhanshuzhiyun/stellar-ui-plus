@@ -165,4 +165,9 @@ export default {
         type: Boolean,
         default: () => false,
     },
+    /** 划线价格是否添加符号 */
+    showOriginalUnit: {
+        type: Boolean,
+        default: () => false
+    }
 };

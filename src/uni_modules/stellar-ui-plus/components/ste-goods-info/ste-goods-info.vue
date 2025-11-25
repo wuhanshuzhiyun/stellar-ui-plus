@@ -219,7 +219,7 @@ const cmpMore = computed(() => props.mode === 'more');
                                             line-price-color="#666666"
                                             :marginLeft="cmpMore ? 16 : 10"
                                             :fontSize="cmpMore ? 20 : 24"
-                                            :showUnit="false"
+                                            :showUnit="showOriginalUnit"
                                         />
                                     </view>
                                 </block>

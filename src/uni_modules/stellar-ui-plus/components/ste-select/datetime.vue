@@ -68,10 +68,11 @@ const initSelectIndex = (values = selectedValue.value) => {
         });
         setSelectIndex(indexs);
         setSelectValue(indexs.map((i, index) => dataOptions.value[index][i].value));
-
-        viewloading.value = false;
-        emits('change', values);
-        emits('update:modelValue', values);
+        emits('change', selectedValue.value);
+        emits('update:modelValue', selectedValue.value);
+        nextTick(() => {
+            viewloading.value = false;
+        });
     });
 };
 

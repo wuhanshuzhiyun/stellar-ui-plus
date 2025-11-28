@@ -54,7 +54,7 @@ const initOptions = (values = selectedValue.value) => {
 
 const viewloading = ref(false);
 
-const initSelectIndex = (values = selectedValue.value, callback?: () => void) => {
+const initSelectIndex = (values = selectedValue.value) => {
     viewloading.value = true;
     nextTick(() => {
         const indexs: number[] = [];
@@ -68,10 +68,10 @@ const initSelectIndex = (values = selectedValue.value, callback?: () => void) =>
         });
         setSelectIndex(indexs);
         setSelectValue(indexs.map((i, index) => dataOptions.value[index][i].value));
-        emits('change', selectedValue.value);
-        emits('update:modelValue', selectedValue.value);
+
         viewloading.value = false;
-        if (callback) callback();
+        emits('change', values);
+        emits('update:modelValue', values);
     });
 };
 
@@ -81,10 +81,8 @@ const onChange = (e: any) => {
     changeTimeout = setTimeout(() => {
         const indexs: number[] = e.detail.value;
         const newValues = indexs.map((i, index) => dataOptions.value[index][i].value);
-        initSelectIndex(newValues, () => {
-            initOptions();
-            initSelectIndex();
-        });
+        initOptions(newValues);
+        initSelectIndex(newValues);
     }, 100);
 };
 

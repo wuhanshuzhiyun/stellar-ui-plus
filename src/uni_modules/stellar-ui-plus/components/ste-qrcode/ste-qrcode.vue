@@ -62,12 +62,19 @@ const initCanvas = () => {
 const draw = (ctx: URCodeCanvasContext, canvas: any = null) => {
     const qr = new UQRCode();
     qr.useDynamicSize = true;
-
     qr.backgroundColor = props.background;
     qr.foregroundColor = props.foreground;
-    qr.foregroundImageSrc = props.foregroundImageSrc;
-    props.foregroundImageWidth ? (qr.foregroundImageWidth = props.foregroundImageWidth) : '';
-    props.foregroundImageHeight ? (qr.foregroundImageHeight = props.foregroundImageHeight) : '';
+    if (props.foregroundImageSrc) {
+        qr.foregroundImageSrc = props.foregroundImageSrc;
+        const width = props.foregroundImageWidth ? props.foregroundImageWidth : props.size / 4;
+        const height = props.foregroundImageHeight ? props.foregroundImageHeight : props.size / 4;
+        qr.foregroundImageWidth = width;
+        qr.foregroundImageHeight = height;
+        const x = (props.size - width) / 2;
+        qr.foregroundImageX = x;
+        const y = (props.size - height) / 2;
+        qr.foregroundImageY = y;
+    }
     // 设置二维码内容
     qr.data = props.content;
     // 设置二维码大小，必须与canvas设置的宽高一致

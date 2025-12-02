@@ -120,6 +120,7 @@ export default function useSimpleFilterLogic(props: FilterToolProps, emits: Setu
             item.children?.forEach(child => {
                 child.active = false;
             });
+            item.config = { ...item.config, value: '' }; // 重置输入框值
             if (props.filterType === 'checkbox') {
                 item.activeValue = '';
             }

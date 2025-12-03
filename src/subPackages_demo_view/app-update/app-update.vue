@@ -37,9 +37,6 @@ const checkForUpdates = () => {
     .content {
         .demo-item {
             .item-block {
-                > view {
-                    margin: 0 36rpx 36rpx 0;
-                }
             }
         }
     }

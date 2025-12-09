@@ -106,7 +106,7 @@ const draw = (ctx: URCodeCanvasContext, canvas: any = null) => {
 
     // #endif
 
-    // #ifdef H5
+    // #ifdef H5 || APP
     canvasWidth.value = qr.dynamicSize;
     canvasHeight.value = qr.dynamicSize;
     qr.loadImage = src => {

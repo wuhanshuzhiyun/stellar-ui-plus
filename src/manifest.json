@@ -19,6 +19,7 @@
     "distribute": {
       "android": {
         "permissions": [
+          "<uses-permission android:name=\"android.permission.INTERNET\"/>",
           "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
           "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
           "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
@@ -36,7 +37,36 @@
           "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
         ]
       },
-      "ios": {},
+      "ios": {
+        "privacyDescription": {
+          "NSPhotoLibraryUsageDescription": "允许访问相册",
+          "NSPhotoLibraryAddUsageDescription": "允许保存图片到相册",
+          "NSCameraUsageDescription": "允许使用摄像头",
+          "NSMicrophoneUsageDescription": "允许使用麦克风"
+        },
+        "capabilities": {
+          "background-modes": {
+            "audio": true
+          }
+        },
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true,
+          "NSAllowsArbitraryLoadsInWebContent": true,
+          "NSExceptionDomains": {
+            "qiniu-web-assets.dcloud.net.cn": {
+              "NSIncludesSubdomains": true,
+              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+              "NSTemporaryExceptionRequiresForwardSecrecy": false,
+              "NSTemporaryExceptionMinimumTLSVersion": "TLSv1.0"
+            },
+            "dcloud.net.cn": {
+              "NSIncludesSubdomains": true,
+              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+              "NSTemporaryExceptionRequiresForwardSecrecy": false
+            }
+          }
+        }
+      },
       "sdkConfigs": {}
     },
     "compatible": {

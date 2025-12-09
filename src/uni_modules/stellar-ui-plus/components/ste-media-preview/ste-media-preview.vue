@@ -67,7 +67,7 @@ const onClose = async () => {
 };
 
 const onTouchstart = (e: UniTouchEvent) => {
-    if (props.scale) return;
+    if (!props.scale) return;
     const [x1, y1, x2, y2] = touch.value?.touchStart(e.changedTouches) || [];
     if (x1 && y1 && x2 && y2) {
         if (dataShowmenu) setDataShowmenu(false);
@@ -75,7 +75,7 @@ const onTouchstart = (e: UniTouchEvent) => {
 };
 
 const onTouchmove = (e: UniTouchEvent) => {
-    if (props.scale) return;
+    if (!props.scale) return;
     const bool = touch.value?.touchMove(e.changedTouches);
     if (!bool) return;
     if (dataShowmenu) setDataShowmenu(false);
@@ -85,7 +85,7 @@ const onTouchmove = (e: UniTouchEvent) => {
 };
 
 const onTouchend = (e: UniTouchEvent) => {
-    if (props.scale) return;
+    if (!props.scale) return;
     if (dataShowmenu.value !== props.showmenu) setDataShowmenu(props.showmenu);
     const bool = touch.value?.touchEnd(e.changedTouches);
     if (!bool) return;

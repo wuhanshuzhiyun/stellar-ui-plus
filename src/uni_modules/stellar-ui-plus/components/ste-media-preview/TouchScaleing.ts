@@ -5,11 +5,11 @@ export default class TouchScaleing {
 
   startParam: {
     id1: number | null
-    x1: number | null
-    y1: number | null
+    x1?: number | null
+    y1?: number | null
     id2: number | null
-    x2: number | null
-    y2: number | null
+    x2?: number | null
+    y2?: number | null
   } = {
       id1: null,
       x1: null,
@@ -19,12 +19,17 @@ export default class TouchScaleing {
       y2: null,
     }
 
+  isScale = false
   scale = 1
+  baseScale = 1
 
   rotate = 0
+  baseRotate = 0
 
   translateX = 0
   translateY = 0
+  baseTranslateX = 0
+  baseTranslateY = 0
 
   private _setData(changedTouches: UniTouchList) {
     for (let i = 0; i < changedTouches.length; i++) {
@@ -77,23 +82,41 @@ export default class TouchScaleing {
   }
 
   touchMove(changedTouches: UniTouchList) {
-    if (changedTouches.length < 2)
-      return false
     this._setData(changedTouches)
 
-    const param = this.startParam
-    const [startX1, startY1, startX2, startY2] = [param.x1, param.y1, param.x2, param.y2] as number[]
-    const [x1, y1, x2, y2] = this._getTouchPosition() as number[]
+    // 单指拖拽处理
+    if (this.isScale && changedTouches.length === 1) {
+      const param = this.startParam
+      const [x1, y1] = this._getTouchPosition() as number[]
 
-    this.scale
-      = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-      / Math.sqrt((startX2 - startX1) ** 2 + (startY2 - startY1) ** 2)
-    this.rotate
-      = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI
-      - (Math.atan2(startY2 - startY1, startX2 - startX1) * 180) / Math.PI
-    this.translateX = (x1 + x2) / 2 - (startX1 + startX2) / 2
-    this.translateY = (y1 + y2) / 2 - (startY1 + startY2) / 2
-    return true
+      // 如果之前有记录第一个触摸点，则计算移动距离
+      if (param.x1 && param.y1) {
+        this.translateX = this.baseTranslateX + (x1 - param.x1)
+        this.translateY = this.baseTranslateY + (y1 - param.y1)
+      }
+      return true
+    }
+
+    // 双指缩放处理
+    if (changedTouches.length >= 2) {
+      const param = this.startParam
+      const [startX1, startY1, startX2, startY2] = [param.x1, param.y1, param.x2, param.y2] as number[]
+      const [x1, y1, x2, y2] = this._getTouchPosition() as number[]
+
+      this.scale = this.baseScale *
+        (Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+          / Math.sqrt((startX2 - startX1) ** 2 + (startY2 - startY1) ** 2))
+
+      this.rotate = this.baseRotate +
+        ((Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI
+          - (Math.atan2(startY2 - startY1, startX2 - startX1) * 180) / Math.PI)
+
+      this.translateX = this.baseTranslateX + ((x1 + x2) / 2 - (startX1 + startX2) / 2)
+      this.translateY = this.baseTranslateY + ((y1 + y2) / 2 - (startY1 + startY2) / 2)
+      return true
+    }
+
+    return false
   }
 
   touchEnd(changedTouches: UniTouchList) {
@@ -112,6 +135,26 @@ export default class TouchScaleing {
       this.startParam.x2 = null
       this.startParam.y2 = null
     }
+
+    // 保存当前状态作为基础值，以便下次操作基于此状态继续
+    this.baseScale = this.scale
+    this.baseRotate = this.rotate
+    this.baseTranslateX = this.translateX
+    this.baseTranslateY = this.translateY
+    this.isScale = this.scale > 1
     return !this.identifiers.length
+  }
+
+  // 重置所有变换状态
+  reset() {
+    this.isScale = false
+    this.scale = 1
+    this.baseScale = 1
+    this.rotate = 0
+    this.baseRotate = 0
+    this.translateX = 0
+    this.translateY = 0
+    this.baseTranslateX = 0
+    this.baseTranslateY = 0
   }
 }

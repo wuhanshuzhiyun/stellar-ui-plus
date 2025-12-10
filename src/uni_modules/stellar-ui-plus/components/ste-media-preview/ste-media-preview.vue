@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch, computed } from 'vue';
+import { onMounted, watch, computed, ref } from 'vue';
 import utils from '../../utils/utils';
 import propsData from './props';
 import useData from './useData';
@@ -18,7 +18,7 @@ const emits = defineEmits<{
 
 const { dataIndex, setDataIndex, dataShow, setDataShow, touch, setTouch, scaling, setScaling, translate, setTranslate, rotate, setRotate, transition, setTransition, dataShowmenu, setDataShowmenu } =
     useData();
-
+const isScale = ref(false); // 是否缩放了
 const props = defineProps(propsData);
 
 const cmpUrls = computed<{ url: string; type: string | number; path?: string }[]>(() => {
@@ -43,11 +43,27 @@ watch(
             setDataIndex(props.index);
         }
         setDataShow(v);
+        // 当切换显示状态时，重置缩放和拖拽状态
+        if (!v && touch.value) {
+            touch.value.reset();
+            setScaling(1);
+            setTranslate('0');
+            setRotate(0);
+        }
     },
     { immediate: true }
 );
 watch(() => props.showmenu, setDataShowmenu, { immediate: true });
 
+const resetScal = () => {
+    if (touch.value) {
+        touch.value.reset();
+        isScale.value = false;
+        setScaling(1);
+        setTranslate('0');
+        setRotate(0);
+    }
+};
 const onClose = async () => {
     let next = true;
     const stop = new Promise((resolve, reject) => {
@@ -64,6 +80,8 @@ const onClose = async () => {
     setDataShow(false);
     emits('update:show', false);
     emits('close');
+    // 关闭时重置缩放和拖拽状态
+    resetScal();
 };
 
 const onTouchstart = (e: UniTouchEvent) => {
@@ -89,55 +107,87 @@ const onTouchend = (e: UniTouchEvent) => {
     if (dataShowmenu.value !== props.showmenu) setDataShowmenu(props.showmenu);
     const bool = touch.value?.touchEnd(e.changedTouches);
     if (!bool) return;
-    setTransition('300ms');
-    setTimeout(() => {
-        setScaling(1);
-        setTranslate('0');
-        setRotate(0);
-        setTimeout(() => {
-            setTransition('0');
-        }, 100);
-    }, 50);
+    isScale.value = touch.value?.isScale || false;
 };
 
 const onChange = (e: SwiperOnChangeEvent) => {
     setDataIndex(e.detail.current);
     emits('update:index', e.detail.current);
     emits('change', e.detail.current);
+    // 切换图片时重置缩放和拖拽状态
+    resetScal();
 };
 
 const onLongpress = () => {
     emits('longpress', dataIndex.value);
 };
-
-const getTransfrom = (i: number) => (dataIndex.value === i ? cmpTransform.value : {});
+const currentItem = computed(() => {
+    return cmpUrls.value[dataIndex.value];
+});
+let clickNum = 0;
+let clickTimer: any = 0;
+const onClick = () => {
+    clearTimeout(clickTimer);
+    clickNum++;
+    if (clickNum > 1) {
+        clickNum = 0;
+        resetScal();
+        return;
+    }
+    clickTimer = setTimeout(() => {
+        clickNum = 0;
+    }, 300);
+};
 </script>
 <template>
     <view class="ste-media-preview-root" data-test="media-preview" v-if="dataShow">
         <view class="media-preview-content">
-            <swiper style="width: 100%; height: 100%" :autoplay="props.autoplay > 0" :interval="props.autoplay" :circular="props.loop" :current="dataIndex" @change="onChange">
-                <swiper-item v-for="(item, index) in cmpUrls" :key="index">
-                    <view
-                        class="preview-item"
-                        data-test="media-preview-item"
-                        @click.stop="1"
-                        @touchstart="onTouchstart"
-                        @touchmove="onTouchmove"
-                        @touchend="onTouchend"
-                        @longpress="onLongpress"
-                        :style="[dataIndex === index ? cmpTransform : {}]"
-                    >
-                        <!-- #ifndef APP -->
-                        <video class="video" object-fit="contain" v-if="item.type === 'video'" :src="item.url || item.path" @click.stop="1" />
-                        <ste-image v-else class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit" />
-                        <!-- #endif -->
-                        <!-- #ifdef APP -->
-                        <video class="video" object-fit="contain" v-if="item.type === 'video' && cmpUrls.length <= 1" :src="item.url || item.path" @click.stop="1" />
-                        <ste-image class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit" />
-                        <!-- #endif -->
-                    </view>
-                </swiper-item>
-            </swiper>
+            <template v-if="isScale">
+                <view
+                    class="preview-item"
+                    data-test="media-preview-item"
+                    @click.stop="onClick"
+                    @touchstart="onTouchstart"
+                    @touchmove="onTouchmove"
+                    @touchend="onTouchend"
+                    @longpress="onLongpress"
+                    :style="[cmpTransform]"
+                >
+                    <!-- #ifndef APP -->
+                    <video class="video" object-fit="contain" v-if="currentItem.type === 'video'" :src="currentItem.url || currentItem.path" @click.stop="1" />
+                    <ste-image v-else class="image" :showMenuByLongpress="dataShowmenu" :src="currentItem.url || currentItem.path" mode="aspectFit" />
+                    <!-- #endif -->
+                    <!-- #ifdef APP -->
+                    <video class="video" object-fit="contain" v-if="currentItem.type === 'video' && cmpUrls.length <= 1" :src="currentItem.url || currentItem.path" @click.stop="1" />
+                    <ste-image class="image" :showMenuByLongpress="dataShowmenu" :src="currentItem.url || currentItem.path" mode="aspectFit" />
+                    <!-- #endif -->
+                </view>
+            </template>
+            <template v-else>
+                <swiper style="width: 100%; height: 100%" :autoplay="props.autoplay > 0" :interval="props.autoplay" :circular="props.loop" :current="dataIndex" @change="onChange">
+                    <swiper-item v-for="(item, index) in cmpUrls" :key="index">
+                        <view
+                            class="preview-item"
+                            data-test="media-preview-item"
+                            @click.stop="onClick"
+                            @touchstart="onTouchstart"
+                            @touchmove="onTouchmove"
+                            @touchend="onTouchend"
+                            @longpress="onLongpress"
+                            :style="[dataIndex === index ? cmpTransform : {}]"
+                        >
+                            <!-- #ifndef APP -->
+                            <video class="video" object-fit="contain" v-if="item.type === 'video'" :src="item.url || item.path" @click.stop="1" />
+                            <ste-image v-else class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit" />
+                            <!-- #endif -->
+                            <!-- #ifdef APP -->
+                            <video class="video" object-fit="contain" v-if="item.type === 'video' && cmpUrls.length <= 1" :src="item.url || item.path" @click.stop="1" />
+                            <ste-image class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit" />
+                            <!-- #endif -->
+                        </view>
+                    </swiper-item>
+                </swiper>
+            </template>
         </view>
         <view class="media-preview-footer">
             <view class="footer-index">

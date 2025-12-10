@@ -42,7 +42,7 @@
         },
         {
             "name": "scale",
-            "description": "是否支持双指缩放",
+            "description": "是否支持双指缩放，双击恢复缩放状态",
             "type": "boolean",
             "default": false
         },

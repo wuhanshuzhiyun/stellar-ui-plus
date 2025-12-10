@@ -155,11 +155,11 @@ const onClick = () => {
                 >
                     <!-- #ifndef APP -->
                     <video class="video" object-fit="contain" v-if="currentItem.type === 'video'" :src="currentItem.url || currentItem.path" @click.stop="1" />
-                    <ste-image v-else class="image" :showMenuByLongpress="dataShowmenu" :src="currentItem.url || currentItem.path" mode="aspectFit" />
+                    <image v-else class="image" :show-menu-by-longpress="dataShowmenu" :src="currentItem.url || currentItem.path" mode="aspectFit" />
                     <!-- #endif -->
                     <!-- #ifdef APP -->
                     <video class="video" object-fit="contain" v-if="currentItem.type === 'video' && cmpUrls.length <= 1" :src="currentItem.url || currentItem.path" @click.stop="1" />
-                    <ste-image class="image" :showMenuByLongpress="dataShowmenu" :src="currentItem.url || currentItem.path" mode="aspectFit" />
+                    <image v-else class="image" :show-menu-by-longpress="dataShowmenu" :src="currentItem.url || currentItem.path" mode="aspectFit" />
                     <!-- #endif -->
                 </view>
             </template>
@@ -182,7 +182,7 @@ const onClick = () => {
                             <!-- #endif -->
                             <!-- #ifdef APP -->
                             <video class="video" object-fit="contain" v-if="item.type === 'video' && cmpUrls.length <= 1" :src="item.url || item.path" @click.stop="1" />
-                            <ste-image class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit" />
+                            <ste-image v-else class="image" :showMenuByLongpress="dataShowmenu" :src="item.url || item.path" mode="aspectFit" />
                             <!-- #endif -->
                         </view>
                     </swiper-item>

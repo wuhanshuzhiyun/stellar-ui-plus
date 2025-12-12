@@ -79,6 +79,14 @@ export default defineManifestConfig({
                     },
                 },
             },
+            icons: {
+                android: {
+                    hdpi: 'C:/Users/zyy/Desktop/抱抱app/抱抱.png',
+                    xhdpi: 'C:/Users/zyy/Desktop/抱抱app/抱抱.png',
+                    xxhdpi: 'C:/Users/zyy/Desktop/抱抱app/抱抱.png',
+                    xxxhdpi: 'C:/Users/zyy/Desktop/抱抱app/抱抱.png',
+                },
+            },
             /* SDK配置 */
             sdkConfigs: {},
         },

@@ -55,6 +55,11 @@
             "name": "[event]footerClick",
             "description": "点击页脚列表时触发",
             "type": "(index:number) => void"
+        },
+        {
+            "name": "[event]countDown",
+            "description": "倒计时触发",
+            "type": "(data:any,time:number) => void"
         }
     ]
 }

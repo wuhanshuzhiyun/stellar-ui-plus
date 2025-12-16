@@ -69,6 +69,7 @@ const endTime = computed(() => Date.now() + 60 * 60 * 1000 * 2);
 <style lang="scss" scoped>
 .page {
     background-color: #f5f5f5;
+
     .content {
         .demo-item {
             .item-block {

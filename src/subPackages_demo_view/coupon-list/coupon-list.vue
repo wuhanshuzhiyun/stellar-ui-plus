@@ -17,6 +17,7 @@ const endTime = computed(() => Date.now() + 60 * 60 * 1000 * 2);
         <view class="description">
             <view class="cmp-name">CouponList 券列表</view>
             <view class="cmp-desc">此组件用于展示券列表</view>
+            <view class="cmp-desc">支持版本：1.24.1</view>
         </view>
         <view class="type-block">
             <view>01 组件类型</view>

@@ -1645,6 +1645,73 @@ export const componentMap: Record<string, ComponentDesc> = {
         ],
         "events": []
     },
+    "coupon-list": {
+        "site": "ste-coupon-list",
+        "attr": [
+            "data=''"
+        ],
+        "props": [
+            {
+                "name": "data",
+                "description": "基础数据",
+                "type": "{title: string;desc?: string;image: string;price: string | number;constraint?: string;footers?: string[]}",
+                "default": "{}"
+            },
+            {
+                "name": "endTime",
+                "description": "结束时间",
+                "type": "string | number | Date",
+                "default": ""
+            },
+            {
+                "name": "residue",
+                "description": "剩余数量",
+                "type": "number",
+                "default": "-1"
+            },
+            {
+                "name": "progress",
+                "description": "进度条百分比",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "buttonText",
+                "description": "按钮文字",
+                "type": "string",
+                "default": "购买"
+            },
+            {
+                "name": "buttonDisabled",
+                "description": "禁用按钮",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "backgroundColor",
+                "description": "背景颜色",
+                "type": "string",
+                "default": "#fff"
+            }
+        ],
+        "events": [
+            {
+                "name": "buttonClick",
+                "description": "点击按钮时触发",
+                "type": "() => void"
+            },
+            {
+                "name": "footerClick",
+                "description": "点击页脚列表时触发",
+                "type": "(index:number) => void"
+            },
+            {
+                "name": "countDown",
+                "description": "倒计时触发",
+                "type": "(data:any,time:number) => void"
+            }
+        ]
+    },
     "date-picker": {
         "site": "ste-date-picker",
         "attr": [
@@ -2636,6 +2703,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "readonlySuggestInput",
                 "description": "建议右侧申请输入框只读（mode='more'时有效）",
                 "type": "boolean"
+            },
+            {
+                "name": "showOriginalUnit",
+                "description": "划线价格是否显示￥符号",
+                "type": "boolean",
+                "version": "1.23.8"
             }
         ],
         "events": [
@@ -4036,7 +4109,7 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "scale",
-                "description": "是否支持双指缩放",
+                "description": "是否支持双指缩放，双击恢复缩放状态",
                 "type": "boolean",
                 "default": false
             },
@@ -8228,6 +8301,14 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "() => void"
             }
         ],
+        "events": []
+    },
+    "tooltip": {
+        "site": "ste-tooltip",
+        "attr": [
+            "undefined=''"
+        ],
+        "props": [],
         "events": []
     },
     "touch-swipe": {

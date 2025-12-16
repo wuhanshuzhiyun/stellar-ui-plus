@@ -34,6 +34,7 @@ const viewTime = (v: number) => {
 };
 const canvasId = utils.guid();
 
+// #ifdef H5
 // 绘制半圆环形进度条
 const drawProgress = () => {
     if (props.progress < 0) return;
@@ -48,23 +49,21 @@ const drawProgress = () => {
 
         query
             .select('#' + canvasId)
-            .fields({ node: true, size: true }, res => {
-                console.log(res);
-            })
+            .fields({ node: true, size: true }, res => {})
             .exec(res => {
-                console.log(res);
                 if (!res || !res[0]) return;
                 const canvas = res[0].node;
                 if (!canvas) return;
+                // #ifdef H5
                 const ctx = canvas.getContext('2d');
+                // #endif
+                if (!ctx) return;
                 const dpr = uni.getSystemInfoSync().pixelRatio;
                 canvas.width = res[0].width * dpr;
                 canvas.height = res[0].height * dpr;
                 ctx.scale(dpr, dpr);
-
                 // 清空画布
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
                 // 设置半圆进度条参数
                 const centerX = res[0].width / 2;
                 const centerY = res[0].height;
@@ -90,16 +89,111 @@ const drawProgress = () => {
             });
     }, 50);
 };
+// #endif
+
+// #ifdef MP-ALIPAY || APP
+const drawProgress = () => {
+    if (props.progress < 0) return;
+
+    // 等待下一个tick确保canvas已经渲染
+    setTimeout(() => {
+        // 使用uni.createCanvasContext创建绘图上下文
+        const ctx: UniApp.CanvasContext = uni.createCanvasContext(canvasId, instance);
+
+        // 设置canvas尺寸 - 根据样式定义的96rpx*48rpx
+        const canvasWidth = utils.formatPx(96, 'num');
+        const canvasHeight = utils.formatPx(48, 'num');
+
+        // 清空画布
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        // 设置半圆进度条参数
+        const centerX = canvasWidth / 2;
+        const centerY = canvasHeight;
+        const radius = canvasWidth / 2 - utils.formatPx(6, 'num'); // 留出边距
+
+        // 绘制背景圆弧（灰色）
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, Math.PI, 0, false);
+        ctx.setLineWidth(utils.formatPx(8, 'num'));
+        ctx.setStrokeStyle('#F3F3F3');
+        ctx.setLineCap('round');
+        ctx.stroke();
+
+        // 绘制进度圆弧
+        if (props.progress > 0) {
+            const progressAngle = Math.PI * (props.progress / 100);
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + progressAngle, false);
+            ctx.setStrokeStyle('#FF283A');
+            ctx.setLineCap('round');
+            ctx.stroke();
+        }
+
+        // 绘制到canvas
+        ctx.draw(false);
+    }, 50);
+};
+// #endif
+
+// #ifdef MP-WEIXIN
+const base64Progress = ref('');
+const drawProgress = () => {
+    if (props.progress < 0) return;
+    // 等待下一个tick确保相关元素已渲染
+    setTimeout(() => {
+        // 创建离屏canvas
+        const canvas = wx.createOffscreenCanvas({
+            type: '2d',
+            width: 96,
+            height: 48,
+        });
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // 清空画布
+        ctx.clearRect(0, 0, 96, 48);
+
+        // 设置半圆进度条参数
+        const centerX = 48;
+        const centerY = 48;
+        const radius = 42; // 留出边距
+
+        // 绘制背景圆弧（灰色）
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, Math.PI, 0, false);
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = '#F3F3F3';
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        // 绘制进度圆弧
+        if (props.progress > 0) {
+            const progressAngle = Math.PI * (props.progress / 100);
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + progressAngle, false);
+            ctx.strokeStyle = '#FF283A';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        // 转换为base64
+        try {
+            const dataURL = canvas.toDataURL('image/png');
+            // 在实际应用中，你可能需要将这个dataURL设置到某个变量中供模板使用
+            // 例如: progressImage.value = dataURL;
+            base64Progress.value = dataURL;
+        } catch (error) {
+            console.error('Failed to convert canvas to base64:', error);
+        }
+    }, 50);
+};
+
+// #endif
 
 // 监听progress变化重新绘制
-watch(
-    () => props.progress,
-    newVal => {
-        if (newVal >= 0) {
-            drawProgress();
-        }
-    }
-);
+watch(() => props.progress, drawProgress);
 </script>
 <template>
     <view class="ste-coupon-list--root" :style="rootStyle">
@@ -133,13 +227,13 @@ watch(
                 </view>
             </view>
             <view class="circle-progress-canvas" v-if="progress >= 0">
-                <!-- #ifdef H5 || APP-PLUS -->
+                <!-- #ifndef MP-WEIXIN -->
                 <canvas :canvas-id="canvasId" :id="canvasId" class="canvas-element" />
                 <!-- #endif -->
-
-                <!-- #ifdef MP-WEIXIN || MP-ALIPAY -->
-                <canvas type="2d" :id="canvasId" class="canvas-element" />
+                <!-- #ifdef MP-WEIXIN -->
+                <image :src="base64Progress" class="canvas-element" />
                 <!-- #endif -->
+
                 <view class="progress-text">{{ progressText }}</view>
             </view>
             <slot name="position"></slot>

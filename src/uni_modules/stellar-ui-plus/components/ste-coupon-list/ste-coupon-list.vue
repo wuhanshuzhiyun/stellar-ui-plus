@@ -35,11 +35,7 @@ const canvasId = utils.guid();
 // #ifdef H5
 // 绘制半圆环形进度条
 const drawProgressH5 = () => {
-    const query = uni
-        .createSelectorQuery()
-        // #ifdef MP-WEIXIN || MP-ALIPAY
-        .in(instance);
-    // #endif
+    const query = uni.createSelectorQuery();
 
     query
         .select('#' + canvasId)
@@ -47,15 +43,10 @@ const drawProgressH5 = () => {
         .exec(res => {
             if (!res || !res[0]) return;
             const canvas = res[0].node;
+
             if (!canvas) return;
-            // #ifdef H5
             const ctx = canvas.getContext('2d');
-            // #endif
             if (!ctx) return;
-            const dpr = uni.getSystemInfoSync().pixelRatio;
-            canvas.width = res[0].width * dpr;
-            canvas.height = res[0].height * dpr;
-            ctx.scale(dpr, dpr);
             // 清空画布
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             // 设置半圆进度条参数

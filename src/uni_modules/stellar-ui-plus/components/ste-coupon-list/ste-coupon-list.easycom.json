@@ -1,0 +1,60 @@
+{
+    "name": "ste-coupon-list",
+    "description": "业务组件",
+    "example": "<ste-coupon-list></ste-coupon-list>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-coupon-list",
+    "attributes": [
+        {
+            "name": "data",
+            "description": "基础数据",
+            "type": "{title: string;desc?: string;image: string;price: string | number;constraint?: string;footers?: string[]}",
+            "default": "{}"
+        },
+        {
+            "name": "endTime",
+            "description": "结束时间",
+            "type": "string | number | Date",
+            "default": ""
+        },
+        {
+            "name": "residue",
+            "description": "剩余数量",
+            "type": "number",
+            "default": "-1"
+        },
+        {
+            "name": "progress",
+            "description": "进度条百分比",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "buttonText",
+            "description": "按钮文字",
+            "type": "string",
+            "default": "购买"
+        },
+        {
+            "name": "buttonDisabled",
+            "description": "禁用按钮",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "backgroundColor",
+            "description": "背景颜色",
+            "type": "string",
+            "default": "#fff"
+        },
+        {
+            "name": "[event]buttonClick",
+            "description": "点击按钮时触发",
+            "type": "() => void"
+        },
+        {
+            "name": "[event]footerClick",
+            "description": "点击页脚列表时触发",
+            "type": "(index:number) => void"
+        }
+    ]
+}

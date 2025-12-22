@@ -19,6 +19,7 @@ const emits = defineEmits<{
     (e: 'delete', index: number, list: UploadFileType[]): void;
     (e: 'open-preview'): void;
     (e: 'close-preview'): void;
+    (e: 'click-item', i: number): void;
 }>();
 
 const props = defineProps(propsData);
@@ -207,6 +208,7 @@ const deleteItem = async (index: number) => {
 };
 
 const previewItem = (index: number, item: UploadFileType) => {
+    emits('click-item', index);
     if (!cmpPreviewFullImage.value) return;
     if (['video', 'image'].indexOf(item.type as string) === -1) return;
     setPreviewIndex(index);

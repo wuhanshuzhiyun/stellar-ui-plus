@@ -262,6 +262,17 @@
             "name": "[event]close-preview",
             "description": "关闭预览时触发",
             "type": "()=>void"
+        },
+        {
+            "name": "[event]click-item",
+            "description": "点击文件触发",
+            "type": "(index:number)=>void",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "文件下标"
+                }
+            ]
         }
     ]
 }

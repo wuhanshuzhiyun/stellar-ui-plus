@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { UploadFileType } from '../../../../uni_modules/stellar-ui-plus/types';
+import type { UploadFileType } from '@/uni_modules/stellar-ui-plus/types';
 import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
 const fileList = ref<UploadFileType[]>([]);
@@ -83,6 +83,9 @@ const onSuccessDelete = (index: number, list: UploadFileType[]) => {
 const openPreview = () => {
     console.log('openPreview');
 };
+const clickItem = (i: number) => {
+    console.log('clickItem', i);
+};
 const closePreview = () => {
     console.log('closePreview');
 };
@@ -111,7 +114,7 @@ const closePreview = () => {
         </view>
         <view class="demo-item">
             <view class="title">自定义上传图标，限制上传数量2</view>
-            <ste-upload v-model="fileList2" uploadIcon="&#xe67e;" :maxCount="2" @open-preview="openPreview" @close-preview="closePreview" />
+            <ste-upload v-model="fileList2" uploadIcon="&#xe67e;" @click-item="clickItem" :maxCount="2" @open-preview="openPreview" @close-preview="closePreview" />
         </view>
         <view class="demo-item">
             <view class="title">限制文件大小2M</view>

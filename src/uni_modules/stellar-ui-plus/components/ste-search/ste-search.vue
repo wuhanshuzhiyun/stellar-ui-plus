@@ -135,7 +135,14 @@ const handleSuggestionClick = (item: SearchSuggestion) => {
                     :fontColor="inputTextColor"
                     background="transparent"
                     :cursor="cursorNumber"
-                />
+                >
+                    <template #prefix>
+                        <slot name="prefix"></slot>
+                    </template>
+                    <template #suffix>
+                        <slot name="suffix"></slot>
+                    </template>
+                </ste-input>
                 <swiper v-if="cmpShowSwitch" class="placeholder-list" :current="switchIndex" :autoplay="autoplay" :interval="interval" circular vertical @change="onSwitchChange">
                     <swiper-item class="placeholder-item" v-for="(item, i) in hotWords" :key="i">
                         {{ item }}

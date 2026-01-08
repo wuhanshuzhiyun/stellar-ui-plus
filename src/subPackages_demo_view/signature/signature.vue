@@ -10,7 +10,19 @@ function save() {
         });
     });
 }
-
+function output(orientation: 'up' | 'down' | 'right' | 'left' | 'up-mirrored' | 'down-mirrored' | 'left-mirrored' | 'right-mirrored' = 'up') {
+    signature.value?.output({
+        orientation,
+        success: res => {
+            uni.previewImage({
+                urls: [res],
+            });
+        },
+        fail(e) {
+            console.error(':::::', e);
+        },
+    });
+}
 function back() {
     signature.value?.back();
 }
@@ -34,6 +46,13 @@ function clear() {
             <view class="button" @click="back">回退</view>
             <view class="button" @click="clear">清除</view>
             <view class="button" @click="save">保存并预览</view>
+            <ste-button background="#f00" @click="output('right')">输出旋转90°</ste-button>
+            <ste-button background="#f00" @click="output('down')">输出旋转180°</ste-button>
+            <ste-button background="#f00" @click="output('left')">输出旋转270°</ste-button>
+            <ste-button background="#f00" @click="output('up-mirrored')">输出镜像</ste-button>
+            <ste-button background="#f00" @click="output('right-mirrored')">输出旋转90°镜像</ste-button>
+            <ste-button background="#f00" @click="output('down-mirrored')">输出旋转180°镜像</ste-button>
+            <ste-button background="#f00" @click="output('left-mirrored')">输出旋转270°镜像</ste-button>
         </view>
         <view class="demo-item">
             <view class="title">画笔颜色和线宽</view>

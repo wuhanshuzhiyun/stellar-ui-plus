@@ -35,6 +35,13 @@
             "default": "立即体验"
         },
         {
+            "name": "appVersion",
+            "description": "当前应用版本",
+            "type": "string",
+            "default": "",
+            "version": "1.24.6"
+        },
+        {
             "name": "[event]cancel",
             "description": "取消更新",
             "type": "() => void"

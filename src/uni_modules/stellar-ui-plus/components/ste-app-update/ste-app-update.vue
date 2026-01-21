@@ -91,10 +91,16 @@ const start = (callback?: (resVersion: { name: string; code: string; updateFile:
     // #ifdef APP-PLUS
     plus.runtime.getProperty(plus.runtime.appid || '', inf => {
         version.value = inf.version || '';
+        if (props.appVersion) {
+            version.value = props.appVersion;
+        }
         getData(callback);
     });
     // #endif
     // #ifndef APP-PLUS
+    if (props.appVersion) {
+        version.value = props.appVersion;
+    }
     getData(callback);
     // #endif
 };

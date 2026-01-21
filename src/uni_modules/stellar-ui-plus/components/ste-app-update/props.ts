@@ -24,4 +24,9 @@ export default {
         type: String,
         default: () => '立即体验',
     },
+    /** 当前应用版本 */
+    appVersion: {
+        type: String,
+        default: () => ''
+    }
 };

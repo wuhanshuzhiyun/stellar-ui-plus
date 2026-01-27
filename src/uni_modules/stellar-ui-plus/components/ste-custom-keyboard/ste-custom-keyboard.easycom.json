@@ -1,6 +1,6 @@
 {
     "name": "ste-number-keyboard",
-    "description": "数字键盘",
+    "description": "键盘",
     "example": "<ste-number-keyboard />",
     "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-number-keyboard",
     "attributes": [
@@ -59,12 +59,6 @@
             "description": "右侧确认是否禁用",
             "type": "boolean",
             "default": false
-        },
-        {
-            "name": "customKeys",
-            "description": "自定义按键，建议数量不大于2",
-            "type": "string[]",
-            "default": []
         },
         {
             "name": "showClear",

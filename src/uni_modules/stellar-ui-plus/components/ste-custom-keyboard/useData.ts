@@ -50,8 +50,11 @@ export default function useData({
     const cmpNumbers = computed(() => {
         let keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
         if (props.randomKeys) keys = utils.randomArray(keys);
-
-        if (Array.isArray(props.customKeys)) keys.push(...props.customKeys);
+        if (['number', 'discount'].includes(props.type)) {
+            keys.push('.');
+        } else if (props.type === "idcard") {
+            keys.push('X');
+        }
 
         if (!props.rightKeys) {
             if (!props.showClear) {
@@ -154,5 +157,16 @@ export default function useData({
 
     const onOpen = () => emits('open');
 
-    return { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen };
+    const title = computed(() => {
+        switch (props.type) {
+            case 'number':
+                return '数字键盘';
+            case 'discount':
+                return '折扣键盘';
+            case 'idcard':
+                return '身份证键盘';
+        }
+    })
+
+    return { cmpNumbers, cmpRootStyle, dataShow, title, onClose, onChange, onOpen };
 }

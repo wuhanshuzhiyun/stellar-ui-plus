@@ -91,6 +91,7 @@ const rows = computed(() => {
 });
 </script>
 <template>
+    <slot></slot>
     <view class="number-keyboard" :style="[cmpRootStyle]" data-test="number-keyboard-item">
         <view class="number-keyboard-left">
             <view class="number-keyboard-left-row" v-for="(row, index) in rows" :key="index">

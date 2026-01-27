@@ -1,4 +1,4 @@
-# NumberKeyboard 数字键盘
+# Keyboard 键盘
 
 用于页面上显示价格的组件
 
@@ -87,38 +87,6 @@
     import { ref } from 'vue';
     const value3 = ref('');
     const show3 = ref(false);
-</script>
-<style lang="scss" scoped>
-    .test-input {
-        height: 66rpx;
-        line-height: 66rpx;
-        background-color: #f5f5f5;
-        padding: 0 18rpx;
-        font-size: 24rpx;
-        .placeholder {
-            color: #999;
-        }
-    }
-</style>
-```
-
-#### 自定义按键
-
-- 属性`customKeys`: 自定义按键列表，建议不超过两个
-
-```html
-<template>
-    <view class="test-input" @click="show4 = true">
-        <text v-if="value4">{{ value4 }}</text>
-        <text v-else class="placeholder">请输入</text>
-    </view>
-    <ste-number-keyboard :customKeys="['00', '.']" v-model="value4" v-model:show="show4" />
-</template>
-
-<script setup lang="ts">
-    import { ref } from 'vue';
-    const value4 = ref('');
-    const show4 = ref(false);
 </script>
 <style lang="scss" scoped>
     .test-input {
@@ -321,10 +289,9 @@
 
 #### 组件插槽(Slot)
 
-| 插槽名  | 说明                 | 插槽参数 | 支持版本 |
-| ------- | -------------------- | -------- | -------- |
-| default | 弹窗标题插槽         | -        | -        |
-| header  | 在键盘上方显示的内容 | -        | -        |
+| 插槽名  | 说明         | 插槽参数 | 支持版本 |
+| ------- | ------------ | -------- | -------- |
+| default | 弹窗标题插槽 | -        | -        |
 
 ---$
 {{xuyajun}}

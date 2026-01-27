@@ -2,7 +2,8 @@
 import useData from './useData';
 import porpsData, { type NumberKeyboardProps } from './props';
 
-import KeyboardVue from './KeyboardVue.vue';
+import KeyboardVue from '../ste-number-keyboard/KeyboardVue.vue';
+import discountVue from './discount.vue';
 
 const props: NumberKeyboardProps = defineProps(porpsData);
 const emits = defineEmits<{
@@ -17,22 +18,21 @@ const emits = defineEmits<{
     (e: 'close'): void;
     (e: 'update:show', show: boolean): void;
     (e: 'open'): void;
-    // 新增事件
     (e: 'update:inputValues', values: Record<string, string>): void; // 更新多输入框值的事件
 }>();
 
-const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useData({ props, emits });
+const { cmpNumbers, cmpRootStyle, dataShow, title, onClose, onChange, onOpen } = useData({ props, emits });
 </script>
 
 <template>
-    <view class="ste-number-keyboard-root" :style="[cmpRootStyle]" data-test="number-keyboard">
+    <view class="ste-keyboard-root" :style="[cmpRootStyle]" data-test="number-keyboard">
         <block v-if="mode === 'popup'">
             <ste-popup v-model:show="dataShow" @close="onClose" position="bottom" :show-close="false" @open="onOpen">
                 <view style="padding: 30rpx 30rpx 60rpx 30rpx; background-color: #f5f5f5">
                     <view class="keyboard-popup-head">
-                        <view></view>
+                        <view />
                         <view class="keyboard-title">
-                            <slot>数字键盘</slot>
+                            <slot>{{ title }}</slot>
                         </view>
                         <view class="keyboard-close" @click="onClose">
                             <ste-icon code="&#xe676;" size="36" />
@@ -51,7 +51,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useDat
                         :background="background"
                         @change="onChange"
                     >
-                        <slot name="header"></slot>
+                        <discountVue v-if="type === 'discount'" :discounts="discounts" @header-click="v => emits('click', v)" />
                     </KeyboardVue>
                 </view>
             </ste-popup>
@@ -70,13 +70,13 @@ const { cmpNumbers, cmpRootStyle, dataShow, onClose, onChange, onOpen } = useDat
                 :background="background"
                 @change="onChange"
             >
-                <slot name="header"></slot>
+                <discountVue v-if="type === 'discount'" :discounts="discounts" />
             </KeyboardVue>
         </block>
     </view>
 </template>
 <style lang="scss" scoped>
-.ste-number-keyboard-root {
+.ste-keyboard-root {
     .keyboard-popup-head {
         width: 100%;
         display: flex;

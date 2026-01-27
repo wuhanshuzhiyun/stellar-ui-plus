@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, nextTick } from 'vue';
 import setImage from '../ste-image/ste-image.vue';
 import setPrice from '../ste-price/ste-price.vue';
 import steStepper from '../ste-stepper/ste-stepper.vue';
@@ -169,6 +169,15 @@ const viewClass = computed(() => {
 });
 
 const cmpMore = computed(() => props.mode === 'more');
+
+const applyForInputFocus = ref(false);
+
+const handerFocus = () => {
+    applyForInputFocus.value = false;
+    nextTick(() => {
+        applyForInputFocus.value = true;
+    });
+};
 </script>
 <template>
     <view class="ste-goods-info-root" :class="{ less: mode === 'less' }" :style="[rootStyle]">
@@ -260,6 +269,7 @@ const cmpMore = computed(() => props.mode === 'more');
                                 <view class="ste-goods-info-suggest-method-number">{{ suggesData.number }}</view>
                             </view>
                             <view class="ste-goods-info-apply-for" v-if="suggesData.applyForText">
+                                <div class="ste-goods-info-apply-for-input-hot" @click="handerFocus" />
                                 <view class="ste-goods-info-apply-for-text">{{ suggesData.applyForText }}：</view>
                                 <view class="ste-goods-info-apply-for-number">
                                     <view class="ste-goods-info-apply-for-input" @click.stop="clickSuggestInput">
@@ -269,6 +279,7 @@ const cmpMore = computed(() => props.mode === 'more');
                                             placeholder-style="font-size:22rpx;color:#ccc"
                                             :class="{ readonly: readonlySuggestInput }"
                                             type="number"
+                                            :focus="applyForInputFocus"
                                             v-model="suggesData.applyForNumber"
                                         />
                                     </view>
@@ -450,6 +461,16 @@ const cmpMore = computed(() => props.mode === 'more');
                     }
                     .ste-goods-info-apply-for {
                         display: flex;
+                        position: relative;
+                        align-items: center;
+                        .ste-goods-info-apply-for-input-hot {
+                            position: absolute;
+                            width: calc(100% - 52rpx);
+                            height: 40rpx;
+                            z-index: 10;
+                            opacity: 0;
+                            left: 0;
+                        }
                         .ste-goods-info-apply-for-number {
                             width: 150rpx;
                             height: 40rpx;

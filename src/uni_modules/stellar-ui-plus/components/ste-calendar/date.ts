@@ -64,9 +64,15 @@ export function getMonthDays(year: number, month: number) {
 /**
  * 获取日历数据
  */
-export function getCalendarData(minDate?: DateType, maxDate?: DateType, defaultDate?: DateType, monthCount = 12, formatter = 'YYYY-MM-DD', signs: { [key: string]: SignType } = {}) {
+export function getCalendarData(minDate?: DateType, maxDate?: DateType, defaultDate?: DateType, monthCount = 12, formatter = 'YYYY-MM-DD', signs: { [key: string]: SignType } = {}, viewStart?: DateType, viewEnd?: DateType) {
   const monthDatas: MonthType[] = []
-  const months = getMonthList(minDate, maxDate, defaultDate, monthCount)
+  if (viewStart && maxDate && maxDate < viewStart) {
+    throw new Error('viewStart cannot be greater than viewEnd')
+  }
+  if (viewEnd && minDate && minDate > viewEnd) {
+    throw new Error('viewEnd cannot be less than viewStart')
+  }
+  const months = getMonthList(viewStart ? viewStart : minDate, viewEnd ? viewEnd : maxDate, defaultDate, monthCount)
   const today = utils.dayjs().format('YYYY-MM-DD');
   months.forEach((date) => {
     const daysCount = getMonthDays(date.year(), date.month())

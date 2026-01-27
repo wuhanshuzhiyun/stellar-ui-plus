@@ -14,7 +14,7 @@ const props = defineProps(propsData);
 const cmpShowSigns = computed(() => {
     return Object.keys(props.signs).length > 0;
 });
-const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, viewDate.value, props.monthCount, props.formatter, props.signs));
+const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, viewDate.value, props.monthCount, props.formatter, props.signs, props.viewStart, props.viewEnd));
 
 const cmpRootStyle = computed(() => {
     const rowHeight = cmpShowSigns.value ? utils.formatPx(180, 'num') : utils.formatPx(126, 'num');
@@ -67,6 +67,14 @@ const showMonth = (date?: DateType) => {
     }
     clearTimeout(viewTimer);
     viewTimer = setTimeout(() => {
+        // 如果显示的月份不在范围区间内，则显示范围区间的第一个月份或者最后一个月份
+        if (props.minDate && props.maxDate) {
+            if (utils.dayjs(viewDate.value).valueOf() < utils.dayjs(props.minDate).valueOf()) {
+                viewDate.value = utils.dayjs(props.minDate);
+            } else if (utils.dayjs(viewDate.value).valueOf() > utils.dayjs(props.maxDate).valueOf()) {
+                viewDate.value = utils.dayjs(props.maxDate);
+            }
+        }
         const _viewMonth = viewDate.value.format('YYYY-MM');
         const tops = cmpMonthTops.value;
         const top = tops[_viewMonth]?.top || 0;
@@ -81,7 +89,7 @@ const showMonth = (date?: DateType) => {
             viewMonth.value = _viewMonth;
             initing.value = false;
         });
-    }, 10);
+    }, 50);
 };
 
 const onMultiple = (day: WeekType) => {
@@ -219,6 +227,7 @@ const onScroll = (e: any) => {
             class="date-content"
             :class="{ 'show-confirm': cmpShowConfirm, 'show-title': showTitle }"
             scroll-y
+            scroll-with-animation
             :scroll-top="contentScrollTop"
             @scroll="onScroll"
             :show-scrollbar="showScrollbar"

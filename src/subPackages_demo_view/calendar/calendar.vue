@@ -112,7 +112,7 @@ const signs = reactive<{ [key: string]: SignType }>({
                     <ste-button @click="show6 = true" width="100%">日期最大范围</ste-button>
                     <ste-popup v-model:show="show6" height="60vh" position="bottom">
                         <div style="padding-bottom: 20px; height: 100%">
-                            <ste-calendar mode="range" minDate="2024-05-10" maxDate="2024-05-20" @confirm="handleConfirm" />
+                            <ste-calendar mode="range" minDate="2024-05-10" maxDate="2024-05-20" view-start="2024-01" view-end="2024-12" @confirm="handleConfirm" />
                         </div>
                     </ste-popup>
                 </view>

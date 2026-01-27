@@ -169,6 +169,8 @@
 
 - 属性`minDate`可以设置日期的最小可选范围
 - 属性`maxDate`可以设置日期的最大可选范围
+- 属性`viewStart`可以设置日期展示的开始时间(月份)
+- 属性`viewEnd`可以设置日期展示的结束时间(月份)
 
 ```html
 <script setup lang="ts">
@@ -187,7 +189,7 @@
     <ste-button @click="show = true">日期最大范围</ste-button>
     <ste-popup v-model:show="show" height="60vh" position="bottom">
         <div style="padding-bottom: 20px; height: 100%">
-            <ste-calendar mode="range" minDate="2024-05-10" maxDate="2024-05-20" @confirm="handleConfirm" />
+            <ste-calendar mode="range" minDate="2024-05-10" maxDate="2024-05-20" view-start="2024-01" view-end="2024-12" @confirm="handleConfirm" />
         </div>
     </ste-popup>
 </template>

@@ -11,6 +11,8 @@ export default {
     color: { type: String, default: () => '' },
     minDate: { type: [String, Number, Date], default: () => 0 },
     maxDate: { type: [String, Number, Date], default: () => 0 },
+    viewStart: { type: [String, Number, Date], default: () => 0 },
+    viewEnd: { type: [String, Number, Date], default: () => 0 },
     maxCount: { type: [Number, String], default: () => 0 },
     formatter: { type: String, default: () => 'YYYY-MM-DD' },
     showMark: { type: Boolean, default: () => true },

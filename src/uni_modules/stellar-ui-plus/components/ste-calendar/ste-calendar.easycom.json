@@ -73,6 +73,18 @@
             "default": 0
         },
         {
+            "name": "viewStart",
+            "description": "开始渲染日期(月份)",
+            "type": "number | string | Date",
+            "default": 0
+        },
+        {
+            "name": "viewEnd",
+            "description": "最大可选日期（结束渲染月份）",
+            "type": "number | string | Date",
+            "default": 0
+        },
+        {
             "name": "maxCount",
             "description": "mode=multiple时，最多可选多少个日期",
             "type": "number",

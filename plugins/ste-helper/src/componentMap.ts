@@ -76,6 +76,13 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "立即体验按钮文本",
                 "type": "string",
                 "default": "立即体验"
+            },
+            {
+                "name": "appVersion",
+                "description": "当前应用版本",
+                "type": "string",
+                "default": "",
+                "version": "1.24.6"
             }
         ],
         "events": [
@@ -963,6 +970,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": 0
             },
             {
+                "name": "viewStart",
+                "description": "开始渲染日期(月份)",
+                "type": "number | string | Date",
+                "default": 0
+            },
+            {
+                "name": "viewEnd",
+                "description": "最大可选日期（结束渲染月份）",
+                "type": "number | string | Date",
+                "default": 0
+            },
+            {
                 "name": "maxCount",
                 "description": "mode=multiple时，最多可选多少个日期",
                 "type": "number",
@@ -1712,6 +1731,216 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
+    "custom-keyboard": {
+        "site": "ste-custom-keyboard",
+        "attr": [
+            "mode=''"
+        ],
+        "props": [
+            {
+                "name": "mode",
+                "description": "键盘模式",
+                "type": "string",
+                "default": "popup",
+                "values": [
+                    {
+                        "name": "popup",
+                        "description": "弹出式"
+                    },
+                    {
+                        "name": "page",
+                        "description": "页面式"
+                    }
+                ]
+            },
+            {
+                "name": "type",
+                "description": "输入框类型",
+                "type": "string",
+                "default": "number",
+                "values": [
+                    {
+                        "name": "number",
+                        "description": "数字键盘"
+                    },
+                    {
+                        "name": "idcard",
+                        "description": "身份证键盘"
+                    },
+                    {
+                        "name": "discount",
+                        "description": "折扣键盘"
+                    }
+                ]
+            },
+            {
+                "name": "modelValue",
+                "description": "输入值，支持v-model双向绑定",
+                "type": "string"
+            },
+            {
+                "name": "maxlength",
+                "description": "value最大长度",
+                "type": "number"
+            },
+            {
+                "name": "show",
+                "description": "是否显示键盘，支持v-model:show绑定，mode='popup'时生效",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rightKeys",
+                "description": "是否显示右侧功能键",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "randomKeys",
+                "description": "按键是否随机排列",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "confirmText",
+                "description": "右侧确定按钮文本",
+                "type": "string",
+                "default": "确定"
+            },
+            {
+                "name": "confirmDisabled",
+                "description": "右侧确认是否禁用",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "showClear",
+                "description": "是否显示清空按钮",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "textColor",
+                "description": "按键文字颜色",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "keyBg",
+                "description": "按键背景颜色",
+                "type": "string",
+                "default": "#fff"
+            },
+            {
+                "name": "background",
+                "description": "背景颜色",
+                "type": "string",
+                "default": "#f9f9f9"
+            },
+            {
+                "name": "textSize",
+                "description": "按键文字大小",
+                "type": "number | string",
+                "default": 48
+            },
+            {
+                "name": "backspaceSize",
+                "description": "回退按钮图标大小",
+                "type": "number | string",
+                "default": 48
+            },
+            {
+                "name": "confirmBg",
+                "description": "确定按钮背景颜色",
+                "type": "string",
+                "default": "#0090FF"
+            },
+            {
+                "name": "confirmColor",
+                "description": "确定按钮文字颜色",
+                "type": "string",
+                "default": "#ffffff"
+            }
+        ],
+        "events": [
+            {
+                "name": "change",
+                "description": "输入值value改变时触发",
+                "type": "(value: string) => void",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "输入值"
+                    }
+                ]
+            },
+            {
+                "name": "clear",
+                "description": "清空按钮点击事件",
+                "type": "() => void"
+            },
+            {
+                "name": "backspace",
+                "description": "删除按钮点击事件",
+                "type": "() => void"
+            },
+            {
+                "name": "confirm",
+                "description": "确认按钮点击事件",
+                "type": "(value:string) => void",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "输入值"
+                    }
+                ]
+            },
+            {
+                "name": "click",
+                "description": "点击功能键(确认/删除/清除)之外的键盘触发",
+                "type": "(key:string) => void",
+                "params": [
+                    {
+                        "name": "key",
+                        "description": "当前点击的按钮"
+                    }
+                ]
+            },
+            {
+                "name": "beforeinput",
+                "description": "输入之前触发，功能键之外的键盘点击时为输入",
+                "type": "(key: string, suspend: () => void, next: () => void, stop: () => void) => void",
+                "params": [
+                    {
+                        "name": "key",
+                        "description": "当前点击的按钮"
+                    },
+                    {
+                        "name": "suspend",
+                        "description": "开启等待的回调函数"
+                    },
+                    {
+                        "name": "next",
+                        "description": "执行后续操作的回调函数"
+                    },
+                    {
+                        "name": "stop",
+                        "description": "阻止后续执行的回调函数"
+                    }
+                ]
+            },
+            {
+                "name": "open",
+                "description": "打开弹窗键盘触发",
+                "type": "() => void"
+            },
+            {
+                "name": "close",
+                "description": "关闭弹窗键盘触发",
+                "type": "() => void"
+            }
+        ]
+    },
     "date-picker": {
         "site": "ste-date-picker",
         "attr": [
@@ -1887,12 +2116,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ],
         "events": []
-    },
-    "ste-donut-chart": {
-        "site": "ste-donut-chart",
-        "attr": [
-            ""
-        ]
     },
     "drag": {
         "site": "ste-drag",
@@ -8904,6 +9127,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "close-preview",
                 "description": "关闭预览时触发",
                 "type": "()=>void"
+            },
+            {
+                "name": "click-item",
+                "description": "点击文件触发",
+                "type": "(index:number)=>void",
+                "params": [
+                    {
+                        "name": "index",
+                        "description": "文件下标"
+                    }
+                ]
             }
         ]
     },

@@ -21,6 +21,26 @@
             ]
         },
         {
+            "name": "type",
+            "description": "输入框类型",
+            "type": "string",
+            "default": "number",
+            "values": [
+                {
+                    "name": "number",
+                    "description": "数字键盘"
+                },
+                {
+                    "name": "idcard",
+                    "description": "身份证键盘"
+                },
+                {
+                    "name": "discount",
+                    "description": "折扣键盘"
+                }
+            ]
+        },
+        {
             "name": "modelValue",
             "description": "输入值，支持v-model双向绑定",
             "type": "string"

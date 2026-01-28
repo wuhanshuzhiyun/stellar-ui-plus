@@ -6,10 +6,11 @@
 
 ### 代码演示
 
-#### 基础用法
+#### 基础用法（数字键盘）
 
 - 属性`value`: 输入的值，支持`v-model`双向绑定
 - 属性`show`: 是否显示键盘，支持`sync`双向绑定
+- 属性`type`: 键盘类型，可选值：`number`（数字键盘），`idcard`（身份证键盘），`discount`（折扣键盘），默认`number`
 
 ```html
 <template>
@@ -17,12 +18,78 @@
         <text v-if="value1">{{ value1 }}</text>
         <text v-else class="placeholder">请输入</text>
     </view>
-    <ste-number-keyboard v-model="value1" v-model:show="show1" />
+    <ste-custom-keyboard v-model="value1" v-model:show="show1" />
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';
     const value1 = ref('');
     const show1 = ref(false);
+</script>
+<style lang="scss" scoped>
+    .test-input {
+        height: 66rpx;
+        line-height: 66rpx;
+        background-color: #f5f5f5;
+        padding: 0 18rpx;
+        font-size: 24rpx;
+        .placeholder {
+            color: #999;
+        }
+    }
+</style>
+```
+
+#### 基础用法（身份证键盘）
+
+```html
+<template>
+    <view class="test-input" @click="show1 = true">
+        <text v-if="value1">{{ value1 }}</text>
+        <text v-else class="placeholder">请输入</text>
+    </view>
+    <ste-custom-keyboard type="idcard" v-model="value1" v-model:show="show1" />
+</template>
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value1 = ref('');
+    const show1 = ref(false);
+</script>
+<style lang="scss" scoped>
+    .test-input {
+        height: 66rpx;
+        line-height: 66rpx;
+        background-color: #f5f5f5;
+        padding: 0 18rpx;
+        font-size: 24rpx;
+        .placeholder {
+            color: #999;
+        }
+    }
+</style>
+```
+
+#### 基础用法（折扣键盘）
+
+- 属性`discounts`接受折扣数据，类型数组，默认无折扣
+
+```html
+<template>
+    <view class="test-input" @click="show1 = true">
+        <text v-if="value1">{{ value1 }}</text>
+        <text v-else class="placeholder">请输入</text>
+    </view>
+    <ste-custom-keyboard type="discount" :discounts="[70, 75, 80, 85]" v-model="value1" v-model:show="show1" @click="onClick" />
+</template>
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const value1 = ref('');
+    const show1 = ref(false);
+    const onClick = (v: string) => {
+        uni.showToast({
+            title: `点击了${v}`,
+            icon: 'none',
+        });
+    };
 </script>
 <style lang="scss" scoped>
     .test-input {
@@ -140,8 +207,6 @@
 
 #### 输入前事件（自定义功能）
 
-- 属性`customKeys`中自定义一些按钮，如"返回"
-    - 需要自定义该按钮功能，可使用`beforeinput`阻止该按钮的默认功能
 - 事件`beforeinput`: 输入前事件
     - 参数1：即将输入的按钮文本
     - 参数2：等待执行回调函数
@@ -154,7 +219,7 @@
         <text v-if="value6">{{ value6 }}</text>
         <text v-else class="placeholder">请输入</text>
     </view>
-    <ste-number-keyboard :customKeys="['返回']" v-model="value6" v-model:show="show6" @beforeinput="beforeinput" />
+    <ste-number-keyboard v-model="value6" v-model:show="show6" @beforeinput="beforeinput" />
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';

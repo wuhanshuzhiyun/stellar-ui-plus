@@ -19,9 +19,18 @@ const emits = defineEmits<{
     (e: 'update:show', show: boolean): void;
     (e: 'open'): void;
     (e: 'update:inputValues', values: Record<string, string>): void; // 更新多输入框值的事件
+    // 点击折扣
+    (e: 'click-discount', key: string): void;
+    // 步进数
+    (e: 'click-step', key: string): void;
 }>();
 
 const { cmpNumbers, cmpRootStyle, dataShow, title, onClose, onChange, onOpen } = useData({ props, emits });
+
+const clickDiscount = (k: string) => {
+    emits('click', k);
+    emits('click-discount', k);
+};
 </script>
 
 <template>
@@ -51,7 +60,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, title, onClose, onChange, onOpen } =
                         :background="background"
                         @change="onChange"
                     >
-                        <discountVue v-if="type === 'discount'" :discounts="discounts" @header-click="v => emits('click', v)" />
+                        <discountVue v-if="type === 'discount'" :discounts="discounts" @header-click="clickDiscount" />
                     </KeyboardVue>
                 </view>
             </ste-popup>
@@ -70,7 +79,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, title, onClose, onChange, onOpen } =
                 :background="background"
                 @change="onChange"
             >
-                <discountVue v-if="type === 'discount'" :discounts="discounts" @header-click="v => emits('click', v)" />
+                <discountVue v-if="type === 'discount'" :discounts="discounts" @header-click="clickDiscount" />
             </KeyboardVue>
         </block>
     </view>

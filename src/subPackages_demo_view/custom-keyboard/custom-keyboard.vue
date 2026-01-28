@@ -86,7 +86,7 @@ const onClick = (v: string) => {
                 <text v-if="value8">{{ value8 }}</text>
                 <text v-else class="placeholder">请输入</text>
             </view>
-            <ste-custom-keyboard type="discount" :discounts="[70, 75, 80, 85]" v-model="value8" v-model:show="show8" @click="onClick" />
+            <ste-custom-keyboard type="discount" :discounts="[70, 75, 80, 85]" v-model="value8" v-model:show="show8" @click-discount="onClick" />
         </view>
         <view class="demo-item">
             <view class="title">隐藏右侧功能键</view>

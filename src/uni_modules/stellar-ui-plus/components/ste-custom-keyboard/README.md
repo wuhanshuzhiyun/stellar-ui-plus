@@ -78,7 +78,7 @@
         <text v-if="value1">{{ value1 }}</text>
         <text v-else class="placeholder">请输入</text>
     </view>
-    <ste-custom-keyboard type="discount" :discounts="[70, 75, 80, 85]" v-model="value1" v-model:show="show1" @click="onClick" />
+    <ste-custom-keyboard type="discount" :discounts="[70, 75, 80, 85]" v-model="value8" v-model:show="show8" @click-discount="onClick" />
 </template>
 <script setup lang="ts">
     import { ref } from 'vue';

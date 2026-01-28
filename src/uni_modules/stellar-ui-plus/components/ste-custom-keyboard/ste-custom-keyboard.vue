@@ -70,7 +70,7 @@ const { cmpNumbers, cmpRootStyle, dataShow, title, onClose, onChange, onOpen } =
                 :background="background"
                 @change="onChange"
             >
-                <discountVue v-if="type === 'discount'" :discounts="discounts" />
+                <discountVue v-if="type === 'discount'" :discounts="discounts" @header-click="v => emits('click', v)" />
             </KeyboardVue>
         </block>
     </view>

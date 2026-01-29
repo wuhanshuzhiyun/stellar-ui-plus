@@ -1907,6 +1907,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                 ]
             },
             {
+                "name": "click-discount",
+                "description": "点击折扣键盘触发",
+                "type": "(key:string) => void",
+                "params": [
+                    {
+                        "name": "key",
+                        "description": "当前点击的按钮"
+                    }
+                ]
+            },
+            {
                 "name": "beforeinput",
                 "description": "输入之前触发，功能键之外的键盘点击时为输入",
                 "type": "(key: string, suspend: () => void, next: () => void, stop: () => void) => void",

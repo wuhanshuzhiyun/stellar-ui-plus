@@ -9,6 +9,7 @@ export interface NumberKeyboardProps {
     show: boolean;
     discounts: number[];
     rightKeys: boolean;
+    customKeys: string[];
     randomKeys: boolean;
     confirmText: string;
     confirmDisabled: boolean;
@@ -31,6 +32,7 @@ export default {
     show: { type: Boolean, default: () => false },
     discounts: { type: Array as PropType<number[]>, default: () => [] },
     rightKeys: { type: Boolean, default: () => true },
+    customKeys: { type: Array as PropType<string[]>, default: () => [] },
     randomKeys: { type: Boolean, default: () => false },
     confirmText: { type: String, default: () => '确定' },
     confirmDisabled: { type: Boolean, default: () => false },

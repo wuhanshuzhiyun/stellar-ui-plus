@@ -50,10 +50,11 @@ export default function useData({
     const cmpNumbers = computed(() => {
         let keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
         if (props.randomKeys) keys = utils.randomArray(keys);
-        if (['number', 'discount'].includes(props.type)) {
-            keys.push('.');
-        } else if (props.type === "idcard") {
+        if (props.type === "idcard") {
             keys.push('X');
+        }
+        if (Array.isArray(props.customKeys) && props.customKeys.length) {
+            keys.push(...props.customKeys);
         }
 
         if (!props.rightKeys) {

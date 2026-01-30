@@ -1,4 +1,4 @@
-# Keyboard 键盘
+# CustomKeyboard 定制键盘
 
 用于页面上显示价格的组件
 

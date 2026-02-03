@@ -1796,6 +1796,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": true
             },
             {
+                "name": "customKeys",
+                "description": "自定义按键，建议数量不大于2",
+                "type": "string[]",
+                "default": []
+            },
+            {
                 "name": "randomKeys",
                 "description": "按键是否随机排列",
                 "type": "boolean",

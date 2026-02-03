@@ -162,6 +162,7 @@ const clickStepperInput = () => emits('click-stepper-input');
 const clickSuggestInput = () => {
     if (!suggesData.value.applyForText) return;
     emits('click-suggest-input');
+    if (props.readonlySuggestInput) return;
     applyForInputFocus.value = false;
     nextTick(() => {
         applyForInputFocus.value = true;

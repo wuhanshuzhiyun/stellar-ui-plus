@@ -86,6 +86,7 @@ const checkboxChange = () => {
 
 const onClick = (type: 'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => {
     emits('click', type);
+    if (['image', 'title', 'code'].includes(type)) clickSuggestInput();
 };
 
 const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeColor));
@@ -158,7 +159,14 @@ const clickSuggest = (type: 'method' | 'back' | 'item' | 'right', item?: { label
 };
 
 const clickStepperInput = () => emits('click-stepper-input');
-const clickSuggestInput = () => emits('click-suggest-input');
+const clickSuggestInput = () => {
+    if (!suggesData.value.applyForText) return;
+    emits('click-suggest-input');
+    applyForInputFocus.value = false;
+    nextTick(() => {
+        applyForInputFocus.value = true;
+    });
+};
 
 const viewClass = computed(() => {
     const imgSize = utils.formatPx<'num'>(props.imageSize, 'num');
@@ -171,13 +179,6 @@ const viewClass = computed(() => {
 const cmpMore = computed(() => props.mode === 'more');
 
 const applyForInputFocus = ref(false);
-
-const handerFocus = () => {
-    applyForInputFocus.value = false;
-    nextTick(() => {
-        applyForInputFocus.value = true;
-    });
-};
 </script>
 <template>
     <view class="ste-goods-info-root" :class="{ less: mode === 'less' }" :style="[rootStyle]">
@@ -269,7 +270,7 @@ const handerFocus = () => {
                                 <view class="ste-goods-info-suggest-method-number">{{ suggesData.number }}</view>
                             </view>
                             <view class="ste-goods-info-apply-for" v-if="suggesData.applyForText">
-                                <div class="ste-goods-info-apply-for-input-hot" @click="handerFocus" />
+                                <div class="ste-goods-info-apply-for-input-hot" @click.stop="clickSuggestInput" />
                                 <view class="ste-goods-info-apply-for-text">{{ suggesData.applyForText }}：</view>
                                 <view class="ste-goods-info-apply-for-number">
                                     <view class="ste-goods-info-apply-for-input" @click.stop="clickSuggestInput">

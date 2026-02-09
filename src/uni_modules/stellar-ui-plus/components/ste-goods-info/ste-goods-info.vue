@@ -86,7 +86,7 @@ const checkboxChange = () => {
 
 const onClick = (type: 'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => {
     emits('click', type);
-    if (['image', 'title', 'code'].includes(type)) clickSuggestInput();
+    if (['title', 'code'].includes(type)) clickSuggestInput();
 };
 
 const _tagBg = computed(() => (props.tagBg ? props.tagBg : getColor().steThemeColor));

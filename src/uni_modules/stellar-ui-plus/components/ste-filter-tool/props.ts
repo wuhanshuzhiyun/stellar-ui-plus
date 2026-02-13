@@ -23,6 +23,8 @@ const props = {
         default: () => [],
     },
     showCategory: { type: Boolean, default: true },
+    // 确认按钮禁用
+    confirmDisabled: { type: Boolean, default: false },
 };
 
 export const filterToolEmits = {

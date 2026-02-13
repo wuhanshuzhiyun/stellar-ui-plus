@@ -199,6 +199,11 @@
                     background-color: var(--active-color);
                     border-radius: 0 16rpx 16rpx 0;
                     color: #fff;
+
+                    &.disabled {
+                        opacity: 0.4;
+                        pointer-events: none;
+                    }
                 }
             }
         }

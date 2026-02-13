@@ -230,6 +230,45 @@
 </template>
 ```
 
+#### 禁用确认按钮
+
+- 通过 `confirmDisabled` 控制确认按钮的禁用状态
+- 适用于需要用户完成某些操作后才允许确认的场景
+
+```html
+<script lang="ts" setup>
+    import { ref, reactive } from 'vue';
+
+    const confirmDisabled = ref(true);
+    const filters = reactive([
+        {
+            title: '默认排序',
+            key: 'category',
+            children: [
+                { title: '电子产品', value: 'electronics' },
+                { title: '服装鞋帽', value: 'clothing' },
+                { title: '家居用品', value: 'home' },
+            ],
+        },
+    ]);
+
+    const handleItemClick = () => {
+        // 有选择后解除禁用
+        confirmDisabled.value = false;
+    };
+</script>
+<template>
+    <view style="width: 100%">
+        <ste-filter-tool :data="filters" :confirmDisabled="confirmDisabled" filter-type="checkbox" @item-click="handleItemClick">
+            <view style="font-size: 24rpx">
+                <text>禁用确认按钮</text>
+                <ste-icon code="&#xe6c7;" color="#000" size="24" />
+            </view>
+        </ste-filter-tool>
+    </view>
+</template>
+```
+
 ---$
 
 ### API

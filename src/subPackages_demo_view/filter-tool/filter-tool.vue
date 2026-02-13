@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import { data1, data2, data3, data4, data21, data5 } from './data';
 
 const subFilters = reactive(data1);
@@ -10,8 +10,12 @@ const checkboxFilters2 = reactive(data4);
 
 const randomFilters = reactive(data5);
 
+const confirmDisabled = ref(true);
+const disabledFilters = reactive(data3);
+
 const handleFilterClick = (item: any) => {
     console.log('点击了筛选项:', item);
+    confirmDisabled.value = false;
 };
 
 const handleConfirm = (values: any) => {
@@ -100,6 +104,19 @@ const handleConfirm = (values: any) => {
                     <ste-filter-tool :data="randomFilters" @confirm="handleConfirm" :show-category="false">
                         <view style="font-size: 24rpx">
                             <text>无规则</text>
+                            <ste-icon code="&#xe6c7;" color="#000" size="24" />
+                        </view>
+                    </ste-filter-tool>
+                </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">禁用确认按钮</view>
+            <view class="item-block">
+                <view>
+                    <ste-filter-tool :data="disabledFilters" filter-type="checkbox" :confirmDisabled="confirmDisabled" @item-click="handleFilterClick" @confirm="handleConfirm">
+                        <view style="font-size: 24rpx">
+                            <text>选择后可确认</text>
                             <ste-icon code="&#xe6c7;" color="#000" size="24" />
                         </view>
                     </ste-filter-tool>

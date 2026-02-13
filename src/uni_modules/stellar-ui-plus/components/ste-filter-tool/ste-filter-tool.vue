@@ -106,7 +106,7 @@
                     <view class="btn reset" @click="handleMenuReset">
                         <text class="btn-text">重置</text>
                     </view>
-                    <view class="btn confirm" @click="handleMenuConfirm">
+                    <view class="btn confirm" :class="{ disabled: props.confirmDisabled }" @click="handleMenuConfirm">
                         <text class="btn-text">确认</text>
                     </view>
                 </view>
@@ -198,10 +198,17 @@ const handleFilterItemInput = (item: FilterItem, value: any) => {
 // 包装重置和确认事件
 const handleMenuReset = () => {
     handleReset();
+    // 重置分类到第一项
+    currentActiveIndex.value = 0;
+    scrollTop.value = 0;
+    categoryData.forEach((item, i) => {
+        item.active = i === 0;
+    });
     showMenu.value = false;
 };
 
 const handleMenuConfirm = () => {
+    if (props.confirmDisabled) return;
     handleConfirm();
     showMenu.value = false;
 };
@@ -224,12 +231,18 @@ watch(
 
 watch(showMenu, async visible => {
     if (visible) {
-        scrollTop.value = 0;
         await initManager.initializeOnMenuShow();
 
         // 更新控制器的偏移数据
         const offsets = await calculator.calculateItemOffsets();
         controller.updateOffsets(offsets);
+
+        // 恢复到上次分类位置
+        if (currentActiveIndex.value > 0) {
+            await controller.scrollToIndex(currentActiveIndex.value, calculator);
+        } else {
+            scrollTop.value = 0;
+        }
     }
 });
 

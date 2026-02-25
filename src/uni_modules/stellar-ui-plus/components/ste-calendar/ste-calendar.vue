@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted, computed, nextTick } from 'vue';
+import { watch, onMounted, computed, nextTick, onUnmounted, ref, shallowRef } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import { formatDate, type DateType, type WeekType } from './date';
@@ -9,12 +9,58 @@ import useData from './useData';
 import propsData from './props';
 import { getCalendarData } from './date';
 
+// 类型定义
+interface CacheKey {
+    minDate: DateType;
+    maxDate: DateType;
+    viewDate: string;
+    monthCount: number;
+    formatter: string;
+    signs: string;
+    viewStart: DateType;
+    viewEnd: DateType;
+}
+
+// 缓存相关
+const cachedCalendarData = shallowRef<any>(null);
+const lastCacheKey = ref<string>('');
+
+// 定时器管理
+let viewTimer: ReturnType<typeof setTimeout> | null = null;
+let scrollTimer: ReturnType<typeof setTimeout> | null = null;
+
 const props = defineProps(propsData);
+
+// 缓存键生成函数
+const generateCacheKey = (): string => {
+    const cacheKey: CacheKey = {
+        minDate: props.minDate,
+        maxDate: props.maxDate,
+        viewDate: viewDate.value.format('YYYY-MM-DD'),
+        monthCount: props.monthCount,
+        formatter: props.formatter,
+        signs: JSON.stringify(props.signs),
+        viewStart: props.viewStart,
+        viewEnd: props.viewEnd,
+    };
+    return JSON.stringify(cacheKey);
+};
+
+// 优化的计算属性 - 添加缓存机制
+const cmpDates = computed(() => {
+    const currentKey = generateCacheKey();
+
+    if (currentKey !== lastCacheKey.value || !cachedCalendarData.value) {
+        cachedCalendarData.value = getCalendarData(props.minDate, props.maxDate, viewDate.value, props.monthCount, props.formatter, props.signs, props.viewStart, props.viewEnd);
+        lastCacheKey.value = currentKey;
+    }
+
+    return cachedCalendarData.value;
+});
 
 const cmpShowSigns = computed(() => {
     return Object.keys(props.signs).length > 0;
 });
-const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, viewDate.value, props.monthCount, props.formatter, props.signs, props.viewStart, props.viewEnd));
 
 const cmpRootStyle = computed(() => {
     const rowHeight = cmpShowSigns.value ? utils.formatPx(180, 'num') : utils.formatPx(126, 'num');
@@ -59,13 +105,44 @@ const emits = defineEmits<{
     (e: 'confirm', days: (string | number)[]): void;
     (e: 'view-month', month: string): void;
 }>();
-let viewTimer: any = 0;
+
+// 定时器清理函数
+const clearTimers = () => {
+    if (viewTimer) {
+        clearTimeout(viewTimer);
+        viewTimer = null;
+    }
+    if (scrollTimer) {
+        clearTimeout(scrollTimer);
+        scrollTimer = null;
+    }
+};
+
+// 策略模式优化事件处理
+const modeHandlers = {
+    single: (day: WeekType) => {
+        setDataList([day.key]);
+    },
+    multiple: (day: WeekType) => {
+        const index = dataList.value.indexOf(day.key);
+        if (index === -1) {
+            if (props.maxCount && dataList.value.length >= (props.maxCount as number)) return;
+            dataList.value.push(day.key);
+        } else {
+            dataList.value.splice(index, 1);
+        }
+    },
+    range: (day: WeekType) => {
+        onRange(day);
+    },
+};
+
 const showMonth = (date?: DateType) => {
+    clearTimers();
     const newDate: Dayjs = date ? utils.dayjs(date) : viewDate.value;
     if (newDate.format('YYYY-MM-DD') !== viewDate.value.format('YYYY-MM-DD')) {
         viewDate.value = newDate;
     }
-    clearTimeout(viewTimer);
     viewTimer = setTimeout(() => {
         // 如果显示的月份不在范围区间内，则显示范围区间的第一个月份或者最后一个月份
         if (props.minDate && props.maxDate) {
@@ -80,6 +157,7 @@ const showMonth = (date?: DateType) => {
         const top = tops[_viewMonth]?.top || 0;
         if (top === undefined || scrollTop.value === top) {
             initing.value = false;
+            viewTimer = null;
             return;
         }
         contentScrollTop.value = scrollTop.value;
@@ -88,6 +166,7 @@ const showMonth = (date?: DateType) => {
             scrollTop.value = top;
             viewMonth.value = _viewMonth;
             initing.value = false;
+            viewTimer = null;
         });
     }, 50);
 };
@@ -147,41 +226,50 @@ const onRange = (day: WeekType) => {
 
 const onSelect = (day: WeekType) => {
     if (props.readonly || !day.dayText || day.disabled) return;
-    if (props.mode === 'single') {
-        setDataList([day.key]);
-    } else if (props.mode === 'multiple') {
-        onMultiple(day);
-    } else if (props.mode === 'range') {
-        onRange(day);
+
+    const handler = modeHandlers[props.mode as keyof typeof modeHandlers];
+    if (handler) {
+        handler(day);
+        emits('select', dataList.value, day.key);
     }
-    emits('select', dataList.value, day.key);
 };
 
-watch(
-    () => props.list,
-    v => {
-        dataList.value = (v || []).map(d => formatDate(d, props.formatter));
-        if (props.mode === 'range') {
-            if (dataList.value.length >= 2) {
-                startDate.value = dataList.value[0];
-                endDate.value = dataList.value[dataList.value.length - 1];
-            } else if (dataList.value.length === 1) {
-                startDate.value = dataList.value[0];
-                endDate.value = dataList.value[0];
-            } else {
-                startDate.value = null;
-                endDate.value = null;
-            }
-            rangeDates();
-        }
-    },
-    { immediate: true }
-);
-watch(
-    () => props.defaultDate,
-    v => {
-        viewDate.value = v ? utils.dayjs(v) : utils.dayjs();
+// 统一初始化逻辑
+const initializeRangeMode = () => {
+    if (dataList.value.length >= 2) {
+        startDate.value = dataList.value[0];
+        endDate.value = dataList.value[dataList.value.length - 1];
+    } else if (dataList.value.length === 1) {
+        startDate.value = endDate.value = dataList.value[0];
+    } else {
+        startDate.value = endDate.value = null;
+    }
+    rangeDates();
+};
+
+const initializeCalendar = () => {
+    // 初始化视图日期
+    viewDate.value = props.defaultDate ? utils.dayjs(props.defaultDate) : utils.dayjs();
+
+    // 初始化选中数据
+    dataList.value = (props.list || []).map(d => formatDate(d, props.formatter));
+
+    // 处理范围模式的特殊逻辑
+    if (props.mode === 'range') {
+        initializeRangeMode();
+    }
+
+    // 显示月份
+    nextTick(() => {
         showMonth();
+    });
+};
+
+// 简化的watch逻辑
+watch(
+    () => [props.list, props.defaultDate, props.mode],
+    () => {
+        initializeCalendar();
     },
     { immediate: true }
 );
@@ -189,30 +277,43 @@ watch(
 const confirm = () => {
     emits('confirm', dataList.value);
 };
+
 onMounted(() => {
-    showMonth();
+    initializeCalendar();
+});
+
+// 组件销毁时清理资源
+onUnmounted(() => {
+    clearTimers();
 });
 
 defineExpose({ showMonth });
+
 const onShowMonth = (scrollTop: number) => {
-    clearTimeout(viewTimer);
-    viewTimer = setTimeout(() => {
+    clearTimers();
+    scrollTimer = setTimeout(() => {
         for (let month in cmpMonthTops.value) {
             const { top = 0, end = 0 } = cmpMonthTops.value[month];
             if (scrollTop >= top && scrollTop < end) {
-                if (viewMonth.value === month) return;
+                if (viewMonth.value === month) {
+                    scrollTimer = null;
+                    return;
+                }
                 viewMonth.value = month;
                 emits('view-month', month);
+                scrollTimer = null;
                 return;
             }
         }
-    }, 100);
+    }, 150);
 };
+
 const onScroll = (e: any) => {
     scrollTop.value = e.detail.scrollTop;
     onShowMonth(e.detail.scrollTop);
 };
 </script>
+
 <template>
     <view class="ste-calendar-root" :style="[cmpRootStyle, { opacity: initing ? 0 : 1 }]">
         <view v-if="showTitle" class="calendar-title">{{ title }}</view>

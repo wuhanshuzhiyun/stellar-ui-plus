@@ -8,25 +8,15 @@ export interface ResponseData {
     status: number;
     isDeleted: number;
     tenantId: string;
-    /** 应用id(关联inte_client表id字段) */
     inteClientId: number;
-    /** 版本号 */
     code: string;
-    /** 版本名称 */
     name: string;
-    /** 版本说明 */
     desc: string;
-    /** 版本更新内容 */
     content: string;
-    /** 版本更新文件地址 */
     updateFile: string;
-    /** 版本完整文件地址 */
     entireFile: string;
-    /** 是否当前版本 */
     isCurrent: true;
-    /** 是否强制更新 */
     isForce: true;
-    /** 发布状态 TO_RELEASE待发布、RELEASED已发布 */
     publishStatus: 'TO_RELEASE' | 'RELEASED';
     createUserName: string;
     updateUserName: string;
@@ -34,40 +24,58 @@ export interface ResponseData {
 }
 
 export interface ClientData {
-    /** 版本更新内容 */
     content: string;
-    /** 版本更新文件地址 */
     updateFile: string;
-    /** 是否强制更新 */
     isForce: boolean;
-    /** 0 是整包升级 1是wgt升级 */
     package_type: number;
-    /** 版本名称 */
     name: string;
-    /** 版本号 */
     code: string;
+}
+
+interface DownloadOptions {
+    success?: () => void;
+    error?: (e: any) => void;
+    downloadSuccess?: (tempFilePath: string) => void;
+    onProgressUpdate?: (res: UniApp.OnProgressDownloadResult) => void;
 }
 
 export function download(
     data: ClientData,
-    {
-        success,
-        error,
-        onProgressUpdate,
-        downloadSuccess,
-    }: { success?: () => void; error?: (e: any) => void; downloadSuccess?: (tempFilePath: string) => void; onProgressUpdate?: (res: UniApp.OnProgressDownloadResult) => void }
-) {
+    options: DownloadOptions
+): UniApp.DownloadTask {
+    const { success, error, downloadSuccess, onProgressUpdate } = options;
+
+    // 参数验证
+    if (!data.updateFile) {
+        const errorMsg = '更新文件地址不能为空';
+        uni.showToast({ title: errorMsg, icon: 'none' });
+        error?.(new Error(errorMsg));
+        throw new Error(errorMsg);
+    }
+
     const package_type = data.package_type;
+    let timeout: ReturnType<typeof setTimeout>;
+
     const downloadTask = uni.downloadFile({
         url: data.updateFile,
         success: res => {
+            clearTimeout(timeout);
+
             if (res.statusCode === 200) {
-                downloadSuccess && downloadSuccess(res.tempFilePath);
+                // 文件完整性检查
+                if (!res.tempFilePath) {
+                    const errorMsg = '下载文件路径为空';
+                    uni.showToast({ title: errorMsg, icon: 'none' });
+                    error?.(new Error(errorMsg));
+                    return;
+                }
+
+                downloadSuccess?.(res.tempFilePath);
+
                 plus.runtime.install(
                     res.tempFilePath,
                     { force: true },
                     () => {
-                        // wgt升级
                         if (package_type == 1) {
                             uni.showModal({
                                 title: '提示',
@@ -75,32 +83,64 @@ export function download(
                                 confirmText: '确定',
                                 showCancel: false,
                                 success: () => {
-                                    success && success();
+                                    success?.();
                                     plus.runtime.restart();
                                 },
                             });
                         } else {
-                            // 整包升级
-                            success && success();
+                            success?.();
                         }
                     },
                     e => {
-                        //提示部分wgt包无法安装的问题
+                        const errorMsg = e.message || '安装失败';
                         uni.showModal({
                             title: '提示',
-                            content: e.message,
+                            content: errorMsg,
                             showCancel: false,
                             success: () => {
-                                error && error(e);
+                                error?.(e);
                             },
                         });
                     }
                 );
+            } else {
+                const errorMsg = `下载失败，状态码：${res.statusCode}`;
+                uni.showToast({ title: errorMsg, icon: 'none' });
+                error?.(new Error(errorMsg));
             }
         },
+        fail: (err) => {
+            clearTimeout(timeout);
+            const errorMsg = `网络请求失败：${err.errMsg || '未知错误'}`;
+            uni.showToast({ title: errorMsg, icon: 'none' });
+            error?.(err);
+        }
     });
-    // 下载进度
+
+    // 下载进度监控
     downloadTask.onProgressUpdate(res => {
-        onProgressUpdate && onProgressUpdate(res);
+        // 添加进度验证
+        if (res.progress >= 0 && res.progress <= 100) {
+            onProgressUpdate?.(res);
+        }
+
+        // 重置超时计时器
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            downloadTask.abort();
+            const errorMsg = '下载超时，请检查网络连接';
+            uni.showToast({ title: errorMsg, icon: 'none' });
+            error?.(new Error(errorMsg));
+        }, 300000); // 5分钟超时
     });
+
+    // 初始超时设置
+    timeout = setTimeout(() => {
+        downloadTask.abort();
+        const errorMsg = '下载超时，请检查网络连接';
+        uni.showToast({ title: errorMsg, icon: 'none' });
+        error?.(new Error(errorMsg));
+    }, 300000);
+
+    return downloadTask;
 }

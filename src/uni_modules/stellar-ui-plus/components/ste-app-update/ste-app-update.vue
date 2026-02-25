@@ -1,17 +1,27 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, onUnmounted } from 'vue';
 import propsData from './props';
-import { type ClientData, type ResponseData, download } from './method';
+import { type ClientData, type ResponseData, download as downloadMethod } from './method';
+
+// 类型定义
+interface AppUpdateData extends ClientData {
+    content: string;
+    updateFile: string;
+    isForce: boolean;
+    package_type: number;
+    name: string;
+    code: string;
+}
 
 const props = defineProps(propsData);
 
-const data = reactive<ClientData>({
+const data = reactive<AppUpdateData>({
     content: '',
-    updateFile: '', //安装包
-    isForce: false, //是否强制更新 0代表否 1代表是
-    package_type: 0, //0 是整包升级 1是wgt升级
-    name: '1.0.1', // 版本名称
-    code: '100', // 版本号
+    updateFile: '',
+    isForce: false,
+    package_type: 0,
+    name: '1.0.1',
+    code: '100',
 });
 
 const open = ref(false);
@@ -22,13 +32,41 @@ const downloadedSize = ref('0');
 const packageFileSize = ref('0');
 const tempFilePath = ref('');
 
+// 资源管理
+let downloadTask: UniApp.DownloadTask | null = null;
+let timeoutTimer: ReturnType<typeof setTimeout> | null = null;
+
 const emits = defineEmits<{
     (e: 'cancel'): void;
     (e: 'update'): void;
     (e: 'no-update'): void;
 }>();
 
+// 清理函数
+const cleanup = () => {
+    if (downloadTask) {
+        downloadTask.abort();
+        downloadTask = null;
+    }
+    if (timeoutTimer) {
+        clearTimeout(timeoutTimer);
+        timeoutTimer = null;
+    }
+};
+
+// 组件卸载时清理资源
+onUnmounted(() => {
+    cleanup();
+});
+
 const getData = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
+    // 参数验证
+    if (!props.apiUrl) {
+        console.error('API地址不能为空');
+        emits('no-update');
+        return;
+    }
+
     uni.request({
         url: props.apiUrl,
         method: 'GET',
@@ -36,52 +74,75 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
             Authorization: `Basic ${btoa(props.clientId + ':' + props.clientSecret)}`,
         },
         success: (res: any) => {
-            const _data: {
-                code: number;
-                success: boolean;
-                msg: string;
-                data: ResponseData;
-            } = res.data;
-            if (_data.code == 200) {
-                data.code = _data.data.code;
-                data.name = _data.data.name;
+            try {
+                const _data: {
+                    code: number;
+                    success: boolean;
+                    msg: string;
+                    data: ResponseData;
+                } = res.data;
 
-                data.content = (_data.data.desc || '').replace(/\n+/g, '<br />');
-
-                data.isForce = _data.data.isForce;
-                data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;
-                data.package_type = _data.data.entireFile ? 0 : 1;
-                callback && callback({ code: _data.data.code, name: _data.data.name, updateFile: data.updateFile }, version.value);
-                if (props.appType) {
-                    const nvs = data.name.split('.');
-                    // 版本号的最后一位是环境，比较版本号最后一位版本号是否一致，不一致弹错误窗口提示
-                    const nevn = nvs[nvs.length - 1];
-                    if (props.appType !== nevn) {
-                        uni.showModal({
-                            title: '提示',
-                            content: `新版本环境：${nevn}和当前环境${props.appType}不一致`,
-                            showCancel: false,
-                        });
+                if (_data.code == 200 && _data.data) {
+                    // 数据验证
+                    if (!_data.data.code || !_data.data.name) {
+                        console.warn('返回数据缺少必要字段');
+                        emits('no-update');
                         return;
                     }
-                    nvs.splice(nvs.length - 1);
-                    data.name = nvs.join('.');
+
+                    data.code = _data.data.code;
+                    data.name = _data.data.name;
+                    data.content = (_data.data.desc || '').replace(/\n+/g, '<br />');
+                    data.isForce = !!_data.data.isForce;
+                    data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;
+                    data.package_type = _data.data.entireFile ? 0 : 1;
+
+                    callback &&
+                        callback(
+                            {
+                                code: _data.data.code,
+                                name: _data.data.name,
+                                updateFile: data.updateFile,
+                            },
+                            version.value
+                        );
+
+                    if (props.appType) {
+                        const nvs = data.name.split('.');
+                        const nevn = nvs[nvs.length - 1];
+                        if (props.appType !== nevn) {
+                            uni.showModal({
+                                title: '提示',
+                                content: `新版本环境：${nevn}和当前环境${props.appType}不一致`,
+                                showCancel: false,
+                            });
+                            return;
+                        }
+                        nvs.splice(nvs.length - 1);
+                        data.name = nvs.join('.');
+                    }
+
+                    if (data.updateFile && data.code !== version.value) {
+                        open.value = true;
+                        emits('update');
+                        if (data.isForce) confirm();
+                        return;
+                    }
+                } else {
+                    console.log(_data.msg || '获取版本信息失败');
                 }
-                if (data.updateFile && data.code !== version.value) {
-                    open.value = true;
-                    emits('update');
-                    // 如果是强制更新，直接开始下载
-                    if (data.isForce) confirm();
-                    return;
-                }
-            } else {
-                console.log(_data.msg);
+                emits('no-update');
+            } catch (error) {
+                console.error('数据解析错误:', error);
+                emits('no-update');
             }
-            // 无需升级
-            emits('no-update');
         },
         fail: (err: any) => {
-            console.log('err===========', err);
+            console.error('网络请求失败:', err);
+            uni.showToast({
+                title: '网络请求失败，请检查网络连接',
+                icon: 'none',
+            });
             emits('no-update');
         },
     });
@@ -106,21 +167,39 @@ const start = (callback?: (resVersion: { name: string; code: string; updateFile:
 };
 
 const onProgressUpdate = (res: UniApp.OnProgressDownloadResult) => {
-    percent.value = res.progress;
-    downloadedSize.value = (res.totalBytesWritten / Math.pow(1024, 2)).toFixed(2);
-    packageFileSize.value = (res.totalBytesExpectedToWrite / Math.pow(1024, 2)).toFixed(2);
+    // 添加边界检查
+    if (res.progress >= 0 && res.progress <= 100) {
+        percent.value = res.progress;
+        downloadedSize.value = (res.totalBytesWritten / Math.pow(1024, 2)).toFixed(2);
+        packageFileSize.value = (res.totalBytesExpectedToWrite / Math.pow(1024, 2)).toFixed(2);
+    }
 };
+
 const confirm = () => {
+    // 先清理之前的任务
+    cleanup();
+
+    // 参数验证
+    if (!data.updateFile) {
+        uni.showToast({ title: '更新文件地址不能为空', icon: 'none' });
+        return;
+    }
+
     if (data.package_type == 0) {
-        //apk整包升级 下载地址必须以.apk结尾
         if (data.updateFile.includes('.apk')) {
             updateBtn.value = false;
-            download(data, {
+            downloadTask = downloadMethod(data, {
                 onProgressUpdate,
                 downloadSuccess: path => (tempFilePath.value = path),
+                error: () => {
+                    updateBtn.value = true;
+                    cleanup();
+                },
+                success: () => {
+                    cleanup();
+                },
             });
         } else {
-            //外部下载 一般是手机应用市场或者其他h5页面
             plus.runtime.openURL(data.updateFile);
             uni.navigateBack({
                 delta: 1,
@@ -128,22 +207,36 @@ const confirm = () => {
         }
     } else {
         updateBtn.value = false;
-        //wgt资源包升级 下载地址必须以.wgt结尾
-        download(data, { onProgressUpdate, downloadSuccess: path => (tempFilePath.value = path) });
+        downloadTask = downloadMethod(data, {
+            onProgressUpdate,
+            downloadSuccess: path => (tempFilePath.value = path),
+            error: () => {
+                updateBtn.value = true;
+                cleanup();
+            },
+            success: () => {
+                cleanup();
+            },
+        });
     }
 };
 
 function close() {
+    cleanup();
     open.value = false;
     emits('cancel');
 }
 
 const install = () => {
+    if (!tempFilePath.value) {
+        uni.showToast({ title: '安装文件不存在', icon: 'none' });
+        return;
+    }
+
     plus.runtime.install(
         tempFilePath.value,
         { force: true },
         () => {
-            // wgt升级
             if (data.package_type == 1) {
                 uni.showModal({
                     title: '提示',
@@ -157,21 +250,39 @@ const install = () => {
             }
         },
         e => {
-            //提示部分wgt包无法安装的问题
             uni.showModal({
-                title: '提示',
-                content: e.message,
+                title: '安装失败',
+                content: e.message || '安装过程中出现错误',
                 showCancel: false,
-                success: () => {},
             });
         }
     );
+};
+
+// 添加取消下载功能
+const cancelDownload = () => {
+    uni.showModal({
+        title: '确认取消',
+        content: '确定要取消下载吗？',
+        success: res => {
+            if (res.confirm) {
+                cleanup();
+                updateBtn.value = true;
+                percent.value = 0;
+                downloadedSize.value = '0';
+                packageFileSize.value = '0';
+                tempFilePath.value = '';
+                uni.showToast({ title: '已取消下载', icon: 'none' });
+            }
+        },
+    });
 };
 
 defineExpose({
     start,
 });
 </script>
+
 <template>
     <view class="update-mask flex-center" v-if="open">
         <view class="update-content">
@@ -179,20 +290,37 @@ defineExpose({
 
             <view class="update-title">发现新版本</view>
             <view class="update-version">v{{ data.name }}</view>
+
             <scroll-view scroll-y class="update-desc">
                 <view class="update-desc-title">更新内容</view>
-                <view class="update-desc-message"><rich-text :nodes="data.content"></rich-text></view>
+                <view class="update-desc-message">
+                    <rich-text :nodes="data.content"></rich-text>
+                </view>
             </scroll-view>
+
             <view class="update-footer">
                 <view class="update-progress-box" v-if="!updateBtn">
-                    <progress class="update-progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" show-info stroke-width="10" />
-                    <view>
-                        <text class="update-down-msg" v-if="tempFilePath">下载完成</text>
-                        <text class="update-down-msg" v-else>正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}M)</text>
+                    <view class="progress-container">
+                        <progress class="update-progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" backgroundColor="#f0f0f0" show-info stroke-width="12" />
+                        <view class="progress-text">{{ percent }}%</view>
                     </view>
+
+                    <view class="download-info">
+                        <text class="update-down-msg" v-if="tempFilePath">
+                            <text class="success-icon">✓</text>
+                            下载完成，准备安装...
+                        </text>
+                        <text class="update-down-msg" v-else>正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}MB)</text>
+                    </view>
+
+                    <button v-if="!tempFilePath && !data.isForce" class="cancel-download-btn" @click="cancelDownload">取消下载</button>
                 </view>
-                <button class="update-button" plain @click="confirm" v-if="updateBtn">{{ btnText }}</button>
-                <button class="update-button" plain @click="install" v-else-if="data.package_type === 0 && tempFilePath">安装</button>
+
+                <button class="update-button primary" plain @click="confirm" v-if="updateBtn">
+                    {{ btnText }}
+                </button>
+
+                <button class="update-button secondary" plain @click="install" v-else-if="data.package_type === 0 && tempFilePath">立即安装</button>
             </view>
 
             <view class="update-close" v-if="!data.isForce" @click.stop="close">✖</view>
@@ -215,6 +343,7 @@ defineExpose({
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 9999;
+
     .update-content {
         width: 694rpx;
         background-color: #fff;
@@ -225,30 +354,36 @@ defineExpose({
         align-items: center;
         line-height: 1.5;
         position: relative;
+
         .update-image {
             width: 201rpx;
             height: 201rpx;
         }
+
         .update-title {
             margin-top: 28rpx;
             font-weight: 500;
             font-size: 48rpx;
             color: #000000;
         }
+
         .update-version {
             font-weight: 400;
             font-size: 34rpx;
             color: #a7abb0;
         }
+
         .update-desc {
             width: 100%;
             max-height: 350rpx;
             margin-top: 24rpx;
+
             .update-desc-title {
                 font-weight: 500;
                 font-size: 32rpx;
                 color: #000000;
             }
+
             .update-desc-message {
                 font-weight: 400;
                 font-size: 28rpx;
@@ -259,24 +394,74 @@ defineExpose({
         .update-footer {
             width: 100%;
             margin-top: 48rpx;
+
             .update-progress-box {
                 text-align: center;
-                font-weight: 400;
-                font-size: 34rpx;
-                color: #a7abb0;
+
+                .progress-container {
+                    position: relative;
+                    margin: 20rpx 0;
+
+                    .progress-text {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        font-size: 24rpx;
+                        color: #3da7ff;
+                        font-weight: 500;
+                    }
+                }
+
+                .download-info {
+                    margin: 20rpx 0;
+                    font-weight: 400;
+                    font-size: 34rpx;
+                    color: #a7abb0;
+
+                    .success-icon {
+                        color: #4caf50;
+                        font-weight: bold;
+                        margin-right: 8rpx;
+                    }
+                }
+
+                .cancel-download-btn {
+                    width: 100%;
+                    height: 72rpx;
+                    line-height: 72rpx;
+                    background: #f5f5f5;
+                    border: 2rpx solid #ddd;
+                    border-radius: 12rpx;
+                    color: #666;
+                    font-size: 28rpx;
+                    margin-top: 20rpx;
+                }
             }
+
             .update-button {
                 width: 100%;
                 height: 96rpx;
                 line-height: 88rpx;
-                background: #1388f7;
                 border-radius: 16rpx;
-                border: 4rpx solid #1388f7;
+                border: 4rpx solid;
                 font-weight: 500;
                 font-size: 32rpx;
-                color: #ffffff;
+
+                &.primary {
+                    background: #1388f7;
+                    border-color: #1388f7;
+                    color: #ffffff;
+                }
+
+                &.secondary {
+                    background: #4caf50;
+                    border-color: #4caf50;
+                    color: #ffffff;
+                }
             }
         }
+
         .update-close {
             position: absolute;
             top: 0;

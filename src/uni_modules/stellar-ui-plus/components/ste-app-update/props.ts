@@ -1,32 +1,62 @@
+// 添加严格的类型定义
+export interface AppUpdateProps {
+    clientId: string;
+    clientSecret: string;
+    apiUrl: string;
+    appType: string;
+    btnText: string;
+    appVersion: string;
+}
+
 export default {
-    /** 应用编码 */
     clientId: {
         type: String,
-        default: () => '',
+        required: true,
+        default: '',
+        validator: (value: string) => {
+            return typeof value === 'string' && value.length > 0;
+        }
     },
-    /** 应用密钥 */
     clientSecret: {
         type: String,
-        default: () => '',
+        required: true,
+        default: '',
+        validator: (value: string) => {
+            return typeof value === 'string' && value.length > 0;
+        }
     },
-    /** API地址 */
     apiUrl: {
         type: String,
-        default: () => 'https://zboa.whzb.com/inte-cloud-dev/blade-system/api/inte/client/ver/currentDetail',
+        default: 'https://zboa.whzb.com/inte-cloud-dev/blade-system/api/inte/client/ver/currentDetail',
+        validator: (value: string) => {
+            if (typeof value !== 'string' || value.length === 0) return false;
+            try {
+                new URL(value);
+                return true;
+            } catch {
+                return false;
+            }
+        }
     },
-    /** APP环境,版本号的最后一位为环境标识 */
     appType: {
         type: String,
-        default: () => '',
+        default: '',
+        validator: (value: string) => {
+            return typeof value === 'string';
+        }
     },
-    /** 立即体验按钮文本 */
     btnText: {
         type: String,
-        default: () => '立即体验',
+        default: '立即体验',
+        validator: (value: string) => {
+            return typeof value === 'string' && value.length > 0;
+        }
     },
-    /** 当前应用版本 */
     appVersion: {
         type: String,
-        default: () => ''
+        default: '',
+        validator: (value: string) => {
+            return typeof value === 'string';
+        }
     }
-};
+} satisfies Record<keyof AppUpdateProps, any>;

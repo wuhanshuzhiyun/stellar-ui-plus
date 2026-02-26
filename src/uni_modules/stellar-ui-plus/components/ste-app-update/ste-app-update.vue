@@ -336,7 +336,6 @@ const cancelDownload = () => {
 
 defineExpose({
     start,
-    skipVersion, // 暴露跳过版本方法
     getSkippedVersions: () => [...skippedVersions.value], // 获取跳过版本列表
     clearSkippedVersions: () => {
         skippedVersions.value = [];

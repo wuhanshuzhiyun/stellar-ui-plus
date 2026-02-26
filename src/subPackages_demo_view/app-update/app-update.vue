@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { RefAppUpdate } from '@/uni_modules/stellar-ui-plus/types/refComponents';
-import { onHide } from '@dcloudio/uni-app';
 import { ref } from 'vue';
 
 const appUpdate = ref<RefAppUpdate>();
@@ -10,6 +9,17 @@ const checkForUpdates = () => {
         console.log(`当前版本号：${version}`);
         console.log(`服务器版本号：${code}；服务器版本名称${name}`);
     });
+};
+
+// 获取跳过版本列表
+const getSkippedList = () => {
+    const list = appUpdate.value?.getSkippedVersions();
+    console.log(`跳过版本列表：${list}`);
+};
+
+// 清空跳过记录
+const clearSkipped = () => {
+    appUpdate.value?.clearSkippedVersions();
 };
 </script>
 
@@ -27,6 +37,8 @@ const checkForUpdates = () => {
             <view class="item-block">
                 <ste-app-update ref="appUpdate" clientId="workbench_android" clientSecret="gkS6lEEncqAocYK2qsrvPQZykm3ISeMx"></ste-app-update>
                 <ste-button @click="checkForUpdates">检查更新</ste-button>
+                <ste-button @click="getSkippedList">获取跳过版本列表</ste-button>
+                <ste-button @click="clearSkipped">清空跳过记录</ste-button>
             </view>
         </view>
     </page-layout>
@@ -37,6 +49,9 @@ const checkForUpdates = () => {
     .content {
         .demo-item {
             .item-block {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
             }
         }
     }

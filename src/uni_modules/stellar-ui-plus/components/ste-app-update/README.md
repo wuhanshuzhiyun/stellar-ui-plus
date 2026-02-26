@@ -12,7 +12,6 @@
 - 函数:
 
     - `start`用于开始检查更新
-    - `skipVersion`用于跳过当前版本
     - `getSkippedVersions`获取跳过版本列表
     - `clearSkipped`清除跳过版本列表
 
@@ -34,11 +33,6 @@
             console.log(`服务器版本号：${code}；服务器版本名称${name}`);
         });
     };
-    // 跳过当前版本
-    const handleSkipVersion = () => {
-        appUpdate.value?.skipVersion();
-    };
-
     // 获取跳过版本列表
     const getSkippedList = () => {
         return appUpdate.value?.getSkippedVersions();
@@ -51,7 +45,9 @@
 </script>
 <template>
     <ste-app-update ref="appUpdate" clientId="workbench_android" clientSecret="gkS6lEEncqAocYK2qsrvPQZykm3ISeMx"></ste-app-update>
-    <button @click="checkForUpdates">检查更新</button>
+    <ste-button @click="checkForUpdates">检查更新</ste-button>
+    <ste-button @click="getSkippedList">获取跳过版本列表</ste-button>
+    <ste-button @click="clearSkipped">清空跳过记录</ste-button>
 </template>
 ```
 

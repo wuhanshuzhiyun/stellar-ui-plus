@@ -36,11 +36,57 @@ const tempFilePath = ref('');
 let downloadTask: UniApp.DownloadTask | null = null;
 let timeoutTimer: ReturnType<typeof setTimeout> | null = null;
 
+// 跳过版本相关
+const skippedVersions = ref<string[]>([]);
+const STORAGE_KEY = 'skipped_app_versions';
+
 const emits = defineEmits<{
     (e: 'cancel'): void;
     (e: 'update'): void;
     (e: 'no-update'): void;
+    (e: 'skip-version', version: string): void;
 }>();
+
+// 初始化跳过版本列表
+const initSkippedVersions = () => {
+    try {
+        const stored = uni.getStorageSync(STORAGE_KEY);
+        if (stored) {
+            skippedVersions.value = JSON.parse(stored);
+        }
+    } catch (error) {
+        console.warn('读取跳过版本记录失败:', error);
+        skippedVersions.value = [];
+    }
+};
+
+// 保存跳过版本记录
+const saveSkippedVersions = () => {
+    try {
+        uni.setStorageSync(STORAGE_KEY, JSON.stringify(skippedVersions.value));
+    } catch (error) {
+        console.warn('保存跳过版本记录失败:', error);
+    }
+};
+
+// 检查是否已跳过该版本
+const isVersionSkipped = (versionCode: string) => {
+    return skippedVersions.value.includes(versionCode);
+};
+
+// 跳过当前版本
+const skipVersion = () => {
+    if (!data.code) return;
+    // 添加到跳过列表
+    if (!skippedVersions.value.includes(data.code)) {
+        skippedVersions.value.push(data.code);
+        saveSkippedVersions();
+    }
+
+    // 关闭更新弹窗
+    close();
+    emits('skip-version', data.code);
+};
 
 // 清理函数
 const cleanup = () => {
@@ -97,6 +143,13 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                     data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;
                     data.package_type = _data.data.entireFile ? 0 : 1;
 
+                    // 检查是否已跳过该版本
+                    if (isVersionSkipped(data.code)) {
+                        console.log(`版本 ${data.code} 已被跳过`);
+                        emits('no-update');
+                        return;
+                    }
+
                     callback &&
                         callback(
                             {
@@ -149,6 +202,9 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
 };
 
 const start = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
+    // 初始化跳过版本记录
+    initSkippedVersions();
+
     // #ifdef APP-PLUS
     plus.runtime.getProperty(plus.runtime.appid || '', inf => {
         version.value = inf.version || '';
@@ -280,6 +336,12 @@ const cancelDownload = () => {
 
 defineExpose({
     start,
+    skipVersion, // 暴露跳过版本方法
+    getSkippedVersions: () => [...skippedVersions.value], // 获取跳过版本列表
+    clearSkippedVersions: () => {
+        skippedVersions.value = [];
+        saveSkippedVersions();
+    }, // 清空跳过版本记录
 });
 </script>
 
@@ -316,9 +378,14 @@ defineExpose({
                     <button v-if="!tempFilePath && !data.isForce" class="cancel-download-btn" @click="cancelDownload">取消下载</button>
                 </view>
 
-                <button class="update-button primary" plain @click="confirm" v-if="updateBtn">
-                    {{ btnText }}
-                </button>
+                <template v-if="updateBtn">
+                    <button class="update-button primary" plain @click="confirm">
+                        {{ btnText }}
+                    </button>
+
+                    <!-- 跳过版本按钮 -->
+                    <button v-if="!data.isForce" class="update-button skip" plain @click="skipVersion">跳过此版本</button>
+                </template>
 
                 <button class="update-button secondary" plain @click="install" v-else-if="data.package_type === 0 && tempFilePath">立即安装</button>
             </view>
@@ -447,6 +514,7 @@ defineExpose({
                 border: 4rpx solid;
                 font-weight: 500;
                 font-size: 32rpx;
+                margin-bottom: 20rpx;
 
                 &.primary {
                     background: #1388f7;
@@ -458,6 +526,12 @@ defineExpose({
                     background: #4caf50;
                     border-color: #4caf50;
                     color: #ffffff;
+                }
+
+                &.skip {
+                    background: #f5f5f5;
+                    border-color: #ddd;
+                    color: #666;
                 }
             }
         }

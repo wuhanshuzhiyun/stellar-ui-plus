@@ -6,11 +6,19 @@
 
 ### 基础用法
 
-- 属性`clientId`用于设置APP的应用编码
-- 属性`clientSecret`用于设置APP的应用密钥
-- 函数`start`用于开始检查更新
-- 回调事`cancel`取消更新
-- 回调事`complete`取消，成功更新都会执行
+- 属性:
+    - `clientId`用于设置APP的应用编码
+    - `clientSecret`用于设置APP的应用密钥
+- 函数:
+
+    - `start`用于开始检查更新
+    - `skipVersion`用于跳过当前版本
+    - `getSkippedVersions`获取跳过版本列表
+    - `clearSkipped`清除跳过版本列表
+
+- 事件：
+    - `cancel`取消更新
+    - `complete`取消，成功更新都会执行
 
 ```html
 <script setup lang="ts">
@@ -25,6 +33,20 @@
             console.log(`当前版本号：${version}`);
             console.log(`服务器版本号：${code}；服务器版本名称${name}`);
         });
+    };
+    // 跳过当前版本
+    const handleSkipVersion = () => {
+        appUpdate.value?.skipVersion();
+    };
+
+    // 获取跳过版本列表
+    const getSkippedList = () => {
+        return appUpdate.value?.getSkippedVersions();
+    };
+
+    // 清空跳过记录
+    const clearSkipped = () => {
+        appUpdate.value?.clearSkippedVersions();
     };
 </script>
 <template>

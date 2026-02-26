@@ -7813,6 +7813,21 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "description": "触发切换的来源"
                     }
                 ]
+            },
+            {
+                "name": "error",
+                "description": "错误监听",
+                "type": "(error: Error, context: string)=>void",
+                "params": [
+                    {
+                        "name": "error",
+                        "description": "错误信息"
+                    },
+                    {
+                        "name": "context",
+                        "description": "提示内容"
+                    }
+                ]
             }
         ]
     },

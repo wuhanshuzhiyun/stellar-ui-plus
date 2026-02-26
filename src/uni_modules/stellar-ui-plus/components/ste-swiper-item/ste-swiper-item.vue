@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { useInject } from '../../utils/mixin';
 import { SWIPER_KEY } from '../ste-swiper/props';
 
@@ -18,26 +18,35 @@ const scale = ref(1);
 const cmpStyle = computed(() => {
     return {
         transform: `translate3d(${transformX.value}px, ${transformY.value}px, ${transformZ.value}px) scale(${scale.value})`,
+        // 添加硬件加速提示
+        willChange: 'transform',
     };
 });
 
 const setTransform = ({ x = 0, y = 0, z = 0 }) => {
-    if (transformX.value !== x) transformX.value = x;
-    if (transformY.value !== y) transformY.value = y;
-    if (transformZ.value !== z) transformZ.value = z;
+    // 添加防抖优化
+    nextTick(() => {
+        if (transformX.value !== x) transformX.value = x;
+        if (transformY.value !== y) transformY.value = y;
+        if (transformZ.value !== z) transformZ.value = z;
+    });
 };
 
 const setLinearScale = (scaleValue: number) => {
-    if (scale.value !== scaleValue) scale.value = scaleValue;
+    // 添加范围限制
+    const clampedScale = Math.max(0.8, Math.min(1.2, scaleValue));
+    if (scale.value !== clampedScale) scale.value = clampedScale;
 };
 
 useInject(SWIPER_KEY, { setTransform, setLinearScale });
 </script>
+
 <template>
     <view class="ste-swiper-item-root" :style="[cmpStyle]">
         <slot></slot>
     </view>
 </template>
+
 <style scoped lang="scss">
 .ste-swiper-item-root {
     width: 100%;
@@ -54,6 +63,9 @@ useInject(SWIPER_KEY, { setTransform, setLinearScale });
     /* 优化图像渲染 */
     image-rendering: -webkit-optimize-contrast;
     /* 确保子元素也使用硬件加速 */
-    transform-style: flat;
+    transform-style: preserve-3d;
+
+    /* 添加性能优化 */
+    isolation: isolate;
 }
 </style>

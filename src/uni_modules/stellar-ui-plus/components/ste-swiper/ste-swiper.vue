@@ -10,6 +10,7 @@ defineOptions({
 
 const emits = defineEmits<{
     (e: 'change', index: number, source: 'autoplay' | 'touch'): void;
+    (e: 'error', error: Error, context: string): void;
 }>();
 
 const thas = ref<ComponentPublicInstance | null | undefined>(getCurrentInstance()?.proxy);
@@ -22,7 +23,14 @@ const { initializing, dataIndex, cmpRootStyle, cmpBoxStyle, cmpBoxTransform, onT
 </script>
 
 <template>
-    <view class="ste-swiper-root" :style="[cmpRootStyle, { opacity: initializing ? 0 : 1 }]">
+    <view
+        class="ste-swiper-root"
+        :style="[cmpRootStyle, { opacity: initializing ? 0 : 1 }]"
+        role="region"
+        aria-label="轮播图组件"
+        :aria-roledescription="props.circular ? '循环轮播图' : '普通轮播图'"
+        :aria-live="props.autoplay ? 'off' : 'polite'"
+    >
         <view
             class="swipe-content"
             @mousedown="onTouchstart"
@@ -33,12 +41,13 @@ const { initializing, dataIndex, cmpRootStyle, cmpBoxStyle, cmpBoxTransform, onT
             @touchmove.stop="onTouchmove"
             @touchend="onTouchend"
             @touchcancel="onTouchend"
+            :aria-disabled="props.disabled"
         >
             <view class="swipe-content-view" :style="[cmpBoxStyle, cmpBoxTransform]">
                 <slot></slot>
             </view>
         </view>
-        <view class="ste-swiper-dots" v-if="props.indicatorDots">
+        <view class="ste-swiper-dots" v-if="props.indicatorDots" role="tablist" aria-label="轮播图指示器">
             <view
                 class="swiper-dots-item"
                 v-for="(m, index) in internalChildren"
@@ -46,10 +55,15 @@ const { initializing, dataIndex, cmpRootStyle, cmpBoxStyle, cmpBoxTransform, onT
                 :class="{
                     active: dataIndex === index || (index === 0 && dataIndex >= internalChildren.length) || (index === internalChildren.length && dataIndex === -1),
                 }"
+                role="tab"
+                :aria-selected="dataIndex === index"
+                :aria-label="`第${index + 1}页`"
+                :tabindex="dataIndex === index ? 0 : -1"
             />
         </view>
     </view>
 </template>
+
 <style lang="scss" scoped>
 .ste-swiper-root {
     width: var(--swiper-width);
@@ -83,6 +97,7 @@ const { initializing, dataIndex, cmpRootStyle, cmpBoxStyle, cmpBoxTransform, onT
             height: 8rpx;
             border-radius: 6rpx;
             background-color: var(--swiper-indicator-color);
+            transition: all 0.3s ease;
 
             &.active {
                 width: 24rpx;

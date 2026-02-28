@@ -1,4 +1,4 @@
-import { type CSSProperties, computed, nextTick, ref, watch } from 'vue'
+import { type CSSProperties, type ComponentPublicInstance, type Ref, computed, nextTick, ref, watch } from 'vue'
 import utils from '../../utils/utils'
 import type { TabProps } from '../ste-tab/props'
 import type { SelfComponentInternalInstance } from '../../utils/mixin'
@@ -14,7 +14,7 @@ export default function useData({
   emits,
   internalChildren,
 }: {
-  thas: globalThis.Ref<globalThis.ComponentPublicInstance | null | undefined>
+  thas: Ref<ComponentPublicInstance | null | undefined>
   props: SteTabsProps
   internalChildren: SelfComponentInternalInstance[]
   emits: {
@@ -50,13 +50,13 @@ export default function useData({
   const pullTransform = ref(false)
   const setPullTransform = (transform: boolean) => (pullTransform.value = transform)
 
-  const updateChildrenTimeout = ref(0)
+  const updateChildrenTimeout = ref<any>(0)
   const setUpdateChildrenTimeout = (callback: () => void, timeout: number) => {
     clearTimeout(updateChildrenTimeout.value)
     updateChildrenTimeout.value = setTimeout(callback, timeout)
   }
 
-  const updateTabsTimeout = ref(0)
+  const updateTabsTimeout = ref<any>(0)
   const setUpdateTabsTimeout = (callback: () => void, timeout: number) => {
     clearTimeout(updateTabsTimeout.value)
     updateTabsTimeout.value = setTimeout(callback, timeout)

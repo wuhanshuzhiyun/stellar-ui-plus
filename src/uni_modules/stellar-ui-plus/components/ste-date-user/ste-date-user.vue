@@ -5,25 +5,48 @@ import propsData from './props';
 defineComponent({
     name: 'ste-date-user',
 });
-
+import utils from '../../utils/utils';
+const dayjs = utils.dayjs;
 const props = defineProps(propsData);
 let time: any = ref({});
 let day = ref('');
 let year = ref('');
 onMounted(async () => {
-    uni.request({
-        url: 'https://zboa.whzb.com/inte-cloud-test/inte-tour-base/api/calendar/getCalendar',
-        method: 'get',
-        success: (res: any) => {
-            time.value = res.data.data;
-            let date = time.value.today.split('-');
-            day.value = date[date.length - 1];
-            year.value = `${date[0]}年${date[1]}月`;
-        },
-        fail: error => {
-            console.log('error', error);
-        },
-    });
+    let flag = true;
+
+    if (props.type == 'date') {
+        // 记录本地时间和服务器时间的差异 按天计算
+        let serverDay = uni.getStorageSync('serverDay');
+        if (serverDay) {
+            // 判断是否差异1天以上，是读取接口
+            let dayDiff = dayjs(dayjs().format('YYYY-MM-DD')).diff(serverDay.today, 'day');
+            if (dayDiff == 0) {
+                setInfo(serverDay);
+                flag = false;
+            } else {
+                flag = true;
+            }
+        }
+        if (flag) {
+            uni.request({
+                url: 'https://zboa.whzb.com/inte-cloud-test/inte-tour-base/api/calendar/getCalendar',
+                method: 'get',
+                success: (res: any) => {
+                    setInfo(res.data.data);
+                    uni.setStorageSync('serverDay', res.data.data);
+                },
+                fail: error => {
+                    console.error('error', error);
+                },
+            });
+        }
+    }
+    function setInfo(res: any) {
+        time.value = res;
+        let date = time.value.today.split('-');
+        day.value = date[date.length - 1];
+        year.value = `${date[0]}年${date[1]}月`;
+    }
 });
 </script>
 

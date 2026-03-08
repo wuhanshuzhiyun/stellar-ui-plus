@@ -92,7 +92,6 @@ const onSwitchChange = (e: SwiperOnChangeEvent) => {
     setSwitchIndex(e.detail.current);
 };
 const onClick = () => {
-    if (props.disabled) return;
     let searchValue = dataValue.value;
     if (!searchValue && props.hotWords.length) {
         searchValue = props.hotWords[switchIndex.value];

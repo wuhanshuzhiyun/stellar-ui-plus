@@ -6,6 +6,7 @@ export interface AppUpdateProps {
     appType: string;
     btnText: string;
     appVersion: string;
+    zIndex: number;
 }
 
 export default {
@@ -57,6 +58,13 @@ export default {
         default: '',
         validator: (value: string) => {
             return typeof value === 'string';
+        }
+    },
+    zIndex: {
+        type: [Number, String],
+        default: () => 998,
+        validator: (value: any) => {
+            return typeof value === 'number' || typeof value === 'string'
         }
     }
 } satisfies Record<keyof AppUpdateProps, any>;

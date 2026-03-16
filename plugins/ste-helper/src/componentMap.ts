@@ -83,6 +83,13 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "string",
                 "default": "",
                 "version": "1.24.6"
+            },
+            {
+                "name": "zIndex",
+                "description": "弹窗层级",
+                "type": "string/number",
+                "default": "998",
+                "version": "1.24.23"
             }
         ],
         "events": [

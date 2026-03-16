@@ -214,6 +214,34 @@
 </script>
 ```
 
+#### 媒体预览插槽
+
+- 事件`previewChange`监听媒体预览区域切换，参数为当前预览的索引或者`null`；
+- 插槽`media-preview`可自定义媒体预览区域底部内容
+
+```html
+<ste-upload v-model="fileList2" uploadIcon="&#xe67e;" @preview-change="previewChange">
+    <template v-slot:media-preview>
+        <button>自定义</button>
+    </template>
+</ste-upload>
+<script lang="ts" setup>
+    import { ref, watch } from 'vue';
+    const fileList2 = ref([]);
+
+    watch(fileList2, fileList => {
+        setTimeout(() => {
+            fileList.forEach(item => {
+                item.status = 'success';
+            });
+        }, 1000);
+    });
+    const previewChange = (index: number | null) => {
+        console.log('previewChange', index);
+    };
+</script>
+```
+
 ---$
 
 ### API

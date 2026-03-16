@@ -89,6 +89,9 @@ const clickItem = (i: number) => {
 const closePreview = () => {
     console.log('closePreview');
 };
+const previewChange = (index: number | null) => {
+    console.log('previewChange', index);
+};
 </script>
 <template>
     <page-layout title="上传">
@@ -145,6 +148,14 @@ const closePreview = () => {
         <view class="demo-item">
             <view class="title">删除前置处理</view>
             <ste-upload v-model="fileList6" @beforeDelete="beforeDelete" @delete="onSuccessDelete"></ste-upload>
+        </view>
+        <view class="demo-item">
+            <view class="title">媒体预览插槽</view>
+            <ste-upload v-model="fileList2" uploadIcon="&#xe67e;" @preview-change="previewChange">
+                <template v-slot:media-preview>
+                    <button>自定义</button>
+                </template>
+            </ste-upload>
         </view>
     </page-layout>
 </template>

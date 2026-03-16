@@ -188,6 +188,9 @@ const onClick = () => {
                     </swiper-item>
                 </swiper>
             </template>
+            <view class="media-preview-slot">
+                <slot></slot>
+            </view>
         </view>
         <view class="media-preview-footer">
             <view class="footer-index">
@@ -210,7 +213,7 @@ const onClick = () => {
     height: 100vh;
     background-color: #000;
     color: #fff;
-    z-index: 9999999;
+    z-index: 997;
 
     .media-preview-content {
         width: 100%;
@@ -218,6 +221,7 @@ const onClick = () => {
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
 
         .preview-item {
             width: 100%;
@@ -236,6 +240,12 @@ const onClick = () => {
                 max-width: 100%;
                 max-height: 100%;
             }
+        }
+        .media-preview-slot {
+            position: absolute;
+            bottom: 30rpx;
+            left: 50%;
+            transform: translateX(-50%);
         }
     }
 

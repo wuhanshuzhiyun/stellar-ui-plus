@@ -17,6 +17,7 @@ const emits = defineEmits<{
     (e: 'read', list: UploadFileType[]): void;
     (e: 'beforeDelete', index: number, suspend: () => void, next: () => void, stop: () => void): void;
     (e: 'delete', index: number, list: UploadFileType[]): void;
+    (e: 'preview-change', index: number | null): void;
     (e: 'open-preview'): void;
     (e: 'close-preview'): void;
     (e: 'click-item', i: number): void;
@@ -83,6 +84,7 @@ watch(
         } else {
             emits('open-preview');
         }
+        emits('preview-change', val);
     }
 );
 
@@ -264,7 +266,9 @@ const onMediaType = () => {
                 </slot>
             </view>
         </view>
-        <ste-media-preview :show="Boolean(previewIndex || previewIndex === 0)" :urls="cmpPreviewList" v-model:index="previewIndex" @close="setPreviewIndex(null)" />
+        <ste-media-preview :show="Boolean(previewIndex || previewIndex === 0)" :urls="cmpPreviewList" v-model:index="previewIndex" @close="setPreviewIndex(null)">
+            <slot name="media-preview"></slot>
+        </ste-media-preview>
     </view>
 </template>
 <style lang="scss" scoped>

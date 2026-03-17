@@ -53,6 +53,12 @@
             "default": true
         },
         {
+            "name": "zIndex",
+            "description": "弹出层级",
+            "type": "number",
+            "default": 997
+        },
+        {
             "name": "[event]beforeClose",
             "description": "关闭前触发",
             "type": "() => void"

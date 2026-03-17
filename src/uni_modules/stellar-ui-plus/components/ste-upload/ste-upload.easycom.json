@@ -259,6 +259,11 @@
             "type": "()=>void"
         },
         {
+            "name": "[event]preview-change",
+            "description": "预览图片变化触发",
+            "type": "(index:number | null)=>void"
+        },
+        {
             "name": "[event]close-preview",
             "description": "关闭预览时触发",
             "type": "()=>void"

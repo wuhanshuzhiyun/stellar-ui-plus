@@ -140,7 +140,7 @@ const onClick = () => {
 };
 </script>
 <template>
-    <view class="ste-media-preview-root" data-test="media-preview" v-if="dataShow">
+    <view class="ste-media-preview-root" :style="{ zIndex }" data-test="media-preview" v-if="dataShow">
         <view class="media-preview-content">
             <template v-if="isScale">
                 <view

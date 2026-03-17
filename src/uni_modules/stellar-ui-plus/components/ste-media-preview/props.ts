@@ -9,4 +9,5 @@ export default {
   showIndex: { type: Boolean, default: () => true },
   scale: { type: Boolean, default: () => false },
   showmenu: { type: Boolean, default: () => true },
+  zIndex: { type: Number, default: () => 997 },
 }

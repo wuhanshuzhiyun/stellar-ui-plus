@@ -4365,6 +4365,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否开启图片长按菜单",
                 "type": "boolean",
                 "default": true
+            },
+            {
+                "name": "zIndex",
+                "description": "弹出层级",
+                "type": "number",
+                "default": 997
             }
         ],
         "events": [
@@ -9161,6 +9167,11 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "open-preview",
                 "description": "打开预览时触发",
                 "type": "()=>void"
+            },
+            {
+                "name": "preview-change",
+                "description": "预览图片变化触发",
+                "type": "(index:number | null)=>void"
             },
             {
                 "name": "close-preview",

@@ -1,6 +1,6 @@
 <template>
     <view class="ste-filter-tool--root" :style="[rootStyleVar, { '--category-count': categoryData.length }]">
-        <ste-dropdown-menu ref="steDropMenu" class="filter-box-menu" :activeColor="activeColor" dropDownIconColor="#000" v-model:showPopup="showMenu">
+        <ste-dropdown-menu ref="steDropMenu" class="filter-box-menu" :activeColor="activeColor" dropDownIconColor="#000" v-model:showPopup="showMenu" @maskClick="handleMaskClick">
             <template #title>
                 <slot>
                     <view></view>
@@ -146,7 +146,7 @@ const rootStyleVar = computed(() => ({
 }));
 
 // 使用简化的筛选逻辑组合式函数
-const { handleFilterClick, handleCheckboxChange, handleReset, handleConfirm } = useData(props, emits, filtersData);
+const { handleFilterClick, handleCheckboxChange, handleReset, handleConfirm, handleMaskClose } = useData(props, emits, filtersData);
 
 // 工具类实例
 const calculator = new ScrollCalculator(instance, filtersData);
@@ -216,6 +216,10 @@ const handleMenuConfirm = () => {
 const toggleExpand = (item: FilterItem) => {
     item.expand = !item.expand;
 };
+
+function handleMaskClick() {
+    handleMaskClose();
+}
 
 // 监听器
 watch(

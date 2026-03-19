@@ -67,6 +67,12 @@
                     "description": "当前操作的筛选项数据"
                 }
             ]
+        },
+        {
+            "name": "[event]maskClose",
+            "description": "点击蒙层关闭了弹窗后触发",
+            "type": "() => void",
+            "params": []
         }
     ]
 }

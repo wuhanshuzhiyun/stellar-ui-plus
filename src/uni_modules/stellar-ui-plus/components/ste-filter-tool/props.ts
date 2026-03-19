@@ -35,6 +35,7 @@ export const filterToolEmits = {
     // 值变化（实时）
     'update:value': (values: FilterValue[]) => Array.isArray(values),
     itemClick: (item: FilterValue) => item instanceof Object,
+    maskClose: () => true,
 };
 
 export type FilterToolProps = ExtractPropTypes<typeof props>;

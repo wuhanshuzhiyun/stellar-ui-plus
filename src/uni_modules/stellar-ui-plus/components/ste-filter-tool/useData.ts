@@ -138,6 +138,13 @@ export default function useSimpleFilterLogic(props: FilterToolProps, emits: Setu
         emits('confirm', currentValues);
     };
 
+    /**
+     * 点击蒙层关闭了弹窗后触发
+     */
+    const handleMaskClose = () => {
+        emits('maskClose');
+    };
+
     // 监听props.value变化，同步到组件内部状态
     watch(
         () => props.value,
@@ -156,6 +163,7 @@ export default function useSimpleFilterLogic(props: FilterToolProps, emits: Setu
         handleCheckboxChange,
         handleReset,
         handleConfirm,
+        handleMaskClose,
         collectCurrentValues,
         setValuesFromProps,
     };

@@ -235,6 +235,7 @@ function choose(item: DropdownItem) {
 function handleMaskClick() {
     if (props.isMaskClick) {
         close();
+        emits('maskClick');
     }
 }
 function handleMenuConentClick() {}

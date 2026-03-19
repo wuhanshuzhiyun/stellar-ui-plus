@@ -26,6 +26,7 @@ export default dropDownMenuProps;
 export const dropDownMenuEmits = {
     close: () => true,
     open: () => true,
+    maskClick: () => true,
     change: (value: Array<any>) => Array.isArray(value),
     'item-choose': (item: any) => item,
     'update:modelValue': (value: Array<any>) => Array.isArray(value),

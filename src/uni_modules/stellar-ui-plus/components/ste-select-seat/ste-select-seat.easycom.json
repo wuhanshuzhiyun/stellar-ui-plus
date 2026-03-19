@@ -1,0 +1,62 @@
+{
+    "name": "ste-select-seat",
+    "description": "基于 Canvas 的座位选择组件",
+    "example": "<ste-select-seat v-model='selected' :rows='5' :cols='10'></ste-select-seat>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-select-seat",
+    "attributes": [
+        {
+            "name": "modelValue",
+            "description": "已选座位坐标列表（仅包含 row/col）",
+            "type": "SteSelectSeatValue[]"
+        },
+        {
+            "name": "rows",
+            "description": "行数",
+            "type": "number"
+        },
+        {
+            "name": "cols",
+            "description": "列数",
+            "type": "number"
+        },
+        {
+            "name": "width",
+            "description": "组件宽度(px)",
+            "type": "number",
+            "default": "350"
+        },
+        {
+            "name": "height",
+            "description": "组件高度(px)",
+            "type": "number",
+            "default": "400"
+        },
+        {
+            "name": "seats",
+            "description": "座位属性配置（未配置的位置会自动补齐为默认座位）",
+            "type": "SteSelectSeatItem[]"
+        },
+        {
+            "name": "seatSize",
+            "description": "座位尺寸(rpx)",
+            "type": "number",
+            "default": "40"
+        },
+        {
+            "name": "seatGap",
+            "description": "座位间距(rpx)",
+            "type": "number",
+            "default": "8"
+        },
+        {
+            "name": "[event]seat-click",
+            "description": "点击有效座位事件（empty/disabled 不触发）",
+            "type": "(seat: SteSelectSeatItem) => void"
+        },
+        {
+            "name": "[event]move",
+            "description": "拖动/缩放事件",
+            "type": "(data: { translateX, translateY, scale, screenTranslateX }) => void"
+        }
+    ]
+}

@@ -2397,6 +2397,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "description": "当前操作的筛选项数据"
                     }
                 ]
+            },
+            {
+                "name": "maskClose",
+                "description": "点击蒙层关闭了弹窗后触发",
+                "type": "() => void",
+                "params": []
             }
         ]
     },

@@ -1,0 +1,60 @@
+{
+    "name": "ste-simple-calendar",
+    "description": "简单日历组件，紧凑展示当前日期信息",
+    "example": "<ste-simple-calendar></ste-simple-calendar>",
+    "tutorial": "",
+    "attributes": [
+        {
+            "name": "date",
+            "description": "展示的日期",
+            "type": "string | number | Date",
+            "default": "Date.now()"
+        },
+        {
+            "name": "formatter",
+            "description": "年月显示的格式化模板",
+            "type": "string",
+            "default": "YYYY年M月"
+        },
+        {
+            "name": "weekTexts",
+            "description": "星期文本数组",
+            "type": "string[]",
+            "default": "['周日','周一','周二','周三','周四','周五','周六']"
+        },
+        {
+            "name": "color",
+            "description": "日期、星期和年月文字颜色",
+            "type": "string",
+            "default": "#000000"
+        },
+        {
+            "name": "showCalendar",
+            "description": "点击后是否弹出内置日历",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "customStyle",
+            "description": "自定义根节点样式对象",
+            "type": "object",
+            "default": "{}"
+        },
+        {
+            "name": "customClass",
+            "description": "自定义根节点 class",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "[event]click",
+            "description": "点击组件时触发",
+            "type": "(dateInfo: DateInfo) => void"
+        },
+        {
+            "name": "[event]date-change",
+            "description": "当 date 属性变化时触发",
+            "type": "(dateInfo: DateInfo) => void"
+        }
+    ]
+}

@@ -1,0 +1,119 @@
+{
+    "name": "ste-slide-verify",
+    "description": "滑动验证组件，支持普通滑动验证和图片旋转验证。",
+    "example": "<ste-slide-verify v-model='value'></ste-slide-verify>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-slide-verify",
+    "attributes": [
+        {
+            "name": "modelValue",
+            "description": "验证状态（支持 v-model 双向绑定）",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "mode",
+            "description": "验证模式，可选值为 slide / image",
+            "type": "String",
+            "default": "slide"
+        },
+        {
+            "name": "size",
+            "description": "轨道高度和滑块大小，默认单位 rpx",
+            "type": "Number|String",
+            "default": 40
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "imageUrl",
+            "description": "图片旋转模式下的图片地址",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "imageSize",
+            "description": "图片旋转模式下的图片尺寸，默认单位 rpx",
+            "type": "Number|String",
+            "default": 150
+        },
+        {
+            "name": "angleThreshold",
+            "description": "图片旋转验证的角度容差",
+            "type": "Number",
+            "default": 10
+        },
+        {
+            "name": "text",
+            "description": "默认提示文案",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "successText",
+            "description": "验证成功文案",
+            "type": "String",
+            "default": "验证成功"
+        },
+        {
+            "name": "showFail",
+            "description": "失败时是否显示失败态",
+            "type": "Boolean",
+            "default": true
+        },
+        {
+            "name": "failText",
+            "description": "失败提示文案",
+            "type": "String",
+            "default": "验证失败"
+        },
+        {
+            "name": "failDuration",
+            "description": "失败态停留时长，单位 ms",
+            "type": "Number",
+            "default": 800
+        },
+        {
+            "name": "activeColor",
+            "description": "拖动过程中的激活颜色",
+            "type": "String",
+            "default": "#0090FF"
+        },
+        {
+            "name": "inactiveColor",
+            "description": "未激活背景色",
+            "type": "String",
+            "default": "#f3f4f6"
+        },
+        {
+            "name": "successColor",
+            "description": "成功态颜色",
+            "type": "String",
+            "default": "#13ce66"
+        },
+        {
+            "name": "failColor",
+            "description": "失败态颜色",
+            "type": "String",
+            "default": "#ee0a24"
+        },
+        {
+            "name": "[event]change",
+            "description": "拖动过程中实时触发",
+            "type": "(detail) => void"
+        },
+        {
+            "name": "[event]success",
+            "description": "验证成功时触发",
+            "type": "(detail) => void"
+        },
+        {
+            "name": "[event]fail",
+            "description": "验证失败时触发",
+            "type": "(detail) => void"
+        }
+    ]
+}

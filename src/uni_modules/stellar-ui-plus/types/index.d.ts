@@ -109,3 +109,5 @@ export interface MessageBoxOptions {
     closeOnPressEscape?: boolean;
     closeOnBackdropClick?: boolean;
 }
+
+export type TypeSkeleton = 'text' | 'image' | 'circle' | 'button';

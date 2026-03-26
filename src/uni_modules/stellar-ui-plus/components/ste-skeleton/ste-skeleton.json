@@ -1,0 +1,38 @@
+{
+    "name": "ste-skeleton",
+    "description": "骨架屏组件",
+    "example": "<ste-skeleton></ste-skeleton>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-skeleton",
+    "attributes": [
+        {
+            "name": "loading",
+            "description": "是否显示骨架图",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "type",
+            "description": "骨架图类型",
+            "type": "string",
+            "values": [
+                {
+                    "name": "text",
+                    "description": "文本"
+                },
+                {
+                    "name": "image",
+                    "description": "图片"
+                },
+                {
+                    "name": "circle",
+                    "description": "圆形"
+                },
+                {
+                    "name": "button",
+                    "description": "按钮"
+                }
+            ],
+            "default": "text"
+        }
+    ]
+}

@@ -33,7 +33,6 @@ const packageFileSize = ref('0');
 const tempFilePath = ref('');
 
 // 资源管理
-let downloadTask: UniApp.DownloadTask | null = null;
 let timeoutTimer: ReturnType<typeof setTimeout> | null = null;
 
 // 跳过版本相关
@@ -90,10 +89,6 @@ const skipVersion = () => {
 
 // 清理函数
 const cleanup = () => {
-    if (downloadTask) {
-        downloadTask.abort();
-        downloadTask = null;
-    }
     if (timeoutTimer) {
         clearTimeout(timeoutTimer);
         timeoutTimer = null;
@@ -244,7 +239,7 @@ const confirm = () => {
     if (data.package_type == 0) {
         if (data.updateFile.includes('.apk')) {
             updateBtn.value = false;
-            downloadTask = downloadMethod(data, {
+            downloadMethod(data, {
                 onProgressUpdate,
                 downloadSuccess: path => (tempFilePath.value = path),
                 error: () => {
@@ -263,7 +258,7 @@ const confirm = () => {
         }
     } else {
         updateBtn.value = false;
-        downloadTask = downloadMethod(data, {
+        downloadMethod(data, {
             onProgressUpdate,
             downloadSuccess: path => (tempFilePath.value = path),
             error: () => {

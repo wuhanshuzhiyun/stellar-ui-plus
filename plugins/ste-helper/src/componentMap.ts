@@ -6973,6 +6973,70 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
+    "select-seat": {
+        "site": "ste-select-seat",
+        "attr": [
+            "modelValue=''"
+        ],
+        "props": [
+            {
+                "name": "modelValue",
+                "description": "已选座位坐标列表（仅包含 row/col）",
+                "type": "SteSelectSeatValue[]"
+            },
+            {
+                "name": "rows",
+                "description": "行数",
+                "type": "number"
+            },
+            {
+                "name": "cols",
+                "description": "列数",
+                "type": "number"
+            },
+            {
+                "name": "width",
+                "description": "组件宽度(px)",
+                "type": "number",
+                "default": "350"
+            },
+            {
+                "name": "height",
+                "description": "组件高度(px)",
+                "type": "number",
+                "default": "400"
+            },
+            {
+                "name": "seats",
+                "description": "座位属性配置（未配置的位置会自动补齐为默认座位）",
+                "type": "SteSelectSeatItem[]"
+            },
+            {
+                "name": "seatSize",
+                "description": "座位尺寸(rpx)",
+                "type": "number",
+                "default": "40"
+            },
+            {
+                "name": "seatGap",
+                "description": "座位间距(rpx)",
+                "type": "number",
+                "default": "8"
+            }
+        ],
+        "events": [
+            {
+                "name": "seat-click",
+                "description": "点击有效座位事件（empty/disabled 不触发）",
+                "type": "(seat: SteSelectSeatItem) => void"
+            },
+            {
+                "name": "move",
+                "description": "拖动/缩放事件",
+                "type": "(data: { translateX, translateY, scale, screenTranslateX }) => void"
+            }
+        ]
+    },
     "signature": {
         "site": "ste-signature",
         "attr": [
@@ -7046,6 +7110,195 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "end",
                 "description": "笔画结束时触发",
                 "type": "() => void"
+            }
+        ]
+    },
+    "simple-calendar": {
+        "site": "ste-simple-calendar",
+        "attr": [
+            "date=''"
+        ],
+        "props": [
+            {
+                "name": "date",
+                "description": "展示的日期",
+                "type": "string | number | Date",
+                "default": "Date.now()"
+            },
+            {
+                "name": "formatter",
+                "description": "年月显示的格式化模板",
+                "type": "string",
+                "default": "YYYY年M月"
+            },
+            {
+                "name": "weekTexts",
+                "description": "星期文本数组",
+                "type": "string[]",
+                "default": "['周日','周一','周二','周三','周四','周五','周六']"
+            },
+            {
+                "name": "color",
+                "description": "日期、星期和年月文字颜色",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "showCalendar",
+                "description": "点击后是否弹出内置日历",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "customStyle",
+                "description": "自定义根节点样式对象",
+                "type": "object",
+                "default": "{}"
+            },
+            {
+                "name": "customClass",
+                "description": "自定义根节点 class",
+                "type": "string",
+                "default": ""
+            }
+        ],
+        "events": [
+            {
+                "name": "click",
+                "description": "点击组件时触发",
+                "type": "(dateInfo: DateInfo) => void"
+            },
+            {
+                "name": "date-change",
+                "description": "当 date 属性变化时触发",
+                "type": "(dateInfo: DateInfo) => void"
+            }
+        ]
+    },
+    "ste-skeleton": {
+        "site": "ste-skeleton",
+        "attr": [
+            ""
+        ]
+    },
+    "slide-verify": {
+        "site": "ste-slide-verify",
+        "attr": [
+            "modelValue=''"
+        ],
+        "props": [
+            {
+                "name": "modelValue",
+                "description": "验证状态（支持 v-model 双向绑定）",
+                "type": "Boolean",
+                "default": false
+            },
+            {
+                "name": "mode",
+                "description": "验证模式，可选值为 slide / image",
+                "type": "String",
+                "default": "slide"
+            },
+            {
+                "name": "size",
+                "description": "轨道高度和滑块大小，默认单位 rpx",
+                "type": "Number|String",
+                "default": 40
+            },
+            {
+                "name": "disabled",
+                "description": "是否禁用",
+                "type": "Boolean",
+                "default": false
+            },
+            {
+                "name": "imageUrl",
+                "description": "图片旋转模式下的图片地址",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "imageSize",
+                "description": "图片旋转模式下的图片尺寸，默认单位 rpx",
+                "type": "Number|String",
+                "default": 150
+            },
+            {
+                "name": "angleThreshold",
+                "description": "图片旋转验证的角度容差",
+                "type": "Number",
+                "default": 10
+            },
+            {
+                "name": "text",
+                "description": "默认提示文案",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "successText",
+                "description": "验证成功文案",
+                "type": "String",
+                "default": "验证成功"
+            },
+            {
+                "name": "showFail",
+                "description": "失败时是否显示失败态",
+                "type": "Boolean",
+                "default": true
+            },
+            {
+                "name": "failText",
+                "description": "失败提示文案",
+                "type": "String",
+                "default": "验证失败"
+            },
+            {
+                "name": "failDuration",
+                "description": "失败态停留时长，单位 ms",
+                "type": "Number",
+                "default": 800
+            },
+            {
+                "name": "activeColor",
+                "description": "拖动过程中的激活颜色",
+                "type": "String",
+                "default": "#0090FF"
+            },
+            {
+                "name": "inactiveColor",
+                "description": "未激活背景色",
+                "type": "String",
+                "default": "#f3f4f6"
+            },
+            {
+                "name": "successColor",
+                "description": "成功态颜色",
+                "type": "String",
+                "default": "#13ce66"
+            },
+            {
+                "name": "failColor",
+                "description": "失败态颜色",
+                "type": "String",
+                "default": "#ee0a24"
+            }
+        ],
+        "events": [
+            {
+                "name": "change",
+                "description": "拖动过程中实时触发",
+                "type": "(detail) => void"
+            },
+            {
+                "name": "success",
+                "description": "验证成功时触发",
+                "type": "(detail) => void"
+            },
+            {
+                "name": "fail",
+                "description": "验证失败时触发",
+                "type": "(detail) => void"
             }
         ]
     },

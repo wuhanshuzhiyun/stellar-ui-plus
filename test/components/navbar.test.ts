@@ -61,6 +61,6 @@ describe('Navbar ', async () => {
 
     test('nav', () => {
         expect(Number(rootEl.element.style._values['z-index'])).toBe(zIndex);
-        expect(nav.element.style._values['background-color']).toBe(backgroundColor);
+        expect(rootEl.element.style._values['background-color']).toBe(backgroundColor);
     });
 });

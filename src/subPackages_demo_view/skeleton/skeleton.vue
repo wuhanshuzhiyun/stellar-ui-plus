@@ -11,31 +11,77 @@
             <view class="title">基础文本骨架</view>
             <view class="item-block">
                 <!-- 显示骨架图 -->
-                <ste-skeleton loading>
+                <ste-skeleton :loading="loading">
                     <ste-text>床前明月光，疑是地上霜。</ste-text>
                 </ste-skeleton>
-
+            </view>
+            <view class="item-block">
                 <!-- 隐藏骨架图，显示真实内容 -->
                 <ste-skeleton :loading="false">
                     <ste-text>床前明月光，疑是地上霜。</ste-text>
                 </ste-skeleton>
             </view>
         </view>
+        <view class="demo-item">
+            <view class="title">图片骨架</view>
+            <ste-skeleton :loading="loading" type="image">
+                <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="120" height="120" />
+            </ste-skeleton>
+        </view>
+        <view class="demo-item">
+            <view class="title">圆形头像骨架</view>
+            <ste-skeleton :loading="loading" type="circle">
+                <ste-image src="https://image.whzb.com/chain/StellarUI/图片.jpg" width="120" height="120" radius="50" />
+            </ste-skeleton>
+        </view>
+        <view class="demo-item">
+            <view class="title">复杂组合骨架</view>
+            <view class="skeleton">
+                <view class="image">
+                    <ste-skeleton type="image" loading></ste-skeleton>
+                </view>
+                <view class="text">
+                    <ste-skeleton type="text" loading></ste-skeleton>
+                    <ste-skeleton type="text" loading style="width: 100rpx"></ste-skeleton>
+                </view>
+            </view>
+        </view>
     </page-layout>
 </template>
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+const loading = ref(true);
 
+onMounted(() => {
+    setTimeout(() => {
+        loading.value = false;
+    }, 3000);
+});
+</script>
 <style lang="scss" scoped>
+.page {
+    background-color: #f8f8f8;
+}
 .demo-item {
+    margin-bottom: 24rpx;
+    border-radius: 24rpx;
+    background-color: #fff;
+    padding: 24rpx;
+
     .item-block {
         > view {
-            margin: 0 36rpx 36rpx 0;
+            margin: 0 36rpx 18rpx 0;
+        }
+    }
 
-            .avator {
-                height: 80rpx;
-                width: 80rpx;
-                border-radius: 8rpx;
-                background-color: #f2f3f5;
-            }
+    .skeleton {
+        display: flex;
+
+        .text {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-left: 20rpx;
         }
     }
 }

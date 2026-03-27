@@ -3,11 +3,10 @@
         class="ste-skeleton"
         :class="[
             {
-                'is-loading': loading,
+                'ste-skeleton--loading': loading,
             },
             `ste-skeleton--${type}`,
         ]"
-        ref="skeletonRef"
     >
         <template v-if="loading">
             <ste-icon v-if="type == 'image'" :size="20" code="&#xe693;"></ste-icon>
@@ -20,89 +19,72 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, type PropType } from 'vue';
 import propsData from './props';
-
 const componentName = `ste-skeleton`;
 
 defineOptions({
     name: componentName,
 });
 const props = defineProps(propsData);
-
-// 组件引用
-// const skeletonRef = ref<UniElement | null>(null);
-
-// // 动画实例
-// let animation: null = null;
-
-// // 开始动画
-// function start() {
-//     if (!props.loading) return;
-
-//     animation = createAnimation(skeletonRef.value, {
-//         duration: 2000,
-//         loop: -1,
-//         alternate: true,
-//     })
-//         .opacity('0.3', '1')
-//         .play();
-// }
-
-// // 停止动画
-// function stop() {
-//     if (animation != null) {
-//         animation!.stop();
-//         animation!.reset();
-//     }
-// }
-
-// onMounted(() => {
-//     watch(
-//         computed(() => props.loading),
-//         (val: boolean) => {
-//             if (val) {
-//                 start();
-//             } else {
-//                 stop();
-//             }
-//         },
-//         {
-//             immediate: true,
-//         }
-//     );
-// });
 </script>
 
 <style lang="scss" scoped>
 .ste-skeleton {
-    &.is-loading {
-        @apply bg-surface-100 rounded-md;
+    &.ste-skeleton--loading {
+        background-color: #fafafb;
+        border-radius: 8rpx;
 
         &.ste-skeleton--text {
-            height: 16px;
-            width: 150px;
-            border-radius: 4px;
+            height: 32rpx;
+            width: 300rpx;
+            border-radius: 8rpx;
         }
 
         &.ste-skeleton--image {
-            @apply flex flex-row items-center justify-center;
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            width: 120rpx;
+            height: 120rpx;
+            border-radius: 16rpx;
         }
 
         &.ste-skeleton--circle {
-            @apply rounded-full;
-            width: 60px;
-            height: 60px;
+            border-radius: 50%;
+            width: 120rpx;
+            height: 120rpx;
         }
 
         &.ste-skeleton--button {
-            @apply rounded-lg;
-            height: 32px;
-            width: 88px;
+            border-radius: 16rpx;
+            height: 64rpx;
+            width: 176rpx;
         }
     }
+}
+
+/* 定义骨架屏闪烁动画 */
+@keyframes skeleton-blink {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* 骨架屏基础样式与动画绑定 */
+.ste-skeleton--loading {
+    /* 对应 duration: 2000ms */
+    animation-duration: 2s;
+    /* 对应 loop: -1 (无限循环) */
+    animation-iteration-count: infinite;
+    /* 对应 alternate: true (交替方向) */
+    animation-direction: alternate;
+    /* 动画名称 */
+    animation-name: skeleton-blink;
+    /* 保证动画平滑过渡 */
+    animation-timing-function: ease-in-out;
 }
 </style>

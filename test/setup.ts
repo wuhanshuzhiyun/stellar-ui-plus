@@ -43,6 +43,12 @@ class MockCanvasRenderingContext2D {
     translate = vi.fn();
     transform = vi.fn();
     setTransform = vi.fn();
+    createLinearGradient = vi.fn().mockReturnValue({
+        addColorStop: vi.fn()
+    });
+    createRadialGradient = vi.fn().mockReturnValue({
+        addColorStop: vi.fn()
+    });
 
     constructor() {
         this.canvas = {};
@@ -120,6 +126,15 @@ const createUniMock = () => {
             statusBarHeight: 20,
             pixelRatio: 2,
         }),
+        getSystemInfoSync: vi.fn().mockReturnValue({
+            platform: 'android',
+            screenWidth: 375,
+            screenHeight: 667,
+            windowWidth: 375,
+            windowHeight: 667,
+            statusBarHeight: 20,
+            pixelRatio: 2,
+        }),
 
         // 页面路由相关API
         navigateTo: vi.fn().mockResolvedValue(undefined),
@@ -142,6 +157,31 @@ const createUniMock = () => {
         onNavigationBarButtonTap: vi.fn(),
         onPullDownRefresh: vi.fn(),
         stopPullDownRefresh: vi.fn(),
+        // 滚动相关API
+        pageScrollTo: vi.fn(),
+        createSelectorQuery: vi.fn().mockReturnValue({
+            select: vi.fn().mockReturnValue({
+                boundingClientRect: vi.fn().mockReturnValue({
+                    exec: vi.fn().mockResolvedValue([{
+                        top: 0,
+                        left: 0,
+                        width: 375,
+                        height: 667,
+                        bottom: 667,
+                        right: 375
+                    }])
+                }),
+                fields: vi.fn().mockReturnValue({
+                    exec: vi.fn().mockResolvedValue([{
+                        node: {
+                            scrollHeight: 1000,
+                            scrollTop: 0,
+                            offsetHeight: 667
+                        }
+                    }])
+                })
+            })
+        }),
     };
 };
 

@@ -249,7 +249,7 @@
 | 参数                | 说明                              | 类型            | 默认值    | 可选值                            | 支持版本  |
 | ------------------- | --------------------------------- | --------------- | --------- | --------------------------------- | --------- |
 | `value`             | 当前选中值（支持v-model双向绑定） | `String`        | ``        | -                                 | -         |
-| `direction`         | 排列方式                          | `String`        | `row`     | `column`：横向 <br/>`row`：纵向   | -         |
+| `direction`         | 排列方式                          | `String`        | `column`  | `row`：横向 <br/>`column`：纵向   | -         |
 | `disabled`          | 是否禁用                          | `Boolean`       | `false`   | -                                 | -         |
 | `readonly`          | 只读 (不置灰)                     | `Boolean`       | `false`   | -                                 | -         |
 | `shape`             | 形状                              | `String`        | `circle`  | `circle`：圆形 <br/>`squar`：方形 | -         |

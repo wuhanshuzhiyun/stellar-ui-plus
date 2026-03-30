@@ -11,7 +11,7 @@
         "types": ["vitest/globals", "@types/jest", "@dcloudio/types", "@uni-helper/uni-app-types", "miniprogram-api-typings", "mini-types"],
         "sourceMap": true
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "global.d.ts"],
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "global.d.ts", "src/**/*.uts"],
     "vueCompilerOptions": {
         "nativeTags": ["block", "component", "template", "slot", "view", "canvas"]
     }

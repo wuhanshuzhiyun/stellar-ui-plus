@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
-import steSkeleton from '../../src/uni_modules/stellar-ui-plus/components/ste-skeleton/ste-skeleton';
+import steSkeleton from '../../src/uni_modules/stellar-ui-plus/components/ste-skeleton/ste-skeleton.vue';
 
 describe('Skeleton', async () => {
     test('loading prop - true', async () => {

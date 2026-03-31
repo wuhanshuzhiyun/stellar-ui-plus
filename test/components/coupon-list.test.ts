@@ -6,7 +6,7 @@ global.uni = {
     createSelectorQuery: () => ({
         select: () => ({
             fields: () => ({
-                exec: () => Promise.resolve([{ node: { width: 100, height: 100 } }]),
+                exec: () => Promise.resolve([{ node: { width: 100, height: 100, scrollHeight: 100, scrollTop: 0, offsetHeight: 100 } }]),
             }),
         }),
     }),

@@ -39,13 +39,24 @@ export function restsFiles() {
         groupData[groupKey] = groupJson[k].default;
     }
     const markdowns: { [key: string]: Markdown } = import.meta.glob('./**/*.md', { eager: true });
+    // 读取项目根目录的 README.md 作为介绍页内容
+    const readmeModules: { [key: string]: Markdown } = import.meta.glob('../../../../README.md', { eager: true });
 
     const map: Obj = {};
     for (const k in markdowns) {
-        const html = formatHtml(assembleTemplate(markdowns[k].html), { enableDebugButton: false });
         const group = k.replace(deg, '$1');
         const sort = k.replace(deg, '$2');
         const name = k.replace(deg, '$3');
+        
+        // 如果是介绍页，使用 README.md 的内容
+        let html: string;
+        if (group === 'handbook' && name === '介绍' && Object.keys(readmeModules).length > 0) {
+            const readmeKey = Object.keys(readmeModules)[0];
+            html = formatHtml(assembleTemplate(readmeModules[readmeKey].html), { enableDebugButton: false });
+        } else {
+            html = formatHtml(assembleTemplate(markdowns[k].html), { enableDebugButton: false });
+        }
+        
         if (!map[group]) map[group] = {};
         map[group][name] = { html, sort: sort || 100 };
     }

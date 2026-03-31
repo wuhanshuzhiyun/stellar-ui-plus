@@ -23,7 +23,7 @@ watch(
     () => datas?.active.value,
     (value: any) => {
         console.log('compMarkdonwHtml', datas);
-        if (['handbook-介绍', 'handbook-其他插件'].includes(value)) {
+        if (['handbook-其他插件'].includes(value)) {
             loading.value = true;
             markdown.value = '';
         } else if (props.mode === 'page') {

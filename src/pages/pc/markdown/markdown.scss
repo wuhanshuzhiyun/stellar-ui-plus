@@ -11,7 +11,8 @@
         padding-bottom: 30px;
 
         img {
-            width: 100%;
+            max-width: 100%;
+            height: auto;
         }
 
         h1 {
@@ -83,12 +84,20 @@
             width: 100%;
             border-collapse: collapse;
             border-color: #ddd;
-            table-layout: fixed;
+            table-layout: auto;
 
             th,
             td {
                 padding: 5px 10px;
                 text-align: left;
+
+                img {
+                    display: inline;
+                    margin: 0;
+                    max-width: none;
+                    border-radius: 0;
+                    box-shadow: none;
+                }
 
                 code {
                     white-space: normal;
@@ -98,14 +107,81 @@
 
             th {
                 width: auto;
-            }
-
-            th:nth-child(2) {
-                width: 35%;
-            }
-
-            th {
                 background-color: #f7f7f7;
+            }
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+
+            .showcase-item {
+                padding: 20px;
+                border: 1px solid #eee;
+                border-radius: 8px;
+                background-color: #fafafa;
+                text-align: center;
+                min-height: 280px;
+
+                img {
+                    display: block;
+                    margin: 0 auto 15px auto;
+                    max-width: 180px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                h4 {
+                    margin-bottom: 10px;
+                    font-size: 18px;
+                }
+
+                p {
+                    margin-bottom: 0;
+                    text-align: left;
+                }
+            }
+        }
+
+        table[border='0'] {
+            border: none;
+            background: transparent;
+
+            td {
+                border: none;
+                background: transparent;
+                text-align: center;
+                padding: 10px 15px;
+
+                p {
+                    margin: 0;
+                    text-align: center;
+
+                    a {
+                        text-decoration: none;
+
+                        &[href] {
+                            color: #3890ff;
+                        }
+
+                        &:not([href]) {
+                            color: #666;
+                            cursor: default;
+                        }
+                    }
+
+                    img {
+                        display: block;
+                        margin: 0 auto;
+                        border-radius: 50%;
+                    }
+                }
+
+                img {
+                    border-radius: 50%;
+                }
             }
         }
 

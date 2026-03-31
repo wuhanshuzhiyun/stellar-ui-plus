@@ -215,6 +215,17 @@ export class MdHtmlFormatter {
         const tables = this.doc.querySelectorAll('table');
         tables.forEach(table => {
             table.setAttribute('border', '1');
+            
+            const images = table.querySelectorAll('img');
+            let has180Image = false;
+            images.forEach(img => {
+                if (img.getAttribute('width') === '180') {
+                    has180Image = true;
+                }
+            });
+            if (has180Image) {
+                table.classList.add('showcase-table');
+            }
         });
     }
 

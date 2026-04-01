@@ -7175,11 +7175,44 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-skeleton": {
+    "skeleton": {
         "site": "ste-skeleton",
         "attr": [
-            ""
-        ]
+            "loading=''"
+        ],
+        "props": [
+            {
+                "name": "loading",
+                "description": "是否显示骨架图",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "type",
+                "description": "骨架图类型",
+                "type": "string",
+                "values": [
+                    {
+                        "name": "text",
+                        "description": "文本"
+                    },
+                    {
+                        "name": "image",
+                        "description": "图片"
+                    },
+                    {
+                        "name": "circle",
+                        "description": "圆形"
+                    },
+                    {
+                        "name": "button",
+                        "description": "按钮"
+                    }
+                ],
+                "default": "text"
+            }
+        ],
+        "events": []
     },
     "slide-verify": {
         "site": "ste-slide-verify",

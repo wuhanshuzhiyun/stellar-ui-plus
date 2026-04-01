@@ -47,7 +47,7 @@ export function restsFiles() {
         const group = k.replace(deg, '$1');
         const sort = k.replace(deg, '$2');
         const name = k.replace(deg, '$3');
-        
+
         // 如果是介绍页，使用 README.md 的内容
         let html: string;
         if (group === 'handbook' && name === '介绍' && Object.keys(readmeModules).length > 0) {
@@ -56,7 +56,7 @@ export function restsFiles() {
         } else {
             html = formatHtml(assembleTemplate(markdowns[k].html), { enableDebugButton: false });
         }
-        
+
         if (!map[group]) map[group] = {};
         map[group][name] = { html, sort: sort || 100 };
     }

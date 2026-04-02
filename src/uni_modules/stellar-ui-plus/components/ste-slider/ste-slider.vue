@@ -97,9 +97,11 @@ const cmpActiveStyle = computed(() => {
 });
 
 onMounted(() => {
-    handleWindowResize();
-    uni.onWindowResize(handleWindowResize);
-    calculateStepMarks();
+    setTimeout(() => {
+        handleWindowResize();
+        uni.onWindowResize(handleWindowResize);
+        calculateStepMarks();
+    }, 50);
 });
 
 onBeforeUnmount(() => {

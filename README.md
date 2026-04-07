@@ -26,14 +26,14 @@
 扫描下方小程序二维码，体验组件库示例：
 
 | <img src="https://image.whzb.com/chain/StellarUI/微信.jpg" alt="微信小程序" width="200"> | <img src="https://image.whzb.com/chain/StellarUI/支付宝.png" alt="支付宝小程序" width="200"> |
-| :------------------------------------------------------------: | :------------------------------------------------------------: |
-| 微信小程序 | 支付宝小程序 |
+| :--------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: |
+|                                        微信小程序                                        |                                         支付宝小程序                                         |
 
 扫描下方安卓APP下载二维码，体验组件库示例：
 
 | <img src="https://image.whzb.com/chain/StellarUI/app/stellar-ui-apk.png" alt="stellar-ui" width="200"> | <img src="https://image.whzb.com/chain/StellarUI/app/stellar-plus-apk.png" alt="stellar-plus" width="200"> |
-| :------------------------------------------------------------: | :------------------------------------------------------------: |
-| stellar-ui | stellar-plus |
+| :----------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
+|                                               stellar-ui                                               |                                                stellar-plus                                                |
 
 > **Tips:** 为了便于预览组件效果，本文档的右侧内嵌了 H5 版的 StellarUI 页面作为参考。在实际使用中，个别组件的表现可能与小程序上的表现有差异，请以实际效果为准。
 
@@ -81,23 +81,23 @@ npm install stellar-ui-plus -S
 
 我们非常欢迎大家一起贡献优秀的 Demo 与案例，欢迎在此 [issue](https://github.com/wuhanshuzhiyun/stellar-ui-plus/issues/1) 提交案例。
 
-| <img src="https://image.whzb.com/chain/StellarUI/头像/邻里购.png" alt="邻里购" width="180"> | <img src="https://image.whzb.com/chain/StellarUI/头像/百荟.png" alt="抱抱生活" width="180"> |
-| :------------------------------------------------------------: | :------------------------------------------------------------: |
-| **邻里购** | **抱抱生活** |
-| 中百邻里购是中百旗下电商平台，主营蔬果、肉蛋、粮油、酒水、休食、家清、百货等，提供外卖、自提、包邮等商品服务，构建邻里生活服务圈。 | 抱抱生活是数智云公司自建的本地综合生活服务线上平台。集商业服务、生活服务、政务综合服务于一体的15分钟便民生活圈服务平台。 |
-| <img src="https://image.whzb.com/chain/StellarUI/头像/中百百货.png" alt="中百百货" width="180"> | <img src="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手.png" alt="数智云巡店助手" width="180"> |
-| **中百百货线上商城** | **数智云巡店助手** |
+|                                 <img src="https://image.whzb.com/chain/StellarUI/头像/邻里购.png" alt="邻里购" width="180">                                  |                                                                 <img src="https://image.whzb.com/chain/StellarUI/头像/百荟.png" alt="抱抱生活" width="180">                                                                  |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                          **邻里购**                                                                          |                                                                                                         **抱抱生活**                                                                                                         |
+|              中百邻里购是中百旗下电商平台，主营蔬果、肉蛋、粮油、酒水、休食、家清、百货等，提供外卖、自提、包邮等商品服务，构建邻里生活服务圈。              |                                                   抱抱生活是数智云公司自建的本地综合生活服务线上平台。集商业服务、生活服务、政务综合服务于一体的15分钟便民生活圈服务平台。                                                   |
+|                               <img src="https://image.whzb.com/chain/StellarUI/头像/中百百货.png" alt="中百百货" width="180">                                |                                                         <img src="https://image.whzb.com/chain/StellarUI/头像/数智云巡店助手.png" alt="数智云巡店助手" width="180">                                                          |
+|                                                                     **中百百货线上商城**                                                                     |                                                                                                      **数智云巡店助手**                                                                                                      |
 | 中心百货大楼历经80余年的沧桑巨变，与时俱进，以新时尚、潮品牌、年轻态竭诚满足消费者购物休闲、娱乐餐饮等一站式需求，曾被国家商务部评定为"全国首批金鼎百货店"。 | 建立一套连锁超市巡店助手系统，以满足社超总部、区域经理、区域督导的巡店需求，结合门店自查统计，社超营运中心通过巡店助手系统提供的支持数据，更好，更优，服务于社超店铺经营，从而实现武汉中百便利店有限公司整体经营利润的提升。 |
 
 ## 周边生态
 
-| 项目 | 描述 |
-| ---- | ---- |
-| [StellarUI](https://github.com/wuhanshuzhiyun/stellar-ui) | 一个基于 Vue 2 构建的 uni-app 组件库 |
-| [ste-vue-inset-loader](https://github.com/wuhanshuzhiyun/ste-vue-inset-loader) | 常用于小程序需要全局引入组件的场景的包 |
+| 项目                                                                                         | 描述                                                                    |
+| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [StellarUI](https://github.com/wuhanshuzhiyun/stellar-ui)                                    | 一个基于 Vue 2 构建的 uni-app 组件库                                    |
+| [ste-vue-inset-loader](https://github.com/wuhanshuzhiyun/ste-vue-inset-loader)               | 常用于小程序需要全局引入组件的场景的包                                  |
 | [ste-helper](https://github.com/wuhanshuzhiyun/stellar-ui-plus/tree/main/plugins/ste-helper) | 旨在帮助开发者更加有效率地使用 StellarUI-Plus 来开发项目的 VS Code 插件 |
-| [ste-cli](https://github.com/wuhanshuzhiyun/ste-cli) | Stellar 配套的脚手架 |
-| [ste-camera](https://github.com/wuhanshuzhiyun/ste-camera) | 适用 App 端相机插件，适用于 uni-app |
+| [ste-cli](https://github.com/wuhanshuzhiyun/ste-cli)                                         | Stellar 配套的脚手架                                                    |
+| [ste-camera](https://github.com/wuhanshuzhiyun/ste-camera)                                   | 适用 App 端相机插件，适用于 uni-app                                     |
 
 ## 核心团队
 
@@ -178,15 +178,13 @@ npm install stellar-ui-plus -S
 </tr>
 </table>
 
-
 ## 贡献者们
 
 感谢以下小伙伴们为 **StellarUI-Plus** 发展做出的贡献：
 
 <a href="https://github.com/wuhanshuzhiyun/stellar-ui-plus/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=wuhanshuzhiyun/stellar-ui-plus" alt="contributors">
+  <img src="https://contrib.rocks/image?repo=wuhanshuzhiyun/stellar-ui-plus" alt="贡献者们">
 </a>
-
 
 ## 鸣谢
 

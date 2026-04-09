@@ -11,7 +11,8 @@
         padding-bottom: 30px;
 
         img {
-            width: 100%;
+            max-width: 100%;
+            height: auto;
         }
 
         h1 {
@@ -83,12 +84,20 @@
             width: 100%;
             border-collapse: collapse;
             border-color: #ddd;
-            table-layout: fixed;
+            table-layout: auto;
 
             th,
             td {
                 padding: 5px 10px;
                 text-align: left;
+
+                img {
+                    display: inline;
+                    margin: 0;
+                    max-width: none;
+                    border-radius: 0;
+                    box-shadow: none;
+                }
 
                 code {
                     white-space: normal;
@@ -98,14 +107,69 @@
 
             th {
                 width: auto;
-            }
-
-            th:nth-child(2) {
-                width: 35%;
-            }
-
-            th {
                 background-color: #f7f7f7;
+            }
+
+            &.showcase-table {
+                border-collapse: collapse;
+                table-layout: fixed;
+
+                td {
+                    padding: 10px;
+                    text-align: center;
+                    vertical-align: top;
+                    border: 1px solid #eee;
+
+                    img {
+                        display: block;
+                        margin: 0 auto;
+                    }
+                }
+
+                td:nth-child(1),
+                td:nth-child(2) {
+                    width: 50%;
+                }
+            }
+        }
+
+        table[border='0'] {
+            border: none;
+            background: transparent;
+
+            td {
+                border: none;
+                background: transparent;
+                text-align: center;
+                padding: 10px 15px;
+
+                p {
+                    margin: 0;
+                    text-align: center;
+
+                    a {
+                        text-decoration: none;
+
+                        &[href] {
+                            color: #3890ff;
+                        }
+
+                        &:not([href]) {
+                            color: #666;
+                            cursor: default;
+                        }
+                    }
+
+                    img {
+                        display: block;
+                        margin: 0 auto;
+                        border-radius: 50%;
+                    }
+                }
+
+                img {
+                    border-radius: 50%;
+                }
             }
         }
 

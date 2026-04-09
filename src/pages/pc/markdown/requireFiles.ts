@@ -42,10 +42,13 @@ export function restsFiles() {
 
     const map: Obj = {};
     for (const k in markdowns) {
-        const html = formatHtml(assembleTemplate(markdowns[k].html), { enableDebugButton: false });
         const group = k.replace(deg, '$1');
         const sort = k.replace(deg, '$2');
         const name = k.replace(deg, '$3');
+
+        // 使用文件本身的内容
+        const html = formatHtml(assembleTemplate(markdowns[k].html), { enableDebugButton: false });
+
         if (!map[group]) map[group] = {};
         map[group][name] = { html, sort: sort || 100 };
     }

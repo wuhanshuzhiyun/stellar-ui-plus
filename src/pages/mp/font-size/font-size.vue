@@ -85,7 +85,7 @@ const rootStyle = computed(() => {
 });
 </script>
 <template>
-    <view data-test="font-size-page" :style="[rootStyle]">
+    <view class="page" data-test="font-size-page" :style="[rootStyle]">
         <ste-sticky>
             <page-nav :autoBack="true" backColor="#000" titleAlignment="2" title="字体大小配置"></page-nav>
             <view style="background-color: #fff; padding: 24rpx; display: flex; justify-content: center; border-bottom: 1px solid #eee">
@@ -199,6 +199,7 @@ const rootStyle = computed(() => {
 <style lang="scss">
 .demo-content {
     padding-top: 20rpx;
+    padding: 20rpx 40rpx 0 40rpx;
 }
 .badge {
     display: inline-block;

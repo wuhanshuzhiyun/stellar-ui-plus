@@ -17,7 +17,7 @@ export default {
         default: '',
         validator: (value: string) => {
             return typeof value === 'string' && value.length > 0;
-        }
+        },
     },
     clientSecret: {
         type: String,
@@ -25,7 +25,7 @@ export default {
         default: '',
         validator: (value: string) => {
             return typeof value === 'string' && value.length > 0;
-        }
+        },
     },
     apiUrl: {
         type: String,
@@ -35,31 +35,31 @@ export default {
             try {
                 new URL(value);
                 return true;
-            } catch {
+            } catch (e) {
                 return false;
             }
-        }
+        },
     },
     appType: {
         type: String,
         default: '',
         validator: (value: string) => {
             return typeof value === 'string';
-        }
+        },
     },
     btnText: {
         type: String,
         default: '立即体验',
         validator: (value: string) => {
             return typeof value === 'string' && value.length > 0;
-        }
+        },
     },
     appVersion: {
         type: String,
         default: '',
         validator: (value: string) => {
             return typeof value === 'string';
-        }
+        },
     },
     zIndex: {
         type: [Number, String],

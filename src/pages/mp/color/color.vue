@@ -44,7 +44,7 @@ function confirm(e: any) {
 function resetPage() {
     const pages = getCurrentPages();
     const currentPage = pages[pages.length - 1];
-    const url = `/${currentPage.route}?${Object.entries(currentPage.options)
+    const url = `/${currentPage.route}?${Object.entries((currentPage as any).options)
         .map(([k, v]) => `${k}=${v}`)
         .join('&')}`;
 
@@ -139,7 +139,7 @@ let list1 = ref([
             <view class="demo-item">
                 <view class="title">日历</view>
                 <view class="item-block" style="display: block">
-                    <ste-calendar height="720" :showTitle="false" @confirm="handleConfirm" ref="Calendar" />
+                    <ste-calendar height="720" :showTitle="false" ref="Calendar" />
                 </view>
             </view>
             <view class="demo-item">

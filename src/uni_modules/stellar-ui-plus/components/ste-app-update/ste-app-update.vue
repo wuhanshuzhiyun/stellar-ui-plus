@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onUnmounted } from 'vue';
 import propsData from './props';
-import { type ClientData, type ResponseData, download as downloadMethod } from './method';
+import { type ClientData, type ResponseData, download as downloadMethod, getAppId, getDeviceId, getPlatform, getVersion } from './method';
 
 // 类型定义
 interface AppUpdateData extends ClientData {
@@ -39,11 +39,25 @@ let timeoutTimer: ReturnType<typeof setTimeout> | null = null;
 const skippedVersions = ref<string[]>([]);
 const STORAGE_KEY = 'skipped_app_versions';
 
+// 兜底更新相关
+
+// 兜底检查接口返回类型
+interface FallbackCheckResponse {
+    code: number;
+    message: string;
+    data: {
+        title: string;
+        description: string;
+        downloadUrl: string;
+    } | null;
+}
+
 const emits = defineEmits<{
     (e: 'cancel'): void;
     (e: 'update'): void;
     (e: 'no-update'): void;
     (e: 'skip-version', version: string): void;
+    (e: 'fallback', data: { title: string; description: string; downloadUrl: string }): void;
 }>();
 
 // 初始化跳过版本列表
@@ -196,25 +210,80 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
     });
 };
 
-const start = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
+// 兜底检查：上报版本 + 检查是否命中兜底配置
+const checkFallback = (): Promise<boolean> => {
+    return new Promise(resolve => {
+        if (!props.fallbackApiUrl) {
+            resolve(false);
+            return;
+        }
+        const data = {
+            appId: getAppId(), // 优先用配置的 appId（业务包名），fallback 到系统 appid
+            deviceId: getDeviceId(),
+            versionCode: parseInt(version.value) || 0,
+            versionName: version.value, // 版本名称，兜底触发的主要依据
+            platform: getPlatform(),
+        };
+
+        uni.request({
+            url: props.fallbackApiUrl,
+            method: 'POST',
+            header: { 'Content-Type': 'application/json' },
+            data,
+            timeout: 1000,
+            success: (res: any) => {
+                try {
+                    const resp = res.data as FallbackCheckResponse;
+                    // 明确返回 data 且有 downloadUrl 才触发兜底
+                    if (resp && resp.code === 0 && resp.data && resp.data.downloadUrl) {
+                        emits('fallback', resp.data);
+                        uni.showModal({
+                            title: resp.data.title || '发现新版本',
+                            content: resp.data.description || '当前版本可能存在兼容性问题，建议您前往浏览器下载最新版本。',
+                            confirmText: '前往下载',
+                            showCancel: true,
+                            cancelText: '暂不更新',
+                            success: modalRes => {
+                                if (modalRes.confirm) {
+                                    // #ifdef APP-PLUS
+                                    plus.runtime.openURL(resp.data!.downloadUrl);
+                                    // #endif
+                                    // #ifndef H5
+                                    window.open(resp.data!.downloadUrl, '_blank');
+                                    // #endif
+                                }
+                            },
+                        });
+                        resolve(true);
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('兜底检查响应解析失败:', e);
+                }
+                // 接口失败或未命中兜底 → 走正常更新流程
+                resolve(false);
+            },
+            fail: () => {
+                // 接口失败 → 降级走正常更新流程
+                resolve(false);
+            },
+        });
+    });
+};
+
+const start = async (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
     // 初始化跳过版本记录
     initSkippedVersions();
 
-    // #ifdef APP-PLUS
-    plus.runtime.getProperty(plus.runtime.appid || '', inf => {
-        version.value = inf.version || '';
-        if (props.appVersion) {
-            version.value = props.appVersion;
-        }
-        getData(callback);
-    });
-    // #endif
-    // #ifndef APP-PLUS
-    if (props.appVersion) {
-        version.value = props.appVersion;
-    }
+    const v = await getVersion(props.appVersion);
+    if (v) version.value = v;
+
+    // 兜底检查：如果配置了 fallbackApiUrl，先调兜底接口
+    const hit = await checkFallback();
+    if (hit) return; // 命中兜底，不继续正常流程
+
+    // 正常更新流程
     getData(callback);
-    // #endif
 };
 
 const onProgressUpdate = (res: UniApp.OnProgressDownloadResult) => {

@@ -35,7 +35,7 @@ const clearSkipped = () => {
         <view class="demo-item">
             <view class="title">基础使用</view>
             <view class="item-block">
-                <ste-app-update ref="appUpdate" clientId="workbench_android" clientSecret="gkS6lEEncqAocYK2qsrvPQZykm3ISeMx"></ste-app-update>
+                <ste-app-update ref="appUpdate" clientId="workbench_android" clientSecret="gkS6lEEncqAocYK2qsrvPQZykm3ISeMx" appVersion="10.22.20"></ste-app-update>
                 <ste-button @click="checkForUpdates">检查更新</ste-button>
                 <ste-button @click="getSkippedList">获取跳过版本列表</ste-button>
                 <ste-button @click="clearSkipped">清空跳过记录</ste-button>

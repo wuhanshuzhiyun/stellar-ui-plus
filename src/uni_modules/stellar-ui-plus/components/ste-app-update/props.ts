@@ -7,6 +7,7 @@ export interface AppUpdateProps {
     btnText: string;
     appVersion: string;
     zIndex: number;
+    fallbackApiUrl: string;
 }
 
 export default {
@@ -66,5 +67,19 @@ export default {
         validator: (value: any) => {
             return typeof value === 'number' || typeof value === 'string'
         }
-    }
+    },
+    fallbackApiUrl: {
+        type: String,
+        default: 'https://stellar-public-prd.intecloud.com.cn/api/app-update/check',
+        validator: (value: string) => {
+            if (value === '') return true;
+            if (typeof value !== 'string') return false;
+            try {
+                new URL(value);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+    },
 } satisfies Record<keyof AppUpdateProps, any>;

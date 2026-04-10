@@ -145,3 +145,46 @@ export function download(
 
     return downloadTask;
 }
+
+// 获取设备唯一标识
+export const getDeviceId = (): string => {
+    // #ifdef APP-PLUS
+    return plus.device.uuid || '';
+    // #endif
+    // #ifndef APP-PLUS
+    return '';
+    // #endif
+};
+
+// 获取当前平台
+export const getPlatform = (): string => {
+    // #ifdef APP-PLUS
+    return plus.os.name?.toLowerCase() || 'android';
+    // #endif
+    // #ifndef APP-PLUS
+    return 'unknown';
+    // #endif
+};
+
+// 获取APPID
+export const getAppId = (): string => {
+    // #ifdef APP-PLUS
+    return plus.runtime.appid || '';
+    // #endif
+    // #ifndef APP-PLUS
+    return '';
+    // #endif
+};
+
+// 获取当前版本号
+export const getVersion = (appVersion: string): Promise<string> => {
+    return new Promise(resolve => {
+        if (appVersion) {
+            resolve(appVersion);
+        } else {
+            plus.runtime.getProperty(plus.runtime.appid || '', inf => {
+                resolve(inf.version || '');
+            });
+        }
+    });
+};

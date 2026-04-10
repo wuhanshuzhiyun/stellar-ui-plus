@@ -49,6 +49,12 @@
             "version": "1.24.23"
         },
         {
+            "name": "fallbackApiUrl",
+            "description": "兜底检查接口地址",
+            "type": "string",
+            "default": ""
+        },
+        {
             "name": "[event]cancel",
             "description": "取消更新",
             "type": "() => void"
@@ -62,6 +68,11 @@
             "name": "[event]no-update",
             "description": "没有新版时本触发",
             "type": "() => void"
+        },
+        {
+            "name": "[event]fallback",
+            "description": "命中兜底更新时触发",
+            "type": "(data: { title: string; description: string; downloadUrl: string }) => void"
         }
     ]
 }

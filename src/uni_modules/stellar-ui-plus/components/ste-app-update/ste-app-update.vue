@@ -34,6 +34,7 @@ const tempFilePath = ref('');
 
 // 资源管理
 let timeoutTimer: ReturnType<typeof setTimeout> | null = null;
+let downloadTask: UniApp.DownloadTask | null = null;
 
 // 跳过版本相关
 const skippedVersions = ref<string[]>([]);
@@ -107,6 +108,7 @@ const cleanup = () => {
         clearTimeout(timeoutTimer);
         timeoutTimer = null;
     }
+    downloadTask = null;
 };
 
 // 组件卸载时清理资源
@@ -308,7 +310,7 @@ const confirm = () => {
     if (data.package_type == 0) {
         if (data.updateFile.includes('.apk')) {
             updateBtn.value = false;
-            downloadMethod(data, {
+            downloadTask = downloadMethod(data, {
                 onProgressUpdate,
                 downloadSuccess: path => (tempFilePath.value = path),
                 error: () => {
@@ -327,7 +329,7 @@ const confirm = () => {
         }
     } else {
         updateBtn.value = false;
-        downloadMethod(data, {
+        downloadTask = downloadMethod(data, {
             onProgressUpdate,
             downloadSuccess: path => (tempFilePath.value = path),
             error: () => {
@@ -386,6 +388,10 @@ const cancelDownload = () => {
         content: '确定要取消下载吗？',
         success: res => {
             if (res.confirm) {
+                // 取消下载时才 abort 下载任务
+                if (downloadTask) {
+                    downloadTask.abort();
+                }
                 cleanup();
                 updateBtn.value = true;
                 percent.value = 0;

@@ -148,7 +148,12 @@
         {
             "name": "[event]click",
             "description": "点击事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         }
     ]
 }

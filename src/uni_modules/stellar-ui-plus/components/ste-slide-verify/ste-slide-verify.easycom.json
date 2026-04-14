@@ -103,17 +103,40 @@
         {
             "name": "[event]change",
             "description": "拖动过程中实时触发",
-            "type": "(detail) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(detail) => void"
+                }
+            ]
         },
         {
             "name": "[event]success",
             "description": "验证成功时触发",
-            "type": "(detail) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(detail) => void"
+                }
+            ]
         },
         {
             "name": "[event]fail",
             "description": "验证失败时触发",
-            "type": "(detail) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(detail) => void"
+                }
+            ]
+        },
+        {
+            "name": "[method]init",
+            "description": "重新计算轨道宽度并同步状态"
+        },
+        {
+            "name": "[method]reset",
+            "description": "重置验证状态"
         }
     ]
 }

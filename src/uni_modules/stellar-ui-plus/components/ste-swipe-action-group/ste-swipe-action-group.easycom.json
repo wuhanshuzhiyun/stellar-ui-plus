@@ -63,7 +63,6 @@
         {
             "name": "[event]open",
             "description": "打开滑块时触发，参数为方向",
-            "type": "(d:string,index:number)=>void",
             "params": [
                 {
                     "name": "direction",
@@ -78,7 +77,6 @@
         {
             "name": "[event]close",
             "description": "关闭滑块时触发",
-            "type": "(index:number)=>void",
             "params": [
                 {
                     "name": "index",

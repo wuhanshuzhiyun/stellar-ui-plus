@@ -37,12 +37,22 @@
         {
             "name": "[event]fixed",
             "description": "组件吸顶时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]unfixed",
             "description": "组件取消吸顶时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         }
     ]
 }

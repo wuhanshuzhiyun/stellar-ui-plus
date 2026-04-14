@@ -123,7 +123,16 @@
         {
             "name": "[event]backClick",
             "description": "返回按钮点击",
-            "type": "()=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "()=>void"
+                }
+            ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "导航栏内容"
         }
     ]
 }

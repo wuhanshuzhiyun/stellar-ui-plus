@@ -4,7 +4,7 @@
 
 ---$
 
-### 基础用法
+## 基础用法
 
 ```html
 <script setup lang="ts">
@@ -21,7 +21,7 @@
 </template>
 ```
 
-#### 日期选择时间段
+## 日期选择时间段
 
 ```html
 <script setup lang="ts">
@@ -39,7 +39,7 @@
 </template>
 ```
 
-#### 输入框字体
+## 输入框字体
 
 ```html
 <script setup lang="ts">
@@ -57,8 +57,6 @@
 ```
 
 ---$
-
-### API
 
 <!-- props -->
 

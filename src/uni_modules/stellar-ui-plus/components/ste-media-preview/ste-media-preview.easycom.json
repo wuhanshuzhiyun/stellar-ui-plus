@@ -61,17 +61,26 @@
         {
             "name": "[event]beforeClose",
             "description": "关闭前触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]close",
             "description": "关闭后触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]change",
             "description": "切换时触发",
-            "type": "(index: number) => void",
             "params": [
                 {
                     "name": "index",
@@ -82,7 +91,6 @@
         {
             "name": "[event]longpress",
             "description": "长按时触发",
-            "type": "(index: number) => void",
             "params": [
                 {
                     "name": "index",

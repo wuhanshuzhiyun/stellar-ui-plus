@@ -68,6 +68,20 @@
             "name": "close",
             "description": "提示关闭的的回调函数",
             "type": "() => void"
+        },
+        {
+            "name": "[method]showToast",
+            "description": "提示打开函数",
+            "params": [
+                {
+                    "name": "props",
+                    "description": "配置项"
+                }
+            ]
+        },
+        {
+            "name": "[method]hideToast",
+            "description": "关闭提示函数"
         }
     ]
 }

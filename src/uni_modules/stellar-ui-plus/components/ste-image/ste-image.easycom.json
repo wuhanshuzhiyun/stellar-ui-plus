@@ -155,7 +155,6 @@
         {
             "name": "[event]click",
             "description": "图片点击触发",
-            "type": "(event: UniEvent) => void",
             "params": [
                 {
                     "name": "event",
@@ -166,7 +165,6 @@
         {
             "name": "[event]load",
             "description": "图片加载成功触发",
-            "type": "(event: UniEvent) => void",
             "params": [
                 {
                     "name": "event",
@@ -177,13 +175,20 @@
         {
             "name": "[event]error",
             "description": "图片加载失败触发",
-            "type": "(event: UniEvent) => void",
             "params": [
                 {
                     "name": "event",
                     "description": "当前图片Event"
                 }
             ]
+        },
+        {
+            "name": "[slot]loading",
+            "description": "加载中内容插槽"
+        },
+        {
+            "name": "[slot]error",
+            "description": "加载失败内容插槽"
         }
     ]
 }

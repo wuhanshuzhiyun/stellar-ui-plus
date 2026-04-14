@@ -4,9 +4,9 @@
 
 ---$
 
-### 代码演示
+## 代码演示
 
-#### 基础用法
+## 基础用法
 
 ```html
 <script setup lang="ts">
@@ -19,7 +19,7 @@
 </template>
 ```
 
-#### 没有错误提示
+## 没有错误提示
 
 ```html
 <script setup lang="ts">
@@ -32,7 +32,7 @@
 </template>
 ```
 
-#### 转动图片
+## 转动图片
 
 ```html
 <script setup lang="ts">
@@ -45,7 +45,7 @@
 </template>
 ```
 
-#### 禁用状态
+## 禁用状态
 
 ```html
 <template>
@@ -53,7 +53,7 @@
 </template>
 ```
 
-#### 失败态停留更久
+## 失败态停留更久
 
 ```html
 <script setup lang="ts">
@@ -66,7 +66,7 @@
 </template>
 ```
 
-#### 尺寸、颜色与文案
+## 尺寸、颜色与文案
 
 ```html
 <script setup lang="ts">
@@ -91,16 +91,7 @@
 
 ---$
 
-### API
-
 <!-- props -->
-
-#### Methods
-
-| 方法名  | 说明                       | 参数 |
-| ------- | -------------------------- | ---- |
-| `init`  | 重新计算轨道宽度并同步状态 | -    |
-| `reset` | 重置验证状态               | -    |
 
 `detail` 数据结构：
 

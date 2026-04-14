@@ -47,12 +47,30 @@
         {
             "name": "[event]click-item",
             "description": "点击问题或答案时触发",
-            "type": "(type: 'q' | 'a', item: GuideQaItem) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(type: 'q' | 'a', item: GuideQaItem) => void"
+                }
+            ]
         },
         {
             "name": "[event]click-all",
             "description": "点击查看全部时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
+        },
+        {
+            "name": "[slot]prefix-q",
+            "description": "问题前缀"
+        },
+        {
+            "name": "[slot]prefix-a",
+            "description": "答案前缀"
         }
     ]
 }

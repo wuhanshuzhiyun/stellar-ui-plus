@@ -48,7 +48,6 @@
         {
             "name": "[event]clickStep",
             "description": "点击步骤的标题或图标时触发",
-            "type": "(index: number) => void",
             "params": [
                 {
                     "name": "index",

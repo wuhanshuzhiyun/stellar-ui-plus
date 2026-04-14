@@ -3,7 +3,6 @@
     "description": "搜索组件",
     "example": "<ste-search-box></ste-search-box>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-search-box",
-
     "attributes": [
         {
             "name": "value",
@@ -71,7 +70,6 @@
         {
             "name": "[event]search",
             "description": "确定搜索时触发",
-            "type": "(value: string) => void",
             "params": [
                 {
                     "name": "value",

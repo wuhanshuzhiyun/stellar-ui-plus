@@ -19,7 +19,6 @@
         {
             "name": "[event]change",
             "description": "分类变化时触发",
-            "type": "(item: CagegoryItem) => void",
             "params": [
                 {
                     "name": "item",

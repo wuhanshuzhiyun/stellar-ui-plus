@@ -65,7 +65,12 @@
         {
             "name": "[event]click",
             "description": "图标点击回调事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         }
     ]
 }

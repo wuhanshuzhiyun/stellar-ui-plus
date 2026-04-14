@@ -49,12 +49,40 @@
         {
             "name": "[event]click",
             "description": "点击组件时触发",
-            "type": "(dateInfo: DateInfo) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(dateInfo: DateInfo) => void"
+                }
+            ]
         },
         {
             "name": "[event]date-change",
             "description": "当 date 属性变化时触发",
-            "type": "(dateInfo: DateInfo) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(dateInfo: DateInfo) => void"
+                }
+            ]
+        },
+        {
+            "name": "[method]setDate",
+            "description": "设置当前展示日期",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "number / string / Date"
+                }
+            ]
+        },
+        {
+            "name": "[method]getDateInfo",
+            "description": "获取当前日期信息"
+        },
+        {
+            "name": "[method]today",
+            "description": "重置为今天"
         }
     ]
 }

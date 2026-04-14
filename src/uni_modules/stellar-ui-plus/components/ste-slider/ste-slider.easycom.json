@@ -83,7 +83,6 @@
         {
             "name": "[event]change",
             "description": "进度变化且结束拖动后触发",
-            "type": "(percentage)=>void",
             "params": [
                 {
                     "name": "percentage",
@@ -94,7 +93,6 @@
         {
             "name": "[event]dragStart",
             "description": "开始拖动时触发",
-            "type": "(e)=>void",
             "params": [
                 {
                     "name": "e",
@@ -105,7 +103,6 @@
         {
             "name": "[event]dragEnd",
             "description": "结束拖动时触发",
-            "type": "(e)=>void",
             "params": [
                 {
                     "name": "e",
@@ -116,7 +113,6 @@
         {
             "name": "[event]input",
             "description": "进度变化时实时触发",
-            "type": "(percentage)=>void",
             "params": [
                 {
                     "name": "percentage",

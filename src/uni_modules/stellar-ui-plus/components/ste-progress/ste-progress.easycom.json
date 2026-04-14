@@ -81,6 +81,10 @@
             "description": "阶段配置信息，该值存在时percentage将不生效",
             "type": "object",
             "default": "{}"
+        },
+        {
+            "name": "[slot]default",
+            "description": "进度条内容"
         }
     ]
 }

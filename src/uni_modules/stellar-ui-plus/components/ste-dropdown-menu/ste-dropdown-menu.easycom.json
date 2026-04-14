@@ -96,7 +96,6 @@
         {
             "name": "[event]change",
             "description": "选项改变时触发",
-            "type": "(value: any[]) => void",
             "params": [
                 {
                     "name": "value",
@@ -107,12 +106,22 @@
         {
             "name": "[event]open",
             "description": "菜单打开",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]close",
             "description": "菜单收起",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         }
     ]
 }

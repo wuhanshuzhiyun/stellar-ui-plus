@@ -37,12 +37,22 @@
         {
             "name": "[event]change",
             "description": "激活节点改变时触发",
-            "type": "(index:number)=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(index:number)=>void"
+                }
+            ]
         },
         {
             "name": "[event]clickItem",
             "description": "点击右边锚点时触发",
-            "type": "(title:string,text:string)=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(title:string,text:string)=>void"
+                }
+            ]
         }
     ]
 }

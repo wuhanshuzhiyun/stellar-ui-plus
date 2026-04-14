@@ -79,7 +79,12 @@
         {
             "name": "[event]change",
             "description": "当前分值变化时触发的事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         }
     ]
 }

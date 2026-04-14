@@ -267,12 +267,22 @@
         {
             "name": "[event]click-tab",
             "description": "点击tab触发",
-            "type": "(tab:TabProps)=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(tab:TabProps)=>void"
+                }
+            ]
         },
         {
             "name": "[event]change",
             "description": "切换tab触发",
-            "type": "(tab:TabProps)=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(tab:TabProps)=>void"
+                }
+            ]
         }
     ]
 }

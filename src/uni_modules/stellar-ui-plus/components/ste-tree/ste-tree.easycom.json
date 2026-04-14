@@ -49,7 +49,6 @@
         {
             "name": "[event]click",
             "description": "点击节点时触发",
-            "type": "(node:TreeNode)=>void",
             "params": [
                 {
                     "name": "node",
@@ -60,7 +59,6 @@
         {
             "name": "[event]open",
             "description": "打开节点时出发",
-            "type": "(node:TreeNode)=>void",
             "params": [
                 {
                     "name": "node",
@@ -71,7 +69,6 @@
         {
             "name": "[event]close",
             "description": "关闭节点时出发",
-            "type": "(node:TreeNode)=>void",
             "params": [
                 {
                     "name": "node",
@@ -82,7 +79,6 @@
         {
             "name": "[event]beforeOpen",
             "description": "打开节点前触发",
-            "type": "(node:TreeNode,suspend:()=>void,next:(tree:TreeNode[])=>void,stop:()=>void)=>void",
             "params": [
                 {
                     "name": "node",
@@ -101,6 +97,22 @@
                     "description": "调用该函数阻止后续代码执行"
                 }
             ]
+        },
+        {
+            "name": "[method]init",
+            "description": "初始化方法，若`options`改变时页面没有更新，可调用此方法重现渲染"
+        },
+        {
+            "name": "[method]open",
+            "description": "打开指定节点"
+        },
+        {
+            "name": "[method]close",
+            "description": "关闭指定节点"
+        },
+        {
+            "name": "[method]search",
+            "description": "节点搜索"
         }
     ]
 }

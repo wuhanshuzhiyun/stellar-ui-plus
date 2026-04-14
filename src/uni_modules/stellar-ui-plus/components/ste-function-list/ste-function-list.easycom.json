@@ -79,7 +79,6 @@
         {
             "name": "[event]click-header",
             "description": "点击列表头部触发",
-            "type": "(type: 'empty' | 'title' | 'subhead' | 'more') => void",
             "params": [
                 {
                     "name": "type",
@@ -90,7 +89,6 @@
         {
             "name": "[event]click-item",
             "description": "点击列表项触发",
-            "type": "(type: 'empty' | 'image' | 'title' | 'subhead' | 'status' | 'button'; item:FunctionListItem) => void",
             "params": [
                 {
                     "name": "type",
@@ -105,7 +103,6 @@
         {
             "name": "[event]click-empty",
             "description": "数据为空时点击内容触发",
-            "type": "(type: 'image' | 'text' | 'button') => void",
             "params": [
                 {
                     "name": "type",

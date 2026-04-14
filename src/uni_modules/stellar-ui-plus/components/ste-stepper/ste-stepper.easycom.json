@@ -172,12 +172,16 @@
         {
             "name": "[event]change",
             "description": "当绑定值变化时触发的事件 `value`: 改变后的绑定值",
-            "type": "(value: number) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(value: number) => void"
+                }
+            ]
         },
         {
             "name": "[event]plus",
             "description": "点击增加按钮时触发（可拦截change事件）",
-            "type": "(value: number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
             "params": [
                 {
                     "name": "value",
@@ -200,7 +204,6 @@
         {
             "name": "[event]minus",
             "description": "点击减少按钮时触发（可拦截change事件）",
-            "type": "(value:string | number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
             "params": [
                 {
                     "name": "value",
@@ -223,12 +226,22 @@
         {
             "name": "[event]focus",
             "description": "输入框聚焦时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]blur",
             "description": "输入框失焦时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         }
     ]
 }

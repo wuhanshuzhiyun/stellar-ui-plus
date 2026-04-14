@@ -39,18 +39,26 @@
         {
             "name": "[event]start",
             "description": "拖拽开始",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]end",
             "description": "拖拽结束",
-            "type": "(position: any) => void",
             "params": [
                 {
                     "name": "position",
                     "description": "当前拖拽是否处于边界(上、下、左、右)"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "拖拽内容"
         }
     ]
 }

@@ -1,25 +1,39 @@
 {
     "name": "ste-animate",
-    "description": "动画组件",
-    "example": "<ste-animate></ste-animate>",
+    "description": "动画组件，给子元素添加动画效果",
+    "example": "<ste-animate type=\"shakeX\" loop><ste-button>抖动</ste-button></ste-animate>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-animate",
     "attributes": [
         {
             "name": "show",
-            "description": "控制动画，当值从`false`变为`true`时会触发一次动画",
+            "description": "控制动画，当值从false变为true时会触发一次动画",
             "type": "boolean",
-
             "default": false
         },
         {
             "name": "type",
-            "description": "动画类型，见下方`type`值说明",
+            "description": "动画类型",
             "type": "string",
-            "default": ""
+            "default": "",
+            "values": [
+                { "name": "shake", "description": "抖动，建议 loop 为 true" },
+                { "name": "shakeX", "description": "横向抖动，建议 loop 为 true" },
+                { "name": "shakeY", "description": "竖向抖动，建议 loop 为 true" },
+                { "name": "ripple", "description": "不循环则是放大后缩小，循环则是心跳" },
+                { "name": "breath", "description": "呼吸灯，建议 loop 为 true" },
+                { "name": "float", "description": "漂浮，建议 loop 为 true" },
+                { "name": "slide-right", "description": "由右向左划入" },
+                { "name": "slide-left", "description": "由左向右划入" },
+                { "name": "slide-top", "description": "由上至下划入" },
+                { "name": "slide-bottom", "description": "由下至上划入" },
+                { "name": "jump", "description": "跳跃，建议 loop 为 true" },
+                { "name": "twinkle", "description": "水波，建议 loop 为 true" },
+                { "name": "flicker", "description": "擦亮按钮，建议 loop 为 true" }
+            ]
         },
         {
             "name": "loop",
-            "description": "是否循环执行。",
+            "description": "是否循环执行",
             "type": "boolean",
             "default": false
         },
@@ -31,9 +45,17 @@
         },
         {
             "name": "action",
-            "description": "不能与 show 同时使用）触发方式，`initial`初始化执行; `click`点击执行",
+            "description": "触发方式，不能与 show 同时使用",
             "type": "string",
-            "default": ""
+            "default": "",
+            "values": [
+                { "name": "initial", "description": "初始化执行" },
+                { "name": "click", "description": "点击执行" }
+            ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽"
         }
     ]
 }

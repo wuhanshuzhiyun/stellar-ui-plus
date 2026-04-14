@@ -1,0 +1,132 @@
+{
+    "name": "ste-marquee",
+    "description": "走马灯组件，用于水平滚动展示公告、中奖名单等信息",
+    "example": "<ste-marquee :list=\"list\"></ste-marquee>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-marquee",
+    "attributes": [
+        {
+            "name": "list",
+            "description": "数据列表",
+            "type": "MarqueeItem[]",
+            "default": "[]"
+        },
+        {
+            "name": "speed",
+            "description": "滚动速度(px/s)",
+            "type": "number",
+            "default": 50
+        },
+        {
+            "name": "pauseOnHover",
+            "description": "悬停时是否暂停",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "loop",
+            "description": "是否循环播放",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "gap",
+            "description": "消息之间的间距(rpx)",
+            "type": "number",
+            "default": 20
+        },
+        {
+            "name": "height",
+            "description": "容器高度",
+            "type": "string",
+            "default": "auto"
+        },
+        {
+            "name": "fillScreen",
+            "description": "是否填满屏幕宽度",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "clickable",
+            "description": "是否可点击",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "containerBg",
+            "description": "容器背景色",
+            "type": "string",
+            "default": "transparent"
+        },
+        {
+            "name": "containerPadding",
+            "description": "容器内边距",
+            "type": "string",
+            "default": "0rpx"
+        },
+        {
+            "name": "containerRadius",
+            "description": "容器圆角",
+            "type": "string",
+            "default": "0rpx"
+        },
+        {
+            "name": "itemBg",
+            "description": "消息项背景色",
+            "type": "string",
+            "default": "transparent"
+        },
+        {
+            "name": "itemPadding",
+            "description": "消息项内边距",
+            "type": "string",
+            "default": "0rpx 20rpx"
+        },
+        {
+            "name": "itemRadius",
+            "description": "消息项圆角",
+            "type": "string",
+            "default": "0rpx"
+        },
+        {
+            "name": "[event]click",
+            "description": "点击消息时触发",
+            "params": [
+                { "name": "item", "description": "点击的数据项" },
+                { "name": "index", "description": "数据项索引" }
+            ]
+        },
+        {
+            "name": "[event]complete",
+            "description": "一轮播放完成时触发"
+        },
+        {
+            "name": "[method]play",
+            "description": "开始播放"
+        },
+        {
+            "name": "[method]pause",
+            "description": "暂停播放"
+        },
+        {
+            "name": "[method]resume",
+            "description": "恢复播放"
+        },
+        {
+            "name": "[method]stop",
+            "description": "停止播放并回到初始位置"
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，自定义整个内容区域"
+        },
+        {
+            "name": "[slot]item",
+            "description": "自定义单项内容",
+            "params": [
+                { "name": "item", "description": "数据项对象" },
+                { "name": "index", "description": "数据项索引" }
+            ]
+        }
+    ]
+}

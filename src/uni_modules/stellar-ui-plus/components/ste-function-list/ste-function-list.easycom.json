@@ -109,6 +109,14 @@
                     "description": "点击的区域类型（可选值：`image` , `text` , `button`）"
                 }
             ]
+        },
+        {
+            "name": "[slot]subhead",
+            "description": "组件头部副标题插槽（若副标题有表情/图片等，请使用插槽）"
+        },
+        {
+            "name": "[slot]header-right",
+            "description": "组件头部右侧插槽（替换右侧`更多`）"
         }
     ]
 }

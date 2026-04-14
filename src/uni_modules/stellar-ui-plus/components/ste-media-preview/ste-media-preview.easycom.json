@@ -97,6 +97,10 @@
                     "description": "当前下标"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽：图片底部居中展示"
         }
     ]
 }

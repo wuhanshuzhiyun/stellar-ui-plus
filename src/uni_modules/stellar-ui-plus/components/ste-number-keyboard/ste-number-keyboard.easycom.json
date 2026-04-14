@@ -205,6 +205,14 @@
                     "description": "() => void"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "弹窗标题插槽"
+        },
+        {
+            "name": "[slot]header",
+            "description": "在键盘上方显示的内容"
         }
     ]
 }

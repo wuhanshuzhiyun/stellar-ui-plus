@@ -35,10 +35,6 @@
 
 ---$
 
-## API
-
-## 组件属性(Props)
-
 <!-- props -->
 
 其他属性可参考原生[video](https://zh.uniapp.dcloud.io/component/video.html)

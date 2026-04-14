@@ -25,6 +25,10 @@
             "name": "lines",
             "description": "文本显示的行数，如果设置，超出此行数，将会显示省略号",
             "type": "number"
+        },
+        {
+            "name": "[slot]default",
+            "description": "内容"
         }
     ]
 }

@@ -235,6 +235,10 @@
                     "description": "() => void"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "弹窗标题插槽"
         }
     ]
 }

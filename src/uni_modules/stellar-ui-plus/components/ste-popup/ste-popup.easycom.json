@@ -131,6 +131,10 @@
                     "description": "() => void"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "内容部分插槽"
         }
     ]
 }

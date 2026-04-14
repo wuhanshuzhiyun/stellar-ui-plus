@@ -42,10 +42,7 @@
             "name": "capture",
             "description": "图片或者视频选取模式，当accept为image | media 类型时设置capture可选值为camera可以直接调起摄像头",
             "type": "Array<\"album\" | \"camera\">",
-            "default": [
-                "album",
-                "camera"
-            ]
+            "default": ["album", "camera"]
         },
         {
             "name": "camera",
@@ -290,6 +287,24 @@
                     "description": "文件下标"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "上传按钮"
+        },
+        {
+            "name": "[slot]preview-cover",
+            "description": "每一份文件的预览图层样式",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "当前文件"
+                }
+            ]
+        },
+        {
+            "name": "[slot]media-preview",
+            "description": "图片放大预览（媒体预览组件带默认插槽）"
         }
     ]
 }

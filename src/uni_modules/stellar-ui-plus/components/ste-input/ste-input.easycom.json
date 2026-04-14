@@ -284,6 +284,14 @@
                     "description": "输入框的值"
                 }
             ]
+        },
+        {
+            "name": "[slot]prefix",
+            "description": "输入框前置内容"
+        },
+        {
+            "name": "[slot]suffix",
+            "description": "输入框后置内容"
         }
     ]
 }

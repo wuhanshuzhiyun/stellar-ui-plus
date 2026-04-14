@@ -119,6 +119,14 @@
                     "description": "() => void"
                 }
             ]
+        },
+        {
+            "name": "[slot]leftIcon",
+            "description": "左边图标的插槽"
+        },
+        {
+            "name": "[slot]rightIcon",
+            "description": "右边图标的插槽"
         }
     ]
 }

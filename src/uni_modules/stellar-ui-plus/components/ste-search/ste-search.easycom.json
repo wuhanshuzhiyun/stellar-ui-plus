@@ -233,6 +233,14 @@
                     "description": "热词列表对象"
                 }
             ]
+        },
+        {
+            "name": "[slot]prefix",
+            "description": "输入框前插槽"
+        },
+        {
+            "name": "[slot]suffix",
+            "description": "输入框后插槽"
         }
     ]
 }

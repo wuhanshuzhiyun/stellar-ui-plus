@@ -249,7 +249,6 @@
         {
             "name": "[event]change",
             "description": "选择时触发",
-            "type": "(value: string | number,option: SelectOption | SelectOption[])=>void",
             "params": [
                 {
                     "name": "value",
@@ -264,12 +263,16 @@
         {
             "name": "[event]cancel",
             "description": "取消选择时触发",
-            "type": "()=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "()=>void"
+                }
+            ]
         },
         {
             "name": "[event]confirm",
             "description": "确定选择时触发",
-            "type": "(value: string | number | (string | number)[])=>void",
             "params": [
                 {
                     "name": "value",
@@ -281,13 +284,23 @@
             "name": "[event]inputFilterable",
             "description": "搜索框输入数据时触发",
             "version": "1.16.16",
-            "type": "(str:string)=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(str:string)=>void"
+                }
+            ]
         },
         {
             "name": "[event]loadMore",
             "description": "上拉触底时触发",
             "version": "1.16.16",
-            "type": "()=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "()=>void"
+                }
+            ]
         }
     ]
 }

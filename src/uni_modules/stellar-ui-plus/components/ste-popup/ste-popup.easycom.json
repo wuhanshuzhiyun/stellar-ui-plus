@@ -28,7 +28,6 @@
             "type": "string | number",
             "default": "auto"
         },
-
         {
             "name": "height",
             "description": "内容区高度",
@@ -106,17 +105,36 @@
         {
             "name": "[event]close",
             "description": "弹窗关闭动画执行完毕事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]open",
             "description": "弹窗打开动画执行完毕事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]maskClick",
             "description": "点击遮罩时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "内容部分插槽"
         }
     ]
 }

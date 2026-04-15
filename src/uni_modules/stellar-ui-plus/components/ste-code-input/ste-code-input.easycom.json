@@ -37,7 +37,6 @@
             "type": "string | number",
             "default": 16
         },
-
         {
             "name": "fontColor",
             "description": "字体颜色",
@@ -88,12 +87,22 @@
         {
             "name": "[event]change",
             "description": "改变时触发",
-            "type": "(value: string | number) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(value: string | number) => void"
+                }
+            ]
         },
         {
             "name": "[event]finish",
             "description": "输入完成触发",
-            "type": "(value: string | number) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(value: string | number) => void"
+                }
+            ]
         }
     ]
 }

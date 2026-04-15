@@ -114,7 +114,6 @@
         {
             "name": "[event]change",
             "description": "监听item切换",
-            "type": "(index:number,source:'autoplay'| 'touch')=>void",
             "params": [
                 {
                     "name": "index",
@@ -129,7 +128,6 @@
         {
             "name": "[event]error",
             "description": "错误监听",
-            "type": "(error: Error, context: string)=>void",
             "params": [
                 {
                     "name": "error",

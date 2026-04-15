@@ -1,7 +1,7 @@
 {
     "name": "ste-app-update",
-    "description": "按钮组件",
-    "example": "<ste-app-update></ste-app-update>",
+    "description": "应用更新组件，用于检测和提示APP版本更新",
+    "example": "<ste-app-update clientId=\"your-client-id\" clientSecret=\"your-client-secret\"></ste-app-update>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-app-update",
     "attributes": [
         {
@@ -56,23 +56,22 @@
         },
         {
             "name": "[event]cancel",
-            "description": "取消更新",
-            "type": "() => void"
+            "description": "取消更新时触发"
         },
         {
             "name": "[event]update",
-            "description": "发现新版时本触发",
-            "type": "() => void"
+            "description": "发现新版本时触发"
         },
         {
             "name": "[event]no-update",
-            "description": "没有新版时本触发",
-            "type": "() => void"
+            "description": "没有新版本时触发"
         },
         {
             "name": "[event]fallback",
             "description": "命中兜底更新时触发",
-            "type": "(data: { title: string; description: string; downloadUrl: string }) => void"
+            "params": [
+                { "name": "data", "description": "兜底更新数据，包含 title、description、downloadUrl" }
+            ]
         }
     ]
 }

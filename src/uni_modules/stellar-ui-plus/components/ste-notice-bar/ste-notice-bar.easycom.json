@@ -93,17 +93,40 @@
         {
             "name": "[event]click",
             "description": "外层点击事件回调",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]close",
             "description": "关闭通知栏时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]end",
             "description": "滚动结束时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
+        },
+        {
+            "name": "[slot]leftIcon",
+            "description": "左边图标的插槽"
+        },
+        {
+            "name": "[slot]rightIcon",
+            "description": "右边图标的插槽"
         }
     ]
 }

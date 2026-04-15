@@ -4,9 +4,9 @@
 
 ---$
 
-### 使用方法
+## 使用方法
 
-#### 组合函数使用方法
+## 组合函数使用方法
 
 ps：注意 目前 useToast 只能在 setup 作用域下使用  
 父组件引入组件 组合函数调用showToast方法，打开轻提示
@@ -25,7 +25,7 @@ ps：注意 目前 useToast 只能在 setup 作用域下使用
 </template>
 ```
 
-#### Ref用法
+## Ref用法
 
 父组件引入组件 绑定ref 通过ref调用showToast方法，打开轻提示
 
@@ -42,7 +42,7 @@ ps：注意 目前 useToast 只能在 setup 作用域下使用
 </script>
 ```
 
-#### 全局引入
+## 全局引入
 
 配合 [https://github.com/smartXJ/vue3-inset-loader](https://github.com/smartXJ/vue3-inset-loader) 插件， 将 ste-toast 节点置于每个页面中，可以更进一步简化使用
 
@@ -57,7 +57,7 @@ insetLoader: {
 }
 ```
 
-#### 文字提示
+## 文字提示
 
 `title`为提示内容，提示弹窗根据内容自动撑开，最大宽度为260px，超过自动换行，也可手动插入换行符`\n`
 
@@ -85,7 +85,7 @@ insetLoader: {
 </script>
 ```
 
-### 提示类型
+## 提示类型
 
 `icon`为固定的图标类型，默认为`success`，为`loading`时，弹窗不会自动关闭，需手动关闭弹窗，使用`hideToast`方法
 
@@ -150,7 +150,7 @@ insetLoader: {
 </script>
 ```
 
-### 遮罩层
+## 遮罩层
 
 `mask`为是否显示透明蒙层，防止触摸穿透，默认为`false`
 
@@ -172,7 +172,7 @@ insetLoader: {
 </script>
 ```
 
-### 延迟时间
+## 延迟时间
 
 `duration`为提示的延迟时间，单位ms 值为 0 时，toast 不会自动消失（loading 类型默认为 0）
 
@@ -193,7 +193,7 @@ insetLoader: {
 </script>
 ```
 
-### 回调事件
+## 回调事件
 
 - `success`：提示打开成功的回调函数
 - `fail`：提示打开失败的回调函数
@@ -252,16 +252,7 @@ insetLoader: {
 
 ---$
 
-### API
-
 <!-- props -->
-
-#### Methods
-
-| 方法名      | 说明         | 方法参数    | 支持版本 |
-| ----------- | ------------ | ----------- | -------- |
-| `showToast` | 提示打开函数 | `props`属性 | -        |
-| `hideToast` | 关闭提示函数 | -           | -        |
 
 ---$
 {{qinpengfei}}

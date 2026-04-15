@@ -26,7 +26,10 @@
             "name": "offset",
             "description": "位置偏移量，格式为：[x, y]",
             "type": "[number, number]",
-            "default": [0, 0]
+            "default": [
+                0,
+                0
+            ]
         },
         {
             "name": "showTitleBar",
@@ -103,7 +106,6 @@
         {
             "name": "[event]change",
             "description": "步骤切换时触发",
-            "type": "(current:number)=>void",
             "params": [
                 {
                     "name": "current",
@@ -114,7 +116,12 @@
         {
             "name": "[event]close",
             "description": "关闭时触发",
-            "type": "()=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "()=>void"
+                }
+            ]
         }
     ]
 }

@@ -49,17 +49,36 @@
         {
             "name": "[event]buttonClick",
             "description": "点击按钮时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]footerClick",
             "description": "点击页脚列表时触发",
-            "type": "(index:number) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(index:number) => void"
+                }
+            ]
         },
         {
             "name": "[event]countDown",
             "description": "倒计时触发",
-            "type": "(data:any,time:number) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(data:any,time:number) => void"
+                }
+            ]
+        },
+        {
+            "name": "[slot]position",
+            "description": "在任意位置插入内容"
         }
     ]
 }

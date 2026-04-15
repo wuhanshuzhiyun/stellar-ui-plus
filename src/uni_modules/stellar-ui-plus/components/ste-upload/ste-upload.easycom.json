@@ -169,7 +169,6 @@
         {
             "name": "[event]beforeRead",
             "description": "文件读取前触发",
-            "type": "(fileList:Array<UploadFileType>,suspend:()=>void,next()=>void,stop:()=>void)=>void",
             "params": [
                 {
                     "name": "fileList",
@@ -192,7 +191,6 @@
         {
             "name": "[event]read",
             "description": "文件读完成触发",
-            "type": "(fileList:Array<UploadFileType>)=>void",
             "params": [
                 {
                     "name": "fileList",
@@ -203,7 +201,6 @@
         {
             "name": "[event]oversize",
             "description": "文件大小超出限制触发",
-            "type": "(file,fileList:Array<UploadFileType>)=>void",
             "params": [
                 {
                     "name": "file",
@@ -218,7 +215,6 @@
         {
             "name": "[event]beforeDelete",
             "description": "文件删除前触发",
-            "type": "(index:number,suspend:()=>void,next()=>void,stop:()=>void)=>void",
             "params": [
                 {
                     "name": "index",
@@ -241,7 +237,6 @@
         {
             "name": "[event]delete",
             "description": "文件删除后触发",
-            "type": "(index:number,fileList:Array<UploadFileType>)=>void",
             "params": [
                 {
                     "name": "index",
@@ -256,28 +251,60 @@
         {
             "name": "[event]open-preview",
             "description": "打开预览时触发",
-            "type": "()=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "()=>void"
+                }
+            ]
         },
         {
             "name": "[event]preview-change",
             "description": "预览图片变化触发",
-            "type": "(index:number | null)=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(index:number | null)=>void"
+                }
+            ]
         },
         {
             "name": "[event]close-preview",
             "description": "关闭预览时触发",
-            "type": "()=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "()=>void"
+                }
+            ]
         },
         {
             "name": "[event]click-item",
             "description": "点击文件触发",
-            "type": "(index:number)=>void",
             "params": [
                 {
                     "name": "index",
                     "description": "文件下标"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "上传按钮"
+        },
+        {
+            "name": "[slot]preview-cover",
+            "description": "每一份文件的预览图层样式",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "当前文件"
+                }
+            ]
+        },
+        {
+            "name": "[slot]media-preview",
+            "description": "图片放大预览（媒体预览组件带默认插槽）"
         }
     ]
 }

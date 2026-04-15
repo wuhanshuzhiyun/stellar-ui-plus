@@ -4,9 +4,9 @@
 
 ---$
 
-### 代码演示
+## 代码演示
 
-#### 基础使用
+## 基础使用
 
 默认视频宽度会根据父容器的宽度撑满
 
@@ -16,7 +16,7 @@
 </template>
 ```
 
-#### 可选择清晰度
+## 可选择清晰度
 
 配置`resolution`后会在全屏时显示清晰度选择选项，数据结构如下
 
@@ -35,15 +35,11 @@
 
 ---$
 
-### API
-
-#### 组件属性(Props)
-
 <!-- props -->
 
 其他属性可参考原生[video](https://zh.uniapp.dcloud.io/component/video.html)
 
-#### 组件事件(Events)
+## 组件事件(Events)
 
 事件可参考原生[video](https://zh.uniapp.dcloud.io/component/video.html)
 

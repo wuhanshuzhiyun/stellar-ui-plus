@@ -51,12 +51,22 @@
         {
             "name": "[event]seat-click",
             "description": "点击有效座位事件（empty/disabled 不触发）",
-            "type": "(seat: SteSelectSeatItem) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(seat: SteSelectSeatItem) => void"
+                }
+            ]
         },
         {
             "name": "[event]move",
             "description": "拖动/缩放事件",
-            "type": "(data: { translateX, translateY, scale, screenTranslateX }) => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(data: { translateX, translateY, scale, screenTranslateX }) => void"
+                }
+            ]
         }
     ]
 }

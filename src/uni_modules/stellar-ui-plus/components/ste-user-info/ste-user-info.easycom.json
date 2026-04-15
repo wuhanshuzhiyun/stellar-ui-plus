@@ -101,12 +101,16 @@
         {
             "name": "[event]userClick",
             "description": "用户区域点击",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]dataClick",
             "description": "数据点击",
-            "type": "(index : string | number) => void",
             "params": [
                 {
                     "name": "index",
@@ -117,12 +121,26 @@
         {
             "name": "[event]codeClick",
             "description": "功能码区域点击",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]loginBtnClick",
             "description": "登录按钮点击",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
+        },
+        {
+            "name": "[slot]desc",
+            "description": "用户描述"
         }
     ]
 }

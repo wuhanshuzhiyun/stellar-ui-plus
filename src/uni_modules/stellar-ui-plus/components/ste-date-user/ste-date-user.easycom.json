@@ -31,6 +31,10 @@
             "description": "昵称",
             "type": "String",
             "default": ""
+        },
+        {
+            "name": "[slot]desc",
+            "description": "用户描述"
         }
     ]
 }

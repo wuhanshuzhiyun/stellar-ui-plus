@@ -91,6 +91,14 @@
             "description": "display属性是否为inline-block",
             "type": "boolean",
             "default": false
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽"
+        },
+        {
+            "name": "[slot]content",
+            "description": "自定义徽标内容"
         }
     ]
 }

@@ -19,7 +19,12 @@
         {
             "name": "[event]change",
             "description": "激活节点改变时触发",
-            "type": "(index:number)=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "(index:number)=>void"
+                }
+            ]
         }
     ]
 }

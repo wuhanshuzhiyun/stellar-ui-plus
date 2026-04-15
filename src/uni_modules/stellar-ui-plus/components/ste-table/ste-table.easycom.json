@@ -79,7 +79,6 @@
             "description": "格式化表头内容的方法，同formatter属性，需要定义customKey属性",
             "type": "function"
         },
-
         {
             "name": "headerRowClassName",
             "description": "表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className",
@@ -166,33 +165,63 @@
         {
             "name": "[event]select",
             "description": "当用户手动勾选数据行的 Checkbox 时触发的事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]selectAll",
             "description": "当用户手动勾选全选 Checkbox 时触发的事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]cellClick",
             "description": "当某个单元格被点击时会触发该事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]rowClick",
             "description": "当某一行被点击时会触发该事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]headerClick",
             "description": "当某一列的表头被点击时会触发该事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]scrollToLower",
             "description": "表格体滚动到底事件",
-            "type": "() => void",
-            "version": "v1.18.9"
+            "version": "v1.18.9",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         }
     ]
 }

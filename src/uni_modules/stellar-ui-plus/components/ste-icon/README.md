@@ -6,7 +6,7 @@
 
 ## 代码演示
 
-### 基础用法
+## 基础用法
 
 通过 `code` 属性来指定需要使用的图标，Stellar 组件使用[iconfont 做图标库](https://at.alicdn.com/t/c/font_4041637_pivqtx3f1mq.json?spm=a313x.manage_type_myprojects.i1.49.f7ba3a81fFvJ6W&file=font_4041637_pivqtx3f1mq.json)，
 可以直接传入对应的编码来使用
@@ -17,7 +17,7 @@
 </template>
 ```
 
-### 图标颜色
+## 图标颜色
 
 通过 `color` 属性来设置图标的颜色
 
@@ -28,7 +28,7 @@
 </template>
 ```
 
-### 图标大小
+## 图标大小
 
 通过 `size` 属性来设置图标的尺寸大小，单位为 rpx，默认`28`
 
@@ -40,7 +40,7 @@
 </template>
 ```
 
-### 图标是否粗体
+## 图标是否粗体
 
 通过 `bold` 属性来设置图标是否粗体，默认`false`
 
@@ -51,7 +51,7 @@
 </template>
 ```
 
-### 自定义图标
+## 自定义图标
 
 如果需要在现有 `Icon` 的基础上使用更多图标，可以引入第三方 `iconfont` 对应的字体文件和 `CSS` 文件，之后就可以在 `Icon` 组件中直接使用，默认为`ste-iconfont-1709689042473`。
 
@@ -70,8 +70,6 @@
 ```
 
 ---$
-
-### API
 
 <!-- props -->
 

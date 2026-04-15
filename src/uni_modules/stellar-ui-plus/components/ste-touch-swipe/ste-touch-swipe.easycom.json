@@ -71,7 +71,6 @@
         {
             "name": "[event]change",
             "description": "切换触发",
-            "type": "(index:number)=>void",
             "params": [
                 {
                     "name": "index",

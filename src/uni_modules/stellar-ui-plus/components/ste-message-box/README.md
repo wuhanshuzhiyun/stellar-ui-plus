@@ -4,9 +4,9 @@
 
 ---$
 
-### 使用方法
+## 使用方法
 
-#### 组合函数使用方法
+## 组合函数使用方法
 
 ps：注意 目前 useMessageBox 只能在 setup 作用域下使用  
 父组件引入组件 组合函数调用showMsgBox方法，打开轻提示
@@ -25,7 +25,7 @@ ps：注意 目前 useMessageBox 只能在 setup 作用域下使用
 </template>
 ```
 
-#### Ref用法
+## Ref用法
 
 父组件引入组件 绑定ref 通过ref调用showMsgBox方法，打开轻提示
 
@@ -46,7 +46,7 @@ ps：注意 目前 useMessageBox 只能在 setup 作用域下使用
 </template>
 ```
 
-#### 全局引入
+## 全局引入
 
 配合 [https://github.com/smartXJ/vue3-inset-loader](https://github.com/smartXJ/vue3-inset-loader) 插件， 将 ste-message-box 节点置于每个页面中，可以更进一步简化使用
 
@@ -61,9 +61,9 @@ insetLoader: {
 }
 ```
 
-### 代码演示
+## 代码演示
 
-#### 基础使用
+## 基础使用
 
 可在标题(`title`)和内容(`content`)中使用`\n`来实现换行
 
@@ -83,7 +83,7 @@ insetLoader: {
 </script>
 ```
 
-#### 带图标
+## 带图标
 
 - 内置三种图标类型：`info`、`success`、`error`
 - 当显示图标时，内容(`content`)会失效，只显示标题(`title`)
@@ -119,7 +119,7 @@ insetLoader: {
 </script>
 ```
 
-#### 自定义按钮
+## 自定义按钮
 
 ```html
 <template>
@@ -163,7 +163,7 @@ insetLoader: {
 </script>
 ```
 
-#### 显示输入框
+## 显示输入框
 
 当显示输入框时，内容(`content`)将不显示
 
@@ -188,7 +188,7 @@ insetLoader: {
 </script>
 ```
 
-#### 插槽
+## 插槽
 
 如果提供的弹框内容不满足需求，可以使用插槽自定义弹框内容。
 可以通过指定唯一标识`selector`的方式，在一个页面中使用多个`ste-message-box`，`useSteMsgBox(selector)`会返回一个指定了selector的组件实例。
@@ -216,7 +216,7 @@ insetLoader: {
 </script>
 ```
 
-#### 回调事件
+## 回调事件
 
 ```html
 <template>
@@ -262,8 +262,6 @@ insetLoader: {
 ```
 
 ---$
-
-### API
 
 <!-- props -->
 

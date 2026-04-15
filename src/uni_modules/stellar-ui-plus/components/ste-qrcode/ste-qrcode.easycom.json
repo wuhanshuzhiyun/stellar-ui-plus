@@ -44,7 +44,6 @@
         {
             "name": "[event]loadImage",
             "description": "加载完成后返回条形码对应的图片数据",
-            "type": "(src:string r) => void",
             "params": [
                 {
                     "name": "src",

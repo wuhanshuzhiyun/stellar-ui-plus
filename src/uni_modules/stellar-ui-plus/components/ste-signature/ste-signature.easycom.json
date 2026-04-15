@@ -58,17 +58,64 @@
         {
             "name": "[event]start",
             "description": "笔画开始时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]signing",
             "description": "画图中触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]end",
             "description": "笔画结束时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
+        },
+        {
+            "name": "[method]clear",
+            "description": "清空画布"
+        },
+        {
+            "name": "[method]back",
+            "description": "回退"
+        },
+        {
+            "name": "[method]save",
+            "description": "保存为图片",
+            "params": [
+                {
+                    "name": "成功回调函数",
+                    "description": "(base64)=>void"
+                },
+                {
+                    "name": "失败回调函数",
+                    "description": "(err)=>void"
+                }
+            ]
+        },
+        {
+            "name": "[method]output",
+            "description": "自定义输出",
+            "params": [
+                {
+                    "name": "Options",
+                    "description": "{orientation:string;success:(base64)=>void;fail:(err)=>void}"
+                }
+            ]
         }
     ]
 }

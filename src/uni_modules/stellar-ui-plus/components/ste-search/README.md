@@ -4,7 +4,7 @@
 
 ---$
 
-### 代码演示
+## 代码演示
 
 **JavaScript**
 
@@ -37,7 +37,7 @@ const onClick = (v: string) => {
 </script>
 ```
 
-#### 基础用法
+## 基础用法
 
 - 通过`input`事件可以捕获用户输入行为，参数为输入的value内容
 - 通过`search`事件可以捕获用户点击`搜索按钮`或`软键盘上的回车`行为，参数为输入的value内容
@@ -71,7 +71,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 搜索建议
+## 搜索建议
 
 - 给`suggestionsList`属性赋值时，会在输入框下方显示，数据结构见下方示例
 - 点击某条建议后会触发搜索的`selectSuggestion`事件，参数为搜索建议对象
@@ -114,7 +114,7 @@ const onClick = (v: string) => {
 </script>
 ```
 
-#### 热词列表
+## 热词列表
 
 - 可以通过`hotWords`属性传入热词列表
 - 可以通过`interval`属性设置热词切换间隔，单位为毫秒
@@ -144,7 +144,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 自定义按钮文本内容
+## 自定义按钮文本内容
 
 - 可以通过`btnText`属性自定义按钮文本内容
 
@@ -162,7 +162,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 隐藏分割线以及按钮
+## 隐藏分割线以及按钮
 
 - 可以通过`hiddenLine`属性隐藏分割线
 - 可以通过`hiddenBtn`属性隐藏按钮，隐藏按钮时也会隐藏分割线
@@ -182,7 +182,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 隐藏输入框以及按钮
+## 隐藏输入框以及按钮
 
 - 可以通过设置`hiddenInput`属性隐藏输入框 和 `hiddenBtn`属性隐藏按钮只保留放大镜的功能
 
@@ -202,7 +202,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 不显示清除图标
+## 不显示清除图标
 
 - 可以通过`clearable`属性来切换清除图标是否显示
 
@@ -220,7 +220,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 颜色和背景
+## 颜色和背景
 
 - 可以通过`borderColor`属性设置边框颜色
 - 可以通过`background`属性设置背景颜色或者背景图片
@@ -284,7 +284,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 自定义高度以及圆角弧度
+## 自定义高度以及圆角弧度
 
 - 可以通过`height`属性设置搜索框高度，默认值`64`
 - 可以通过`radius`属性设置圆角弧度，默认值`32`
@@ -303,7 +303,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 导航模式
+## 导航模式
 
 - 可以通过`type`属性设置`nav`开启导航模式；开启后，点击搜索框任意区域都会触发`click`事件，其他功能失效。
 
@@ -324,7 +324,7 @@ const onClick = (v: string) => {
 </template>
 ```
 
-#### 聚焦
+## 聚焦
 
 - 可以通过`fous`属性控制搜索框聚焦，双向绑定
 
@@ -351,16 +351,7 @@ const onClick = (v: string) => {
 
 ---$
 
-### API
-
 <!-- props -->
-
-#### 组件插槽(Slots)
-
-| 插槽名   | 说明         | 插槽参数 | 支持版本 |
-| -------- | ------------ | -------- | -------- |
-| `prefix` | 输入框前插槽 | -        | -        |
-| `suffix` | 输入框后插槽 | -        | -        |
 
 ---$
 {{xuyajun}}

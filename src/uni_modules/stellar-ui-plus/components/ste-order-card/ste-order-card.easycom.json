@@ -95,7 +95,6 @@
         {
             "name": "[event]click-header",
             "description": "点击头部触发",
-            "type": "(type: 'empty' | 'title' | 'image' | 'status' | 'tag' | 'helper') => void",
             "params": [
                 {
                     "name": "type",
@@ -106,7 +105,6 @@
         {
             "name": "[event]click-item",
             "description": "点击商品项触发",
-            "type": "(type: 'empty' | 'image' | 'title' | 'sub-title' | 'details'; item: OrderGoods) => void",
             "params": [
                 {
                     "name": "type",
@@ -121,7 +119,6 @@
         {
             "name": "[event]click-button",
             "description": "点击底部按钮触发",
-            "type": "(type: 'primary' | 'secondary' | 'more') => void",
             "params": [
                 {
                     "name": "type",

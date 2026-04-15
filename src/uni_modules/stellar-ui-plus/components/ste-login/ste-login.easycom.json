@@ -62,7 +62,6 @@
             "type": "BtnItem[]",
             "default": "[]"
         },
-
         {
             "name": "loginGroup",
             "description": "登录表单配置",
@@ -90,7 +89,6 @@
         {
             "name": "[event]protocolClick",
             "description": "协议点击时触发",
-            "type": "(item: ProtocolItem) => void",
             "params": [
                 {
                     "name": "item",
@@ -101,7 +99,6 @@
         {
             "name": "[event]primaryBtnClick",
             "description": "主按钮点击时触发",
-            "type": "(item: BtnItem[]) => void",
             "params": [
                 {
                     "name": "item",
@@ -112,7 +109,6 @@
         {
             "name": "[event]secondaryBtnClick",
             "description": "次要按钮点击时触发",
-            "type": "(item: BtnItem[]) => void",
             "params": [
                 {
                     "name": "item",
@@ -123,7 +119,6 @@
         {
             "name": "[event]tabChange",
             "description": "复杂登录时tab切换时触发",
-            "type": "(item: BaseConfigItem[]) => void",
             "params": [
                 {
                     "name": "item",
@@ -134,7 +129,6 @@
         {
             "name": "[event]formDataChange",
             "description": "复杂登录时输入框或者下拉框改变时触发",
-            "type": "(data: {}) => void",
             "params": [
                 {
                     "name": "data",
@@ -145,7 +139,6 @@
         {
             "name": "[event]getCode",
             "description": "当配置输入类型为验证码时，点击获取验证码时触发",
-            "type": "(suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
             "params": [
                 {
                     "name": "suspend",
@@ -160,6 +153,10 @@
                     "description": "停止"
                 }
             ]
+        },
+        {
+            "name": "[slot]header",
+            "description": "头部内容"
         }
     ]
 }

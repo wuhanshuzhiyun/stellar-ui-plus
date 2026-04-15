@@ -33,6 +33,10 @@
                 }
             ],
             "default": "text"
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽"
         }
     ]
 }

@@ -137,7 +137,6 @@
         {
             "name": "[event]change",
             "description": "输入值value改变时触发",
-            "type": "(value: string) => void",
             "params": [
                 {
                     "name": "value",
@@ -148,17 +147,26 @@
         {
             "name": "[event]clear",
             "description": "清空按钮点击事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]backspace",
             "description": "删除按钮点击事件",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]confirm",
             "description": "确认按钮点击事件",
-            "type": "(value:string) => void",
             "params": [
                 {
                     "name": "value",
@@ -169,7 +177,6 @@
         {
             "name": "[event]click",
             "description": "点击功能键(确认/删除/清除)之外的键盘触发",
-            "type": "(key:string) => void",
             "params": [
                 {
                     "name": "key",
@@ -180,7 +187,6 @@
         {
             "name": "[event]click-discount",
             "description": "点击折扣键盘触发",
-            "type": "(key:string) => void",
             "params": [
                 {
                     "name": "key",
@@ -191,7 +197,6 @@
         {
             "name": "[event]beforeinput",
             "description": "输入之前触发，功能键之外的键盘点击时为输入",
-            "type": "(key: string, suspend: () => void, next: () => void, stop: () => void) => void",
             "params": [
                 {
                     "name": "key",
@@ -214,13 +219,26 @@
         {
             "name": "[event]open",
             "description": "打开弹窗键盘触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]close",
             "description": "关闭弹窗键盘触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
-        {}
+        {
+            "name": "[slot]default",
+            "description": "弹窗标题插槽"
+        }
     ]
 }

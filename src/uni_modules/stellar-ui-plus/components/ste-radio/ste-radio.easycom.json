@@ -115,7 +115,6 @@
         {
             "name": "[event]click",
             "description": "点击复选框时触发的事件",
-            "type": "(value:string | number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
             "params": [
                 {
                     "name": "value",
@@ -138,7 +137,6 @@
         {
             "name": "[event]change",
             "description": "当绑定值变化时触发的事件",
-            "type": "(value: string | number) => void",
             "params": [
                 {
                     "name": "value",

@@ -57,7 +57,6 @@
         {
             "name": "[event]open",
             "description": "打开滑块时触发，参数为方向",
-            "type": "(d:string)=>void",
             "params": [
                 {
                     "name": "direction",
@@ -68,7 +67,26 @@
         {
             "name": "[event]close",
             "description": "关闭滑块时触发",
-            "type": "()=>void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "()=>void"
+                }
+            ]
+        },
+        {
+            "name": "[method]open",
+            "description": "打开滑块，参数为方向",
+            "params": [
+                {
+                    "name": "direction",
+                    "description": "left / right：需要打开的方向，默认同 mode"
+                }
+            ]
+        },
+        {
+            "name": "[method]close",
+            "description": "关闭滑块"
         }
     ]
 }

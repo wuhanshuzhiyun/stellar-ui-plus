@@ -167,7 +167,6 @@
         {
             "name": "[event]input",
             "description": "输入事件",
-            "type": "(value: string) => void",
             "params": [
                 {
                     "name": "value",
@@ -178,7 +177,6 @@
         {
             "name": "[event]focus",
             "description": "聚焦焦点事件",
-            "type": "(value: string) => void",
             "params": [
                 {
                     "name": "value",
@@ -189,7 +187,6 @@
         {
             "name": "[event]blur",
             "description": "失去焦点事件",
-            "type": "(value: string) => void",
             "params": [
                 {
                     "name": "value",
@@ -200,7 +197,6 @@
         {
             "name": "[event]search",
             "description": "确定搜索时触发",
-            "type": "(value: string) => void",
             "params": [
                 {
                     "name": "value",
@@ -211,12 +207,16 @@
         {
             "name": "[event]clear",
             "description": "点击清除按钮后触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]click",
             "description": "点击事件",
-            "type": "(value: string) => void",
             "params": [
                 {
                     "name": "value",
@@ -227,13 +227,20 @@
         {
             "name": "[event]selectSuggestion",
             "description": "点击搜索建议触发",
-            "type": "(item: object) => void",
             "params": [
                 {
                     "name": "item",
                     "description": "热词列表对象"
                 }
             ]
+        },
+        {
+            "name": "[slot]prefix",
+            "description": "输入框前插槽"
+        },
+        {
+            "name": "[slot]suffix",
+            "description": "输入框后插槽"
         }
     ]
 }

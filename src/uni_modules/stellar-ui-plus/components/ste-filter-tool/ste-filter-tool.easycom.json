@@ -43,7 +43,6 @@
         {
             "name": "[event]confirm",
             "description": "点击确认按钮时触发",
-            "type": "(values: FilterValue[]) => void",
             "params": [
                 {
                     "name": "values",
@@ -54,13 +53,11 @@
         {
             "name": "[event]reset",
             "description": "点击重置按钮时触发",
-            "type": "() => void",
             "params": []
         },
         {
             "name": "[event]itemClick",
             "description": "点击任意筛选项时触发（实时）",
-            "type": "(item: FilterValue) => void",
             "params": [
                 {
                     "name": "item",
@@ -71,7 +68,6 @@
         {
             "name": "[event]maskClose",
             "description": "点击蒙层关闭了弹窗后触发",
-            "type": "() => void",
             "params": []
         }
     ]

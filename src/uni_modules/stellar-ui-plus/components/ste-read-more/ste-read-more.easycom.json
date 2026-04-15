@@ -43,12 +43,30 @@
         {
             "name": "[event]open",
             "description": "展开时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]click",
             "description": "收起时触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
+        },
+        {
+            "name": "[method]init",
+            "description": "重新初始化组件内部高度计算过程，如果是异步获取内容需要用到"
+        },
+        {
+            "name": "[slot]default",
+            "description": "单选框文本内容"
         }
     ]
 }

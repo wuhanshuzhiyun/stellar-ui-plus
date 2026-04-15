@@ -4,7 +4,7 @@
 
 ---$
 
-### 代码演示
+## 代码演示
 
 JavaScript后面的演示代码中涉及到的变量和方法都使用本`javascript`代码
 
@@ -18,7 +18,7 @@ let value4 = ref(2.5);
 let value5 = ref(2);
 ```
 
-#### 基础用法
+## 基础用法
 
 通过`value`属性，双向绑定，设置评分的值
 
@@ -28,7 +28,7 @@ let value5 = ref(2);
 </template>
 ```
 
-#### 自定义图标
+## 自定义图标
 
 - 通过`inactiveCode`属性，设置未选中的图标code，默认`&#xe681;`。
 - 通过`activeCode`属性，设置选中的图标code，默认`&#xe684;`。
@@ -43,7 +43,7 @@ let value5 = ref(2);
 </template>
 ```
 
-#### 自定义样式
+## 自定义样式
 
 - 通过`inactiveColor`属性，设置未选中的颜色，默认`#dddddd`。
 - 通过`activeColor`属性，设置选中的颜色，默认`#0090FF`。
@@ -56,7 +56,7 @@ let value5 = ref(2);
 </template>
 ```
 
-#### 只读
+## 只读
 
 通过`readonly `属性，设置只读，不可切换评分，样式不置灰，可部分星， 默认`false`。
 
@@ -66,7 +66,7 @@ let value5 = ref(2);
 </template>
 ```
 
-#### 禁用
+## 禁用
 
 通过`disabled`属性，设置禁用，不可切换评分，样式置灰，可部分星，默认`false`。
 
@@ -76,7 +76,7 @@ let value5 = ref(2);
 </template>
 ```
 
-#### 自定义数量和自定义分值
+## 自定义数量和自定义分值
 
 - 通过`count`属性，设置图标总数，默认`5`。
 - 通过`score`属性，设置每颗图标代表的分数，默认`1`。
@@ -88,7 +88,7 @@ let value5 = ref(2);
 </template>
 ```
 
-#### 自定义分值图标
+## 自定义分值图标
 
 - 需要传入图标code对应的数组, 此时`inactiveColor`和`activeColor`将失效
 - 会根据当前评分数对应的图标数量来取`iconData`中的值为当前图标的`code`
@@ -104,8 +104,6 @@ let value5 = ref(2);
 ```
 
 ---$
-
-### API
 
 <!-- props -->
 

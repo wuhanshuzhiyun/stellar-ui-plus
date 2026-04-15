@@ -77,19 +77,16 @@
         {
             "name": "[event]avatar-click",
             "description": "头像点击时触发",
-            "type": "(]) => void",
             "params": []
         },
         {
             "name": "[event]user-click",
             "description": "用户信息点击时触发",
-            "type": "(]) => void",
             "params": []
         },
         {
             "name": "[event]loginTitleClick",
             "description": "未登录文本点击时触发",
-            "type": "(]) => void",
             "params": []
         }
     ]

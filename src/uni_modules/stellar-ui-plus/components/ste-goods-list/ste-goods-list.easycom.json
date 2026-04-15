@@ -31,6 +31,10 @@
             "description": "数据列表",
             "type": "{label:string,value:string}[]",
             "default": "[]"
+        },
+        {
+            "name": "[slot]method",
+            "description": "标题栏右侧操作插槽"
         }
     ]
 }

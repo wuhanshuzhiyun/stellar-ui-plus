@@ -16,8 +16,14 @@
             "type": "string",
             "default": "more",
             "values": [
-                { "name": "more", "description": "门店，展示所有字段" },
-                { "name": "less", "description": "食堂，仅展示部分字段" }
+                {
+                    "name": "more",
+                    "description": "门店，展示所有字段"
+                },
+                {
+                    "name": "less",
+                    "description": "食堂，仅展示部分字段"
+                }
             ]
         },
         {
@@ -74,9 +80,18 @@
             "type": "string",
             "default": "none",
             "values": [
-                { "name": "none", "description": "不显示选择框" },
-                { "name": "left", "description": "选择框在左侧" },
-                { "name": "right", "description": "选择框在右侧" }
+                {
+                    "name": "none",
+                    "description": "不显示选择框"
+                },
+                {
+                    "name": "left",
+                    "description": "选择框在左侧"
+                },
+                {
+                    "name": "right",
+                    "description": "选择框在右侧"
+                }
             ]
         },
         {
@@ -191,11 +206,9 @@
             "type": "boolean",
             "version": "1.23.8"
         },
-
         {
             "name": "[event]change",
             "description": "数值/选择改变时触发",
-            "type": "(data, goods) => void",
             "params": [
                 {
                     "name": "data",
@@ -210,7 +223,6 @@
         {
             "name": "[event]click",
             "description": "点击确定按钮时触发",
-            "type": "(type:'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => void",
             "params": [
                 {
                     "name": "type",
@@ -221,7 +233,6 @@
         {
             "name": "[event]plus",
             "description": "点击加号前置钩子函数",
-            "type": "(v: number | string, suspend: () => void, next: () => void, stop: () => void) => void",
             "params": [
                 {
                     "name": "value",
@@ -244,7 +255,6 @@
         {
             "name": "[event]minus",
             "description": "点击减号前置钩子函数",
-            "type": "(v: number | string, suspend: () => void, next: () => void, stop: () => void) => void",
             "params": [
                 {
                     "name": "value",
@@ -267,7 +277,6 @@
         {
             "name": "[event]click-suggest",
             "description": "点击建议模块触发",
-            "type": "(type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => void",
             "params": [
                 {
                     "name": "type",
@@ -282,12 +291,30 @@
         {
             "name": "[event]click-stepper-input",
             "description": "点击步进器输入框触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
         },
         {
             "name": "[event]click-suggest-input",
             "description": "点击建议输入框触发",
-            "type": "() => void"
+            "params": [
+                {
+                    "name": "data",
+                    "description": "() => void"
+                }
+            ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，在编码下方出现的其他内容"
+        },
+        {
+            "name": "[slot]stepper",
+            "description": "步进器位置插槽，使用该插槽后将替换掉步进器"
         }
     ]
 }

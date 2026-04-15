@@ -1,0 +1,47 @@
+{
+    "name": "ste-drag-sort",
+    "description": "拖拽排序组件，支持单列和多列网格排序。",
+    "example": "<ste-drag-sort v-model='basicList'><template #item=\"{ item, index }\"><view>{{ index + 1 }}. {{ item.text }}</view></template></ste-drag-sort>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-drag-sort",
+    "attributes": [
+        {
+            "name": "modelValue",
+            "description": "拖拽数据列表，支持 v-model 双向绑定",
+            "type": "SteDragSortItem[]",
+            "default": "[]"
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用拖拽功能",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "columns",
+            "description": "列数，1 为纵向列表，大于 1 为网格排序",
+            "type": "Number",
+            "default": 1
+        },
+        {
+            "name": "longPress",
+            "description": "是否长按后再开始拖拽",
+            "type": "Boolean",
+            "default": true
+        },
+        {
+            "name": "[event]start",
+            "description": "开始拖拽时触发",
+            "type": "(index: number) => void"
+        },
+        {
+            "name": "[event]change",
+            "description": "排序结果发生变化时触发",
+            "type": "(list: SteDragSortItem[]) => void"
+        },
+        {
+            "name": "[event]end",
+            "description": "拖拽结束时触发",
+            "type": "(index: number) => void"
+        }
+    ]
+}

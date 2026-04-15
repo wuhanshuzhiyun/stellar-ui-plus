@@ -117,8 +117,10 @@ const buildQueue = async (sourceList: MarqueeItem[]) => {
 };
 
 // ─── 初始化 ────────────────────────────────────────────────────
-const init = async (list: MarqueeItem[]) => {
-    isPaused.value = false;
+const init = async (list: MarqueeItem[], { keepPaused = false } = {}) => {
+    if (!keepPaused) {
+        isPaused.value = false;
+    }
     await buildQueue(list);
 };
 
@@ -136,8 +138,8 @@ const resume = () => {
 };
 const stop = async () => {
     isPaused.value = true;
-    // 重新初始化回到起始位置
-    await init(props.list);
+    // 重新初始化回到起始位置，保持暂停状态
+    await init(props.list, { keepPaused: true });
 };
 
 // ─── 监听 ──────────────────────────────────────────────────────

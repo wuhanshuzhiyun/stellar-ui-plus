@@ -39,7 +39,7 @@
 ## 网格排序
 
 - `columns` 大于 `1` 时会按网格布局排序
-- H5 桌面端如果不需要长按再拖拽，可设置 `:longPress="false"`
+- 网格类纯拖拽场景可按需要设置 `:longPress="false"`
 
 ```html
 <script setup lang="ts">
@@ -90,15 +90,27 @@
 </template>
 ```
 
+## longPress 说明
+
+- `longPress=true`：长按后再开始拖拽，适合纵向列表、可滚动页面、移动端场景，可减少误触和页面滚动冲突
+- `longPress=false`：按下后立即开始拖拽，适合网格、纯排序面板、桌面端操作更直接的场景
+- 默认值为 `true`，因为列表排序通常更需要兼顾滚动和点击体验
+
+```html
+<ste-drag-sort v-model="list" :longPress="true" />
+<ste-drag-sort v-model="list" :longPress="false" />
+```
+
 ---$
 
 <!-- props -->
 
 ## 使用建议
 
-- 列表项高度尽量保持一致，否则排序位移动画可能出现偏差。
-- `columns > 1` 时建议每个子项都设置稳定的视觉尺寸，避免网格测量不准。
-- H5 桌面端如果不需要长按再拖拽，建议显式设置 `:longPress="false"`。
+- 列表项高度尽量保持一致，否则排序位移动画可能出现偏差
+- `columns > 1` 时建议每个子项都设置稳定的视觉尺寸，避免网格测量不准
+- 列表排序、可滚动页面、移动端场景优先使用 `longPress`
+- 网格纯拖拽、桌面端快速操作场景可显式设置 `:longPress="false"`
 
 ---$
 {{fuyuwei}}

@@ -24,7 +24,7 @@
         },
         {
             "name": "longPress",
-            "description": "是否长按后再开始拖拽",
+            "description": "拖拽启动方式。true 为长按后开始拖拽，适合列表和可滚动页面；false 为按下立即拖拽，适合网格和纯排序面板",
             "type": "boolean",
             "default": true
         },

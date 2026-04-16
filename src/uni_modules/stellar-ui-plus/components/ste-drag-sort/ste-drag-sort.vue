@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, onBeforeUnmount, ref, watch, type ComponentPublicInstance, type CSSProperties } from 'vue';
+import { getTouchX, getTouchY, toTouchArray } from '../ste-select-seat/useTouchCompat';
 import utils from '../../utils/utils';
 import propsData, { type SteDragSortItem } from './props';
 
@@ -57,6 +58,7 @@ let mousePressing = false;
 let mousePendingIndex = -1;
 let mousePendingX = 0;
 let mousePendingY = 0;
+let dragSessionId = 0;
 
 const columns = computed(() => {
     const value = Math.floor(Number(props.columns) || 1);
@@ -92,6 +94,7 @@ function syncList(value: SteDragSortItem[]) {
 }
 
 function resetDragState() {
+    dragSessionId += 1;
     dragging.value = false;
     dragIndex.value = -1;
     insertIndex.value = -1;
@@ -126,6 +129,43 @@ function getItemDisabled(index: number) {
     return !!list.value[index]?.raw?.disabled;
 }
 
+function getEnabledIndices() {
+    return list.value.reduce<number[]>((indices, item, index) => {
+        if (!item.raw?.disabled) {
+            indices.push(index);
+        }
+        return indices;
+    }, []);
+}
+
+function getReorderPreview(dragIdx: number, targetIdx: number) {
+    const enabledIndices = getEnabledIndices();
+    const dragEnabledIndex = enabledIndices.indexOf(dragIdx);
+    const targetEnabledIndex = enabledIndices.indexOf(targetIdx);
+
+    if (dragEnabledIndex < 0 || targetEnabledIndex < 0) return null;
+
+    const nextEnabledSourceIndices = [...enabledIndices];
+    const [draggedSourceIndex] = nextEnabledSourceIndices.splice(dragEnabledIndex, 1);
+    nextEnabledSourceIndices.splice(targetEnabledIndex, 0, draggedSourceIndex);
+
+    const finalIndexMap = new Map<number, number>();
+    list.value.forEach((_, index) => finalIndexMap.set(index, index));
+    enabledIndices.forEach((slotIndex, orderIndex) => {
+        finalIndexMap.set(nextEnabledSourceIndices[orderIndex], slotIndex);
+    });
+
+    return {
+        enabledIndices,
+        nextEnabledSourceIndices,
+        finalIndexMap,
+    };
+}
+
+function getFirstTouch(event: TouchEvent) {
+    return toTouchArray(event.touches)[0] || toTouchArray(event.changedTouches)[0];
+}
+
 async function measureItemPositions() {
     const rootRect = await utils.querySelector<false>('.ste-drag-sort-root', instance);
     const rects = await utils.querySelector('.ste-drag-sort-item', instance, true);
@@ -141,28 +181,6 @@ async function measureItemPositions() {
     }));
 }
 
-function calculateGridOffset(index: number, dragIdx: number, insertIdx: number): TranslateOffset {
-    const cols = columns.value;
-    const currentRow = Math.floor(index / cols);
-    const currentCol = index % cols;
-
-    let nextIndex = index;
-
-    if (dragIdx < insertIdx) {
-        if (index > dragIdx && index <= insertIdx) nextIndex = index - 1;
-    } else if (dragIdx > insertIdx) {
-        if (index >= insertIdx && index < dragIdx) nextIndex = index + 1;
-    }
-
-    const nextRow = Math.floor(nextIndex / cols);
-    const nextCol = nextIndex % cols;
-
-    return {
-        x: (nextCol - currentCol) * itemWidth.value,
-        y: (nextRow - currentRow) * itemHeight.value,
-    };
-}
-
 function calculateGridInsertIndex(centerX: number, centerY: number) {
     if (!itemPositions.value.length) return dragIndex.value;
 
@@ -170,6 +188,8 @@ function calculateGridInsertIndex(centerX: number, centerY: number) {
     let minDistance = Infinity;
 
     itemPositions.value.forEach((position, index) => {
+        if (getItemDisabled(index)) return;
+
         const itemCenterX = position.left + position.width / 2;
         const itemCenterY = position.top + position.height / 2;
         const distance = Math.sqrt(Math.pow(centerX - itemCenterX, 2) + Math.pow(centerY - itemCenterY, 2));
@@ -188,6 +208,8 @@ function calculateSingleColumnInsertIndex(centerY: number) {
     let minDistance = Infinity;
 
     itemPositions.value.forEach((position, index) => {
+        if (getItemDisabled(index)) return;
+
         const itemCenterY = position.top + position.height / 2;
         const distance = Math.abs(centerY - itemCenterY);
 
@@ -214,25 +236,33 @@ function calculateInsertIndex() {
     return calculateSingleColumnInsertIndex(centerY);
 }
 
-function calculateSingleColumnOffset(index: number, dragIdx: number, insertIdx: number): TranslateOffset {
-    if (dragIdx < insertIdx) {
-        if (index > dragIdx && index <= insertIdx) return { x: 0, y: -itemHeight.value };
-    } else if (dragIdx > insertIdx) {
-        if (index >= insertIdx && index < dragIdx) return { x: 0, y: itemHeight.value };
-    }
-
-    return { x: 0, y: 0 };
-}
-
 function getItemTranslateOffset(index: number): TranslateOffset {
     if (!dragging.value || !sortingStarted.value) return { x: 0, y: 0 };
+    if (getItemDisabled(index)) return { x: 0, y: 0 };
     if (index === dragIndex.value || dragIndex.value === insertIndex.value) return { x: 0, y: 0 };
 
+    const reorderPreview = getReorderPreview(dragIndex.value, insertIndex.value);
+    const nextIndex = reorderPreview?.finalIndexMap.get(index);
+
+    if (typeof nextIndex !== 'number' || nextIndex === index) return { x: 0, y: 0 };
+
     if (columns.value > 1) {
-        return calculateGridOffset(index, dragIndex.value, insertIndex.value);
+        const cols = columns.value;
+        const currentRow = Math.floor(index / cols);
+        const currentCol = index % cols;
+        const nextRow = Math.floor(nextIndex / cols);
+        const nextCol = nextIndex % cols;
+
+        return {
+            x: (nextCol - currentCol) * itemWidth.value,
+            y: (nextRow - currentRow) * itemHeight.value,
+        };
     }
 
-    return calculateSingleColumnOffset(index, dragIndex.value, insertIndex.value);
+    return {
+        x: 0,
+        y: (nextIndex - index) * itemHeight.value,
+    };
 }
 
 function getItemStyle(index: number): CSSProperties {
@@ -248,7 +278,8 @@ function getItemStyle(index: number): CSSProperties {
     if (!dragging.value) return style;
 
     if (index === dragIndex.value) {
-        style.transform = `translate(${offsetX.value}px, ${offsetY.value}px)`;
+        const dragScale = sortingStarted.value ? 1.03 : 1.02;
+        style.transform = `translate(${offsetX.value}px, ${offsetY.value}px) scale(${dragScale})`;
         style.zIndex = 100;
         return style;
     }
@@ -259,6 +290,29 @@ function getItemStyle(index: number): CSSProperties {
     }
 
     return style;
+}
+
+function getItemClass(index: number) {
+    return {
+        'ste-drag-sort-item-disabled': props.disabled || !!list.value[index]?.raw?.disabled,
+        'ste-drag-sort-item-ready': dragging.value && dragIndex.value === index && !sortingStarted.value,
+        'ste-drag-sort-item-dragging': dragging.value && dragIndex.value === index,
+        'ste-drag-sort-item-animating': dragging.value && dragIndex.value !== index,
+    };
+}
+
+function triggerReadyHaptic() {
+    if (!props.longPress) return;
+
+    try {
+        if (typeof uni === 'undefined' || typeof uni.vibrateShort !== 'function') return;
+        uni.vibrateShort({
+            type: 'light',
+            fail: () => {},
+        });
+    } catch {
+        // Ignore unsupported platforms so drag flow can proceed.
+    }
 }
 
 function checkMovedToOtherElement() {
@@ -290,12 +344,12 @@ function checkMovedToOtherElement() {
 }
 
 async function startDrag(index: number, clientX: number, clientY: number) {
-    if (props.disabled) return;
-    if (index < 0 || index >= list.value.length) return;
-    if (getItemDisabled(index)) return;
+    if (props.disabled) return false;
+    if (dragging.value) return false;
+    if (index < 0 || index >= list.value.length) return false;
+    if (getItemDisabled(index)) return false;
 
-    await measureItemPositions();
-
+    const sessionId = ++dragSessionId;
     dragging.value = true;
     dragIndex.value = index;
     insertIndex.value = index;
@@ -305,7 +359,11 @@ async function startDrag(index: number, clientX: number, clientY: number) {
     offsetY.value = 0;
     sortingStarted.value = false;
 
+    triggerReadyHaptic();
     emits('start', index);
+    await measureItemPositions();
+
+    return dragging.value && dragSessionId === sessionId && dragIndex.value === index;
 }
 
 function moveDrag(clientX: number, clientY: number) {
@@ -327,12 +385,22 @@ function finishDrag() {
     if (!dragging.value) return;
 
     const oldIndex = dragIndex.value;
-    const newIndex = insertIndex.value >= 0 ? insertIndex.value : oldIndex;
+    const reorderPreview = getReorderPreview(oldIndex, insertIndex.value >= 0 ? insertIndex.value : oldIndex);
+    const newIndex = reorderPreview?.finalIndexMap.get(oldIndex) ?? oldIndex;
 
     if (oldIndex !== newIndex && oldIndex >= 0) {
-        const nextList = [...list.value];
-        const current = nextList.splice(oldIndex, 1)[0];
-        nextList.splice(newIndex, 0, current);
+        const nextList = Array.from({ length: list.value.length }) as InternalItem[];
+
+        list.value.forEach((item, index) => {
+            if (getItemDisabled(index)) {
+                nextList[index] = item;
+            }
+        });
+
+        reorderPreview?.enabledIndices.forEach((slotIndex, orderIndex) => {
+            nextList[slotIndex] = list.value[reorderPreview.nextEnabledSourceIndices[orderIndex]];
+        });
+
         list.value = nextList;
 
         const result = nextList.map(item => item.raw);
@@ -348,19 +416,23 @@ async function onTouchStart(event: TouchEvent, index: number, type: 'touch' | 'l
     if (type === 'longpress' && !props.longPress) return;
     if (type === 'touch' && props.longPress) return;
 
-    const touch = event.touches?.[0];
+    const touch = getFirstTouch(event);
     if (!touch) return;
 
-    await startDrag(index, touch.clientX, touch.clientY);
+    const started = await startDrag(index, getTouchX(touch), getTouchY(touch));
+    if (!started) return;
+
     event.stopPropagation();
     event.preventDefault();
 }
 
 function onTouchMove(event: TouchEvent) {
-    const touch = event.touches?.[0];
+    if (!dragging.value) return;
+
+    const touch = getFirstTouch(event);
     if (!touch) return;
 
-    moveDrag(touch.clientX, touch.clientY);
+    moveDrag(getTouchX(touch), getTouchY(touch));
     event.preventDefault();
 }
 
@@ -436,28 +508,41 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <view class="ste-drag-sort-root" :class="[rootClass]" data-test="drag-sort">
-        <view
-            v-for="(current, index) in list"
-            :key="current.uid"
-            class="ste-drag-sort-item"
-            :class="[
-                {
-                    'ste-drag-sort-item-disabled': props.disabled || !!current.raw.disabled,
-                    'ste-drag-sort-item-dragging': dragging && dragIndex === index,
-                    'ste-drag-sort-item-animating': dragging && dragIndex !== index,
-                },
-            ]"
-            :style="getItemStyle(index)"
-            @touchstart="(event: TouchEvent) => onTouchStart(event, index, 'touch')"
-            @longpress="(event: TouchEvent) => onTouchStart(event, index, 'longpress')"
-            @touchmove.stop.prevent="onTouchMove"
-            @touchend="onTouchEnd"
-            @touchcancel="onTouchEnd"
-            @mousedown.prevent="mouseDown($event, index)"
-        >
-            <slot name="item" :item="current.raw" :index="index" :dragging="dragging" :dragIndex="dragIndex" :insertIndex="insertIndex"></slot>
-        </view>
+    <view class="ste-drag-sort-root" :class="[rootClass, { 'ste-drag-sort-root-dragging': dragging }]" data-test="drag-sort">
+        <template v-if="dragging">
+            <view
+                v-for="(current, index) in list"
+                :key="current.uid"
+                class="ste-drag-sort-item"
+                :class="getItemClass(index)"
+                :style="getItemStyle(index)"
+                @touchstart="(event: TouchEvent) => onTouchStart(event, index, 'touch')"
+                @longpress="(event: TouchEvent) => onTouchStart(event, index, 'longpress')"
+                @touchmove.stop.prevent="onTouchMove"
+                @touchend="onTouchEnd"
+                @touchcancel="onTouchEnd"
+                @mousedown.prevent="mouseDown($event, index)"
+            >
+                <slot name="item" :item="current.raw" :index="index" :dragging="dragging" :dragIndex="dragIndex" :insertIndex="insertIndex"></slot>
+            </view>
+        </template>
+        <template v-else>
+            <view
+                v-for="(current, index) in list"
+                :key="current.uid"
+                class="ste-drag-sort-item"
+                :class="getItemClass(index)"
+                :style="getItemStyle(index)"
+                @touchstart="(event: TouchEvent) => onTouchStart(event, index, 'touch')"
+                @longpress="(event: TouchEvent) => onTouchStart(event, index, 'longpress')"
+                @touchmove="onTouchMove"
+                @touchend="onTouchEnd"
+                @touchcancel="onTouchEnd"
+                @mousedown.prevent="mouseDown($event, index)"
+            >
+                <slot name="item" :item="current.raw" :index="index" :dragging="dragging" :dragIndex="dragIndex" :insertIndex="insertIndex"></slot>
+            </view>
+        </template>
     </view>
 </template>
 
@@ -467,20 +552,30 @@ onBeforeUnmount(() => {
     display: flex;
     flex-direction: column;
     overflow: visible;
+    user-select: none;
 
     &.ste-drag-sort-columns {
         flex-direction: row;
         flex-wrap: wrap;
+    }
+
+    &.ste-drag-sort-root-dragging {
+        touch-action: none;
     }
 }
 
 .ste-drag-sort-item {
     position: relative;
     z-index: 10;
+    transition: opacity 0.12s ease;
 
     &.ste-drag-sort-item-dragging {
-        opacity: 0.82;
+        opacity: 0.95;
         z-index: 20;
+    }
+
+    &.ste-drag-sort-item-ready {
+        opacity: 0.98;
     }
 
     &.ste-drag-sort-item-disabled {

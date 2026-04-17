@@ -17,6 +17,7 @@ export interface SteTabsProps {
   ellipsis: boolean
   tabWidth: number | string
   tabPadding: number | string
+  tabLineGap: number | string
   tabSpace: number | string
   divideNum: number
   sticky: boolean
@@ -78,6 +79,8 @@ export default {
   tabWidth: { type: [String, Number], default: () => 'auto' },
   // 选项内边距，默认24，单位rpx
   tabPadding: { type: [Number, String], default: () => 24 },
+  // tab到下划线的距离，默认单位rpx
+  tabLineGap: { type: [Number, String], default: () => 4 },
   // tab间距rpx
   tabSpace: { type: [Number, String], default: () => 0 },
   // tab等分数量，设置为 0 ，则不等分

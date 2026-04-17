@@ -109,6 +109,12 @@
             "default": 24
         },
         {
+            "name": "tabLineGap",
+            "description": "tab到下划线的距离，默认单位rpx",
+            "type": "number | string",
+            "default": 4
+        },
+        {
             "name": "tabSpace",
             "description": "tab间距rpx",
             "type": "number | string",

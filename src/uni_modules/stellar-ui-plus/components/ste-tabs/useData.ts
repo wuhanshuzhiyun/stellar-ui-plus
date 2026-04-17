@@ -136,7 +136,7 @@ export default function useData({
       '--tabs-line-height': utils.formatPx(props.lineHeight),
       '--tabs-tab-width': tabWidth,
       '--tabs-tab-padding': utils.formatPx(props.tabPadding),
-      '--tabs-tab-padding-bottom': cmpShowLine.value ? utils.formatPx(4) : utils.formatPx(props.tabPadding),
+      '--tabs-tab-padding-bottom': cmpShowLine.value ? utils.formatPx(props.tabLineGap) : utils.formatPx(props.tabPadding),
       '--tabs-transition-duration': props.duration ? `${props.duration}s` : 'inherit',
       '--tabs-tab-space': tabSpace,
       '--tabs-tab-space-line': tabSpaceLine,

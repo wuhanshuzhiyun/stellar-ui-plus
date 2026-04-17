@@ -1,0 +1,88 @@
+{
+    "name": "ste-drag-sort",
+    "description": "拖拽排序组件，支持单列列表和多列网格排序",
+    "example": "<ste-drag-sort v-model='basicList'><template #item=\"{ item, index }\"><view>{{ index + 1 }}. {{ item.text }}</view></template></ste-drag-sort>",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-drag-sort",
+    "attributes": [
+        {
+            "name": "modelValue",
+            "description": "拖拽数据列表，支持 v-model 双向绑定",
+            "type": "SteDragSortItem[]",
+            "default": "[]"
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用拖拽功能",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "columns",
+            "description": "列数，1 为纵向列表，大于 1 为网格排序",
+            "type": "number",
+            "default": 1
+        },
+        {
+            "name": "longPress",
+            "description": "拖拽启动方式。true 为长按后开始拖拽，适合列表和可滚动页面；false 为按下立即拖拽，适合网格和纯排序面板",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "[event]start",
+            "description": "开始拖拽时触发",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "当前拖拽项索引"
+                }
+            ]
+        },
+        {
+            "name": "[event]change",
+            "description": "排序结果发生变化时触发",
+            "params": [
+                {
+                    "name": "list",
+                    "description": "最新排序结果"
+                }
+            ]
+        },
+        {
+            "name": "[event]end",
+            "description": "拖拽结束时触发",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "最终落点索引"
+                }
+            ]
+        },
+        {
+            "name": "[slot]item",
+            "description": "单个拖拽项内容",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "当前项数据"
+                },
+                {
+                    "name": "index",
+                    "description": "当前项索引"
+                },
+                {
+                    "name": "dragging",
+                    "description": "当前是否处于拖拽中"
+                },
+                {
+                    "name": "dragIndex",
+                    "description": "当前拖拽项索引"
+                },
+                {
+                    "name": "insertIndex",
+                    "description": "当前插入位置索引"
+                }
+            ]
+        }
+    ]
+}

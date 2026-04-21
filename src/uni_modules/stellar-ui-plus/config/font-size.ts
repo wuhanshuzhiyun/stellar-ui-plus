@@ -54,6 +54,9 @@ class FontSize {
         return FontSize.config.max;
     }
     constructor() {
+        // 初始化 changes 数组，防止构造函数提前 return 导致问题
+        this._changes = [];
+
         if (process.env.NODE_ENV == 'test') {
             return;
         }

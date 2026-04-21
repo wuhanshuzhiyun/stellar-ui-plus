@@ -11,7 +11,10 @@ function setFontSize() {
     });
 }
 setTimeout(setFontSize);
-config.onChange(setFontSize);
+// 防御性检查：确保 config 和 onChange 方法存在
+if (config && typeof config.onChange === 'function') {
+    config.onChange(setFontSize);
+}
 // #endif
 </script>
 

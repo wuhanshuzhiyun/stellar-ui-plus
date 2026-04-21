@@ -2,7 +2,7 @@ import { defineManifestConfig } from '@uni-helper/vite-plugin-uni-manifest';
 
 export default defineManifestConfig({
     name: 'Stellar Plus',
-    appid: '',
+    appid: '__UNI__450CE3C',
     description: '',
     versionName: '1.0.0',
     versionCode: '100',

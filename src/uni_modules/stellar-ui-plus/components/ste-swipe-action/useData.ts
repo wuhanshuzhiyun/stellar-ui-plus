@@ -44,21 +44,28 @@ export default function useData({ props, parent, thas, emits }: {
     changeCallback.value = val
   }
 
-  const cmpMode = computed<ModeType>(() => props.mode || parent?.mode || 'right')
+  // 获取配置值：优先使用自己的值，其次使用父组件的值，最后使用默认值
+  const getDefaultData = <T,>(selfValue: T | null | undefined, parentValue: T | undefined, defaultValue: T): T => {
+    if (selfValue !== null && selfValue !== undefined) return selfValue;
+    if (parentValue !== undefined) return parentValue;
+    return defaultValue;
+  };
 
-  const cmpLeft = computed(() => ['all', 'left'].includes(cmpMode.value))
+  const cmpMode = computed<ModeType>(() => getDefaultData(props.mode, parent?.props?.mode, 'right'));
 
-  const cmpRight = computed(() => ['all', 'right'].includes(cmpMode.value))
+  const cmpLeft = computed(() => ['all', 'left'].includes(cmpMode.value));
 
-  const cmpDisabled = computed<boolean>(() => props.disabled !== null ? props.disabled : parent?.disabled)
+  const cmpRight = computed(() => ['all', 'right'].includes(cmpMode.value));
 
-  const cmpSwipeThreshold = computed<number>(() => props.swipeThreshold || parent?.swipeThreshold || 0.35)
+  const cmpDisabled = computed<boolean>(() => getDefaultData(props.disabled, parent?.props?.disabled, false));
 
-  const cmpDuration = computed<number>(() => props.duration || parent?.duration || 300)
+  const cmpSwipeThreshold = computed<number>(() => getDefaultData(props.swipeThreshold, parent?.props?.swipeThreshold, 0.35));
 
-  const cmpLeftIcon = computed<boolean>(() => props.leftIcon !== null ? props.leftIcon : parent?.leftIcon)
+  const cmpDuration = computed<number>(() => getDefaultData(props.duration, parent?.props?.duration, 300));
 
-  const cmpRightIcon = computed<boolean>(() => props.rightIcon !== null ? props.rightIcon : parent?.rightIcon)
+  const cmpLeftIcon = computed<boolean>(() => getDefaultData(props.leftIcon, parent?.props?.leftIcon, false));
+
+  const cmpRightIcon = computed<boolean>(() => getDefaultData(props.rightIcon, parent?.props?.rightIcon, false));
 
   const cmpTransform = computed<StyleValue>(() => ({
     transform: `translateX(${translateX.value}px)`,

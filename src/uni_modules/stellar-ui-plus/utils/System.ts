@@ -1,3 +1,27 @@
+// 模块级缓存，所有实例共享，App 生命周期内只调用一次系统 API
+// 定义 WindowInfo 类型，包含 getWindowInfo 和 getSystemInfoSync 返回的共同字段
+interface WindowInfo {
+    pixelRatio: number;
+    safeArea: {
+        bottom: number;
+        height: number;
+        left: number;
+        right: number;
+        top: number;
+        width: number;
+    };
+    safeAreaInsets?: { bottom: number };
+    screenHeight: number;
+    screenTop?: number;
+    screenWidth: number;
+    statusBarHeight: number;
+    windowHeight: number;
+    windowWidth: number;
+    [key: string]: any;
+}
+
+let _cachedWindowInfo: WindowInfo | null = null;
+
 export default class System {
     /**
      * 获取设备设置
@@ -39,12 +63,14 @@ export default class System {
     }
 
     /**
-     * 获取窗口信息
+     * 获取窗口信息（结果已缓存，同一 App 生命周期内只调用一次系统 API）
      */
     static getWindowInfo() {
+        if (_cachedWindowInfo) return _cachedWindowInfo;
+
         // 测试环境判断
         if (process.env.NODE_ENV == 'test' || process.env.UNI_APP_NAME == 'stellar-debug') {
-            let windowInfo = {
+            let windowInfo: WindowInfo = {
                 pixelRatio: 3,
                 safeArea: {
                     bottom: 778,
@@ -65,21 +91,30 @@ export default class System {
             windowInfo.safeAreaInsets = {
                 bottom: windowInfo.screenHeight - windowInfo.safeArea.bottom,
             };
-            return windowInfo;
+            _cachedWindowInfo = windowInfo;
+            return _cachedWindowInfo;
         }
-        if (process.env.NODE_ENV != 'test') {
-            // #ifdef MP-WEIXIN
-            let windowInfo = wx.getWindowInfo();
-            windowInfo.safeAreaInsets = {
-                bottom: (windowInfo?.screenHeight ?? 812) - (windowInfo?.safeArea?.bottom ?? 778),
-            };
-            return windowInfo;
-            // #endif
 
-            // #ifndef MP-WEIXIN
-            return uni.getSystemInfoSync();
-            // #endif
-        }
+        // #ifdef MP-WEIXIN
+        let windowInfo: WindowInfo = wx.getWindowInfo();
+        windowInfo.safeAreaInsets = {
+            bottom: (windowInfo?.screenHeight ?? 812) - (windowInfo?.safeArea?.bottom ?? 778),
+        };
+        _cachedWindowInfo = windowInfo;
+        return _cachedWindowInfo;
+        // #endif
+
+        // #ifndef MP-WEIXIN
+        _cachedWindowInfo = uni.getSystemInfoSync() as WindowInfo;
+        return _cachedWindowInfo;
+        // #endif
+    }
+
+    /**
+     * 清除窗口信息缓存（屏幕旋转或窗口尺寸变化时调用）
+     */
+    static clearWindowInfoCache() {
+        _cachedWindowInfo = null;
     }
 
     /**

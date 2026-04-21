@@ -2,6 +2,11 @@ import useFontSize from './font-size';
 
 const { config, fontSizeStyle } = useFontSize();
 
+// 防御性检查：确保 config 存在
+if (!config) {
+    throw new Error('FontSize config initialization failed');
+}
+
 class Options {
     get minSize() {
         return config.min;

@@ -86,7 +86,7 @@ export function sortChildren(parent: SelfComponentInternalInstance, internalChil
 }
 
 // 如果指定组件名称，则只查找此组件并且查到后结束。也就是不关心此组件下的内容，在大部分场景下节省查找消耗。
-export function useProvide<ProvideValue>(key: InjectionKey<ProvideValue>, childName?: string) {
+export function useProvide<ProvideValue>(key: InjectionKey<ParentProvide<ProvideValue>>, childName?: string) {
   const internalChildren: SelfComponentInternalInstance[] = shallowReactive([])
   const publicChildren = shallowReactive<any[]>([])
   const parent = getCurrentInstance()!
@@ -107,12 +107,13 @@ export function useProvide<ProvideValue>(key: InjectionKey<ProvideValue>, childN
   }
 
   return (value?: ProvideValue) => {
-    provide(key, {
+    // 使用 markRaw 包装整个 provide 对象，避免 provide/inject 链形成循环引用
+    provide(key, markRaw({
       add,
       remove,
       internalChildren,
       ...value,
-    } as any)
+    }) as ParentProvide<ProvideValue>)
 
     return {
       internalChildren,

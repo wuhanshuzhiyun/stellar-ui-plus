@@ -69,6 +69,23 @@
 </script>
 ```
 
+## 事件
+
+- 属性`getImage`: 通过ref来获取实例的base64格式的图片地址，异步方法,需在实例生成后调用。
+
+```html
+<template>
+    <ste-bar-chart :series="series1" :categories="['2018', '2019', '2020']" width="660" height="400" ref="barChart"></ste-bar-chart>
+</template>
+<script setup lang="ts">
+    import { ref,onMounted } from 'vue';
+    let barChart: any = ref(null);
+    onMounted(async () => {
+        const base64 = await barChart.value.getImage()
+    }),
+</script>
+```
+
 ---$
 
 <!-- props -->

@@ -10,17 +10,14 @@ export const componentMap: Record<string, ComponentDesc> = {
         "props": [
             {
                 "name": "show",
-                "description": "控制动画，当值从`false`变为`true`时会触发一次动画",
                 "description": "控制动画，当值从false变为true时会触发一次动画",
                 "type": "boolean",
                 "default": false
             },
             {
                 "name": "type",
-                "description": "动画类型，见下方`type`值说明",
                 "description": "动画类型",
                 "type": "string",
-                "default": ""
                 "default": "",
                 "values": [
                     {
@@ -79,7 +76,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "loop",
-                "description": "是否循环执行。",
                 "description": "是否循环执行",
                 "type": "boolean",
                 "default": false
@@ -92,20 +88,8 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "action",
-                "description": "不能与 show 同时使用）触发方式，`initial`初始化执行; `click`点击执行",
                 "description": "触发方式，不能与 show 同时使用",
                 "type": "string",
-                "default": ""
-
-
-
-
-
-
-
-
-
-
                 "default": "",
                 "values": [
                     {
@@ -117,10 +101,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "description": "点击执行"
                     }
                 ]
-
-
-
-
             }
         ],
         "events": []
@@ -185,22 +165,16 @@ export const componentMap: Record<string, ComponentDesc> = {
         "events": [
             {
                 "name": "cancel",
-                "description": "取消更新",
-                "type": "() => void"
                 "description": "取消更新时触发",
                 "type": ""
             },
             {
                 "name": "update",
-                "description": "发现新版时本触发",
-                "type": "() => void"
                 "description": "发现新版本时触发",
                 "type": ""
             },
             {
                 "name": "no-update",
-                "description": "没有新版时本触发",
-                "type": "() => void"
                 "description": "没有新版本时触发",
                 "type": ""
             },
@@ -829,13 +803,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "loadImage",
                 "description": "加载完成后返回条形码对应的图片数据",
-                "type": "(src:string r) => void",
                 "params": [
                     {
                         "name": "src",
                         "description": "图片数据"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -952,11 +924,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "非禁止并且非加载中，才能点击",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -968,11 +935,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "getuserinfo",
                 "description": "微信小程序：用户点击该按钮时，会返回获取到的用户信息，从返回参数的 detail 中获取到的值同 wx.getUserInfo。支付宝小程序：当 open-type 为 getAuthorize 且 scope 为 userInfo 时有效。当授权成功时触发。",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -984,11 +946,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "contact",
                 "description": "微信小程序：客服消息回调，open-type=\"contact\"时有效。",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1000,11 +957,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "getphonenumber",
                 "description": "微信小程序：手机号快速验证回调，open-type=getPhoneNumber时有效。Tips：在触发 bindgetphonenumber 回调后应立即隐藏手机号按钮组件，或置为 disabled 状态，避免用户重复授权手机号产生额外费用。支付宝小程序：当 open-type 为 getAuthorize 且 scope 为 phoneNumber 时有效。当授权成功时触发。",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1016,11 +968,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "getrealtimephonenumber",
                 "description": "微信小程序：手机号实时验证回调，open-type=getRealtimePhoneNumber 时有效。Tips：在触发 bindgetrealtimephonenumber 回调后应立即隐藏手机号按钮组件，或置为 disabled 状态，避免用户重复授权手机号产生额外费用。",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1032,11 +979,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "agreeprivacyauthorization",
                 "description": "微信小程序：用户同意隐私协议事件回调，open-type=agreePrivacyAuthorization时有效 （Tips: 如果使用 onNeedPrivacyAuthorization 接口，需要在 bindagreeprivacyauthorization 触发后再调用 resolve({ event: \"agree\", buttonId })）",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1048,11 +990,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "error",
                 "description": "微信小程序：当使用开放能力时，发生错误的回调，open-type=launchApp时有效 支付宝小程序：当 open-type 为 getAuthorize 时有效。当授权失败时触发。event.detail = {type, errorMessage}，此时 type 的值为 getAuthorize。",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1064,11 +1001,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "launchapp",
                 "description": "微信小程序：打开 APP 成功的回调，open-type=launchApp时有效",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1080,11 +1012,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "opensetting",
                 "description": "微信小程序：在打开授权设置页后回调，open-type=openSetting时有效",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1096,11 +1023,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "chooseavatar",
                 "description": "微信小程序：获取用户头像回调，open-type=chooseAvatar时有效。返回 e.detail.avatarUrl 为头像临时文件链接。",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1112,11 +1034,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "getAuthorize",
                 "description": "支付宝小程序：当 open-type 为 getAuthorize 时有效。当授权成功时触发。",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1128,11 +1045,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "followLifestyle",
                 "description": "支付宝小程序：当 open-type 为 lifestyle 时有效。当点击按钮时触发。event.detail = { followStatus }，folllowStatus 合法值有 1、2、3，其中 1 表示已关注。2 表示用户不允许关注。3 表示发生未知错误；。",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1329,7 +1241,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "select",
                 "description": "选择日期时触发",
-                "type": "(days:(number|string)[],day:number|string) => void",
                 "params": [
                     {
                         "name": "days",
@@ -1339,33 +1250,28 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "day",
                         "description": "当前选中的日期"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "confirm",
                 "description": "点击确定按钮时触发",
-                "type": "(days:(number|string)[]) => void",
                 "params": [
                     {
                         "name": "days",
                         "description": "当前选中的日期列表"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "view-month",
                 "description": "页面展示月份发生变化时触发",
-                "type": "(month:string) => void",
                 "params": [
                     {
                         "name": "month",
                         "description": "当前页面上显示的月份"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -1394,13 +1300,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "分类变化时触发",
-                "type": "(item: CagegoryItem) => void",
                 "params": [
                     {
                         "name": "item",
                         "description": "变化后的分类数据"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -1526,7 +1430,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "点击复选框时触发的事件",
-                "type": "(value:string | number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
                 "params": [
                     {
                         "name": "value",
@@ -1544,20 +1447,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "change",
                 "description": "当绑定值变化时触发的事件",
-                "type": "(value: string | number) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "当前复选框的绑定值"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -1660,11 +1560,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "改变时触发",
-                "type": "(value: string | number) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1676,11 +1571,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "finish",
                 "description": "输入完成触发",
-                "type": "(value: string | number) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -1999,11 +1889,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "buttonClick",
                 "description": "点击按钮时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2015,11 +1900,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "footerClick",
                 "description": "点击页脚列表时触发",
-                "type": "(index:number) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2031,11 +1911,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "countDown",
                 "description": "倒计时触发",
-                "type": "(data:any,time:number) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2187,24 +2062,17 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "输入值value改变时触发",
-                "type": "(value: string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "clear",
                 "description": "清空按钮点击事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2216,11 +2084,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "backspace",
                 "description": "删除按钮点击事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2232,46 +2095,39 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "confirm",
                 "description": "确认按钮点击事件",
-                "type": "(value:string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click",
                 "description": "点击功能键(确认/删除/清除)之外的键盘触发",
-                "type": "(key:string) => void",
                 "params": [
                     {
                         "name": "key",
                         "description": "当前点击的按钮"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click-discount",
                 "description": "点击折扣键盘触发",
-                "type": "(key:string) => void",
                 "params": [
                     {
                         "name": "key",
                         "description": "当前点击的按钮"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "beforeinput",
                 "description": "输入之前触发，功能键之外的键盘点击时为输入",
-                "type": "(key: string, suspend: () => void, next: () => void, stop: () => void) => void",
                 "params": [
                     {
                         "name": "key",
@@ -2289,18 +2145,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "阻止后续执行的回调函数"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "open",
                 "description": "打开弹窗键盘触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2312,11 +2162,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "close",
                 "description": "关闭弹窗键盘触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2452,11 +2297,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "confirm",
                 "description": "点击确定按钮，返回当前选择的值",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2468,11 +2308,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "当选择值变化时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2484,11 +2319,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "cancel",
                 "description": "点击取消按钮",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2579,11 +2409,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "start",
                 "description": "拖拽开始",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2595,13 +2420,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "end",
                 "description": "拖拽结束",
-                "type": "(position: any) => void",
                 "params": [
                     {
                         "name": "position",
                         "description": "当前拖拽是否处于边界(上、下、左、右)"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -2775,24 +2598,17 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "选项改变时触发",
-                "type": "(value: any[]) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "选中的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "open",
                 "description": "菜单打开",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2804,11 +2620,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "close",
                 "description": "菜单收起",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -2872,42 +2683,34 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "confirm",
                 "description": "点击确认按钮时触发",
-                "type": "(values: FilterValue[]) => void",
                 "params": [
                     {
                         "name": "values",
                         "description": "当前所有选中的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "reset",
                 "description": "点击重置按钮时触发",
-                "type": "() => void",
-                "params": []
                 "params": [],
                 "type": ""
             },
             {
                 "name": "itemClick",
                 "description": "点击任意筛选项时触发（实时）",
-                "type": "(item: FilterValue) => void",
                 "params": [
                     {
                         "name": "item",
                         "description": "当前操作的筛选项数据"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "maskClose",
                 "description": "点击蒙层关闭了弹窗后触发",
-                "type": "() => void",
-                "params": []
                 "params": [],
                 "type": ""
             }
@@ -2996,20 +2799,17 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-header",
                 "description": "点击列表头部触发",
-                "type": "(type: 'empty' | 'title' | 'subhead' | 'more') => void",
                 "params": [
                     {
                         "name": "type",
                         "description": "点击的区域类型（可选值：`empty`, `title`, `subhead`,`more`）"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click-item",
                 "description": "点击列表项触发",
-                "type": "(type: 'empty' | 'image' | 'title' | 'subhead' | 'status' | 'button'; item:FunctionListItem) => void",
                 "params": [
                     {
                         "name": "type",
@@ -3019,20 +2819,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "item",
                         "description": "当前点击的数据项"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click-empty",
                 "description": "数据为空时点击内容触发",
-                "type": "(type: 'image' | 'text' | 'button') => void",
                 "params": [
                     {
                         "name": "type",
                         "description": "点击的区域类型（可选值：`image` , `text` , `button`）"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -3481,7 +3278,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "数值/选择改变时触发",
-                "type": "(data, goods) => void",
                 "params": [
                     {
                         "name": "data",
@@ -3491,27 +3287,23 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "goods",
                         "description": "当前商品信息"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click",
                 "description": "点击确定按钮时触发",
-                "type": "(type:'empty' | 'image' | 'title' | 'code' | 'price' | 'originalPrice' | 'stepper') => void",
                 "params": [
                     {
                         "name": "type",
                         "description": "点击位置: `empty` , `image` , `title` , `code` , `price` , `originalPrice` , `stepper`"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "plus",
                 "description": "点击加号前置钩子函数",
-                "type": "(v: number | string, suspend: () => void, next: () => void, stop: () => void) => void",
                 "params": [
                     {
                         "name": "value",
@@ -3529,14 +3321,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "minus",
                 "description": "点击减号前置钩子函数",
-                "type": "(v: number | string, suspend: () => void, next: () => void, stop: () => void) => void",
                 "params": [
                     {
                         "name": "value",
@@ -3554,14 +3344,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click-suggest",
                 "description": "点击建议模块触发",
-                "type": "(type: 'method' | 'back' | 'item' | 'right', item?: { label: string; value: string | number }) => void",
                 "params": [
                     {
                         "name": "type",
@@ -3571,18 +3359,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "item",
                         "description": "type为item时，点击的item对象"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click-stepper-input",
                 "description": "点击步进器输入框触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -3594,11 +3376,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-suggest-input",
                 "description": "点击建议输入框触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -3697,11 +3474,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-item",
                 "description": "点击问题或答案时触发",
-                "type": "(type: 'q' | 'a', item: GuideQaItem) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -3713,11 +3485,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-all",
                 "description": "点击查看全部时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -3797,11 +3564,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "图标点击回调事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -3971,39 +3733,33 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "图片点击触发",
-                "type": "(event: UniEvent) => void",
                 "params": [
                     {
                         "name": "event",
                         "description": "当前图片Event"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "load",
                 "description": "图片加载成功触发",
-                "type": "(event: UniEvent) => void",
                 "params": [
                     {
                         "name": "event",
                         "description": "当前图片Event"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "error",
                 "description": "图片加载失败触发",
-                "type": "(event: UniEvent) => void",
                 "params": [
                     {
                         "name": "event",
                         "description": "当前图片Event"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -4056,11 +3812,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "激活节点改变时触发",
-                "type": "(index:number)=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -4072,11 +3823,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "clickItem",
                 "description": "点击右边锚点时触发",
-                "type": "(title:string,text:string)=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -4329,50 +4075,39 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "blur",
                 "description": "输入框失去焦点事件",
-                "type": "(value: string | number) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "focus",
                 "description": "聚焦事件",
-                "type": "(value: string | number) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "confirm",
                 "description": "输入框输入键盘右下角点击事件",
-                "type": "(value: string | number) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "clear",
                 "description": "清除输入框事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -4384,13 +4119,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "input",
                 "description": "输入事件",
-                "type": "(value: string | number) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -4772,72 +4505,61 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "protocolClick",
                 "description": "协议点击时触发",
-                "type": "(item: ProtocolItem) => void",
                 "params": [
                     {
                         "name": "item",
                         "description": "所点击的协议项"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "primaryBtnClick",
                 "description": "主按钮点击时触发",
-                "type": "(item: BtnItem[]) => void",
                 "params": [
                     {
                         "name": "item",
                         "description": "所点击的按钮项"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "secondaryBtnClick",
                 "description": "次要按钮点击时触发",
-                "type": "(item: BtnItem[]) => void",
                 "params": [
                     {
                         "name": "item",
                         "description": "所点击的按钮项"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "tabChange",
                 "description": "复杂登录时tab切换时触发",
-                "type": "(item: BaseConfigItem[]) => void",
                 "params": [
                     {
                         "name": "item",
                         "description": "当前选项卡项"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "formDataChange",
                 "description": "复杂登录时输入框或者下拉框改变时触发",
-                "type": "(data: {}) => void",
                 "params": [
                     {
                         "name": "data",
                         "description": "所有表单值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "getCode",
                 "description": "当配置输入类型为验证码时，点击获取验证码时触发",
-                "type": "(suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
                 "params": [
                     {
                         "name": "suspend",
@@ -4851,7 +4573,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -4938,118 +4659,23 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "avatar-click",
                 "description": "头像点击时触发",
-                "type": "(]) => void",
-                "params": []
                 "params": [],
                 "type": ""
             },
             {
                 "name": "user-click",
                 "description": "用户信息点击时触发",
-                "type": "(]) => void",
-                "params": []
                 "params": [],
                 "type": ""
             },
             {
                 "name": "loginTitleClick",
                 "description": "未登录文本点击时触发",
-                "type": "(]) => void",
-                "params": []
                 "params": [],
                 "type": ""
             }
         ]
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     "marquee": {
         "site": "ste-marquee",
         "attr": [
@@ -5164,38 +4790,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     "media-preview": {
         "site": "ste-media-preview",
         "attr": [
@@ -5261,11 +4855,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "beforeClose",
                 "description": "关闭前触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5277,11 +4866,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "close",
                 "description": "关闭后触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5293,26 +4877,22 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "切换时触发",
-                "type": "(index: number) => void",
                 "params": [
                     {
                         "name": "index",
                         "description": "切换后的下标"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "longpress",
                 "description": "长按时触发",
-                "type": "(index: number) => void",
                 "params": [
                     {
                         "name": "index",
                         "description": "当前下标"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -5532,11 +5112,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "backClick",
                 "description": "返回按钮点击",
-                "type": "()=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5644,11 +5219,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "外层点击事件回调",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5660,11 +5230,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "close",
                 "description": "关闭通知栏时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5676,11 +5241,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "end",
                 "description": "滚动结束时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5812,24 +5372,17 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "输入值value改变时触发",
-                "type": "(value: string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "clear",
                 "description": "清空按钮点击事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5841,11 +5394,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "backspace",
                 "description": "删除按钮点击事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5857,33 +5405,28 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "confirm",
                 "description": "确认按钮点击事件",
-                "type": "(value:string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click",
                 "description": "点击功能键(确认/删除/清除)之外的键盘触发",
-                "type": "(key:string) => void",
                 "params": [
                     {
                         "name": "key",
                         "description": "当前点击的按钮"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "beforeinput",
                 "description": "输入之前触发，功能键之外的键盘点击时为输入",
-                "type": "(key: string, suspend: () => void, next: () => void, stop: () => void) => void",
                 "params": [
                     {
                         "name": "key",
@@ -5901,18 +5444,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "阻止后续执行的回调函数"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "open",
                 "description": "打开弹窗键盘触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -5924,11 +5461,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "close",
                 "description": "关闭弹窗键盘触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -6038,20 +5570,17 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-header",
                 "description": "点击头部触发",
-                "type": "(type: 'empty' | 'title' | 'image' | 'status' | 'tag' | 'helper') => void",
                 "params": [
                     {
                         "name": "type",
                         "description": "点击的区域类型（可选值：`empty`,`image`, `title`, `status`, `tag`, `helper`）"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click-item",
                 "description": "点击商品项触发",
-                "type": "(type: 'empty' | 'image' | 'title' | 'sub-title' | 'details'; item: OrderGoods) => void",
                 "params": [
                     {
                         "name": "type",
@@ -6061,20 +5590,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "item",
                         "description": "当前点击的数据项"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "click-button",
                 "description": "点击底部按钮触发",
-                "type": "(type: 'primary' | 'secondary' | 'more') => void",
                 "params": [
                     {
                         "name": "type",
                         "description": "点击的按钮类型（可选值：`primary`,`secondary`, `more`）"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -6426,11 +5952,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "close",
                 "description": "弹窗关闭动画执行完毕事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -6442,11 +5963,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "open",
                 "description": "弹窗打开动画执行完毕事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -6458,11 +5974,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "maskClick",
                 "description": "点击遮罩时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -6625,11 +6136,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "点击事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -6775,13 +6281,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "loadImage",
                 "description": "加载完成后返回条形码对应的图片数据",
-                "type": "(src:string r) => void",
                 "params": [
                     {
                         "name": "src",
                         "description": "图片数据"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -6906,7 +6410,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "点击复选框时触发的事件",
-                "type": "(value:string | number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
                 "params": [
                     {
                         "name": "value",
@@ -6924,20 +6427,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "change",
                 "description": "当绑定值变化时触发的事件",
-                "type": "(value: string | number) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "当前复选框的绑定值"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -7032,11 +6532,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "当前分值变化时触发的事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -7094,11 +6589,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "open",
                 "description": "展开时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -7110,11 +6600,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "收起时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -7432,11 +6917,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "激活节点改变时触发",
-                "type": "(index:number)=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -7624,63 +7104,50 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "input",
                 "description": "输入事件",
-                "type": "(value: string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "focus",
                 "description": "聚焦焦点事件",
-                "type": "(value: string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "blur",
                 "description": "失去焦点事件",
-                "type": "(value: string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "search",
                 "description": "确定搜索时触发",
-                "type": "(value: string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "clear",
                 "description": "点击清除按钮后触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -7692,26 +7159,22 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "点击事件",
-                "type": "(value: string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "selectSuggestion",
                 "description": "点击搜索建议触发",
-                "type": "(item: object) => void",
                 "params": [
                     {
                         "name": "item",
                         "description": "热词列表对象"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -7791,13 +7254,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "search",
                 "description": "确定搜索时触发",
-                "type": "(value: string) => void",
                 "params": [
                     {
                         "name": "value",
                         "description": "输入框的值"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -8056,7 +7517,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "选择时触发",
-                "type": "(value: string | number,option: SelectOption | SelectOption[])=>void",
                 "params": [
                     {
                         "name": "value",
@@ -8066,18 +7526,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "option",
                         "description": "选中的选项或选中项列表"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "cancel",
                 "description": "取消选择时触发",
-                "type": "()=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8089,13 +7543,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "confirm",
                 "description": "确定选择时触发",
-                "type": "(value: string | number | (string | number)[])=>void",
                 "params": [
                     {
                         "name": "value",
                         "description": "选中的值或选中值列表"
                     }
-                ]
                 ],
                 "type": ""
             },
@@ -8103,11 +7555,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "inputFilterable",
                 "description": "搜索框输入数据时触发",
                 "version": "1.16.16",
-                "type": "(str:string)=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8120,11 +7567,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "loadMore",
                 "description": "上拉触底时触发",
                 "version": "1.16.16",
-                "type": "()=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8190,11 +7632,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "seat-click",
                 "description": "点击有效座位事件（empty/disabled 不触发）",
-                "type": "(seat: SteSelectSeatItem) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8206,11 +7643,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "move",
                 "description": "拖动/缩放事件",
-                "type": "(data: { translateX, translateY, scale, screenTranslateX }) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8283,11 +7715,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "start",
                 "description": "笔画开始时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8299,11 +7726,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "signing",
                 "description": "画图中触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8315,11 +7737,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "end",
                 "description": "笔画结束时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8383,11 +7800,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "点击组件时触发",
-                "type": "(dateInfo: DateInfo) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8399,11 +7811,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "date-change",
                 "description": "当 date 属性变化时触发",
-                "type": "(dateInfo: DateInfo) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8560,11 +7967,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "拖动过程中实时触发",
-                "type": "(detail) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8576,11 +7978,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "success",
                 "description": "验证成功时触发",
-                "type": "(detail) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8592,11 +7989,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "fail",
                 "description": "验证失败时触发",
-                "type": "(detail) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8694,52 +8086,44 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "进度变化且结束拖动后触发",
-                "type": "(percentage)=>void",
                 "params": [
                     {
                         "name": "percentage",
                         "description": "当前滑块值"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "dragStart",
                 "description": "开始拖动时触发",
-                "type": "(e)=>void",
                 "params": [
                     {
                         "name": "e",
                         "description": "拖动事件"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "dragEnd",
                 "description": "结束拖动时触发",
-                "type": "(e)=>void",
                 "params": [
                     {
                         "name": "e",
                         "description": "拖动事件"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "input",
                 "description": "进度变化时实时触发",
-                "type": "(percentage)=>void",
                 "params": [
                     {
                         "name": "percentage",
                         "description": "进度百分比"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -8928,11 +8312,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "当绑定值变化时触发的事件 `value`: 改变后的绑定值",
-                "type": "(value: number) => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -8944,7 +8323,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "plus",
                 "description": "点击增加按钮时触发（可拦截change事件）",
-                "type": "(value: number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
                 "params": [
                     {
                         "name": "value",
@@ -8962,14 +8340,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "minus",
                 "description": "点击减少按钮时触发（可拦截change事件）",
-                "type": "(value:string | number,suspend: ()=>void,next: ()=>void,stop: ()=>void) => void",
                 "params": [
                     {
                         "name": "value",
@@ -8987,18 +8363,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "focus",
                 "description": "输入框聚焦时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9010,11 +8380,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "blur",
                 "description": "输入框失焦时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9078,13 +8443,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "clickStep",
                 "description": "点击步骤的标题或图标时触发",
-                "type": "(index: number) => void",
                 "params": [
                     {
                         "name": "index",
                         "description": "点击的步骤序号"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -9131,11 +8494,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "fixed",
                 "description": "组件吸顶时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9147,11 +8505,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "unfixed",
                 "description": "组件取消吸顶时触发",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9223,24 +8576,17 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "open",
                 "description": "打开滑块时触发，参数为方向",
-                "type": "(d:string)=>void",
                 "params": [
                     {
                         "name": "direction",
                         "description": "方向（值为left或right）"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "close",
                 "description": "关闭滑块时触发",
-                "type": "()=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9318,7 +8664,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "open",
                 "description": "打开滑块时触发，参数为方向",
-                "type": "(d:string,index:number)=>void",
                 "params": [
                     {
                         "name": "direction",
@@ -9328,20 +8673,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "index",
                         "description": "当前单元格索引"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "close",
                 "description": "关闭滑块时触发",
-                "type": "(index:number)=>void",
                 "params": [
                     {
                         "name": "index",
                         "description": "当前单元格索引"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -9465,7 +8807,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "监听item切换",
-                "type": "(index:number,source:'autoplay'| 'touch')=>void",
                 "params": [
                     {
                         "name": "index",
@@ -9475,14 +8816,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "source",
                         "description": "触发切换的来源"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "error",
                 "description": "错误监听",
-                "type": "(error: Error, context: string)=>void",
                 "params": [
                     {
                         "name": "error",
@@ -9492,7 +8831,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "context",
                         "description": "提示内容"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -9557,11 +8895,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "点击开关时触发的事件（可拦截change事件）`value`：改变后的绑定值,`allowStop`：允许阻止后续的事件触发,：`resolve`：后续的事件执行",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9573,11 +8906,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "当绑定值变化时触发的事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9816,11 +9144,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "select",
                 "description": "当用户手动勾选数据行的 Checkbox 时触发的事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9832,11 +9155,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "selectAll",
                 "description": "当用户手动勾选全选 Checkbox 时触发的事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9848,11 +9166,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "cellClick",
                 "description": "当某个单元格被点击时会触发该事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9864,11 +9177,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "rowClick",
                 "description": "当某一行被点击时会触发该事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9880,11 +9188,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "headerClick",
                 "description": "当某一列的表头被点击时会触发该事件",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -9896,12 +9199,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "scrollToLower",
                 "description": "表格体滚动到底事件",
-                "type": "() => void",
-                "version": "v1.18.9"
-
-
-
-
                 "version": "v1.18.9",
                 "params": [
                     {
@@ -10197,11 +9494,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-tab",
                 "description": "点击tab触发",
-                "type": "(tab:TabProps)=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -10213,11 +9505,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "切换tab触发",
-                "type": "(tab:TabProps)=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -10344,9 +9631,6 @@ export const componentMap: Record<string, ComponentDesc> = {
     },
     "tooltip": {
         "site": "ste-tooltip",
-        "attr": [
-            "undefined=''"
-        ],
         "attr": [],
         "props": [],
         "events": []
@@ -10426,13 +9710,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "切换触发",
-                "type": "(index:number)=>void",
                 "params": [
                     {
                         "name": "index",
                         "description": "当前展示的面板索引"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -10554,24 +9836,17 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "change",
                 "description": "步骤切换时触发",
-                "type": "(current:number)=>void",
                 "params": [
                     {
                         "name": "current",
                         "description": "当前步骤"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "close",
                 "description": "关闭时触发",
-                "type": "()=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -10635,46 +9910,39 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click",
                 "description": "点击节点时触发",
-                "type": "(node:TreeNode)=>void",
                 "params": [
                     {
                         "name": "node",
                         "description": "当前点击的节点"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "open",
                 "description": "打开节点时出发",
-                "type": "(node:TreeNode)=>void",
                 "params": [
                     {
                         "name": "node",
                         "description": "当前打开的节点"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "close",
                 "description": "关闭节点时出发",
-                "type": "(node:TreeNode)=>void",
                 "params": [
                     {
                         "name": "node",
                         "description": "当前关闭的节点"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "beforeOpen",
                 "description": "打开节点前触发",
-                "type": "(node:TreeNode,suspend:()=>void,next:(tree:TreeNode[])=>void,stop:()=>void)=>void",
                 "params": [
                     {
                         "name": "node",
@@ -10692,7 +9960,6 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "调用该函数阻止后续代码执行"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -10874,7 +10141,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "beforeRead",
                 "description": "文件读取前触发",
-                "type": "(fileList:Array<UploadFileType>,suspend:()=>void,next()=>void,stop:()=>void)=>void",
                 "params": [
                     {
                         "name": "fileList",
@@ -10892,27 +10158,23 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "read",
                 "description": "文件读完成触发",
-                "type": "(fileList:Array<UploadFileType>)=>void",
                 "params": [
                     {
                         "name": "fileList",
                         "description": "选择的文件列表"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "oversize",
                 "description": "文件大小超出限制触发",
-                "type": "(file,fileList:Array<UploadFileType>)=>void",
                 "params": [
                     {
                         "name": "file",
@@ -10922,14 +10184,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "fileList",
                         "description": "选择的文件列表"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "beforeDelete",
                 "description": "文件删除前触发",
-                "type": "(index:number,suspend:()=>void,next()=>void,stop:()=>void)=>void",
                 "params": [
                     {
                         "name": "index",
@@ -10947,14 +10207,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "stop",
                         "description": "停止"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "delete",
                 "description": "文件删除后触发",
-                "type": "(index:number,fileList:Array<UploadFileType>)=>void",
                 "params": [
                     {
                         "name": "index",
@@ -10964,18 +10222,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "name": "fileList",
                         "description": "删除后的文件列表"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "open-preview",
                 "description": "打开预览时触发",
-                "type": "()=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -10987,11 +10239,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "preview-change",
                 "description": "预览图片变化触发",
-                "type": "(index:number | null)=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -11003,11 +10250,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "close-preview",
                 "description": "关闭预览时触发",
-                "type": "()=>void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -11019,13 +10261,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "click-item",
                 "description": "点击文件触发",
-                "type": "(index:number)=>void",
                 "params": [
                     {
                         "name": "index",
                         "description": "文件下标"
                     }
-                ]
                 ],
                 "type": ""
             }
@@ -11136,11 +10376,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "userClick",
                 "description": "用户区域点击",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -11152,24 +10387,17 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "dataClick",
                 "description": "数据点击",
-                "type": "(index : string | number) => void",
                 "params": [
                     {
                         "name": "index",
                         "description": "当前点击的数据排序"
                     }
-                ]
                 ],
                 "type": ""
             },
             {
                 "name": "codeClick",
                 "description": "功能码区域点击",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",
@@ -11181,11 +10409,6 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "loginBtnClick",
                 "description": "登录按钮点击",
-                "type": "() => void"
-
-
-
-
                 "params": [
                     {
                         "name": "data",

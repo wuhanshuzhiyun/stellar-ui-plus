@@ -20,7 +20,7 @@ function processMdContent(content) {
     return firstReplaced.replace(/---\$/g, '');
 }
 
-function splitMarkdown(content) {
+function splitMarkdown(content, id='') {
     try {
         const parts = content.split('---$').map(part => part.trim());
 

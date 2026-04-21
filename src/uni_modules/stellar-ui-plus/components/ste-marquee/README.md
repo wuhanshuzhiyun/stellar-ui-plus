@@ -2,6 +2,8 @@
 
 用于展示滚动公告、中奖名单等水平滚动信息。
 
+---$
+
 ## 使用场景
 
 - 抽奖活动中奖名单滚动展示
@@ -30,15 +32,7 @@ const list = ref([
 ## 自定义样式
 
 ```vue
-<ste-marquee 
-    :list="list"
-    containerBg="#f5f5f5"
-    containerPadding="20rpx"
-    containerRadius="16rpx"
-    itemBg="#ffffff"
-    itemPadding="16rpx 24rpx"
-    itemRadius="8rpx"
-/>
+<ste-marquee :list="list" containerBg="#f5f5f5" containerPadding="20rpx" containerRadius="16rpx" itemBg="#ffffff" itemPadding="16rpx 24rpx" itemRadius="8rpx" />
 ```
 
 ## 填满屏幕
@@ -120,4 +114,10 @@ interface MarqueeItem {
 }
 ```
 
+---$
+
 <!-- props -->
+
+---$
+
+{{xuyajun}}

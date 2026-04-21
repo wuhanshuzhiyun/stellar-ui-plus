@@ -11,3 +11,4 @@ vsc-extension-quickstart.md
 pnpm-lock.yaml
 .versionrc
 README_DEV.md
+_tmp_*

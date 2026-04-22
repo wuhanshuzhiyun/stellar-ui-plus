@@ -39,8 +39,9 @@ function getMonthList(minDate?: DateType, maxDate?: DateType, defaultDate?: Date
     eY = Number(end.format('YYYY'))
     eM = Number(end.format('MM'))
   } else {
-    eY = sM + Number(monthCount) - 1 > 12 ? sY + 1 : sY
-    eM = sM + Number(monthCount) - 1 > 12 ? sM + Number(monthCount) - 1 - 12 : sM + Number(monthCount) - 1
+    const totalMonths = sM + Number(monthCount) - 1
+    eY = sY + Math.floor((totalMonths - 1) / 12)
+    eM = ((totalMonths - 1) % 12) + 1
   }
   const months = []
   for (let y = sY; y <= eY; y++) {
@@ -96,8 +97,13 @@ export function getCalendarData(minDate?: DateType, maxDate?: DateType, defaultD
         else _day = day++
         const key = _day ? utils.dayjs(`${monthData.key}-${_day}`).format(formatter) : Math.random()
         let disabled = !_day
-        if (_day)
-          disabled = Boolean((minDate && key < minDate) || (maxDate && key > maxDate))
+        if (_day) {
+          const keyDate = utils.dayjs(key)
+          disabled = Boolean(
+            (minDate && keyDate.isBefore(utils.dayjs(minDate), 'day')) ||
+            (maxDate && keyDate.isAfter(utils.dayjs(maxDate), 'day'))
+          )
+        }
 
         const daySigns = _day && signs && signs[key] ? signs[key].slice(0, 3).map(item => ({
           ...item,

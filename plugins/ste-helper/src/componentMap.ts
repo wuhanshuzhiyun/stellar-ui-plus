@@ -5951,35 +5951,33 @@ export const componentMap: Record<string, ComponentDesc> = {
         "events": [
             {
                 "name": "close",
-                "description": "弹窗关闭动画执行完毕事件",
+                "description": "弹窗关闭前触发，可用于异步拦截关闭",
                 "params": [
                     {
-                        "name": "data",
-                        "description": "() => void"
+                        "name": "suspend",
+                        "description": "开启等待的回调函数"
+                    },
+                    {
+                        "name": "next",
+                        "description": "执行后续关闭操作的回调函数"
+                    },
+                    {
+                        "name": "stop",
+                        "description": "阻止后续关闭操作的回调函数"
                     }
                 ],
                 "type": ""
             },
             {
-                "name": "open",
+                "name": "open-after",
                 "description": "弹窗打开动画执行完毕事件",
-                "params": [
-                    {
-                        "name": "data",
-                        "description": "() => void"
-                    }
-                ],
+                "params": [],
                 "type": ""
             },
             {
-                "name": "maskClick",
+                "name": "clickMask",
                 "description": "点击遮罩时触发",
-                "params": [
-                    {
-                        "name": "data",
-                        "description": "() => void"
-                    }
-                ],
+                "params": [],
                 "type": ""
             }
         ]

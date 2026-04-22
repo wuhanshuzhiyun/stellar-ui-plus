@@ -3,7 +3,7 @@ import utils from '../../utils/utils'
 import type { Dayjs } from '../../types'
 
 export default function useData() {
-  const initing = ref(false)
+  const initing = ref(true)
   const setIniting = (val: boolean) => initing.value = val
   const startDate = ref<number | string | null>(null)
   const setStartDate = (val: number | string | null) => startDate.value = val

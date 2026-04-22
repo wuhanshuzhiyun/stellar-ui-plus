@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted, computed, nextTick, onUnmounted } from 'vue';
+import { watch, onMounted, computed, nextTick, onUnmounted, ref, getCurrentInstance } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import { formatDate, type DateType, type WeekType } from './date';
@@ -75,8 +75,81 @@ const clearViewTimer = () => {
     }
 };
 
+// 根节点引用，用于可见性监听
+const rootRef = ref<any>(null);
+// 是否已可见（在视口内）
+let isVisible = false;
+// 待执行的滚动目标，组件不可见时暂存
+let pendingScrollTop: number | null = null;
+// 在 setup 顶层获取实例，供小程序端观察器使用
+const instance = getCurrentInstance();
+
+const doScroll = (top: number, _viewMonth: string) => {
+    if (scrollTop.value === top) {
+        viewMonth.value = _viewMonth;
+        initing.value = false;
+        return;
+    }
+    contentScrollTop.value = scrollTop.value;
+    nextTick(() => {
+        contentScrollTop.value = top;
+        scrollTop.value = top;
+        viewMonth.value = _viewMonth;
+        initing.value = false;
+    });
+};
+
+let observer: any = null;
+const startObserver = () => {
+    // #ifdef H5
+    if (typeof IntersectionObserver !== 'undefined' && rootRef.value) {
+        // uni-app H5 中 <view> 的 ref 直接是 DOM 元素
+        const el = rootRef.value.$el ?? rootRef.value;
+        observer = new IntersectionObserver(entries => {
+            const visible = entries[0]?.isIntersecting;
+            if (visible && !isVisible) {
+                isVisible = true;
+                if (pendingScrollTop !== null) {
+                    const top = pendingScrollTop;
+                    const _viewMonth = viewDate.value.format('YYYY-MM');
+                    pendingScrollTop = null;
+                    nextTick(() => doScroll(top, _viewMonth));
+                }
+            } else if (!visible) {
+                isVisible = false;
+            }
+        });
+        observer.observe(el);
+        return;
+    }
+    // #endif
+    // 小程序端使用 uni.createIntersectionObserver
+    try {
+        observer = uni.createIntersectionObserver(instance).relativeToViewport();
+        observer.observe('.ste-calendar-root', (res: any) => {
+            const visible = res.intersectionRatio > 0;
+            if (visible && !isVisible) {
+                isVisible = true;
+                if (pendingScrollTop !== null) {
+                    const top = pendingScrollTop;
+                    const _viewMonth = viewDate.value.format('YYYY-MM');
+                    pendingScrollTop = null;
+                    nextTick(() => doScroll(top, _viewMonth));
+                }
+            } else if (!visible) {
+                isVisible = false;
+            }
+        });
+    } catch (_) {}
+};
+
 onUnmounted(() => {
     clearViewTimer();
+    if (observer) {
+        observer.disconnect?.();
+        observer.unobserve?.();
+        observer = null;
+    }
 });
 
 const showMonth = (date?: DateType) => {
@@ -84,6 +157,7 @@ const showMonth = (date?: DateType) => {
     if (newDate.format('YYYY-MM-DD') !== viewDate.value.format('YYYY-MM-DD')) {
         viewDate.value = newDate;
     }
+    initing.value = true;
     clearViewTimer();
     viewTimer = setTimeout(() => {
         if (props.minDate && props.maxDate) {
@@ -99,18 +173,17 @@ const showMonth = (date?: DateType) => {
         }
         const _viewMonth = viewDate.value.format('YYYY-MM');
         const tops = cmpMonthTops.value;
-        const top = tops[_viewMonth]?.top || 0;
-        if (top === undefined || scrollTop.value === top) {
+        const top = tops[_viewMonth]?.top;
+        if (top === undefined) {
             initing.value = false;
             return;
         }
-        contentScrollTop.value = scrollTop.value;
-        nextTick(() => {
-            contentScrollTop.value = top;
-            scrollTop.value = top;
-            viewMonth.value = _viewMonth;
-            initing.value = false;
-        });
+        // 组件不可见时，暂存目标位置，等可见后再执行
+        if (!isVisible) {
+            pendingScrollTop = top;
+            return;
+        }
+        doScroll(top, _viewMonth);
     }, VIEW_MONTH_DELAY);
 };
 
@@ -208,7 +281,6 @@ watch(
     () => props.defaultDate,
     v => {
         viewDate.value = v ? utils.dayjs(v) : utils.dayjs();
-        showMonth();
     },
     { immediate: true }
 );
@@ -217,6 +289,7 @@ const confirm = () => {
     emits('confirm', dataList.value);
 };
 onMounted(() => {
+    startObserver();
     showMonth();
 });
 
@@ -241,7 +314,7 @@ const onScroll = (e: any) => {
 };
 </script>
 <template>
-    <view class="ste-calendar-root" :style="[cmpRootStyle, { opacity: initing ? 0 : 1 }]">
+    <view ref="rootRef" class="ste-calendar-root" :style="[cmpRootStyle, { opacity: initing ? 0 : 1 }]">
         <view v-if="showTitle" class="calendar-title">{{ title }}</view>
         <view class="week-head">
             <view class="week-row">

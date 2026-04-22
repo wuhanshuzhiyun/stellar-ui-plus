@@ -96,19 +96,14 @@ function tap(e: any) {
     charts?.value.showToolTip(e);
 }
 const thas = ref<ComponentPublicInstance | null>();
-const emits = defineEmits<{
-    (e: 'getImage'): String;
-}>();
-
 async function getImage() {
-    console.log('getImage', props.canvas2d);
     if (props.canvas2d == false) {
         return new Promise(resolve => {
             uni.canvasToTempFilePath(
                 {
                     canvasId: canvasId.value,
                     success: res => {
-                        resolve(emits('getImage', res.tempFilePath));
+                        resolve(res.tempFilePath);
                     },
                 },
                 thas.value
@@ -121,10 +116,8 @@ async function getImage() {
                 .select('#' + canvasId.value)
                 .fields({ node: true, size: true })
                 .exec(res => {
-                    console.log('res[0]', res[0].node.toDataURL('image/png'));
                     if (res[0]) {
                         const canvas = res[0].node;
-                        emits('getImage', canvas.toDataURL('image/png'));
                         resolve(canvas.toDataURL('image/png'));
                     }
                 });

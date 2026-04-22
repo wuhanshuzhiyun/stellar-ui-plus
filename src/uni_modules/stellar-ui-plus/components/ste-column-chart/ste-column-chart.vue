@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import uCharts from '../../Charts/Charts';
-import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance } from 'vue';
+import { ref, onMounted, computed, type CSSProperties, watch, getCurrentInstance, type ComponentPublicInstance } from 'vue';
 import utils from '../../utils/utils';
 import { propsData, propsComponent } from './props';
 import type { ChartsOptions } from '../../Charts/types/index';
@@ -96,6 +96,39 @@ function tap(e: any) {
     charts.value?.touchLegend(e);
     charts.value?.showToolTip(e);
 }
+
+const thas = ref<ComponentPublicInstance | null>();
+async function getImage() {
+    if (props.canvas2d == false) {
+        return new Promise(resolve => {
+            uni.canvasToTempFilePath(
+                {
+                    canvasId: canvasId.value,
+                    success: res => {
+                        resolve(res.tempFilePath);
+                    },
+                },
+                thas.value
+            );
+        });
+    } else {
+        return new Promise(resolve => {
+            const query = uni.createSelectorQuery().in(thas.value);
+            query
+                .select('#' + canvasId.value)
+                .fields({ node: true, size: true })
+                .exec(res => {
+                    if (res[0]) {
+                        const canvas = res[0].node;
+                        resolve(canvas.toDataURL('image/png'));
+                    }
+                });
+        });
+    }
+}
+defineExpose({
+    getImage,
+});
 </script>
 
 <style scoped></style>

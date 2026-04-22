@@ -44,9 +44,10 @@ const chartStyle = computed(() => {
     style.height = cHeight.value + 'px';
     return style;
 });
-
+const thas = ref<ComponentPublicInstance | null>();
 onMounted(() => {
     ctx.value = uni.createCanvasContext(canvasId.value, getCurrentInstance());
+    thas.value = getCurrentInstance()?.proxy;
     if (props.series.length) {
         drawCharts(props.series, props.categories);
     }
@@ -99,7 +100,6 @@ function tap(e: any) {
     charts.value?.touchLegend(e);
     charts.value?.showToolTip(e);
 }
-const thas = ref<ComponentPublicInstance | null>();
 async function getImage() {
     if (props.canvas2d == false) {
         return new Promise(resolve => {
@@ -121,8 +121,19 @@ async function getImage() {
                 .fields({ node: true, size: true })
                 .exec(res => {
                     if (res[0]) {
-                        const canvas = res[0].node;
-                        resolve(canvas.toDataURL('image/png'));
+                        uni.canvasToTempFilePath(
+                            {
+                                canvasId: canvasId.value, // 传入 canvas 实例
+                                success: result => {
+                                    // result.tempFilePath 就是生成的图片路径
+                                    resolve(result.tempFilePath);
+                                },
+                                fail: err => {
+                                    reject(err);
+                                },
+                            },
+                            thas.value
+                        ); // 这里的 thas.value 必须是当前组件实例
                     }
                 });
         });

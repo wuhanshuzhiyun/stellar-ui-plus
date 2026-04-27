@@ -22,7 +22,7 @@ const val = reactive({
 function click1(value: any, suspend: () => void, next: () => void) {
     toast.showToast({
         icon: 'none',
-        title: `点击：${value} 复选框的值`,
+        title: `点击：${value} 单选框的值`,
     });
     suspend(); // 阻止操作
 
@@ -33,7 +33,7 @@ function click1(value: any, suspend: () => void, next: () => void) {
 function click2(value: any, suspend: () => void, _next: any, stop: () => void) {
     toast.showToast({
         icon: 'none',
-        title: `点击：${value} 复选框的值`,
+        title: `点击：${value} 单选框的值`,
     });
     suspend(); // 阻止操作
     setTimeout(() => {

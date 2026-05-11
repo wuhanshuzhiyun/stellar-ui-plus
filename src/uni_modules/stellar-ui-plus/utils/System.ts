@@ -65,7 +65,7 @@ export default class System {
     /**
      * 获取窗口信息（结果已缓存，同一 App 生命周期内只调用一次系统 API）
      */
-    static getWindowInfo() {
+    static getWindowInfo(): WindowInfo {
         if (_cachedWindowInfo) return _cachedWindowInfo;
 
         // 测试环境判断

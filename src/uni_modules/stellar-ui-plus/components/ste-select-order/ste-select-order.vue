@@ -5,7 +5,7 @@ import { useColorStore } from '../../store/color';
 import utils from '../../utils/utils';
 
 defineOptions({
-    name: 'ste-select',
+    name: 'ste-select-order',
     options: {
         virtualHost: true,
     },
@@ -27,7 +27,6 @@ const emits = defineEmits<{
 const open = ref(false);
 const viewValue = ref(props.modelValue);
 const isUpward = ref(false);
-const cmpRef = ref<HTMLElement | null>(null);
 
 watch(() => props.modelValue, (newVal) => {
     if (newVal !== viewValue.value) {
@@ -36,7 +35,7 @@ watch(() => props.modelValue, (newVal) => {
 });
 
 const onTouchMove = (e: TouchEvent) => {
-    // 只有在展开状态下才阻止页面滚动
+    // 只有在展开状态下才阻止动
     if (open.value) {
         e.preventDefault();
     }
@@ -53,16 +52,13 @@ const viewTitle = computed(() => {
 });
 
 const calculatePosition = async () => {
-    if (!cmpRef.value) return;
     const header = await utils.querySelector(".ste-select-order-header", thas.value)
     if (!header) return;
     const vh = utils.System.getWindowHeight()
     const { top, height } = header as any
     const position = top + height / 2;
     const middle = vh / 2;
-    console.log("position", position, "middle", middle);
     isUpward.value = position > middle;
-    console.log("isUpward", isUpward.value);
 };
 
 const onTitleClick = async () => {
@@ -81,7 +77,6 @@ const onShadeClick = () => {
 };
 
 const onSelect = (item: SelectOption) => {
-    console.log(item);
     if (item.disabled) return;
     const val = item[props.valueKey];
     if (val === viewValue.value || props.disabled) return;
@@ -95,8 +90,7 @@ const onSelect = (item: SelectOption) => {
 </script>
 
 <template>
-    <view ref="cmpRef" class="ste-select-order-root" :class="{ open, disabled: props.disabled }"
-        :style="[cmpRootStyle]">
+    <view class="ste-select-order-root" :class="{ open, disabled: props.disabled }" :style="[cmpRootStyle]">
         <view class="ste-select-order-shade" @click="onShadeClick" @touchmove.stop="onTouchMove"></view>
         <view class="ste-select-order-content" :class="{ 'is-upward': isUpward }" @click.stop="onTitleClick"
             @touchmove.stop="onTouchMove">

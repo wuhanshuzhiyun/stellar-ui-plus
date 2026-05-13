@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import type { RefDropdownMenu } from '@/uni_modules/stellar-ui-plus/types/refComponents';
 import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 let toast = useToast();
@@ -45,6 +45,78 @@ function choose(type: string, v: number) {
 const steDropMenu = ref<RefDropdownMenu>();
 function confirm() {
     steDropMenu.value?.close();
+}
+
+const orderMenus = [
+    {
+        label: '单据类型1',
+        value: '1',
+        children: [
+            {
+                label: '类型1A',
+                value: '1-1',
+            },
+            {
+                label: '类型1B',
+                value: '1-2',
+            },
+            {
+                label: '类型1C',
+                value: '1-3',
+            },
+            {
+                label: '类型1D',
+                value: '1-4',
+            }
+        ]
+    },
+    {
+        label: '单据类型2',
+        value: '2',
+        children: [
+            {
+                label: '类型2A',
+                value: '2-1',
+            },
+            {
+                label: '类型2B',
+                value: '2-2',
+            },
+            {
+                label: '类型2C',
+                value: '2-3',
+            },
+            {
+                label: '类型2D',
+                value: '2-4',
+            }
+        ]
+    }
+]
+
+
+const orderData = reactive({
+    parent: "1",
+    type: "1-1",
+    code: ""
+});
+const orderChildren = computed(() => orderMenus.find(item => item.value == orderData.parent)?.children || []);
+
+const setOrder = (key: keyof typeof orderData, v: string) => {
+    orderData[key] = v;
+    if (key == 'parent') {
+        const children = orderMenus.find(item => item.value == v)?.children || [];
+        orderData.type = children[0]?.value || '';
+    }
+}
+
+const orderMenuRef = ref<RefDropdownMenu>();
+function confirmOrderMenu() {
+    uni.showToast({
+        title: `确认订单paremt:${orderData.parent},type:${orderData.type},code:${orderData.code}`,
+        icon: 'none',
+    })
+    orderMenuRef.value?.close();
 }
 </script>
 
@@ -119,19 +191,59 @@ function confirm() {
                             <view class="custom-menu-box">
                                 <view class="menu-box">
                                     <view class="left">
-                                        <view v-for="(m, i) in customMenuData" :key="i" :class="i == m1 ? 'active' : ''" @click="choose('1', i)">
+                                        <view v-for="(m, i) in customMenuData" class="left-menu-item" :key="i"
+                                            :class="i == m1 ? 'active' : ''" @click="choose('1', i)">
                                             {{ m.name }}
                                         </view>
                                     </view>
                                     <view class="right">
-                                        <view v-for="(m, i) in customMenuData[m1].child" :key="i" :class="i == m2 ? 'active' : ''" @click="choose('2', i)">
+                                        <view v-for="(m, i) in customMenuData[m1].child" class="right-menu-item"
+                                            :key="i" :class="i == m2 ? 'active' : ''" @click="choose('2', i)">
                                             {{ m }}
                                         </view>
                                     </view>
                                 </view>
                                 <view class="action-box">
-                                    <ste-button width="320" background="rgba(0,0,0,0)" borderColor="#0090FF" color="#0090FF" @click="confirm">重置</ste-button>
+                                    <ste-button width="320" background="rgba(0,0,0,0)" borderColor="#0090FF"
+                                        color="#0090FF" @click="confirm">重置</ste-button>
                                     <ste-button width="320" @click="confirm">确认</ste-button>
+                                </view>
+                            </view>
+                        </ste-dropdown-menu>
+                    </view>
+                    <view>
+                        <ste-dropdown-menu value="2" title="单据类型" ref="orderMenuRef">
+                            <view class="order-menu-box">
+                                <view class="content-box">
+                                    <view class="content-left">
+                                        <view v-for="(m, i) in orderMenus" :key="i" class="left-menu-item"
+                                            :class="orderData.parent == m.value ? 'active' : ''"
+                                            @click="setOrder('parent', m.value)">
+                                            {{ m.label }}
+                                        </view>
+                                    </view>
+                                    <view class="content-right">
+                                        <view class="right-codes">
+                                            <view class="content-title">订单尾号</view>
+                                            <ste-input style="width: 356rpx" placeholder="请输入订单最后5位"
+                                                v-model="orderData.code" background="#f5f5f5"></ste-input>
+                                        </view>
+                                        <view class="right-types">
+                                            <view class="content-title">单据类型</view>
+                                            <view class="right-menus">
+                                                <view v-for="(m, i) in orderChildren" :key="i" class="right-menu-item"
+                                                    :class="orderData.type == m.value ? 'active' : ''"
+                                                    @click="setOrder('type', m.value)">
+                                                    {{ m.label }}
+                                                </view>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                                <view class="action-box">
+                                    <ste-button width="320" background="rgba(0,0,0,0)" borderColor="#0090FF"
+                                        color="#0090FF" @click="confirmOrderMenu">重置</ste-button>
+                                    <ste-button width="320" @click="confirmOrderMenu">确认</ste-button>
                                 </view>
                             </view>
                         </ste-dropdown-menu>
@@ -265,23 +377,28 @@ function confirm() {
 .page {
     .content {
         padding: 0;
+
         .description {
             padding: 0 40rpx;
         }
+
         .type-block {
             padding: 0 40rpx;
         }
+
         .demo-item {
             .title {
                 padding-left: 40rpx;
             }
+
             .item-block {
                 .menu-item {
                     display: flex;
                     padding: 0 40rpx;
                     width: 100%;
                     box-shadow: 0 0 10px #ddd;
-                    > view {
+
+                    >view {
                         flex: 1;
                         display: flex;
                         align-items: center;
@@ -292,16 +409,18 @@ function confirm() {
                         background-color: #fff;
                         padding-top: 24rpx;
                         border-top: solid 4rpx #f5f5f5;
+
                         .menu-box {
                             width: 100%;
                             display: flex;
                             margin-bottom: 56rpx;
                             font-size: 28rpx;
+
                             .left {
                                 width: 236rpx;
                                 background-color: #f9f9f9;
 
-                                > view {
+                                .left-menu-item {
                                     height: 90rpx;
                                     display: flex;
                                     align-items: center;
@@ -319,7 +438,8 @@ function confirm() {
                                 margin-left: 26rpx;
                                 margin-right: 18rpx;
                                 background-color: #fff;
-                                > view {
+
+                                .right-menu-item {
                                     height: 90rpx;
                                     display: flex;
                                     align-items: center;
@@ -332,6 +452,7 @@ function confirm() {
                                         color: #0090ff;
                                         font-weight: bold;
                                     }
+
                                 }
                             }
                         }
@@ -342,6 +463,89 @@ function confirm() {
                             justify-content: space-between;
 
                             padding-bottom: 20rpx;
+                        }
+                    }
+
+                    .order-menu-box {
+                        background-color: #fff;
+                        padding-top: 24rpx;
+                        border-top: solid 4rpx #f5f5f5;
+
+                        .content-box {
+                            width: 100%;
+                            display: flex;
+                            margin-bottom: 56rpx;
+                            font-size: 28rpx;
+
+                            .content-left {
+                                width: 150rpx;
+                                background-color: #f9f9f9;
+
+                                .left-menu-item {
+                                    height: 90rpx;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 24rpx;
+                                    color: #A4A4A4;
+
+                                    &.active {
+                                        background-color: #fff;
+                                        color: #0090ff;
+                                    }
+                                }
+                            }
+
+                            .content-right {
+                                flex: 1;
+                                margin-left: 26rpx;
+                                margin-right: 18rpx;
+                                background-color: #fff;
+
+                                .content-title {
+                                    height: 90rpx;
+                                    display: flex;
+                                    align-items: center;
+                                    font-size: 24rpx;
+                                    color: #1C1F23;
+                                }
+
+                                .right-types {
+                                    .right-menus {
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        align-items: center;
+                                        gap: 20rpx;
+
+                                        .right-menu-item {
+                                            width: 162rpx;
+                                            height: 64rpx;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            background: #F9F9F9;
+                                            border-radius: 8rpx;
+                                            font-size: 24rpx;
+
+                                            color: #555A61;
+
+                                            &.active {
+                                                background-color: #0090ff;
+                                                font-weight: bold;
+                                                color: #fff;
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
+                        .action-box {
+                            padding: 0 40rpx 20rpx 40rpx;
+                            display: flex;
+                            justify-content: space-between;
                         }
                     }
                 }

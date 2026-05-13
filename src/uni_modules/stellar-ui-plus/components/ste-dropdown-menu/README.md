@@ -177,10 +177,195 @@
             }
 
             .action-box {
+                padding: 0 40rpx 20rpx 40rpx;
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+</style>
+```
+
+## 单据类型筛选
+
+此示例展示了如何实现一个单据类型筛选菜单，包含左侧分类选择、右侧输入框和子选项选择。
+
+```html
+<script lang="ts" setup>
+    import type { RefDropdownMenu } from 'stellar-ui-plus/types/refComponents';
+    import { computed, reactive, ref } from 'vue';
+
+    const orderMenus = [
+        {
+            label: '单据类型1',
+            value: '1',
+            children: [
+                { label: '类型1A', value: '1-1' },
+                { label: '类型1B', value: '1-2' },
+                { label: '类型1C', value: '1-3' },
+                { label: '类型1D', value: '1-4' },
+            ],
+        },
+        {
+            label: '单据类型2',
+            value: '2',
+            children: [
+                { label: '类型2A', value: '2-1' },
+                { label: '类型2B', value: '2-2' },
+                { label: '类型2C', value: '2-3' },
+                { label: '类型2D', value: '2-4' },
+            ],
+        },
+    ];
+
+    const orderData = reactive({
+        parent: '1',
+        type: '1-1',
+        code: '',
+    });
+
+    const orderChildren = computed(() => orderMenus.find(item => item.value == orderData.parent)?.children || []);
+
+    const setOrder = (key: keyof typeof orderData, v: string) => {
+        orderData[key] = v;
+        if (key == 'parent') {
+            const children = orderMenus.find(item => item.value == v)?.children || [];
+            orderData.type = children[0]?.value || '';
+        }
+    };
+
+    const orderMenuRef = ref<RefDropdownMenu>();
+    function confirmOrderMenu() {
+        uni.showToast({
+            title: `确认订单 parent:${orderData.parent}, type:${orderData.type}, code:${orderData.code}`,
+            icon: 'none',
+        });
+        orderMenuRef.value?.close();
+    }
+</script>
+<template>
+    <view class="menu-item">
+        <view>
+            <ste-dropdown-menu value="2" title="单据类型" ref="orderMenuRef">
+                <view class="order-menu-box">
+                    <view class="content-box">
+                        <view class="content-left">
+                            <view v-for="(m, i) in orderMenus" :key="i" class="left-menu-item" :class="orderData.parent == m.value ? 'active' : ''" @click="setOrder('parent', m.value)">
+                                {{ m.label }}
+                            </view>
+                        </view>
+                        <view class="content-right">
+                            <view class="right-codes">
+                                <view class="content-title">订单尾号</view>
+                                <ste-input style="width: 356rpx" placeholder="请输入订单最后5位" v-model="orderData.code" background="#f5f5f5"></ste-input>
+                            </view>
+                            <view class="right-types">
+                                <view class="content-title">单据类型</view>
+                                <view class="right-menus">
+                                    <view v-for="(m, i) in orderChildren" :key="i" class="right-menu-item" :class="orderData.type == m.value ? 'active' : ''" @click="setOrder('type', m.value)">
+                                        {{ m.label }}
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="action-box">
+                        <ste-button width="320" background="rgba(0,0,0,0)" borderColor="#0090FF" color="#0090FF" @click="confirmOrderMenu">重置</ste-button>
+                        <ste-button width="320" @click="confirmOrderMenu">确认</ste-button>
+                    </view>
+                </view>
+            </ste-dropdown-menu>
+        </view>
+    </view>
+</template>
+<style lang="scss">
+    .menu-item {
+        display: flex;
+        padding: 0 20rpx;
+        width: 100%;
+        box-shadow: 0 0 10px #ddd;
+        > view {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .order-menu-box {
+            background-color: #fff;
+            padding-top: 24rpx;
+            border-top: solid 4rpx #f5f5f5;
+
+            .content-box {
+                width: 100%;
+                display: flex;
+                margin-bottom: 56rpx;
+                font-size: 28rpx;
+
+                .content-left {
+                    width: 150rpx;
+                    background-color: #f9f9f9;
+
+                    .left-menu-item {
+                        height: 90rpx;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 24rpx;
+                        color: #a4a4a4;
+
+                        &.active {
+                            background-color: #fff;
+                            color: #0090ff;
+                        }
+                    }
+                }
+
+                .content-right {
+                    flex: 1;
+                    margin-left: 26rpx;
+                    margin-right: 18rpx;
+                    background-color: #fff;
+
+                    .content-title {
+                        height: 90rpx;
+                        display: flex;
+                        align-items: center;
+                        font-size: 24rpx;
+                        color: #1c1f23;
+                    }
+
+                    .right-types {
+                        .right-menus {
+                            display: flex;
+                            flex-wrap: wrap;
+                            align-items: center;
+                            gap: 20rpx;
+
+                            .right-menu-item {
+                                width: 162rpx;
+                                height: 64rpx;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                background: #f9f9f9;
+                                border-radius: 8rpx;
+
+                                &.active {
+                                    background-color: #0090ff;
+                                    font-weight: bold;
+                                    color: #fff;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .action-box {
                 padding: 0 40rpx;
                 display: flex;
                 justify-content: space-between;
-
                 padding-bottom: 20rpx;
             }
         }

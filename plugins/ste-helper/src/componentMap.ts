@@ -6407,11 +6407,11 @@ export const componentMap: Record<string, ComponentDesc> = {
         "events": [
             {
                 "name": "click",
-                "description": "点击复选框时触发的事件",
+                "description": "点击单选框时触发的事件",
                 "params": [
                     {
                         "name": "value",
-                        "description": "当前复选框的绑定值"
+                        "description": "当前单选框的绑定值"
                     },
                     {
                         "name": "suspend",
@@ -6434,7 +6434,7 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "params": [
                     {
                         "name": "value",
-                        "description": "当前复选框的绑定值"
+                        "description": "当前单选框的绑定值"
                     }
                 ],
                 "type": ""
@@ -7569,6 +7569,83 @@ export const componentMap: Record<string, ComponentDesc> = {
                     {
                         "name": "data",
                         "description": "()=>void"
+                    }
+                ],
+                "type": ""
+            }
+        ]
+    },
+    "select-order": {
+        "site": "ste-select-order",
+        "attr": [
+            "modelValue=''"
+        ],
+        "props": [
+            {
+                "name": "modelValue",
+                "description": "绑定的值，支持v-model双向绑定",
+                "type": "string | number | null | undefined"
+            },
+            {
+                "name": "list",
+                "description": "选项数据，每个选项支持 disabled 属性设置单项禁止选择",
+                "type": "SelectOption[]",
+                "default": []
+            },
+            {
+                "name": "placeholder",
+                "description": "占位符",
+                "type": "string",
+                "default": "请选择"
+            },
+            {
+                "name": "labelKey",
+                "description": "选项标签Key",
+                "type": "string",
+                "default": "label"
+            },
+            {
+                "name": "valueKey",
+                "description": "选项值Key",
+                "type": "string",
+                "default": "value"
+            },
+            {
+                "name": "disabled",
+                "description": "禁用状态",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "maskClose",
+                "description": "点击遮罩层是否关闭弹窗",
+                "type": "boolean",
+                "default": true
+            }
+        ],
+        "events": [
+            {
+                "name": "update:modelValue",
+                "description": "选中值改变时触发",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "选中的值"
+                    }
+                ],
+                "type": ""
+            },
+            {
+                "name": "change",
+                "description": "选中值改变时触发",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "选中的值"
+                    },
+                    {
+                        "name": "option",
+                        "description": "选中的选项对象"
                     }
                 ],
                 "type": ""

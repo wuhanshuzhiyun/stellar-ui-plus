@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { computed, watch, ref, type CSSProperties, toRaw, nextTick } from 'vue';
+import { computed, watch, ref, type CSSProperties, toRaw } from 'vue';
 import propsData, { TABLE_KEY, tableEmits, CHECK_ICON_SIZE, SELECTION_COLOR_CONFIG, type TableProps } from './props';
 import utils from '../../utils/utils';
 import { useProvide } from '../../utils/mixin';
 import useData from './useData';
 import type { TableColumnProps } from '../ste-table-column/props';
 import { useColorStore } from '../../store/color';
-let { getColor } = useColorStore();
+const { getColor } = useColorStore();
 
 const componentName = `ste-table`;
 defineOptions({
@@ -82,14 +82,14 @@ const cmpRootClass = computed(() => {
     if (props.stripe) {
         classArr.push('stripe');
     }
-    if (props.height || Number(props.height) > 0) {
+    if (Number(props.height) > 0) {
         classArr.push('scroll-table');
     }
     return classArr.join(' ');
 });
 
 const cmpShowFixedPlaceholder = computed(() => {
-    return props.fixed || props.height || Number(props.height) > 0 || props.maxHeight || Number(props.maxHeight) > 0;
+    return props.fixed || Number(props.height) > 0 || Number(props.maxHeight) > 0;
 });
 
 const dataChangeFun = (fullLength: number = 0, val: any) => {
@@ -300,38 +300,7 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
                     </view>
                 </view>
             </view>
-            <template v-if="height || Number(height) > 0">
-                <scroll-view scroll-y class="ste-table-scroll" @scrolltolower="handleScrollToLower">
-                    <view class="ste-table-body" :class="!tableData.length ? 'no-data' : ''">
-                        <template v-if="tableData.length">
-                            <view
-                                class="ste-table-row"
-                                :class="[getRowClass(row, rowIndex)]"
-                                :style="[getRowStyle(row, rowIndex) as CSSProperties]"
-                                v-for="(row, rowIndex) in tableData"
-                                :key="rowIndex"
-                                @click="rowClick(row, $event)"
-                            >
-                                <slot :row="row" name="default"></slot>
-                            </view>
-                            <view class="ste-table-row sum" v-if="showSummary">
-                                <view class="ste-table-cell" v-for="(column, index) in columns" :key="index" :class="[getHeaderCellClass(column, 0)]">
-                                    <view class="cell-box">
-                                        <view v-if="index === 0" class="sum-header">{{ sumText }}</view>
-                                        <view v-else>
-                                            {{ sumData[index] || '-' }}
-                                        </view>
-                                    </view>
-                                </view>
-                            </view>
-                        </template>
-                        <template v-else>
-                            <text class="no-data-text">- 暂无数据 -</text>
-                        </template>
-                    </view>
-                </scroll-view>
-            </template>
-            <template v-else>
+            <scroll-view :scroll-y="Number(height) > 0" class="ste-table-scroll" @scrolltolower="handleScrollToLower">
                 <view class="ste-table-body" :class="!tableData.length ? 'no-data' : ''">
                     <template v-if="tableData.length">
                         <view
@@ -339,6 +308,7 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
                             :class="[getRowClass(row, rowIndex)]"
                             :style="[getRowStyle(row, rowIndex) as CSSProperties]"
                             v-for="(row, rowIndex) in tableData"
+                            :key="rowIndex"
                             @click="rowClick(row, $event)"
                         >
                             <slot :row="row"></slot>
@@ -358,7 +328,7 @@ defineExpose({ clearSelection, toggleAllSelection, toggleRowSelection, getSelect
                         <text class="no-data-text">- 暂无数据 -</text>
                     </template>
                 </view>
-            </template>
+            </scroll-view>
         </view>
     </view>
 </template>

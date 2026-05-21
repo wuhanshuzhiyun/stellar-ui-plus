@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, type CSSProperties } from 'vue';
+import { ref, computed, watch, onUnmounted, type CSSProperties } from 'vue';
 import propsData from './props';
 import utils from '../../utils/utils';
 const DEFAULT_BORDER_RADIUS = 32;
@@ -13,11 +13,14 @@ defineOptions({
     },
 });
 
-const animationProp: UniApp.CreateAnimationOptions = { duration: props.duration, timingFunction: 'ease-out' };
+const animationProp = computed<UniApp.CreateAnimationOptions>(() => ({ duration: props.duration, timingFunction: 'ease-out' }));
 const pageDisplay = ref('none');
 const overlayAnimationData = ref<UniApp.Animation>();
 const animationData = ref<UniApp.Animation>();
 const showContent = ref(false);
+
+let beginTimer: ReturnType<typeof setTimeout> | null = null;
+let endTimer: ReturnType<typeof setTimeout> | null = null;
 
 const emits = defineEmits<{
     (e: 'clickMask'): void;
@@ -48,14 +51,6 @@ const cmpContentStyle = computed(() => {
         height: utils.addUnit(props.height),
         backgroundColor: props.backgroundColor,
     };
-
-    if (props.position === 'center') {
-    } else if (props.position === 'bottom') {
-    } else if (props.position === 'top') {
-    } else if (props.position === 'left') {
-    } else if (props.position === 'right') {
-    }
-
     return style;
 });
 
@@ -108,8 +103,8 @@ async function beginAnimation() {
 
     pageDisplay.value = 'flex';
     await utils.sleep(50);
-    let animation = uni.createAnimation(animationProp);
-    let overlayAnimation = uni.createAnimation(animationProp);
+    let animation = uni.createAnimation(animationProp.value);
+    let overlayAnimation = uni.createAnimation(animationProp.value);
     overlayAnimation.opacity(1).step({
         duration: props.duration,
     });
@@ -128,15 +123,16 @@ async function beginAnimation() {
     overlayAnimationData.value = overlayAnimation.export();
     animationData.value = animation.export();
 
-    setTimeout(() => {
+    if (beginTimer) clearTimeout(beginTimer);
+    beginTimer = setTimeout(() => {
         showContent.value = true;
         emits('open-after');
     }, props.duration);
 }
 
 function endAnimation() {
-    let animation = uni.createAnimation(animationProp);
-    let overlayAnimation = uni.createAnimation(animationProp);
+    let animation = uni.createAnimation(animationProp.value);
+    let overlayAnimation = uni.createAnimation(animationProp.value);
     overlayAnimation.opacity(0).step();
 
     if (props.position === 'center') {
@@ -150,23 +146,24 @@ function endAnimation() {
     overlayAnimationData.value = overlayAnimation.export();
     animationData.value = animation.export();
 
-    setTimeout(() => {
+    if (endTimer) clearTimeout(endTimer);
+    endTimer = setTimeout(() => {
         pageDisplay.value = 'none';
         showContent.value = false;
     }, props.duration);
 }
 
-function touchmove(e: TouchEvent) {
-    // TODO nvue 取消冒泡
-    e.stopPropagation();
-}
+onUnmounted(() => {
+    if (beginTimer) clearTimeout(beginTimer);
+    if (endTimer) clearTimeout(endTimer);
+});
 </script>
 
 <template>
     <view class="ste-popup" :class="position" :style="[cmpPageStyle]" @click.stop="onMaskClick" :animation="overlayAnimationData" data-test="popup">
         <view class="content" :class="position" :style="[cmpContentStyle]" :animation="animationData" @click.stop>
             <template v-if="keepContent || showContent">
-                <scroll-view style="width: 100%; height: 100%" v-if="Number(height) > 0" :scroll-y="true" @touchmove.stop.prevent="touchmove">
+                <scroll-view style="width: 100%; height: 100%" v-if="Number(height) > 0" :scroll-y="true" @touchmove.stop.prevent>
                     <slot name="default"></slot>
                 </scroll-view>
                 <slot v-else name="default"></slot>
@@ -176,7 +173,7 @@ function touchmove(e: TouchEvent) {
             </view>
         </view>
         <view class="close-icon-box-center" @click="handleClose" v-if="showClose && position == 'center' && showContent">
-            <ste-icon code="&#xe6a0;" :size="40" color="'#fff'"></ste-icon>
+            <ste-icon code="&#xe6a0;" :size="40" :color="'#fff'"></ste-icon>
         </view>
     </view>
 </template>
@@ -189,7 +186,6 @@ function touchmove(e: TouchEvent) {
     position: fixed;
     left: 0;
     top: 0;
-    overflow: hidden;
     justify-content: center;
     align-items: center;
     touch-action: none;

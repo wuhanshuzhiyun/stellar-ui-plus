@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onUnmounted } from 'vue';
 import propsData from './props';
-import { type ClientData, type ResponseData, download as downloadMethod, getAppId, getDeviceId, getPlatform, getVersion } from './method';
+import { type ClientData, type ResponseData, download as downloadMethod, getAppId, getDeviceId, getPlatform, getVersion, saveDownloadState, getDownloadState, clearDownloadState, isDownloadStateExpired, findExistingDownloadTask } from './method';
 
 // 类型定义
 interface AppUpdateData extends ClientData {
@@ -34,7 +34,10 @@ const tempFilePath = ref('');
 
 // 资源管理
 let timeoutTimer: ReturnType<typeof setTimeout> | null = null;
-let downloadTask: UniApp.DownloadTask | null = null;
+let downloadTask: any = null;
+let nativeDownloadTask: any = null;
+let nativeDownloadListener: ((download: any) => void) | null = null;
+let progressPollTimer: ReturnType<typeof setInterval> | null = null;
 
 // 跳过版本相关
 const skippedVersions = ref<string[]>([]);
@@ -103,12 +106,29 @@ const skipVersion = () => {
 };
 
 // 清理函数
+const stopProgressPolling = () => {
+    if (progressPollTimer) {
+        clearInterval(progressPollTimer);
+        progressPollTimer = null;
+    }
+};
+
 const cleanup = () => {
     if (timeoutTimer) {
         clearTimeout(timeoutTimer);
         timeoutTimer = null;
     }
+    stopProgressPolling();
+    // #ifdef APP-PLUS
+    if (nativeDownloadTask && nativeDownloadListener) {
+        try {
+            nativeDownloadTask.removeEventListener('statechanged', nativeDownloadListener);
+        } catch (_) { }
+    }
+    // #endif
     downloadTask = null;
+    nativeDownloadTask = null;
+    nativeDownloadListener = null;
 };
 
 // 组件卸载时清理资源
@@ -116,7 +136,7 @@ onUnmounted(() => {
     cleanup();
 });
 
-const getData = (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
+const getData = async (callback?: (resVersion: { name: string; code: string; updateFile: string }, version: string) => void) => {
     // 参数验证
     if (!props.apiUrl) {
         console.error('API地址不能为空');
@@ -130,7 +150,7 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
         header: {
             Authorization: `Basic ${btoa(props.clientId + ':' + props.clientSecret)}`,
         },
-        success: (res: any) => {
+        success: async (res: any) => {
             try {
                 const _data: {
                     code: number;
@@ -187,6 +207,36 @@ const getData = (callback?: (resVersion: { name: string; code: string; updateFil
                     }
 
                     if (data.updateFile && data.code !== version.value) {
+                        const downloadState = getDownloadState();
+                        const hasValidDownloadState = downloadState
+                            && downloadState.versionCode === data.code
+                            && downloadState.updateFile === data.updateFile
+                            && !isDownloadStateExpired(downloadState);
+
+                        if (hasValidDownloadState) {
+                            const existing = await findExistingDownloadTask(data.updateFile);
+
+                            if (existing) {
+                                open.value = true;
+                                emits('update');
+                                if (existing.state === 0 || existing.state === 1 || existing.state === 2 || existing.state === 3) {
+                                    updateBtn.value = false;
+                                    resumeDownloadProgress(existing.task);
+                                } else if (existing.state === 4) {
+                                    updateBtn.value = false;
+                                    tempFilePath.value = existing.filename;
+                                    if (data.package_type === 1 && existing.filename) {
+                                        installWgt(existing.filename);
+                                    }
+                                }
+                                return;
+                            }
+                        }
+
+                        if (downloadState) {
+                            clearDownloadState();
+                        }
+
                         open.value = true;
                         emits('update');
                         if (data.isForce) confirm();
@@ -279,11 +329,11 @@ const start = async (callback?: (resVersion: { name: string; code: string; updat
 
     const v = await getVersion(props.appVersion);
     if (v) version.value = v;
-
+    // #ifdef APP-PLUS
     // 兜底检查：如果配置了 fallbackApiUrl，先调兜底接口
     const hit = await checkFallback();
     if (hit) return; // 命中兜底，不继续正常流程
-
+    // #endif
     // 正常更新流程
     getData(callback);
 };
@@ -297,15 +347,101 @@ const onProgressUpdate = (res: UniApp.OnProgressDownloadResult) => {
     }
 };
 
-const confirm = () => {
-    // 先清理之前的任务
+const resumeDownloadProgress = (task: any) => {
+    // #ifdef APP-PLUS
+    if (nativeDownloadTask && nativeDownloadListener) {
+        nativeDownloadTask.removeEventListener('statechanged', nativeDownloadListener);
+    }
+    stopProgressPolling();
+
+    nativeDownloadTask = task;
+
+    const updateProgress = () => {
+        if (task.downloadedSize !== undefined && task.totalSize > 0) {
+            percent.value = Math.round((task.downloadedSize / task.totalSize) * 100);
+            downloadedSize.value = (task.downloadedSize / Math.pow(1024, 2)).toFixed(2);
+            packageFileSize.value = (task.totalSize / Math.pow(1024, 2)).toFixed(2);
+        }
+    };
+    updateProgress();
+
+    nativeDownloadListener = (download: any) => {
+        if (download.state === 4) {
+            stopProgressPolling();
+            percent.value = 100;
+            downloadedSize.value = packageFileSize.value;
+            tempFilePath.value = download.filename;
+            if (open.value && data.package_type === 1 && download.filename) {
+                installWgt(download.filename);
+            }
+        } else if (download.state === -1) {
+            stopProgressPolling();
+            updateBtn.value = true;
+            clearDownloadState();
+            cleanup();
+        }
+    };
+
+    task.addEventListener('statechanged', nativeDownloadListener);
+
+    if (task.state === 3) {
+        progressPollTimer = setInterval(updateProgress, 500);
+    }
+
+    if (task.state === 0) {
+        task.start();
+    }
+    // #endif
+};
+
+const installWgt = (filePath: string) => {
+    // #ifdef APP-PLUS
+    plus.runtime.install(
+        filePath,
+        { force: true },
+        () => {
+            uni.showModal({
+                title: '提示',
+                content: '升级成功，请重新启动！',
+                confirmText: '确定',
+                showCancel: false,
+                success: () => {
+                    clearDownloadState();
+                    plus.runtime.restart();
+                },
+            });
+        },
+        e => {
+            uni.showModal({
+                title: '安装失败',
+                content: e.message || '安装过程中出现错误',
+                showCancel: false,
+            });
+        }
+    );
+    // #endif
+};
+
+const confirm = async () => {
     cleanup();
 
-    // 参数验证
     if (!data.updateFile) {
         uni.showToast({ title: '更新文件地址不能为空', icon: 'none' });
         return;
     }
+
+    // #ifdef APP-PLUS
+    const stale = await findExistingDownloadTask(data.updateFile);
+    if (stale) {
+        try { stale.task.abort(); } catch (_) { }
+    }
+    // #endif
+
+    saveDownloadState({
+        versionCode: data.code,
+        updateFile: data.updateFile,
+        startTime: Date.now(),
+    });
 
     if (data.package_type == 0) {
         if (data.updateFile.includes('.apk')) {
@@ -315,9 +451,11 @@ const confirm = () => {
                 downloadSuccess: path => (tempFilePath.value = path),
                 error: () => {
                     updateBtn.value = true;
+                    clearDownloadState();
                     cleanup();
                 },
                 success: () => {
+                    clearDownloadState();
                     cleanup();
                 },
             });
@@ -334,9 +472,11 @@ const confirm = () => {
             downloadSuccess: path => (tempFilePath.value = path),
             error: () => {
                 updateBtn.value = true;
+                clearDownloadState();
                 cleanup();
             },
             success: () => {
+                clearDownloadState();
                 cleanup();
             },
         });
@@ -359,6 +499,7 @@ const install = () => {
         tempFilePath.value,
         { force: true },
         () => {
+            clearDownloadState();
             if (data.package_type == 1) {
                 uni.showModal({
                     title: '提示',
@@ -388,10 +529,10 @@ const cancelDownload = () => {
         content: '确定要取消下载吗？',
         success: res => {
             if (res.confirm) {
-                // 取消下载时才 abort 下载任务
                 if (downloadTask) {
-                    downloadTask.abort();
+                    try { downloadTask.abort(); } catch (_) { }
                 }
+                clearDownloadState();
                 cleanup();
                 updateBtn.value = true;
                 percent.value = 0;
@@ -432,7 +573,8 @@ defineExpose({
             <view class="update-footer">
                 <view class="update-progress-box" v-if="!updateBtn">
                     <view class="progress-container">
-                        <progress class="update-progress" border-radius="35" :percent="percent" activeColor="#3DA7FF" backgroundColor="#f0f0f0" show-info stroke-width="12" />
+                        <progress class="update-progress" border-radius="35" :percent="percent" activeColor="#3DA7FF"
+                            backgroundColor="#f0f0f0" show-info stroke-width="12" />
                         <view class="progress-text">{{ percent }}%</view>
                     </view>
 
@@ -441,10 +583,12 @@ defineExpose({
                             <text class="success-icon">✓</text>
                             下载完成，准备安装...
                         </text>
-                        <text class="update-down-msg" v-else>正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}MB)</text>
+                        <text class="update-down-msg" v-else>正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize
+                            }}MB)</text>
                     </view>
 
-                    <button v-if="!tempFilePath && !data.isForce" class="cancel-download-btn" @click="cancelDownload">取消下载</button>
+                    <button v-if="!tempFilePath && !data.isForce" class="cancel-download-btn"
+                        @click="cancelDownload">取消下载</button>
                 </view>
 
                 <template v-if="updateBtn">
@@ -456,7 +600,8 @@ defineExpose({
                     <button v-if="!data.isForce" class="update-button skip" plain @click="skipVersion">跳过此版本</button>
                 </template>
 
-                <button class="update-button secondary" plain @click="install" v-else-if="data.package_type === 0 && tempFilePath">立即安装</button>
+                <button class="update-button secondary" plain @click="install"
+                    v-else-if="data.package_type === 0 && tempFilePath">立即安装</button>
             </view>
 
             <view class="update-close" v-if="!data.isForce" @click.stop="close">✖</view>

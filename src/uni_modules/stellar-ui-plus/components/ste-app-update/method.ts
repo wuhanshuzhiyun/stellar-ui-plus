@@ -39,13 +39,9 @@ interface DownloadOptions {
     onProgressUpdate?: (res: UniApp.OnProgressDownloadResult) => void;
 }
 
-export function download(
-    data: ClientData,
-    options: DownloadOptions
-): UniApp.DownloadTask {
+export function download(data: ClientData, options: DownloadOptions): any {
     const { success, error, downloadSuccess, onProgressUpdate } = options;
 
-    // 参数验证
     if (!data.updateFile) {
         const errorMsg = '更新文件地址不能为空';
         uni.showToast({ title: errorMsg, icon: 'none' });
@@ -54,15 +50,110 @@ export function download(
     }
 
     const package_type = data.package_type;
+
+    // #ifdef APP-PLUS
     let timeout: ReturnType<typeof setTimeout>;
+
+    const task = plus.downloader.createDownload(
+        data.updateFile,
+        {
+            filename: '_downloads/stellar_update/',
+        },
+        (download, status) => {
+            clearTimeout(timeout);
+
+            if (status === 200) {
+                if (!download.filename) {
+                    const errorMsg = '下载文件路径为空';
+                    uni.showToast({ title: errorMsg, icon: 'none' });
+                    error?.(new Error(errorMsg));
+                    return;
+                }
+
+                downloadSuccess?.(download.filename);
+
+                plus.runtime.install(
+                    download.filename,
+                    { force: true },
+                    () => {
+                        if (package_type == 1) {
+                            uni.showModal({
+                                title: '提示',
+                                content: '升级成功，请重新启动！',
+                                confirmText: '确定',
+                                showCancel: false,
+                                success: () => {
+                                    success?.();
+                                    plus.runtime.restart();
+                                },
+                            });
+                        } else {
+                            success?.();
+                        }
+                    },
+                    e => {
+                        const errorMsg = e.message || '安装失败';
+                        uni.showModal({
+                            title: '提示',
+                            content: errorMsg,
+                            showCancel: false,
+                            success: () => {
+                                error?.(e);
+                            },
+                        });
+                    }
+                );
+            } else {
+                const errorMsg = `下载失败，状态码：${status}`;
+                uni.showToast({ title: errorMsg, icon: 'none' });
+                error?.(new Error(errorMsg));
+            }
+        }
+    );
+
+    task.addEventListener('statechanged', (download: any) => {
+        if (download.state === 3 && download.totalSize > 0) {
+            const progress = Math.round((download.downloadedSize / download.totalSize) * 100);
+            onProgressUpdate?.({
+                progress,
+                totalBytesWritten: download.downloadedSize,
+                totalBytesExpectedToWrite: download.totalSize,
+            } as UniApp.OnProgressDownloadResult);
+
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                task.abort();
+                const errorMsg = '下载超时，请检查网络连接';
+                uni.showToast({ title: errorMsg, icon: 'none' });
+                error?.(new Error(errorMsg));
+            }, 300000);
+        }
+
+        if (download.state === 4 || download.state === -1) {
+            clearTimeout(timeout);
+        }
+    });
+
+    timeout = setTimeout(() => {
+        task.abort();
+        const errorMsg = '下载超时，请检查网络连接';
+        uni.showToast({ title: errorMsg, icon: 'none' });
+        error?.(new Error(errorMsg));
+    }, 300000);
+
+    task.start();
+    return task;
+    // #endif
+
+    // #ifndef APP-PLUS
+    let timeoutFallback: ReturnType<typeof setTimeout>;
 
     const downloadTask = uni.downloadFile({
         url: data.updateFile,
         success: res => {
-            clearTimeout(timeout);
+            clearTimeout(timeoutFallback);
 
             if (res.statusCode === 200) {
-                // 文件完整性检查
                 if (!res.tempFilePath) {
                     const errorMsg = '下载文件路径为空';
                     uni.showToast({ title: errorMsg, icon: 'none' });
@@ -88,7 +179,6 @@ export function download(
                                 },
                             });
                         } else {
-                            // 整包升级时，执行到此处更新并未完成，只是弹出了安装提示，无法获悉用户是否安装了更新包，若是在此处清除资源，会导致升级包被删除，后续流程无法继续执行
                             success?.();
                         }
                     },
@@ -110,33 +200,29 @@ export function download(
                 error?.(new Error(errorMsg));
             }
         },
-        fail: (err) => {
-            clearTimeout(timeout);
+        fail: err => {
+            clearTimeout(timeoutFallback);
             const errorMsg = `网络请求失败：${err.errMsg || '未知错误'}`;
             uni.showToast({ title: errorMsg, icon: 'none' });
             error?.(err);
-        }
+        },
     });
 
-    // 下载进度监控
     downloadTask.onProgressUpdate(res => {
-        // 添加进度验证
         if (res.progress >= 0 && res.progress <= 100) {
             onProgressUpdate?.(res);
         }
 
-        // 重置超时计时器
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
+        clearTimeout(timeoutFallback);
+        timeoutFallback = setTimeout(() => {
             downloadTask.abort();
             const errorMsg = '下载超时，请检查网络连接';
             uni.showToast({ title: errorMsg, icon: 'none' });
             error?.(new Error(errorMsg));
-        }, 300000); // 5分钟超时
+        }, 300000);
     });
 
-    // 初始超时设置
-    timeout = setTimeout(() => {
+    timeoutFallback = setTimeout(() => {
         downloadTask.abort();
         const errorMsg = '下载超时，请检查网络连接';
         uni.showToast({ title: errorMsg, icon: 'none' });
@@ -144,6 +230,7 @@ export function download(
     }, 300000);
 
     return downloadTask;
+    // #endif
 }
 
 // 获取设备唯一标识
@@ -186,5 +273,87 @@ export const getVersion = (appVersion: string): Promise<string> => {
                 resolve(inf.version || '');
             });
         }
+    });
+};
+
+export interface DownloadState {
+    versionCode: string;
+    updateFile: string;
+    startTime: number;
+}
+
+const DOWNLOAD_STATE_KEY = 'app_update_download_state';
+export const DOWNLOAD_TIMEOUT = 30 * 60 * 1000;
+
+export const saveDownloadState = (state: DownloadState): void => {
+    try {
+        uni.setStorageSync(DOWNLOAD_STATE_KEY, JSON.stringify(state));
+    } catch (e) {
+        console.warn('保存下载状态失败:', e);
+    }
+};
+
+export const getDownloadState = (): DownloadState | null => {
+    try {
+        const stored = uni.getStorageSync(DOWNLOAD_STATE_KEY);
+        if (stored) {
+            return JSON.parse(stored);
+        }
+    } catch (e) {
+        console.warn('读取下载状态失败:', e);
+    }
+    return null;
+};
+
+export const clearDownloadState = (): void => {
+    try {
+        uni.removeStorageSync(DOWNLOAD_STATE_KEY);
+    } catch (e) {
+        console.warn('清除下载状态失败:', e);
+    }
+};
+
+export const isDownloadStateExpired = (state: DownloadState): boolean => {
+    return Date.now() - state.startTime > DOWNLOAD_TIMEOUT;
+};
+
+export interface ExistingDownloadTask {
+    task: any;
+    state: number;
+    filename: string;
+}
+
+export const findExistingDownloadTask = (url: string): Promise<ExistingDownloadTask | null> => {
+    return new Promise(resolve => {
+        // #ifdef APP-PLUS
+        plus.downloader.enumerate((tasks: any[]) => {
+            if (!tasks || !tasks.length) {
+                resolve(null);
+                return;
+            }
+            for (let i = tasks.length - 1; i >= 0; i--) {
+                const task = tasks[i];
+                if (task.url === url) {
+                    if (task.state === 0 || task.state === 1 || task.state === 2 || task.state === 3 || task.state === 4) {
+                        resolve({ task, state: task.state, filename: task.filename || '' });
+                        return;
+                    }
+                    if (task.state === -1) {
+                        try {
+                            task.abort();
+                        } catch (_) {}
+                    }
+                    break;
+                }
+            }
+            // #endif
+            resolve(null);
+            // #ifdef APP-PLUS
+        });
+        // #endif
+
+        // #ifndef APP-PLUS
+        resolve(null);
+        // #endif
     });
 };

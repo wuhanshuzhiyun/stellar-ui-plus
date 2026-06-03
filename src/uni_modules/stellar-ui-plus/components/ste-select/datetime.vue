@@ -31,6 +31,13 @@ const emits = defineEmits<{
     (e: 'update:modelValue', selectedValue: string | number | number[]): void;
 }>();
 
+const viewloading = ref(false);
+
+const initOptions = (values = selectedValue.value) => {
+    const { options } = getDateOptions(values, props.mode as DateMode, props.minDate, props.maxDate);
+    setDataOptions(options);
+};
+
 watch(
     () => props.modelValue,
     v => {
@@ -43,16 +50,26 @@ watch(
             values = value.map(item => Number(item));
         }
         setSelectValue(values as number[]);
+        // modelValue外部变化时，同步刷新dataOptions与selectedIndex，
+        // 避免打开下拉时picker仍停留在旧值位置。
+        viewloading.value = true;
+        initOptions(values);
+        nextTick(() => {
+            const indexs: number[] = [];
+            const _values = getNowDate(values, props.mode as DateMode);
+            dataOptions.value.forEach((item, index) => {
+                let i = item.map(({ value }) => value).indexOf(_values[index]);
+                if (i === -1) {
+                    i = _values[index] > item[item.length - 1].value ? item.length - 1 : 0;
+                }
+                indexs.push(i);
+            });
+            setSelectIndex(indexs);
+            viewloading.value = false;
+        });
     },
     { immediate: true }
 );
-
-const initOptions = (values = selectedValue.value) => {
-    const { options } = getDateOptions(values, props.mode as DateMode, props.minDate, props.maxDate);
-    setDataOptions(options);
-};
-
-const viewloading = ref(false);
 
 const initSelectIndex = (values = selectedValue.value) => {
     viewloading.value = true;
@@ -91,9 +108,6 @@ watch([() => props.minDate, () => props.maxDate], () => {
     initOptions();
     initSelectIndex();
 });
-
-initOptions();
-initSelectIndex();
 </script>
 <template>
     <picker-view v-if="!viewloading" style="height: 450rpx; width: 100%" indicator-style="height: 43px" immediate-change :value="selectedIndex" @change="onChange">

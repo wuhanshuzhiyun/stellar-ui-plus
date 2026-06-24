@@ -65,6 +65,13 @@ watch(
                 indexs.push(i);
             });
             setSelectIndex(indexs);
+            // 当modelValue为空时，selectedValue也应该同步为当前日期，
+            // 并回传给父组件（useData的selected），否则点确定时value为undefined
+            if (!values.length) {
+                setSelectValue(indexs.map((i, index) => dataOptions.value[index][i].value));
+                emits('change', selectedValue.value);
+                emits('update:modelValue', selectedValue.value);
+            }
             viewloading.value = false;
         });
     },

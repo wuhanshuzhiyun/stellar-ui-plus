@@ -8,6 +8,7 @@ export interface AppUpdateProps {
     appVersion: string;
     zIndex: number;
     fallbackApiUrl: string;
+    strictVersionCheck: boolean;
 }
 
 export default {
@@ -80,6 +81,13 @@ export default {
             } catch {
                 return false;
             }
+        }
+    },
+    strictVersionCheck: {
+        type: Boolean,
+        default: false,
+        validator: (value: boolean) => {
+            return typeof value === 'boolean';
         }
     },
 } satisfies Record<keyof AppUpdateProps, any>;

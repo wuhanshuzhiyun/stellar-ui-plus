@@ -55,6 +55,12 @@
             "default": ""
         },
         {
+            "name": "strictVersionCheck",
+            "description": "严格版本检查，设为true时只有新版本大于当前版本才触发更新",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
             "name": "[event]cancel",
             "description": "取消更新时触发"
         },

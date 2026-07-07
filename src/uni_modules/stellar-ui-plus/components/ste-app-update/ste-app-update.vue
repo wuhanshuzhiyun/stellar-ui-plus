@@ -91,6 +91,20 @@ const isVersionSkipped = (versionCode: string) => {
     return skippedVersions.value.includes(versionCode);
 };
 
+const compareVersions = (newVersion: string, currentVersion: string): number => {
+    const newParts = newVersion.split('.').map(v => parseInt(v) || 0);
+    const currentParts = currentVersion.split('.').map(v => parseInt(v) || 0);
+    const maxLength = Math.max(newParts.length, currentParts.length);
+
+    for (let i = 0; i < maxLength; i++) {
+        const newPart = newParts[i] || 0;
+        const currentPart = currentParts[i] || 0;
+        if (newPart > currentPart) return 1;
+        if (newPart < currentPart) return -1;
+    }
+    return 0;
+};
+
 // 跳过当前版本
 const skipVersion = () => {
     if (!data.code) return;
@@ -206,7 +220,11 @@ const getData = async (callback?: (resVersion: { name: string; code: string; upd
                         data.name = nvs.join('.');
                     }
 
-                    if (data.updateFile && data.code !== version.value) {
+                    const shouldUpdate = props.strictVersionCheck
+                        ? compareVersions(data.name, version.value) > 0
+                        : data.code !== version.value;
+
+                    if (data.updateFile && shouldUpdate) {
                         const downloadState = getDownloadState();
                         const hasValidDownloadState = downloadState
                             && downloadState.versionCode === data.code

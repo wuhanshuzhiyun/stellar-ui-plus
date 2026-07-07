@@ -160,6 +160,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "兜底检查接口地址",
                 "type": "string",
                 "default": ""
+            },
+            {
+                "name": "strictVersionCheck",
+                "description": "严格版本检查，设为true时只有新版本大于当前版本才触发更新",
+                "type": "boolean",
+                "default": "false"
             }
         ],
         "events": [

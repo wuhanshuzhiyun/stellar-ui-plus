@@ -181,12 +181,35 @@ const getData = async (callback?: (resVersion: { name: string; code: string; upd
                         return;
                     }
 
-                    data.code = _data.data.code;
-                    data.name = _data.data.name;
-                    data.content = (_data.data.desc || '').replace(/\n+/g, '<br />');
-                    data.isForce = !!_data.data.isForce;
-                    data.updateFile = _data.data.entireFile ? _data.data.entireFile : _data.data.updateFile;
-                    data.package_type = _data.data.entireFile ? 0 : 1;
+                    const responseData = _data.data;
+                    data.code = responseData.code;
+                    data.name = responseData.name;
+                    data.content = (responseData.desc || '').replace(/\n+/g, '<br />');
+                    data.isForce = !!responseData.isForce;
+                    data.updateFile = responseData.entireFile ? responseData.entireFile : responseData.updateFile;
+                    data.package_type = responseData.entireFile ? 0 : 1;
+
+                    // strictVersionCheck 为 true 时，优先检查是否需要先升级到最近一次全量包
+                    const lastAllDetail = responseData.lastAllDetail;
+                    if (props.strictVersionCheck && lastAllDetail && lastAllDetail.entireFile && lastAllDetail.name && lastAllDetail.code) {
+                        let allName = lastAllDetail.name;
+                        if (props.appType) {
+                            const nvs = allName.split('.');
+                            const nevn = nvs[nvs.length - 1];
+                            if (props.appType === nevn) {
+                                nvs.splice(nvs.length - 1);
+                                allName = nvs.join('.');
+                            }
+                        }
+                        if (compareVersions(allName, version.value) > 0) {
+                            data.code = lastAllDetail.code;
+                            data.name = lastAllDetail.name;
+                            data.content = (lastAllDetail.desc || '').replace(/\n+/g, '<br />');
+                            data.isForce = !!lastAllDetail.isForce;
+                            data.updateFile = lastAllDetail.entireFile;
+                            data.package_type = 0;
+                        }
+                    }
 
                     // 检查是否已跳过该版本
                     if (isVersionSkipped(data.code)) {
@@ -198,8 +221,8 @@ const getData = async (callback?: (resVersion: { name: string; code: string; upd
                     callback &&
                         callback(
                             {
-                                code: _data.data.code,
-                                name: _data.data.name,
+                                code: data.code,
+                                name: data.name,
                                 updateFile: data.updateFile,
                             },
                             version.value

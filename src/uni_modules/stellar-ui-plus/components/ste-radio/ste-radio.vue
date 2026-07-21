@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { useSlots, computed, ref, watch, type CSSProperties } from 'vue';
+import { useSlots, computed, type CSSProperties } from 'vue';
 import { useColorStore } from '../../store/color';
 import utils from '../../utils/utils';
 import propsData, { RADIO_KEY, type RadioEmits } from './props';
 import type { RadioGroupProps } from '../ste-radio-group/props';
 import { useInject } from '../../utils/mixin';
 
-// 🚀 模块级别调用，所有实例共享
+// 🚀 优化: 模块级别调用，所有实例共享
 const { getColor } = useColorStore();
 const themeColor = getColor()?.steThemeColor || '#0090FF';
 
@@ -23,157 +23,135 @@ const slots = useSlots();
 
 const Parent = useInject<{ props: Required<RadioGroupProps>; updateValue: (value: string) => void }>(RADIO_KEY);
 
-// 🚀 优化: 使用 watch 而非 computed，避免频繁依赖追踪
-const parentData = ref<{ props: Required<RadioGroupProps>; updateValue: (value: string) => void } | null>(null);
+const parentProps = computed(() => Parent?.parent?.props);
 
-watch(
-    () => Parent?.parent,
-    newParent => {
-        parentData.value = newParent || null;
-    },
-    { immediate: true }
-);
-
-// 是否在 group 中
-const inGroup = computed(() => !!parentData.value);
-
-// ─── 各 prop 单独 computed，直接使用 parentData ──────────────────────────
-
-const cmpDisabled = computed(() => props.disabled ?? parentData.value?.props.disabled ?? false);
-const cmpReadonly = computed(() => props.readonly ?? parentData.value?.props.readonly ?? false);
-const cmpShape = computed(() => props.shape ?? parentData.value?.props.shape ?? 'circle');
-const cmpIconSize = computed(() => props.iconSize ?? parentData.value?.props.iconSize ?? 36);
-const cmpCheckedColor = computed(() => props.checkedColor ?? parentData.value?.props.checkedColor ?? themeColor);
-const cmpTextPosition = computed(() => props.textPosition ?? parentData.value?.props.textPosition ?? 'right');
-const cmpTextSize = computed(() => props.textSize ?? parentData.value?.props.textSize ?? 28);
-const cmpTextInactiveColor = computed(() => props.textInactiveColor ?? parentData.value?.props.textInactiveColor ?? '#000000');
-const cmpTextActiveColor = computed(() => props.textActiveColor ?? parentData.value?.props.textActiveColor ?? '#000000');
-const cmpTextDisabled = computed(() => props.textDisabled ?? parentData.value?.props.textDisabled ?? false);
-const cmpMarginLeft = computed(() => props.marginLeft ?? parentData.value?.props.marginLeft ?? '0');
-const cmpMarginRight = computed(() => props.marginRight ?? parentData.value?.props.marginRight ?? '0');
-const cmpColumnGap = computed(() => props.columnGap ?? parentData.value?.props.columnGap ?? '16');
-
-// ─── 选中状态 ───────────────────────────────────────────────────────────────
-
+// 🚀 优化: 只保留必要的 computed
 const cmpChecked = computed(() => {
-    if (inGroup.value) {
-        return parentData.value!.props.modelValue == props.name;
-    }
-    return props.modelValue == props.name;
+    return parentProps.value ? parentProps.value.modelValue == props.name : props.modelValue == props.name;
 });
 
-// ─── 根节点样式 ─────────────────────────────────────────────────────────────
-
+// 🚀 优化: 合并所有样式计算,直接调用 getDefaultData
 const cmpRootStyle = computed(() => {
+    const textSize = getDefaultData('textSize', 28);
+    const textPosition = getDefaultData('textPosition', 'right');
+    const readonly = getDefaultData('readonly', false);
+    const disabled = getDefaultData('disabled', false);
+    const textDisabled = getDefaultData('textDisabled', false);
+
     const style: CSSProperties = {
-        fontSize: `var(--font-size-${cmpTextSize.value},${utils.formatPx(cmpTextSize.value)})`,
-        color: cmpChecked.value ? cmpTextActiveColor.value : cmpTextInactiveColor.value,
-        flexDirection: cmpTextPosition.value === 'right' ? 'row' : 'row-reverse',
-        marginLeft: utils.formatPx(cmpMarginLeft.value),
-        marginRight: utils.formatPx(cmpMarginRight.value),
-        columnGap: slots.default ? utils.formatPx(cmpColumnGap.value) : '0',
+        fontSize: `var(--font-size-${textSize},${utils.formatPx(textSize)})`,
+        color: cmpChecked.value ? getDefaultData('textActiveColor', '#000000') : getDefaultData('textInactiveColor', '#000000'),
+        flexDirection: textPosition === 'right' ? 'row' : 'row-reverse',
+        marginLeft: utils.formatPx(getDefaultData('marginLeft', '0')),
+        marginRight: utils.formatPx(getDefaultData('marginRight', '0')),
+        columnGap: utils.formatPx(getDefaultData('columnGap', '16')),
     };
 
     // #ifdef H5
-    if (cmpDisabled.value || cmpReadonly.value) {
+    if (disabled || readonly) {
         style['cursor'] = 'not-allowed';
-    } else if (cmpTextDisabled.value) {
+    } else if (textDisabled) {
         style['cursor'] = 'default';
     } else {
         style['cursor'] = 'pointer';
     }
     // #endif
 
-    if (cmpTextDisabled.value) {
+    if (textDisabled) {
         style['pointerEvents'] = 'none';
     }
     return style;
 });
 
-// ─── 图标样式 ───────────────────────────────────────────────────────────────
-
 const cmpInputStyle = computed(() => {
+    const shape = getDefaultData('shape', 'circle');
+    const iconSize = getDefaultData('iconSize', 36);
+    const checkedColor = getDefaultData('checkedColor', themeColor);
+    const readonly = getDefaultData('readonly', false);
+    const disabled = getDefaultData('disabled', false);
+    const checked = cmpChecked.value;
+
     const style: CSSProperties = {
-        borderRadius: cmpShape.value === 'circle' ? '50%' : '0',
-        border: `${utils.formatPx(2)} solid ${cmpChecked.value ? cmpCheckedColor.value : '#BBBBBB'}`,
-        background: cmpChecked.value ? cmpCheckedColor.value : '#FFFFFF',
-        width: `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`,
-        height: `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`,
-        lineHeight: `var(--font-size-${cmpIconSize.value},${utils.formatPx(cmpIconSize.value)})`,
+        borderRadius: shape === 'circle' ? '50%' : '0',
+        border: `${utils.formatPx(2)} solid ${checked ? checkedColor : '#BBBBBB'}`,
+        background: checked ? checkedColor : '#FFFFFF',
+        width: `var(--font-size-${iconSize},${utils.formatPx(iconSize)})`,
+        height: `var(--font-size-${iconSize},${utils.formatPx(iconSize)})`,
+        lineHeight: `var(--font-size-${iconSize},${utils.formatPx(iconSize)})`,
     };
 
     // #ifdef H5
-    style['cursor'] = cmpDisabled.value || cmpReadonly.value ? 'not-allowed' : 'pointer';
+    style['cursor'] = disabled || readonly ? 'not-allowed' : 'pointer';
     // #endif
 
-    if (cmpDisabled.value) {
+    if (disabled) {
         style['background'] = '#eeeeee';
         style['borderColor'] = '#bbbbbb';
+    }
+
+    // 在没有使用插槽内容时去掉边距
+    if (!slots.default) {
+        style['columnGap'] = '0';
     }
     return style;
 });
 
-// ─── slotProps & icon props ─────────────────────────────────────────────────
-
+// 🚀 优化: slotProps 也直接计算
 const cmpSlotProps = computed(() => ({
     checked: cmpChecked.value,
-    disabled: cmpDisabled.value,
-    readonly: cmpReadonly.value,
+    disabled: getDefaultData('disabled', false),
+    readonly: getDefaultData('readonly', false),
 }));
 
-const cmpIconProps = computed(() => ({
-    size: (cmpIconSize.value as number) * 0.8,
-    color: cmpDisabled.value ? '#bbbbbb' : '#fff',
-}));
+// 🚀 优化: 缓存 ste-icon 需要的属性，避免模板中重复调用 getDefaultData
+const cmpIconProps = computed(() => {
+    const iconSize = getDefaultData('iconSize', 36);
+    const disabled = getDefaultData('disabled', false);
+    return {
+        size: iconSize * 0.8,
+        color: disabled ? '#bbbbbb' : '#fff',
+    };
+});
 
-// ─── 点击处理 ───────────────────────────────────────────────────────────────
+async function click() {
+    const readonly = getDefaultData('readonly', false);
+    const disabled = getDefaultData('disabled', false);
 
-// 🚀 优化: 移除 async，简化 Promise 处理
-function click() {
-    if (cmpDisabled.value || cmpReadonly.value) {
-        return;
-    }
-
-    let next = true;
-    const stop = new Promise<void>(resolve => {
-        emits(
-            'click',
-            props.modelValue,
-            () => (next = false),
-            () => resolve(),
-            () => {}
-        );
-    });
-
-    if (!next) {
-        stop.catch(() => {});
-        return;
-    }
-
-    if (!cmpChecked.value) {
-        let value = String(props.name);
-        if (inGroup.value) {
-            parentData.value!.updateValue(value);
-        } else {
-            emits('update:modelValue', value);
+    if (!disabled && !readonly) {
+        let next = true;
+        const stop = new Promise((resolve, reject) => {
+            emits(
+                'click',
+                props.modelValue,
+                () => (next = false),
+                () => resolve(props.modelValue),
+                () => reject()
+            );
+        });
+        if (!next) {
+            try {
+                await stop;
+            } catch (e) {
+                return;
+            }
         }
-        emits('change', value);
+
+        if (!cmpChecked.value) {
+            let value = String(props.name);
+            if (parentProps.value) {
+                Parent.parent?.updateValue(value);
+            } else {
+                emits('update:modelValue', value);
+            }
+            emits('change', value);
+        }
     }
 }
 
-// ─── 工具函数（保留兼容）──────────────────────────────────────────────────────
-
 type PropsKeyType = keyof typeof props;
-/**
- * 优先使用子组件自身 prop，否则读父组件 props，最后取默认值。
- * 每个独立 computed 调用此函数，响应式系统会精准追踪对应字段。
- */
 const getDefaultData = <T,>(key: PropsKeyType, defaultValue: T): T => {
     const value = props[key];
-    if (value !== undefined && value !== null && value !== '') return value as T;
-    const parentVal = parentProps.value?.[key as keyof RadioGroupProps];
-    if (parentVal !== undefined && parentVal !== null && (parentVal as any) !== '') return parentVal as T;
-    return defaultValue;
+    return value !== undefined && value !== '' ? (value as T) : defaultValue;
 };
 </script>
 
@@ -187,12 +165,10 @@ const getDefaultData = <T,>(key: PropsKeyType, defaultValue: T): T => {
             </slot>
         </view>
         <view class="text">
-            <!-- #ifndef MP -->
-            <slot :slotProps="cmpSlotProps"></slot>
-            <!-- #endif -->
             <!-- #ifdef MP -->
             <slot></slot>
             <!-- #endif -->
+            <slot :slotProps="cmpSlotProps"></slot>
         </view>
     </view>
 </template>

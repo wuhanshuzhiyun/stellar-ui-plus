@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useSlots, computed, ref, watch, onMounted, onUnmounted, type CSSProperties } from 'vue';
+import { useSlots, computed, ref, nextTick, onMounted, onUnmounted, type CSSProperties } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import utils from '../../utils/utils';
@@ -25,95 +25,77 @@ const Parent = useInject<{
     registerChild: () => number;
     unregisterChild: () => void;
 }>(CHECKBOX_KEY);
-
-// 🚀 优化: 使用 watch 而非 computed，避免频繁依赖追踪
-const parentData = ref<{
-    props: Required<CheckboxGroupProps>;
-    updateValue: (value: any[]) => void;
-    registerChild: () => number;
-    unregisterChild: () => void;
-} | null>(null);
-
-watch(
-    () => Parent?.parent,
-    newParent => {
-        parentData.value = newParent || null;
-    },
-    { immediate: true }
-);
+const parentProps = computed(() => Parent?.parent?.props);
 
 // 记录当前组件在 group 中的索引
 const childIndex = ref<number>(-1);
 
 onMounted(() => {
-    if (parentData.value?.registerChild) {
-        childIndex.value = parentData.value.registerChild();
+    if (Parent?.parent?.registerChild) {
+        childIndex.value = Parent.parent.registerChild();
     }
 });
 
 onUnmounted(() => {
-    if (parentData.value?.unregisterChild) {
-        parentData.value.unregisterChild();
+    if (Parent?.parent?.unregisterChild) {
+        Parent.parent.unregisterChild();
     }
 });
 
-// 🚀 优化: 缓存 themeColor
+// 🚀 优化: 缓存 themeColor,避免每次调用 getColor()
 const themeColor = getColor().steThemeColor;
 
 // 强制更新选中状态
-const num = ref(1);
+let num = ref(1);
 
-// 是否在 group 中
-const inGroup = computed(() => !!parentData.value);
-
-// 🚀 优化: 只保留必要的 computed，直接使用 parentData.value
+// 🚀 优化: 只保留必要的 computed
 const cmpChecked = computed(() => {
-    if (inGroup.value) {
-        return num.value > 0 && parentData.value!.props.modelValue.includes(props.name);
-    }
-    return props.modelValue;
+    let v = num.value && parentProps.value ? parentProps.value.modelValue.includes(props.name) : props.modelValue;
+    return v;
 });
 
 const cmpDisabled = computed(() => {
-    let disabled = props.disabled ?? parentData.value?.props.disabled ?? false;
+    let disabled = getDefaultData('disabled', false);
     // 限制最大可选数
-    if (inGroup.value && parentData.value!.props.max > 0) {
-        if (!cmpChecked.value && parentData.value!.props.modelValue.length >= parentData.value!.props.max) {
+    if (parentProps.value && parentProps.value.max) {
+        if (!cmpChecked.value && parentProps.value.modelValue.length >= parentProps.value.max) {
             disabled = true;
         }
     }
     return disabled;
 });
 
-// 🚀 优化: 合并所有样式计算
+// 🚀 优化: 合并所有样式计算,直接调用 getDefaultData
 const cmpRootStyle = computed(() => {
-    const textSize = props.textSize ?? parentData.value?.props.textSize ?? 28;
-    const textPosition = props.textPosition ?? parentData.value?.props.textPosition ?? 'right';
-    const readonly = props.readonly ?? parentData.value?.props.readonly ?? false;
-    const textDisabled = props.textDisabled ?? parentData.value?.props.textDisabled ?? false;
+    const textSize = getDefaultData('textSize', 28);
+    const textPosition = getDefaultData('textPosition', 'right');
+    const readonly = getDefaultData('readonly', false);
+    const textDisabled = getDefaultData('textDisabled', false);
 
-    let marginLeft = props.marginLeft ?? parentData.value?.props.marginLeft ?? '0';
-    let marginRight = props.marginRight ?? parentData.value?.props.marginRight ?? '0';
+    let marginLeft = getDefaultData('marginLeft', '0');
+    let marginRight = getDefaultData('marginRight', '0');
 
     // 如果在 checkbox-group 中，并且不是第一个元素，自动应用间距
-    if (inGroup.value && childIndex.value > 0 && marginLeft === '0') {
-        const direction = parentData.value!.props.direction || 'column';
+    if (parentProps.value && childIndex.value > 0 && marginLeft === '0') {
+        const direction = parentProps.value.direction || 'column';
+
         if (direction === 'row') {
+            // 横向排列时，设置左间距 16rpx
             marginLeft = '16';
         }
     }
 
     const style: CSSProperties = {
         fontSize: `var(--font-size-${textSize},${utils.formatPx(textSize)})`,
-        color: cmpChecked.value ? (props.textActiveColor ?? parentData.value?.props.textActiveColor ?? '#000000') : (props.textInactiveColor ?? parentData.value?.props.textInactiveColor ?? '#000000'),
+        color: cmpChecked.value ? getDefaultData('textActiveColor', '#000000') : getDefaultData('textInactiveColor', '#000000'),
         flexDirection: textPosition === 'right' ? 'row' : 'row-reverse',
         marginLeft: utils.formatPx(marginLeft),
         marginRight: utils.formatPx(marginRight),
     };
 
     // 纵向排列时，设置上间距 16rpx
-    if (inGroup.value && childIndex.value > 0) {
-        const direction = parentData.value!.props.direction || 'column';
+    if (parentProps.value && childIndex.value > 0) {
+        const direction = parentProps.value.direction || 'column';
         if (direction === 'column') {
             style.marginTop = '16rpx';
         }
@@ -137,17 +119,16 @@ const cmpRootStyle = computed(() => {
 });
 
 const cmpIconStyle = computed(() => {
-    const columnGap = props.columnGap ?? parentData.value?.props.columnGap ?? '16';
     return {
-        marginRight: utils.formatPx(columnGap),
+        marginRight: utils.formatPx(getDefaultData('columnGap', '16')),
     } as CSSProperties;
 });
 
 const cmpInputStyle = computed(() => {
-    const shape = props.shape ?? parentData.value?.props.shape ?? 'circle';
-    const iconSize = props.iconSize ?? parentData.value?.props.iconSize ?? 36;
-    const checkedColor = props.checkedColor ?? parentData.value?.props.checkedColor ?? themeColor;
-    const readonly = props.readonly ?? parentData.value?.props.readonly ?? false;
+    const shape = getDefaultData('shape', 'circle');
+    const iconSize = getDefaultData('iconSize', 36);
+    const checkedColor = getDefaultData('checkedColor', themeColor);
+    const readonly = getDefaultData('readonly', false);
     const checked = cmpChecked.value;
 
     const style: CSSProperties = {
@@ -180,7 +161,7 @@ const cmpInputStyle = computed(() => {
 const cmpSlotProps = computed(() => ({
     checked: cmpChecked.value,
     disabled: cmpDisabled.value,
-    readonly: props.readonly ?? parentData.value?.props.readonly ?? false,
+    readonly: getDefaultData('readonly', false),
 }));
 
 const cmpIconMargin = computed(() => {
@@ -193,9 +174,41 @@ const cmpIconMargin = computed(() => {
     // #endif
 });
 
-// 🚀 优化: 简化点击处理，移除 batchedUpdate 和不必要的 async/await
-const handleClick = () => {
-    const readonly = props.readonly ?? parentData.value?.props.readonly ?? false;
+// 批处理更新相关
+const isBatchUpdating = ref(false);
+const pendingUpdate = ref(false);
+
+// 批处理更新函数
+const batchedUpdate = async (updateFn: () => Promise<void>) => {
+    if (isBatchUpdating.value) {
+        pendingUpdate.value = true;
+        return;
+    }
+
+    isBatchUpdating.value = true;
+
+    try {
+        await updateFn();
+    } finally {
+        await nextTick();
+        isBatchUpdating.value = false;
+
+        // 处理待处理的更新
+        if (pendingUpdate.value) {
+            pendingUpdate.value = false;
+            // 如果有待处理的更新，延迟一帧再处理
+            requestAnimationFrame(() => {
+                if (!isBatchUpdating.value) {
+                    handleClick();
+                }
+            });
+        }
+    }
+};
+
+// 实际的点击处理逻辑
+const handleClick = async () => {
+    const readonly = getDefaultData('readonly', false);
 
     if (cmpDisabled.value || readonly) {
         return;
@@ -213,20 +226,23 @@ const handleClick = () => {
     });
 
     if (!next) {
-        stop.catch(() => {});
-        return;
+        try {
+            await stop;
+        } catch (e) {
+            return;
+        }
     }
 
     let value: boolean | any[];
-    if (inGroup.value) {
+    if (parentProps.value) {
         // 使用浅拷贝避免直接修改原数组
-        value = [...parentData.value!.props.modelValue];
+        value = [...parentProps.value.modelValue];
         if (cmpChecked.value) {
             value = value.filter(v => v !== props.name);
         } else {
             value.push(props.name);
         }
-        parentData.value!.updateValue(value);
+        Parent.parent?.updateValue(value);
         num.value++;
     } else {
         value = !cmpChecked.value;
@@ -236,21 +252,14 @@ const handleClick = () => {
 };
 
 const click = () => {
-    handleClick();
+    batchedUpdate(handleClick);
 };
 
-// 获取配置值的快捷方法（保留兼容）
 type PropsKeyType = keyof typeof props;
 const getDefaultData = <T,>(key: PropsKeyType, defaultValue: T): T => {
     const value = props[key];
-    if (value !== undefined && value !== null && value !== '') return value as T;
-    const parentVal = parentData.value?.props[key as keyof typeof props];
-    if (parentVal !== undefined && parentVal !== null && parentVal !== '') return parentVal as T;
-    return defaultValue;
+    return value !== undefined && value !== '' ? (value as T) : defaultValue;
 };
-
-// 图标大小（用于模板中）
-const iconSize = computed(() => props.iconSize ?? parentData.value?.props.iconSize ?? 36);
 </script>
 
 <template>
@@ -258,7 +267,7 @@ const iconSize = computed(() => props.iconSize ?? parentData.value?.props.iconSi
         <view class="icon" :style="[cmpIconStyle]">
             <slot name="icon" :slotProps="cmpSlotProps">
                 <view class="input-icon" :style="[cmpInputStyle]">
-                    <ste-icon v-if="cmpChecked" :size="iconSize * 0.8" code="&#xe67a;" :color="cmpDisabled ? '#bbbbbb' : '#fff'" bold :marginBottom="cmpIconMargin" />
+                    <ste-icon v-if="cmpChecked" :size="getDefaultData('iconSize', 36) * 0.8" code="&#xe67a;" :color="cmpDisabled ? '#bbbbbb' : '#fff'" bold :marginBottom="cmpIconMargin" />
                 </view>
             </slot>
         </view>

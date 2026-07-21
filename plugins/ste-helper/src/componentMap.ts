@@ -163,7 +163,7 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "strictVersionCheck",
-                "description": "严格版本检查，设为true时只有新版本大于当前版本才触发更新",
+                "description": "严格版本检查，设为true时只有新版本大于当前版本才触发更新；开启后若服务端返回lastAllDetail且当前版本低于最后一次全量包版本，会优先使用全量包(apk)升级",
                 "type": "boolean",
                 "default": "false"
             }

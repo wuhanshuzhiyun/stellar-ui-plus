@@ -191,17 +191,8 @@ const getData = async (callback?: (resVersion: { name: string; code: string; upd
 
                     // strictVersionCheck 为 true 时，优先检查是否需要先升级到最近一次全量包
                     const lastAllDetail = responseData.lastAllDetail;
-                    if (props.strictVersionCheck && lastAllDetail && lastAllDetail.entireFile && lastAllDetail.name && lastAllDetail.code) {
-                        let allName = lastAllDetail.name;
-                        if (props.appType) {
-                            const nvs = allName.split('.');
-                            const nevn = nvs[nvs.length - 1];
-                            if (props.appType === nevn) {
-                                nvs.splice(nvs.length - 1);
-                                allName = nvs.join('.');
-                            }
-                        }
-                        if (compareVersions(allName, version.value) > 0) {
+                    if (props.strictVersionCheck && lastAllDetail && lastAllDetail.entireFile && lastAllDetail.code) {
+                        if (compareVersions(lastAllDetail.code, version.value) > 0) {
                             data.code = lastAllDetail.code;
                             data.name = lastAllDetail.name;
                             data.content = (lastAllDetail.desc || '').replace(/\n+/g, '<br />');
@@ -630,7 +621,7 @@ defineExpose({
                             下载完成，准备安装...
                         </text>
                         <text class="update-down-msg" v-else>正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize
-                            }}MB)</text>
+                        }}MB)</text>
                     </view>
 
                     <button v-if="!tempFilePath && !data.isForce" class="cancel-download-btn"

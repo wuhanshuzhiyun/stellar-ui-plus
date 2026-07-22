@@ -244,7 +244,7 @@ const getData = async (callback?: (resVersion: { name: string; code: string; upd
                     }
 
                     const shouldUpdate = props.strictVersionCheck
-                        ? compareVersions(data.name, version.value) > 0
+                        ? compareVersions(data.code, version.value) > 0
                         : data.code !== version.value;
 
                     if (data.updateFile && shouldUpdate) {
@@ -427,9 +427,14 @@ const resumeDownloadProgress = (task: any) => {
 
     if (task.state === 3) {
         progressPollTimer = setInterval(updateProgress, 500);
+        try {
+            task.start();
+        } catch (e) {
+            console.warn('尝试重启下载任务:', e);
+        }
     }
 
-    if (task.state === 0) {
+    if (task.state === 0 || task.state === 1 || task.state === 2) {
         task.start();
     }
     // #endif

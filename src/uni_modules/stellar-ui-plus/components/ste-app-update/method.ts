@@ -21,6 +21,7 @@ export interface ResponseData {
     createUserName: string;
     updateUserName: string;
     createDeptName: string;
+    lastAllDetail: any;
 }
 
 export interface ClientData {

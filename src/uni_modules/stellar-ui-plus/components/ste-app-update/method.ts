@@ -277,47 +277,6 @@ export const getVersion = (appVersion: string): Promise<string> => {
     });
 };
 
-export interface DownloadState {
-    versionCode: string;
-    updateFile: string;
-    startTime: number;
-}
-
-const DOWNLOAD_STATE_KEY = 'app_update_download_state';
-export const DOWNLOAD_TIMEOUT = 30 * 60 * 1000;
-
-export const saveDownloadState = (state: DownloadState): void => {
-    try {
-        uni.setStorageSync(DOWNLOAD_STATE_KEY, JSON.stringify(state));
-    } catch (e) {
-        console.warn('保存下载状态失败:', e);
-    }
-};
-
-export const getDownloadState = (): DownloadState | null => {
-    try {
-        const stored = uni.getStorageSync(DOWNLOAD_STATE_KEY);
-        if (stored) {
-            return JSON.parse(stored);
-        }
-    } catch (e) {
-        console.warn('读取下载状态失败:', e);
-    }
-    return null;
-};
-
-export const clearDownloadState = (): void => {
-    try {
-        uni.removeStorageSync(DOWNLOAD_STATE_KEY);
-    } catch (e) {
-        console.warn('清除下载状态失败:', e);
-    }
-};
-
-export const isDownloadStateExpired = (state: DownloadState): boolean => {
-    return Date.now() - state.startTime > DOWNLOAD_TIMEOUT;
-};
-
 export interface ExistingDownloadTask {
     task: any;
     state: number;

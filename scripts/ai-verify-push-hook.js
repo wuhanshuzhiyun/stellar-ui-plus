@@ -219,9 +219,17 @@ async function main() {
   const platforms = platformsRaw.split(',').map((s) => s.trim()).filter(Boolean);
   let requested = 0;
   let failed = 0;
+  let totalChanged = 0;
+  let excludedCount = 0;
+  let nonReviewableCount = 0;
   for (const r of refs) {
     const paths = changedPaths(r.localSha, r.remoteSha);
     if (!paths.length) continue;
+    totalChanged += paths.length;
+    for (const p of paths) {
+      if (isExcluded(p)) excludedCount++;
+      else if (!REVIEWABLE_EXT.test(p)) nonReviewableCount++;
+    }
     if (!paths.some((p) => REVIEWABLE_EXT.test(p))) continue;
     const files = collectReviewFiles(r.localSha, paths);
     if (!files.length) continue;
@@ -268,7 +276,15 @@ async function main() {
 
   let tail;
   if (requested === 0 && failed === 0) {
-    tail = '本次 push 处理完成：无代码文件变更，未发起评审请求。';
+    if (totalChanged === 0) {
+      tail = '本次 push 处理完成：推送区间内无文件变更，未发起评审请求。';
+    } else {
+      tail =
+        `本次 push 处理完成：共 ${totalChanged} 个变更文件，` +
+        `${excludedCount} 个位于排除目录（${EXCLUDE_PREFIXES.join(' / ')} 等）、` +
+        `${nonReviewableCount} 个为非源码类型（.json/.md 等），` +
+        `无进入 AI 审查的源码文件（.vue/.js/.ts…），未发起评审请求。`;
+    }
   } else if (failed > 0) {
     tail =
       `本次 push 处理完成：已发出 ${requested} 次请求，${failed} 次失败` +

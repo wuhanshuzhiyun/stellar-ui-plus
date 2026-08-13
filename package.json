@@ -110,7 +110,8 @@
         "vue-tsc": "^1.8.27"
     },
     "simple-git-hooks": {
-        "pre-commit": "pnpm lint-staged"
+        "pre-commit": "node node_modules/lint-staged/bin/lint-staged.js && node scripts/compat-check.js && node scripts/ai-verify-hook.js",
+        "pre-push": "node scripts/ai-verify-push-hook.js"
     },
     "lint-staged": {
         "*.vue": "prettier --write",

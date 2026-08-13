@@ -1,0 +1,10 @@
+{
+  "serverUrl": "https://stellar-ui.intecloud.com.cn/verify/review",
+  "apiToken": "",
+  "platforms": ["MP-WEIXIN", "MP-ALIPAY", "MP-TOUTIAO", "MP-QQ", "H5", "APP-PLUS", "APP"],
+  "blockOnError": 1,
+  "requireServer": 0,
+  "timeout": 90000,
+  "maxDiff": 200000,
+  "exclude": ["scripts/", "node_modules/", "dist/", "unpackage/"]
+}

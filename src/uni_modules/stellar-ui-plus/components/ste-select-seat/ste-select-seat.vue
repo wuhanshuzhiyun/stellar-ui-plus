@@ -296,6 +296,24 @@ const clampTranslate = (x: number, y: number, scale = touchHandler.scale) => {
     };
 };
 
+const aisleRows = computed(() => {
+    const rows = new Set<number>();
+    if (!safeCols.value) return rows;
+
+    for (let row = 0; row < safeRows.value; row++) {
+        let isAisle = true;
+        for (let col = 0; col < safeCols.value; col++) {
+            if (!getSeat(row, col)?.empty) {
+                isAisle = false;
+                break;
+            }
+        }
+        if (isAisle) rows.add(row);
+    }
+
+    return rows;
+});
+
 const rowLabelItems = computed(() => {
     if (!props.showRowLabels) return [];
     return buildRowLabelItems({
@@ -305,6 +323,7 @@ const rowLabelItems = computed(() => {
         seatGap: seatGapPx.value,
         translateY: viewportTranslateY.value,
         scale: viewportScale.value,
+        hiddenRows: aisleRows.value,
     });
 });
 
@@ -367,6 +386,8 @@ watch(
     () => [
         props.modelValue,
         props.seats,
+        props.emptyRows,
+        props.emptyCols,
         props.rows,
         props.cols,
         props.width,
@@ -450,7 +471,7 @@ defineExpose({
         <view v-if="props.showRowLabels" class="row-label-overlay" :class="{ 'is-visible': rowLabelsVisible }">
             <view class="row-label-track" :style="rowLabelTrackStyle" />
             <view v-for="item in rowLabelItems" :key="item.row" class="row-label-item" :style="item.style">
-                {{ item.row + 1 }}
+                {{ item.label }}
             </view>
         </view>
     </view>

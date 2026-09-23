@@ -55,6 +55,21 @@
 </script>
 ```
 
+## 配置整行、整列过道
+
+`emptyRows`、`emptyCols` 可直接配置整行或整列空位，坐标均从 `0` 开始，无需在业务代码中为过道逐格生成 `seats`。
+
+```html
+<template>
+    <!-- 第 6 行、以及第 10 和第 11 列为过道 -->
+    <ste-select-seat v-model="selected" :rows="12" :cols="20" :empty-rows="[5]" :empty-cols="[9, 10]" />
+</template>
+```
+
+- 命中空行或空列的座位始终为 `empty: true`，优先于同坐标的 `seats` 配置。
+- 空行会保留纵向过道空间；左侧行号跳过空行，后续座位行号连续显示。
+- 空列会保留横向过道空间，不影响行号。
+
 ## 预选座位
 
 预选本质上就是给 `v-model` 初始值。这里的坐标只表示“已选状态”，不负责定义座位是否禁用、是否留空。
@@ -156,10 +171,10 @@
     const vipSeatSet = new Set(vipSeatCoords.map(toSeatKey));
     const coupleSeatSet = new Set(coupleSeatCoords.map(toSeatKey));
 
-    const isAisleCol = (col: number) => col === 9 || col === 10;
+    const emptyCols = [9, 10];
     const isFrontSideGap = (row: number, col: number) => (row === 0 || row === 1) && (col <= 1 || col >= 18);
     const isBackCornerGap = (row: number, col: number) => row === 11 && (col === 0 || col === 19);
-    const isEmptySeat = (row: number, col: number) => isAisleCol(col) || isFrontSideGap(row, col) || isBackCornerGap(row, col);
+    const isEmptySeat = (row: number, col: number) => isFrontSideGap(row, col) || isBackCornerGap(row, col);
 
     const seats = computed<SteSelectSeatItem[]>(() => {
         const list: SteSelectSeatItem[] = [];
@@ -212,6 +227,7 @@
             :seat-gap="6"
             :border-radius="8"
             :seats="seats"
+            :empty-cols="emptyCols"
             selected-bg-color="#2d6cdf"
             @move="onMove"
         />
@@ -242,6 +258,7 @@
 - 某个座位是已售：应在 `seats` 中配置 `disabled: true`
 - 某个座位默认选中：应在 `modelValue` 中写入对应坐标
 - 某个位置是过道：应在 `seats` 中配置 `empty: true`
+- 整行或整列过道：应使用 `emptyRows`、`emptyCols` 配置
 
 ## 注意事项
 
@@ -251,13 +268,16 @@
 - `setSeat()` 同样会校验坐标合法性，越界或非法时不会生效。
 - `empty: true` 的位置不会渲染，也不会触发点击。
 - `disabled: true` 的位置会渲染，但不可选、不会切换选中状态。
+- `emptyRows`、`emptyCols` 中的值必须是合法的 `row`、`col` 坐标；非法值会被忽略并输出告警。
+- 命中 `emptyRows` 或 `emptyCols` 的位置始终为空位，优先于 `seats` 和 `setSeat()` 配置。
+- 空行会保留为过道；左侧行号不显示该行，后续座位行号连续递增，但 `row` 坐标不变。
 - `width`、`height` 决定可视区域大小；如果座位图较大，建议配合拖拽缩放使用。
 - `showRowLabels` 适合影院、车厢等纵向较长的座位图场景，小型座位图可关闭以减少干扰。
 
 ## 使用建议
 
 - 普通场景只传 `rows`、`cols`、`v-model` 即可。
-- 有过道、不可售、分区价格时，再补充 `seats`。
+- 有整行、整列过道时优先使用 `emptyRows`、`emptyCols`；不可售、分区价格等再补充 `seats`。
 - 如果需要“银幕跟随”“顶部浮层跟随”等效果，监听 `move` 事件即可。
 - 如果业务里存在实时锁座、出票状态刷新，建议用 `setSeat()` 做局部更新，而不是每次重建整张座位图。
 

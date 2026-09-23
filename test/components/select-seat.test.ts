@@ -10,6 +10,8 @@ describe('SelectSeat', () => {
         expect(wrapper.props('height')).toBe(400);
         expect(wrapper.props('seatSize')).toBe(40);
         expect(wrapper.props('seatGap')).toBe(8);
+        expect(wrapper.props('emptyRows')).toEqual([]);
+        expect(wrapper.props('emptyCols')).toEqual([]);
         expect(wrapper.props('showRowLabels')).toBe(true);
     });
 
@@ -73,6 +75,49 @@ describe('SelectSeat', () => {
             props: { rows: 2, cols: 2, seats },
         });
         expect(wrapper.props('seats')).toEqual(seats);
+    });
+
+    test('skips a full empty row in visible row labels', () => {
+        const wrapper = mount(steSelectSeat, {
+            props: {
+                rows: 4,
+                cols: 2,
+                seats: [
+                    { row: 1, col: 0, empty: true },
+                    { row: 1, col: 1, empty: true },
+                ],
+            },
+        });
+
+        expect(wrapper.findAll('.row-label-item').map(item => item.text())).toEqual(['1', '2', '3']);
+    });
+
+    test('emptyRows and emptyCols override seats and setSeat', () => {
+        const wrapper = mount(steSelectSeat, {
+            props: {
+                rows: 3,
+                cols: 4,
+                emptyRows: [1],
+                emptyCols: [2],
+                seats: [
+                    { row: 1, col: 0, bgColor: '#ff0000' },
+                    { row: 0, col: 2, bgColor: '#00ff00' },
+                ],
+            },
+        });
+        const instance = wrapper.vm as unknown as {
+            getSeats: () => Array<{ row: number; col: number; empty?: boolean }>;
+            setSeat: (row: number, col: number, data: { empty?: boolean }) => void;
+        };
+        const findSeat = (row: number, col: number) => instance.getSeats().find(item => item.row === row && item.col === col);
+
+        expect(findSeat(1, 0)?.empty).toBe(true);
+        expect(findSeat(0, 2)?.empty).toBe(true);
+        expect(findSeat(2, 2)?.empty).toBe(true);
+        expect(wrapper.findAll('.row-label-item').map(item => item.text())).toEqual(['1', '2']);
+
+        instance.setSeat(1, 0, { empty: false });
+        expect(findSeat(1, 0)?.empty).toBe(true);
     });
 
     test('emit update:modelValue on seat-click', async () => {

@@ -6,6 +6,8 @@ export function useData(props: {
   rows: number
   cols: number
   seats: SteSelectSeatItem[]
+  emptyRows: number[]
+  emptyCols: number[]
   modelValue: SteSelectSeatValue[]
 }) {
   // 内部座位数据 Map: `${row}-${col}` => SteSelectSeatItem
@@ -21,7 +23,13 @@ export function useData(props: {
   }
 
   const getGridSize = () => {
-    const shouldWarn = props.rows !== 0 || props.cols !== 0 || props.seats.length > 0 || props.modelValue.length > 0
+    const shouldWarn =
+      props.rows !== 0 ||
+      props.cols !== 0 ||
+      props.seats.length > 0 ||
+      props.emptyRows.length > 0 ||
+      props.emptyCols.length > 0 ||
+      props.modelValue.length > 0
     const { rows, cols } = getSafeGridSize(props.rows, props.cols)
 
     if (!rows && shouldWarn) {
@@ -48,6 +56,22 @@ export function useData(props: {
     return { ...seat }
   }
 
+  const normalizeEmptyIndexes = (values: number[], size: number, propName: 'emptyRows' | 'emptyCols') => {
+    const indexes = new Set<number>()
+    values.forEach((value, index) => {
+      if (!isInteger(value) || value < 0 || value >= size) {
+        warn(`${propName}[${index}] 应为 0 到 ${size - 1} 的整数，当前值为 ${String(value)}，已忽略`)
+        return
+      }
+      indexes.add(value)
+    })
+    return indexes
+  }
+
+  const isConfiguredEmpty = (row: number, col: number) => {
+    return props.emptyRows.includes(row) || props.emptyCols.includes(col)
+  }
+
   // 初始化座位数据
   const initSeats = () => {
     const { rows, cols } = getGridSize()
@@ -57,6 +81,9 @@ export function useData(props: {
       seatMap.value = map
       return
     }
+
+    const emptyRows = normalizeEmptyIndexes(props.emptyRows, rows, 'emptyRows')
+    const emptyCols = normalizeEmptyIndexes(props.emptyCols, cols, 'emptyCols')
 
     if (props.seats && props.seats.length > 0) {
       for (let index = 0; index < props.seats.length; index++) {
@@ -71,11 +98,14 @@ export function useData(props: {
       }
     }
 
-    // 补齐 rows*cols 中未定义的座位
+    // 空行/列优先于 seats；其他位置补齐为默认座位。
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const key = getKey(r, c)
-        if (!map.has(key)) {
+        const seat = map.get(key)
+        if (emptyRows.has(r) || emptyCols.has(c)) {
+          map.set(key, { ...(seat || { row: r, col: c }), row: r, col: c, empty: true })
+        } else if (!seat) {
           map.set(key, { row: r, col: c })
         }
       }
@@ -106,11 +136,8 @@ export function useData(props: {
 
     const key = getKey(row, col)
     const existing = seatMap.value.get(key)
-    if (existing) {
-      seatMap.value.set(key, { ...existing, ...data })
-    } else {
-      seatMap.value.set(key, { row, col, ...data })
-    }
+    const nextSeat = existing ? { ...existing, ...data } : { row, col, ...data }
+    seatMap.value.set(key, isConfiguredEmpty(row, col) ? { ...nextSeat, empty: true } : nextSeat)
     // 触发响应式更新
     seatMap.value = new Map(seatMap.value)
   }
@@ -159,9 +186,9 @@ export function useData(props: {
     return newValue
   }
 
-  // 监听 seats 和 rows/cols 变化重新初始化
+  // 监听座位与空行/列配置变化重新初始化
   watch(
-    () => [props.seats, props.rows, props.cols],
+    () => [props.seats, props.emptyRows, props.emptyCols, props.rows, props.cols],
     () => initSeats(),
     { immediate: true, deep: true },
   )

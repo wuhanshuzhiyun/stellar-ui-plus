@@ -14,6 +14,10 @@ export default {
   height: { type: Number, default: 400 },
   // 自定义座位数据
   seats: { type: Array as PropType<SteSelectSeatItem[]>, default: () => [] },
+  // 整行空位坐标（从 0 开始）
+  emptyRows: { type: Array as PropType<number[]>, default: () => [] },
+  // 整列空位坐标（从 0 开始）
+  emptyCols: { type: Array as PropType<number[]>, default: () => [] },
   // 座位尺寸(rpx)
   seatSize: { type: Number, default: 40 },
   // 座位间距(rpx)

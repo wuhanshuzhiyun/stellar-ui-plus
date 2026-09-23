@@ -11,6 +11,7 @@ export interface SteSelectSeatViewport {
 
 export interface SteSelectSeatRowLabelItem {
   row: number
+  label: number
   top: number
   rowHeight: number
   style: {
@@ -128,15 +129,22 @@ export const buildRowLabelItems = (params: {
   seatGap: number
   translateY: number
   scale: number
+  hiddenRows?: ReadonlySet<number>
 }): SteSelectSeatRowLabelItem[] => {
-  const { rows, height, seatSize, seatGap, translateY, scale } = params
+  const { rows, height, seatSize, seatGap, translateY, scale, hiddenRows } = params
   const rowHeight = seatSize * scale
   const fontSize = Math.max(10, Math.min(13, rowHeight * 0.3))
+  const items: SteSelectSeatRowLabelItem[] = []
+  let label = 0
 
-  return Array.from({ length: rows }, (_, row) => {
+  for (let row = 0; row < rows; row++) {
+    if (hiddenRows?.has(row)) continue
+
+    label += 1
     const top = (row * (seatSize + seatGap) + seatGap / 2 + translateY) * scale
-    return {
+    items.push({
       row,
+      label,
       top,
       rowHeight,
       style: {
@@ -145,8 +153,10 @@ export const buildRowLabelItems = (params: {
         lineHeight: `${rowHeight}px`,
         fontSize: `${fontSize}px`,
       },
-    }
-  }).filter(item => item.top + rowHeight > 0 && item.top < height)
+    })
+  }
+
+  return items.filter(item => item.top + rowHeight > 0 && item.top < height)
 }
 
 export const getRowLabelTrackStyle = (items: SteSelectSeatRowLabelItem[], height: number) => {

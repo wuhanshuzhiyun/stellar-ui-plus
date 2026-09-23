@@ -86,10 +86,10 @@ const soldSeatSet = createSeatKeySet(soldSeatCoords);
 const vipSeatSet = createSeatKeySet(vipSeatCoords);
 const coupleSeatSet = createSeatKeySet(coupleSeatCoords);
 
-const isAisleCol = (col: number) => col === 9 || col === 10;
+const emptyCols = [9, 10];
 const isFrontSideGap = (row: number, col: number) => (row === 0 || row === 1) && (col <= 1 || col >= 18);
 const isBackCornerGap = (row: number, col: number) => row === 11 && (col === 0 || col === 19);
-const isEmptySeat = (row: number, col: number) => isAisleCol(col) || isFrontSideGap(row, col) || isBackCornerGap(row, col);
+const isEmptySeat = (row: number, col: number) => isFrontSideGap(row, col) || isBackCornerGap(row, col);
 const isSoldSeat = (row: number, col: number) => soldSeatSet.has(toSeatKey({ row, col }));
 const isVipSeat = (row: number, col: number) => vipSeatSet.has(toSeatKey({ row, col }));
 const isCoupleSeat = (row: number, col: number) => coupleSeatSet.has(toSeatKey({ row, col }));
@@ -206,6 +206,7 @@ const onMove = (event: SteSelectSeatMoveEvent) => {
                         :width="stageWidth"
                         :height="stageHeight"
                         :seats="seats"
+                        :empty-cols="emptyCols"
                         :seat-size="seatSize"
                         :seat-gap="seatGap"
                         :border-radius="8"

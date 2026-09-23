@@ -55,10 +55,22 @@
             "default": "结束"
         },
         {
+            "name": "showRangeText",
+            "description": "是否展示范围选择器的起止文案（如“开始”、“结束”），为 false 时释放上下占位空间缩小单元格",
+            "type": "boolean",
+            "default": true
+        },
+        {
             "name": "color",
             "description": "主题颜色（选中日期背景、周末文日期颜色和确定按钮）",
             "type": "string",
             "default": "#0090FF"
+        },
+        {
+            "name": "rangeColor",
+            "description": "范围选择器区间背景色（不含起止日期，为空时默认取主题色 0.2 透明度）",
+            "type": "string",
+            "default": ""
         },
         {
             "name": "minDate",

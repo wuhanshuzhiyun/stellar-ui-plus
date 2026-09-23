@@ -17,6 +17,8 @@ const show10 = ref(false);
 const show11 = ref(false);
 const show12 = ref(false);
 const show13 = ref(false);
+const show14 = ref(false);
+const show15 = ref(false);
 let taost = useToast();
 const handleConfirm = (v: (string | number)[]) => {
     taost.showToast({
@@ -102,6 +104,22 @@ const signs = reactive<{ [key: string]: SignType }>({
                     <ste-popup v-model:show="show5" height="60vh" position="bottom">
                         <div style="padding-bottom: 20px; height: 100%">
                             <ste-calendar mode="range" title="酒店预约" startText="住店" endText="离店" @confirm="handleConfirm" />
+                        </div>
+                    </ste-popup>
+                </view>
+                <view class="demo-code">
+                    <ste-button @click="show14 = true" width="100%">隐藏区间文案</ste-button>
+                    <ste-popup v-model:show="show14" height="60vh" position="bottom">
+                        <div style="padding-bottom: 20px; height: 100%">
+                            <ste-calendar mode="range" :showRangeText="false" @confirm="handleConfirm" />
+                        </div>
+                    </ste-popup>
+                </view>
+                <view class="demo-code">
+                    <ste-button @click="show15 = true" width="100%">自定义区间背景色</ste-button>
+                    <ste-popup v-model:show="show15" height="60vh" position="bottom">
+                        <div style="padding-bottom: 20px; height: 100%">
+                            <ste-calendar mode="range" color="#0284c7" rangeColor="#e0f2fe" @confirm="handleConfirm" />
                         </div>
                     </ste-popup>
                 </view>

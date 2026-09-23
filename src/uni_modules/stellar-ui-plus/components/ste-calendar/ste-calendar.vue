@@ -14,25 +14,56 @@ const props = defineProps(propsData);
 // 常量定义
 const ROW_HEIGHT_WITH_SIGN = 180;
 const ROW_HEIGHT_WITHOUT_SIGN = 126;
+// 释放起止文案占位空间后的紧凑单元格行高
+const ROW_HEIGHT_COMPACT = 80;
 const MONTH_HEADER_HEIGHT = 80;
 const VIEW_MONTH_DELAY = 50;
 const SHOW_MONTH_DELAY = 100;
 
+/** 是否展示自定义标签 */
 const cmpShowSigns = computed(() => {
     return Object.keys(props.signs).length > 0;
 });
+
+/**
+ * 是否展示区间选择文本（如“开始”、“结束”）
+ * 当 showRangeText 为 true 且至少设置了 startText 或 endText 时展示
+ */
+const cmpShowRangeText = computed(() => {
+    if (!props.showRangeText) return false;
+    return Boolean(props.startText || props.endText);
+});
+
+/**
+ * 单元格单行行高计算：
+ * 1. 存在标签（signs）时采用 180rpx；
+ * 2. 无标签且不需要展示区间文案时，释放上下各 24rpx 预留空间，采用紧凑高度 80rpx；
+ * 3. 其余情况使用默认行高 126rpx。
+ */
+const cmpRowHeight = computed(() => {
+    if (cmpShowSigns.value) {
+        return ROW_HEIGHT_WITH_SIGN;
+    }
+    if (!cmpShowRangeText.value) {
+        return ROW_HEIGHT_COMPACT;
+    }
+    return ROW_HEIGHT_WITHOUT_SIGN;
+});
+
 const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, viewDate.value, props.monthCount, props.formatter, props.signs, props.viewStart, props.viewEnd));
 
 const cmpRootStyle = computed(() => {
-    const rowHeight = cmpShowSigns.value ? utils.formatPx(ROW_HEIGHT_WITH_SIGN, 'num') : utils.formatPx(ROW_HEIGHT_WITHOUT_SIGN, 'num');
+    const rowHeight = utils.formatPx(cmpRowHeight.value, 'num');
     const color = props.color ? props.color : getColor().steThemeColor;
+    // 范围选择器中间区间背景色：优先使用 rangeColor 属性值，未设置时使用现有逻辑（主题色 0.2 透明度）
+    const rangeColor = props.rangeColor ? props.rangeColor : utils.Color.formatColor(color, 0.2);
     return {
         '--calendar-width': utils.formatPx(props.width),
         '--calendar-height': utils.formatPx(props.height),
         '--calendar-color': color,
         '--calendar-weekend-color': props.weekendColor ? props.weekendColor : color,
         '--calendar-bg-color': utils.Color.formatColor(color, 0.1),
-        '--calendar-range-color': utils.Color.formatColor(color, 0.2),
+        '--calendar-range-color': rangeColor,
         '--calendar-disabled-color': utils.Color.formatColor(color, 0.3),
         '--calendar-sign-color': utils.Color.formatColor(color, 0.7),
         '--calendar-start-text': `"${props.startText}"`,
@@ -75,13 +106,15 @@ const clearViewTimer = () => {
     }
 };
 
+// 组件根节点唯一标识
+const elId = `ste-calendar-${utils.guid(8)}`;
 // 根节点引用，用于可见性监听
 const rootRef = ref<any>(null);
 // 是否已可见（在视口内）
 let isVisible = false;
 // 待执行的滚动目标，组件不可见时暂存
 let pendingScrollTop: number | null = null;
-// 在 setup 顶层获取实例，供小程序端观察器使用
+// 在 setup 顶层获取实例代理，供跨端观察器使用
 const instance = getCurrentInstance();
 
 const doScroll = (top: number, _viewMonth: string) => {
@@ -103,30 +136,36 @@ let observer: any = null;
 const startObserver = () => {
     // #ifdef H5
     if (typeof IntersectionObserver !== 'undefined' && rootRef.value) {
-        // uni-app H5 中 <view> 的 ref 直接是 DOM 元素
+        // H5 环境原生支持对 DOM 元素直接监听，隐藏节点不报警告，可见后自动恢复滚动
         const el = rootRef.value.$el ?? rootRef.value;
-        observer = new IntersectionObserver(entries => {
-            const visible = entries[0]?.isIntersecting;
-            if (visible && !isVisible) {
-                isVisible = true;
-                if (pendingScrollTop !== null) {
-                    const top = pendingScrollTop;
-                    const _viewMonth = viewDate.value.format('YYYY-MM');
-                    pendingScrollTop = null;
-                    nextTick(() => doScroll(top, _viewMonth));
+        if (el) {
+            observer = new IntersectionObserver(entries => {
+                const visible = entries[0]?.isIntersecting;
+                if (visible && !isVisible) {
+                    isVisible = true;
+                    if (pendingScrollTop !== null) {
+                        const top = pendingScrollTop;
+                        const _viewMonth = viewDate.value.format('YYYY-MM');
+                        pendingScrollTop = null;
+                        nextTick(() => doScroll(top, _viewMonth));
+                    }
+                } else if (!visible) {
+                    isVisible = false;
                 }
-            } else if (!visible) {
-                isVisible = false;
-            }
-        });
-        observer.observe(el);
-        return;
+            });
+            observer.observe(el);
+            return;
+        }
     }
     // #endif
-    // 小程序端使用 uni.createIntersectionObserver
+
+    // #ifdef MP
+    // 小程序端完整保留原生 IntersectionObserver（如微信 wx.createIntersectionObserver）
+    // 小程序端原生支持隐藏节点监听，无 uni-app-view 报错，弹窗展开时精准感知可见性并自动执行滚动
     try {
-        observer = uni.createIntersectionObserver(instance).relativeToViewport();
-        observer.observe('.ste-calendar-root', (res: any) => {
+        const proxy = instance?.proxy;
+        observer = uni.createIntersectionObserver(proxy).relativeToViewport();
+        observer.observe(`#${elId}`, (res: any) => {
             const visible = res.intersectionRatio > 0;
             if (visible && !isVisible) {
                 isVisible = true;
@@ -140,7 +179,14 @@ const startObserver = () => {
                 isVisible = false;
             }
         });
+        return;
     } catch (_) {}
+    // #endif
+
+    // #ifdef APP-PLUS
+    // App 端（App-Vue）为避免 uni-app-view.umd.js 底层选择器对未展开弹窗抛出 Node not found 警告，直接置为就绪状态
+    isVisible = true;
+    // #endif
 };
 
 onUnmounted(() => {
@@ -178,7 +224,7 @@ const showMonth = (date?: DateType) => {
             initing.value = false;
             return;
         }
-        // 组件不可见时，暂存目标位置，等可见后再执行
+        // 组件未可见时暂存目标位置，待可见后执行；已可见时直接执行滚动
         if (!isVisible) {
             pendingScrollTop = top;
             return;
@@ -314,7 +360,7 @@ const onScroll = (e: any) => {
 };
 </script>
 <template>
-    <view ref="rootRef" class="ste-calendar-root" :style="[cmpRootStyle, { opacity: initing ? 0 : 1 }]">
+    <view ref="rootRef" :id="elId" class="ste-calendar-root" :style="[cmpRootStyle, { opacity: initing ? 0 : 1 }]">
         <view v-if="showTitle" class="calendar-title">{{ title }}</view>
         <view class="week-head">
             <view class="week-row">
@@ -357,9 +403,11 @@ const onScroll = (e: any) => {
                         }"
                     >
                         <block v-if="d.dayText">
-                            <view class="day-range-head" v-if="mode === 'range'"></view>
+                            <!-- 仅在需要展示区间文案时渲染头部预留文案区域，隐藏时释放占位 -->
+                            <view class="day-range-head" v-if="mode === 'range' && cmpShowRangeText"></view>
                             <view class="day-content">{{ d.dayText }}</view>
-                            <view class="day-range-foot" v-if="mode === 'range'"></view>
+                            <!-- 仅在需要展示区间文案时渲染底部预留文案区域，隐藏时释放占位 -->
+                            <view class="day-range-foot" v-if="mode === 'range' && cmpShowRangeText"></view>
                             <view class="day-signs" v-if="cmpShowSigns">
                                 <block v-if="d.signs">
                                     <view class="day-sign" v-for="sign in d.signs" :key="sign.key" :style="[sign.style]" :class="sign.className">

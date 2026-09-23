@@ -165,6 +165,62 @@
 </template>
 ```
 
+## 隐藏区间文案（紧凑模式）
+
+- 属性`showRangeText`用于控制范围选择器是否展示起止文案（如“开始”、“结束”），默认`true`
+- 当设置为`false`时，隐藏“开始”、“结束”文案，并释放单元格上下预留的占位空间，单元格行高紧凑缩小
+
+```html
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const show = ref(false);
+
+    const handleConfirm = (v: (string | number)[]) => {
+        uni.showToast({
+            title: '确定选择：' + v.join(' '),
+            icon: 'none',
+            duration: 1500,
+        });
+    };
+</script>
+<template>
+    <ste-button @click="show = true">隐藏区间文案（紧凑尺寸）</ste-button>
+    <ste-popup v-model:show="show" height="60vh" position="bottom">
+        <div style="padding-bottom: 20px; height: 100%">
+            <ste-calendar mode="range" :showRangeText="false" @confirm="handleConfirm" />
+        </div>
+    </ste-popup>
+</template>
+```
+
+## 自定义区间背景色
+
+- 属性`rangeColor`可独立设置范围选择器中间区间的背景色（不含起止日期，起止日期依然使用`color`主题色）
+- 未传值时默认使用主题色的 0.2 透明度
+
+```html
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const show = ref(false);
+
+    const handleConfirm = (v: (string | number)[]) => {
+        uni.showToast({
+            title: '确定选择：' + v.join(' '),
+            icon: 'none',
+            duration: 1500,
+        });
+    };
+</script>
+<template>
+    <ste-button @click="show = true">自定义区间背景色</ste-button>
+    <ste-popup v-model:show="show" height="60vh" position="bottom">
+        <div style="padding-bottom: 20px; height: 100%">
+            <ste-calendar mode="range" color="#0284c7" rangeColor="#e0f2fe" @confirm="handleConfirm" />
+        </div>
+    </ste-popup>
+</template>
+```
+
 ## 日期最大范围
 
 - 属性`minDate`可以设置日期的最小可选范围

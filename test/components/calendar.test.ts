@@ -102,4 +102,10 @@ describe('Calendar Component', async () => {
 	test('signs', async () => {
 		expect(wrapper.props('signs')).toEqual({});
 	})
+	test('showRangeText', async () => {
+		expect(wrapper.props('showRangeText')).toBe(true);
+	})
+	test('rangeColor', async () => {
+		expect(wrapper.props('rangeColor')).toBe('');
+	})
 });

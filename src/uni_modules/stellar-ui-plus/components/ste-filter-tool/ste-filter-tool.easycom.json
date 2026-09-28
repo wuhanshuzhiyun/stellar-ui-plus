@@ -23,6 +23,12 @@
             "default": "#555A61"
         },
         {
+            "name": "offsetTop",
+            "description": "下拉菜单内容 top 值的偏移量；数值按 rpx 处理，也支持 px、rpx 单位字符串",
+            "type": "string | number",
+            "default": "0"
+        },
+        {
             "name": "filterType",
             "description": "筛选类型",
             "type": "'button' | 'checkbox' | 'calendar'",

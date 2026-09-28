@@ -13,6 +13,7 @@ const dropDownMenuProps = {
     showMask: { type: Boolean, default: true },
     isMaskClick: { type: Boolean, default: true },
     zIndex: { type: Number, default: 1000 },
+    offsetTop: { type: [String, Number], default: 0 },
     type: { type: String, default: 'block' },
     max: { type: Number, default: 1 },
     dropDownIconColor: { type: String, default: '#bbbbbb' },

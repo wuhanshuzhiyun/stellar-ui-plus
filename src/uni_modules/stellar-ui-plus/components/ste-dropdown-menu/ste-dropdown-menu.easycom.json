@@ -65,6 +65,12 @@
             "type": "number"
         },
         {
+            "name": "offsetTop",
+            "description": "菜单内容 top 值的偏移量；数值按 rpx 处理，也支持 px、rpx 单位字符串",
+            "type": "string | number",
+            "default": "0"
+        },
+        {
             "name": "type",
             "description": "下拉选项的形状",
             "type": "string",

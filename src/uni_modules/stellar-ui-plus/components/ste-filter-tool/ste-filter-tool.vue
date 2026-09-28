@@ -1,6 +1,14 @@
 <template>
     <view class="ste-filter-tool--root" :style="[rootStyleVar, { '--category-count': categoryData.length }]">
-        <ste-dropdown-menu ref="steDropMenu" class="filter-box-menu" :activeColor="activeColor" dropDownIconColor="#000" v-model:showPopup="showMenu" @maskClick="handleMaskClick">
+        <ste-dropdown-menu
+            ref="steDropMenu"
+            class="filter-box-menu"
+            :activeColor="activeColor"
+            :offsetTop="offsetTop"
+            dropDownIconColor="#000"
+            v-model:showPopup="showMenu"
+            @maskClick="handleMaskClick"
+        >
             <template #title>
                 <slot>
                     <view></view>

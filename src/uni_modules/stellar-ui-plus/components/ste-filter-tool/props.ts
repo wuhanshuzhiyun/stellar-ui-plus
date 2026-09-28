@@ -13,6 +13,8 @@ const props = {
     // 主题色配置
     activeColor: { type: String, default: '#0275FF' },
     inactiveColor: { type: String, default: '#555A61' },
+    // 下拉菜单内容顶部偏移量，数值按 rpx 处理
+    offsetTop: { type: [String, Number], default: 0 },
 
     // 筛选类型
     filterType: { type: String as PropType<FilterType>, default: 'button' },

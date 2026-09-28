@@ -70,9 +70,9 @@ const cmpMenuContentStyle = computed(() => {
         background: props.showMask ? 'rgba(0, 0, 0, 0.6)' : 'rgba(0, 0, 0, 0)',
     } as CSSProperties;
     if (props.direction == 'down') {
-        style.top = addPx(menuRootQuery.value.top + menuRootQuery.value.height);
+        style.top = addPx(menuRootQuery.value.top + menuRootQuery.value.height + utils.formatPx(props.offsetTop, 'num'));
     } else {
-        style.top = 0;
+        style.top = addPx(utils.formatPx(props.offsetTop, 'num'));
     }
     return style;
 });

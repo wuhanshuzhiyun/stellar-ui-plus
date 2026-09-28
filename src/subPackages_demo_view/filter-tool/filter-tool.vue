@@ -38,6 +38,7 @@ const handleConfirm = (values: any) => {
                         :data="subFilters"
                         @item-click="handleFilterClick"
                         @confirm="handleConfirm"
+                        offset-top="20"
                         :value="[
                             {
                                 key: 'category',

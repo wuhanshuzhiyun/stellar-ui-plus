@@ -51,6 +51,18 @@ const touchHandler = new TouchScaleing();
 // ─── 手势状态变量 ────────────────────────────────────────────────────────────
 let canvasCtx: any = null;
 let dpr = 1;
+type SeatPaintCache = { seat: SteSelectSeatItem; x: number; y: number; w: number; h: number; radius: number };
+const seatPaintCache = new Map<string, SeatPaintCache>();
+let seatPaintCacheKey = '';
+
+const invalidateSeatPaintCache = () => {
+    seatPaintCache.clear();
+    seatPaintCacheKey = '';
+};
+
+const getSeatPaintCacheKey = () => [safeRows.value, safeCols.value, seatSizePx.value, seatGapPx.value, borderRadiusPx.value, labelWidthPx.value, props.width, props.height].join('|');
+
+const getSeatStyleKey = (seat: SteSelectSeatItem) => [seat.row, seat.col, seat.empty, seat.disabled, seat.bgColor, seat.borderColor].join('|');
 
 // ─── 响应式视口状态 ───────────────────────────────────────────────────────────
 const viewportTranslateY = ref(0);
@@ -114,6 +126,21 @@ const draw = () => {
     const radius = borderRadiusPx.value;
     const labelWidth = labelWidthPx.value;
     const defaultSelectedBg = props.selectedBgColor || themeColor;
+    const cacheKey = getSeatPaintCacheKey();
+    if (cacheKey !== seatPaintCacheKey) {
+        seatPaintCache.clear();
+        seatPaintCacheKey = cacheKey;
+    }
+
+    // 仅遍历当前视口覆盖的网格范围，避免大座位图每次重绘扫描整张网格。
+    const visibleLeft = Math.max(0, -tx + (0 - labelWidth) / userScale);
+    const visibleRight = Math.min(safeCols.value * (size + gap), -tx + (props.width / userScale - labelWidth));
+    const visibleTop = Math.max(0, -ty);
+    const visibleBottom = Math.min(safeRows.value * (size + gap), -ty + props.height / userScale);
+    const firstCol = Math.max(0, Math.floor(visibleLeft / (size + gap)) - 1);
+    const lastCol = Math.min(safeCols.value - 1, Math.ceil(visibleRight / (size + gap)));
+    const firstRow = Math.max(0, Math.floor(visibleTop / (size + gap)) - 1);
+    const lastRow = Math.min(safeRows.value - 1, Math.ceil(visibleBottom / (size + gap)));
 
     ctx.clearRect(0, 0, props.width, props.height);
 
@@ -123,26 +150,40 @@ const draw = () => {
     ctx.scale(userScale, userScale);
     // #endif
 
-    for (let r = 0; r < safeRows.value; r++) {
-        for (let c = 0; c < safeCols.value; c++) {
+    for (let r = firstRow; r <= lastRow; r++) {
+        for (let c = firstCol; c <= lastCol; c++) {
             const seat = getSeat(r, c);
             if (!seat || seat.empty) continue;
+
+            const key = `${r}-${c}`;
+            let paint = seatPaintCache.get(key);
+            if (!paint || getSeatStyleKey(paint.seat) !== getSeatStyleKey(seat)) {
+                paint = {
+                    seat,
+                    x: labelWidth + c * (size + gap) + gap / 2,
+                    y: r * (size + gap) + gap / 2,
+                    w: size,
+                    h: size,
+                    radius,
+                };
+                seatPaintCache.set(key, paint);
+            }
 
             const selected = isSelected(r, c);
 
             // #ifndef APP
-            const x = labelWidth + c * (size + gap) + gap / 2;
-            const y = r * (size + gap) + gap / 2;
-            const w = size;
-            const h = size;
-            const r_ = radius;
+            const x = paint.x;
+            const y = paint.y;
+            const w = paint.w;
+            const h = paint.h;
+            const r_ = paint.radius;
             // #endif
             // #ifdef APP
-            const x = tx * userScale + (labelWidth + c * (size + gap) + gap / 2) * userScale;
-            const y = ty * userScale + (r * (size + gap) + gap / 2) * userScale;
-            const w = size * userScale;
-            const h = size * userScale;
-            const r_ = radius * userScale;
+            const x = tx * userScale + paint.x * userScale;
+            const y = ty * userScale + paint.y * userScale;
+            const w = paint.w * userScale;
+            const h = paint.h * userScale;
+            const r_ = paint.radius * userScale;
             // #endif
 
             if (seat.disabled) {
@@ -176,6 +217,40 @@ const draw = () => {
     // #ifdef H5 || APP
     if (ctx.draw) ctx.draw(true);
     // #endif
+};
+
+// 仅清除并重绘单个座位，供选中状态变化使用。
+const drawDirtySeat = (row: number, col: number) => {
+    const ctx = canvasCtx;
+    const seat = getSeat(row, col);
+    if (!ctx || !seat) return;
+    const scale = clampScale(touchHandler.scale);
+    const size = seatSizePx.value;
+    const gap = seatGapPx.value;
+    const labelWidth = labelWidthPx.value;
+    const x = (touchHandler.translateX + labelWidth + col * (size + gap) + gap / 2) * scale;
+    const y = (touchHandler.translateY + row * (size + gap) + gap / 2) * scale;
+    const pad = 2;
+    ctx.clearRect(x - pad, y - pad, size * scale + pad * 2, size * scale + pad * 2);
+    if (seat.empty) return;
+    const radius = borderRadiusPx.value * scale;
+    const selected = isSelected(row, col);
+    const defaultSelectedBg = props.selectedBgColor || themeColor;
+    ctx.save();
+    ctx.fillStyle = seat.disabled ? props.disabledBgColor : selected ? seat.selectedBgColor || defaultSelectedBg : seat.bgColor || props.bgColor;
+    drawRoundRect(ctx, x, y, size * scale, size * scale, radius);
+    ctx.fill();
+    if (!seat.disabled && !selected) {
+        ctx.strokeStyle = seat.borderColor || props.borderColor;
+        ctx.lineWidth = props.borderWidth;
+        drawRoundRect(ctx, x, y, size * scale, size * scale, radius);
+        ctx.stroke();
+    }
+    if (selected && !seat.disabled) {
+        drawCheck(ctx, x + (size * scale) / 2, y + (size * scale) / 2, size * scale, seat.selectedColor || props.selectedColor);
+    }
+    ctx.restore();
+    if (ctx.draw) ctx.draw(true);
 };
 
 // ─── Canvas 初始化 / 生命周期 ──────────────────────────────────────────────────
@@ -365,6 +440,7 @@ const { rowLabelsVisible, setShowRowLabelsVisible, onTouchStart, onTouchMove, on
     getTouchLocalPoint,
     applyDefaultViewport,
     draw,
+    drawDirtySeat,
     emitMove,
     emitSeatClick: seat => emit('seat-click', seat),
     emitModelValue: value => emit('update:modelValue', value),
@@ -404,6 +480,7 @@ watch(
         props.showRowLabels,
     ],
     () => {
+        invalidateSeatPaintCache();
         if (canvasCtx) draw();
     },
     { deep: true }
@@ -414,7 +491,7 @@ watch(
 defineExpose({
     setSeat: (row: number, col: number, data: Partial<SteSelectSeatItem>) => {
         setSeat(row, col, data);
-        nextTick(() => draw());
+        nextTick(() => drawDirtySeat(row, col));
     },
     getSeats,
     reset,

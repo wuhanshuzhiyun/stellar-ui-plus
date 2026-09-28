@@ -16,6 +16,15 @@ export function useData(props: {
 
   const getKey = (row: number, col: number) => `${row}-${col}`
 
+  // 配置查询使用 Set，避免 setSeat 等高频调用重复线性查找。
+  const configuredEmptyRows = ref<Set<number>>(new Set())
+  const configuredEmptyCols = ref<Set<number>>(new Set())
+  const selectedSeatKeys = computed(() => {
+    const keys = new Set<string>()
+    props.modelValue.forEach(value => keys.add(getKey(value.row, value.col)))
+    return keys
+  })
+
   const warn = (message: string) => {
     if (warnedMessages.has(message)) return
     warnedMessages.add(message)
@@ -69,7 +78,7 @@ export function useData(props: {
   }
 
   const isConfiguredEmpty = (row: number, col: number) => {
-    return props.emptyRows.includes(row) || props.emptyCols.includes(col)
+    return configuredEmptyRows.value.has(row) || configuredEmptyCols.value.has(col)
   }
 
   // 初始化座位数据
@@ -78,12 +87,16 @@ export function useData(props: {
     const map = new Map<string, SteSelectSeatItem>()
 
     if (!rows || !cols) {
+      configuredEmptyRows.value = new Set()
+      configuredEmptyCols.value = new Set()
       seatMap.value = map
       return
     }
 
     const emptyRows = normalizeEmptyIndexes(props.emptyRows, rows, 'emptyRows')
     const emptyCols = normalizeEmptyIndexes(props.emptyCols, cols, 'emptyCols')
+    configuredEmptyRows.value = emptyRows
+    configuredEmptyCols.value = emptyCols
 
     if (props.seats && props.seats.length > 0) {
       for (let index = 0; index < props.seats.length; index++) {
@@ -98,24 +111,32 @@ export function useData(props: {
       }
     }
 
-    // 空行/列优先于 seats；其他位置补齐为默认座位。
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const key = getKey(r, c)
+    // 未配置的普通座位按需生成，避免初始化时创建完整 rows × cols Map。
+    emptyRows.forEach(row => {
+      for (let col = 0; col < cols; col++) {
+        const key = getKey(row, col)
         const seat = map.get(key)
-        if (emptyRows.has(r) || emptyCols.has(c)) {
-          map.set(key, { ...(seat || { row: r, col: c }), row: r, col: c, empty: true })
-        } else if (!seat) {
-          map.set(key, { row: r, col: c })
-        }
+        map.set(key, { ...(seat || { row, col }), row, col, empty: true })
       }
-    }
+    })
+    emptyCols.forEach(col => {
+      for (let row = 0; row < rows; row++) {
+        const key = getKey(row, col)
+        const seat = map.get(key)
+        map.set(key, { ...(seat || { row, col }), row, col, empty: true })
+      }
+    })
     seatMap.value = map
   }
 
   // 获取某个座位数据
   const getSeat = (row: number, col: number): SteSelectSeatItem | undefined => {
-    return seatMap.value.get(getKey(row, col))
+    const seat = seatMap.value.get(getKey(row, col))
+    if (seat) return seat
+    if (configuredEmptyRows.value.has(row) || configuredEmptyCols.value.has(col)) {
+      return { row, col, empty: true }
+    }
+    return { row, col }
   }
 
   // 设置某个座位数据
@@ -144,7 +165,14 @@ export function useData(props: {
 
   // 获取所有座位
   const getSeats = (): SteSelectSeatItem[] => {
-    return Array.from(seatMap.value.values())
+    const { rows, cols } = getGridSize()
+    const seats: SteSelectSeatItem[] = []
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        seats.push(getSeat(row, col)!)
+      }
+    }
+    return seats
   }
 
   // 按行获取座位（用于渲染）
@@ -154,12 +182,7 @@ export function useData(props: {
     for (let r = 0; r < totalRows; r++) {
       const row: SteSelectSeatItem[] = []
       for (let c = 0; c < totalCols; c++) {
-        const seat = seatMap.value.get(getKey(r, c))
-        if (seat) {
-          row.push(seat)
-        } else {
-          row.push({ row: r, col: c })
-        }
+        row.push(getSeat(r, c)!)
       }
       rows.push(row)
     }
@@ -168,7 +191,7 @@ export function useData(props: {
 
   // 判断座位是否选中
   const isSelected = (row: number, col: number): boolean => {
-    return props.modelValue.some(v => v.row === row && v.col === col)
+    return selectedSeatKeys.value.has(getKey(row, col))
   }
 
   // 切换座位选中状态，返回新的选中列表

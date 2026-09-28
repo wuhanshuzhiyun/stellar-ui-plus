@@ -24,6 +24,7 @@ interface UseSeatInteractionOptions {
   getTouchLocalPoint: (touch: UniTouch | undefined | null, rect?: { left?: number; top?: number } | null) => { x: number; y: number }
   applyDefaultViewport: () => void
   draw: () => void
+  drawDirtySeat?: (row: number, col: number) => void
   emitMove: () => void
   emitSeatClick: (seat: SteSelectSeatItem) => void
   emitModelValue: (value: SteSelectSeatValue[]) => void
@@ -49,6 +50,7 @@ export function useSeatInteraction(options: UseSeatInteractionOptions) {
     getTouchLocalPoint,
     applyDefaultViewport,
     draw,
+    drawDirtySeat,
     emitMove,
     emitSeatClick,
     emitModelValue,
@@ -341,6 +343,9 @@ export function useSeatInteraction(options: UseSeatInteractionOptions) {
   const emitSeatSelection = (seat: SteSelectSeatItem) => {
     emitSeatClick(seat)
     emitModelValue(toggleSeat(seat.row, seat.col))
+    if (drawDirtySeat) {
+      setTimeout(() => drawDirtySeat(seat.row, seat.col), 0)
+    }
   }
 
   const selectSeatByPoint = (x: number, y: number) => {

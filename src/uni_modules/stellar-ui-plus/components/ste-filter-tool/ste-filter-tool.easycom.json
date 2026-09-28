@@ -25,7 +25,7 @@
         {
             "name": "filterType",
             "description": "筛选类型",
-            "type": "string",
+            "type": "'button' | 'checkbox' | 'calendar'",
             "default": "button"
         },
         {
@@ -41,8 +41,32 @@
             "default": "true"
         },
         {
+            "name": "confirmDisabled",
+            "description": "是否禁用默认确认按钮",
+            "type": "boolean",
+            "default": "false"
+        },
+        {
+            "name": "[slot]default",
+            "description": "自定义下拉菜单的触发区域"
+        },
+        {
+            "name": "[slot]content",
+            "description": "自定义筛选菜单内容，替换 custom-menu-box 内的默认内容"
+        },
+        {
+            "name": "[event]update:value",
+            "description": "当前选中值变化或重置时触发",
+            "params": [
+                {
+                    "name": "values",
+                    "description": "当前所有选中的值"
+                }
+            ]
+        },
+        {
             "name": "[event]confirm",
-            "description": "点击确认按钮时触发",
+            "description": "点击默认确认按钮时触发",
             "params": [
                 {
                     "name": "values",
@@ -52,7 +76,7 @@
         },
         {
             "name": "[event]reset",
-            "description": "点击重置按钮时触发",
+            "description": "点击默认重置按钮时触发",
             "params": []
         },
         {

@@ -4,6 +4,69 @@
 
 ---$
 
+## 筛选模式
+
+| `filterType` | 说明 |
+| --- | --- |
+| `button` | 默认模式。支持分组单选、多选、折叠、每行数量和输入框类型。 |
+| `checkbox` | 左侧分类对应右侧单选列表，每个分组仅能选择一个选项。 |
+| `calendar` | 仅展示内置日历；当前日历选中值不会同步到 `v-model:value` 或 `confirm` 回调。 |
+
+## 自定义菜单内容
+
+通过 `content` 插槽可替换 `custom-menu-box` 内的全部默认内容，包括筛选区域、重置按钮和确认按钮。传入该插槽后，`data`、`filterType`、`showCategory` 与 `confirmDisabled` 不再控制插槽内的渲染和交互；组件也不会触发默认的 `confirm`、`reset` 逻辑。该插槽当前不提供插槽参数，交互与状态由使用者自行管理。
+
+```html
+<template>
+    <ste-filter-tool>
+        <view style="font-size: 24rpx">
+            <text>自定义菜单</text>
+            <ste-icon code="&#xe6c7;" color="#000" size="24" />
+        </view>
+        <template #content>
+            <view class="custom-menu-content">
+                <view class="custom-menu-options">
+                    <view class="custom-menu-option active">推荐</view>
+                    <view class="custom-menu-option">最新</view>
+                    <view class="custom-menu-option">价格优先</view>
+                </view>
+            </view>
+        </template>
+    </ste-filter-tool>
+</template>
+
+<style lang="scss" scoped>
+.custom-menu-content {
+    padding: 24rpx;
+
+    .custom-menu-title {
+        color: #1d2129;
+        font-size: 28rpx;
+        font-weight: 500;
+    }
+
+    .custom-menu-options {
+        display: flex;
+        gap: 16rpx;
+        margin-top: 24rpx;
+    }
+
+    .custom-menu-option {
+        padding: 12rpx 20rpx;
+        color: #555a61;
+        font-size: 24rpx;
+        background: #f4f5f6;
+        border-radius: 8rpx;
+
+        &.active {
+            color: #0275ff;
+            background: #e6f2ff;
+        }
+    }
+}
+</style>
+```
+
 ## `data` 属性详解
 
 `data` 属性是组件的核心，它是一个数组，数组中的每个对象代表一个筛选分组。下面是每个筛选分组对象的详细配置项：
@@ -11,14 +74,15 @@
 | 属性          | 说明                                                    | 类型                  | 默认值     |
 | ------------- | ------------------------------------------------------- | --------------------- | ---------- |
 | `title`       | 分组的标题                                              | `string`              | -          |
-| `key`         | 分组的唯一标识，用于在 `value` 和事件回调中识别         | `string`              | -          |
-| `children`    | 当前分组下的筛选项数组，每个选项包含 `title` 和 `value` | `BaseFilterItem[]`    | `[]`       |
-| `multiple`    | 是否支持多选                                            | `boolean`             | `false`    |
-| `rowCount`    | 每行显示的筛选项数量                                    | `number`              | `3`        |
-| `expandCount` | 折叠时显示的行数，`0` 或不设置为不折叠                  | `number`              | `0`        |
+| `key`         | 分组标识，用于 `value` 和事件回调；未传时使用分组 `value` | `string`            | -          |
+| `value`       | 未传 `key` 时作为分组标识                              | `string \| number`   | -          |
+| `children`    | 当前分组下的筛选项数组，每项需包含 `title` 和 `value`  | `BaseFilterItem[]`    | `[]`       |
+| `multiple`    | 是否支持多选，仅 `button` 模式生效                     | `boolean`             | `false`    |
+| `rowCount`    | 每行显示的筛选项数量，支持 `2`、`3`、`4`               | `number`              | `3`        |
+| `expandCount` | 折叠时显示的行数，`0` 或不设置为不折叠，仅 `button` 模式生效 | `number`          | `0`        |
 | `type`        | 分组的类型，可以是按钮或输入框                          | `'button' \| 'input'` | `'button'` |
 | `config`      | 当 `type` 为 `input` 时的详细配置                       | `object`              | `{}`       |
-| `random`      | 是否启用无规则布局（使用flex-wrap）                     | `boolean`             | `false`    |
+| `random`      | 是否启用自动换行布局（使用 `flex-wrap`）               | `boolean`             | `false`    |
 
 **`config` 对象属性 (当 `type: 'input'` 时):**
 
@@ -28,21 +92,30 @@
 | `placeholder` | 输入框的提示文字 | `string`  | `'请输入内容'` |
 | `maxLength`   | 最大输入长度     | `number`  | `100`          |
 | `clearable`   | 是否显示清除按钮 | `boolean` | `false`        |
+| `width`       | 输入框宽度       | `string \| number` | `'100%'` |
 
 ## 基础用法
 
-- 筛选数据需按照下方`script`中的格式传入
+常规 `button` 模式下，`data` 采用“筛选分组 → 筛选项”的两层结构：
 
-    - 分类需要传入`key`用于数据定位
-    - `children`为可选项
-        - 选项需传入`title`和`value`
-    - `expandCount`为折叠展示的行数，默认为0，不折叠
-    - `rowCount` 配置每行显示的选项数量，默认为3
-    - `multiple`配置当前分类项是否可以多选
+- 分组使用 `title` 作为展示标题，优先使用 `key` 作为数据标识；未传 `key` 时使用分组 `value`。
+- `children` 是当前分组下的选项，每项需提供 `title` 与 `value`。
+- 分组设置 `multiple: true` 后可多选；未设置时同一分组单选。
+- 使用 `v-model:value` 接收选中结果。每个已选分组对应一项，`checkbox` 模式每组最多一个值，`input` 类型在点击确认时返回输入值。
+
+```ts
+const selectedValues = ref([
+    {
+        title: '商品分类',
+        key: 'category',
+        values: ['beauty'],
+    },
+]);
+```
 
 ```html
 <script lang="ts" setup>
-    import { reactive } from 'vue';
+    import { ref, reactive } from 'vue';
     // 筛选选项
     const subFilters = reactive([
         {
@@ -146,16 +219,51 @@
             ],
         },
     ]);
+
+    const selectedValues = ref([
+        {
+            key: 'category',
+            values: ['beauty'],
+        },
+    ]);
 </script>
 <template>
     <view style="width: 100%">
-        <ste-filter-tool :data="subFilters" @item-click="handleFilterClick" value="all">
+        <ste-filter-tool v-model:value="selectedValues" :data="subFilters">
             <view style="font-size: 24rpx">
                 <text>基础筛选</text>
                 <ste-icon code="&#xe6c7;" color="#000" size="24" />
             </view>
         </ste-filter-tool>
     </view>
+</template>
+```
+
+## 输入框类型
+
+将分组的 `type` 设为 `input`，可在筛选菜单中渲染输入框。输入值会在点击默认确认按钮时随 `confirm` 事件返回。
+
+```html
+<script lang="ts" setup>
+    import { reactive } from 'vue';
+
+    const filters = reactive([
+        {
+            title: '商品名称',
+            key: 'keyword',
+            type: 'input',
+            config: {
+                placeholder: '请输入商品名称',
+                clearable: true,
+            },
+        },
+    ]);
+</script>
+
+<template>
+    <ste-filter-tool :data="filters" @confirm="values => console.log(values)">
+        <view>按名称筛选</view>
+    </ste-filter-tool>
 </template>
 ```
 

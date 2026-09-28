@@ -2681,7 +2681,7 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "filterType",
                 "description": "筛选类型",
-                "type": "string",
+                "type": "'button' | 'checkbox' | 'calendar'",
                 "default": "button"
             },
             {
@@ -2695,12 +2695,29 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否显示左侧的分类栏",
                 "type": "boolean",
                 "default": "true"
+            },
+            {
+                "name": "confirmDisabled",
+                "description": "是否禁用默认确认按钮",
+                "type": "boolean",
+                "default": "false"
             }
         ],
         "events": [
             {
+                "name": "update:value",
+                "description": "当前选中值变化或重置时触发",
+                "params": [
+                    {
+                        "name": "values",
+                        "description": "当前所有选中的值"
+                    }
+                ],
+                "type": ""
+            },
+            {
                 "name": "confirm",
-                "description": "点击确认按钮时触发",
+                "description": "点击默认确认按钮时触发",
                 "params": [
                     {
                         "name": "values",
@@ -2711,7 +2728,7 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "reset",
-                "description": "点击重置按钮时触发",
+                "description": "点击默认重置按钮时触发",
                 "params": [],
                 "type": ""
             },

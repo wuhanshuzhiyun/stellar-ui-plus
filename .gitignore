@@ -32,3 +32,5 @@ src/uni_modules/stellar-ui-plus/components/**/ATTRIBUTES.md
 src/pages.json
 page_code.json
 null
+.ai-context/
+.codex*

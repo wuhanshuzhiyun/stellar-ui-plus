@@ -326,3 +326,15 @@ export const data5 = [
         random: true,
     },
 ];
+
+export const data6 = [
+    {
+        title: '商品名称',
+        key: 'keyword',
+        type: 'input' as const,
+        config: {
+            placeholder: '请输入商品名称',
+            clearable: true,
+        },
+    },
+];

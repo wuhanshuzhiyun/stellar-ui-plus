@@ -1506,6 +1506,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "default": "{}"
             },
             {
+                "name": "monthFormatter",
+                "description": "每月标题展示格式（支持格式化模板字符串如 YYYY-MM 或自定义格式化函数）",
+                "type": "string / ((date: Dayjs) => string)",
+                "default": "YYYY年MM月"
+            },
+            {
                 "name": "showScrollbar",
                 "description": "是否显示滚动条",
                 "type": "boolean",

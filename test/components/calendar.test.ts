@@ -108,4 +108,33 @@ describe('Calendar Component', async () => {
 	test('rangeColor', async () => {
 		expect(wrapper.props('rangeColor')).toBe('');
 	})
+	test('monthFormatter default value', async () => {
+		expect(wrapper.props('monthFormatter')).toBe('YYYY年MM月');
+		const monthText = wrapper.find('.month-text');
+		expect(monthText.text()).toBe('2022年01月');
+	})
+	test('monthFormatter custom format and callback', async () => {
+		const customWrapper = mount(Calendar, {
+			props: {
+				minDate: '2024-05-01',
+				maxDate: '2024-05-31',
+				monthFormatter: 'YYYY-MM',
+			},
+		});
+		await nextTick();
+		const monthText = customWrapper.find('.month-text');
+		expect(monthText.text()).toBe('2024-05');
+
+		const fnWrapper = mount(Calendar, {
+			props: {
+				minDate: '2024-05-01',
+				maxDate: '2024-05-31',
+				monthFormatter: (d) => `Year ${d.year()} Month ${d.month() + 1}`,
+			},
+		});
+		await nextTick();
+		const fnMonthText = fnWrapper.find('.month-text');
+		expect(fnMonthText.text()).toBe('Year 2024 Month 5');
+	})
 });
+

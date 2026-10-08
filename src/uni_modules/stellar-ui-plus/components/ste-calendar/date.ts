@@ -1,9 +1,15 @@
+/**
+ * ste-calendar 日历核心日期计算与格式化工具模块
+ * 负责日历月份列表生成、月度周数排布、日期单元格状态计算（禁用、周末、打卡标记等）及日期格式化转换
+ */
 import utils from '../../utils/utils'
 import type { Dayjs } from '../../types/index'
 import type { CSSProperties } from 'vue'
 
 export type SignType = { content: string, style?: CSSProperties, className?: string, key?: number }[]
 
+/** 月份标题格式化配置类型：支持 Dayjs 格式模板字符串或接收 Dayjs 返回字符串的自定义函数 */
+export type MonthFormatterType = string | ((date: Dayjs) => string)
 
 export interface WeekType {
   dayText: string | number
@@ -24,6 +30,19 @@ export interface MonthType {
 }
 
 export type DateType = string | number | Dayjs | Date
+
+/**
+ * 格式化月份标题文本
+ * @param date 当前月份的 Dayjs 实例
+ * @param monthFormatter 月份格式化模板或自定义函数，默认为 'YYYY年MM月'
+ * @returns 格式化后的月份展示字符串
+ */
+export function formatMonthTitle(date: Dayjs, monthFormatter: MonthFormatterType = 'YYYY年MM月'): string {
+  if (typeof monthFormatter === 'function') {
+    return monthFormatter(date)
+  }
+  return date.format(monthFormatter || 'YYYY年MM月')
+}
 
 /**
  * 获取从当前月份开始的12个月
@@ -64,8 +83,28 @@ export function getMonthDays(year: number, month: number) {
 
 /**
  * 获取日历数据
+ * @param minDate 最小可选日期
+ * @param maxDate 最大可选日期
+ * @param defaultDate 默认定位日期
+ * @param monthCount 渲染月份数
+ * @param formatter 日期单元格格式化模板，默认 'YYYY-MM-DD'
+ * @param signs 标记点数据
+ * @param viewStart 可视起始日期
+ * @param viewEnd 可视截止日期
+ * @param monthFormatter 月份标题展示格式化配置（模板字符串或回调函数），默认 'YYYY年MM月'
+ * @returns 月份数据集及周文本列表
  */
-export function getCalendarData(minDate?: DateType, maxDate?: DateType, defaultDate?: DateType, monthCount = 12, formatter = 'YYYY-MM-DD', signs: { [key: string]: SignType } = {}, viewStart?: DateType, viewEnd?: DateType) {
+export function getCalendarData(
+  minDate?: DateType,
+  maxDate?: DateType,
+  defaultDate?: DateType,
+  monthCount = 12,
+  formatter = 'YYYY-MM-DD',
+  signs: { [key: string]: SignType } = {},
+  viewStart?: DateType,
+  viewEnd?: DateType,
+  monthFormatter: MonthFormatterType = 'YYYY年MM月'
+) {
   const monthDatas: MonthType[] = []
   if (viewStart && maxDate && maxDate < viewStart) {
     throw new Error('viewStart cannot be greater than viewEnd')
@@ -81,7 +120,7 @@ export function getCalendarData(minDate?: DateType, maxDate?: DateType, defaultD
     const firstDay = date.startOf('month').day()
     const monthData: MonthType = {
       date,
-      monthText: date.format('YYYY年MM月'),
+      monthText: formatMonthTitle(date, monthFormatter),
       key: date.format('YYYY-MM'),
       month: date.month() + 1,
       weeks: [],

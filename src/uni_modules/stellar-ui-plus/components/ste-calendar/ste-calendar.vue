@@ -50,7 +50,7 @@ const cmpRowHeight = computed(() => {
     return ROW_HEIGHT_WITHOUT_SIGN;
 });
 
-const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, viewDate.value, props.monthCount, props.formatter, props.signs, props.viewStart, props.viewEnd));
+const cmpDates = computed(() => getCalendarData(props.minDate, props.maxDate, viewDate.value, props.monthCount, props.formatter, props.signs, props.viewStart, props.viewEnd, props.monthFormatter));
 
 const cmpRootStyle = computed(() => {
     const rowHeight = utils.formatPx(cmpRowHeight.value, 'num');

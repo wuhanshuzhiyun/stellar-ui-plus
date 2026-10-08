@@ -450,6 +450,18 @@
 </template>
 ```
 
+## 自定义月份标题格式
+
+- 属性`monthFormatter`用于配置每个月份顶部的标题显示格式，默认`YYYY年MM月`
+- 支持传入 Dayjs 格式模板字符串（如 `YYYY-MM`、`YYYY/MM`）或自定义回调函数 `(date) => string`
+
+```html
+<template>
+    <!-- 显示为形如 2024-05 -->
+    <ste-calendar monthFormatter="YYYY-MM" />
+</template>
+```
+
 ## 自定义组件
 
 - 属性`weekendColor`用于设置周末日期颜色

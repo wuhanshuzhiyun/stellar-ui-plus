@@ -19,6 +19,7 @@ const show12 = ref(false);
 const show13 = ref(false);
 const show14 = ref(false);
 const show15 = ref(false);
+const show16 = ref(false);
 let taost = useToast();
 const handleConfirm = (v: (string | number)[]) => {
     taost.showToast({
@@ -187,6 +188,14 @@ const signs = reactive<{ [key: string]: SignType }>({
                     <ste-popup v-model:show="show13" position="bottom" height="60vh">
                         <div style="padding-bottom: 20px; height: 100%">
                             <ste-calendar :showMark="false" @select="handleConfirm" />
+                        </div>
+                    </ste-popup>
+                </view>
+                <view class="demo-code">
+                    <ste-button @click="show16 = true" width="100%">自定义月份标题(YYYY-MM)</ste-button>
+                    <ste-popup v-model:show="show16" position="bottom" height="60vh">
+                        <div style="padding-bottom: 20px; height: 100%">
+                            <ste-calendar monthFormatter="YYYY-MM" @select="handleConfirm" />
                         </div>
                     </ste-popup>
                 </view>

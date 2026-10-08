@@ -4,6 +4,7 @@
  */
 import type { PropType } from 'vue';
 import type { DateType, SignType } from './date';
+import type { Dayjs } from '../../types/index';
 
 export default {
     title: { type: String, default: () => '日期选择' },
@@ -38,4 +39,13 @@ export default {
     monthCount: { type: Number, default: () => 12 },
     weekendColor: { type: String, default: () => '' },
     showScrollbar: { type: Boolean, default: () => true },
+    /**
+     * 月份标题展示格式化配置
+     * 支持传入 Dayjs 格式化模板字符串（如 'YYYY年MM月'、'YYYY-MM'、'YYYY/MM'）或自定义格式化函数 (date: Dayjs) => string
+     * 默认值为 'YYYY年MM月'
+     */
+    monthFormatter: {
+        type: [String, Function] as PropType<string | ((date: Dayjs) => string)>,
+        default: () => 'YYYY年MM月',
+    },
 };

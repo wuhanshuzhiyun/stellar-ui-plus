@@ -231,6 +231,14 @@ function handleMaskClick() {
     handleMaskClose();
 }
 
+function closeMenu() {
+    showMenu.value = false;
+}
+
+defineExpose({
+    closeMenu,
+});
+
 // 监听器
 watch(
     () => props.data,

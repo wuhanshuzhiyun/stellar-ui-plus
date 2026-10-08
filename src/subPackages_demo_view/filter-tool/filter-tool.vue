@@ -22,6 +22,13 @@ const handleFilterClick = (item: any) => {
 const handleConfirm = (values: any) => {
     console.log('点击了确认按钮:', values);
 };
+
+const filterToolRef = ref<any>(null);
+const handleClose = () => {
+    if (filterToolRef.value) {
+        filterToolRef.value.closeMenu();
+    }
+};
 </script>
 
 <template>
@@ -158,6 +165,20 @@ const handleConfirm = (values: any) => {
                         </view>
                     </ste-filter-tool>
                 </view>
+            </view>
+        </view>
+        <view class="demo-item">
+            <view class="title">手动收起弹窗</view>
+            <view class="item-block" style="align-items: center">
+                <view>
+                    <ste-filter-tool ref="filterToolRef" :data="subFilters" @item-click="handleFilterClick" @confirm="handleConfirm">
+                        <view style="font-size: 24rpx">
+                            <text>基础筛选</text>
+                            <ste-icon code="&#xe6c7;" color="#000" size="24" />
+                        </view>
+                    </ste-filter-tool>
+                </view>
+                <ste-button @click="handleClose" mode="100" style="margin-left: 20rpx; margin-bottom: 36rpx">手动收起</ste-button>
             </view>
         </view>
     </page-layout>

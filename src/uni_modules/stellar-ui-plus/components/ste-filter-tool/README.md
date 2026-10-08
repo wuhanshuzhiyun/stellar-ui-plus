@@ -102,6 +102,7 @@
 - `children` 是当前分组下的选项，每项需提供 `title` 与 `value`。
 - 分组设置 `multiple: true` 后可多选；未设置时同一分组单选。
 - 使用 `v-model:value` 接收选中结果。每个已选分组对应一项，`checkbox` 模式每组最多一个值，`input` 类型在点击确认时返回输入值。
+- 通过给组件添加 `ref`，可以调用 `closeMenu` 方法手动收起筛选弹窗。
 
 ```ts
 const selectedValues = ref([
@@ -116,6 +117,16 @@ const selectedValues = ref([
 ```html
 <script lang="ts" setup>
     import { ref, reactive } from 'vue';
+    
+    const filterToolRef = ref(null);
+    
+    // 手动收起筛选弹窗
+    const closeFilter = () => {
+        if (filterToolRef.value) {
+            filterToolRef.value.closeMenu();
+        }
+    };
+    
     // 筛选选项
     const subFilters = reactive([
         {
@@ -229,12 +240,13 @@ const selectedValues = ref([
 </script>
 <template>
     <view style="width: 100%">
-        <ste-filter-tool v-model:value="selectedValues" :data="subFilters">
+        <ste-filter-tool ref="filterToolRef" v-model:value="selectedValues" :data="subFilters">
             <view style="font-size: 24rpx">
                 <text>基础筛选</text>
                 <ste-icon code="&#xe6c7;" color="#000" size="24" />
             </view>
         </ste-filter-tool>
+        <button @click="closeFilter">手动收起筛选</button>
     </view>
 </template>
 ```
@@ -379,7 +391,11 @@ const selectedValues = ref([
 
 ---$
 
-<!-- props -->
+| type | 类型 | 默认值 | 必填 | 说明 |
+| --- | --- | --- | --- | --- |
+| closeMenu | `() => void` | - | - | 收起弹框 |
+
+<!-- methods -->
 
 ---$
 {{fuyuwei}}

@@ -198,6 +198,25 @@
             "version": "1.22.27"
         },
         {
+            "name": "infinite",
+            "description": "是否开启前后无限滚动模式（基于虚拟滑动窗口，无论跨度多少年均恒定极低内存开销）",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "infiniteYears",
+            "description": "无限滚动模式下预设的单向年份跨度（如设为 10 即向前 10 年、向后 10 年）",
+            "type": "number",
+            "default": 10
+        },
+        {
+            "name": "bufferCount",
+            "description": "虚拟列表可视区域上下预渲染的月份缓冲区数量",
+            "type": "number",
+            "default": 3
+        },
+        {
+
             "name": "[event]select",
             "description": "选择日期时触发",
             "params": [

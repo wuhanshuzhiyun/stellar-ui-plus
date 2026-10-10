@@ -48,4 +48,21 @@ export default {
         type: [String, Function] as PropType<string | ((date: Dayjs) => string)>,
         default: () => 'YYYY年MM月',
     },
+    /**
+     * 是否开启前后无限滚动模式
+     * 开启后，在未设置 viewStart / viewEnd 时，自动以 defaultDate 为基准向前和向后无限扩展年份
+     * 内部基于纯数学虚拟滑动窗口，无论滚动跨度多少年均不会造成内存溢出崩溃
+     */
+    infinite: { type: Boolean, default: () => false },
+    /**
+     * 无限滚动模式下预设的单向年份跨度（默认 10 年，即向前 10 年、向后 10 年，共 20 年）
+     * 配合虚拟列表使用，即使设置为 50 或 100 年也仅生成轻量数值元数据，内存消耗极低
+     */
+    infiniteYears: { type: Number, default: () => 10 },
+    /**
+     * 虚拟列表可视区域上下预渲染的月份缓冲区数量（默认上下各预热 3 个月）
+     * 可有效避免快速惯性滚动时的白屏闪烁
+     */
+    bufferCount: { type: Number, default: () => 3 },
 };
+

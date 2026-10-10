@@ -20,6 +20,7 @@ const show13 = ref(false);
 const show14 = ref(false);
 const show15 = ref(false);
 const show16 = ref(false);
+const show17 = ref(false);
 let taost = useToast();
 const handleConfirm = (v: (string | number)[]) => {
     taost.showToast({
@@ -33,6 +34,11 @@ const defaultMonth = ref<RefCalendar>();
 
 const setViewMonth = () => {
     defaultMonth.value?.showMonth('2024-07');
+};
+
+const infiniteMonth = ref<RefCalendar>();
+const setInfiniteMonth = () => {
+    infiniteMonth.value?.showMonth();
 };
 
 const defaultDate = ref(utils.dayjs().format('YYYY-MM'));
@@ -196,6 +202,14 @@ const signs = reactive<{ [key: string]: SignType }>({
                     <ste-popup v-model:show="show16" position="bottom" height="60vh">
                         <div style="padding-bottom: 20px; height: 100%">
                             <ste-calendar monthFormatter="YYYY-MM" @select="handleConfirm" />
+                        </div>
+                    </ste-popup>
+                </view>
+                <view class="demo-code">
+                    <ste-button @click="show17 = true" width="100%">前后无限滚动(虚拟列表)</ste-button>
+                    <ste-popup v-model:show="show17" position="bottom" height="60vh" @open-after="setInfiniteMonth">
+                        <div style="padding-bottom: 20px; height: 100%">
+                            <ste-calendar ref="infiniteMonth" infinite :infiniteYears="10" @confirm="handleConfirm" />
                         </div>
                     </ste-popup>
                 </view>

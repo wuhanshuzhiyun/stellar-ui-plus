@@ -462,6 +462,46 @@
 </template>
 ```
 
+## 前后无限滚动 (虚拟长列表)
+
+- 属性`infinite`用于开启前后无限滚动模式，内部基于纯数学可预测高度的滑动窗口虚拟列表实现
+- 无论滚动跨度 10 年还是 100 年，页面中始终恒定仅渲染 5~7 个月份，内存开销极小且绝无 OOM 崩溃闪退风险
+- 属性`infiniteYears`用于设置默认单向前溯与后延的年份跨度（如设为 10 即向前 10 年、向后 10 年，共 20 年）
+
+```html
+<script setup lang="ts">
+    import { ref } from 'vue';
+    const show = ref(false);
+
+    const handleConfirm = (v: (string | number)[]) => {
+        uni.showToast({
+            title: '确定选择：' + v.join(' '),
+            icon: 'none',
+        });
+    };
+</script>
+<template>
+    <ste-button @click="show = true">前后无限滚动</ste-button>
+    <ste-popup v-model:show="show" position="bottom" height="60vh">
+        <div style="padding-bottom: 20px; height: 100%">
+            <!-- 开启无限滚动，向前可滚动 10 年，向后可滚动 10 年 -->
+            <ste-calendar infinite :infiniteYears="10" @confirm="handleConfirm" />
+        </div>
+    </ste-popup>
+</template>
+```
+
+## 超大年份跨度渲染
+
+- 当需要显式指定极大的时间跨度（例如从 1970 年到 2070 年，跨越 100 年）时，组件自动应用滑动窗口虚拟化渲染，流畅无卡顿
+
+```html
+<template>
+    <ste-calendar view-start="1970-01-01" view-end="2070-12-31" defaultDate="2026-10-01" />
+</template>
+```
+
+
 ## 自定义组件
 
 - 属性`weekendColor`用于设置周末日期颜色

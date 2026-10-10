@@ -136,5 +136,51 @@ describe('Calendar Component', async () => {
 		const fnMonthText = fnWrapper.find('.month-text');
 		expect(fnMonthText.text()).toBe('Year 2024 Month 5');
 	})
+
+	test('virtual sliding window with large span (100 years / 1200 months)', async () => {
+		// 跨度 100 年（从 1970-01-01 到 2070-12-31，共 1212 个月）
+		const largeWrapper = mount(Calendar, {
+			props: {
+				viewStart: '1970-01-01',
+				viewEnd: '2070-12-31',
+				defaultDate: '2026-10-01',
+				bufferCount: 2,
+			},
+		});
+		await nextTick();
+
+		// 验证 DOM 中渲染的月份数量恒定（2 * bufferCount + 1 = 5 个月），绝不膨胀到 1200+
+		const months = largeWrapper.findAll('.month-item');
+		expect(months.length).toBeLessThanOrEqual(5);
+		expect(months.length).toBeGreaterThan(0);
+
+		// 验证虚拟上下占位容器存在
+		const spacerTop = largeWrapper.find('.virtual-spacer-top');
+		const spacerBottom = largeWrapper.find('.virtual-spacer-bottom');
+		expect(spacerTop.exists()).toBe(true);
+		expect(spacerBottom.exists()).toBe(true);
+	})
+
+	test('infinite scroll mode', async () => {
+		// 开启前后无限滚动模式
+		const infiniteWrapper = mount(Calendar, {
+			props: {
+				infinite: true,
+				infiniteYears: 15,
+				bufferCount: 3,
+				defaultDate: '2026-10-01',
+			},
+		});
+		await nextTick();
+
+		expect(infiniteWrapper.props('infinite')).toBe(true);
+		expect(infiniteWrapper.props('infiniteYears')).toBe(15);
+		expect(infiniteWrapper.props('bufferCount')).toBe(3);
+
+		// 即使前后扩展各 15 年（共 30 年 360 个月），DOM 节点恒定（至多 7 个月）
+		const months = infiniteWrapper.findAll('.month-item');
+		expect(months.length).toBeLessThanOrEqual(7);
+	})
 });
+
 

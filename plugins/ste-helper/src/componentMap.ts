@@ -2589,11 +2589,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "change",
-                "description": "当选择值变化时触发",
+                "description": "当选择值变化时触发。返回对象包含 value（毫秒时间戳）、selected（当前模式展示的字段，值为数字）和 columnIndexs（各列选中索引）。value 中未展示的字段使用默认值，格式由使用者自行处理",
                 "params": [
                     {
                         "name": "data",
-                        "description": "() => void"
+                        "description": "{ value: number; selected: { year?, month?, day?, hour?, minute?, second? }; columnIndexs: number[] }"
                     }
                 ],
                 "type": ""

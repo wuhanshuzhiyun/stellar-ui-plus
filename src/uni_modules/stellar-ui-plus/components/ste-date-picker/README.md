@@ -18,6 +18,33 @@
 </template>
 ```
 
+## change 事件
+
+`change` 事件返回 `value`、`selected` 和 `columnIndexs`：
+
+- `value`：毫秒时间戳。未展示的字段会使用默认值，使用者可按需格式化或调整。
+- `selected`：只包含当前 `mode` 展示的字段，字段值为数字。例如 `mode="date"` 时为 `{ year: 2026, month: 10, day: 14 }`。
+- `columnIndexs`：各列当前选中项的索引。
+
+```html
+<template>
+    <ste-date-picker mode="date" @change="onChange"></ste-date-picker>
+    <text>{{ dateText }}</text>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue';
+import type { DatePickerChangeEvent } from 'stellar-ui-plus/components/ste-date-picker/types';
+
+const dateText = ref('');
+function onChange(event: DatePickerChangeEvent) {
+    const date = new Date(event.value);
+    const pad = (value: number) => String(value).padStart(2, '0');
+    dateText.value = `${date.getFullYear()}年${pad(date.getMonth() + 1)}月${pad(date.getDate())}日`;
+}
+</script>
+```
+
 ## 不显示操作栏
 
 ```html

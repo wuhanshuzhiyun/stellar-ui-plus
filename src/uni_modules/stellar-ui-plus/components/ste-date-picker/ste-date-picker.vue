@@ -25,7 +25,7 @@ import { ref, onMounted, nextTick, computed, watch } from 'vue';
 import { useColorStore } from '../../store/color';
 let { getColor } = useColorStore();
 import propsData from './props';
-import type { CloumnType } from './types';
+import type { CloumnType, DatePickerChangeEvent } from './types';
 import utils from '../../utils/utils';
 const dayjs = utils.dayjs;
 
@@ -41,6 +41,7 @@ let cmpConfirmColor = computed(() => {
 });
 
 const DEFAULT_DATE = dayjs(new Date(1970, 1, 1, 0, 0, 0));
+const dateTypes: CloumnType[] = ['year', 'month', 'day', 'hour', 'minute', 'second'];
 const padZero = (value: string | number) => `00${value}`.slice(-2);
 
 const times = (n: number, iteratee: (index: number) => string): string[] => {
@@ -53,13 +54,14 @@ const times = (n: number, iteratee: (index: number) => string): string[] => {
 };
 
 const emits = defineEmits<{
-    (e: 'change', changeObj: any): void;
+    (e: 'change', changeObj: DatePickerChangeEvent): void;
     (e: 'cancel'): void;
     (e: 'confirm', value: string | number): void;
     (e: 'update:value', value: string | number): void;
 }>();
 
 const columns = ref<string[][]>([]);
+const rawColumns = ref<{ type: CloumnType; values: string[] }[]>([]);
 const innerValue = ref<string | number>('');
 const innerDefaultIndex = ref<number[]>([]);
 
@@ -86,7 +88,9 @@ const updateColumnValue = (value: string | number) => {
 
 const updateColumns = () => {
     const formatter = props.formatter || innerFormatter;
-    const result = getOriginColumns().map(column => column.values.map(value => formatter(column.type, value)));
+    const originColumns = getOriginColumns();
+    rawColumns.value = originColumns;
+    const result = originColumns.map(column => column.values.map(value => formatter(column.type, value)));
     columns.value = result;
     nextTick(() => {
         show.value = true;
@@ -225,55 +229,28 @@ const correctValue = (value: string | number) => {
     return date.valueOf();
 };
 
-const change = (e: { indexs: number[]; values: string[][] }) => {
-    const { indexs, values } = e;
-    let selectValue: string | number = '';
+const change = (e: { indexs: number[] }) => {
+    const { indexs } = e;
 
     let dateArr = [DEFAULT_DATE.year(), DEFAULT_DATE.month() + 1, DEFAULT_DATE.day(), DEFAULT_DATE.hour(), DEFAULT_DATE.minute(), DEFAULT_DATE.second()];
+    const selected: DatePickerChangeEvent['selected'] = {};
 
-    let startFlag = 0;
-    switch (props.mode) {
-        case 'month-day':
-            startFlag = 1;
-            break;
-        case 'time':
-        case 'hour-minute':
-            startFlag = 3;
-            break;
-        case 'minute-second':
-            startFlag = 4;
-    }
-
-    values.forEach((value, index) => {
-        switch (index + startFlag) {
-            case 0:
-                dateArr[0] = +value[indexs[index]];
-                break;
-            case 1:
-                dateArr[1] = +value[indexs[index]];
-                break;
-            case 2:
-                dateArr[2] = +value[indexs[index]];
-                break;
-            case 3:
-                dateArr[3] = +value[indexs[index]];
-                break;
-            case 4:
-                dateArr[4] = +value[indexs[index]];
-                break;
-            case 5:
-                dateArr[5] = +value[indexs[index]];
-        }
+    rawColumns.value.forEach(({ type, values }, index) => {
+        const dateIndex = dateTypes.indexOf(type);
+        const value = +values[indexs[index]];
+        dateArr[dateIndex] = value;
+        selected[type] = value;
     });
 
     // 此月份的最大天数
     const maxDay = dayjs(`${dateArr[0]}-${dateArr[1]}`).daysInMonth();
     dateArr[2] = Math.min(maxDay, dateArr[2]) || 1;
+    if (selected.day !== undefined) selected.day = dateArr[2];
 
-    selectValue = dayjs(`${dateArr[0]}/${padZero(dateArr[1])}/${padZero(dateArr[2])} ${padZero(dateArr[3])}:${padZero(dateArr[4])}:${padZero(dateArr[5])}`).valueOf();
+    const selectValue = dayjs(`${dateArr[0]}/${padZero(dateArr[1])}/${padZero(dateArr[2])} ${padZero(dateArr[3])}:${padZero(dateArr[4])}:${padZero(dateArr[5])}`).valueOf();
 
     updateColumnValue(selectValue);
-    emits('change', { value: selectValue, columnIndexs: indexs });
+    emits('change', { value: selectValue, columnIndexs: indexs, selected });
     emits('update:value', selectValue);
 };
 

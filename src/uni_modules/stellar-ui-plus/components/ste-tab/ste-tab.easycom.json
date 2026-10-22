@@ -5,52 +5,87 @@
     "attributes": [
         {
             "name": "title",
-            "description": "当前标签标题",
-            "type": "string"
+            "description": "标题",
+            "type": "String",
+            "default": ""
         },
         {
             "name": "subTitle",
-            "description": "当前标签子标题",
-            "type": "string"
+            "description": "子标题",
+            "type": "String",
+            "default": ""
         },
         {
             "name": "image",
-            "description": "当前标签图片",
-            "type": "string"
+            "description": "图片（同 image 的 src 属性）",
+            "type": "String",
+            "default": ""
         },
         {
             "name": "name",
-            "description": "当前标签name",
-            "type": "string"
+            "description": "标签唯一标识（当 tabs 的 active 值类型为 string 时，作为匹配激活的标识符）",
+            "type": "String",
+            "default": ""
         },
         {
             "name": "index",
-            "description": "当前标签index",
-            "type": "number"
+            "description": "标签下标（当 tabs 的 active 值类型为 number 时，作为匹配激活的标识符）",
+            "type": "Number",
+            "default": 0
         },
         {
             "name": "disabled",
-            "description": "是否禁用当前标签",
-            "type": "boolean",
+            "description": "禁用当前标签",
+            "type": "Boolean",
             "default": false
         },
         {
             "name": "showDot",
-            "description": "是否显示徽标",
-            "type": "boolean",
+            "description": "是否在主标题右上角显示小红点（隐藏主标题时无法显示）",
+            "type": "Boolean",
             "default": false
         },
         {
             "name": "badge",
-            "description": "显示的徽标数量",
-            "type": "number | string",
+            "description": "右上角徽标的内容",
+            "type": "String | Number",
             "default": 0
         },
         {
             "name": "showZeroBadge",
-            "description": "徽标数量为0时是否展示",
-            "type": "boolean",
+            "description": "当 badge 为数字 0 时，是否展示徽标",
+            "type": "Boolean",
             "default": false
+        },
+        {
+            "name": "activeImage",
+            "description": "选中状态下的图标图片地址[仅UVue支持]",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "icon",
+            "description": "内置图标编码或类名[仅UVue支持]",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，在插槽中的内容会展示在标签内容区域"
+        },
+        {
+            "name": "[slot]header-suffix",
+            "description": "tab 栏后缀插槽",
+            "version": "v1.22.20"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "parent": "配合 ste-tabs 使用。UVue 端支持 activeImage、icon 及 rootStyle 原生样式自定义"
+    }
 }

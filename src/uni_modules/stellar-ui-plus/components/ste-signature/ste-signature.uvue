@@ -1,0 +1,436 @@
+<script setup lang="uts">
+	import { computed, onMounted, ref, watch, getCurrentInstance } from 'vue'
+	import { formatPx, guid } from '../../utils/utils.uts'
+
+	defineOptions({ name: 'ste-signature' })
+
+	type Stroke = {
+		x : number,
+		y : number,
+	}
+
+	type CanvasSize = {
+		width : number,
+		height : number,
+	}
+
+	type SignatureProps = {
+		customClass ?: string,
+		lineWidth ?: number,
+		strokeColor ?: string,
+		background ?: string,
+		type ?: string,
+		width ?: number | string,
+		height ?: number | string,
+		action ?: string,
+	}
+
+	const props = withDefaults(defineProps<SignatureProps>(), {
+		customClass: '',
+		lineWidth: 3,
+		strokeColor: '#000000',
+		background: '#ffffff',
+		type: 'png',
+		width: '100%',
+		height: '100%',
+		action: '',
+	})
+
+	const emits = defineEmits(['start', 'signing', 'end', 'save', 'error'])
+
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		return {
+			width: formatPx(props.width),
+			height: formatPx(props.height),
+			backgroundColor: props.background,
+		} as UTSJSONObject
+	})
+
+	const canvasId = ref<string>(guid(8))
+
+	const strokeing = ref<Stroke[]>([])
+	const strokes = ref<Stroke[][]>([])
+	const canvasSize = ref<CanvasSize>({ width: 0, height: 0 })
+	const isDrawing = ref(false)
+
+	let viewLayout : UTSJSONObject | null = null
+
+	// #ifdef APP-ANDROID || APP-IOS
+	let drawableCtx : DrawableContext | null = null
+	// #endif
+
+	// 缓存实时布局，每次 touchStart 时刷新
+	let currentLayout : UTSJSONObject | null = null
+
+	function refreshLayout() {
+		const query = uni.createSelectorQuery()
+		query.select('#' + canvasId.value).boundingClientRect((res : any) => {
+			if (res != null) {
+				const rect = JSON.parse(JSON.stringify(res)) as UTSJSONObject
+				currentLayout = rect
+				viewLayout = rect
+			}
+		}).exec()
+	}
+
+	function getTouchPosition(e : TouchEvent) : Stroke {
+		let x = 0
+		let y = 0
+
+		if (e.touches.length > 0) {
+			const touch = e.touches[0]
+			x = touch.clientX
+			y = touch.clientY
+		} else if (e.changedTouches.length > 0) {
+			const touch = e.changedTouches[0]
+			x = touch.clientX
+			y = touch.clientY
+		} else {
+			return { x: 0, y: 0 }
+		}
+
+		// 使用实时布局偏移
+		const layout = currentLayout
+		if (layout != null) {
+			const left = layout['left'] as number
+			const top = layout['top'] as number
+			x = x - left
+			y = y - top
+		}
+
+		return { x: x, y: y }
+	}
+
+	// #ifdef APP-ANDROID || APP-IOS
+	function drawAllStrokesFn() {
+		const ctx = drawableCtx
+		if (ctx == null) return
+		const width = canvasSize.value.width
+		const height = canvasSize.value.height
+		if (width <= 0 || height <= 0) return
+
+		// 清空并填充背景
+		if (props.background != 'none') {
+			ctx.fillStyle = props.background
+			ctx.beginPath()
+			ctx.rect(0, 0, width, height)
+			ctx.fill()
+		}
+
+		for (let i = 0; i < strokes.value.length; i++) {
+			const stroke = strokes.value[i]
+			if (stroke.length == 0) continue
+			ctx.strokeStyle = props.strokeColor
+			ctx.lineWidth = props.lineWidth
+			ctx.lineCap = 'round'
+			ctx.lineJoin = 'round'
+			ctx.beginPath()
+			ctx.moveTo(stroke[0].x, stroke[0].y)
+			for (let j = 1; j < stroke.length; j++) {
+				ctx.lineTo(stroke[j].x, stroke[j].y)
+			}
+			ctx.stroke()
+		}
+		ctx.update()
+	}
+
+	function setupDrawable() {
+		// 通过 id 获取 UniElement，直接调用其 getDrawableContext 方法
+		const container = uni.getElementById(canvasId.value)
+		if (container == null) {
+			console.warn('signature container not found, retry...')
+			setTimeout(() : void => { setupDrawable() }, 100)
+			return
+		}
+		try {
+			drawableCtx = container.getDrawableContext() as DrawableContext
+			drawAllStrokesFn()
+		} catch (e) {
+			console.error('setupDrawable error:', e)
+			setTimeout(() : void => { setupDrawable() }, 100)
+		}
+	}
+
+	function onTouchStartApp(e : TouchEvent) {
+
+		// 异步刷新布局，确保滚动后位置准确
+		const query = uni.createSelectorQuery()
+		query.select('#' + canvasId.value).boundingClientRect((res : any) => {
+			if (res != null) {
+				const rect = JSON.parse(JSON.stringify(res)) as UTSJSONObject
+				currentLayout = rect
+				viewLayout = rect
+
+				const pos = getTouchPosition(e)
+
+				// 使用 splice 清空数组，然后添加新点
+				strokeing.value.splice(0, strokeing.value.length)
+				strokeing.value.push(pos)
+				isDrawing.value = true
+
+				const ctx = drawableCtx
+				if (ctx != null) {
+					ctx.strokeStyle = props.strokeColor
+					ctx.lineWidth = props.lineWidth
+					ctx.lineCap = 'round'
+					ctx.lineJoin = 'round'
+					ctx.beginPath()
+					ctx.moveTo(pos.x, pos.y)
+					const radius = props.lineWidth / 2
+					ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2, true)
+					ctx.fillStyle = props.strokeColor
+					ctx.fill()
+					ctx.update()
+				}
+				emits('start')
+			}
+		}).exec()
+	}
+
+	function onTouchMoveApp(e : TouchEvent) {
+		const ctx = drawableCtx
+		if (strokeing.value.length == 0 || ctx == null) {
+			return
+		}
+		const pos = getTouchPosition(e)
+		strokeing.value.push(pos)
+
+		// 获取上一个点
+		const lastPos = strokeing.value[strokeing.value.length - 2]
+
+		// 设置绘制样式
+		ctx.strokeStyle = props.strokeColor
+		ctx.lineWidth = props.lineWidth
+		ctx.lineCap = 'round'
+		ctx.lineJoin = 'round'
+
+		// 每次移动都重新开始路径
+		ctx.beginPath()
+		ctx.moveTo(lastPos.x, lastPos.y)
+		ctx.lineTo(pos.x, pos.y)
+		ctx.stroke()
+		ctx.update()
+
+		emits('signing')
+	}
+
+	function clearApp() {
+		strokes.value = []
+		const ctx = drawableCtx
+		if (ctx != null) {
+			const width = canvasSize.value.width
+			const height = canvasSize.value.height
+			if (width > 0 && height > 0) {
+				ctx.beginPath()
+				ctx.rect(0, 0, width, height)
+				if (props.background != 'none') {
+					ctx.fillStyle = props.background
+					ctx.fill()
+				} else {
+					ctx.strokeStyle = 'rgba(0,0,0,0)'
+					ctx.stroke()
+				}
+			}
+			ctx.update()
+		}
+	}
+
+	function saveApp(callback : (res : string) => void, error ?: (err : any) => void) {
+		if (strokes.value.length == 0) {
+			console.warn('没有绘制签名内容')
+			if (error != null) error('请绘制签名')
+			return
+		}
+		const container = uni.getElementById(canvasId.value)
+		if (container == null) {
+			if (error != null) error('容器元素未找到')
+			return
+		}
+		try {
+			container.takeSnapshot({
+				success: (res) => {
+					const tempFilePath = res.tempFilePath
+					if (tempFilePath != null && tempFilePath != '') {
+						// 确保路径格式正确，添加 file:// 协议
+						let finalPath = tempFilePath
+						if (!tempFilePath.startsWith('file://') && !tempFilePath.startsWith('http')) {
+							finalPath = 'file://' + tempFilePath
+						}
+						callback(finalPath)
+					} else {
+						if (error != null) error('截图失败：未获取到文件路径')
+					}
+				},
+				fail: (err) => {
+					console.error('takeSnapshot fail:', err)
+					if (error != null) error('截图失败：' + err)
+				},
+			})
+		} catch (e) {
+			console.error('saveApp error:', e)
+			if (error != null) error('保存异常：' + e)
+		}
+	}
+	// #endif
+
+	function onTouchStart(e : TouchEvent) {
+		// #ifdef APP-ANDROID || APP-IOS
+		onTouchStartApp(e)
+		// #endif
+		// #ifndef APP-ANDROID || APP-IOS
+		isDrawing.value = true
+		strokeing.value = [getTouchPosition(e)]
+		emits('start')
+		// #endif
+	}
+
+	function onTouchMove(e : TouchEvent) {
+		// #ifdef APP-ANDROID || APP-IOS
+		onTouchMoveApp(e)
+		// #endif
+		// #ifndef APP-ANDROID || APP-IOS
+		if (strokeing.value.length == 0) return
+		const pos = getTouchPosition(e)
+		strokeing.value.push(pos)
+		emits('signing')
+		// #endif
+	}
+
+	function onTouchEnd() {
+		if (isDrawing.value == false) {
+			console.log('onTouchEnd skipped: not drawing')
+			return
+		}
+		if (strokeing.value.length > 0) {
+			strokes.value.push([...strokeing.value])
+			strokeing.value = []
+			isDrawing.value = false
+			emits('end')
+		} else {
+			strokeing.value = []
+			isDrawing.value = false
+		}
+	}
+
+	function onTouchCancel() {
+		if (isDrawing.value == false) {
+			console.log('onTouchCancel skipped: not drawing')
+			return
+		}
+		// 取消绘制，不保存当前笔画
+		strokeing.value = []
+		isDrawing.value = false
+		// 重绘已保存的笔画
+		drawAllStrokesFn()
+	}
+
+	function clear() {
+		// #ifdef APP-ANDROID || APP-IOS
+		clearApp()
+		// #endif
+		// #ifndef APP-ANDROID || APP-IOS
+		strokes.value = []
+		// #endif
+	}
+
+	function back() {
+		strokes.value.pop()
+		// #ifdef APP-ANDROID || APP-IOS
+		drawAllStrokesFn()
+		// #endif
+	}
+
+	function save(callback : (res : string) => void, error ?: (err : any) => void) {
+		if (strokes.value.length == 0) {
+			console.warn('没有绘制签名内容')
+			if (error != null) error('请绘制签名')
+			return
+		}
+		// #ifdef APP-ANDROID || APP-IOS
+		saveApp(callback, error)
+		// #endif
+		// #ifndef APP-ANDROID || APP-IOS
+		if (error != null) error('UVue 版本暂不支持 save')
+		// #endif
+	}
+
+	function output(options : UTSJSONObject = {} as UTSJSONObject) {
+		const success = options['success'] as ((res : string) => void) | null
+		const fail = options['fail'] as ((err : any) => void) | null
+		if (success == null) return
+		save(success, fail)
+	}
+
+	function measureLayout(callback ?: () => void) {
+		const query = uni.createSelectorQuery()
+		query.select('#' + canvasId.value).boundingClientRect((res : any) => {
+			if (res != null) {
+				const data = JSON.parse(JSON.stringify(res)) as UTSJSONObject
+				const width = data['width'] as number
+				const height = data['height'] as number
+				if (width > 0 && height > 0) {
+					canvasSize.value = { width, height }
+				} else {
+					console.error('Invalid canvas size:', width, height)
+				}
+				viewLayout = data
+			} else {
+				console.error('measureLayout res is null')
+			}
+			if (callback != null) callback()
+		}).exec()
+	}
+
+	onMounted(() : void => {
+		// #ifdef APP-ANDROID || APP-IOS
+		measureLayout(() => {
+			setupDrawable()
+		})
+		// #endif
+		// #ifndef APP-ANDROID || APP-IOS
+		measureLayout()
+		// #endif
+	})
+
+	watch(() : string => props.action, (newVal : string) : void => {
+		if (newVal == '') return
+		if (newVal == 'clear') {
+			clear()
+		} else if (newVal == 'back') {
+			back()
+		} else if (newVal == 'save') {
+			save((path : string) => {
+				emits('save', path)
+			}, (err : any) => {
+				console.error('save error:', err)
+				emits('error', '' + err)
+			})
+		} else if (newVal == 'output') {
+			output({
+				success: (path : string) => {
+					emits('save', path)
+				},
+				fail: (err : any) => {
+					console.error('output error:', err)
+					emits('error', '' + err)
+				},
+			} as UTSJSONObject)
+		}
+	})
+
+	defineExpose({ save, output, clear, back })
+</script>
+
+<template>
+	<view class="ste-signature-root" :id="canvasId" :style="cmpRootStyle" :ref="'drawable'"
+		@touchstart.stop="onTouchStart" @touchmove.stop.prevent="onTouchMove" @touchend.stop="onTouchEnd"
+		@touchcancel.stop="onTouchCancel">
+	</view>
+</template>
+
+<style>
+	.ste-signature-root {
+		position: relative;
+		overflow: hidden;
+	}
+</style>

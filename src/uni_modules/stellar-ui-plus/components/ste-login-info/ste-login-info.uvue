@@ -1,0 +1,245 @@
+<template>
+	<view class="ste-login-info-root" :style="cmpRootStyle">
+		<view class="user-block">
+			<!-- 1. 头像点击触发区 -->
+			<view class="avatar-wrap" @click="handleAvatarClick">
+				<ste-image
+					:src="cmpAvatarSrc"
+					:width="92"
+					:height="92"
+					radius="50%"
+					mode="aspectFill"
+				/>
+			</view>
+
+			<!-- 2. 已登录状态展示区（loginStatus == 1） -->
+			<view class="user-info" v-if="props.loginStatus == 1" @click="handleUserClick">
+				<view class="name-row">
+					<text class="nickname-text">{{ props.nickname }}</text>
+				</view>
+				<!-- 副标题描述：优先插槽，无插槽时使用默认图标与文字 -->
+				<view class="desc-row">
+					<slot name="desc">
+						<ste-icon
+							v-if="props.subTitleIcon != ''"
+							:code="props.subTitleIcon"
+							:size="26"
+							:color="compMainColor"
+							marginRight="4"
+							:fontFamily="props.fontFamily"
+						/>
+						<text class="desc-text" :style="{ color: compMainColor }">{{ props.subTitle }}</text>
+					</slot>
+				</view>
+			</view>
+
+			<!-- 3. 未登录状态展示区（loginStatus == 0 或 showTitleIcon） -->
+			<view
+				class="user-info user-info-unlogin"
+				v-if="props.loginStatus == 0 || props.showTitleIcon"
+				@click="handleLoginTitleClick"
+			>
+				<view class="unlogin-name-row">
+					<text class="unlogin-title-text">{{ cmpLoginTitle }}</text>
+					<!-- 登录引导向右箭头图标 -->
+					<ste-icon
+						code="&#xe674;"
+						:size="28"
+						color="#333333"
+						marginLeft="8"
+						:fontFamily="props.fontFamily"
+					/>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-login-info.uvue
+	 * @description LoginInfo 登录信息展示组件 - uni-app x / UTS 纯原生重构版本
+	 * 用于个人中心/首页顶部展示用户登录状态卡片，支持已登录（头像、昵称、等级与图标）和未登录（引导文案与跳转箭头）。
+	 */
+	import { computed } from 'vue'
+	import {
+		LoginInfoProps,
+		DEFAULT_LOGIN_AVATAR,
+		DEFAULT_LOGIN_TITLE,
+		DEFAULT_LOGIN_FONT_FAMILY,
+	} from './props.uts'
+	import { useColorStore } from '../../store/color.uts'
+	import { deepMerge } from '../../utils/utils.uts'
+
+	defineOptions({
+		name: 'ste-login-info',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== 组件 Props 属性定义 ====================
+	const props = withDefaults(defineProps<LoginInfoProps>(), {
+		avatar: '',
+		nickname: '',
+		subTitle: '',
+		subTitleIcon: '',
+		subColor: '',
+		fontFamily: DEFAULT_LOGIN_FONT_FAMILY,
+		loginStatus: 1,
+		loginSrc: '',
+		loginTitle: DEFAULT_LOGIN_TITLE,
+		showTitleIcon: false,
+		rootStyle: () => ({} as UTSJSONObject),
+	})
+
+	// ==================== 组件 Emits 事件声明 ====================
+	const emit = defineEmits<{
+		/** 点击头像时触发 */
+		(e: 'avatar-click') : void,
+		/** 点击已登录用户信息区域时触发 */
+		(e: 'user-click') : void,
+		/** 点击未登录引导文本或卡片时触发 */
+		(e: 'login-title-click') : void,
+	}>()
+
+	// ==================== 全局主题色集成 ====================
+	const { getColor } = useColorStore()
+
+	/**
+	 * 计算副标题与图标的主题高亮颜色
+	 */
+	const compMainColor = computed(() : string => {
+		if (props.subColor != '') {
+			return props.subColor
+		}
+		return getColor().steThemeColor
+	})
+
+	/**
+	 * 计算当前展示的有效头像图片 URL
+	 */
+	const cmpAvatarSrc = computed(() : string => {
+		if (props.loginStatus == 1) {
+			return props.avatar != '' ? props.avatar : DEFAULT_LOGIN_AVATAR
+		}
+		return props.loginSrc != '' ? props.loginSrc : DEFAULT_LOGIN_AVATAR
+	})
+
+	/**
+	 * 计算未登录文案提示
+	 */
+	const cmpLoginTitle = computed(() : string => {
+		return props.loginTitle != '' ? props.loginTitle : DEFAULT_LOGIN_TITLE
+	})
+
+	/**
+	 * 自定义内联样式合并计算
+	 */
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		const style = {} as UTSJSONObject
+		return deepMerge(style, props.rootStyle) as UTSJSONObject
+	})
+
+	// ==================== 事件交互响应 ====================
+	/**
+	 * 处理头像点击
+	 */
+	function handleAvatarClick() {
+		emit('avatar-click')
+	}
+
+	/**
+	 * 处理已登录用户信息点击
+	 */
+	function handleUserClick() {
+		emit('user-click')
+	}
+
+	/**
+	 * 处理未登录卡片引导点击
+	 */
+	function handleLoginTitleClick() {
+		emit('login-title-click')
+	}
+</script>
+
+<style scoped>
+	/* 根容器：纯白卡片，固定高度与自适应外框 */
+	.ste-login-info-root {
+		background-color: #ffffff;
+		border-radius: 16rpx;
+		padding: 0 24rpx 0 20rpx;
+		height: 148rpx;
+		justify-content: center;
+	}
+
+	/* 用户核心内容水平横排容器 */
+	.user-block {
+		width: 100%;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	/* 头像容器：圆形包裹与右侧外间距 */
+	.avatar-wrap {
+		border-radius: 50%;
+		margin-right: 24rpx;
+	}
+
+	/* 用户信息列布局：flex: 1 撑开剩余空间 */
+	.user-info {
+		flex: 1;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	/* 未登录状态布局：紧凑居中排列 */
+	.user-info-unlogin {
+		flex: 1;
+		justify-content: center;
+	}
+
+	/* 昵称所在行 */
+	.name-row {
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 8rpx;
+	}
+
+	/* 昵称文本：加粗，超出单行省略号隐藏 */
+	.nickname-text {
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #1a1a1a;
+		lines: 1;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
+	/* 副标题描述所在行 */
+	.desc-row {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	/* 副标题描述文本 */
+	.desc-text {
+		font-size: 24rpx;
+		lines: 1;
+		text-overflow: ellipsis;
+	}
+
+	/* 未登录文本与向右箭头水平行 */
+	.unlogin-name-row {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	/* 未登录标题文字 */
+	.unlogin-title-text {
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #1a1a1a;
+	}
+</style>

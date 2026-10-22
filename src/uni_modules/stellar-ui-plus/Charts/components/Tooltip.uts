@@ -1,0 +1,139 @@
+/**
+ * @file Tooltip.uts
+ * @description 触控提示框与十字准星吸附绘制器
+ * 负责手势滑动时的数据吸附十字线、气泡卡片防越界对齐与多序列数值高清排版
+ */
+
+import { ChartTooltipState, ChartRect } from '../types/uts-types.uts'
+
+/**
+ * 提示框绘制管理类
+ */
+export class Tooltip {
+	/**
+	 * 绘制十字吸附准星辅助线
+	 * @param ctx 渲染上下文
+	 * @param x 吸附点 X 坐标
+	 * @param plotArea 绘图区
+	 */
+	public static drawCrosshair(ctx: CanvasRenderingContext2D, x: number, plotArea: ChartRect) {
+		ctx.save();
+		ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
+		ctx.lineWidth = 1;
+		ctx.beginPath();
+		ctx.moveTo(x, plotArea.top);
+		ctx.lineTo(x, plotArea.bottom);
+		ctx.stroke();
+		ctx.restore();
+	}
+
+	/**
+	 * 绘制浮动 Tooltip 气泡卡片
+	 * @param ctx 渲染上下文
+	 * @param state 提示框状态与数据
+	 * @param canvasWidth 画布总宽
+	 * @param canvasHeight 画布总高
+	 */
+	public static drawCard(
+		ctx: CanvasRenderingContext2D,
+		state: ChartTooltipState,
+		canvasWidth: number,
+		canvasHeight: number
+	) {
+		if (!state.visible || state.items.length == 0) return;
+
+		ctx.save();
+		ctx.font = '11px sans-serif';
+
+		const paddingX = 10;
+		const paddingY = 8;
+		const lineHeight = 16;
+		const titleHeight = state.title != '' ? lineHeight + 4 : 0;
+
+		// 1. 计算卡片内容总宽高
+		let maxContentW = state.title != '' ? ctx.measureText(state.title).width : 0;
+
+		for (let i = 0; i < state.items.length; i++) {
+			const item = state.items[i];
+			const lineStr = item.name + ': ' + item.value;
+			const w = ctx.measureText(lineStr).width + 12; // 包含色标点
+			if (w > maxContentW) {
+				maxContentW = w;
+			}
+		}
+
+		const cardW = maxContentW + paddingX * 2;
+		const cardH = titleHeight + state.items.length * lineHeight + paddingY * 2;
+
+		// 2. 自适应计算卡片左上角坐标，防止超出画布边界
+		let cardX = state.x + 12;
+		let cardY = state.y - cardH / 2;
+
+		// 如果右侧超出，则翻转显示在左侧
+		if (cardX + cardW > canvasWidth - 8) {
+			cardX = state.x - cardW - 12;
+		}
+		if (cardX < 8) cardX = 8;
+
+		// 上下边界防护
+		if (cardY < 8) cardY = 8;
+		if (cardY + cardH > canvasHeight - 8) {
+			cardY = canvasHeight - cardH - 8;
+		}
+
+		// 3. 绘制卡片背景（深色半透明圆角矩形）
+		const radius = 6;
+		ctx.fillStyle = 'rgba(33, 37, 41, 0.88)';
+		ctx.beginPath();
+		ctx.moveTo(cardX + radius, cardY);
+		ctx.lineTo(cardX + cardW - radius, cardY);
+		ctx.arc(cardX + cardW - radius, cardY + radius, radius, -Math.PI / 2, 0);
+		ctx.lineTo(cardX + cardW, cardY + cardH - radius);
+		ctx.arc(cardX + cardW - radius, cardY + cardH - radius, radius, 0, Math.PI / 2);
+		ctx.lineTo(cardX + radius, cardY + cardH);
+		ctx.arc(cardX + radius, cardY + cardH - radius, radius, Math.PI / 2, Math.PI);
+		ctx.lineTo(cardX, cardY + radius);
+		ctx.arc(cardX + radius, cardY + radius, radius, Math.PI, -Math.PI / 2);
+		ctx.closePath();
+		ctx.fill();
+
+		// 4. 绘制文字内容
+		let textY = cardY + paddingY;
+		ctx.textBaseline = 'top';
+
+		// 标题
+		if (state.title != '') {
+			ctx.font = 'bold 11px sans-serif';
+			ctx.fillStyle = '#ffffff';
+			ctx.textAlign = 'left';
+			ctx.fillText(state.title, cardX + paddingX, textY);
+			textY += titleHeight;
+		}
+
+		// 明细列表
+		ctx.font = '11px sans-serif';
+		for (let i = 0; i < state.items.length; i++) {
+			const item = state.items[i];
+
+			// 圆形色标
+			ctx.fillStyle = item.color;
+			ctx.beginPath();
+			ctx.arc(cardX + paddingX + 4, textY + lineHeight / 2, 3.5, 0, Math.PI * 2);
+			ctx.fill();
+
+			// 序列名称
+			ctx.fillStyle = '#e0e0e0';
+			ctx.textAlign = 'left';
+			ctx.fillText(item.name, cardX + paddingX + 12, textY);
+
+			// 数值右对齐
+			ctx.fillStyle = '#ffffff';
+			ctx.textAlign = 'right';
+			ctx.fillText(item.value, cardX + cardW - paddingX, textY);
+
+			textY += lineHeight;
+		}
+
+		ctx.restore();
+	}
+}

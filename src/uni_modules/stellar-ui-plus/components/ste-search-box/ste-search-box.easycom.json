@@ -68,6 +68,12 @@
             "default": "done"
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]search",
             "description": "确定搜索时触发",
             "params": [
@@ -76,6 +82,13 @@
                     "description": "输入框的值"
                 }
             ]
+        },
+        {
+            "name": "[slot]right",
+            "description": "搜索框右侧扩展按钮或操作插槽"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端新增 rootStyle 原生样式对象支持"
+    }
 }

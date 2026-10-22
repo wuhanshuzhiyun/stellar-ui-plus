@@ -6,108 +6,116 @@
         {
             "name": "data",
             "description": "表格数据",
-            "type": "array",
-            "default": "[]"
+            "type": "Array",
+            "default": []
         },
         {
             "name": "fixed",
-            "description": "表头是否定位为fixed",
-            "type": "boolean",
-            "default": "false"
+            "description": "表头是否定位为 fixed",
+            "type": "Boolean",
+            "default": false
         },
         {
             "name": "offsetTop",
-            "description": "定位fixed时top的距离",
-            "type": "number | string",
-            "default": "0"
+            "description": "定位 fixed 时 top 的距离",
+            "type": "Number | String",
+            "default": ""
         },
         {
             "name": "border",
             "description": "是否带有纵向边框",
-            "type": "boolean",
-            "default": "false"
+            "type": "Boolean",
+            "default": false
         },
         {
             "name": "stripe",
             "description": "是否斑马纹",
-            "type": "boolean",
-            "default": "true"
+            "type": "Boolean",
+            "default": true
         },
         {
             "name": "emptyText",
-            "description": "空数据时显示的文本内容，也可以通过 slot=\"empty\" 设置",
-            "type": "string",
-            "default": "'暂无数据'"
+            "description": "空数据时显示的文本内容，也可以通过 slot='empty' 设置",
+            "type": "String",
+            "default": "暂无数据"
         },
         {
             "name": "showSummary",
             "description": "是否在表尾显示合计行",
-            "type": "boolean",
-            "default": "false"
+            "type": "Boolean",
+            "default": false
         },
         {
             "name": "sumText",
             "description": "合计行第一列的文本",
-            "type": "string",
-            "default": "'合计'"
+            "type": "String",
+            "default": "合计"
         },
         {
             "name": "summaryMethod",
             "description": "自定义的合计计算方法",
-            "type": "function",
-            "default": "null"
+            "type": "Function({ columns, data })",
+            "default": null
         },
         {
             "name": "selectable",
-            "description": "仅对 type=selection 的列有效，类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选",
-            "type": "function",
-            "default": "null"
+            "description": "仅对 type=checkbox 的列有效，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选",
+            "type": "Function(row, index)",
+            "default": null
         },
         {
             "name": "readable",
-            "description": "仅对 type=selection 的列有效，类型为 Function，Function 的返回值用来决定这一行的 CheckBox 是否可以勾选",
-            "type": "function",
-            "default": "null"
+            "description": "仅对 type=checkbox 的列有效，Function 的返回值用来决定这一行的 CheckBox 是否只读",
+            "type": "Function(row, index)",
+            "default": null
         },
         {
             "name": "formatter",
-            "description": "格式化单元格方法，需要配合TableColumn中的customKey属性",
-            "type": "function"
+            "description": "格式化方法，需要配合 TableColumn 中的 customKey 属性",
+            "type": "Function(row, key)",
+            "default": null
         },
         {
             "name": "header",
-            "description": "格式化表头内容的方法，同formatter属性，需要定义customKey属性",
-            "type": "function"
+            "description": "格式化表头内容的方法，同 formatter 属性，需要定义 customKey 属性",
+            "type": "Function(column, tableData)",
+            "default": null
         },
         {
             "name": "headerRowClassName",
             "description": "表头行的 className 的回调方法，也可以使用字符串为所有表头行设置一个固定的 className",
-            "type": "function | string"
+            "type": "Function() | String",
+            "default": ""
         },
         {
             "name": "headerRowStyle",
             "description": "表头行的 style 的回调方法，也可以使用一个固定的 Object 为所有表头行设置一样的 Style",
-            "type": "function | string"
+            "type": "Function() | Object",
+            "default": null
         },
         {
             "name": "headerCellClassName",
-            "description": "表头单元格的 className 的回调方法，也可以使用字符串为所有表头单元格设置一个固定的 className",
-            "type": "function | string"
+            "description": "表头单元格的 className 的回调方法，也可以使用字符串设置固定的 className",
+            "type": "Function({ column, columnIndex }) | String",
+            "default": ""
         },
         {
             "name": "headerCellStyle",
-            "description": "表头单元格的 style 的回调方法，也可以使用一个固定的 Object 为所有表头单元格设置一样的 Style",
-            "type": "function | string"
+            "description": "表头单元格的 style 的回调方法，也可以使用固定的 Object 设置",
+            "type": "Function({ column, columnIndex }) | Object",
+            "default": null
         },
         {
             "name": "rowClassName",
-            "description": "行的 className 的回调方法，也可以使用字符串为所有行设置一个固定的 className",
-            "type": "function | string"
+            "description": "行的 className 的回调方法，也可以使用字符串设置",
+            "type": "Function({ row, rowIndex }) | String",
+            "default": ""
         },
         {
             "name": "rowStyle",
-            "description": "行的 style 的回调方法，也可以使用一个固定的 Object 为所有行设置一样的 Style",
-            "type": "function | string"
+            "description": "行的 style 的回调方法，也可以使用固定的 Object 设置",
+            "type": "Function({ row, rowIndex }) | Object",
+            "default": null
         },
         {
             "name": "cellClassName",
@@ -122,30 +130,32 @@
         {
             "name": "highlightCurrentRow",
             "description": "是否要高亮当前行",
-            "type": "boolean",
-            "default": "false"
+            "type": "Boolean",
+            "default": false
         },
         {
             "name": "highlightSelectionRow",
             "description": "是否要高亮复选框选中行（仅针对开启 checkbox 有效）",
-            "type": "boolean",
-            "default": "false"
+            "type": "Boolean",
+            "default": false
         },
         {
             "name": "showHeader",
             "description": "是否显示表头",
-            "type": "boolean",
-            "default": "true"
+            "type": "Boolean",
+            "default": true
         },
         {
             "name": "height",
-            "description": "表格高度",
-            "type": "number | string"
+            "description": "表格高度，设置该值可以让表格体开启滚动",
+            "type": "Number | String",
+            "default": ""
         },
         {
             "name": "maxHeight",
             "description": "表格最大高度",
-            "type": "number | string"
+            "type": "Number | String",
+            "default": ""
         },
         {
             "name": "selectionIconColor",
@@ -163,12 +173,30 @@
             "type": "number | string"
         },
         {
+            "name": "columns",
+            "description": "表格列定义数组[仅UVue支持]",
+            "type": "Array<any>",
+            "default": []
+        },
+        {
+            "name": "sticky",
+            "description": "是否固定表头[仅UVue支持]",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]select",
             "description": "当用户手动勾选数据行的 Checkbox 时触发的事件",
             "params": [
                 {
-                    "name": "data",
-                    "description": "() => void"
+                    "name": "params",
+                    "description": "{ selection, row }"
                 }
             ]
         },
@@ -177,8 +205,8 @@
             "description": "当用户手动勾选全选 Checkbox 时触发的事件",
             "params": [
                 {
-                    "name": "data",
-                    "description": "() => void"
+                    "name": "params",
+                    "description": "{ selection }"
                 }
             ]
         },
@@ -187,8 +215,8 @@
             "description": "当某个单元格被点击时会触发该事件",
             "params": [
                 {
-                    "name": "data",
-                    "description": "() => void"
+                    "name": "params",
+                    "description": "{ row, column, event }"
                 }
             ]
         },
@@ -197,8 +225,8 @@
             "description": "当某一行被点击时会触发该事件",
             "params": [
                 {
-                    "name": "data",
-                    "description": "() => void"
+                    "name": "params",
+                    "description": "{ row, event }"
                 }
             ]
         },
@@ -207,8 +235,8 @@
             "description": "当某一列的表头被点击时会触发该事件",
             "params": [
                 {
-                    "name": "data",
-                    "description": "() => void"
+                    "name": "params",
+                    "description": "{ column, event }"
                 }
             ]
         },
@@ -216,12 +244,51 @@
             "name": "[event]scrollToLower",
             "description": "表格体滚动到底事件",
             "version": "v1.18.9",
+            "params": []
+        },
+        {
+            "name": "[method]clearSelection",
+            "description": "用于多选表格，清空用户的选择",
+            "params": [],
+            "return": "void"
+        },
+        {
+            "name": "[method]toggleRowSelection",
+            "description": "用于多选表格，切换某一行的选中状态",
             "params": [
                 {
-                    "name": "data",
-                    "description": "() => void"
+                    "name": "row",
+                    "description": "行数据"
+                },
+                {
+                    "name": "selected",
+                    "description": "是否选中"
                 }
-            ]
+            ],
+            "return": "void"
+        },
+        {
+            "name": "[method]toggleAllSelection",
+            "description": "用于多选表格，切换所有行的选中状态",
+            "params": [],
+            "return": "void"
+        },
+        {
+            "name": "[method]getSelection",
+            "description": "获取当前表格已选中的数据数组",
+            "params": [],
+            "return": "Array"
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，用于定义 ste-table-column 列"
+        },
+        {
+            "name": "[slot]empty",
+            "description": "空数据插槽"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "columns_model": "UVue 端采用显式 columns 数据模型与原生 UTSJSONObject 虚拟渲染，支持直接传入列定义与 rootStyle"
+    }
 }

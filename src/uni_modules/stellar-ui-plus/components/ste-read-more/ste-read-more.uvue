@@ -1,0 +1,299 @@
+<template>
+	<view class="ste-read-more-root" :style="[cmpRootStyle, rootStyle]" data-test="read-more">
+		<!-- 内容包裹盒子 (折叠时限制 maxHeight 并 overflow: hidden) -->
+		<view class="ste-rm-content-box" :style="cmpContentBoxStyle">
+			<view :id="contentId" class="ste-rm-inner-content">
+				<slot></slot>
+			</view>
+			<!-- 1. 折叠状态下的底部遮罩与展开按钮浮层 (分层架构：渐变过渡层 + 实色底座) -->
+			<view v-if="cmpShowMaskAction" class="ste-rm-mask-container">
+				<!-- 上层：标准 2 点平滑淡出渐变 -->
+				<view class="ste-rm-gradient-mask"></view>
+				<!-- 下层：纯实白底座，100% 遮盖底层文字，承载展开按钮 -->
+				<view class="ste-rm-solid-bar">
+					<view class="ste-rm-action-btn" @click="handleToggle">
+						<text class="ste-rm-btn-text" :style="cmpBtnTextStyle">{{ closeText }}</text>
+						<ste-icon
+							code="&#xe676;"
+							:size="fontSize"
+							:color="color"
+							style="margin-left: 8rpx;"
+						/>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<!-- 2. 展开状态下的收起操作栏 (当 toggle 为 true 时流式居中展示) -->
+		<view v-if="cmpShowOpenAction" class="ste-rm-toggle-box">
+			<view class="ste-rm-action-btn" @click="handleToggle">
+				<text class="ste-rm-btn-text" :style="cmpBtnTextStyle">{{ openText }}</text>
+				<ste-icon
+					code="&#xe678;"
+					:size="fontSize"
+					:color="color"
+					style="margin-left: 8rpx;"
+				/>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-read-more.uvue
+	 * @description ReadMore 展开更多组件 - uni-app x / UTS 版本
+	 * 用于长内容折叠展示，超出阈值高度时底部渐变遮罩并展示“展开阅读全文”，支持展开后收起（toggle）与异步 init 重新测量。
+	 */
+	import { ref, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue'
+	import { addUnit } from '../../utils/utils.uts'
+	import { ReadMoreProps } from './constants.uts'
+
+	defineOptions({
+		name: 'ste-read-more',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// #ifdef MP-WEIXIN || MP-ALIPAY
+	const mpInstance = getCurrentInstance()
+	// #endif
+
+	// ==================== Props 属性与默认值 ====================
+	const props = withDefaults(defineProps<ReadMoreProps>(), {
+		showHeight: 400,
+		toggle: false,
+		closeText: '展开阅读全文',
+		openText: '收起',
+		fontSize: 28,
+		color: '#666666',
+		rootStyle: () => ({}) as UTSJSONObject,
+	})
+
+	// ==================== Emits 事件声明 ====================
+	const emits = defineEmits<{
+		(e: 'open'): void
+		(e: 'close'): void
+	}>()
+
+	// ==================== 响应式内部状态 ====================
+	/** 当前是否处于展开状态 */
+	const isOpen = ref(false)
+	/** 是否需要展示展开/收起操作栏（内容实际高度超过阈值） */
+	const showToggle = ref(false)
+	/** 内容节点唯一 ID */
+	const contentId = ref<string>('ste-rm-content-' + Math.floor(Math.random() * 1000000).toString())
+
+	// ==================== 尺寸计算工具函数 ====================
+	/**
+	 * 将输入的尺寸属性安全解析为 px 数值 (默认数字按 rpx 换算)
+	 */
+	function parseToPxNumber(val: any, defaultVal: number): number {
+		if (val == null) return defaultVal
+		if (typeof val === 'number') {
+			const n = val as number
+			return n > 0 ? uni.rpx2px(n) : defaultVal
+		}
+		const s = '' + val
+		if (s.endsWith('rpx')) {
+			const n = parseFloat(s.substring(0, s.length - 3))
+			return uni.rpx2px(n)
+		}
+		if (s.endsWith('px')) {
+			return parseFloat(s.substring(0, s.length - 2))
+		}
+		const n = parseFloat(s)
+		return isNaN(n) || n <= 0 ? defaultVal : uni.rpx2px(n)
+	}
+
+	/**
+	 * 折叠阈值高度 (px)
+	 */
+	const thresholdPx = computed((): number => {
+		return parseToPxNumber(props.showHeight, uni.rpx2px(400))
+	})
+
+	// ==================== 样式与显隐计算 ====================
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		return {} as UTSJSONObject
+	})
+
+	/**
+	 * 内容包裹层动态样式
+	 */
+	const cmpContentBoxStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {}
+		if (showToggle.value && !isOpen.value) {
+			style['height'] = thresholdPx.value.toString() + 'px'
+			style['overflow'] = 'hidden'
+			style['position'] = 'relative'
+		} else {
+			style['height'] = 'auto'
+			style['overflow'] = 'visible'
+		}
+		return style
+	})
+
+	/**
+	 * 是否渲染折叠状态下的底部渐变遮罩与“展开”操作
+	 */
+	const cmpShowMaskAction = computed((): boolean => {
+		return showToggle.value && !isOpen.value
+	})
+
+	/**
+	 * 是否渲染展开状态下的“收起”操作
+	 */
+	const cmpShowOpenAction = computed((): boolean => {
+		return showToggle.value && isOpen.value && props.toggle
+	})
+
+	/**
+	 * 按钮文本样式
+	 */
+	const cmpBtnTextStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {}
+		if (props.color != '') {
+			style['color'] = props.color
+		}
+		if (props.fontSize != null) {
+			style['fontSize'] = addUnit(props.fontSize as any)
+		}
+		return style
+	})
+
+	// ==================== 交互与测量逻辑 ====================
+	/**
+	 * 切换展开/收起状态
+	 */
+	function handleToggle() {
+		if (!isOpen.value) {
+			isOpen.value = true
+			emits('open')
+		} else {
+			isOpen.value = false
+			emits('close')
+		}
+	}
+
+	/**
+	 * 重新测量并初始化组件高度
+	 */
+	function init() {
+		setTimeout(() => {
+			// #ifdef APP-ANDROID || APP-IOS || H5
+			const el = uni.getElementById(contentId.value)
+			if (el != null) {
+				const h = el.offsetHeight
+				showToggle.value = h > thresholdPx.value
+			}
+			// #endif
+
+			// #ifdef MP-WEIXIN || MP-ALIPAY
+			uni.createSelectorQuery()
+				.in(mpInstance)
+				.select('#' + contentId.value)
+				.boundingClientRect(res => {
+					if (res != null) {
+						const h = (res as UTSJSONObject)['height'] as number
+						showToggle.value = h > thresholdPx.value
+					}
+				})
+				.exec()
+			// #endif
+		}, 100)
+	}
+
+	// 暴露 init 方法供父组件调用
+	defineExpose({
+		init: init,
+	})
+
+	// ==================== 生命周期与监听 ====================
+	onMounted(() => {
+		init()
+	})
+
+	watch(
+		(): any => props.showHeight,
+		() => {
+			init()
+		}
+	)
+</script>
+
+<style scoped>
+.ste-read-more-root {
+	width: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+
+.ste-rm-content-box {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.ste-rm-inner-content {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+/* 1. 折叠状态下的底部遮罩容器 (绝对定位贴底) */
+.ste-rm-mask-container {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	z-index: 2;
+	box-sizing: border-box;
+}
+
+/* 1.1 上层：平滑淡出渐变层 (100rpx) */
+.ste-rm-gradient-mask {
+	width: 100%;
+	height: 100rpx;
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+}
+
+/* 1.2 下层：纯实白底座 (64rpx)，彻底遮盖文字 */
+.ste-rm-solid-bar {
+	width: 100%;
+	height: 64rpx;
+	background-color: #ffffff;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+/* 2. 展开状态下的收起操作栏 */
+.ste-rm-toggle-box {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding-top: 16rpx;
+	box-sizing: border-box;
+}
+
+.ste-rm-action-btn {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	padding: 8rpx 24rpx;
+}
+
+.ste-rm-btn-text {
+	font-size: 28rpx;
+	color: #666666;
+}
+</style>

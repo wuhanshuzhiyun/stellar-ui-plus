@@ -1,0 +1,96 @@
+<script setup lang="uts">
+	defineOptions({ name: 'ste-rich-text' })
+
+	type RichTextProps = {
+		text ?: string,
+		space ?: string,
+		userSelect ?: boolean,
+	}
+
+	const props = withDefaults(defineProps<RichTextProps>(), {
+		text: '',
+		space: 'nbsp',
+		userSelect: false,
+	})
+
+	// 为指定 HTML 标签添加/替换样式属性
+	function richTextTagAddStyle(html : string, tag : string, checkProperties : string[], replaceProperty : string) : string {
+		let result = html
+		// 构建正则表达式模式
+		const pattern = new RegExp(`<${tag}\\b((?:[^>]*\\s+)?style="[^"]*")?[^>]*>`, 'gi')
+
+		// 查找匹配的标签
+		const matches = result.match(pattern)
+		if (matches != null) {
+			for (let i = 0; i < matches.length; i++) {
+				const match = matches[i]!!
+				const styleMatch = match.match(/style="([^"]+)"/i)
+
+				if (styleMatch != null) {
+					const styleValue = styleMatch[1]!!
+					const styleProperties = styleValue.split(';')
+
+					let hasMatchingProperty = false
+					for (let j = 0; j < styleProperties.length; j++) {
+						const styleProperty = styleProperties[j].trim()
+						const colonIdx = styleProperty.indexOf(':')
+						if (colonIdx > 0) {
+							const attributeName = styleProperty.substring(0, colonIdx).trim()
+							for (let k = 0; k < checkProperties.length; k++) {
+								if (attributeName == checkProperties[k]) {
+									hasMatchingProperty = true
+									break
+								}
+							}
+							if (hasMatchingProperty) break
+						}
+					}
+
+					if (!hasMatchingProperty) {
+						const replacedMatch = match.replace(/(style="[^"]*)(")/, `$1${replaceProperty}"`)
+						result = result.replace(match, replacedMatch)
+					}
+				} else {
+					const replacedMatch = match.replace('>', ` style="${replaceProperty}">`)
+					result = result.replace(match, replacedMatch)
+				}
+			}
+		}
+		return result
+	}
+
+	// 处理富文本 HTML，优化显示效果
+	const cmpProcessedText = computed(() : string => {
+		let html = props.text
+		if (html == null || html == '') return ''
+
+		// 清除 p 标签的 margin
+		html = richTextTagAddStyle(html, 'p', ['margin', 'margin-top'], ';margin-top:0')
+		html = richTextTagAddStyle(html, 'p', ['margin', 'margin-bottom'], ';margin-bottom:0')
+		// 图片顶部对齐
+		html = richTextTagAddStyle(html, 'img', ['vertical-align'], ';vertical-align:top')
+
+		// 解决微信小程序会忽略空白换行的问题
+		html = html.replace(/↵/g, '\n')
+		html = html.replace(/&nbsp;/g, '\n')
+		// 解决特殊转义符的问题
+		html = html.replace(/&middot;/g, '·')
+		html = html.replace(/&mdash;/g, '—')
+		return html
+	})
+</script>
+
+<template>
+	<view class="rich-text-root">
+		<rich-text :nodes="cmpProcessedText" :user-select="props.userSelect" class="rich-text" :space="props.space"></rich-text>
+	</view>
+</template>
+
+<style>
+.rich-text-root {
+	overflow: hidden;
+}
+
+.rich-text {
+}
+</style>

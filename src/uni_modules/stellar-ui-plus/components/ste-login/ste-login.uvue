@@ -1,0 +1,642 @@
+<template>
+	<view class="ste-login-root" :style="compRootStyle" data-test="login">
+		<!-- 顶部自定义插槽 -->
+		<slot name="header"></slot>
+
+		<!-- A. 基础登录模式 (mode='base') -->
+		<view class="login-view mode-base" v-if="props.mode == 'base'">
+			<!-- Logo 展示 -->
+			<view class="logo-box">
+				<ste-image
+					:src="cmpLogoUrl"
+					:height="120"
+					mode="heightFix"
+				/>
+			</view>
+
+			<!-- 协议勾选与提示 -->
+			<view class="protocol-box" v-if="hasProtocol">
+				<ste-checkbox
+					v-model="innerProtocolCheck"
+					:iconSize="32"
+					:checkedColor="mainColor"
+				/>
+				<view class="protocol-text-wrap">
+					<text class="base-protocol-text">{{ props.baseProtocol }}</text>
+					<text
+						class="protocol-link"
+						:style="{ color: mainColor }"
+						v-for="(item, k) in props.protocolData"
+						:key="k"
+						@click="handleProtocolClick(item)"
+					>《{{ item.title }}》</text>
+				</view>
+			</view>
+
+			<!-- 按钮组 -->
+			<view class="btn-group">
+				<view class="btn-item primary" v-for="(item, k) in props.primaryBtn" :key="k">
+					<ste-button
+						width="100%"
+						:mode="300"
+						:round="item.round == true"
+						:background="mainColor"
+						@click="handlePrimaryBtnClick(item)"
+					>
+						<text class="btn-title-text">{{ item.title }}</text>
+					</ste-button>
+				</view>
+				<view class="btn-item secondary" v-for="(item, k) in props.secondaryBtn" :key="k">
+					<ste-button
+						width="100%"
+						:mode="300"
+						background="#ffffff"
+						borderColor="#CCCCCC"
+						color="#000000"
+						:round="item.round == true"
+						@click="handleSecondaryBtnClick(item)"
+					>
+						<text class="btn-title-text text-black">{{ item.title }}</text>
+					</ste-button>
+				</view>
+			</view>
+		</view>
+
+		<!-- B. 综合表单登录模式 (mode='mode1') -->
+		<view class="login-view mode-1" v-else-if="props.mode == 'mode1'">
+			<view class="login-card-box" :style="compLoginBoxStyle">
+				<!-- Tab 切换栏 -->
+				<view class="tab-box" v-if="props.loginGroup.length > 1">
+					<view
+						class="tab-item"
+						:class="[item.key == loginCurrentTab ? 'active-tab' : 'normal-tab']"
+						v-for="(item, index) in props.loginGroup"
+						:key="item.key"
+						@click="changeTab(item.key, index)"
+					>
+						<text
+							class="tab-title-text"
+							:style="{ color: item.key == loginCurrentTab ? mainColor : '#888888', fontWeight: item.key == loginCurrentTab ? 'bold' : 'normal' }"
+						>{{ item.title }}</text>
+						<view class="tab-indicator-line" :style="{ backgroundColor: mainColor }" v-if="item.key == loginCurrentTab"></view>
+					</view>
+				</view>
+
+				<!-- 当前选中的表单模块 -->
+				<view class="login-tabs-content">
+					<view class="login-module" v-if="currentGroupItems.length > 0">
+						<template v-for="item in currentGroupItems" :key="item.key">
+							<login-form-item
+								:config="item"
+								:modelValue="getFormValue(item.key)"
+								:color="mainColor"
+								@change="(val : string) => onFormFieldChange(item.key, val)"
+								@get-code="onGetCodeForward"
+							/>
+						</template>
+					</view>
+
+					<!-- 协议勾选与提示 -->
+					<view class="protocol-box card-protocol" v-if="hasProtocol">
+						<ste-checkbox
+							v-model="innerProtocolCheck"
+							:iconSize="32"
+							:checkedColor="mainColor"
+						/>
+						<view class="protocol-text-wrap">
+							<text class="base-protocol-text">{{ props.baseProtocol }}</text>
+							<text
+								class="protocol-link"
+								:style="{ color: mainColor }"
+								v-for="(item, k) in props.protocolData"
+								:key="k"
+								@click="handleProtocolClick(item)"
+							>《{{ item.title }}》</text>
+						</view>
+					</view>
+
+					<!-- 按钮操作区 -->
+					<view class="btn-group">
+						<view class="btn-item primary" v-for="(item, k) in props.primaryBtn" :key="k">
+							<ste-button
+								width="100%"
+								:mode="300"
+								:round="item.round == true"
+								:background="getBtnBackground(item)"
+								@click="handlePrimaryBtnClick(item)"
+							>
+								<text class="btn-title-text">{{ item.title }}</text>
+							</ste-button>
+						</view>
+						<view
+							class="secondary-links-box"
+							:class="[props.secondaryBtn.length == 2 ? 'two-links' : 'one-link']"
+							v-if="props.secondaryBtn.length > 0"
+						>
+							<view
+								v-for="(item, k) in props.secondaryBtn"
+								:key="k"
+								class="link-item"
+								@click="handleSecondaryBtnClick(item)"
+							>
+								<text class="link-text" :style="{ color: mainColor }">{{ item.title }}</text>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<!-- 底部提示信息 -->
+		<view class="bottom-tip-box" v-if="props.bottomTip != ''">
+			<text class="bottom-tip-text">{{ props.bottomTip }}</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+/**
+ * ste-login 登录组件
+ * 
+ * @description 支持快速简单登录模式与综合卡片登录模式，涵盖协议勾选、Tab 切换、各类输入表单项与短信验证码倒计时。
+ * 遵循 uni-app x 原生规范，解耦 CSS 动态变量。
+ */
+import {
+	BaseConfigItem,
+	ProtocolItem,
+	BtnItem,
+	LoginItem,
+	LoginGroupItem
+} from './constants.uts';
+import LoginFormItem from './components/login-form-item.uvue';
+import { useColorStore } from '../../store/color.uts';
+import { formatPx } from '../../utils/utils.uts';
+
+defineOptions({
+	name: 'ste-login'
+});
+
+/**
+ * 组件入参 Props 规范定义
+ */
+const props = withDefaults(
+	defineProps<{
+		/** 登录模式：base - 简单居中模式，mode1 - 综合表单卡片模式 */
+		mode ?: string;
+		/** 主题强调主色 */
+		color ?: string;
+		/** 是否已勾选用户协议 */
+		protocolCheck ?: boolean;
+		/** 协议基础前缀文案 */
+		baseProtocol ?: string;
+		/** 协议条款列表 */
+		protocolData ?: ProtocolItem[];
+		/** 基础模式下为Logo图片URL，综合模式下为顶部背景图URL */
+		loginImgUrl ?: string;
+		/** 主要实心按钮列表配置 */
+		primaryBtn ?: BtnItem[];
+		/** 次要按钮列表配置 */
+		secondaryBtn ?: BtnItem[];
+		/** 表单 Tab 分组配置列表 */
+		loginGroup ?: LoginGroupItem[];
+		/** 综合模式下表单卡片的背景颜色或图片 */
+		loginBoxBackground ?: string;
+		/** 综合模式下表单卡片的高度 */
+		loginBoxHeight ?: any;
+		/** 底部版本或版权提示说明 */
+		bottomTip ?: string;
+	}>(),
+	{
+		mode: 'base',
+		color: '',
+		protocolCheck: false,
+		baseProtocol: '我已认真阅读、理解并同意',
+		protocolData: () : ProtocolItem[] => [] as ProtocolItem[],
+		loginImgUrl: '',
+		primaryBtn: () : BtnItem[] => [] as BtnItem[],
+		secondaryBtn: () : BtnItem[] => [] as BtnItem[],
+		loginGroup: () : LoginGroupItem[] => [] as LoginGroupItem[],
+		loginBoxBackground: '#ffffff',
+		loginBoxHeight: '67%',
+		bottomTip: ''
+	}
+);
+
+/**
+ * 组件事件 Emits 规范定义
+ */
+const emits = defineEmits<{
+	(e : 'update:protocolCheck', checked : boolean) : void;
+	(e : 'protocolClick', item : ProtocolItem) : void;
+	(e : 'primaryBtnClick', item : BtnItem) : void;
+	(e : 'secondaryBtnClick', item : BtnItem) : void;
+	(e : 'tabChange', item : BaseConfigItem) : void;
+	(e : 'formDataChange', data : UTSJSONObject) : void;
+	(e : 'getCode', suspend : () => void, next : () => void, stop : () => void) : void;
+}>();
+
+const colorStore = useColorStore();
+
+/**
+ * 内部状态维护
+ */
+const innerProtocolCheck = ref<boolean>(props.protocolCheck);
+const loginCurrentTabIndex = ref<number>(0);
+const loginCurrentTab = ref<string>('');
+const formData = ref<UTSJSONObject>({} as UTSJSONObject);
+
+/**
+ * 当前生效主题主色
+ */
+const mainColor = computed<string>(() : string => {
+	if (props.color != '') {
+		return props.color;
+	}
+	return colorStore.getColor().steThemeColor;
+});
+
+/**
+ * 基础模式 Logo 图片
+ */
+const cmpLogoUrl = computed<string>(() : string => {
+	if (props.loginImgUrl != '') {
+		return props.loginImgUrl;
+	}
+	return 'https://image.whzb.com/chain/StellarUI/image/banner2.png';
+});
+
+/**
+ * 是否有协议需要展示
+ */
+const hasProtocol = computed<boolean>(() : boolean => {
+	return props.protocolData.length > 0 || props.baseProtocol != '';
+});
+
+/**
+ * 根容器样式
+ */
+const compRootStyle = computed<UTSJSONObject>(() : UTSJSONObject => {
+	const style : UTSJSONObject = {};
+	if (props.mode == 'mode1' && props.loginImgUrl != '') {
+		style['backgroundImage'] = `url(${props.loginImgUrl})`;
+		style['backgroundSize'] = '100% auto';
+		style['backgroundRepeat'] = 'no-repeat';
+	}
+	return style;
+});
+
+/**
+ * 综合模式卡片高度与背景样式
+ */
+const compLoginBoxStyle = computed<UTSJSONObject>(() : UTSJSONObject => {
+	const style : UTSJSONObject = {};
+	if (props.loginBoxBackground != '') {
+		style['backgroundColor'] = props.loginBoxBackground;
+	} else {
+		style['backgroundColor'] = '#ffffff';
+	}
+
+	if (typeof props.loginBoxHeight == 'number') {
+		style['height'] = formatPx(props.loginBoxHeight);
+	} else {
+		style['height'] = `${props.loginBoxHeight}`;
+	}
+	return style;
+});
+
+/**
+ * 获取当前 Tab 下的输入项列表（空安全防护）
+ */
+const currentGroupItems = computed<LoginItem[]>(() : LoginItem[] => {
+	const groups = props.loginGroup;
+	const idx = loginCurrentTabIndex.value;
+	if (idx >= 0 && idx < groups.length) {
+		return groups[idx].items;
+	}
+	return [] as LoginItem[];
+});
+
+/**
+ * 初始化表单字段与 Tab
+ */
+function initFormData() {
+	const initialData : UTSJSONObject = {};
+	for (let i = 0; i < props.loginGroup.length; i++) {
+		const grp = props.loginGroup[i];
+		for (let j = 0; j < grp.items.length; j++) {
+			const itm = grp.items[j];
+			if (itm.type != 'txt') {
+				initialData[itm.key] = itm.value != null ? itm.value : '';
+			}
+		}
+	}
+	formData.value = initialData;
+
+	if (props.loginGroup.length > 0) {
+		loginCurrentTab.value = props.loginGroup[0].key;
+		loginCurrentTabIndex.value = 0;
+	}
+}
+
+initFormData();
+
+/**
+ * 监听 loginGroup 变更并重置
+ */
+watch(
+	() : LoginGroupItem[] => props.loginGroup,
+	() => {
+		initFormData();
+	},
+	{ deep: true }
+);
+
+/**
+ * 监听协议勾选变动并向外派发
+ */
+watch(
+	() : boolean => innerProtocolCheck.value,
+	(val : boolean) => {
+		emits('update:protocolCheck', val);
+	}
+);
+
+/**
+ * 监听外部 protocolCheck 变更
+ */
+watch(
+	() : boolean => props.protocolCheck,
+	(val : boolean) => {
+		if (innerProtocolCheck.value != val) {
+			innerProtocolCheck.value = val;
+		}
+	}
+);
+
+/**
+ * 获取指定表单字段值
+ */
+function getFormValue(key : string) : string {
+	const val = formData.value.getString(key);
+	return val != null ? val! : '';
+}
+
+/**
+ * 获取按钮背景颜色
+ */
+function getBtnBackground(item : BtnItem) : string {
+	const customBg = item.style?.getString('background');
+	if (customBg != null && customBg != '') {
+		return customBg!;
+	}
+	return mainColor.value;
+}
+
+/**
+ * 切换 Tab 栏
+ */
+function changeTab(tabKey : string, index : number) {
+	loginCurrentTab.value = tabKey;
+	loginCurrentTabIndex.value = index;
+	if (index >= 0 && index < props.loginGroup.length) {
+		const curTab = props.loginGroup[index];
+		const item : BaseConfigItem = {
+			title: curTab.title,
+			key: curTab.key
+		};
+		emits('tabChange', item);
+	}
+}
+
+/**
+ * 表单字段值变更
+ */
+function onFormFieldChange(key : string, val : string) {
+	formData.value[key] = val;
+	emits('formDataChange', formData.value);
+}
+
+/**
+ * 转发验证码事件
+ */
+function onGetCodeForward(suspend : () => void, next : () => void, stop : () => void) {
+	emits('getCode', suspend, next, stop);
+}
+
+/**
+ * 点击协议条款
+ */
+function handleProtocolClick(item : ProtocolItem) {
+	emits('protocolClick', item);
+}
+
+/**
+ * 主要按钮点击
+ */
+function handlePrimaryBtnClick(item : BtnItem) {
+	emits('primaryBtnClick', item);
+}
+
+/**
+ * 次要按钮点击
+ */
+function handleSecondaryBtnClick(item : BtnItem) {
+	emits('secondaryBtnClick', item);
+}
+
+/**
+ * 供外部调用获取表单数据
+ */
+function getFormData() : UTSJSONObject {
+	return formData.value;
+}
+
+defineExpose({
+	getFormData
+});
+</script>
+
+<style scoped>
+/* 根卡片容器 */
+.ste-login-root {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.login-view {
+	width: 100%;
+	height: 100%;
+}
+
+/* 基础简单模式 (mode='base') */
+.mode-base {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.logo-box {
+	margin-top: 60rpx;
+	margin-bottom: 20rpx;
+}
+
+/* 综合卡片模式 (mode='mode1') */
+.mode-1 {
+	position: relative;
+}
+
+.login-card-box {
+	width: 710rpx;
+	position: absolute;
+	bottom: 0;
+	left: 20rpx;
+	border-radius: 40rpx 40rpx 0 0;
+	box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+/* Tab 切换栏 */
+.tab-box {
+	height: 96rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	border-bottom: 1rpx solid #f0f2f5;
+}
+
+.tab-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 60rpx;
+	position: relative;
+}
+
+.tab-title-text {
+	font-size: 28rpx;
+	line-height: 40rpx;
+}
+
+.tab-indicator-line {
+	width: 24rpx;
+	height: 6rpx;
+	border-radius: 6rpx;
+	margin-top: 6rpx;
+}
+
+/* 表单内容区 */
+.login-tabs-content {
+	padding: 40rpx 66rpx 30rpx;
+}
+
+.login-module {
+	width: 100%;
+}
+
+/* 协议行布局 */
+.protocol-box {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 0 84rpx;
+	margin-top: 40rpx;
+}
+
+.card-protocol {
+	padding: 0;
+	margin-top: 24rpx;
+}
+
+.protocol-text-wrap {
+	flex: 1;
+	margin-left: 12rpx;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.base-protocol-text {
+	font-size: 24rpx;
+	color: #8f959e;
+	line-height: 34rpx;
+}
+
+.protocol-link {
+	font-size: 24rpx;
+	line-height: 34rpx;
+	font-weight: 500;
+}
+
+/* 按钮组 */
+.btn-group {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 0 84rpx;
+	margin-top: 20rpx;
+}
+
+.card-protocol + .btn-group {
+	padding: 0;
+}
+
+.btn-item {
+	width: 100%;
+	margin-top: 24rpx;
+}
+
+.btn-title-text {
+	font-size: 28rpx;
+	color: #ffffff;
+	font-weight: 500;
+}
+
+.text-black {
+	color: #1f2329;
+}
+
+/* 次要文字链接排版 */
+.secondary-links-box {
+	margin-top: 24rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.one-link {
+	justify-content: center;
+}
+
+.two-links {
+	justify-content: space-between;
+}
+
+.link-item {
+	padding: 6rpx 12rpx;
+}
+
+.link-text {
+	font-size: 26rpx;
+}
+
+/* 底部版本或版权提示 */
+.bottom-tip-box {
+	position: absolute;
+	bottom: 40rpx;
+	left: 0;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.bottom-tip-text {
+	font-size: 24rpx;
+	color: #8f959e;
+}
+</style>

@@ -1,0 +1,395 @@
+<template>
+	<!-- 水印根容器：通过 pointer-events: none 确保事件完全穿透，不阻断底层业务交互 -->
+	<view
+		:id="rootId"
+		:class="['ste-watermark-root', fullPage ? 'full-page' : 'partial-page']"
+		:style="cmpRootStyle"
+	>
+		<!-- 平铺网格：通过动态计算的行列数，以 Flex 布局平铺所有水印单元项 -->
+		<view
+			class="ste-watermark-grid"
+			:style="cmpGridStyle"
+		>
+			<view
+				v-for="(item, index) in markList"
+				:key="index"
+				class="ste-watermark-item"
+				:style="cmpItemStyle"
+			>
+				<!-- 水印内容主体：执行原生 transform 旋转，包含图片或多行文本 -->
+				<view
+					class="ste-watermark-content"
+					:style="cmpContentStyle"
+				>
+					<!-- 1. 图片水印 -->
+					<image
+						v-if="image != ''"
+						:src="image"
+						class="ste-watermark-image"
+						:style="cmpImageStyle"
+						mode="aspectFit"
+					/>
+					<!-- 2. 文字水印（支持多行排版） -->
+					<view
+						v-else
+						class="ste-watermark-text-wrap"
+						:style="cmpTextWrapStyle"
+					>
+						<text
+							v-for="(line, lIndex) in contentList"
+							:key="lIndex"
+							class="ste-watermark-text"
+							:style="cmpTextStyle"
+						>{{ line }}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-watermark.uvue
+	 * @description Watermark 水印组件 (uni-app x / UTS 版本)
+	 * 采用轻量原生 VDOM 网格平铺引擎，支持全屏覆盖、局部容器平铺、多行文字、图片水印及自定义旋转角度与字体样式。
+	 * 原生支持 pointer-events: none 点击穿透，避免传统全屏 Canvas 显存开销与黑屏风险。
+	 */
+
+	/**
+	 * 水印字体配置类型定义
+	 */
+	export type WatermarkFont = {
+		/** 字体颜色，例如 'rgba(0, 0, 0, 0.15)' 或 '#999999' */
+		color ?: string
+		/** 字体大小，单位为 px */
+		fontSize ?: number
+		/** 字重，例如 'normal', 'bold', '500' */
+		fontWeight ?: string
+		/** 字体样式，例如 'normal', 'italic' */
+		fontStyle ?: string
+		/** 字体族 */
+		fontFamily ?: string
+		/** 文本水平对齐方式，可选 'center', 'left', 'right', 'start', 'end' */
+		textAlign ?: string
+	}
+
+	/**
+	 * 组件入参 Props 声明与默认值配置
+	 */
+	const props = withDefaults(
+		defineProps<{
+			/** 水印容器的层级 z-index */
+			zIndex ?: number
+			/** 水印倾斜旋转角度，单位：度 (deg)，默认 -22 */
+			rotate ?: number
+			/** 单个水印宽度，单位：px，默认 120 */
+			width ?: number
+			/** 单个水印高度，单位：px，默认 64 */
+			height ?: number
+			/** 图片水印链接或本地资源路径，优先级高于文字水印 */
+			image ?: string
+			/** 水印文字内容，可为字符串或字符串数组 (多行文本) */
+			content ?: any
+			/** 水印文字样式配置对象 */
+			font ?: WatermarkFont
+			/** 水印之间的水平间距，单位：px，默认 50 */
+			gapX ?: number
+			/** 水印之间的垂直间距，单位：px，默认 50 */
+			gapY ?: number
+			/** 使用图片水印时图片的宽度，单位：px，默认 120 */
+			imageWidth ?: number
+			/** 使用图片水印时图片的高度，单位：px，默认 64 */
+			imageHeight ?: number
+			/** 是否覆盖整个页面 (true 时为 position: fixed 铺满窗口，false 时为 position: absolute 填充父容器) */
+			fullPage ?: boolean
+		}>(),
+		{
+			zIndex: 9,
+			rotate: -22,
+			width: 120,
+			height: 64,
+			image: '',
+			content: 'ste-watermark',
+			font: () : WatermarkFont => ({
+				color: 'rgba(0, 0, 0, 0.15)',
+				fontSize: 16,
+				fontWeight: 'normal',
+				fontStyle: 'normal',
+				fontFamily: 'sans-serif',
+				textAlign: 'center'
+			} as WatermarkFont),
+			gapX: 50,
+			gapY: 50,
+			imageWidth: 120,
+			imageHeight: 64,
+			fullPage: true
+		}
+	)
+
+	/** 生成唯一根节点 ID */
+	const rootId = ref<string>('ste-watermark-' + Math.floor(Math.random() * 1000000).toString())
+
+	/** 容器测量所得的像素宽度与高度 */
+	const containerWidth = ref<number>(0)
+	const containerHeight = ref<number>(0)
+
+	/** 单个水印单元格的横向总跨度 (内容宽 + 水平间隙) */
+	const cellWidth = computed((): number => {
+		return props.width + props.gapX
+	})
+
+	/** 单个水印单元格的纵向总跨度 (内容高 + 垂直间隙) */
+	const cellHeight = computed((): number => {
+		return props.height + props.gapY
+	})
+
+	/** 水平方向所需平铺的网格列数 (向右多计算 1 列余量以防止边缘切角留白) */
+	const cols = computed((): number => {
+		if (containerWidth.value <= 0) return 0
+		return Math.ceil(containerWidth.value / cellWidth.value) + 1
+	})
+
+	/** 垂直方向所需平铺的网格行数 (向下多计算 1 行余量以防止边缘切角留白) */
+	const rows = computed((): number => {
+		if (containerHeight.value <= 0) return 0
+		return Math.ceil(containerHeight.value / cellHeight.value) + 1
+	})
+
+	/** 计算平铺水印单元总数 */
+	const markCount = computed((): number => {
+		return cols.value * rows.value
+	})
+
+	/** 渲染循环数组 */
+	const markList = computed((): number[] => {
+		const total = markCount.value
+		const list: number[] = []
+		for (let i = 0; i < total; i++) {
+			list.push(i)
+		}
+		return list
+	})
+
+	/**
+	 * 解析多行文字内容：若为数组则逐行拆解，若为字符串则作为单行
+	 */
+	const contentList = computed((): string[] => {
+		if (Array.isArray(props.content)) {
+			const arr = props.content as any[]
+			const res: string[] = []
+			for (let i = 0; i < arr.length; i++) {
+				const item = arr[i]
+				res.push(item != null ? item.toString() : '')
+			}
+			return res
+		} else if (props.content != null) {
+			return [props.content.toString()]
+		}
+		return []
+	})
+
+	/** 字体颜色 */
+	const fontColor = computed((): string => {
+		return props.font?.color ?? 'rgba(0, 0, 0, 0.15)'
+	})
+
+	/** 字体大小 */
+	const fontSize = computed((): number => {
+		return props.font?.fontSize ?? 16
+	})
+
+	/** 字重 */
+	const fontWeight = computed((): string => {
+		return props.font?.fontWeight ?? 'normal'
+	})
+
+	/** 字体风格 */
+	const fontStyle = computed((): string => {
+		return props.font?.fontStyle ?? 'normal'
+	})
+
+	/** 字体族 */
+	const fontFamily = computed((): string => {
+		return props.font?.fontFamily ?? 'sans-serif'
+	})
+
+	/** 文本对齐 */
+	const textAlign = computed((): string => {
+		return props.font?.textAlign ?? 'center'
+	})
+
+	/** 文本对齐方式转换为 Flex alignItems */
+	const alignItemsFlex = computed((): string => {
+		const align = textAlign.value
+		if (align == 'left' || align == 'start') return 'flex-start'
+		if (align == 'right' || align == 'end') return 'flex-end'
+		return 'center'
+	})
+
+	/** 根容器动态样式 */
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		return {
+			zIndex: props.zIndex
+		}
+	})
+
+	/** 平铺网格整体尺寸样式 */
+	const cmpGridStyle = computed((): UTSJSONObject => {
+		return {
+			width: (cols.value * cellWidth.value) + 'px',
+			height: (rows.value * cellHeight.value) + 'px'
+		}
+	})
+
+	/** 单个网格单元格样式 */
+	const cmpItemStyle = computed((): UTSJSONObject => {
+		return {
+			width: cellWidth.value + 'px',
+			height: cellHeight.value + 'px'
+		}
+	})
+
+	/** 水印内容主体旋转与尺寸样式 */
+	const cmpContentStyle = computed((): UTSJSONObject => {
+		return {
+			transform: 'rotate(' + props.rotate + 'deg)',
+			width: props.width + 'px',
+			height: props.height + 'px'
+		}
+	})
+
+	/** 图片水印尺寸样式 */
+	const cmpImageStyle = computed((): UTSJSONObject => {
+		return {
+			width: props.imageWidth + 'px',
+			height: props.imageHeight + 'px'
+		}
+	})
+
+	/** 文字容器对齐样式 */
+	const cmpTextWrapStyle = computed((): UTSJSONObject => {
+		return {
+			alignItems: alignItemsFlex.value
+		}
+	})
+
+	/** 文字样式 */
+	const cmpTextStyle = computed((): UTSJSONObject => {
+		return {
+			color: fontColor.value,
+			fontSize: fontSize.value + 'px',
+			fontWeight: fontWeight.value,
+			fontStyle: fontStyle.value,
+			fontFamily: fontFamily.value,
+			textAlign: textAlign.value,
+			lineHeight: (fontSize.value * 1.4) + 'px'
+		}
+	})
+
+	/**
+	 * 更新容器测量尺寸
+	 * 全屏模式直接从系统信息获取窗口宽高；局部模式使用 SelectorQuery 探测节点尺寸
+	 */
+	function updateContainerSize() {
+		if (props.fullPage) {
+			const windowInfo = uni.getWindowInfo()
+			containerWidth.value = windowInfo.windowWidth
+			containerHeight.value = windowInfo.windowHeight
+		} else {
+			const query = uni.createSelectorQuery().in(this)
+			query.select('#' + rootId.value).boundingClientRect((res: any) => {
+				if (res != null) {
+					const node = res as NodeInfo
+					if (node.width != null && node.width! > 0) {
+						containerWidth.value = node.width!
+					}
+					if (node.height != null && node.height! > 0) {
+						containerHeight.value = node.height!
+					}
+				}
+			}).exec()
+		}
+	}
+
+	onMounted(() => {
+		// 挂载后启动容器尺寸计算
+		nextTick(() => {
+			updateContainerSize()
+		})
+	})
+
+	// 监听全屏模式属性切换
+	watch(
+		(): boolean => props.fullPage,
+		() => {
+			updateContainerSize()
+		}
+	)
+</script>
+
+<style lang="scss">
+	/* 水印根容器：开启严格点击穿透与边界裁剪 */
+	.ste-watermark-root {
+		pointer-events: none;
+		overflow: hidden;
+	}
+
+	/* 全屏模式：固定视窗顶层，随页面滚动保持锁定 */
+	.full-page {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+
+	/* 局部模式：绝对定位贴合父级相对定位容器 */
+	.partial-page {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	/* 网格平铺行级流式排版 */
+	.ste-watermark-grid {
+		flex-direction: row;
+		flex-wrap: wrap;
+		pointer-events: none;
+	}
+
+	/* 单个网格单元 */
+	.ste-watermark-item {
+		justify-content: center;
+		align-items: center;
+		pointer-events: none;
+	}
+
+	/* 水印内容主体 */
+	.ste-watermark-content {
+		justify-content: center;
+		align-items: center;
+		pointer-events: none;
+	}
+
+	/* 图片水印元素 */
+	.ste-watermark-image {
+		pointer-events: none;
+	}
+
+	/* 多行文字容器 */
+	.ste-watermark-text-wrap {
+		flex-direction: column;
+		justify-content: center;
+		pointer-events: none;
+	}
+
+	/* 水印文字 */
+	.ste-watermark-text {
+		pointer-events: none;
+	}
+</style>

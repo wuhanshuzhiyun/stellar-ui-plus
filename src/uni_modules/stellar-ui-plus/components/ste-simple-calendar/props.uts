@@ -1,0 +1,101 @@
+/**
+ * @file props.uts
+ * @description ste-simple-calendar 简单日历胶囊组件 - uni-app x / UTS 强类型属性与契约定义
+ * 提供日、星期、年月三段式胶囊展示，并支持联动底部完整日历弹窗进行交互式日期选择。
+ */
+
+/**
+ * 默认年月格式化模板
+ */
+export const DEFAULT_SIMPLE_CALENDAR_FORMATTER = 'YYYY年M月'
+
+/**
+ * 默认星期文本列表（从周日到周六，长度为 7）
+ */
+export const DEFAULT_SIMPLE_CALENDAR_WEEK_TEXTS : string[] = [
+	'周日', '周一', '周二', '周三', '周四', '周五', '周六',
+]
+
+/**
+ * 默认文字颜色
+ */
+export const DEFAULT_SIMPLE_CALENDAR_COLOR = '#000000'
+
+/**
+ * 日期信息明细结构体
+ */
+export type DateInfo = {
+	/** 标准化完整日期字符串，格式固定为 YYYY-MM-DD */
+	date : string,
+	/** 公历年份（如 2026） */
+	year : number,
+	/** 月份，范围 1~12 */
+	month : number,
+	/** 月份中的日期数，范围 1~31 */
+	day : number,
+	/** 星期序号，0~6（0 代表周日，1~6 代表周一至周六） */
+	weekday : number,
+	/** 星期描述文本（如 '周一'） */
+	weekText : string,
+	/** 毫秒时间戳 */
+	timestamp : number,
+}
+
+/**
+ * ste-simple-calendar 组件 Props 强类型定义
+ */
+export type SimpleCalendarProps = {
+	/**
+	 * 当前选中展示的日期（支持毫秒时间戳 number、标准日期字符串或 Date 对象）
+	 * @default 当前时间
+	 */
+	date ?: any,
+	/**
+	 * 年月展示的格式化模板（支持 YYYY、MM、M、DD、D 等占位符）
+	 * @default 'YYYY年M月'
+	 */
+	formatter ?: string,
+	/**
+	 * 星期名称文本映射数组（从周日到周六）
+	 * @default ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+	 */
+	weekTexts ?: string[],
+	/**
+	 * 文字高亮基础颜色
+	 * @default '#000000'
+	 */
+	color ?: string,
+	/**
+	 * 点击组件整体时，是否拉起底部完整日历弹窗供用户选择切换
+	 * @default true
+	 */
+	showCalendar ?: boolean,
+	/**
+	 * 根节点自定义内联样式映射
+	 */
+	rootStyle ?: UTSJSONObject,
+	/**
+	 * 根节点自定义类名
+	 */
+	customClass ?: string,
+}
+
+/**
+ * 组件对外暴露的方法契约
+ */
+export type SimpleCalendarExpose = {
+	/**
+	 * 编程式设置当前选定日期
+	 * @param {any} date 目标日期（支持时间戳、日期字符串或 Date 对象）
+	 */
+	setDate : (date : any) => void,
+	/**
+	 * 获取当前日期的结构化明细信息
+	 * @return {DateInfo} 当前选定日期的详细对象
+	 */
+	getDateInfo : () => DateInfo,
+	/**
+	 * 快捷回到今天日期
+	 */
+	today : () => void,
+}

@@ -1,0 +1,380 @@
+// utils/utils.uts - uni-app x 版本
+// 提供 stellar-ui-plus 组件库所需的通用方法
+// 兼容原 utils.ts 暴露的常用 API
+
+// ============== Window / System ==============
+// UTS 中对象字面量只能赋值给 type 定义的对象类型，不支持 interface。
+// 所有可能接收对象字面量的类型必须用 type 形式。
+type WindowInfo = {
+    windowWidth : number,
+    windowHeight : number,
+    statusBarHeight : number,
+    screenWidth : number,
+    screenHeight : number,
+    pixelRatio : number,
+}
+
+let _cachedWindowInfo : WindowInfo | null = null;
+
+function getWindowInfo() : WindowInfo {
+    if (_cachedWindowInfo != null) {
+        return _cachedWindowInfo!;
+    }
+    const info = uni.getWindowInfo();
+    // UTS 编译到 Kotlin 时不支持 (obj as any)['key'] 的动态属性访问
+    // uni.getWindowInfo() 返回的对象直接提供 windowWidth / windowHeight / statusBarHeight
+    // screenWidth / screenHeight / pixelRatio 使用安全默认值
+    const newInfo : WindowInfo = {
+        windowWidth: info.windowWidth,
+        windowHeight: info.windowHeight,
+        statusBarHeight: info.statusBarHeight,
+        screenWidth: 375,
+        screenHeight: 812,
+        pixelRatio: 3,
+    };
+    _cachedWindowInfo = newInfo;
+    return _cachedWindowInfo!;
+}
+
+function getWindowWidth() : number {
+    return getWindowInfo().windowWidth;
+}
+
+function getWindowHeight() : number {
+    return getWindowInfo().windowHeight;
+}
+
+function getStatusBarHeight() : number {
+    return getWindowInfo().statusBarHeight;
+}
+
+// ============== 数字 / 单位 ==============
+function isNaN(value : any) : boolean {
+    if (typeof value === 'number') {
+        return value != value; // NaN 是唯一不等于自身的值
+    }
+    const deg = /^-?\d+(\.\d+)?$/i;
+    return !deg.test('' + value);
+}
+
+function isNumber(value : string | number) : boolean {
+    if (typeof value === 'number') {
+        return value == value;
+    }
+    const deg = /^-?\d+(\.\d+)?$/i;
+    return deg.test(value as string);
+}
+
+function isNum(num : number | string) : boolean {
+    const reg = /^\d+\.?\d*$/;
+    return reg.test('' + num);
+}
+
+function isEmpty(value : any) : boolean {
+    return value === null || value === '';
+}
+
+/**
+ * 格式化像素单位为px
+ * - 数字：基于当前屏幕宽度换算 rpx → px
+ * - 以 "rpx" 结尾的字符串：去掉 rpx 后换算
+ * - 以 "px" 结尾的字符串：原样返回
+ * - 其它：原样返回
+ */
+function formatPx(value : number | string) : string {
+    let format = value;
+    if (typeof format === 'string') {
+        const numReg = /^\d+\.?\d*$/;
+        if (!numReg.test(format)) {
+            if (/^\d+px$/i.test(format)) {
+                return format;
+            } else if (/^\d+rpx/i.test(format)) {
+                format = format.slice(0, -3);
+            } else {
+                return format;
+            }
+        }
+    }
+    let numVal = typeof format === 'string' ? parseFloat(format as string) : (format as number);
+    let px = uni.rpx2px(numVal);
+    return `${px}px`;
+}
+
+/**
+ * px 转 rpx
+ */
+function px2rpx(px : number) : number {
+    const w = getWindowWidth();
+    if (w == 0) return px;
+    return (px * 750) / w;
+}
+
+/**
+ * 兼容css中的单位
+ * - 数字：拼接 rpx
+ * - 字符串：原样返回
+ * - H5 平台：rpx 转 px
+ */
+function addUnit(val : string | number) : string {
+    let s = '' + val;
+    let newVal : string;
+    if (isNumber(s)) {
+        newVal = `${s}rpx`;
+    } else {
+        newVal = s;
+    }
+    // #ifdef H5
+    if (newVal && newVal.indexOf('rpx') >= 0) {
+        newVal = formatPx(newVal);
+    }
+    // #endif
+    return newVal;
+}
+
+// ============== 背景 / 颜色 ==============
+/**
+ * 背景值转样式对象
+ * - 颜色（#xxx / rgba / rgb） → backgroundColor
+ * - 渐变（linear-gradient） → backgroundImage
+ * - 图片（http(s)://, data:image/） → backgroundImage: url(...)
+ * - 其它 → background 原生值
+ */
+function bg2style(value : string) : UTSJSONObject {
+    const result : UTSJSONObject = {};
+    const colorReg = /^(\#|rgba?)/i;
+    const colorsReg = /^linear\-gradient/i;
+    const imgReg = /^(https?\:\/\/|data\:image\/)/i;
+
+    if (colorReg.test(value)) {
+        result['backgroundColor'] = value;
+    } else if (colorsReg.test(value)) {
+        result['backgroundImage'] = value;
+    } else if (imgReg.test(value)) {
+        result['backgroundImage'] = `url(${value})`;
+    } else {
+        result['background'] = value;
+    }
+    return result;
+}
+
+// ============== 对象 / 数组 ==============
+/**
+ * 深拷贝
+ */
+function deepClone(obj : UTSJSONObject) : UTSJSONObject {
+    if (obj == null) return obj;
+    return JSON.parse(JSON.stringify(obj)) as UTSJSONObject;
+}
+
+/**
+ * 对象深度合并
+ * 用 source 上的数据覆盖 target 上的数据，返回新对象
+ */
+function deepMerge(target : UTSJSONObject, source : UTSJSONObject) : UTSJSONObject {
+    if (target == null || source == null) return target;
+    const merged = JSON.parse(JSON.stringify(target)) as UTSJSONObject;
+    // #ifdef APP-ANDROID || APP-IOS
+    const srcMap = source.toMap();
+    const srcKeys = srcMap.keys;
+    const iter = srcKeys.iterator();
+    while (iter.hasNext()) {
+        const key = iter.next()!;
+        const sourceValue = source[key];
+        if (sourceValue != null && typeof sourceValue === 'object' && sourceValue instanceof UTSJSONObject) {
+            const targetValue = merged[key];
+            if (targetValue != null && typeof targetValue === 'object' && targetValue instanceof UTSJSONObject) {
+                merged[key] = deepMerge(targetValue as UTSJSONObject, sourceValue as UTSJSONObject);
+            } else {
+                merged[key] = sourceValue;
+            }
+        } else {
+            merged[key] = sourceValue;
+        }
+    }
+    // #endif
+    // #ifdef H5 || MP-WEIXIN || MP-ALIPAY
+    const keys = Object.keys(source as Any);
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i]!;
+        const sourceValue = source[key];
+        if (sourceValue != null && typeof sourceValue === 'object' && sourceValue instanceof UTSJSONObject) {
+            const targetValue = merged[key];
+            if (targetValue != null && typeof targetValue === 'object' && targetValue instanceof UTSJSONObject) {
+                merged[key] = deepMerge(targetValue as UTSJSONObject, sourceValue as UTSJSONObject);
+            } else {
+                merged[key] = sourceValue;
+            }
+        } else {
+            merged[key] = sourceValue;
+        }
+    }
+    // #endif
+    return merged;
+}
+
+/**
+ * 对比两个对象是否完全相等
+ */
+function deepEqual(
+    obj1 : UTSJSONObject | null,
+    obj2 : UTSJSONObject | null,
+    ignoreKeys : string[] = []
+) : boolean {
+    if (obj1 === obj2) return true;
+    if (obj1 == null && obj2 == null) return true;
+    if (obj1 == null || obj2 == null) return false;
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') return false;
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+}
+
+// ============== 时间 / 节流 / 防抖 ==============
+/**
+ * 延迟执行
+ */
+function sleep(millisecond : number) : Promise<void> {
+    return new Promise<void>((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, millisecond);
+    });
+}
+
+let _throLast : number = 0;
+let _throTimer : number | null = null;
+/**
+ * 节流
+ */
+function thro(fn : () => void, delay : number = 500) : void {
+    const now : number = new Date().getTime();
+    if (_throLast == 0 || now - _throLast > delay) {
+        if (_throTimer !== null) {
+            const timer = _throTimer!;
+            clearTimeout(timer);
+        }
+        fn();
+        _throLast = now;
+        _throTimer = setTimeout(() => {
+            _throLast = 0;
+        }, delay);
+    }
+}
+
+let _debounceTimer : number | null = null;
+/**
+ * 防抖
+ */
+function debounce(fn : () => void, delay : number = 500) : void {
+    if (_debounceTimer !== null) {
+        const timer = _debounceTimer!;
+        clearTimeout(timer);
+    }
+    _debounceTimer = setTimeout(() => {
+        fn();
+    }, delay);
+}
+
+// ============== 其它 ==============
+/**
+ * 全局唯一标识符
+ */
+function guid(len : number = 32, firstU : boolean = true) : string {
+    let str = firstU ? 'u' : '';
+    const chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+    while (str.length < len) {
+        str += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return str;
+}
+
+/**
+ * 分转元
+ */
+function fenToYuan(
+    val : any,
+    digits : number = -1,
+    defaultVal : string = '',
+    part : number = 0
+) : string | null {
+    let newVal : string = '';
+    if (val == null || val === '') {
+        newVal = defaultVal;
+    } else {
+        const numVal = val as number;
+        if (digits == -1) {
+            newVal = '' + (numVal / 100);
+        } else {
+            newVal = (numVal / 100).toFixed(digits);
+        }
+    }
+    if (part == 0) return newVal;
+    const parts = newVal.split('.');
+    if (part == 1) return parts[0];
+    if (part == 2) return parts.length > 1 ? `.${parts[1]}` : '';
+    return newVal;
+}
+
+/**
+ * 媒体文件类型
+ * compatible: 1:通用 2:Android/iOS 3:Android 4:iOS
+ */
+function getMediaFileType(filePath : string | null, compatible : number = 1) : string {
+    if (filePath == null || filePath === '') return '-1';
+    const filePathList = filePath!.split('.');
+    const type = filePathList[filePathList.length - 1];
+    let videoType : string[] = [];
+    let audioType : string[] = [];
+    if (compatible == 1) {
+        videoType = ['mp4', 'mov', 'm4v', '3gp', 'avim', '3u8', 'webm'];
+        audioType = ['flac', 'm4a', 'ogg', 'ape', 'amr', 'wma', 'wav', 'mp3', 'mp4', 'aac', 'aiff', 'caf'];
+    }
+    if (compatible == 2) {
+        videoType = ['mp4', '3gp', 'm3u8'];
+        audioType = ['m4a', 'wav', 'mp3', 'aac'];
+    }
+    if (compatible == 3) {
+        videoType = ['mp4', '3gp', 'm3u8', 'webm'];
+        audioType = ['flac', 'm4a', 'ogg', 'ape', 'amr', 'wma', 'wav', 'mp3', 'mp4', 'aac'];
+    }
+    if (compatible == 4) {
+        videoType = ['mp4', 'mov', 'm4v', '3gp', 'avim', '3u8'];
+        audioType = ['flac', 'm4a', 'wav', 'mp3', 'aac', 'aiff', 'caf'];
+    }
+    const imageType = ['jpg', 'png', 'svg', 'webp', 'gif', 'bmp'];
+    if (videoType.indexOf(type) >= 0) return 'video';
+    if (audioType.indexOf(type) >= 0) return 'audio';
+    if (imageType.indexOf(type) >= 0) return 'image';
+    return '-1';
+}
+
+export { getWindowInfo, getWindowWidth, getWindowHeight, getStatusBarHeight }
+export { isNaN, isNumber, isNum, isEmpty, formatPx, px2rpx, addUnit }
+export { bg2style }
+export { deepClone, deepMerge, deepEqual }
+export { sleep, thro, debounce }
+export { guid, fenToYuan, getMediaFileType }
+
+const utils = {
+    getWindowInfo: () => getWindowInfo(),
+    getWindowWidth: () => getWindowWidth(),
+    getWindowHeight: () => getWindowHeight(),
+    getStatusBarHeight: () => getStatusBarHeight(),
+    isNaN: (v : any) => isNaN(v),
+    isNumber: (v : string | number) => isNumber(v),
+    isNum: (n : number | string) => isNum(n),
+    isEmpty: (v : any) => isEmpty(v),
+    formatPx: (v : number | string) => formatPx(v),
+    px2rpx: (px : number) => px2rpx(px),
+    addUnit: (v : string | number) => addUnit(v),
+    bg2style: (v : string) => bg2style(v),
+    deepClone: (o : UTSJSONObject) => deepClone(o),
+    deepMerge: (t : UTSJSONObject, s : UTSJSONObject) => deepMerge(t, s),
+    deepEqual: (o1 : UTSJSONObject | null, o2 : UTSJSONObject | null, ignore? : string[]) => deepEqual(o1, o2, ignore == null ? [] : ignore),
+    sleep: (ms : number) => sleep(ms),
+    thro: (fn : () => void, delay? : number) => thro(fn, delay == null ? 500 : delay),
+    debounce: (fn : () => void, delay? : number) => debounce(fn, delay == null ? 500 : delay),
+    guid: (len? : number, firstU? : boolean) => guid(len == null ? 32 : len!, firstU == null ? true : firstU!),
+    fenToYuan: (val : any, digits? : number, defaultVal? : string, part? : number) => fenToYuan(val, digits == null ? -1 : digits!, defaultVal == null ? '' : defaultVal!, part == null ? 0 : part!),
+    getMediaFileType: (fp : string | null, compatible? : number) => getMediaFileType(fp, compatible == null ? 1 : compatible!),
+};
+
+export default utils;

@@ -157,6 +157,12 @@
         {
             "name": "[slot]header",
             "description": "头部内容"
+        },
+        {
+            "name": "[method]getFormData",
+            "description": "主动获取当前登录表单的所有输入字段值",
+            "params": [],
+            "return": "Record<string, any>"
         }
     ]
 }

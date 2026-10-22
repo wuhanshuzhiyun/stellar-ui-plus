@@ -1,6 +1,6 @@
 import * as dayjs from './dayjs';
 import type { TreeNode } from '../types';
-import config from '../config';
+import config from '../config/index.ts';
 import System from './System';
 import Color from './Color';
 

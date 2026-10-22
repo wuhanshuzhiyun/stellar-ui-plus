@@ -1,0 +1,1003 @@
+<template>
+	<!-- 更新弹窗遮罩层 -->
+	<view class="ste-update-mask" :style="cmpMaskStyle" v-if="open">
+		<!-- 弹窗主体卡片容器 -->
+		<view class="ste-update-card">
+			<!-- 顶部主题插画 -->
+			<image class="ste-update-image" src="../../static/app_update_img.png" mode="aspectFit"></image>
+
+			<!-- 弹窗主标题 -->
+			<text class="ste-update-title">发现新版本</text>
+			<!-- 目标版本号标识 -->
+			<text class="ste-update-version">v{{ data.name }}</text>
+
+			<!-- 垂直滚动更新日志描述区域 -->
+			<scroll-view scroll-y="true" class="ste-update-desc-box">
+				<text class="ste-update-desc-title">更新内容</text>
+				<text class="ste-update-desc-content">{{ displayContent }}</text>
+			</scroll-view>
+
+			<!-- 底部交互区域 -->
+			<view class="ste-update-footer">
+				<!-- 下载中进度展示模块 -->
+				<view class="ste-update-progress-box" v-if="!updateBtn">
+					<view class="ste-progress-track">
+						<view class="ste-progress-bar" :style="cmpProgressBarStyle"></view>
+					</view>
+					<text class="ste-progress-text">{{ percent }}%</text>
+
+					<view class="ste-download-info">
+						<text class="ste-down-msg" v-if="tempFilePath != ''">
+							✓ 下载完成，准备安装...
+						</text>
+						<text class="ste-down-msg" v-else>
+							正在下载，请稍后 ({{ downloadedSize }}/{{ packageFileSize }}MB)
+						</text>
+					</view>
+
+					<!-- 非强制更新时支持取消下载 -->
+					<button
+						v-if="tempFilePath == '' && !data.isForce"
+						class="ste-btn ste-btn-cancel"
+						@click="cancelDownload"
+					>
+						取消下载
+					</button>
+				</view>
+
+				<!-- 初始就绪状态操作按钮组 -->
+				<template v-if="updateBtn">
+					<button class="ste-btn ste-btn-primary" @click="confirm">
+						{{ btnText }}
+					</button>
+
+					<!-- 非强制更新时支持跳过此版本 -->
+					<button v-if="!data.isForce" class="ste-btn ste-btn-skip" @click="skipVersion">
+						跳过此版本
+					</button>
+				</template>
+
+				<!-- 下载完成安装按钮（全量包模式） -->
+				<button
+					class="ste-btn ste-btn-install"
+					v-else-if="data.package_type === 0 && tempFilePath != ''"
+					@click="install"
+				>
+					立即安装
+				</button>
+			</view>
+
+			<!-- 右上角关闭弹窗图标按钮（非强制更新时展示） -->
+			<view class="ste-update-close" v-if="!data.isForce" @click.stop="close">
+				<text class="ste-close-icon">✕</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+/**
+ * @file ste-app-update.uvue
+ * @description 应用更新组件 (uni-app x / UTS 纯原生重构实现)
+ *
+ * 核心设计与模块职责：
+ * 1. 彻底移除弃用的 5+ 规范 API (plus.runtime / plus.downloader)，迁移至 uni-app x 原生标准；
+ * 2. 基础信息安全获取：基于 uni.getAppBaseInfo() 与 uni.getDeviceInfo()；
+ * 3. 授权加签：自研纯 UTS 实现标准 RFC 4648 Base64 编码器，消除对浏览器 btoa 的依赖；
+ * 4. 智能版本决策：支持语义化版本 (x.y.z) 严格比对、本地跳过版本持久化、以及 fallbackApiUrl 兜底检测；
+ * 5. 下载与安装管线：基于 uni.downloadFile 及其 onProgressUpdate 流式进度监听，并在 Android 下调用 uni.installApk 完成应用升级。
+ */
+
+import { ref, reactive, computed, onUnmounted } from 'vue'
+
+// #ifdef APP-ANDROID
+import Intent from 'android.content.Intent';
+import Uri from 'android.net.Uri';
+// #endif
+
+/**
+ * 内部状态数据模型接口
+ */
+export type AppUpdateData = {
+	/** 更新说明文字内容 */
+	content: string;
+	/** 目标安装包/更新包下载地址 */
+	updateFile: string;
+	/** 是否强制全屏独占更新 */
+	isForce: boolean;
+	/** 包类型：0 为全量安装包 (APK)，1 为差量热更新包 (WGT) */
+	package_type: number;
+	/** 版本显示名称，例如 1.0.1 */
+	name: string;
+	/** 版本号代码，例如 100 */
+	code: string;
+}
+
+/**
+ * 兜底检测接口响应数据结构
+ */
+export type FallbackData = {
+	title: string;
+	description: string;
+	downloadUrl: string;
+}
+
+/**
+ * 组件 Props 属性定义
+ */
+const props = defineProps({
+	/** 应用唯一编码标识 (ClientId) */
+	clientId: {
+		type: String,
+		default: ''
+	},
+	/** 应用访问密钥 (ClientSecret) */
+	clientSecret: {
+		type: String,
+		default: ''
+	},
+	/** 检查版本更新的 API 请求地址 */
+	apiUrl: {
+		type: String,
+		default: 'https://zboa.whzb.com/inte-cloud-dev/blade-system/api/inte/client/ver/currentDetail'
+	},
+	/** APP 所属环境标示 (例如 dev/test/prod) */
+	appType: {
+		type: String,
+		default: ''
+	},
+	/** 立即体验/更新按钮的文案 */
+	btnText: {
+		type: String,
+		default: '立即体验'
+	},
+	/** 手动指定的当前应用版本号，为空时自动从系统读取 */
+	appVersion: {
+		type: String,
+		default: ''
+	},
+	/** 遮罩层 z-index 堆叠层级 */
+	zIndex: {
+		type: [Number, String],
+		default: 998
+	},
+	/** 兜底检测接口地址 */
+	fallbackApiUrl: {
+		type: String,
+		default: 'https://stellar-public-prd.intecloud.com.cn/api/app-update/check'
+	},
+	/** 严格版本检查：为 true 时新版本大于当前版本才弹窗，且全量包优先 */
+	strictVersionCheck: {
+		type: Boolean,
+		default: false
+	}
+});
+
+/**
+ * 组件 Emits 事件声明
+ */
+const emit = defineEmits<{
+	/** 取消更新弹窗时触发 */
+	(e: 'cancel'): void;
+	/** 检测到可用新版本并弹出更新时触发 */
+	(e: 'update'): void;
+	/** 无可用更新或接口返回无需更新时触发 */
+	(e: 'no-update'): void;
+	/** 用户主动点击跳过某个版本时触发，回调返回该版本 code */
+	(e: 'skip-version', version: string): void;
+	/** 命中兜底更新配置时触发 */
+	(e: 'fallback', data: FallbackData): void;
+}>();
+
+// ==================== 响应式数据状态 ====================
+
+/** 更新弹窗显隐控制 */
+const open = ref(false);
+/** 当前客户端本地版本号 */
+const currentVersion = ref('');
+/** 下载进度百分比 (0 ~ 100) */
+const percent = ref(0);
+/** 操作按钮状态控制：true 为展示初始更新按钮，false 为展示下载进度面板 */
+const updateBtn = ref(true);
+/** 已下载体积文本 (MB) */
+const downloadedSize = ref('0');
+/** 总文件体积文本 (MB) */
+const packageFileSize = ref('0');
+/** 下载完成后本地保存的文件临时路径 */
+const tempFilePath = ref('');
+/** 本地存储中已跳过的版本列表缓存 */
+const skippedVersions = ref<string[]>([]);
+/** 跳过版本在本地 Storage 中的键名 */
+const STORAGE_KEY = 'skipped_app_versions';
+
+/** 当前版本更新详情数据 */
+const data = reactive<AppUpdateData>({
+	content: '',
+	updateFile: '',
+	isForce: false,
+	package_type: 0,
+	name: '1.0.0',
+	code: '100'
+});
+
+/** 下载任务控制器句柄引用 */
+let downloadTask: DownloadTask | null = null;
+
+// ==================== 计算属性 ====================
+
+/** 遮罩层动态 z-index 样式 */
+const cmpMaskStyle = computed((): UTSJSONObject => {
+	const z = parseFloat(props.zIndex.toString());
+	return {
+		zIndex: isNaN(z) ? 998 : z
+	};
+});
+
+/** 进度条填充宽度样式 */
+const cmpProgressBarStyle = computed((): UTSJSONObject => {
+	const p = Math.max(0, Math.min(100, percent.value));
+	return {
+		width: p.toString() + '%'
+	};
+});
+
+/** 更新日志展示文本（清洗 HTML 换行标签） */
+const displayContent = computed((): string => {
+	if (data.content == '') return '修复若干已知问题，提升使用体验。';
+	return data.content.replace(/<br\s*\/?>/gi, '\n');
+});
+
+// ==================== 纯 UTS 工具函数 ====================
+
+/**
+ * 纯 UTS 实现标准 RFC 4648 Base64 编码
+ * 用于在原生缺少浏览器 btoa 的环境下生成 HTTP Basic Authorization 头
+ * @param str 待编码的原始字符串
+ * @returns 编码后的 Base64 字符串
+ */
+function base64Encode(str: string): string {
+	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+	let output = '';
+	let i = 0;
+	while (i < str.length) {
+		const raw1 = str.charCodeAt(i++);
+		const c1: number = raw1 != null ? (raw1 as number) : 0;
+		const hasC2 = i < str.length;
+		const raw2 = hasC2 ? str.charCodeAt(i++) : null;
+		const c2: number = raw2 != null ? (raw2 as number) : 0;
+		const hasC3 = i < str.length;
+		const raw3 = hasC3 ? str.charCodeAt(i++) : null;
+		const c3: number = raw3 != null ? (raw3 as number) : 0;
+
+		const e1: number = Math.floor(c1 / 4);
+		const e2: number = Math.floor((c1 % 4) * 16) + (hasC2 ? Math.floor(c2 / 16) : 0);
+		const e3: number = hasC2 ? (Math.floor((c2 % 16) * 4) + (hasC3 ? Math.floor(c3 / 64) : 0)) : 64;
+		const e4: number = hasC3 ? (c3 % 64) : 64;
+
+		output += chars.charAt(e1) + chars.charAt(e2) +
+			(e3 == 64 ? '=' : chars.charAt(e3)) +
+			(e4 == 64 ? '=' : chars.charAt(e4));
+	}
+	return output;
+}
+
+/**
+ * 语义化版本号大小比对
+ * @param newVersion 新版本号
+ * @param curVersion 当前版本号
+ * @returns 1 (新版本更大), -1 (当前版本更大), 0 (版本相等)
+ */
+function compareVersions(newVersion: string, curVersion: string): number {
+	const newParts = newVersion.split('.');
+	const curParts = curVersion.split('.');
+	const maxLen = Math.max(newParts.length, curParts.length);
+
+	for (let i = 0; i < maxLen; i++) {
+		const nVal = i < newParts.length ? parseFloat(newParts[i]) : 0;
+		const cVal = i < curParts.length ? parseFloat(curParts[i]) : 0;
+		const n = isNaN(nVal) ? 0 : nVal;
+		const c = isNaN(cVal) ? 0 : cVal;
+		if (n > c) return 1;
+		if (n < c) return -1;
+	}
+	return 0;
+}
+
+/**
+ * 打开外部浏览器或者第三方下载链接
+ * @param url 目标外部地址
+ */
+function openExternalBrowser(url: string) {
+	// #ifdef APP-ANDROID
+	try {
+		const context = UTSAndroid.getUniActivity();
+		if (context != null) {
+			const uri = Uri.parse(url);
+			const intent = new Intent(Intent.ACTION_VIEW, uri);
+			context.startActivity(intent);
+		}
+	} catch (e) {
+		console.error('[ste-app-update] 打开外部浏览器失败:', e);
+	}
+	// #endif
+
+	// #ifdef WEB
+	window.open(url, '_blank');
+	// #endif
+}
+
+// ==================== 版本持久化与跳过机制 ====================
+
+/**
+ * 释放清理下载任务资源，避免内存泄露与未决网络请求
+ */
+function cleanupDownload() {
+	if (downloadTask != null) {
+		try {
+			downloadTask?.abort();
+		} catch (e) {}
+		downloadTask = null;
+	}
+}
+
+/**
+ * 关闭更新弹窗并分发取消事件
+ */
+function close() {
+	cleanupDownload();
+	open.value = false;
+	emit('cancel');
+}
+
+/**
+ * 调用原生标准能力安装已下载的应用包
+ */
+function install() {
+	if (tempFilePath.value == '') {
+		uni.showToast({ title: '安装文件不存在', icon: 'none' });
+		return;
+	}
+
+	// #ifdef APP-ANDROID
+	uni.installApk({
+		filePath: tempFilePath.value,
+		success: () => {
+			console.log('[ste-app-update] 成功调起应用安装界面');
+		},
+		fail: (err) => {
+			console.error('[ste-app-update] 原生应用安装失败:', err);
+			uni.showModal({
+				title: '安装失败',
+				content: '安装程序调用异常: ' + err.errMsg + '，请检查系统是否允许安装未知来源应用。',
+				showCancel: false
+			});
+		}
+	});
+	// #endif
+
+	// #ifndef APP-ANDROID
+	uni.showModal({
+		title: '提示',
+		content: '当前运行平台不支持直接本地安装 APK，请通过应用商店下载安装。',
+		showCancel: false
+	});
+	// #endif
+}
+
+/**
+ * 中断并取消当前下载任务
+ */
+function cancelDownload() {
+	uni.showModal({
+		title: '提示',
+		content: '确定要取消本次下载吗？',
+		success: (res) => {
+			if (res.confirm) {
+				cleanupDownload();
+				updateBtn.value = true;
+				percent.value = 0;
+				downloadedSize.value = '0';
+				packageFileSize.value = '0';
+				tempFilePath.value = '';
+				uni.showToast({ title: '已取消下载', icon: 'none' });
+			}
+		}
+	});
+}
+
+/**
+ * 读取本地缓存的已跳过版本列表（兼读老版本存储 Key 兜底）
+ */
+function initSkippedVersions() {
+	try {
+		let stored = uni.getStorageSync(STORAGE_KEY);
+		if (stored == null || stored === '') {
+			// 向下兼容读取旧版本存储 Key
+			stored = uni.getStorageSync('stellar_skipped_app_versions');
+		}
+		if (stored != null && typeof stored === 'string') {
+			const parsed = JSON.parse(stored as string);
+			const list: string[] = [];
+			if (Array.isArray(parsed)) {
+				const arr = parsed as any[];
+				for (let i = 0; i < arr.length; i++) {
+					if (arr[i] != null) {
+						list.push(arr[i].toString());
+					}
+				}
+			}
+			skippedVersions.value = list;
+		}
+	} catch (e) {
+		console.warn('[ste-app-update] 读取跳过版本记录异常:', e);
+		skippedVersions.value = [];
+	}
+}
+
+/**
+ * 保存跳过版本列表到本地存储
+ */
+function saveSkippedVersions() {
+	try {
+		uni.setStorageSync(STORAGE_KEY, JSON.stringify(skippedVersions.value));
+	} catch (e) {
+		console.warn('[ste-app-update] 存储跳过版本失败:', e);
+	}
+}
+
+/**
+ * 校验当前版本代码是否在跳过记录中
+ * @param versionCode 待校验版本代号 (如 101)
+ */
+function isVersionSkipped(versionCode: string): boolean {
+	if (versionCode != '' && skippedVersions.value.includes(versionCode)) {
+		return true;
+	}
+	return false;
+}
+
+/**
+ * 用户主动跳过当前版本
+ */
+function skipVersion() {
+	// 记录版本代号 code
+	if (data.code != '' && !skippedVersions.value.includes(data.code)) {
+		skippedVersions.value.push(data.code);
+		saveSkippedVersions();
+	}
+	if (data.code != '') {
+		emit('skip-version', data.code);
+	}
+	close();
+}
+
+// ==================== 核心更新与下载管线 ====================
+
+/**
+ * 确认升级，拉起流式下载与安装管线
+ */
+function confirm() {
+	cleanupDownload();
+
+	if (data.updateFile == '') {
+		uni.showToast({ title: '更新下载地址为空', icon: 'none' });
+		return;
+	}
+
+	// 针对外部网页/应用商店链接直接唤起系统浏览器
+	if (data.package_type === 0 && !data.updateFile.toLowerCase().includes('.apk')) {
+		openExternalBrowser(data.updateFile);
+		close();
+		return;
+	}
+
+	// 启动流式文件下载
+	updateBtn.value = false;
+	percent.value = 0;
+	tempFilePath.value = '';
+
+	downloadTask = uni.downloadFile({
+		url: data.updateFile,
+		success: (res) => {
+			if (res.statusCode === 200 && res.tempFilePath != null && res.tempFilePath != '') {
+				tempFilePath.value = res.tempFilePath!;
+				// 下载完成后自动唤起安装
+				install();
+			} else {
+				uni.showToast({ title: '下载失败，状态码: ' + res.statusCode.toString(), icon: 'none' });
+				updateBtn.value = true;
+				cleanupDownload();
+			}
+		},
+		fail: (err) => {
+			uni.showToast({ title: '下载失败: ' + err.errMsg, icon: 'none' });
+			updateBtn.value = true;
+			cleanupDownload();
+		}
+	});
+
+	// 监听下载进度与体积
+	downloadTask?.onProgressUpdate((pRes: OnProgressDownloadResult) => {
+		// 下载进度百分比限制在 0 ~ 100 区间，与 Vue 端原始数值流向保持一致
+		const rawProgress = pRes.progress;
+		percent.value = Math.max(0, Math.min(100, rawProgress));
+		const writtenMb = pRes.totalBytesWritten / 1048576.0;
+		const totalMb = pRes.totalBytesExpectedToWrite / 1048576.0;
+		downloadedSize.value = writtenMb.toFixed(2);
+		packageFileSize.value = totalMb.toFixed(2);
+	});
+}
+
+/**
+ * 执行前置兜底检测 (Fallback Check)
+ * @returns 是否命中了兜底配置 (true 表示命中，停止正常升级流程)
+ */
+function checkFallback(): Promise<boolean> {
+	return new Promise((resolve) => {
+		if (props.fallbackApiUrl == '') {
+			resolve(false);
+			return;
+		}
+
+		let appIdStr = '';
+		let verNameStr = currentVersion.value;
+		let deviceIdStr = '';
+		let platformStr = 'android';
+
+		try {
+			const baseInfo = uni.getAppBaseInfo();
+			if (baseInfo.appId != null) appIdStr = baseInfo.appId!;
+			if (verNameStr == '' && baseInfo.appVersion != null) {
+				verNameStr = baseInfo.appVersion!;
+			}
+			const devInfo = uni.getDeviceInfo();
+			if (devInfo.deviceId != null) deviceIdStr = devInfo.deviceId!;
+			if (devInfo.platform != null) platformStr = devInfo.platform!;
+		} catch (e) {}
+
+		const reqData = {
+			appId: appIdStr,
+			deviceId: deviceIdStr,
+			versionName: verNameStr,
+			platform: platformStr
+		};
+
+		uni.request({
+			url: props.fallbackApiUrl,
+			method: 'POST',
+			header: {
+				'Content-Type': 'application/json'
+			},
+			data: reqData,
+			timeout: 3000,
+			success: (res) => {
+				try {
+					if (res.statusCode !== 200) {
+						resolve(false);
+						return;
+					}
+
+					let body: UTSJSONObject | null = null;
+					if (typeof res.data === 'string') {
+						try {
+							body = JSON.parse(res.data as string) as UTSJSONObject;
+						} catch (e) {
+							resolve(false);
+							return;
+						}
+					} else {
+						body = res.data as UTSJSONObject;
+					}
+
+					if (body == null) {
+						resolve(false);
+						return;
+					}
+
+					const code = body.getNumber('code');
+					const subData = body.getJSON('data');
+					if (code === 0 && subData != null) {
+						const dlUrl = subData.getString('downloadUrl');
+						if (dlUrl != null && dlUrl != '') {
+							const title = subData.getString('title') != null ? subData.getString('title')! : '发现新版本';
+							const desc = subData.getString('description') != null ? subData.getString('description')! : '当前版本可能存在兼容性问题，建议前往浏览器下载最新版本。';
+
+							emit('fallback', {
+								title: title,
+								description: desc,
+								downloadUrl: dlUrl
+							} as FallbackData);
+
+							uni.showModal({
+								title: title,
+								content: desc,
+								confirmText: '前往下载',
+								cancelText: '暂不更新',
+								showCancel: true,
+								success: (mRes) => {
+									if (mRes.confirm) {
+										openExternalBrowser(dlUrl);
+									}
+								}
+							});
+							resolve(true);
+							return;
+						}
+					}
+				} catch (e) {}
+				resolve(false);
+			},
+			fail: () => {
+				resolve(false);
+			}
+		});
+	});
+}
+
+/**
+ * 向后端 API 获取当前应用的更新信息
+ * @param callback 成功发现更新时的外部通知回调
+ */
+function getData(callback?: (resVersion: UTSJSONObject, version: string) => void) {
+	if (props.apiUrl == '') {
+		console.error('[ste-app-update] apiUrl 配置不可为空');
+		emit('no-update');
+		return;
+	}
+
+	const authHeader = 'Basic ' + base64Encode(props.clientId + ':' + props.clientSecret);
+
+	uni.request({
+		url: props.apiUrl,
+		method: 'GET',
+		header: {
+			Authorization: authHeader
+		},
+		success: (res) => {
+			try {
+				if (res.statusCode !== 200) {
+					console.warn('[ste-app-update] 版本检测接口响应非200状态码:', res.statusCode);
+					emit('no-update');
+					return;
+				}
+
+				let body: UTSJSONObject | null = null;
+				if (typeof res.data === 'string') {
+					try {
+						body = JSON.parse(res.data as string) as UTSJSONObject;
+					} catch (e) {
+						console.warn('[ste-app-update] 响应内容非合法JSON格式:', res.data);
+						emit('no-update');
+						return;
+					}
+				} else {
+					body = res.data as UTSJSONObject;
+				}
+
+				if (body == null) {
+					emit('no-update');
+					return;
+				}
+
+				const statusCode = body.getNumber('code');
+				const resData = body.getJSON('data');
+
+				if (statusCode === 200 && resData != null) {
+					const code = resData.getString('code') != null ? resData.getString('code')! : '';
+					const name = resData.getString('name') != null ? resData.getString('name')! : '';
+					const desc = resData.getString('desc') != null ? resData.getString('desc')! : '';
+					const isForce = resData.getBoolean('isForce') != null ? resData.getBoolean('isForce')! : false;
+					const entireFile = resData.getString('entireFile');
+					const updateFile = resData.getString('updateFile');
+
+					if (code == '' || name == '') {
+						emit('no-update');
+						return;
+					}
+
+					data.code = code;
+					data.name = name;
+					data.content = desc;
+					data.isForce = isForce;
+
+					if (entireFile != null && entireFile != '') {
+						data.updateFile = entireFile!;
+						data.package_type = 0; // 全量包
+					} else {
+						data.updateFile = updateFile != null ? updateFile! : '';
+						data.package_type = 1; // 补丁包
+					}
+
+					// 严格版本检查 (strictVersionCheck)：优先检测是否需要安装全量更新
+					if (props.strictVersionCheck) {
+						const lastAll = resData.getJSON('lastAllDetail');
+						if (lastAll != null) {
+							const lastFile = lastAll.getString('entireFile');
+							const lastCode = lastAll.getString('code');
+							if (lastFile != null && lastCode != null) {
+								if (compareVersions(lastCode!, currentVersion.value) > 0) {
+									data.code = lastCode!;
+									data.name = lastAll.getString('name') != null ? lastAll.getString('name')! : data.name;
+									data.content = lastAll.getString('desc') != null ? lastAll.getString('desc')! : data.content;
+									data.isForce = lastAll.getBoolean('isForce') != null ? lastAll.getBoolean('isForce')! : data.isForce;
+									data.updateFile = lastFile!;
+									data.package_type = 0;
+								}
+							}
+						}
+					}
+
+					// 检查是否已被用户跳过
+					if (isVersionSkipped(data.code)) {
+						emit('no-update');
+						return;
+					}
+
+					// 触发外部自定义回调
+					if (callback != null) {
+						const resObj: UTSJSONObject = {
+							code: data.code,
+							name: data.name,
+							updateFile: data.updateFile
+						};
+						callback(resObj, currentVersion.value);
+					}
+
+					// 环境标签校验 (appType)
+					if (props.appType != '') {
+						const parts = data.name.split('.');
+						if (parts.length > 1) {
+							const envTag = parts[parts.length - 1];
+							if (props.appType !== envTag) {
+								uni.showModal({
+									title: '提示',
+									content: '新版本发布环境 (' + envTag + ') 与当前环境 (' + props.appType + ') 不匹配',
+									showCancel: false
+								});
+								return;
+							}
+						}
+					}
+
+					// 版本决策判定
+					const shouldUpdate = props.strictVersionCheck
+						? compareVersions(data.code, currentVersion.value) > 0
+						: data.code !== currentVersion.value;
+
+					if (data.updateFile != '' && shouldUpdate) {
+						open.value = true;
+						emit('update');
+						// 强制更新立即启动下载
+						if (data.isForce) {
+							confirm();
+						}
+						return;
+					}
+				}
+
+				emit('no-update');
+			} catch (e) {
+				console.error('[ste-app-update] 解析更新数据失败:', e);
+				emit('no-update');
+			}
+		},
+		fail: (err) => {
+			console.error('[ste-app-update] 版本检测网络请求失败:', err);
+			emit('no-update');
+		}
+	});
+}
+
+/**
+ * 启动版本检测入口方法
+ * @param callback 外部获取新版本数据回调
+ */
+function start(callback?: (resVersion: UTSJSONObject, version: string) => void) {
+	initSkippedVersions();
+
+	// 获取客户端真实版本号
+	if (props.appVersion != '') {
+		currentVersion.value = props.appVersion;
+	} else {
+		try {
+			const info = uni.getAppBaseInfo();
+			if (info.appVersion != null && info.appVersion != '') {
+				currentVersion.value = info.appVersion!;
+			} else {
+				currentVersion.value = '1.0.0';
+			}
+		} catch (e) {
+			currentVersion.value = '1.0.0';
+		}
+	}
+
+	// 执行前置兜底探针
+	checkFallback().then((hit: boolean) => {
+		if (hit) return;
+		getData(callback);
+	});
+}
+
+
+
+// ==================== 生命周期管理 ====================
+
+onUnmounted(() => {
+	cleanupDownload();
+});
+
+// ==================== 暴露组件实例方法 ====================
+
+defineExpose({
+	start,
+	getSkippedVersions: (): string[] => [...skippedVersions.value],
+	clearSkippedVersions: () => {
+		skippedVersions.value = [];
+		saveSkippedVersions();
+	}
+});
+</script>
+
+<style>
+.ste-update-mask {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.55);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 998;
+}
+
+.ste-update-card {
+	width: 620rpx;
+	background-color: #ffffff;
+	border-radius: 24rpx;
+	padding: 56rpx 40rpx 40rpx 40rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+}
+
+.ste-update-image {
+	width: 180rpx;
+	height: 180rpx;
+	margin-bottom: 20rpx;
+}
+
+.ste-update-title {
+	font-size: 42rpx;
+	font-weight: bold;
+	color: #1a1a1a;
+	margin-bottom: 8rpx;
+}
+
+.ste-update-version {
+	font-size: 30rpx;
+	color: #999999;
+	margin-bottom: 24rpx;
+}
+
+.ste-update-desc-box {
+	width: 100%;
+	max-height: 320rpx;
+	background-color: #f9fafb;
+	border-radius: 12rpx;
+	padding: 20rpx;
+	margin-bottom: 36rpx;
+}
+
+.ste-update-desc-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #333333;
+	margin-bottom: 12rpx;
+}
+
+.ste-update-desc-content {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.6;
+}
+
+.ste-update-footer {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.ste-update-progress-box {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.ste-progress-track {
+	width: 100%;
+	height: 16rpx;
+	background-color: #eeeeee;
+	border-radius: 8rpx;
+	overflow: hidden;
+}
+
+.ste-progress-bar {
+	height: 16rpx;
+	background-color: #1388f7;
+	border-radius: 8rpx;
+}
+
+.ste-progress-text {
+	font-size: 26rpx;
+	color: #1388f7;
+	font-weight: bold;
+	margin-top: 12rpx;
+}
+
+.ste-download-info {
+	margin-top: 10rpx;
+	margin-bottom: 16rpx;
+}
+
+.ste-down-msg {
+	font-size: 24rpx;
+	color: #888888;
+}
+
+.ste-btn {
+	width: 100%;
+	height: 84rpx;
+	line-height: 84rpx;
+	border-radius: 16rpx;
+	font-size: 30rpx;
+	font-weight: 500;
+	text-align: center;
+	margin-bottom: 16rpx;
+}
+
+.ste-btn-primary {
+	background-color: #1388f7;
+	color: #ffffff;
+}
+
+.ste-btn-skip {
+	background-color: #f5f5f5;
+	color: #666666;
+	border: 1px solid #e0e0e0;
+}
+
+.ste-btn-install {
+	background-color: #52c41a;
+	color: #ffffff;
+}
+
+.ste-btn-cancel {
+	background-color: #f5f5f5;
+	color: #ff4d4f;
+	font-size: 26rpx;
+	height: 72rpx;
+	line-height: 72rpx;
+	border: 1px solid #ffccc7;
+}
+
+.ste-update-close {
+	position: absolute;
+	right: 16rpx;
+	top: 16rpx;
+	width: 64rpx;
+	height: 64rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ste-close-icon {
+	font-size: 32rpx;
+	color: #999999;
+}
+</style>

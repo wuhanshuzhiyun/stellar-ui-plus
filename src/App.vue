@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import useFontSize from '@/uni_modules/stellar-ui-plus/config/font-size';
+// 显式指定 .ts 扩展名，防止 Vite 在存在同名 .uts 时根据 extensions 优先级错误命中 UTS 模块
+import useFontSize from '@/uni_modules/stellar-ui-plus/config/font-size.ts';
 const { fontSizeStyle, config } = useFontSize();
 // #ifdef H5
 

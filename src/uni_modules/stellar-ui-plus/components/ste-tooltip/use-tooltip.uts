@@ -1,0 +1,43 @@
+/**
+ * @file use-tooltip.uts
+ * @description ste-tooltip 文字提示组合式函数 - uni-app x / UTS 版本
+ * 通过 uni.$emit 全局事件系统触发页面内的 ste-tooltip 挂载组件进行显示或隐藏。
+ */
+
+import { TooltipOptions, UseTooltipResult } from './constants.uts'
+
+/**
+ * 获得 Tooltip 控制实例方法
+ * @returns 包含 showTooltip 和 hideTooltip 的控制对象
+ * @example
+ * ```uts
+ * const tooltip = useTooltip()
+ * tooltip.showTooltip({
+ *     text: '气泡提示文本',
+ *     selector: '.target-btn',
+ *     placement: 'top',
+ * } as TooltipOptions)
+ * ```
+ */
+export function useTooltip() : UseTooltipResult {
+	/**
+	 * 打开并展示文字提示
+	 * @param options Tooltip 配置参数
+	 */
+	const showTooltip = (options : TooltipOptions) => {
+		// 广播展示事件，直接携带强类型 options 实体传递给页面内挂载的 ste-tooltip 组件
+		uni.$emit('ste:tooltip:show', options)
+	}
+
+	/**
+	 * 关闭并隐藏文字提示
+	 */
+	const hideTooltip = () => {
+		uni.$emit('ste:tooltip:hide')
+	}
+
+	return {
+		showTooltip: showTooltip,
+		hideTooltip: hideTooltip,
+	} as UseTooltipResult
+}

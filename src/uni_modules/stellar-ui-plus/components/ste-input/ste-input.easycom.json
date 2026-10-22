@@ -231,9 +231,15 @@
         },
         {
             "name": "filter",
-            "description": "过滤器函数，用于在输入时对值进行预处理",
-            "type": "(value: any) => string",
+            "description": "输入文本正则或校验函数[仅Vue支持]",
+            "type": "Function",
             "default": "null"
+        },
+        {
+            "name": "modelValue",
+            "description": "输入框当前绑定文本内容，支持 v-model[UVue/Vue标准支持]",
+            "type": "string | number",
+            "default": ""
         },
         {
             "name": "[event]blur",
@@ -293,5 +299,8 @@
             "name": "[slot]suffix",
             "description": "输入框后置内容"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "filter": "Vue 端支持 filter 正则过滤函数；UVue 端支持原生 confirmType, allowSpace, password 及 modelValue"
+    }
 }

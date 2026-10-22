@@ -1,0 +1,22 @@
+/**
+ * @file constants.uts
+ * @description ste-category 分类组件 - uni-app x / UTS 强类型契约与常量定义
+ */
+
+/**
+ * 分类项标准数据接口定义
+ */
+export type CategoryItem = {
+	/** 分类主标题 */
+	title: string;
+	/** 分类对应唯一标识值 */
+	value: string;
+	/** 角标内容 (可选) */
+	badge?: string | number;
+	/** 扩展统计计数 (可选) */
+	count?: number;
+	/** 当前是否处于选中激活状态 */
+	active?: boolean;
+	/** 是否禁用交互 (可选) */
+	disabled?: boolean;
+};

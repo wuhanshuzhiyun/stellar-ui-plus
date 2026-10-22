@@ -1,0 +1,493 @@
+<template>
+	<view class="ste-upload-root" :style="cmpRootStyle">
+		<!-- 文件列表 -->
+		<view v-for="(item, index) in modelValue" :key="index"
+			class="upload-item" :style="cmpItemStyle" @click="onItemClick(index, item)">
+			<!-- 图片预览 -->
+			<image v-if="previewImage"
+				:src="item.thumbPath != null ? item.thumbPath! : item.url"
+				class="item-image" :style="cmpItemImgStyle" mode="aspectFill" />
+			<!-- 文件类型占位（非图片时） -->
+			<view v-if="!previewImage" class="file-placeholder" :style="cmpPlaceholderStyle">
+				<text class="file-type-text">{{ item.type != null ? item.type! : 'file' }}</text>
+			</view>
+			<!-- 上传中遮罩 -->
+			<view v-if="item.status == 'uploading'" class="overlay" :style="cmpOverlayStyle">
+				<text class="loading-text">...</text>
+			</view>
+			<!-- 错误遮罩 -->
+			<view v-if="item.status == 'error'" class="overlay" :style="cmpErrorOverlayStyle">
+				<text class="error-text">!</text>
+			</view>
+			<!-- 删除按钮 -->
+			<view v-if="cmpDeletable && item.status != 'uploading'"
+				class="delete-badge" @click.stop="deleteItem(index)">
+				<text class="delete-x">x</text>
+			</view>
+		</view>
+		<!-- 添加按钮 -->
+		<view v-if="cmpShowUpload" class="upload-add" :style="cmpAddStyle" @click="selectFile">
+			<text class="add-icon">{{ uploadIcon }}</text>
+			<text class="add-text">{{ uploadText }}</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { ref, computed } from 'vue'
+	import { formatPx } from '../../utils/utils.uts'
+
+	defineOptions({ name: 'ste-upload', options: { virtualHost: true } })
+
+	// ============== 类型定义 ==============
+
+	type UploadFileType = {
+		url : string,
+		type ?: string,
+		size ?: number,
+		name ?: string,
+		status ?: string,
+		path ?: string,
+		thumbPath ?: string,
+		duration ?: number,
+		height ?: number,
+		width ?: number
+	}
+
+	// ============== Props ==============
+
+	type UploadProps = {
+		modelValue ?: UploadFileType[],
+		accept ?: string,
+		capture ?: string[],
+		camera ?: string,
+		compressed ?: boolean,
+		maxDuration ?: number,
+		previewWidth ?: number | string,
+		previewHeight ?: number | string,
+		previewImage ?: boolean,
+		previewFullImage ?: boolean,
+		multiple ?: boolean,
+		disabled ?: boolean,
+		showUpload ?: boolean,
+		deletable ?: boolean,
+		maxSize ?: number,
+		maxCount ?: number,
+		uploadIcon ?: string,
+		uploadText ?: string,
+		radius ?: number | string,
+		flexWrap ?: string
+	}
+
+	const props = withDefaults(defineProps<UploadProps>(), {
+		modelValue: () : UploadFileType[] => { return [] as UploadFileType[] },
+		accept: 'image',
+		capture: () : string[] => { return ['album', 'camera'] as string[] },
+		camera: 'back',
+		compressed: true,
+		maxDuration: 60,
+		previewWidth: 200,
+		previewHeight: 200,
+		previewImage: true,
+		previewFullImage: true,
+		multiple: false,
+		disabled: false,
+		showUpload: true,
+		deletable: true,
+		maxSize: 0,
+		maxCount: 9,
+		uploadIcon: '+',
+		uploadText: '\u70B9\u51FB\u4E0A\u4F20',
+		radius: 9,
+		flexWrap: 'wrap'
+	})
+
+	const emit = defineEmits([
+		'beforeRead', 'read', 'oversize',
+		'update:modelValue',
+		'beforeDelete', 'delete',
+		'preview-change', 'open-preview', 'close-preview',
+		'click-item'
+	])
+
+	// ============== 响应式状态 ==============
+
+	const reading = ref<boolean>(false)
+	const deleting = ref<boolean>(false)
+	let cancelNextAction = false
+
+	// ============== 辅助函数 ==============
+
+	function parseSize(val : number | string) : number {
+		if (typeof val === 'number') return val as number
+		return parseFloat(val as string)
+	}
+
+	// ============== 计算属性 ==============
+
+	const itemWidth = computed(() : number => parseSize(props.previewWidth))
+	const itemHeight = computed(() : number => parseSize(props.previewHeight))
+	const itemRadius = computed(() : number => parseSize(props.radius))
+
+	/** 根容器样式 */
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['flexDirection'] = 'row'
+		s['flexWrap'] = props.flexWrap
+		return s
+	})
+
+	/** 文件项样式 */
+	const cmpItemStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['width'] = formatPx(itemWidth.value)
+		s['height'] = formatPx(itemHeight.value)
+		s['borderRadius'] = formatPx(itemRadius.value)
+		s['marginRight'] = formatPx(20)
+		s['marginBottom'] = formatPx(20)
+		return s
+	})
+
+	/** 图片样式 */
+	const cmpItemImgStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['width'] = '100%'
+		s['height'] = '100%'
+		s['borderRadius'] = formatPx(itemRadius.value)
+		return s
+	})
+
+	/** 文件占位样式 */
+	const cmpPlaceholderStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['width'] = '100%'
+		s['height'] = '100%'
+		s['backgroundColor'] = '#f5f5f5'
+		s['borderRadius'] = formatPx(itemRadius.value)
+		s['justifyContent'] = 'center'
+		s['alignItems'] = 'center'
+		return s
+	})
+
+	/** 遮罩样式 */
+	const cmpOverlayStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['position'] = 'absolute'
+		s['top'] = '0px'
+		s['left'] = '0px'
+		s['right'] = '0px'
+		s['bottom'] = '0px'
+		s['backgroundColor'] = 'rgba(0,0,0,0.5)'
+		s['borderRadius'] = formatPx(itemRadius.value)
+		s['justifyContent'] = 'center'
+		s['alignItems'] = 'center'
+		return s
+	})
+
+	/** 错误遮罩样式 */
+	const cmpErrorOverlayStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['position'] = 'absolute'
+		s['top'] = '0px'
+		s['left'] = '0px'
+		s['right'] = '0px'
+		s['bottom'] = '0px'
+		s['backgroundColor'] = 'rgba(255,0,0,0.3)'
+		s['borderRadius'] = formatPx(itemRadius.value)
+		s['justifyContent'] = 'center'
+		s['alignItems'] = 'center'
+		return s
+	})
+
+	/** 添加按钮样式 */
+	const cmpAddStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['width'] = formatPx(itemWidth.value)
+		s['height'] = formatPx(itemHeight.value)
+		s['borderRadius'] = formatPx(itemRadius.value)
+		s['borderWidth'] = '1px'
+		s['borderStyle'] = 'dashed'
+		s['borderColor'] = '#ccc'
+		s['justifyContent'] = 'center'
+		s['alignItems'] = 'center'
+		s['marginRight'] = formatPx(20)
+		s['marginBottom'] = formatPx(20)
+		return s
+	})
+
+	/** 是否显示添加按钮 */
+	const cmpShowUpload = computed(() : boolean => {
+		if (props.disabled && props.modelValue.length > 0) return false
+		if (!props.showUpload) return false
+		if (props.maxCount > 0 && props.modelValue.length >= props.maxCount) return false
+		return true
+	})
+
+	/** 是否显示删除按钮 */
+	const cmpDeletable = computed(() : boolean => {
+		return !props.disabled && props.deletable
+	})
+
+	/** 可预览的媒体文件 URL 列表 */
+	const cmpPreviewList = computed(() : string[] => {
+		const list : string[] = [] as string[]
+		for (let i = 0; i < props.modelValue.length; i++) {
+			const item = props.modelValue[i]
+			const t = item.type ?? ''
+			if (t == 'image' || t == 'video') {
+				const url = item.thumbPath ?? item.url
+				list.push(url)
+			}
+		}
+		return list
+	})
+
+	/** 是否启用全屏预览 */
+	const cmpPreviewFullImage = computed(() : boolean => {
+		if (!props.previewFullImage) return false
+		if (props.maxCount == 1 && !props.deletable) return false
+		return true
+	})
+
+	// ============== 文件选择 ==============
+
+	function readNext(fileList : UploadFileType[]) {
+		if (reading.value) return
+		reading.value = true
+		cancelNextAction = false
+		emit('beforeRead', fileList, false)
+		if (cancelNextAction) {
+			cancelNextAction = false
+			reading.value = false
+			return
+		}
+		// check size
+		if (props.maxSize > 0) {
+			for (let i = 0; i < fileList.length; i++) {
+				const fileSize = fileList[i].size ?? 0
+				if (fileSize / 1024 > props.maxSize) {
+					emit('oversize', fileList[i], props.modelValue)
+					reading.value = false
+					return
+				}
+			}
+		}
+		// build new list from props.modelValue + new files
+		const merged : UploadFileType[] = [] as UploadFileType[]
+		for (let i = 0; i < props.modelValue.length; i++) {
+			merged.push(props.modelValue[i])
+		}
+		for (let i = 0; i < fileList.length; i++) {
+			merged.push(fileList[i])
+		}
+		// truncate to maxCount
+		if (props.maxCount > 0 && merged.length > props.maxCount) {
+			const truncated : UploadFileType[] = [] as UploadFileType[]
+			for (let i = 0; i < props.maxCount; i++) {
+				truncated.push(merged[i])
+			}
+			emit('update:modelValue', truncated)
+		} else {
+			emit('update:modelValue', merged)
+		}
+		emit('read', fileList)
+		reading.value = false
+	}
+
+	function readMediaFile(count : number) {
+		// #ifdef APP-ANDROID || APP-IOS
+		const captureList : string[] = [] as string[]
+		for (let i = 0; i < props.capture.length; i++) {
+			captureList.push(props.capture[i])
+		}
+		uni.chooseImage({
+			count: count,
+			sourceType: captureList,
+			sizeType: props.compressed ? ['compressed'] : ['original', 'compressed'],
+			success: (res) => {
+				const items : UploadFileType[] = [] as UploadFileType[]
+				for (let i = 0; i < res.tempFilePaths.length; i++) {
+					const item : UploadFileType = {
+						url: res.tempFilePaths[i],
+						type: 'image',
+						status: 'uploading'
+					}
+					if (i < res.tempFiles.length) {
+						item.size = res.tempFiles[i].size
+					}
+					items.push(item)
+				}
+				readNext(items)
+			}
+		})
+		// #endif
+
+		// #ifndef APP-ANDROID || APP-IOS
+		uni.chooseImage({
+			count: count,
+			success: (res) => {
+				const items : UploadFileType[] = [] as UploadFileType[]
+				for (let i = 0; i < res.tempFilePaths.length; i++) {
+					const item : UploadFileType = {
+						url: res.tempFilePaths[i],
+						type: 'image',
+						status: 'uploading'
+					}
+					items.push(item)
+				}
+				readNext(items)
+			}
+		})
+		// #endif
+	}
+
+	function selectFile() {
+		if (props.disabled) return
+		const currentLen = props.modelValue.length
+		let count = 1
+		if (props.multiple) {
+			const remain = props.maxCount > 0 ? props.maxCount - currentLen : 9
+			count = remain > 9 ? 9 : remain
+			if (count <= 0) return
+		} else {
+			if (props.maxCount > 0 && currentLen >= props.maxCount) return
+		}
+		readMediaFile(count)
+	}
+
+	// ============== 删除 ==============
+
+	function deleteItem(index : number) {
+		if (props.disabled) return
+		if (deleting.value) return
+		deleting.value = true
+		cancelNextAction = false
+		emit('beforeDelete', index, false)
+		if (cancelNextAction) {
+			cancelNextAction = false
+			deleting.value = false
+			return
+		}
+		const list : UploadFileType[] = [] as UploadFileType[]
+		for (let i = 0; i < props.modelValue.length; i++) {
+			if (i != index) {
+				list.push(props.modelValue[i])
+			}
+		}
+		emit('update:modelValue', list)
+		emit('delete', index, list)
+		deleting.value = false
+	}
+
+	// ============== 预览 ==============
+
+	function onItemClick(index : number, item : UploadFileType) {
+		emit('click-item', index)
+		if (!cmpPreviewFullImage.value) return
+		const t = item.type ?? ''
+		if (t != 'image' && t != 'video') return
+		const url = item.thumbPath ?? item.url
+		if (url == '') return
+		uni.previewImage({
+			current: url,
+			urls: cmpPreviewList.value
+		})
+		emit('open-preview')
+		emit('preview-change', index)
+	}
+
+	// ============== 暴露给父组件 ==============
+
+	function cancelPendingAction() {
+		cancelNextAction = true
+	}
+
+	defineExpose({ cancelPendingAction })
+</script>
+
+<style>
+	.ste-upload-root {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.upload-item {
+		position: relative;
+		overflow: hidden;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.item-image {
+		display: flex;
+	}
+
+	.file-placeholder {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.file-type-text {
+		color: #999;
+		font-size: 12px;
+	}
+
+	.overlay {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.loading-text {
+		color: #ffffff;
+		font-size: 18px;
+	}
+
+	.error-text {
+		color: #ffffff;
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+	.delete-badge {
+		position: absolute;
+		top: -4px;
+		right: -4px;
+		width: 20px;
+		height: 20px;
+		border-radius: 10px;
+		background-color: rgba(0, 0, 0, 0.7);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.delete-x {
+		color: #ffffff;
+		font-size: 12px;
+	}
+
+	.upload-add {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #fafafa;
+	}
+
+	.add-icon {
+		font-size: 24px;
+		color: #999;
+		line-height: 30px;
+	}
+
+	.add-text {
+		font-size: 12px;
+		color: #999;
+		margin-top: 4px;
+	}
+</style>

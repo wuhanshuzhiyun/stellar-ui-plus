@@ -21,6 +21,54 @@
             "description": "评价数组",
             "type": "CommentType[]",
             "default": "[]"
+        },
+        {
+            "name": "[event]click-head-right",
+            "description": "点击评论项右上角更多操作时触发",
+            "params": [
+                {
+                    "name": "comment",
+                    "description": "当前评论对象"
+                }
+            ]
+        },
+        {
+            "name": "[event]click-tag",
+            "description": "点击评价标签时触发",
+            "params": [
+                {
+                    "name": "tag",
+                    "description": "标签文本"
+                },
+                {
+                    "name": "index",
+                    "description": "标签索引"
+                }
+            ]
+        },
+        {
+            "name": "[event]click-item",
+            "description": "点击单条评论内容主体时触发",
+            "params": [
+                {
+                    "name": "comment",
+                    "description": "当前评论对象"
+                }
+            ]
+        },
+        {
+            "name": "[event]click-image",
+            "description": "点击评论图片预览时触发",
+            "params": [
+                {
+                    "name": "images",
+                    "description": "图片数组"
+                },
+                {
+                    "name": "current",
+                    "description": "当前图片索引"
+                }
+            ]
         }
     ]
 }

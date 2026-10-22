@@ -1,0 +1,56 @@
+{
+    "name": "ste-step",
+    "description": "步骤条子项组件，配合 ste-steps 使用展示单步内容与状态。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-steps",
+    "attributes": [
+        {
+            "name": "title",
+            "description": "流程步骤的标题",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "description",
+            "description": "流程步骤的描述性文字 (支持 html 结构)",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "icon",
+            "description": "图标",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "status",
+            "description": "步骤状态",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
+            "name": "[slot]title",
+            "description": "步骤标题插槽"
+        },
+        {
+            "name": "[slot]description",
+            "description": "自定义步骤描述信息插槽"
+        },
+        {
+            "name": "[slot]icon",
+            "description": "步骤图标插槽"
+        },
+        {
+            "name": "[slot]content",
+            "description": "步骤内容插槽"
+        }
+    ],
+    "uvue_diff": {
+        "styling": "配合 ste-steps 使用，UVue 端支持 rootStyle 原生样式对象"
+    }
+}

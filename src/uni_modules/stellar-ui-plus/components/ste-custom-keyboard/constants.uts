@@ -1,0 +1,68 @@
+/**
+ * @file constants.uts
+ * @description ste-custom-keyboard 定制键盘组件 - uni-app x / UTS 强类型契约与常量定义
+ */
+
+/**
+ * 折扣快捷项实体接口
+ */
+export type DiscountItem = {
+	/** 折扣整数部分，如 75 -> 7 */
+	n: number;
+	/** 折扣小数部分，如 75 -> 5，70 -> 0 */
+	d: number;
+	/** 原始折算数值，如 75 */
+	v: number;
+	/** 格式化呈现文本，如 '7.5折' 或 '7折' */
+	text: string;
+};
+
+/**
+ * 定制键盘核心属性接口
+ */
+export type CustomKeyboardProps = {
+	/** 键盘展示模式：popup（底部抽屉弹窗）或 page（嵌入文档流） */
+	mode?: string;
+	/** 键盘业务类型：number（普通数字）、idcard（身份证键盘带X）、discount（折扣键盘） */
+	type?: string;
+	/** 双向绑定的当前输入值 */
+	modelValue?: string;
+	/** 最大输入字符长度限制 */
+	maxlength?: any | null;
+	/** 控制弹窗显隐状态 (mode='popup' 时生效) */
+	show?: boolean;
+	/** 折扣预设数组，如 [70, 75, 80, 85, 90] 分别对应 7折、7.5折、8折等 */
+	discounts?: number[];
+	/** 是否展示右侧确认与退格操作列 */
+	rightKeys?: boolean;
+	/** 自定义补充按键数组（如 ['.'] 或 ['00']） */
+	customKeys?: string[];
+	/** 是否随机打乱数字按键布局（安全防窥键盘） */
+	randomKeys?: boolean;
+	/** 确认操作按钮文案，默认为 '确定' */
+	confirmText?: string;
+	/** 是否禁用确认按钮 */
+	confirmDisabled?: boolean;
+	/** 是否展示清空按键 */
+	showClear?: boolean;
+	/** 按键文本文字颜色 */
+	textColor?: string;
+	/** 按键文字字号大小 */
+	textSize?: any;
+	/** 删除退格图标尺寸大小 */
+	backspaceSize?: any;
+	/** 确认按钮背景颜色 */
+	confirmBg?: string;
+	/** 确认按钮文字颜色 */
+	confirmColor?: string;
+	/** 普通按键背景颜色 */
+	keyBg?: string;
+	/** 键盘整体底层容器背景色 */
+	background?: string;
+	/** 多输入框联动引用标识 */
+	activeInputRef?: string;
+	/** 多输入框键值映射字典 */
+	inputValues?: UTSJSONObject;
+	/** 自定义最外层容器样式 */
+	rootStyle?: UTSJSONObject;
+};

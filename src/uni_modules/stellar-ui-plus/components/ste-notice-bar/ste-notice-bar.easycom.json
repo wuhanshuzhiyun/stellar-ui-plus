@@ -91,6 +91,12 @@
             "default": true
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]click",
             "description": "外层点击事件回调",
             "params": [
@@ -127,6 +133,27 @@
         {
             "name": "[slot]rightIcon",
             "description": "右边图标的插槽"
+        },
+        {
+            "name": "[method]play",
+            "description": "恢复/开始滚动播放",
+            "params": [],
+            "return": "void"
+        },
+        {
+            "name": "[method]pause",
+            "description": "暂停滚动播放",
+            "params": [],
+            "return": "void"
+        },
+        {
+            "name": "[method]reset",
+            "description": "重置滚动状态到首条公告",
+            "params": [],
+            "return": "void"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端新增 rootStyle 原生样式对象支持；采用双缓冲槽状态机实现平滑轮播"
+    }
 }

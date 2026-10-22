@@ -46,6 +46,12 @@
             "default": true
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]update:modelValue",
             "description": "选中值改变时触发",
             "params": [
@@ -68,6 +74,21 @@
                     "description": "选中的选项对象"
                 }
             ]
+        },
+        {
+            "name": "label",
+            "description": "显示文本字段名",
+            "type": "String",
+            "default": "label"
+        },
+        {
+            "name": "value",
+            "description": "绑定值字段名",
+            "type": "String",
+            "default": "value"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端新增 rootStyle 原生样式对象支持"
+    }
 }

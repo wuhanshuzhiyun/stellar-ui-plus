@@ -1,0 +1,464 @@
+<script setup lang="uts">
+	import { computed, watch, nextTick, ref } from 'vue'
+
+	import { formatPx } from '../../utils/utils.uts'
+	import { normalizeFontSize } from '../../config/index.uts'
+
+	defineOptions({ name: 'ste-search' })
+
+	type SearchProps = {
+		type ?: string,
+		modelValue ?: string,
+		placeholder ?: string,
+		hotWords ?: string[],
+		interval ?: number,
+		autoplay ?: boolean,
+		disabled ?: boolean,
+		hiddenLine ?: boolean,
+		hiddenBtn ?: boolean,
+		btnText ?: string,
+		hiddenInput ?: boolean,
+		clearable ?: boolean,
+		allowSpace ?: boolean,
+		borderColor ?: string,
+		background ?: string,
+		prefixIconColor ?: string,
+		placeholderColor ?: string,
+		inputTextColor ?: string,
+		clearIconColor ?: string,
+		btnBackground ?: string,
+		btnTextColor ?: string,
+		height ?: number,
+		radius ?: number,
+		focus ?: boolean,
+		suggestionList ?: UTSJSONObject[],
+	}
+
+	const props = withDefaults(defineProps<SearchProps>(), {
+		type: 'default',
+		modelValue: '',
+		placeholder: '',
+		hotWords: () => [] as string[],
+		interval: 3000,
+		autoplay: true,
+		disabled: false,
+		hiddenLine: false,
+		hiddenBtn: false,
+		btnText: '搜索',
+		hiddenInput: false,
+		clearable: true,
+		allowSpace: true,
+		borderColor: '#dddddd',
+		background: '#ffffff',
+		prefixIconColor: '#bbbbbb',
+		placeholderColor: '#bbbbbb',
+		inputTextColor: '#000000',
+		clearIconColor: '#bbbbbb',
+		btnBackground: '',
+		btnTextColor: '#0090FF',
+		height: 64,
+		radius: 32,
+		focus: false,
+		suggestionList: () => [] as UTSJSONObject[],
+	})
+
+	const emits = defineEmits(['input', 'update:modelValue', 'focus', 'update:focus', 'blur', 'search', 'click', 'clear', 'selectSuggestion'])
+
+	// 内部状态
+	const dataValue = ref('')
+	const switchIndex = ref(0)
+	const focused = ref(false)
+	const showSuggestionsBox = ref<null | boolean>(null)
+
+	const cmpPlaceholder = computed(() : string => {
+		if (props.hotWords != null && props.hotWords.length > 0) return ''
+		return props.placeholder
+	})
+
+	const cmpShowSwitch = computed(() : boolean => {
+		return props.hotWords != null && props.hotWords.length > 0 && dataValue.value == ''
+	})
+
+	const cmpHiddenLine = computed(() : boolean => {
+		return props.hiddenLine || props.hiddenBtn
+	})
+
+	const cmpShowClear = computed(() : boolean => {
+		return props.clearable && focused.value && dataValue.value != '' && !props.disabled
+	})
+
+	// 预计算字体大小
+	const cmpFontSize = computed(() : string => normalizeFontSize(28))
+
+	// 根容器样式
+	function getRootStyle() : UTSJSONObject {
+		const style : UTSJSONObject = {
+			height: formatPx(props.height),
+			borderRadius: formatPx(props.radius),
+			backgroundColor: props.background,
+			borderWidth: '1px',
+			borderStyle: 'solid',
+			borderColor: props.borderColor,
+		}
+		if (!props.hiddenBtn || !props.hiddenInput) {
+			style['paddingLeft'] = formatPx(16)
+			style['paddingRight'] = formatPx(8)
+		}
+		return style
+	}
+
+	// 分割线样式
+	function getLineBg() : string {
+		return props.disabled ? '#bbbbbb' : props.btnTextColor
+	}
+
+	// placeholder 文字样式
+	function getPlaceholderStyle() : UTSJSONObject {
+		return {
+			color: props.placeholderColor,
+			fontSize: cmpFontSize.value,
+		} as UTSJSONObject
+	}
+
+	// input 样式
+	function getInputStyle() : UTSJSONObject {
+		return {
+			flex: 1,
+			height: formatPx(props.height),
+			color: props.inputTextColor,
+			fontSize: cmpFontSize.value,
+			backgroundColor: 'transparent',
+			borderWidth: '0',
+		} as UTSJSONObject
+	}
+
+	// 清除按钮样式
+	function getClearIconStyle() : UTSJSONObject {
+		return {
+			color: props.clearIconColor,
+			fontSize: cmpFontSize.value,
+			fontFamily: 'ste-iconfont-1709689042473',
+		} as UTSJSONObject
+	}
+
+	// 搜索按钮文字样式
+	function getBtnTextStyle() : UTSJSONObject {
+		return {
+			color: props.disabled ? '#bbbbbb' : props.btnTextColor,
+			fontSize: cmpFontSize.value,
+		} as UTSJSONObject
+	}
+
+	// 搜索按钮样式
+	function getBtnStyle() : UTSJSONObject {
+		const style : UTSJSONObject = {
+			paddingLeft: formatPx(16),
+			paddingRight: formatPx(16),
+			height: formatPx(40),
+			borderRadius: formatPx(20),
+		}
+		if (props.btnBackground != '') {
+			style['backgroundColor'] = props.btnBackground
+		}
+		return style
+	}
+
+	// 建议框样式
+	function getSuggestionsStyle() : UTSJSONObject {
+		if (showSuggestionsBox.value == true) {
+			return {
+				opacity: 1,
+				maxHeight: formatPx(400),
+			} as UTSJSONObject
+		}
+		return {
+			opacity: 0,
+			maxHeight: '0px',
+		} as UTSJSONObject
+	}
+
+	watch(() : string => props.modelValue, (newVal : string) => {
+		dataValue.value = newVal
+	}, { immediate: true })
+
+	watch(() : string[] => props.hotWords, () => {
+		switchIndex.value = 0
+	})
+
+	function onInputEvent(e : InputEvent) {
+		if (props.disabled) return
+		let val = e.detail.value
+		if (!props.allowSpace) {
+			val = val.replace(/ /g, '')
+		}
+		dataValue.value = val
+		nextTick(() => {
+			emits('input', dataValue.value)
+			emits('update:modelValue', dataValue.value)
+		})
+	}
+
+	function onSearch() {
+		if (props.disabled) return
+		let searchValue = dataValue.value
+		if (searchValue == '' && props.hotWords.length > 0) {
+			searchValue = props.hotWords[switchIndex.value]
+		}
+		emits('search', searchValue)
+	}
+
+	function onFocus() {
+		if (props.disabled) return
+		focused.value = true
+		emits('focus', dataValue.value)
+		emits('update:focus', true)
+		showSuggestionsBox.value = true
+	}
+
+	function onBlur() {
+		if (props.disabled) return
+		focused.value = false
+		emits('blur', dataValue.value)
+		emits('update:focus', false)
+	}
+
+	function onClear() {
+		if (props.disabled) return
+		dataValue.value = ''
+		emits('input', '')
+		emits('update:modelValue', '')
+		emits('clear')
+	}
+
+	function onSwitchChange(e : SwiperChangeEvent) {
+		switchIndex.value = e.detail.current
+	}
+
+	function onClick() {
+		let searchValue = dataValue.value
+		if (searchValue == '' && props.hotWords.length > 0) {
+			searchValue = props.hotWords[switchIndex.value]
+		}
+		emits('click', searchValue)
+	}
+
+	function handleSuggestionClick(item : UTSJSONObject) {
+		const label = item['label'] as string
+		dataValue.value = label
+		emits('input', label)
+		emits('update:modelValue', label)
+		emits('selectSuggestion', item)
+		showSuggestionsBox.value = false
+	}
+</script>
+
+<template>
+	<view class="ste-search-root" :style="getRootStyle()" @click="onClick">
+		<view class="content">
+			<!-- 前置搜索图标 -->
+			<view class="icon-box">
+				<ste-icon code="&#xe695;" :color="prefixIconColor" :size="44"></ste-icon>
+			</view>
+
+			<!-- 输入框区域 -->
+			<view class="input-box" v-if="!hiddenInput">
+				<!-- 热词轮播（底层背景） -->
+				<swiper
+					v-if="cmpShowSwitch"
+					class="placeholder-list"
+					:current="switchIndex"
+					:autoplay="autoplay"
+					:interval="interval"
+					:circular="true"
+					:vertical="true"
+					@change="onSwitchChange"
+				>
+					<swiper-item class="placeholder-item" v-for="(item, i) in hotWords" :key="i">
+						<text class="placeholder-text" :style="getPlaceholderStyle()">{{ item }}</text>
+					</swiper-item>
+				</swiper>
+
+				<!-- 输入框（覆盖在上层） -->
+				<input
+					class="search-input"
+					:style="getInputStyle()"
+					:disabled="disabled"
+					:placeholder="cmpPlaceholder"
+					:placeholder-style="`color:${placeholderColor};font-size:${cmpFontSize}`"
+					:value="dataValue"
+					:focus="focus"
+					@input="onInputEvent"
+					@confirm="onSearch"
+					@focus="onFocus"
+					@blur="onBlur"
+				/>
+
+				<!-- 清除按钮 -->
+				<view v-if="cmpShowClear" class="clear-icon" @click.stop="onClear">
+					<text :style="getClearIconStyle()">&#xe6a0;</text>
+				</view>
+			</view>
+
+			<!-- 分割线 -->
+			<view v-if="!cmpHiddenLine" class="search-line" :style="{ backgroundColor: getLineBg() }"></view>
+
+			<!-- 搜索按钮 -->
+			<view v-if="!hiddenBtn" class="search-button" :style="getBtnStyle()" @click="onSearch">
+				<text class="search-btn-text" :style="getBtnTextStyle()">{{ btnText }}</text>
+			</view>
+		</view>
+
+		<!-- nav 模式覆盖层 -->
+		<view class="nav-box" v-if="type == 'nav'"></view>
+
+		<!-- 搜索建议下拉 -->
+		<view
+			v-if="suggestionList.length > 0"
+			class="suggestions-box"
+			:style="getSuggestionsStyle()"
+		>
+			<scroll-view scroll-y="true" class="scroll-box">
+				<view
+					class="suggestion-item"
+					v-for="(item, key) in suggestionList"
+					:key="key"
+					@click="handleSuggestionClick(item)"
+				>
+					<text class="suggestion-text">{{ item['label'] }}</text>
+				</view>
+			</scroll-view>
+		</view>
+	</view>
+</template>
+
+<style>
+.ste-search-root {
+	width: 100%;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.content {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.icon-box {
+	width: 44rpx;
+	height: 44rpx;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.input-box {
+	position: relative;
+	flex: 1;
+	height: 100%;
+	margin-left: 8rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.placeholder-list {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.placeholder-item {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	height: 100%;
+}
+
+.placeholder-text {
+	font-weight: normal;
+	line-height: 44rpx;
+}
+
+.search-input {
+	flex: 1;
+	background-color: transparent;
+}
+
+.clear-icon {
+	width: 48rpx;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.search-line {
+	margin-left: 8rpx;
+	width: 2rpx;
+	flex-shrink: 0;
+	height: 24rpx;
+}
+
+.search-button {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.search-btn-text {
+	font-weight: normal;
+}
+
+.nav-box {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 2;
+}
+
+.suggestions-box {
+	z-index: 999;
+	position: absolute;
+	left: 0;
+	top: 100%;
+	overflow: hidden;
+	margin-top: 20rpx;
+	margin-bottom: 20rpx;
+	width: 100%;
+	background-color: #ffffff;
+	border-radius: 8rpx;
+	padding-top: 16rpx;
+	padding-bottom: 16rpx;
+}
+
+.scroll-box {
+	width: 100%;
+	height: 368rpx;
+}
+
+.suggestion-item {
+	padding-left: 16rpx;
+	width: 100%;
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+}
+
+.suggestion-text {
+	font-size: 28rpx;
+	color: #333333;
+}
+</style>

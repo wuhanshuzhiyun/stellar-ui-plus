@@ -1,0 +1,849 @@
+<template>
+	<view class="ste-video-root" :class="{ 'ste-video-full': isFull, 'ste-video-auto-height': autoHeight }">
+		<!-- 1. 原生 Video 播放核心组件（全屏时自动激活系统级全屏操作栏） -->
+		<video
+			:id="videoId"
+			ref="nativeVideoRef"
+			class="native-video"
+			:src="activeSrc"
+			:controls="isFull"
+			:show-center-play-btn="false"
+			:poster="poster"
+			:autoplay="autoplay"
+			:loop="loop"
+			:muted="isMuted"
+			:direction="direction"
+			:object-fit="objectFit"
+			:enable-progress-gesture="enableProgressGesture"
+			:page-gesture="pageGesture"
+			@click="handleVideoClick"
+			@play="handlePlayEvent"
+			@pause="handlePauseEvent"
+			@ended="handleEndedEvent"
+			@timeupdate="handleTimeUpdate"
+			@fullscreenchange="handleFullScreenChange"
+			@waiting="handleWaitingEvent"
+			@error="handleErrorEvent"
+			@progress="handleProgressEvent"
+			@loadedmetadata="handleLoadedMetadata"
+		/>
+
+		<!-- 2. 首屏封面图片层（未起播前展示，一旦起播永久销毁，杜绝全屏旋转复现） -->
+		<image
+			v-if="!hasStarted && !isPlaying && poster != ''"
+			class="video-poster-layer"
+			:src="poster"
+			mode="aspectFill"
+			@click.stop="togglePlay"
+		/>
+
+		<!-- 3. 视频中央单一精美大播放按钮（未起播/暂停且控制栏展示时可见） -->
+		<view
+			v-if="!isPlaying && showControls && !isFull"
+			class="center-play-btn-wrap"
+			@click.stop="togglePlay"
+		>
+			<view class="center-play-icon-bg">
+				<ste-icon code="&#xe6a8;" :size="52" color="#ffffff" />
+			</view>
+		</view>
+
+		<!-- 4. 顶部导航与标题栏（自定义全屏顶栏） -->
+		<view
+			v-if="isFull && showControls"
+			class="video-top-bar"
+			@click.stop=""
+		>
+			<view class="back-btn" @click.stop="exitFullScreen">
+				<ste-icon code="&#xe673;" :size="36" color="#ffffff" />
+			</view>
+			<text class="video-title">{{ title }}</text>
+		</view>
+
+		<!-- 5. 底部自定义控制操作栏（非全屏模式下展示） -->
+		<view
+			v-if="showControls && !isFull"
+			class="video-bottom-bar"
+			@click.stop=""
+		>
+			<!-- 播放/暂停控制按钮 -->
+			<view v-if="showPlayBtn" class="control-btn" @click.stop="togglePlay">
+				<ste-icon :code="isPlaying ? '&#xe6ab;' : '&#xe6a8;'" :size="34" color="#ffffff" />
+			</view>
+
+			<!-- 静音切换按钮 -->
+			<view class="control-btn" @click.stop="toggleMuted">
+				<ste-icon :code="isMuted ? '&#xe6c2;' : '&#xe6c3;'" :size="34" color="#ffffff" />
+			</view>
+
+			<!-- 时间进度展示（当前时间 / 总时长） -->
+			<view class="time-display">
+				<text class="time-text">{{ formatTime(currentTime) }}</text>
+				<text class="time-separator">/</text>
+				<text class="time-text">{{ formatTime(totalDuration) }}</text>
+			</view>
+
+			<!-- 滑动进度条 -->
+			<view class="progress-slider-wrap">
+				<ste-slider
+					:value="progressPercent"
+					:bar-height="4"
+					:button-size="24"
+					@change="handleSliderChange"
+				/>
+			</view>
+
+			<!-- 清晰度切换入口按钮（全屏模式或配置 resolution 时可见） -->
+			<view
+				v-if="resolution.length > 0 && isFull"
+				class="text-action-btn"
+				@click.stop="openResolutionPopup"
+			>
+				<text class="action-btn-text">{{ resolution[currentResolutionIndex].text }}</text>
+			</view>
+
+			<!-- 倍速播放切换入口按钮（全屏模式下可见） -->
+			<view
+				v-if="isFull"
+				class="text-action-btn"
+				@click.stop="openSpeedPopup"
+			>
+				<text class="action-btn-text">{{ speedList[currentSpeedIndex] }}X</text>
+			</view>
+
+			<!-- 全屏/退出全屏切换按钮 -->
+			<view v-if="showFullscreenBtn" class="control-btn" @click.stop="toggleFullScreen">
+				<ste-icon :code="isFull ? '&#xe6aa;' : '&#xe6a9;'" :size="34" color="#ffffff" />
+			</view>
+		</view>
+
+		<!-- 6. 右侧侧边栏弹窗（倍速与清晰度选择） -->
+		<view
+			v-if="showPopup"
+			class="sidebar-popup"
+			@click.stop=""
+		>
+			<!-- 倍速选择菜单 -->
+			<view v-if="popupType == 1" class="popup-item-list">
+				<view
+					v-for="(spd, index) in speedList"
+					:key="index"
+					class="popup-item"
+					:class="{ 'popup-item-active': currentSpeedIndex == index }"
+					@click.stop="handleSelectSpeed(index)"
+				>
+					<text class="popup-item-text">{{ spd }}X</text>
+					<ste-icon v-if="currentSpeedIndex == index" code="&#xe67a;" color="#0090FF" :size="30" />
+				</view>
+			</view>
+
+			<!-- 清晰度选择菜单 -->
+			<view v-if="popupType == 2" class="popup-item-list">
+				<view
+					v-for="(res, index) in resolution"
+					:key="index"
+					class="popup-item"
+					:class="{ 'popup-item-active': currentResolutionIndex == index }"
+					@click.stop="handleSelectResolution(index)"
+				>
+					<text class="popup-item-text">{{ res.text }}</text>
+					<ste-icon v-if="currentResolutionIndex == index" code="&#xe67a;" color="#0090FF" :size="30" />
+				</view>
+			</view>
+		</view>
+
+		<!-- 7. 居中操作反馈轻提示 Toast 浮层 -->
+		<view v-if="showToastTip" class="center-toast-tip">
+			<text class="toast-tip-text">{{ toastTipMsg }}</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-video.uvue
+	 * @description Video 视频组件 - uni-app x / UTS 纯原生增强版本
+	 * 支持自定义控制栏、清晰度无缝切换、多倍速播放、进度手势与全屏旋转联动。
+	 */
+	import { ref, computed, watch, onMounted, getCurrentInstance, type ComponentPublicInstance } from 'vue'
+	import {
+		VideoResolution,
+		VideoLoadedMetadataEvent,
+	} from './constants.uts'
+
+	defineOptions({
+		name: 'ste-video',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== Props 属性定义 ====================
+	type VideoProps = {
+		/** 视频元素自定义 ID */
+		id ?: string,
+		/** 视频的标题，全屏时在顶部展示 */
+		title ?: string,
+		/** 是否视频高度跟随父容器 */
+		autoHeight ?: boolean,
+		/** 多清晰度播放源列表 */
+		resolution ?: VideoResolution[],
+		/** 默认播放视频的网络资源地址 */
+		src ?: string,
+		/** 是否自动开始播放 */
+		autoplay ?: boolean,
+		/** 是否循环播放 */
+		loop ?: boolean,
+		/** 是否静音播放 */
+		muted ?: boolean,
+		/** 指定视频初始播放位置（秒） */
+		initialTime ?: number,
+		/** 指定视频时长（秒） */
+		duration ?: number,
+		/** 在非全屏模式下，是否开启亮度与音量调节手势 */
+		pageGesture ?: boolean,
+		/** 设置全屏时视频的方向（0/90/-90） */
+		direction ?: number,
+		/** 是否显示全屏按钮 */
+		showFullscreenBtn ?: boolean,
+		/** 是否显示底部控制栏的播放按钮 */
+		showPlayBtn ?: boolean,
+		/** 是否开启控制进度的手势 */
+		enableProgressGesture ?: boolean,
+		/** 视频的表现形式（contain/fill/cover） */
+		objectFit ?: string,
+		/** 视频封面图片地址 */
+		poster ?: string,
+		/** 解码器选择（hardware/software） */
+		codec ?: string,
+		/** 是否开启本地缓存 */
+		httpCache ?: boolean,
+		/** 播放策略（0/1/2） */
+		playStrategy ?: number,
+		/** 是否为直播流媒体 */
+		isLive ?: boolean,
+	}
+
+	const props = withDefaults(defineProps<VideoProps>(), {
+		id: '',
+		title: '',
+		autoHeight: false,
+		resolution: () : VideoResolution[] => [] as VideoResolution[],
+		src: '',
+		autoplay: false,
+		loop: false,
+		muted: false,
+		initialTime: 0,
+		duration: 0,
+		pageGesture: false,
+		direction: 0,
+		showFullscreenBtn: true,
+		showPlayBtn: true,
+		enableProgressGesture: true,
+		objectFit: 'contain',
+		poster: 'https://image.whzb.com/chain/StellarUI/image/banner2.png',
+		codec: 'hardware',
+		httpCache: true,
+		playStrategy: 0,
+		isLive: false,
+	})
+
+	// ==================== Emits 事件定义 ====================
+	const emit = defineEmits<{
+		(e: 'play') : void,
+		(e: 'pause') : void,
+		(e: 'ended') : void,
+		(e: 'timeupdate', event : UniVideoTimeUpdateEvent) : void,
+		(e: 'fullscreenchange', event : UniVideoFullScreenChangeEvent) : void,
+		(e: 'waiting', event : UniEvent) : void,
+		(e: 'error', event : UniEvent) : void,
+		(e: 'progress', event : UniEvent) : void,
+		(e: 'loadedmetadata', event : VideoLoadedMetadataEvent) : void,
+		(e: 'controlstoggle', show : boolean) : void,
+	}>()
+
+	// ==================== 响应式状态定义 ====================
+	/** 挂载就绪的组件实例代理 */
+	let currentProxy : ComponentPublicInstance | null = null
+
+	/** 稳定的普通字符串 Video DOM ID（确保 Android 原生层准确注册） */
+	const videoId = props.id != '' ? props.id : `ste_vid_${Math.floor(Math.random() * 1000000)}`
+
+	/** 原生 videoElementRef 节点引用 */
+	const nativeVideoRef = ref<UniVideoElement | null>(null)
+
+	/** 原生 VideoContext 实例 */
+	let videoContext : VideoContext | null = null
+
+	/** 同步计算获取初始 URL，确保 Android 原生层在 View 创建时立即接收有效地址 */
+	function getInitialSrc() : string {
+		if (props.src != '') {
+			return props.src
+		}
+		if (props.resolution.length > 0) {
+			return props.resolution[0].url
+		}
+		return ''
+	}
+
+	/** 当前生效的视频播放源 URL（初始化同步赋予初始值） */
+	const activeSrc = ref<string>(getInitialSrc())
+
+	/** 视频是否已触发过起播（一旦起播永久为 true，彻底杜绝全屏旋转时首图复现） */
+	const hasStarted = ref<boolean>(false)
+
+	/** 播放状态 */
+	const isPlaying = ref<boolean>(false)
+
+	/** 静音状态 */
+	const isMuted = ref<boolean>(props.muted)
+
+	/** 全屏状态 */
+	const isFull = ref<boolean>(false)
+
+	/** 是否展示控制栏 */
+	const showControls = ref<boolean>(true)
+
+	/** 当前播放进度时间（秒） */
+	const currentTime = ref<number>(0)
+
+	/** 视频总时长（秒）：初始化优先取 props.duration，未起播前直接展示 */
+	const totalDuration = ref<number>(props.duration)
+
+	/** 进度百分比（0 - 100） */
+	const progressPercent = ref<number>(0)
+
+	/** 当前选中的清晰度索引 */
+	const currentResolutionIndex = ref<number>(0)
+
+	/** 可选倍速配置列表 */
+	const speedList = ref<number[]>([0.5, 0.8, 1.0, 1.25, 1.5])
+
+	/** 当前选中的倍速索引（默认 2 为 1.0X） */
+	const currentSpeedIndex = ref<number>(2)
+
+	/** 右侧侧边栏弹窗展示状态 */
+	const showPopup = ref<boolean>(false)
+
+	/** 侧边栏弹窗类型：1 为倍速，2 为清晰度 */
+	const popupType = ref<number>(1)
+
+	/** 中间轻提示 Toast 浮层 */
+	const showToastTip = ref<boolean>(false)
+	const toastTipMsg = ref<string>('')
+	let toastTimer : number | null = null
+
+	// ==================== 获取 VideoContext ====================
+	function getVideoContext() : VideoContext | null {
+		if (videoContext == null) {
+			if (currentProxy != null) {
+				videoContext = uni.createVideoContext(videoId, currentProxy)
+			} else {
+				const inst = getCurrentInstance()
+				if (inst != null && inst.proxy != null) {
+					currentProxy = inst.proxy
+					videoContext = uni.createVideoContext(videoId, inst.proxy)
+				} else {
+					videoContext = uni.createVideoContext(videoId)
+				}
+			}
+		}
+		return videoContext
+	}
+
+	// ==================== 监听与初始化 ====================
+	watch(
+		() : string => props.src,
+		(newVal : string) => {
+			if (newVal != '') {
+				activeSrc.value = newVal
+			}
+		}
+	)
+
+	watch(
+		() : number => props.duration,
+		(newVal : number) => {
+			if (newVal > 0) {
+				totalDuration.value = newVal
+			}
+		}
+	)
+
+	watch(
+		() : boolean => props.muted,
+		(newVal : boolean) => {
+			isMuted.value = newVal
+		}
+	)
+
+	onMounted(() => {
+		const inst = getCurrentInstance()
+		if (inst != null && inst.proxy != null) {
+			currentProxy = inst.proxy
+		}
+	})
+
+	// ==================== 时间格式化工具 ====================
+	function formatTime(seconds : number) : string {
+		const totalSec = Math.floor(seconds)
+		const hours = Math.floor(totalSec / 3600)
+		const minutes = Math.floor((totalSec % 3600) / 60)
+		const remainingSeconds = totalSec % 60
+
+		const mStr = minutes < 10 ? `0${minutes}` : `${minutes}`
+		const sStr = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
+
+		if (hours > 0) {
+			const hStr = hours < 10 ? `0${hours}` : `${hours}`
+			return `${hStr}:${mStr}:${sStr}`
+		}
+		return `${mStr}:${sStr}`
+	}
+
+	// ==================== 浮层轻提示方法 ====================
+	function showTip(message : string) {
+		if (toastTimer != null) {
+			clearTimeout(toastTimer!)
+			toastTimer = null
+		}
+		toastTipMsg.value = message
+		showToastTip.value = true
+		toastTimer = setTimeout(() => {
+			showToastTip.value = false
+		}, 1500)
+	}
+
+	// ==================== 控制操作方法 ====================
+	/** 播放 */
+	function play() {
+		hasStarted.value = true
+		isPlaying.value = true
+		getVideoContext()?.play()
+		nativeVideoRef.value?.play()
+	}
+
+	/** 暂停 */
+	function pause() {
+		isPlaying.value = false
+		getVideoContext()?.pause()
+		nativeVideoRef.value?.pause()
+	}
+
+	/** 播放/暂停切换 */
+	function togglePlay() {
+		if (isPlaying.value) {
+			pause()
+		} else {
+			play()
+		}
+	}
+
+	/** 静音切换 */
+	function toggleMuted() {
+		isMuted.value = !isMuted.value
+	}
+
+	/** 跳转指定秒数进度 */
+	function seek(position : number) {
+		const ctx = getVideoContext()
+		ctx?.seek(position)
+		currentTime.value = position
+	}
+
+	/** 进度条滑动更新 */
+	function handleSliderChange(val : any) {
+		let percent = 0
+		if (typeof val === 'number') {
+			percent = val as number
+		} else if (Array.isArray(val)) {
+			const arr = val as number[]
+			if (arr.length > 0) percent = arr[0]
+		}
+		if (totalDuration.value > 0) {
+			const targetSec = (percent / 100) * totalDuration.value
+			seek(targetSec)
+		}
+	}
+
+	/** 请求全屏 */
+	function requestFullScreen() {
+		const ctx = getVideoContext()
+		ctx?.requestFullScreen({ direction: props.direction })
+	}
+
+	/** 退出全屏 */
+	function exitFullScreen() {
+		showPopup.value = false
+		const ctx = getVideoContext()
+		ctx?.exitFullScreen()
+	}
+
+	/** 全屏切换 */
+	function toggleFullScreen() {
+		if (isFull.value) {
+			exitFullScreen()
+		} else {
+			requestFullScreen()
+		}
+	}
+
+	/** 点击视频区域切换控制栏显隐 */
+	function handleVideoClick() {
+		if (showPopup.value) {
+			showPopup.value = false
+			return
+		}
+		showControls.value = !showControls.value
+		emit('controlstoggle', showControls.value)
+	}
+
+	/** 打开倍速侧边栏 */
+	function openSpeedPopup() {
+		popupType.value = 1
+		showPopup.value = true
+	}
+
+	/** 打开清晰度侧边栏 */
+	function openResolutionPopup() {
+		popupType.value = 2
+		showPopup.value = true
+	}
+
+	/** 选中倍速 */
+	function handleSelectSpeed(index : number) {
+		currentSpeedIndex.value = index
+		const rate = speedList.value[index]
+		const ctx = getVideoContext()
+		ctx?.playbackRate(rate)
+		showPopup.value = false
+		showTip(`${rate}X 倍速`)
+	}
+
+	/** 选中清晰度 */
+	function handleSelectResolution(index : number) {
+		if (currentResolutionIndex.value == index) {
+			showPopup.value = false
+			return
+		}
+		currentResolutionIndex.value = index
+		const targetRes = props.resolution[index]
+		const currentSec = currentTime.value
+
+		activeSrc.value = targetRes.url
+		showPopup.value = false
+
+		setTimeout(() => {
+			seek(currentSec)
+			play()
+			showTip(`切换至 ${targetRes.text}`)
+		}, 200)
+	}
+
+	/** 设置倍速方法 */
+	function playbackRate(rate : number) {
+		const ctx = getVideoContext()
+		ctx?.playbackRate(rate)
+	}
+
+	// ==================== 原生事件中转 ====================
+	function handlePlayEvent() {
+		hasStarted.value = true
+		isPlaying.value = true
+		emit('play')
+	}
+
+	function handlePauseEvent() {
+		isPlaying.value = false
+		emit('pause')
+	}
+
+	function handleEndedEvent() {
+		isPlaying.value = false
+		emit('ended')
+	}
+
+	function handleTimeUpdate(e : UniVideoTimeUpdateEvent) {
+		const dur = e.detail.duration
+		const cur = e.detail.currentTime
+		if (!isNaN(dur) && dur > 0) {
+			totalDuration.value = dur
+		}
+		if (!isNaN(cur)) {
+			currentTime.value = cur
+			if (totalDuration.value > 0) {
+				progressPercent.value = (currentTime.value / totalDuration.value) * 100
+			}
+		}
+		emit('timeupdate', e)
+	}
+
+	function handleFullScreenChange(e : UniVideoFullScreenChangeEvent) {
+		isFull.value = e.detail.fullScreen
+		if (!isFull.value) {
+			showPopup.value = false
+		}
+		emit('fullscreenchange', e)
+	}
+
+	function handleWaitingEvent(e : UniEvent) {
+		emit('waiting', e)
+	}
+
+	function handleErrorEvent(e : UniEvent) {
+		emit('error', e)
+	}
+
+	function handleProgressEvent(e : UniEvent) {
+		emit('progress', e)
+	}
+
+	function handleLoadedMetadata(e : VideoLoadedMetadataEvent) {
+		const dur = e.detail.duration
+		if (!isNaN(dur) && dur > 0) {
+			totalDuration.value = dur
+		}
+		emit('loadedmetadata', e)
+	}
+
+	// ==================== Expose 实例方法导出 ====================
+	defineExpose({
+		play,
+		pause,
+		seek,
+		requestFullScreen,
+		exitFullScreen,
+		playbackRate,
+	})
+</script>
+
+<style scoped>
+/* 视频组件根容器（相对定位，带有实体高度） */
+.ste-video-root {
+	width: 100%;
+	height: 420rpx;
+	position: relative;
+	background-color: #000000;
+	overflow: hidden;
+}
+
+/* 视频高度跟随父容器 */
+.ste-video-auto-height {
+	height: 100%;
+}
+
+/* 全屏状态 */
+.ste-video-full {
+	width: 100%;
+	height: 100%;
+}
+
+/* 原生 Video 实体尺寸，与用例 0 保持 100% 一致 */
+.native-video {
+	width: 100%;
+	height: 420rpx;
+}
+
+/* 首屏封面图片层绝对铺满 */
+.video-poster-layer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+}
+
+/* 视频中间大播放按钮容器 */
+.center-play-btn-wrap {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 15;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.center-play-icon-bg {
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 50rpx;
+	background-color: rgba(0, 0, 0, 0.55);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* 顶部悬浮操作栏 */
+.video-top-bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 90rpx;
+	background-color: rgba(0, 0, 0, 0.45);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-left: 20rpx;
+	padding-right: 20rpx;
+	z-index: 20;
+}
+
+.back-btn {
+	width: 60rpx;
+	height: 60rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 16rpx;
+}
+
+.video-title {
+	font-size: 28rpx;
+	color: #ffffff;
+	font-weight: 500;
+	flex: 1;
+}
+
+/* 底部悬浮控制栏 */
+.video-bottom-bar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 88rpx;
+	background-color: rgba(0, 0, 0, 0.65);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-left: 16rpx;
+	padding-right: 16rpx;
+	z-index: 20;
+}
+
+.control-btn {
+	width: 60rpx;
+	height: 60rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.time-display {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 12rpx;
+	margin-right: 16rpx;
+}
+
+.time-text {
+	font-size: 22rpx;
+	color: #ffffff;
+}
+
+.time-separator {
+	font-size: 22rpx;
+	color: rgba(255, 255, 255, 0.6);
+	margin-left: 4rpx;
+	margin-right: 4rpx;
+}
+
+.progress-slider-wrap {
+	flex: 1;
+	margin-left: 10rpx;
+	margin-right: 16rpx;
+}
+
+.text-action-btn {
+	padding-left: 16rpx;
+	padding-right: 16rpx;
+	height: 50rpx;
+	border-radius: 8rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 12rpx;
+	background-color: rgba(255, 255, 255, 0.15);
+}
+
+.action-btn-text {
+	font-size: 22rpx;
+	color: #ffffff;
+	font-weight: 500;
+}
+
+/* 右侧侧边栏抽屉弹窗 */
+.sidebar-popup {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 320rpx;
+	background-color: rgba(0, 0, 0, 0.85);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 24rpx;
+	z-index: 30;
+}
+
+.popup-item-list {
+	display: flex;
+	flex-direction: column;
+}
+
+.popup-item {
+	height: 80rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 20rpx;
+	padding-right: 20rpx;
+	border-radius: 8rpx;
+	margin-bottom: 8rpx;
+}
+
+.popup-item-active {
+	background-color: rgba(0, 144, 255, 0.15);
+}
+
+.popup-item-text {
+	font-size: 26rpx;
+	color: #ffffff;
+}
+
+.popup-item-active > .popup-item-text {
+	color: #0090FF;
+	font-weight: bold;
+}
+
+/* 居中轻提示浮层 */
+.center-toast-tip {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: rgba(0, 0, 0, 0.75);
+	padding-left: 32rpx;
+	padding-right: 32rpx;
+	padding-top: 16rpx;
+	padding-bottom: 16rpx;
+	border-radius: 12rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 40;
+}
+
+.toast-tip-text {
+	font-size: 26rpx;
+	color: #ffffff;
+}
+</style>

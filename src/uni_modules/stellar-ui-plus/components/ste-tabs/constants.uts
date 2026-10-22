@@ -1,0 +1,155 @@
+/**
+ * @file constants.uts
+ * @description ste-tabs 标签页组件的类型定义、常量与上下文协议
+ */
+
+/**
+ * 父子组件上下文注入键（Provide / Inject Key）
+ */
+export const TABS_KEY = 'STE_TABS_CONTEXT'
+
+/**
+ * 单个 Tab 子项的数据实体接口
+ */
+export type TabItemData = {
+    /** Tab 唯一标识 ID */
+    id: string,
+    /** 标签标题 */
+    title: string,
+    /** 副标题（可选） */
+    subTitle?: string,
+    /** 标签绑定的唯一标识值（如果未传则以子组件索引为准） */
+    name?: any,
+    /** 是否禁用当前标签 */
+    disabled?: boolean,
+    /** 徽标属性（支持数字、字符串或 Badge 配置对象） */
+    badge?: any,
+    /** 标签图标（内置图标名） */
+    icon?: string,
+    /** 未激活时的自定义图标/图片路径 */
+    image?: string,
+    /** 激活时的自定义图标/图片路径 */
+    activeImage?: string,
+    /** 内部渲染开关 */
+    show?: boolean,
+}
+
+/**
+ * ste-tabs 根组件 Props 属性定义
+ */
+export type TabsProps = {
+    /**
+     * 当前选中的标签标识或索引（支持 v-model 双向绑定）
+     * @default 0
+     */
+    active?: any,
+    /**
+     * 数据源列表（如直接通过数据配置标签页，无需嵌套 ste-tab）
+     */
+    tabList?: UTSJSONObject[],
+    /**
+     * 标签主题色（下划线颜色、激活文字颜色等）
+     * @default '#007aff'
+     */
+    color?: string,
+    /**
+     * 未激活标签的文字颜色
+     * @default '#666666'
+     */
+    titleInactiveColor?: string,
+    /**
+     * 激活标签的文字颜色（默认优先使用 color）
+     */
+    titleActiveColor?: string,
+    /**
+     * 标签栏背景颜色
+     * @default '#ffffff'
+     */
+    background?: string,
+    /**
+     * 动画过渡时长（单位：毫秒）
+     * @default 300
+     */
+    duration?: number,
+    /**
+     * 底部滑动指示条的宽度（支持 rpx/px/百分比或数值）
+     * @default 40
+     */
+    lineWidth?: any,
+    /**
+     * 底部滑动指示条的高度（支持 rpx/px 或数值）
+     * @default 3
+     */
+    lineHeight?: any,
+    /**
+     * 底部滑动指示条的移动形变缩放比
+     * @default 1
+     */
+    lineScale?: number,
+    /**
+     * 是否显示底部指示条
+     * @default true
+     */
+    showLine?: boolean,
+    /**
+     * 标签栏样式形态：'line'（下划线线型）、'card'（卡片型）、'segment'（分段控制器）
+     * @default 'line'
+     */
+    barType?: string,
+    /**
+     * 是否开启收缩布局（标签紧凑排列，自适应文字宽度，而不是等分均铺）
+     * @default false
+     */
+    shrink?: boolean,
+    /**
+     * 是否允许横向滑动标签栏
+     * @default true
+     */
+    scrollable?: boolean,
+    /**
+     * 是否支持在内容区域手势左右滑动切换标签
+     * @default false
+     */
+    swipeable?: boolean,
+    /**
+     * 是否开启下拉展开面板功能
+     * @default false
+     */
+    pullDown?: boolean,
+    /**
+     * 是否全局禁用所有标签页点击
+     * @default false
+     */
+    disabled?: boolean,
+    /**
+     * 手势滑动切屏模式下的内容区域高度（支持 rpx/px/百分比或纯数字）
+     * @default '100%'
+     */
+    swipeHeight?: any,
+    /**
+     * 根节点自定义样式
+     */
+    rootStyle?: UTSJSONObject,
+}
+
+/**
+ * ste-tabs 提供给 ste-tab 子组件通信的上下文接口
+ */
+export type TabsContext = {
+    /** 注册子标签项 */
+    registerTab: (item: TabItemData) => void,
+    /** 更新子标签项数据 */
+    updateTab: (item: TabItemData) => void,
+    /** 注销子标签项 */
+    unregisterTab: (id: string) => void,
+    /** 获取当前激活的标签值（active） */
+    getActive: () => any,
+    /** 获取组件主题色 */
+    getColor: () => string,
+    /** 获取过渡动画时长 */
+    getDuration: () => number,
+    /** 判定指定 ID 或 name 的子 Tab 是否处于激活状态 */
+    isTabActive: (id: string, name: any | null) => boolean,
+    /** 检查当前是否开启了手势滑动切屏模式 */
+    isSwipeable: () => boolean,
+}

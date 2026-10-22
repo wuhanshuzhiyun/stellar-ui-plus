@@ -49,6 +49,18 @@
             "default": "8"
         },
         {
+            "name": "showRowLabels",
+            "description": "是否展示左侧行号排号标签[仅UVue支持]",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]seat-click",
             "description": "点击有效座位事件（empty/disabled 不触发）",
             "params": [
@@ -67,6 +79,82 @@
                     "description": "(data: { translateX, translateY, scale, screenTranslateX }) => void"
                 }
             ]
+        },
+        {
+            "name": "borderRadius",
+            "description": "座位圆角大小，单位 rpx",
+            "type": "Number | String",
+            "default": 8
+        },
+        {
+            "name": "borderWidth",
+            "description": "座位边框宽度，单位 rpx",
+            "type": "Number | String",
+            "default": 2
+        },
+        {
+            "name": "bgColor",
+            "description": "可选座位的背景色",
+            "type": "String",
+            "default": "#FFFFFF"
+        },
+        {
+            "name": "borderColor",
+            "description": "可选座位的边框色",
+            "type": "String",
+            "default": "#E5E5E5"
+        },
+        {
+            "name": "selectedBgColor",
+            "description": "已选座位的背景色",
+            "type": "String",
+            "default": "#0090FF"
+        },
+        {
+            "name": "selectedColor",
+            "description": "已选座位的文字色",
+            "type": "String",
+            "default": "#FFFFFF"
+        },
+        {
+            "name": "disabledBgColor",
+            "description": "不可选座位的背景色",
+            "type": "String",
+            "default": "#F5F5F5"
+        },
+        {
+            "name": "[method]setSeat",
+            "description": "设置指定座位的选中/取消状态",
+            "params": [
+                {
+                    "name": "row",
+                    "description": "行号"
+                },
+                {
+                    "name": "col",
+                    "description": "列号"
+                },
+                {
+                    "name": "status",
+                    "description": "状态值"
+                }
+            ],
+            "return": "void"
+        },
+        {
+            "name": "[method]getSeats",
+            "description": "获取当前所有已选中的座位列表",
+            "params": [],
+            "return": "Array<any>"
+        },
+        {
+            "name": "[method]reset",
+            "description": "重置并清空所有已选座位",
+            "params": [],
+            "return": "void"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端补充 borderRadius, borderWidth, bgColor, borderColor, selectedBgColor, selectedColor, disabledBgColor, showRowLabels 与 rootStyle"
+    }
 }

@@ -1,0 +1,78 @@
+// types/index.uts - uni-app x 版本类型定义
+// 移除 @uni-helper/uni-app-types 依赖
+
+export type UniImageMode =
+    | 'scaleToFill'
+    | 'aspectFit'
+    | 'aspectFill'
+    | 'widthFix'
+    | 'heightFix'
+    | 'top'
+    | 'bottom'
+    | 'center'
+    | 'left'
+    | 'right'
+    | 'top left'
+    | 'top right'
+    | 'bottom left'
+    | 'bottom right';
+
+export type ImgType = 'png' | 'jpg' | 'jpeg' | 'svg' | 'webp';
+
+export type DisplayType = 'flex' | 'block' | 'inline-flex' | 'inline-block' | 'none' | 'inherit' | 'inline';
+
+export type SizeType = number | string;
+
+export type PositionType = 'top' | 'bottom' | 'left' | 'right' | 'center';
+
+export type AroundPositionType = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+
+export type ModeType = 100 | 200 | 300 | 400 | 450;
+
+export type InputType = 'text' | 'number' | 'idcard' | 'digit' | 'tel' | 'safe-password' | 'nickname';
+
+export type SteInputType = InputType | 'password' | 'textarea';
+
+export type DirectionType = 'horizontal' | 'vertical';
+
+export type AlignType = 'left' | 'right' | 'center';
+
+export type inputConfirmType = 'done' | 'go' | 'next' | 'search' | 'send';
+
+export type TypeSkeleton = 'text' | 'image' | 'circle' | 'button';
+
+export type InputAccept = 'image' | 'video' | 'all' | 'file' | 'media';
+export type InputCapture = 'back' | 'front';
+
+// 按钮 open-type 能力类型（覆盖常见微信小程序/支付宝小程序/抖音小程序取值）
+export type ButtonOpenType =
+    | 'feedback'
+    | 'share'
+    | 'getUserInfo'
+    | 'contact'
+    | 'getPhoneNumber'
+    | 'launchApp'
+    | 'openSetting'
+    | 'chooseAvatar'
+    | 'getAuthorize'
+    | 'lifestyle'
+    | 'contactShare'
+    | 'openGroupProfile'
+    | 'openGuildProfile'
+    | 'openPublicProfile'
+    | 'shareMessageToFriend'
+    | 'addFriend'
+    | 'addColorSign'
+    | 'addGroupApp'
+    | 'addToFavorites'
+    | 'chooseAddress'
+    | 'chooseInvoiceTitle'
+    | 'login'
+    | 'subscribe'
+    | 'favorite'
+    | 'watchLater'
+    | 'openProfile'
+    | 'liveActivity'
+    | 'getRealtimePhoneNumber'
+    | 'agreePrivacyAuthorization'
+    | 'im';

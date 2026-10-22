@@ -1,0 +1,61 @@
+/**
+ * @file constants.uts
+ * @description ste-tree 树形控件 - uni-app x / UTS 强类型契约与常量定义
+ */
+
+/**
+ * 树形节点强类型定义
+ */
+export type SteTreeNode = {
+	/**
+	 * 节点标题展示文本
+	 */
+	title ?: string,
+	/**
+	 * 节点唯一标识值
+	 */
+	value ?: string,
+	/**
+	 * 子节点列表
+	 */
+	children ?: SteTreeNode[],
+	/**
+	 * 是否包含子节点（懒加载时若无 children 则需显式声明为 true，用于显示展开箭头）
+	 */
+	hasChildren ?: boolean,
+	/**
+	 * 节点当前是否处于展开状态
+	 */
+	open ?: boolean,
+	/**
+	 * 节点当前是否正在异步加载子数据中
+	 */
+	loading ?: boolean,
+	/**
+	 * 节点层级深度（根节点为 0，次级为 1，以此类推）
+	 */
+	depth ?: number,
+	/**
+	 * 父节点的唯一标识值（根节点为 '__root__'）
+	 */
+	parentNode ?: string,
+	/**
+	 * 原始未清洗的键值对数据
+	 */
+	raw ?: UTSJSONObject,
+}
+
+/**
+ * 懒加载挂起函数类型
+ */
+export type BeforeOpenSuspend = () => void
+
+/**
+ * 懒加载注入子节点并继续执行的函数类型
+ */
+export type BeforeOpenNext = (children ?: SteTreeNode[]) => void
+
+/**
+ * 懒加载中断函数类型
+ */
+export type BeforeOpenStop = () => void

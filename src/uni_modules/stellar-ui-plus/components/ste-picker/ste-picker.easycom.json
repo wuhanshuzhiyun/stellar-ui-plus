@@ -1,0 +1,92 @@
+{
+    "name": "ste-picker",
+    "description": "底部弹出或嵌入页面的多列选择器",
+    "example": "<ste-picker :columns='columns' @change='change' @confirm='confirm' />",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-picker",
+    "attributes": [
+        {
+            "name": "columns",
+            "description": "选择器数据，二维数组，每个子数组为一列",
+            "type": "string[][]",
+            "default": "[]"
+        },
+        {
+            "name": "itemHeight",
+            "description": "各列中，单个选项的高度",
+            "type": "string | number",
+            "default": 44
+        },
+        {
+            "name": "visibleItemCount",
+            "description": "每列中可见选项的数量",
+            "type": "string | number",
+            "default": 5
+        },
+        {
+            "name": "showToolbar",
+            "description": "是否显示顶部的操作栏",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "title",
+            "description": "顶部标题",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "cancelText",
+            "description": "取消按钮的文字",
+            "type": "string",
+            "default": "取消"
+        },
+        {
+            "name": "cancelColor",
+            "description": "取消按钮的颜色",
+            "type": "string",
+            "default": "#969799"
+        },
+        {
+            "name": "confirmText",
+            "description": "确认按钮的文字",
+            "type": "string",
+            "default": "确认"
+        },
+        {
+            "name": "confirmColor",
+            "description": "确认按钮的颜色",
+            "type": "string",
+            "default": "#0090FF"
+        },
+        {
+            "name": "defaultIndex",
+            "description": "默认选中的索引数组，对应每列的选中项下标",
+            "type": "number[]",
+            "default": "[]"
+        },
+        {
+            "name": "rootClass",
+            "description": "根节点的自定义类名",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "[event]change",
+            "description": "当选择值变化时触发",
+            "params": [
+                {
+                    "name": "changeObj",
+                    "description": "包含 value(选中值数组)、index(变化列选中索引)、indexs(各列选中索引数组)、values(各列数据)、columnIndex(变化列索引)"
+                }
+            ]
+        },
+        {
+            "name": "[event]confirm",
+            "description": "点击确认按钮时触发"
+        },
+        {
+            "name": "[event]cancel",
+            "description": "点击取消按钮时触发"
+        }
+    ]
+}

@@ -1,0 +1,270 @@
+<template>
+	<view class="ste-navbar-wrapper">
+		<!-- 1. 占位容器（当 fixed 且 placeholder 均为 true 时自动生成等高占位，避免遮挡页面正文） -->
+		<view
+			v-if="props.fixed && props.placeholder"
+			class="ste-navbar-placeholder"
+			:style="{ height: `${totalHeightPx}px` }"
+		/>
+
+		<!-- 2. 导航栏核心容器 -->
+		<view class="ste-navbar-root" :style="cmpRootStyle">
+			<view class="navbar-content">
+				<!-- 左侧区域：默认返回按钮或自定义 left 插槽 -->
+				<view class="navbar-left">
+					<slot name="left">
+						<view v-if="props.autoBack" class="back-box" @click="handleBackClick">
+							<view class="back-btn" :style="cmpBackBtnStyle">
+								<ste-icon
+									:code="props.backCode"
+									:size="28"
+									:color="props.backColor"
+								/>
+							</view>
+						</view>
+					</slot>
+				</view>
+
+				<!-- 居左标题（titleAlignment == 1） -->
+				<view
+					v-if="props.title != '' && props.titleAlignment == 1"
+					class="navbar-title-left"
+				>
+					<text class="title-text" :style="{ color: props.titleColor }">{{ props.title }}</text>
+				</view>
+
+				<!-- 中间主体插槽区（可嵌入搜索框、自定义标签栏等） -->
+				<view class="navbar-center-slot">
+					<slot name="default" />
+				</view>
+
+				<!-- 右侧操作区插槽（如分享、更多等） -->
+				<view class="navbar-right">
+					<slot name="right" />
+				</view>
+			</view>
+
+			<!-- 居中标题（titleAlignment == 2）：水平绝对居中，设置 pointer-events: none 防止遮挡左右操作区点击 -->
+			<view
+				v-if="props.title != '' && props.titleAlignment == 2"
+				class="navbar-title-center"
+				:style="{ top: `${cmpStatusBarHeight}px` }"
+			>
+				<text class="title-text title-center-text" :style="{ color: props.titleColor }">
+					{{ props.title }}
+				</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-navbar.uvue
+	 * @description Navbar 页面顶部导航栏组件 - uni-app x / UTS 纯原生版本
+	 * 提供页面顶部导航栏展示，支持顶部状态栏自动安全适配、居左/居中标题排版、返回按钮个性化定制及多插槽扩展。
+	 */
+	import { computed } from 'vue'
+	import {
+		NavbarProps,
+		DEFAULT_NAVBAR_BACK_CODE,
+		DEFAULT_NAVBAR_TITLE_COLOR,
+		DEFAULT_NAVBAR_HEIGHT_PX,
+	} from './props.uts'
+	import { getStatusBarHeight, deepMerge } from '../../utils/utils.uts'
+
+	defineOptions({
+		name: 'ste-navbar',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== 组件 Props 属性定义 ====================
+	const props = withDefaults(defineProps<NavbarProps>(), {
+		title: '',
+		titleColor: DEFAULT_NAVBAR_TITLE_COLOR,
+		titleAlignment: 1,
+		autoBack: true,
+		backColor: '#000000',
+		backCode: DEFAULT_NAVBAR_BACK_CODE,
+		backBackgroundColor: 'transparent',
+		backBorderColor: 'transparent',
+		backOpacity: 1,
+		stopNavigateBack: false,
+		fixed: false,
+		placeholder: false,
+		safeAreaInsetTop: true,
+		zIndex: 10,
+		backgroundColor: 'transparent',
+		rootStyle: () => ({} as UTSJSONObject),
+	})
+
+	// ==================== 组件 Emits 事件声明 ====================
+	const emit = defineEmits<{
+		/** 点击返回按钮时触发 */
+		(e: 'backClick') : void,
+	}>()
+
+	// ==================== 尺寸与样式计算 ====================
+	/**
+	 * 顶部状态栏安全区物理高度（px）
+	 */
+	const cmpStatusBarHeight = computed(() : number => {
+		if (props.safeAreaInsetTop) {
+			return getStatusBarHeight()
+		}
+		return 0
+	})
+
+	/**
+	 * 导航栏整体总高度（包含状态栏与 44px 内容栏）
+	 */
+	const totalHeightPx = computed(() : number => {
+		return cmpStatusBarHeight.value + DEFAULT_NAVBAR_HEIGHT_PX
+	})
+
+	/**
+	 * 根容器内联样式映射
+	 */
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		const style = {} as UTSJSONObject
+		style['zIndex'] = props.zIndex
+		style['backgroundColor'] = props.backgroundColor
+		if (props.fixed) {
+			style['position'] = 'fixed'
+			style['top'] = '0px'
+			style['left'] = '0px'
+			style['right'] = '0px'
+		} else {
+			style['position'] = 'relative'
+		}
+		style['paddingTop'] = `${cmpStatusBarHeight.value}px`
+		return deepMerge(style, props.rootStyle) as UTSJSONObject
+	})
+
+	/**
+	 * 返回按钮容器样式映射
+	 */
+	const cmpBackBtnStyle = computed(() : UTSJSONObject => {
+		const style = {} as UTSJSONObject
+		style['backgroundColor'] = props.backBackgroundColor
+		style['borderColor'] = props.backBorderColor
+		style['opacity'] = props.backOpacity
+		return style
+	})
+
+	// ==================== 交互行为逻辑 ====================
+	/**
+	 * 处理返回按钮点击事件
+	 */
+	function handleBackClick() {
+		emit('backClick')
+		// 当未阻止默认返回逻辑时，自动调用系统 navigateBack
+		if (!props.stopNavigateBack) {
+			uni.navigateBack({
+				fail: () => {
+					// 处于页面栈第一层（如首页直接进入）时容错静默
+				},
+			})
+		}
+	}
+</script>
+
+<style scoped>
+	/* 外层包装容器 */
+	.ste-navbar-wrapper {
+		width: 100%;
+	}
+
+	/* 占位元素 */
+	.ste-navbar-placeholder {
+		width: 100%;
+	}
+
+	/* 核心导航容器 */
+	.ste-navbar-root {
+		width: 100%;
+		flex-direction: column;
+	}
+
+	/* 内容区域（高度 44px） */
+	.navbar-content {
+		height: 44px;
+		width: 100%;
+		flex-direction: row;
+		align-items: center;
+		padding-left: 12rpx;
+		padding-right: 12rpx;
+	}
+
+	/* 左侧区域（返回按钮或自定义 left 插槽） */
+	.navbar-left {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	/* 返回按钮外层大热区，便于触控操作 */
+	.back-box {
+		width: 72rpx;
+		height: 44px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	/* 返回圆形胶囊按钮 */
+	.back-btn {
+		width: 52rpx;
+		height: 52rpx;
+		border-radius: 26rpx;
+		justify-content: center;
+		align-items: center;
+		border-width: 1px;
+		border-style: solid;
+	}
+
+	/* 居左标题排版 */
+	.navbar-title-left {
+		margin-left: 8rpx;
+		margin-right: 16rpx;
+		justify-content: center;
+	}
+
+	/* 中部主体插槽区（弹性自适应填充） */
+	.navbar-center-slot {
+		flex: 1;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	/* 右侧操作区插槽 */
+	.navbar-right {
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+	}
+
+	/* 标题基础样式 */
+	.title-text {
+		font-size: 34rpx;
+		font-weight: bold;
+		lines: 1;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
+	/* 居中标题：绝对水平居中，留出左右安全间距，设置 pointer-events: none 防止阻断按键 */
+	.navbar-title-center {
+		position: absolute;
+		left: 160rpx;
+		right: 160rpx;
+		height: 44px;
+		justify-content: center;
+		align-items: center;
+		pointer-events: none;
+	}
+
+	.title-center-text {
+		text-align: center;
+	}
+</style>

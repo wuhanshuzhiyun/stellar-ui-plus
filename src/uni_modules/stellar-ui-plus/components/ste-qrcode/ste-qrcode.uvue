@@ -1,0 +1,330 @@
+<template>
+	<view class="ste-qrcode-root" :style="[cmpRootStyle, rootStyle]" data-test="qrcode" @click="onClick">
+		<view class="ste-qrcode-wrap" :style="cmpWrapStyle">
+			<!-- Canvas 2D 绘制画布 -->
+			<canvas
+				:id="canvasId"
+				class="ste-qrcode-canvas"
+				:style="cmpCanvasStyle"
+				:disable-scroll="true"
+				type="2d"
+			></canvas>
+
+			<!-- 中心 Logo 图标叠加层 -->
+			<view
+				v-if="foregroundImageSrc != ''"
+				class="ste-qrcode-logo-wrap"
+				:style="cmpLogoWrapStyle"
+			>
+				<image
+					:src="foregroundImageSrc"
+					class="ste-qrcode-logo-image"
+					:style="cmpLogoImageStyle"
+					mode="aspectFit"
+				/>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-qrcode.uvue
+	 * @description QRCode 二维码组件 - uni-app x / UTS 版本
+	 * 采用纯 UTS 原生 QR Code Model 2 矩阵引擎编码，通过 Canvas 2D 异步渲染与高清 DPI 缩放，支持自定义尺寸、配色与中心 Logo 叠加。
+	 */
+	import { ref, computed, watch, onMounted, nextTick } from 'vue'
+	import { addUnit } from '../../utils/utils.uts'
+	import { QRCodeProps } from './constants.uts'
+	import { QRCodeGenerator, QR_EC_LEVEL_M, QR_EC_LEVEL_H } from './qrcode.uts'
+
+	defineOptions({
+		name: 'ste-qrcode',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== Props 属性与默认值 ====================
+	const props = withDefaults(defineProps<QRCodeProps>(), {
+		content: '',
+		size: 200,
+		background: '#ffffff',
+		foreground: '#000000',
+		foregroundImageSrc: '',
+		foregroundImageWidth: null,
+		foregroundImageHeight: null,
+		rootStyle: () => ({}) as UTSJSONObject,
+	})
+
+	// ==================== Emits 事件声明 ====================
+	const emits = defineEmits<{
+		(e: 'click'): void
+		(e: 'success', content: string): void
+		(e: 'error', error: string): void
+	}>()
+
+	// ==================== 响应式内部状态 ====================
+	/** 生成 Canvas 唯一 ID */
+	const canvasId = ref<string>('ste-qrcode-' + Math.floor(Math.random() * 1000000).toString())
+
+	// ==================== 尺寸计算工具函数 ====================
+	/**
+	 * 将输入的尺寸属性安全解析为 px 数值
+	 */
+	function parseToPxNumber(val: any, defaultVal: number): number {
+		if (val == null) return defaultVal
+		if (typeof val === 'number') {
+			const n = val as number
+			return n > 0 ? n : defaultVal
+		}
+		const s = '' + val
+		if (s.endsWith('rpx')) {
+			const n = parseFloat(s.substring(0, s.length - 3))
+			const px = uni.rpx2px(n)
+			return px > 0 ? px : defaultVal
+		}
+		if (s.endsWith('px')) {
+			const n = parseFloat(s.substring(0, s.length - 2))
+			return n > 0 ? n : defaultVal
+		}
+		const n = parseFloat(s)
+		return isNaN(n) || n <= 0 ? defaultVal : n
+	}
+
+	// ==================== 尺寸计算 ====================
+	/**
+	 * 二维码尺寸转换为 px 数值
+	 */
+	const sizePx = computed((): number => {
+		return parseToPxNumber(props.size, 200)
+	})
+
+	/**
+	 * 中心 Logo 宽度 (px)
+	 */
+	const logoWidthPx = computed((): number => {
+		const w = props.foregroundImageWidth
+		if (w != null) {
+			return parseToPxNumber(w, Math.round(sizePx.value / 4))
+		}
+		return Math.round(sizePx.value / 4)
+	})
+
+	/**
+	 * 中心 Logo 高度 (px)
+	 */
+	const logoHeightPx = computed((): number => {
+		const h = props.foregroundImageHeight
+		if (h != null) {
+			return parseToPxNumber(h, Math.round(sizePx.value / 4))
+		}
+		return Math.round(sizePx.value / 4)
+	})
+
+	// ==================== 动态样式计算 ====================
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {}
+		style['width'] = sizePx.value.toString() + 'px'
+		style['height'] = sizePx.value.toString() + 'px'
+		return style
+	})
+
+	const cmpWrapStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {
+			'position': 'relative',
+			'width': sizePx.value.toString() + 'px',
+			'height': sizePx.value.toString() + 'px',
+		}
+		return style
+	})
+
+	const cmpCanvasStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {
+			'width': sizePx.value.toString() + 'px',
+			'height': sizePx.value.toString() + 'px',
+		}
+		return style
+	})
+
+	const cmpLogoWrapStyle = computed((): UTSJSONObject => {
+		const w = logoWidthPx.value
+		const h = logoHeightPx.value
+		const l = (sizePx.value - w) / 2
+		const t = (sizePx.value - h) / 2
+		const style: UTSJSONObject = {
+			'position': 'absolute',
+			'left': l.toString() + 'px',
+			'top': t.toString() + 'px',
+			'width': w.toString() + 'px',
+			'height': h.toString() + 'px',
+		}
+		return style
+	})
+
+	const cmpLogoImageStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {
+			'width': logoWidthPx.value.toString() + 'px',
+			'height': logoHeightPx.value.toString() + 'px',
+		}
+		return style
+	})
+
+	// ==================== 二维码绘制主逻辑 ====================
+	/**
+	 * 执行 Canvas 2D 二维码绘制
+	 */
+	function drawQrcode() {
+		const text = props.content
+		if (text == '') {
+			return
+		}
+
+		// 带 Logo 时自动使用更高的 H 纠错等级 (30%)，不带 Logo 时使用 M 纠错等级 (15%)
+		const ecLevel = props.foregroundImageSrc != '' ? QR_EC_LEVEL_H : QR_EC_LEVEL_M
+		const qr = new QRCodeGenerator(0, ecLevel)
+		let modules: boolean[][]
+
+		try {
+			modules = qr.generate(text)
+		} catch (err) {
+			emits('error', '生成二维码矩阵失败: ' + err)
+			return
+		}
+
+		if (modules.length == 0) {
+			emits('error', '生成二维码矩阵为空')
+			return
+		}
+
+		// 使用 uni.createCanvasContextAsync 获取标准 W3C 2D Canvas 上下文
+		uni.createCanvasContextAsync({
+			id: canvasId.value,
+			success: (context: CanvasContext) => {
+				const ctx = context.getContext('2d') as CanvasRenderingContext2D
+				if (ctx == null) {
+					emits('error', '获取 2D 渲染上下文失败')
+					return
+				}
+
+				const canvas = ctx.canvas
+				const dpr: number = (uni.getDeviceInfo().devicePixelRatio ?? 1) > 0 ? (uni.getDeviceInfo().devicePixelRatio ?? 1) : 1
+				const dimension = sizePx.value
+
+				// 针对高分屏 Retina 设置物理像素与逻辑像素对齐
+				canvas.width = dimension * dpr
+				canvas.height = dimension * dpr
+				ctx.scale(dpr, dpr)
+
+				// 1. 填充背景色
+				ctx.fillStyle = props.background != '' ? props.background : '#ffffff'
+				ctx.fillRect(0, 0, dimension, dimension)
+
+				// 2. 绘制二维码黑色/前景色块
+				ctx.fillStyle = props.foreground != '' ? props.foreground : '#000000'
+				const count = modules.length
+				const moduleSize = dimension / count
+
+				for (let r = 0; r < count; r++) {
+					for (let c = 0; c < count; c++) {
+						if (modules[r][c]) {
+							const x = c * moduleSize
+							const y = r * moduleSize
+							// 微量 +0.05 像素补间，消除不同屏幕抗锯齿带来的微细白缝
+							ctx.fillRect(x, y, moduleSize + 0.05, moduleSize + 0.05)
+						}
+					}
+				}
+
+				emits('success', text)
+			},
+			fail: (err: any) => {
+				emits('error', '创建画布上下文失败: ' + err)
+			}
+		})
+	}
+
+	function onClick() {
+		emits('click')
+	}
+
+	// ==================== 响应式属性监听 ====================
+	watch(
+		(): string => props.content,
+		() => {
+			nextTick(() => {
+				drawQrcode()
+			})
+		}
+	)
+
+	watch(
+		(): any => props.size,
+		() => {
+			nextTick(() => {
+				drawQrcode()
+			})
+		}
+	)
+
+	watch(
+		(): string => props.foreground,
+		() => {
+			nextTick(() => {
+				drawQrcode()
+			})
+		}
+	)
+
+	watch(
+		(): string => props.background,
+		() => {
+			nextTick(() => {
+				drawQrcode()
+			})
+		}
+	)
+
+	onMounted(() => {
+		nextTick(() => {
+			drawQrcode()
+		})
+	})
+</script>
+
+<style scoped>
+.ste-qrcode-root {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.ste-qrcode-wrap {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.ste-qrcode-canvas {
+}
+
+/* 中心 Logo 容器 (白底衬底与微圆角) */
+.ste-qrcode-logo-wrap {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	background-color: #ffffff;
+	border-radius: 8rpx;
+	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+	overflow: hidden;
+	box-sizing: border-box;
+	border: 4rpx solid #ffffff;
+}
+
+.ste-qrcode-logo-image {
+}
+</style>

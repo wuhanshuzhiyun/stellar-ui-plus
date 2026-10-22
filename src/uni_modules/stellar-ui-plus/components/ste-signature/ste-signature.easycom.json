@@ -56,6 +56,12 @@
             "default": "100%"
         },
         {
+            "name": "action",
+            "description": "操作按钮区域配置或插槽标识[仅UVue支持]",
+            "type": "boolean | string",
+            "default": true
+        },
+        {
             "name": "[event]start",
             "description": "笔画开始时触发",
             "params": [
@@ -116,6 +122,29 @@
                     "description": "{orientation:string;success:(base64)=>void;fail:(err)=>void}"
                 }
             ]
+        },
+        {
+            "name": "[event]save",
+            "description": "签名生成并保存完成时触发",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "导出的临时图片路径"
+                }
+            ]
+        },
+        {
+            "name": "[event]error",
+            "description": "签名导出保存失败时触发",
+            "params": [
+                {
+                    "name": "error",
+                    "description": "错误信息"
+                }
+            ]
         }
-    ]
+    ],
+    "uvue_diff": {
+        "action_slot": "UVue 端扩展了 action 操作控制插槽与参数"
+    }
 }

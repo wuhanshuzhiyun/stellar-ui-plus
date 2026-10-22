@@ -1,0 +1,686 @@
+<!--
+ * ste-select-seat 在线选座组件
+ *
+ * @description 专为电影院购票、剧场展演、赛事体育及会议排座设计的纯原生交互组件。
+ * 基于高性能 2D Canvas 硬件渲染引擎与多点触控手势跟踪体系，支持大规模座席网格、
+ * 视口弹性平移与双指缩放、通道空位避让、售出锁定置灰、浮动排号轴及双向绑定。
+ * 全面兼容 uni-app x 原生渲染引擎 (Android / iOS / Web)。
+-->
+<template>
+	<view class="ste-select-seat-root" :style="cmpRootStyle">
+		<!-- 核心 2D Canvas 画布 -->
+		<canvas
+			:id="canvasId"
+			type="2d"
+			class="seat-canvas"
+			:style="cmpCanvasStyle"
+			:disable-scroll="true"
+			@touchstart="onTouchStart"
+			@touchmove="onTouchMove"
+			@touchend="onTouchEnd"
+			@touchcancel="onTouchEnd"
+		></canvas>
+
+		<!-- 左侧浮动行号数字指示轴（随视口 Y 轴平移与缩放自动联动） -->
+		<view
+			v-if="props.showRowLabels && rowLabelItems.length > 0"
+			class="row-label-overlay"
+			:class="{ 'is-visible': rowLabelsVisible }"
+		>
+			<view class="row-label-track" :style="cmpRowLabelTrackStyle" />
+			<view
+				v-for="item in rowLabelItems"
+				:key="item.row"
+				class="row-label-item"
+				:style="item.style"
+			>
+				<text class="row-label-text">{{ item.row + 1 }}</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { ref, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue'
+	import {
+		SteSelectSeatProps,
+		DEFAULT_SEAT_SIZE,
+		DEFAULT_SEAT_GAP,
+		DEFAULT_SEAT_RADIUS,
+		DEFAULT_BORDER_WIDTH,
+		DEFAULT_BG_COLOR,
+		DEFAULT_BORDER_COLOR,
+		DEFAULT_SELECTED_COLOR,
+		DEFAULT_DISABLED_BG_COLOR,
+	} from './props.uts'
+	import {
+		SteSelectSeatItem,
+		SteSelectSeatValue,
+		SteSelectSeatMoveEvent,
+	} from './types.uts'
+	import { drawRoundRect, drawCheck } from './canvasUtils.uts'
+	import {
+		INTERNAL_MAX_SCALE,
+		getLabelWidth,
+		getSeatContentSize,
+		getFitScale,
+		clampSeatScale,
+	} from './internals/seatLayout.uts'
+	import { formatPx } from '../../utils/utils.uts'
+	import { useColorStore } from '../../store/color'
+
+	defineOptions({
+		name: 'ste-select-seat',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== 组件 Props 属性定义 ====================
+	const props = withDefaults(defineProps<SteSelectSeatProps>(), {
+		modelValue: () : SteSelectSeatValue[] => [] as SteSelectSeatValue[],
+		rows: 0,
+		cols: 0,
+		width: 350,
+		height: 400,
+		seats: () : SteSelectSeatItem[] => [] as SteSelectSeatItem[],
+		seatSize: DEFAULT_SEAT_SIZE,
+		seatGap: DEFAULT_SEAT_GAP,
+		borderRadius: DEFAULT_SEAT_RADIUS,
+		borderWidth: DEFAULT_BORDER_WIDTH,
+		bgColor: DEFAULT_BG_COLOR,
+		borderColor: DEFAULT_BORDER_COLOR,
+		selectedBgColor: '',
+		selectedColor: DEFAULT_SELECTED_COLOR,
+		disabledBgColor: DEFAULT_DISABLED_BG_COLOR,
+		showRowLabels: true,
+		rootStyle: '',
+	})
+
+	// ==================== 组件 Emits 事件声明 ====================
+	const emit = defineEmits<{
+		/** 选中座位集合变更时派发（双向数据绑定） */
+		(e : 'update:modelValue', value : SteSelectSeatValue[]) : void
+		/** 单个座位被点击时派发 */
+		(e : 'seat-click', seat : SteSelectSeatItem) : void
+		/** 画布发生平移或缩放移动时派发 */
+		(e : 'move', data : SteSelectSeatMoveEvent) : void
+	}>()
+
+	// ==================== 全局主题色配置 ====================
+	const { getColor } = useColorStore()
+	const themeColor = computed(() : string => {
+		const c = getColor()
+		if (c != null && c.steThemeColor != null && c.steThemeColor.length > 0) {
+			return c.steThemeColor
+		}
+		return '#0090FF'
+	})
+
+	// ==================== 画布与上下文引用 ====================
+	/** 画布唯一节点 ID */
+	const canvasId = ref<string>('ste-seat-cvs-' + Math.floor(Math.random() * 1000000).toString())
+	let canvasCtx : CanvasRenderingContext2D | null = null
+	let canvasObj : any | null = null
+
+	/** Canvas 画布相对整机视口左上角的偏移量缓存 (px) */
+	let canvasRectLeft = 0.0
+	let canvasRectTop = 0.0
+
+	/**
+	 * 动态刷新 Canvas 在当前视口中的绝对坐标，适配页面上下滚动或动态布局
+	 * @param callback 刷新完成后的回调函数
+	 */
+	function refreshCanvasRect(callback : (() => void) | null = null) {
+		uni.createSelectorQuery()
+			.select('#' + canvasId.value)
+			.boundingClientRect((res : any) => {
+				if (res != null) {
+					const rect = JSON.parse(JSON.stringify(res)) as UTSJSONObject
+					canvasRectLeft = rect.getNumber('left') ?? canvasRectLeft
+					canvasRectTop = rect.getNumber('top') ?? canvasRectTop
+				}
+				if (callback != null) {
+					callback()
+				}
+			})
+			.exec()
+	}
+
+	// ==================== 视口变换与手势状态 ====================
+	/** 当前视口缩放倍数 */
+	const currentScale = ref<number>(1.0)
+	/** 当前 X 轴平移物理偏移 (px) */
+	const currentTranslateX = ref<number>(0.0)
+	/** 当前 Y 轴平移物理偏移 (px) */
+	const currentTranslateY = ref<number>(0.0)
+
+	/** 行号轴显隐状态 */
+	const rowLabelsVisible = ref<boolean>(false)
+	let rowLabelHideTimer : number | null = null
+
+	/** 触摸判定状态 */
+	let isTouching = false
+	let touchStartX = 0.0
+	let touchStartY = 0.0
+	let touchStartTranslateX = 0.0
+	let touchStartTranslateY = 0.0
+	let touchStartDistance = 0.0
+	let touchStartScale = 1.0
+	let hasMoved = false
+
+	// ==================== 物理尺寸换算 ====================
+	const seatSizePx = computed(() : number => uni.rpx2px(props.seatSize))
+	const seatGapPx = computed(() : number => uni.rpx2px(props.seatGap))
+	const borderRadiusPx = computed(() : number => uni.rpx2px(props.borderRadius))
+
+	const labelWidthPx = computed(() : number => {
+		return getLabelWidth(props.showRowLabels, seatSizePx.value, seatGapPx.value)
+	})
+
+	/** 座位总内容尺寸 */
+	const contentSize = computed(() : UTSJSONObject => {
+		return getSeatContentSize(
+			props.rows,
+			props.cols,
+			seatSizePx.value,
+			seatGapPx.value,
+			labelWidthPx.value
+		)
+	})
+
+	/** 视口全景自适应缩放比 */
+	const fitScale = computed(() : number => {
+		const cSize = contentSize.value
+		const cW = cSize.getNumber('width') ?? 0.0
+		const cH = cSize.getNumber('height') ?? 0.0
+		return getFitScale(props.width, props.height, cW, cH)
+	})
+
+	// ==================== 样式计算 ====================
+	const cmpRootStyle = computed(() : string => {
+		let s = `width: ${props.width}px; height: ${props.height}px; position: relative; overflow: hidden;`
+		if (props.rootStyle.length > 0) {
+			s += ' ' + props.rootStyle
+		}
+		return s
+	})
+
+	const cmpCanvasStyle = computed(() : string => {
+		return `width: ${props.width}px; height: ${props.height}px; display: block;`
+	})
+
+	// ==================== 座位数据索引与判定 ====================
+	/** 座位坐标索引字典 `${row}-${col}` => SteSelectSeatItem */
+	const seatMap = ref<Map<string, SteSelectSeatItem>>(new Map<string, SteSelectSeatItem>())
+
+	/**
+	 * 重构座位属性索引表
+	 */
+	function rebuildSeatMap() {
+		const map = new Map<string, SteSelectSeatItem>()
+		for (let i = 0; i < props.seats.length; i++) {
+			const item = props.seats[i]
+			const key = `${item.row}-${item.col}`
+			map.set(key, item)
+		}
+		seatMap.value = map
+	}
+
+	/**
+	 * 根据行号与列号获取座位数据对象
+	 * 必须在 renderCanvas 调用前声明，适配 Kotlin 顺序解析机制
+	 * @param r 目标行索引 (0-based)
+	 * @param c 目标列索引 (0-based)
+	 * @return 座位详细属性实体
+	 */
+	function getSeatItem(r : number, c : number) : SteSelectSeatItem {
+		const key = `${r}-${c}`
+		if (seatMap.value.has(key)) {
+			return seatMap.value.get(key)!
+		}
+		// 若未自定义，则返回默认座位配置
+		return {
+			row: r,
+			col: c,
+			disabled: false,
+			empty: false,
+		} as SteSelectSeatItem
+	}
+
+	/**
+	 * 检查指定坐标的座位是否已被用户勾选
+	 * 必须在 renderCanvas 调用前声明，适配 Kotlin 顺序解析机制
+	 * @param r 目标行索引 (0-based)
+	 * @param c 目标列索引 (0-based)
+	 * @return 是否处于被选高亮状态
+	 */
+	function isSeatSelected(r : number, c : number) : boolean {
+		for (let i = 0; i < props.modelValue.length; i++) {
+			const v = props.modelValue[i]
+			if (v.row == r && v.col == c) {
+				return true
+			}
+		}
+		return false
+	}
+
+	// ==================== 视口广播与绘制函数前置声明 ====================
+	/**
+	 * 向外广播 move 变换事件
+	 */
+	function emitMoveEvent() {
+		const moveData : SteSelectSeatMoveEvent = {
+			translateX: currentTranslateX.value,
+			translateY: currentTranslateY.value,
+			scale: currentScale.value,
+			screenTranslateX: currentTranslateX.value,
+		}
+		emit('move', moveData)
+	}
+
+	/**
+	 * 执行 Canvas 2D 全量绘制
+	 */
+	function renderCanvas() {
+		const ctx = canvasCtx
+		if (ctx == null) return
+
+		const userScale = currentScale.value
+		const tx = currentTranslateX.value
+		const ty = currentTranslateY.value
+		const size = seatSizePx.value
+		const gap = seatGapPx.value
+		const radius = borderRadiusPx.value
+		const lWidth = labelWidthPx.value
+		const defaultSelBg = (props.selectedBgColor != '') ? props.selectedBgColor : themeColor.value
+
+		// 清理全画布区域
+		ctx.clearRect(0, 0, props.width, props.height)
+
+		// 遍历全量网格进行投影绘制
+		for (let r = 0; r < props.rows; r++) {
+			for (let c = 0; c < props.cols; c++) {
+				const seat = getSeatItem(r, c)
+				// 空位通道不绘制实体，形成走道镂空视觉效果
+				if (seat.empty == true) {
+					continue
+				}
+
+				const isSel = isSeatSelected(r, c)
+
+				// 计算经手势缩放和平移矩阵变换后的最终物理像素矩形
+				const x = tx + (lWidth + c * (size + gap) + gap / 2) * userScale
+				const y = ty + (r * (size + gap) + gap / 2) * userScale
+				const w = size * userScale
+				const h = size * userScale
+				const r_ = radius * userScale
+
+				// 视野外裁剪优化（超屏不渲染）
+				if (x + w < -10 || x > props.width + 10 || y + h < -10 || y > props.height + 10) {
+					continue
+				}
+
+				// 1. 确定背景填充颜色
+				if (seat.disabled == true) {
+					ctx.fillStyle = props.disabledBgColor
+				} else if (isSel) {
+					const selBg = seat.selectedBgColor
+					ctx.fillStyle = (selBg != null && selBg != '') ? selBg : defaultSelBg
+				} else {
+					const bg = seat.bgColor
+					ctx.fillStyle = (bg != null && bg != '') ? bg : props.bgColor
+				}
+
+				// 绘制填充背景
+				drawRoundRect(ctx, x, y, w, h, r_)
+				ctx.fill()
+
+				// 2. 绘制未选中可用座位的边框线
+				if (seat.disabled != true && !isSel) {
+					const bColor = seat.borderColor
+					ctx.strokeStyle = (bColor != null && bColor != '') ? bColor : props.borderColor
+					ctx.lineWidth = Math.max(1, props.borderWidth * userScale)
+					drawRoundRect(ctx, x, y, w, h, r_)
+					ctx.stroke()
+				}
+
+				// 3. 绘制选中状态下的矢量对勾标记
+				if (isSel && seat.disabled != true) {
+					const sColor = seat.selectedColor
+					const checkColor = (sColor != null && sColor != '') ? sColor : props.selectedColor
+					drawCheck(ctx, x + w / 2, y + h / 2, w, checkColor)
+				}
+			}
+		}
+	}
+
+	watch(() : any => [props.seats, props.rows, props.cols], () => {
+		rebuildSeatMap()
+		renderCanvas()
+	})
+
+	// ==================== 浮动行号轴计算 ====================
+	type RowLabelRenderInfo = {
+		row : number
+		style : string
+	}
+
+	/**
+	 * 动态计算左侧行号数字列表与垂直绝对坐标
+	 */
+	const rowLabelItems = computed(() : RowLabelRenderInfo[] => {
+		if (!props.showRowLabels || props.rows <= 0) return [] as RowLabelRenderInfo[]
+
+		const items : RowLabelRenderInfo[] = []
+		const s = currentScale.value
+		const ty = currentTranslateY.value
+		const size = seatSizePx.value
+		const gap = seatGapPx.value
+		const unitH = (size + gap) * s
+
+		for (let r = 0; r < props.rows; r++) {
+			const itemTop = ty + (r * (size + gap) + gap / 2) * s
+			const itemH = size * s
+			// 仅收集在视口可见区域附近的行号以提升性能
+			if (itemTop + itemH >= -20 && itemTop <= props.height + 20) {
+				const styleStr = `position: absolute; left: 0px; top: ${itemTop}px; height: ${itemH}px; width: 100%; justify-content: center; align-items: center;`
+				items.push({
+					row: r,
+					style: styleStr,
+				} as RowLabelRenderInfo)
+			}
+		}
+		return items
+	})
+
+	/**
+	 * 行号背景胶囊条样式
+	 */
+	const cmpRowLabelTrackStyle = computed(() : string => {
+		if (props.rows <= 0) return ''
+		const s = currentScale.value
+		const ty = currentTranslateY.value
+		const size = seatSizePx.value
+		const gap = seatGapPx.value
+		const startY = ty + (gap / 2) * s
+		const totalH = (props.rows * (size + gap)) * s
+		return `position: absolute; left: 0px; top: ${startY}px; height: ${totalH}px; width: 100%; border-radius: 999px; background-color: rgba(0, 0, 0, 0.35);`
+	})
+
+	/**
+	 * 唤起行号轴并在延时后平滑淡出
+	 */
+	function showRowLabelsTemporarily() {
+		rowLabelsVisible.value = true
+		if (rowLabelHideTimer != null) {
+			clearTimeout(rowLabelHideTimer!)
+		}
+		rowLabelHideTimer = setTimeout(() => {
+			rowLabelsVisible.value = false
+		}, 1200)
+	}
+
+	// ==================== 视口居中与默认对齐 ====================
+	/**
+	 * 将所有座位自适应缩放并水平居中放置在画布内
+	 */
+	function applyDefaultViewport() {
+		const scale = fitScale.value
+		currentScale.value = scale
+
+		const cSize = contentSize.value
+		const cW = (cSize.getNumber('width') ?? 0.0) * scale
+		const cH = (cSize.getNumber('height') ?? 0.0) * scale
+
+		currentTranslateX.value = (props.width - cW) / 2
+		currentTranslateY.value = (props.height - cH) / 2
+
+		emitMoveEvent()
+	}
+
+	// ==================== 触控命中算法 (Hit-Testing) ====================
+	/**
+	 * 根据点击在画布上的物理坐标反查对应的座位数据
+	 * 基于标准对称网格单元格反算，消除人为边缘偏移
+	 * @param clickX 相对 Canvas 画布左上角的物理像素 X 坐标
+	 * @param clickY 相对 Canvas 画布左上角的物理像素 Y 坐标
+	 * @return 命中的座位数据实体，若点在间隙或画布外部则返回 null
+	 */
+	function getSeatByPoint(clickX : number, clickY : number) : SteSelectSeatItem | null {
+		const scale = currentScale.value
+		if (scale <= 0) return null
+
+		const size = seatSizePx.value
+		const gap = seatGapPx.value
+		const lWidth = labelWidthPx.value
+		const tx = currentTranslateX.value
+		const ty = currentTranslateY.value
+
+		// 逆向变换为内容本地未缩放坐标
+		const localX = (clickX - tx) / scale
+		const localY = (clickY - ty) / scale
+
+		// 对称单元格命中反算：
+		// 列单元格范围为 [lWidth + c * (size + gap), lWidth + (c + 1) * (size + gap)]
+		// 行单元格范围为 [r * (size + gap), (r + 1) * (size + gap)]
+		// 座位居中放置在单元格内部，两边各有 gap / 2 对称间隙，消除点击偏边误判
+		const col = Math.floor((localX - lWidth) / (size + gap))
+		const row = Math.floor(localY / (size + gap))
+
+		if (row < 0 || row >= props.rows || col < 0 || col >= props.cols) {
+			return null
+		}
+
+		return getSeatItem(row, col)
+	}
+
+	/**
+	 * 处理座位点击状态切换
+	 */
+	function handleSeatClick(seat : SteSelectSeatItem) {
+		if (seat.disabled == true || seat.empty == true) {
+			return
+		}
+
+		emit('seat-click', seat)
+
+		const currentList = props.modelValue.slice()
+		let foundIndex = -1
+		for (let i = 0; i < currentList.length; i++) {
+			const item = currentList[i]
+			if (item.row == seat.row && item.col == seat.col) {
+				foundIndex = i
+				break
+			}
+		}
+
+		if (foundIndex >= 0) {
+			// 已选中状态再次点击取消选中
+			currentList.splice(foundIndex, 1)
+		} else {
+			// 加入已选集合
+			currentList.push({ row: seat.row, col: seat.col } as SteSelectSeatValue)
+		}
+
+		emit('update:modelValue', currentList)
+		renderCanvas()
+	}
+
+	// ==================== 手势交互监听 ====================
+	function onTouchStart(e : TouchEvent) {
+		const touches = e.touches
+		if (touches.length == 0) return
+
+		isTouching = true
+		hasMoved = false
+		showRowLabelsTemporarily()
+		refreshCanvasRect()
+
+		if (touches.length == 1) {
+			// 单指拖拽准备
+			touchStartX = touches[0].clientX
+			touchStartY = touches[0].clientY
+			touchStartTranslateX = currentTranslateX.value
+			touchStartTranslateY = currentTranslateY.value
+		} else if (touches.length >= 2) {
+			// 双指缩放准备
+			const dx = touches[0].clientX - touches[1].clientX
+			const dy = touches[0].clientY - touches[1].clientY
+			touchStartDistance = Math.sqrt(dx * dx + dy * dy)
+			touchStartScale = currentScale.value
+			touchStartTranslateX = currentTranslateX.value
+			touchStartTranslateY = currentTranslateY.value
+		}
+	}
+
+	function onTouchMove(e : TouchEvent) {
+		if (!isTouching) return
+		const touches = e.touches
+		if (touches.length == 0) return
+
+		showRowLabelsTemporarily()
+
+		if (touches.length == 1) {
+			const deltaX = touches[0].clientX - touchStartX
+			const deltaY = touches[0].clientY - touchStartY
+
+			// 8px 容差防轻微指尖抖动误判拖拽
+			if (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8) {
+				hasMoved = true
+			}
+
+			// 更新平移坐标
+			currentTranslateX.value = touchStartTranslateX + deltaX
+			currentTranslateY.value = touchStartTranslateY + deltaY
+
+			renderCanvas()
+			emitMoveEvent()
+		} else if (touches.length >= 2) {
+			hasMoved = true
+			const dx = touches[0].clientX - touches[1].clientX
+			const dy = touches[0].clientY - touches[1].clientY
+			const newDist = Math.sqrt(dx * dx + dy * dy)
+
+			if (touchStartDistance > 0) {
+				const ratio = newDist / touchStartDistance
+				const rawScale = touchStartScale * ratio
+				const finalScale = clampSeatScale(rawScale, fitScale.value * 0.8, INTERNAL_MAX_SCALE)
+
+				currentScale.value = finalScale
+				renderCanvas()
+				emitMoveEvent()
+			}
+		}
+	}
+
+	function onTouchEnd(e : TouchEvent) {
+		if (!isTouching) return
+
+		if (!hasMoved) {
+			// 未发生大幅拖拽，判定为点击选中操作
+			const changedTouches = e.changedTouches
+			if (changedTouches.length > 0) {
+				const touch = changedTouches[0]
+				// 立即校准 Canvas 在当前视口中的绝对坐标并精确执行命中判定
+				refreshCanvasRect(() => {
+					const touchX = touch.clientX - canvasRectLeft
+					const touchY = touch.clientY - canvasRectTop
+					const seat = getSeatByPoint(touchX, touchY)
+					if (seat != null) {
+						handleSeatClick(seat!)
+					}
+				})
+			}
+		}
+
+		isTouching = false
+	}
+
+	// ==================== 初始化与生命周期 ====================
+	function initCanvas() {
+		rebuildSeatMap()
+		uni.createCanvasContextAsync({
+			id: canvasId.value,
+			success: (context : CanvasContext) => {
+				const ctx = context.getContext('2d') as CanvasRenderingContext2D | null
+				if (ctx != null) {
+					canvasCtx = ctx
+					const canvas = ctx!.canvas
+					canvasObj = canvas
+
+					const dpr : number = (uni.getDeviceInfo().devicePixelRatio ?? 1) > 0 ? (uni.getDeviceInfo().devicePixelRatio ?? 1) : 1
+					canvas.width = props.width * dpr
+					canvas.height = props.height * dpr
+					ctx!.scale(dpr, dpr)
+
+					applyDefaultViewport()
+					renderCanvas()
+					refreshCanvasRect()
+				}
+			},
+		})
+	}
+
+	watch(() : any => props.modelValue, () => {
+		renderCanvas()
+	})
+
+	onMounted(() => {
+		nextTick(() => {
+			initCanvas()
+		})
+	})
+</script>
+
+<style scoped>
+.ste-select-seat-root {
+	position: relative;
+	background-color: #F4F5F7;
+	border-radius: 16rpx;
+	overflow: hidden;
+}
+
+.seat-canvas {
+	width: 100%;
+	height: 100%;
+}
+
+/* 浮动行号数字轴 */
+.row-label-overlay {
+	position: absolute;
+	left: 12rpx;
+	top: 0;
+	bottom: 0;
+	width: 36rpx;
+	pointer-events: none;
+	opacity: 0;
+	transform: translateX(-10rpx);
+	transition-property: opacity, transform;
+	transition-duration: 200ms;
+	transition-timing-function: ease;
+}
+
+.row-label-overlay.is-visible {
+	opacity: 1;
+	transform: translateX(0rpx);
+}
+
+.row-label-track {
+	position: absolute;
+	left: 0;
+	width: 100%;
+}
+
+.row-label-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.row-label-text {
+	color: #FFFFFF;
+	font-size: 20rpx;
+	font-weight: bold;
+}
+</style>

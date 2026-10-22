@@ -1,0 +1,69 @@
+/**
+ * @file props.uts
+ * @description ste-search-box 搜索组件 - uni-app x / UTS 强类型属性契约与常量定义
+ */
+
+/**
+ * 默认搜索提示占位文案
+ */
+export const DEFAULT_SEARCH_BOX_PLACEHOLDER = '请输入'
+
+/**
+ * 默认键盘右下角动作类型
+ */
+export const DEFAULT_SEARCH_BOX_CONFIRM_TYPE = 'search'
+
+/**
+ * ste-search-box 组件 Props 强类型定义
+ */
+export type SearchBoxProps = {
+	/**
+	 * 输入框当前搜索关键词（支持 v-model:value 双向绑定）
+	 * @default ''
+	 */
+	value ?: any,
+	/**
+	 * 头部操作模式：
+	 * - 'date'：单日期选择模式
+	 * - 'dateRange'：日期区间范围选择模式
+	 * @default 'date'
+	 */
+	type ?: string,
+	/**
+	 * 头部选中的日期值：
+	 * - 单日期模式：'YYYY-MM-DD' 字符串或时间戳
+	 * - 日期范围模式：['YYYY-MM-DD', 'YYYY-MM-DD'] 字符串数组
+	 */
+	headerValue ?: any,
+	/**
+	 * 输入框未输入时的占位提示文案
+	 * @default '请输入'
+	 */
+	placeholder ?: string,
+	/**
+	 * 搜索框自定义高度（如 '72rpx' 或 36）
+	 */
+	height ?: any,
+	/**
+	 * 输入文字颜色
+	 */
+	textColor ?: string,
+	/**
+	 * 占位符提示文字颜色
+	 */
+	placeholderColor ?: string,
+	/**
+	 * 是否允许显示一键清空按钮
+	 * @default true
+	 */
+	clearable ?: boolean,
+	/**
+	 * 移动端软键盘右下角操作按键文字类型（如 'search'、'done'、'go'）
+	 * @default 'search'
+	 */
+	confirmType ?: string,
+	/**
+	 * 自定义根节点内联样式映射
+	 */
+	rootStyle ?: UTSJSONObject,
+}

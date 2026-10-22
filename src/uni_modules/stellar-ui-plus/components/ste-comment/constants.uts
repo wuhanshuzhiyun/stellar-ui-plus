@@ -1,0 +1,22 @@
+/**
+ * @file constants.uts
+ * @description ste-comment 评论组件 - uni-app x / UTS 强类型契约与常量定义
+ */
+
+/**
+ * 评论项数据类型契约接口
+ */
+export type CommentType = {
+	/** 评价内容正文文本 */
+	evaluateText: string;
+	/** 评价发布日期文本（如 '2024.10.05'） */
+	date: string;
+	/** 评价配图 URL 列表（支持九宫格展示） */
+	imgList?: string[];
+	/** 评价等级类型：1 为好评（显示好评角标），2 为中/差评 */
+	type?: number;
+	/** 评价用户昵称 */
+	userName: string;
+	/** 评价用户头像图片地址 */
+	userAvatar: string;
+};

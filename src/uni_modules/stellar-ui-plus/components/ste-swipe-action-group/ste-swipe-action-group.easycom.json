@@ -6,8 +6,8 @@
     "attributes": [
         {
             "name": "mode",
-            "description": "模式",
-            "type": "string",
+            "description": "滑动模式",
+            "type": "String",
             "default": "right",
             "values": [
                 {
@@ -22,67 +22,108 @@
                     "name": "all",
                     "description": "左右滑"
                 }
+            ],
+            "enum": [
+                "right",
+                "left",
+                "all"
             ]
         },
         {
             "name": "disabled",
-            "description": "禁用",
-            "type": "boolean",
+            "description": "是否禁用滑动",
+            "type": "Boolean",
             "default": false
         },
         {
             "name": "autoClose",
-            "description": "打开时是否自动关闭组内其他单元格",
-            "type": "boolean",
+            "description": "是否自动关闭其他 swipe 项",
+            "type": "Boolean",
             "default": true
         },
         {
             "name": "swipeThreshold",
-            "description": "灵敏度（0-1之间的小数，数值越小灵敏度越高）",
-            "type": "number",
+            "description": "灵敏度（0-1 之间的小数，数值越小灵敏度越高）",
+            "type": "Number",
             "default": 0.35
         },
         {
             "name": "duration",
-            "description": "动画时长，单位ms",
-            "type": "number | string",
+            "description": "动画时长，单位 ms",
+            "type": "Number | String",
             "default": 300
         },
         {
             "name": "leftIcon",
             "description": "是否显示左侧图标",
-            "type": "boolean",
+            "type": "Boolean",
             "default": false
         },
         {
             "name": "rightIcon",
             "description": "是否显示右侧图标",
-            "type": "boolean",
+            "type": "Boolean",
             "default": false
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]open",
-            "description": "打开滑块时触发，参数为方向",
+            "description": "打开滑块时触发",
             "params": [
                 {
-                    "name": "direction",
-                    "description": "方向（值为left或right）"
-                },
-                {
-                    "name": "index",
-                    "description": "当前单元格索引"
+                    "name": "params",
+                    "description": "{ direction: 'left' | 'right', index: number }"
                 }
             ]
         },
         {
             "name": "[event]close",
             "description": "关闭滑块时触发",
+            "params": []
+        },
+        {
+            "name": "[method]open",
+            "description": "打开指定下标的滑块",
+            "params": [
+                {
+                    "name": "direction",
+                    "description": "方向 'left' | 'right'"
+                },
+                {
+                    "name": "index",
+                    "description": "下标"
+                }
+            ],
+            "return": "void"
+        },
+        {
+            "name": "[method]close",
+            "description": "关闭指定下标的滑块",
             "params": [
                 {
                     "name": "index",
-                    "description": "当前单元格索引"
+                    "description": "下标"
                 }
-            ]
+            ],
+            "return": "void"
+        },
+        {
+            "name": "[method]closeAll",
+            "description": "关闭所有打开的滑块",
+            "params": [],
+            "return": "void"
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，放置 ste-swipe-action 子项"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端新增 rootStyle 原生样式对象支持"
+    }
 }

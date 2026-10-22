@@ -1,0 +1,638 @@
+/**
+ * @file qrcode.uts
+ * @description 纯 UTS 原生 QR Code Model 2 二维码矩阵生成引擎
+ * 支持 UTF-8 字符集（中英文/符号）、Reed-Solomon 纠错码计算、掩模评估与最优矩阵输出。
+ * 100% 纯 UTS 强类型实现，无任何外部平台或 npm 依赖。
+ */
+
+// ==================== 常量与纠错级别定义 ====================
+/** 纠错级别枚举值: L(7%), M(15%), Q(25%), H(30%) */
+export const QR_EC_LEVEL_L: number = 1
+export const QR_EC_LEVEL_M: number = 0
+export const QR_EC_LEVEL_Q: number = 3
+export const QR_EC_LEVEL_H: number = 2
+
+// ==================== 有限域 GF(256) 对数与指数查找表 ====================
+const EXP_TABLE: number[] = []
+const LOG_TABLE: number[] = []
+
+let isGfInitialized = false
+
+/**
+ * 初始化 GF(256) 有限域查找表
+ */
+function initGfTable() {
+    if (isGfInitialized) return
+    for (let i = 0; i < 256; i++) {
+        EXP_TABLE.push(0)
+        LOG_TABLE.push(0)
+    }
+    for (let i = 0; i < 8; i++) {
+        EXP_TABLE[i] = 1 << i
+    }
+    for (let i = 8; i < 256; i++) {
+        EXP_TABLE[i] = EXP_TABLE[i - 4] ^ EXP_TABLE[i - 5] ^ EXP_TABLE[i - 6] ^ EXP_TABLE[i - 8]
+    }
+    for (let i = 0; i < 255; i++) {
+        LOG_TABLE[EXP_TABLE[i]] = i
+    }
+    isGfInitialized = true
+}
+
+function gexp(n: number): number {
+    initGfTable()
+    let val = n
+    while (val < 0) {
+        val += 255
+    }
+    while (val >= 256) {
+        val -= 255
+    }
+    return EXP_TABLE[val]
+}
+
+function glog(n: number): number {
+    initGfTable()
+    if (n < 1) {
+        return 0
+    }
+    return LOG_TABLE[n]
+}
+
+// ==================== 多项式计算辅助类 ====================
+class Polynomial {
+    num: number[] = []
+
+    constructor(num: number[], shift: number) {
+        let offset = 0
+        while (offset < num.length && num[offset] == 0) {
+            offset++
+        }
+        const len = num.length - offset + shift
+        this.num = []
+        for (let i = 0; i < len; i++) {
+            this.num.push(0)
+        }
+        for (let i = 0; i < num.length - offset; i++) {
+            this.num[i] = num[offset + i]
+        }
+    }
+
+    get(index: number): number {
+        return this.num[index]
+    }
+
+    getLength(): number {
+        return this.num.length
+    }
+
+    multiply(e: Polynomial): Polynomial {
+        const resultLen = this.getLength() + e.getLength() - 1
+        const res: number[] = []
+        for (let i = 0; i < resultLen; i++) {
+            res.push(0)
+        }
+        for (let i = 0; i < this.getLength(); i++) {
+            for (let j = 0; j < e.getLength(); j++) {
+                res[i + j] ^= gexp(glog(this.get(i)) + glog(e.get(j)))
+            }
+        }
+        return new Polynomial(res, 0)
+    }
+
+    mod(e: Polynomial): Polynomial {
+        if (this.getLength() - e.getLength() < 0) {
+            return this
+        }
+        const ratio = glog(this.get(0)) - glog(e.get(0))
+        const res: number[] = []
+        for (let i = 0; i < this.getLength(); i++) {
+            res.push(this.get(i))
+        }
+        for (let i = 0; i < e.getLength(); i++) {
+            res[i] ^= gexp(glog(e.get(i)) + ratio)
+        }
+        return new Polynomial(res, 0).mod(e)
+    }
+}
+
+// ==================== 位流缓冲器 (BitBuffer) ====================
+class BitBuffer {
+    buffer: number[] = []
+    length: number = 0
+
+    get(index: number): boolean {
+        const bufIndex = Math.floor(index / 8)
+        return ((this.buffer[bufIndex] >>> (7 - (index % 8))) & 1) == 1
+    }
+
+    put(num: number, length: number) {
+        for (let i = 0; i < length; i++) {
+            this.putBit(((num >>> (length - i - 1)) & 1) == 1)
+        }
+    }
+
+    putBit(bit: boolean) {
+        const bufIndex = Math.floor(this.length / 8)
+        if (this.buffer.length <= bufIndex) {
+            this.buffer.push(0)
+        }
+        if (bit) {
+            this.buffer[bufIndex] |= (0x80 >>> (this.length % 8))
+        }
+        this.length++
+    }
+
+    getLengthInBits(): number {
+        return this.length
+    }
+}
+
+// ==================== RS 块与纠错多项式定义 ====================
+type RSBlockInfo = {
+    totalCount: number,
+    dataCount: number,
+}
+
+// 常用版本 1~10 的 RS_BLOCK_TABLE 配置 (足以满足普通文本与 URL 需求)
+const RS_BLOCK_TABLE: number[][] = [
+    // Version 1
+    [1, 26, 19], [1, 26, 16], [1, 26, 13], [1, 26, 9],
+    // Version 2
+    [1, 44, 34], [1, 44, 28], [1, 44, 22], [1, 44, 16],
+    // Version 3
+    [1, 70, 55], [1, 70, 44], [2, 35, 17], [2, 35, 13],
+    // Version 4
+    [1, 100, 80], [2, 50, 32], [2, 50, 24], [4, 25, 9],
+    // Version 5
+    [1, 134, 108], [2, 67, 43], [2, 33, 15, 2, 34, 16], [2, 33, 11, 2, 34, 12],
+    // Version 6
+    [2, 86, 68], [4, 43, 27], [4, 43, 19], [4, 43, 15],
+    // Version 7
+    [2, 98, 78], [4, 49, 31], [2, 32, 14, 4, 33, 15], [4, 39, 13, 1, 40, 14],
+    // Version 8
+    [2, 121, 97], [2, 60, 38, 2, 61, 39], [4, 40, 18, 2, 41, 19], [4, 40, 14, 2, 41, 15],
+    // Version 9
+    [2, 146, 116], [3, 58, 36, 2, 59, 37], [4, 36, 16, 4, 37, 17], [4, 36, 12, 4, 37, 13],
+    // Version 10
+    [2, 86, 68, 2, 87, 69], [4, 69, 43, 1, 70, 44], [6, 43, 19, 2, 44, 20], [6, 43, 15, 2, 44, 16]
+]
+
+function getRSBlocks(version: number, errorCorrectLevel: number): RSBlockInfo[] {
+    let offset = 0
+    if (errorCorrectLevel == QR_EC_LEVEL_L) offset = 0
+    else if (errorCorrectLevel == QR_EC_LEVEL_M) offset = 1
+    else if (errorCorrectLevel == QR_EC_LEVEL_Q) offset = 2
+    else if (errorCorrectLevel == QR_EC_LEVEL_H) offset = 3
+
+    const tableIndex = 4 * (version - 1) + offset
+    if (tableIndex < 0 || tableIndex >= RS_BLOCK_TABLE.length) {
+        return []
+    }
+
+    const row = RS_BLOCK_TABLE[tableIndex]
+    const list: RSBlockInfo[] = []
+    const count = Math.floor(row.length / 3)
+
+    for (let n = 0; n < count; n++) {
+        const numBlocks = row[3 * n + 0]
+        const total = row[3 * n + 1]
+        const data = row[3 * n + 2]
+        for (let i = 0; i < numBlocks; i++) {
+            list.push({ totalCount: total, dataCount: data } as RSBlockInfo)
+        }
+    }
+    return list
+}
+
+function getErrorCorrectPolynomial(errorCorrectLength: number): Polynomial {
+    let a = new Polynomial([1], 0)
+    for (let i = 0; i < errorCorrectLength; i++) {
+        a = a.multiply(new Polynomial([1, gexp(i)], 0))
+    }
+    return a
+}
+
+// ==================== 校正图案坐标表 ====================
+const PATTERN_POSITIONS: number[][] = [
+    [],
+    [6, 18],
+    [6, 22],
+    [6, 26],
+    [6, 30],
+    [6, 34],
+    [6, 22, 38],
+    [6, 24, 42],
+    [6, 26, 46],
+    [6, 28, 50]
+]
+
+// ==================== BCH 格式与版本校验码 ====================
+const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
+const G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1)
+
+function getBCHDigit(data: number): number {
+    let digit = 0
+    let d = data
+    while (d != 0) {
+        digit++
+        d >>>= 1
+    }
+    return digit
+}
+
+function getBCHTypeInfo(data: number): number {
+    let d = data << 10
+    while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15)))
+    }
+    return ((data << 10) | d) ^ G15_MASK
+}
+
+// ==================== UTF-8 字符串转字节数组 ====================
+function stringToUtf8ByteArray(str: string): number[] {
+    const bytes: number[] = []
+    for (let i = 0; i < str.length; i++) {
+        const codeVal = str.charCodeAt(i)
+        if (codeVal == null) continue
+        const code: number = codeVal!
+        if (code < 0x80) {
+            bytes.push(code)
+        } else if (code < 0x800) {
+            bytes.push(0xc0 | (code >> 6))
+            bytes.push(0x80 | (code & 0x3f))
+        } else if (code < 0xd800 || code >= 0xe000) {
+            bytes.push(0xe0 | (code >> 12))
+            bytes.push(0x80 | ((code >> 6) & 0x3f))
+            bytes.push(0x80 | (code & 0x3f))
+        } else {
+            // Surrogate pair (4 bytes UTF-8)
+            i++
+            const nextVal = i < str.length ? str.charCodeAt(i) : null
+            const nextCode: number = nextVal != null ? nextVal! : 0
+            const fullChar = 0x10000 + (((code & 0x3ff) << 10) | (nextCode & 0x3ff))
+            bytes.push(0xf0 | (fullChar >> 18))
+            bytes.push(0x80 | ((fullChar >> 12) & 0x3f))
+            bytes.push(0x80 | ((fullChar >> 6) & 0x3f))
+            bytes.push(0x80 | (fullChar & 0x3f))
+        }
+    }
+    return bytes
+}
+
+// ==================== 掩模与惩罚分计算 ====================
+function getMaskCondition(maskPattern: number, r: number, c: number): boolean {
+    if (maskPattern == 0) return (r + c) % 2 == 0
+    if (maskPattern == 1) return r % 2 == 0
+    if (maskPattern == 2) return c % 3 == 0
+    if (maskPattern == 3) return (r + c) % 3 == 0
+    if (maskPattern == 4) return (Math.floor(r / 2) + Math.floor(c / 3)) % 2 == 0
+    if (maskPattern == 5) return ((r * c) % 2) + ((r * c) % 3) == 0
+    if (maskPattern == 6) return (((r * c) % 2) + ((r * c) % 3)) % 2 == 0
+    if (maskPattern == 7) return (((r * c) % 3) + ((r + c) % 2)) % 2 == 0
+    return false
+}
+
+// ==================== 二维码核心生成器类 ====================
+export class QRCodeGenerator {
+    version: number = 1
+    errorCorrectLevel: number = QR_EC_LEVEL_M
+    moduleCount: number = 21
+    modules: (boolean | null)[][] = []
+
+    constructor(version: number = 0, errorCorrectLevel: number = QR_EC_LEVEL_M) {
+        this.version = version
+        this.errorCorrectLevel = errorCorrectLevel
+    }
+
+    /**
+     * 根据输入文本生成完整的 QR 二维码模块矩阵
+     * @param text 输入文本或 URL
+     * @returns 2D 布尔矩阵（true: 黑点, false: 白点）
+     */
+    generate(text: string): boolean[][] {
+        const utf8Bytes = stringToUtf8ByteArray(text)
+
+        // 1. 自动选择最佳版本 (Version 1 ~ 10)
+        let ver = this.version
+        if (ver < 1) {
+            ver = 1
+            for (let v = 1; v <= 10; v++) {
+                const rsBlocks = getRSBlocks(v, this.errorCorrectLevel)
+                let totalDataCapacity = 0
+                for (let i = 0; i < rsBlocks.length; i++) {
+                    totalDataCapacity += rsBlocks[i].dataCount
+                }
+                const bitCount = 4 + (v < 10 ? 8 : 16) + utf8Bytes.length * 8
+                if (bitCount <= totalDataCapacity * 8) {
+                    ver = v
+                    break
+                }
+                if (v == 10) {
+                    ver = 10
+                }
+            }
+        }
+        this.version = ver
+        this.moduleCount = this.version * 4 + 17
+
+        // 2. 编码数据位流
+        const dataBytes = this.createDataBytes(utf8Bytes)
+
+        // 3. 构建并选择最优掩模矩阵
+        let bestMask = 0
+        let minLostPoint = 99999999
+
+        for (let mask = 0; mask < 8; mask++) {
+            this.buildMatrix(dataBytes, mask)
+            const lostPoint = this.getLostPoint()
+            if (mask == 0 || lostPoint < minLostPoint) {
+                minLostPoint = lostPoint
+                bestMask = mask
+            }
+        }
+
+        // 4. 以最优掩模生成最终矩阵
+        this.buildMatrix(dataBytes, bestMask)
+
+        // 5. 格式化返回纯布尔矩阵
+        const result: boolean[][] = []
+        for (let r = 0; r < this.moduleCount; r++) {
+            const row: boolean[] = []
+            for (let c = 0; c < this.moduleCount; c++) {
+                row.push(this.modules[r][c] == true)
+            }
+            result.push(row)
+        }
+        return result
+    }
+
+    private createDataBytes(utf8Bytes: number[]): number[] {
+        const rsBlocks = getRSBlocks(this.version, this.errorCorrectLevel)
+        const buffer = new BitBuffer()
+
+        // 8-bit Byte 模式指示符 (0100)
+        buffer.put(4, 4)
+        // 字符数指示符
+        buffer.put(utf8Bytes.length, this.version < 10 ? 8 : 16)
+        // 写入 UTF-8 数据字节
+        for (let i = 0; i < utf8Bytes.length; i++) {
+            buffer.put(utf8Bytes[i], 8)
+        }
+
+        let totalDataCount = 0
+        for (let i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount
+        }
+
+        // 终止符 (0000)
+        if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+            buffer.put(0, 4)
+        } else {
+            buffer.put(0, totalDataCount * 8 - buffer.getLengthInBits())
+        }
+
+        // 填充至 8 位对齐
+        while (buffer.getLengthInBits() % 8 != 0) {
+            buffer.putBit(false)
+        }
+
+        // 填充交替的 PAD 字节 (0xEC, 0x11)
+        while (buffer.getLengthInBits() < totalDataCount * 8) {
+            buffer.put(0xec, 8)
+            if (buffer.getLengthInBits() < totalDataCount * 8) {
+                buffer.put(0x11, 8)
+            }
+        }
+
+        // 构造 RS 纠错块并交织数据
+        let offset = 0
+        let maxDataCount = 0
+        let maxEcCount = 0
+        const dcdata: number[][] = []
+        const ecdata: number[][] = []
+
+        for (let r = 0; r < rsBlocks.length; r++) {
+            const dcCount = rsBlocks[r].dataCount
+            const ecCount = rsBlocks[r].totalCount - dcCount
+
+            if (dcCount > maxDataCount) maxDataCount = dcCount
+            if (ecCount > maxEcCount) maxEcCount = ecCount
+
+            const dc: number[] = []
+            for (let i = 0; i < dcCount; i++) {
+                dc.push(buffer.buffer[i + offset])
+            }
+            offset += dcCount
+            dcdata.push(dc)
+
+            const rsPoly = getErrorCorrectPolynomial(ecCount)
+            const rawPoly = new Polynomial(dc, rsPoly.getLength() - 1)
+            const modPoly = rawPoly.mod(rsPoly)
+
+            const ec: number[] = []
+            for (let i = 0; i < rsPoly.getLength() - 1; i++) {
+                const modIndex = i + modPoly.getLength() - (rsPoly.getLength() - 1)
+                ec.push(modIndex >= 0 ? modPoly.get(modIndex) : 0)
+            }
+            ecdata.push(ec)
+        }
+
+        const totalCodeCount = totalDataCount + rsBlocks.length * maxEcCount
+        const result: number[] = []
+
+        // 数据块交织
+        for (let i = 0; i < maxDataCount; i++) {
+            for (let r = 0; r < rsBlocks.length; r++) {
+                if (i < dcdata[r].length) {
+                    result.push(dcdata[r][i])
+                }
+            }
+        }
+
+        // 纠错块交织
+        for (let i = 0; i < maxEcCount; i++) {
+            for (let r = 0; r < rsBlocks.length; r++) {
+                if (i < ecdata[r].length) {
+                    result.push(ecdata[r][i])
+                }
+            }
+        }
+
+        return result
+    }
+
+    private buildMatrix(data: number[], maskPattern: number) {
+        this.modules = []
+        for (let r = 0; r < this.moduleCount; r++) {
+            const row: (boolean | null)[] = []
+            for (let c = 0; c < this.moduleCount; c++) {
+                row.push(null)
+            }
+            this.modules.push(row)
+        }
+
+        // 放置定位图案 (Finder Patterns)
+        this.setupPositionProbePattern(0, 0)
+        this.setupPositionProbePattern(this.moduleCount - 7, 0)
+        this.setupPositionProbePattern(0, this.moduleCount - 7)
+
+        // 放置校正图案 (Alignment Patterns)
+        this.setupPositionAdjustPattern()
+
+        // 放置时序图案 (Timing Patterns)
+        this.setupTimingPattern()
+
+        // 放置格式化信息 (Type Info)
+        this.setupTypeInfo(maskPattern)
+
+        // 填充数据并应用掩模
+        this.mapData(data, maskPattern)
+    }
+
+    private setupPositionProbePattern(row: number, col: number) {
+        for (let r = -1; r <= 7; r++) {
+            if (row + r <= -1 || this.moduleCount <= row + r) continue
+            for (let c = -1; c <= 7; c++) {
+                if (col + c <= -1 || this.moduleCount <= col + c) continue
+                const isBlack = (0 <= r && r <= 6 && (c == 0 || c == 6)) ||
+                    (0 <= c && c <= 6 && (r == 0 || r == 6)) ||
+                    (2 <= r && r <= 4 && 2 <= c && c <= 4)
+                this.modules[row + r][col + c] = isBlack
+            }
+        }
+    }
+
+    private setupPositionAdjustPattern() {
+        if (this.version < 2 || this.version > 10) return
+        const pos = PATTERN_POSITIONS[this.version - 1]
+        for (let i = 0; i < pos.length; i++) {
+            for (let j = 0; j < pos.length; j++) {
+                const r = pos[i]
+                const c = pos[j]
+                if (this.modules[r][c] != null) continue
+                for (let dr = -2; dr <= 2; dr++) {
+                    for (let dc = -2; dc <= 2; dc++) {
+                        const isBlack = dr == -2 || dr == 2 || dc == -2 || dc == 2 || (dr == 0 && dc == 0)
+                        this.modules[r + dr][c + dc] = isBlack
+                    }
+                }
+            }
+        }
+    }
+
+    private setupTimingPattern() {
+        for (let i = 8; i < this.moduleCount - 8; i++) {
+            if (this.modules[i][6] == null) {
+                this.modules[i][6] = i % 2 == 0
+            }
+            if (this.modules[6][i] == null) {
+                this.modules[6][i] = i % 2 == 0
+            }
+        }
+    }
+
+    private setupTypeInfo(maskPattern: number) {
+        const data = (this.errorCorrectLevel << 3) | maskPattern
+        const bits = getBCHTypeInfo(data)
+
+        for (let i = 0; i < 15; i++) {
+            const isBlack = ((bits >>> i) & 1) == 1
+            if (i < 6) {
+                this.modules[i][8] = isBlack
+            } else if (i < 8) {
+                this.modules[i + 1][8] = isBlack
+            } else {
+                this.modules[this.moduleCount - 15 + i][8] = isBlack
+            }
+
+            if (i < 8) {
+                this.modules[8][this.moduleCount - i - 1] = isBlack
+            } else if (i < 9) {
+                this.modules[8][15 - i - 1 + 1] = isBlack
+            } else {
+                this.modules[8][15 - i - 1] = isBlack
+            }
+        }
+        // 暗模块 (Dark Module)
+        this.modules[this.moduleCount - 8][8] = true
+    }
+
+    private mapData(data: number[], maskPattern: number) {
+        let inc = -1
+        let row = this.moduleCount - 1
+        let bitIndex = 7
+        let byteIndex = 0
+
+        for (let col = this.moduleCount - 1; col > 0; col -= 2) {
+            if (col == 6) col--
+            while (true) {
+                for (let c = 0; c < 2; c++) {
+                    if (this.modules[row][col - c] == null) {
+                        let isBlack = false
+                        if (byteIndex < data.length) {
+                            isBlack = ((data[byteIndex] >>> bitIndex) & 1) == 1
+                        }
+                        const mask = getMaskCondition(maskPattern, row, col - c)
+                        if (mask) {
+                            isBlack = !isBlack
+                        }
+                        this.modules[row][col - c] = isBlack
+                        bitIndex--
+                        if (bitIndex == -1) {
+                            byteIndex++
+                            bitIndex = 7
+                        }
+                    }
+                }
+                row += inc
+                if (row < 0 || this.moduleCount <= row) {
+                    row -= inc
+                    inc = -inc
+                    break
+                }
+            }
+        }
+    }
+
+    private getLostPoint(): number {
+        let lostPoint = 0
+        const count = this.moduleCount
+
+        // 规则 1: 连续同色模块
+        for (let r = 0; r < count; r++) {
+            let sameCount = 0
+            let prevColor: boolean | null = null
+            for (let c = 0; c < count; c++) {
+                const color = this.modules[r][c]
+                if (color == prevColor) {
+                    sameCount++
+                } else {
+                    if (sameCount >= 5) {
+                        lostPoint += (3 + sameCount - 5)
+                    }
+                    prevColor = color
+                    sameCount = 1
+                }
+            }
+            if (sameCount >= 5) {
+                lostPoint += (3 + sameCount - 5)
+            }
+        }
+
+        // 规则 2: 2x2 同色块
+        for (let r = 0; r < count - 1; r++) {
+            for (let c = 0; c < count - 1; c++) {
+                const countBlack = (this.modules[r][c] == true ? 1 : 0) +
+                    (this.modules[r + 1][c] == true ? 1 : 0) +
+                    (this.modules[r][c + 1] == true ? 1 : 0) +
+                    (this.modules[r + 1][c + 1] == true ? 1 : 0)
+                if (countBlack == 0 || countBlack == 4) {
+                    lostPoint += 3
+                }
+            }
+        }
+
+        return lostPoint
+    }
+}

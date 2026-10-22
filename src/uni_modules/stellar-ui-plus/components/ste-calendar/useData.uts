@@ -1,0 +1,34 @@
+// useData.uts - uni-app x 版本
+// 用原生 Date 替代 Dayjs
+
+import { ref } from 'vue'
+
+export function useData() {
+	const initing = ref(true)
+	const startDate = ref<string | null>(null)
+	const endDate = ref<string | null>(null)
+	const dataList = ref<string[]>([])
+	const contentScrollTop = ref(0)
+	const scrollTop = ref(0)
+	// 用 Date 对象替代 Dayjs
+	const viewDate = ref<Date>(new Date())
+	const viewMonth = ref<string>('')
+
+	const setStartDate = (val : string | null) => { startDate.value = val }
+	const setEndDate = (val : string | null) => { endDate.value = val }
+	const setDataList = (val : string[]) => { dataList.value = val }
+
+	return {
+		initing,
+		startDate,
+		setStartDate,
+		endDate,
+		setEndDate,
+		dataList,
+		setDataList,
+		contentScrollTop,
+		scrollTop,
+		viewDate,
+		viewMonth,
+	}
+}

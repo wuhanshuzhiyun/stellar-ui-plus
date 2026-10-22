@@ -1,0 +1,169 @@
+/**
+ * @file props.uts
+ * @description ste-slide-verify 滑动验证组件 - uni-app x / UTS 强类型属性与契约定义
+ * 提供拖拽滑块基础验证与旋转图片拼合角度校验两种验证模式，内置平滑拖拽跟踪与判定算法。
+ */
+
+/**
+ * 默认滑道与滑块高度（rpx 单位数值）
+ */
+export const DEFAULT_SLIDE_VERIFY_SIZE = 80
+
+/**
+ * 默认旋转校验图片尺寸（rpx 单位数值）
+ */
+export const DEFAULT_SLIDE_VERIFY_IMAGE_SIZE = 168
+
+/**
+ * 默认图片旋转成功角度容差阈值（度数）
+ */
+export const DEFAULT_SLIDE_VERIFY_ANGLE_THRESHOLD = 10
+
+/**
+ * 默认验证成功提示文案
+ */
+export const DEFAULT_SLIDE_VERIFY_SUCCESS_TEXT = '验证成功'
+
+/**
+ * 默认验证失败提示文案
+ */
+export const DEFAULT_SLIDE_VERIFY_FAIL_TEXT = '验证失败'
+
+/**
+ * 默认验证失败红态保留时长（毫秒）
+ */
+export const DEFAULT_SLIDE_VERIFY_FAIL_DURATION = 800
+
+/**
+ * 默认验证成功高亮色彩
+ */
+export const DEFAULT_SLIDE_VERIFY_SUCCESS_COLOR = '#13ce66'
+
+/**
+ * 默认验证失败警示色彩
+ */
+export const DEFAULT_SLIDE_VERIFY_FAIL_COLOR = '#ee0a24'
+
+/**
+ * 滑动验证交互事件明细结构体
+ */
+export type SlideVerifyDetail = {
+	/** 当前交互验证模式：'slide' 基础滑块 | 'image' 旋转图片 */
+	mode : string,
+	/** 当前滑动进度比率（0.0 ~ 1.0） */
+	progress : number,
+	/** 当前图片角度（0 ~ 360 规范化角度） */
+	angle : number,
+	/** 滑块当前水平左偏移像素值 */
+	left : number,
+	/** 滑道最大可滑行距离像素值 */
+	maxLeft : number,
+}
+
+/**
+ * ste-slide-verify 组件 Props 强类型定义
+ */
+export type SlideVerifyProps = {
+	/**
+	 * 验证是否通过的双向绑定值
+	 * @default false
+	 */
+	modelValue ?: boolean,
+	/**
+	 * 验证交互模式：'slide' 基础滑动条 | 'image' 旋转图片校准
+	 * @default 'slide'
+	 */
+	mode ?: string,
+	/**
+	 * 滑道与滑块尺寸高度（支持数字如 80 或字符串如 '80rpx'）
+	 * @default 80
+	 */
+	size ?: any,
+	/**
+	 * 是否禁用手势拖拽
+	 * @default false
+	 */
+	disabled ?: boolean,
+	/**
+	 * 待旋转验证的图片资源 URL（仅在 mode == 'image' 时展示生效）
+	 * @default ''
+	 */
+	imageUrl ?: string,
+	/**
+	 * 旋转图片展示尺寸（支持数字或单位字符串）
+	 * @default 168
+	 */
+	imageSize ?: any,
+	/**
+	 * 旋转图片摆正判定成功容差角度范围（单位：度）
+	 * @default 10
+	 */
+	angleThreshold ?: number,
+	/**
+	 * 默认滑动引导文案（留空则根据模式自适应）
+	 * @default ''
+	 */
+	text ?: string,
+	/**
+	 * 验证成功提示文案
+	 * @default '验证成功'
+	 */
+	successText ?: string,
+	/**
+	 * 验证失败时是否呈现红色失败态并延迟自动复位
+	 * @default true
+	 */
+	showFail ?: boolean,
+	/**
+	 * 验证失败提示文案
+	 * @default '验证失败'
+	 */
+	failText ?: string,
+	/**
+	 * 验证失败后红态保持的时长（毫秒）
+	 * @default 800
+	 */
+	failDuration ?: number,
+	/**
+	 * 拖拽中激活色彩（留空自动跟随主题色）
+	 * @default ''
+	 */
+	activeColor ?: string,
+	/**
+	 * 滑道未激活底色
+	 * @default '#f4f4f5'
+	 */
+	inactiveColor ?: string,
+	/**
+	 * 验证成功色
+	 * @default '#13ce66'
+	 */
+	successColor ?: string,
+	/**
+	 * 验证失败色
+	 * @default '#ee0a24'
+	 */
+	failColor ?: string,
+	/**
+	 * 根节点自定义内联样式映射
+	 */
+	rootStyle ?: UTSJSONObject,
+	/**
+	 * 根节点自定义类名
+	 */
+	customClass ?: string,
+}
+
+/**
+ * 组件对外暴露的方法契约
+ */
+export type SlideVerifyExpose = {
+	/**
+	 * 初始化或重新测量滑道物理宽度
+	 */
+	init : () => void,
+	/**
+	 * 重置滑块状态至初始零位，重新随机生成图片旋转校验角度
+	 */
+	reset : () => void,
+}

@@ -1,0 +1,118 @@
+<template>
+	<view class="ste-table-radio-icon" :style="cmpOuterStyle">
+		<view v-if="showInnerDot" class="radio-inner-dot" :style="cmpInnerStyle" />
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file radio-icon.uvue
+	 * @description 表格单选框图标展示子组件 - uni-app x / UTS 强类型版本
+	 * 负责渲染单选圆圈、选中浅色外圆与实心内圆、禁用与只读等各视觉状态。
+	 */
+	import { computed } from 'vue'
+	import { Color } from '../../utils/Color.uts'
+	import { TableSelectionColorConfig, DEFAULT_SELECTION_COLOR_CONFIG } from '../ste-table/constants.uts'
+
+	defineOptions({
+		name: 'ste-table-radio-icon',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	type RadioIconProps = {
+		/** 是否处于单选勾选状态 */
+		checked ?: boolean,
+		/** 是否处于禁用状态 */
+		disabled ?: boolean,
+		/** 是否处于只读状态 */
+		readonly ?: boolean,
+		/** 选择图标自定义调色板配置 */
+		iconColorConfig ?: TableSelectionColorConfig,
+	}
+
+	const props = withDefaults(defineProps<RadioIconProps>(), {
+		checked: false,
+		disabled: false,
+		readonly: false,
+		iconColorConfig: () => ({ ...DEFAULT_SELECTION_COLOR_CONFIG }) as TableSelectionColorConfig,
+	})
+
+	// ==================== 状态判定与颜色提取 ====================
+	const mainColor = computed(() : string => {
+		const cfg = props.iconColorConfig
+		return cfg.main != null && cfg.main != '' ? cfg.main! : DEFAULT_SELECTION_COLOR_CONFIG.main!
+	})
+
+	const unSelectedColor = computed(() : string => {
+		const cfg = props.iconColorConfig
+		return cfg.unSelected != null && cfg.unSelected != '' ? cfg.unSelected! : DEFAULT_SELECTION_COLOR_CONFIG.unSelected!
+	})
+
+	const disabledColor = computed(() : string => {
+		const cfg = props.iconColorConfig
+		return cfg.disabled != null && cfg.disabled != '' ? cfg.disabled! : DEFAULT_SELECTION_COLOR_CONFIG.disabled!
+	})
+
+	const readonlyColor = computed(() : string => {
+		const cfg = props.iconColorConfig
+		return cfg.readonly != null && cfg.readonly != '' ? cfg.readonly! : DEFAULT_SELECTION_COLOR_CONFIG.readonly!
+	})
+
+	/** 是否展示中心圆点 */
+	const showInnerDot = computed(() : boolean => {
+		if (props.disabled) return false
+		return props.checked || props.readonly
+	})
+
+	// ==================== 外圈样式计算 ====================
+	const cmpOuterStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (props.disabled) {
+			style['backgroundColor'] = disabledColor.value
+			style['borderWidth'] = '0'
+		} else if (props.readonly) {
+			style['backgroundColor'] = Color.formatColor(readonlyColor.value, 0.2)
+			style['borderWidth'] = '0'
+		} else if (props.checked) {
+			style['backgroundColor'] = Color.formatColor(mainColor.value, 0.2)
+			style['borderWidth'] = '0'
+		} else {
+			style['backgroundColor'] = 'transparent'
+			style['borderWidth'] = '2rpx'
+			style['borderStyle'] = 'solid'
+			style['borderColor'] = unSelectedColor.value
+		}
+		return style
+	})
+
+	// ==================== 内圈中心圆点样式计算 ====================
+	const cmpInnerStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (props.readonly) {
+			style['backgroundColor'] = readonlyColor.value
+		} else if (props.checked) {
+			style['backgroundColor'] = mainColor.value
+		}
+		return style
+	})
+</script>
+
+<style scoped>
+.ste-table-radio-icon {
+	width: 32rpx;
+	height: 32rpx;
+	border-radius: 16rpx;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.radio-inner-dot {
+	width: 16rpx;
+	height: 16rpx;
+	border-radius: 8rpx;
+}
+</style>

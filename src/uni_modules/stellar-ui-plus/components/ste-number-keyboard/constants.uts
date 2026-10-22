@@ -1,0 +1,111 @@
+/**
+ * @file constants.uts
+ * @description ste-number-keyboard 数字键盘组件的类型定义、常量与默认参数配置
+ */
+
+/**
+ * 数字键盘组件属性类型定义
+ */
+export type NumberKeyboardProps = {
+    /**
+     * 键盘展示模式
+     * - popup: 底部弹出层展示（默认）
+     * - page: 页面文档流内嵌展示
+     * @default 'popup'
+     */
+    mode ?: string,
+    /**
+     * 当前绑定的输入值，支持 v-model
+     * @default ''
+     */
+    modelValue ?: string,
+    /**
+     * 最大输入长度限制（为 null 或 <= 0 时不限制）
+     * @default null
+     */
+    maxlength ?: number | null,
+    /**
+     * 是否显示键盘，支持 v-model:show (mode='popup' 时生效)
+     * @default false
+     */
+    show ?: boolean,
+    /**
+     * 是否显示右侧功能键（4列模式，右侧为删除/清除/确定）
+     * @default true
+     */
+    rightKeys ?: boolean,
+    /**
+     * 数字按键是否随机乱序排列
+     * @default false
+     */
+    randomKeys ?: boolean,
+    /**
+     * 右侧确定按钮文本
+     * @default '确定'
+     */
+    confirmText ?: string,
+    /**
+     * 确定按钮是否禁用
+     * @default false
+     */
+    confirmDisabled ?: boolean,
+    /**
+     * 自定义按键列表，例如 ['.', '00'] 或 ['X']
+     * @default []
+     */
+    customKeys ?: string[],
+    /**
+     * 是否显示清空按钮
+     * @default true
+     */
+    showClear ?: boolean,
+    /**
+     * 数字按键文字颜色
+     * @default '#000000'
+     */
+    textColor ?: string,
+    /**
+     * 数字按键文字大小 (单位: rpx 或 px 字符串/数字)
+     * @default 48
+     */
+    textSize ?: any,
+    /**
+     * 退格删除图标大小 (单位: rpx 或 px 字符串/数字)
+     * @default 48
+     */
+    backspaceSize ?: any,
+    /**
+     * 确定按钮背景颜色（为空时使用主题色）
+     * @default ''
+     */
+    confirmBg ?: string,
+    /**
+     * 确定按钮文字颜色
+     * @default '#ffffff'
+     */
+    confirmColor ?: string,
+    /**
+     * 按键背景颜色
+     * @default '#ffffff'
+     */
+    keyBg ?: string,
+    /**
+     * 键盘整体背景颜色
+     * @default '#f9f9f9'
+     */
+    background ?: string,
+    /**
+     * 多输入框支持：当前激活的输入框标识键名
+     * @default ''
+     */
+    activeInputRef ?: string,
+    /**
+     * 多输入框支持：所有输入框的值对象集合
+     * @default {}
+     */
+    inputValues ?: UTSJSONObject,
+    /**
+     * 根节点自定义样式
+     */
+    rootStyle ?: UTSJSONObject,
+}

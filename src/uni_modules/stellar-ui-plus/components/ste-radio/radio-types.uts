@@ -1,0 +1,20 @@
+// Radio 组件共享类型定义
+
+export type RadioGroupContext = {
+	getModelValue : () => string,
+	getDirection : () => string,
+	getDisabled : () => boolean,
+	getReadonly : () => boolean,
+	getShape : () => string,
+	getIconSize : () => string,
+	getCheckedColor : () => string,
+	getTextPosition : () => string,
+	getTextSize : () => string,
+	getTextInactiveColor : () => string,
+	getTextActiveColor : () => string,
+	getTextDisabled : () => boolean,
+	getMarginLeft : () => string,
+	getMarginRight : () => string,
+	getColumnGap : () => string,
+	updateValue : (value : string) => void,
+}

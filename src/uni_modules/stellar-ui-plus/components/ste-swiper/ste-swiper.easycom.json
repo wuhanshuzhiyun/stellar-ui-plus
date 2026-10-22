@@ -94,19 +94,19 @@
         },
         {
             "name": "previousMargin",
-            "description": "前边距，可用于露出前一项的一小部分，单位rpx",
-            "type": "number | string",
-            "default": 0
+            "description": "前边距，用于透出上一项[仅Vue支持]",
+            "type": "string",
+            "default": "0px"
         },
         {
             "name": "nextMargin",
-            "description": "后边距，可用于露出后一项的一小部分，单位rpx",
-            "type": "number | string",
-            "default": 0
+            "description": "后边距，用于透出下一项[仅Vue支持]",
+            "type": "string",
+            "default": "0px"
         },
         {
             "name": "highlightActive",
-            "description": "是否启用突出显示模式（当前项正常大小，非当前项缩小）",
+            "description": "是否启用当前激活项高亮放大特效[仅Vue支持]",
             "type": "boolean",
             "default": false,
             "version": "1.22.20"
@@ -138,6 +138,39 @@
                     "description": "提示内容"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，请传入 ste-swiper-item 标签列表"
+        },
+        {
+            "name": "[method]init",
+            "description": "初始化轮播信息，在渲染完成后调用",
+            "params": [],
+            "return": "void"
+        },
+        {
+            "name": "[event]animationfinish",
+            "description": "轮播动画结束时触发",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "{ current, source }"
+                }
+            ]
+        },
+        {
+            "name": "[event]transition",
+            "description": "轮播位置发生改变时触发（支持动画进度计算）",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "{ dx, dy }"
+                }
+            ]
         }
-    ]
+    ],
+    "uvue_diff": {
+        "margins": "Vue 端支持 previousMargin, nextMargin 与 highlightActive 卡片透出与激活高亮；UVue 采用 uni-app x 原生 swiper 基础封装，暂不支持前后露出边距"
+    }
 }

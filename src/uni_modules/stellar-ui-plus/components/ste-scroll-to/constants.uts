@@ -1,0 +1,37 @@
+/**
+ * ste-scroll-to 常量契约与上下文类型定义
+ * 模块职责：规范父子组件依赖注入（provide/inject）协议与跨层级通信数据结构
+ */
+
+/** 父子组件注入使用的 Key */
+export const SCROLL_TO_KEY = 'STE_SCROLL_TO_KEY'
+
+/** 递增序列号生成锚点 DOM ID */
+let scrollToItemSeq = 0
+
+/**
+ * 生成唯一的滚动锚点元素 ID
+ * @return 唯一字符串 ID
+ */
+export function generateScrollToItemId() : string {
+	scrollToItemSeq++
+	return `ste_scroll_anchor_${scrollToItemSeq}`
+}
+
+/**
+ * 子项注册数据结构契约
+ */
+export type ScrollToItemRegisterData = {
+	/** 锚点唯一 ID */
+	id : string
+}
+
+/**
+ * 滚动锚点容器注入给子项的上下文上下文契约
+ */
+export type ScrollToContext = {
+	/** 子项挂载注册 */
+	registerItem : (item : ScrollToItemRegisterData) => void
+	/** 子项卸载注销 */
+	unregisterItem : (id : string) => void
+}

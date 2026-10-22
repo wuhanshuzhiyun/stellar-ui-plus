@@ -1,0 +1,31 @@
+/**
+ * @file constants.uts
+ * @description ste-step 单步骤项属性类型定义
+ */
+
+export type StepProps = {
+    /**
+     * 步骤标题文案
+     * @default ''
+     */
+    title ?: string,
+    /**
+     * 步骤描述性文案
+     * @default ''
+     */
+    description ?: string,
+    /**
+     * 自定义步骤图标 Unicode 字符（例如 '&#xe67a;'）
+     * @default ''
+     */
+    icon ?: string,
+    /**
+     * 当前步骤指定状态（可选: 'finished' 已完成 | 'process' 进行中 | 'error' 失败），未指定时根据 active 自动计算
+     * @default ''
+     */
+    status ?: string,
+    /**
+     * 根节点自定义样式
+     */
+    rootStyle ?: UTSJSONObject,
+}

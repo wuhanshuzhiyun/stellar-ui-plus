@@ -1,0 +1,143 @@
+/**
+ * @file RingRenderer.uts
+ * @description 环形图渲染策略器
+ * 在饼图扇区基础上中空挖孔，支持中心核心指标/指标标题展示、圆环展开动效与占比文案呈现
+ */
+
+import { ChartRect, ChartSeriesItem, PieRingExtraConfig, RingRenderResult } from '../types/uts-types.uts'
+
+/**
+ * 环形图渲染策略类
+ */
+export class RingRenderer {
+	/**
+	 * 执行环形图绘制
+	 * @param ctx 渲染上下文
+	 * @param series 数据序列
+	 * @param plotArea 绘图区
+	 * @param colors 调色板
+	 * @param progress 补间动画进度 (0.0 ~ 1.0)
+	 * @param extra 额外配置（内圆比例、中心标题/副标题）
+	 * @param dataLabel 是否显示标签
+	 * @returns 几何尺寸与扇区角度
+	 */
+	public static render(
+		ctx: CanvasRenderingContext2D,
+		series: ChartSeriesItem[],
+		plotArea: ChartRect,
+		colors: string[],
+		progress: number,
+		extra: PieRingExtraConfig | null = null,
+		dataLabel: boolean = true
+	): RingRenderResult {
+		const cx = plotArea.left + plotArea.width / 2;
+		const cy = plotArea.top + plotArea.height / 2;
+		const radius = Math.min(plotArea.width, plotArea.height) / 2 - 10;
+		const ringRatio = extra?.ringRadiusRatio != null ? extra?.ringRadiusRatio! : 0.6;
+		const innerRadius = radius * ringRatio;
+
+		const result: RingRenderResult = {
+			sectorAngles: [] as number[][],
+			centerX: cx,
+			centerY: cy,
+			radius: radius,
+			innerRadius: innerRadius
+		};
+
+		if (series.length == 0 || radius <= 10) return result;
+
+		// 1. 计算总量
+		let total = 0;
+		for (let i = 0; i < series.length; i++) {
+			const s = series[i];
+			if (s.show == null || s.show!) {
+				const val = s.value != null ? s.value! : (s.data.length > 0 ? s.data[0] : 0);
+				if (val > 0) total += val;
+			}
+		}
+
+		if (total <= 0) return result;
+
+		let currentAngle = -Math.PI / 2;
+
+		ctx.save();
+		ctx.font = '10px sans-serif';
+
+		// 2. 绘制各环形扇区
+		for (let i = 0; i < series.length; i++) {
+			const s = series[i];
+			if (s.show != null && !s.show!) {
+				result.sectorAngles.push([0, 0]);
+				continue;
+			}
+
+			const val = s.value != null ? s.value! : (s.data.length > 0 ? s.data[0] : 0);
+			const ratio = val / total;
+			const sweepAngle = Math.PI * 2 * ratio * progress;
+			const startAngle = currentAngle;
+			const endAngle = startAngle + sweepAngle;
+
+			let normStart = startAngle;
+			let normEnd = endAngle;
+			while (normStart < 0) normStart += Math.PI * 2;
+			while (normEnd < 0) normEnd += Math.PI * 2;
+			result.sectorAngles.push([normStart, normEnd]);
+
+			const color = s.color != null && s.color != '' ? s.color! : colors[i % colors.length];
+
+			// 绘制中空圆环段 (外圆顺时针 -> 内圆逆时针)
+			ctx.fillStyle = color;
+			ctx.strokeStyle = '#ffffff';
+			ctx.lineWidth = 1.5;
+
+			ctx.beginPath();
+			ctx.arc(cx, cy, radius, startAngle, endAngle, false);
+			ctx.arc(cx, cy, innerRadius, endAngle, startAngle, true);
+			ctx.closePath();
+			ctx.fill();
+			ctx.stroke();
+
+			// 环带上数据显示
+			if (dataLabel && progress >= 0.8 && ratio >= 0.08) {
+				const midAngle = startAngle + sweepAngle / 2;
+				const textRadius = (radius + innerRadius) / 2;
+				const tx = cx + Math.cos(midAngle) * textRadius;
+				const ty = cy + Math.sin(midAngle) * textRadius;
+
+				const percentText = (ratio * 100).toFixed(0) + '%';
+				ctx.fillStyle = '#ffffff';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.fillText(percentText, tx, ty);
+			}
+
+			currentAngle = endAngle;
+		}
+
+		// 3. 绘制中心中空标题与副标题
+		const title = extra?.title != null ? extra?.title! : '';
+		const subtitle = extra?.subtitle != null ? extra?.subtitle! : '';
+
+		if (title != '' || subtitle != '') {
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+
+			if (title != '' && subtitle != '') {
+				ctx.font = 'bold 15px sans-serif';
+				ctx.fillStyle = '#262626';
+				ctx.fillText(title, cx, cy - 8);
+
+				ctx.font = '10px sans-serif';
+				ctx.fillStyle = '#8c8c8c';
+				ctx.fillText(subtitle, cx, cy + 10);
+			} else {
+				ctx.font = 'bold 15px sans-serif';
+				ctx.fillStyle = '#262626';
+				ctx.fillText(title != '' ? title : subtitle, cx, cy);
+			}
+		}
+
+		ctx.restore();
+		return result;
+	}
+}

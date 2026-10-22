@@ -6,9 +6,9 @@
     "attributes": [
         {
             "name": "type",
-            "description": "组件类型",
-            "type": "String",
-            "default": "date",
+            "description": "选择器展示类型[仅Vue支持]",
+            "type": "string",
+            "default": "",
             "values": [
                 {
                     "name": "date",
@@ -36,5 +36,8 @@
             "name": "[slot]desc",
             "description": "用户描述"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "type_prop": "Vue 端包含 type 预设类型；UVue 端统一通过 props 直接配置"
+    }
 }

@@ -1,0 +1,11 @@
+{
+    "name": "ste-scroll-to-item",
+    "description": "滚动导航锚点子项组件，用于承载各个分组的具体内容并自动向父级注册锚点。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-scroll-to",
+    "attributes": [
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，承载当前锚点项的具体视图内容"
+        }
+    ]
+}

@@ -1,0 +1,100 @@
+/**
+ * ste-login 登录组件常量与类型定义
+ * 
+ * @description 提供了 ste-login 组件在 UTS 环境下的强类型支持，包括登录模式、表单项类型、协议与按钮配置规范。
+ */
+
+/**
+ * 登录模式
+ * - `base`: 基础模式（居中 Logo、协议多选与主/次按钮组）
+ * - `mode1`: 综合模式（半屏浮动卡片、Tab 切换、多类型输入表单项与验证码）
+ */
+export type LoginMode = 'base' | 'mode1';
+
+/**
+ * 表单项输入控件类型
+ * - `number`: 纯数字或手机账号输入框
+ * - `password`: 密码输入框（密文展示）
+ * - `select`: 下拉列表选择框
+ * - `txt`: 提示信息纯文本卡片
+ * - `validate`: 短信验证码输入框（支持 60 秒倒计时）
+ */
+export type LoginItemType = 'number' | 'password' | 'select' | 'txt' | 'validate';
+
+/**
+ * 基础通用配置条目
+ */
+export type BaseConfigItem = {
+	/** 显示标题或选项文本 */
+	title : string;
+	/** 唯一键名 */
+	key : string;
+	/** 自定义样式属性 */
+	style ?: UTSJSONObject;
+};
+
+/**
+ * 协议条款数据结构
+ */
+export type ProtocolItem = {
+	/** 协议标题名称（如“用户注册协议”） */
+	title : string;
+	/** 协议标识 Key */
+	key : string;
+	/** 协议详情链接或富文本内容（可选） */
+	url ?: string;
+};
+
+/**
+ * 按钮项配置结构
+ */
+export type BtnItem = {
+	/** 按钮文案 */
+	title : string;
+	/** 按钮标识 Key */
+	key : string;
+	/** 是否为全圆角按钮 */
+	round ?: boolean;
+	/** 按钮独立自定义样式（背景色、边框、文字颜色等） */
+	style ?: UTSJSONObject;
+};
+
+/**
+ * 登录表单具体输入项
+ */
+export type LoginItem = {
+	/** 标题文案/标签 */
+	title : string;
+	/** 字段唯一标识 Key */
+	key : string;
+	/** 控件类型，默认为 number */
+	type ?: string;
+	/** 输入框提示占位文案 */
+	placeholder ?: string;
+	/** 默认/当前输入值 */
+	value ?: string;
+	/** 最大可输入字符数 */
+	maxlength ?: number;
+	/** 是否禁用控件 */
+	disabled ?: boolean;
+	/** 是否只读控件 */
+	readonly ?: boolean;
+	/** 左侧前缀图标代码 */
+	icon ?: string;
+	/** 自定义控件样式 */
+	style ?: UTSJSONObject;
+	/** 当 type='select' 时的下拉候选数据列表 */
+	selectData ?: BaseConfigItem[];
+};
+
+/**
+ * 登录表单 Tab 分组配置
+ */
+export type LoginGroupItem = {
+	/** Tab 分组标题 */
+	title : string;
+	/** Tab 分组唯一 Key */
+	key : string;
+	/** 分组包含的具体表单输入项列表 */
+	items : LoginItem[];
+};

@@ -1,0 +1,483 @@
+/**
+ * @file date.uts
+ * @description ste-calendar 日历核心日期计算与格式化工具模块 (uni-app x / UTS 纯原生实现)
+ * 采用原生 Date 替代外部 dayjs 依赖，实现轻量级月份元数据推导、按需构建单元格矩阵、
+ * 以及前后无限滚动 (Infinite Scrolling) 与自定义月份标题格式化。
+ */
+
+// ============== 类型定义 ==============
+
+/**
+ * 日期标记点项定义
+ */
+export type SignItem = {
+	content : string,
+	style ?: UTSJSONObject,
+	className ?: string,
+	key ?: number,
+}
+
+export type SignType = SignItem[]
+
+/**
+ * 日期单元格详细数据结构
+ */
+export type WeekType = {
+	dayText : string,
+	key : string,
+	disabled : boolean,
+	weekend : boolean,
+	today : boolean,
+	date : string,
+	signs : SignType | null,
+}
+
+/**
+ * 月份详细数据结构（包含已渲染的完整星期单元格矩阵）
+ */
+export type MonthType = {
+	year : number,
+	month : number,
+	monthText : string,
+	bgText : string,
+	key : string,
+	weeks : WeekType[][],
+}
+
+/**
+ * 月份轻量元数据结构（用于虚拟长列表绝对高度推导与滑动窗口快速索引）
+ * 仅保留轻量数值与字符串，不创建庞大的日期单元格对象，实现千月级毫秒计算与恒定微小内存开销
+ */
+export type MonthMeta = {
+	key : string,
+	year : number,
+	month : number,
+	monthText : string,
+	bgText : string,
+	weeksCount : number,
+	height : number,
+	top : number,
+	end : number,
+}
+
+/**
+ * 月份元数据推导计算结果
+ */
+export type MonthMetasResult = {
+	metas : MonthMeta[],
+	totalHeight : number,
+}
+
+/**
+ * 日历全量数据结构（供兼容接口返回）
+ */
+export type CalendarData = {
+	monthDatas : MonthType[],
+	weekTexts : string[],
+}
+
+export type DateType = string | number | Date | null
+
+// ============== 工具函数 ==============
+
+/**
+ * 数字补零辅助函数 (保证两位宽度)
+ * @param n 原始数字
+ * @return 两位字符串
+ */
+function pad2(n : number) : string {
+	return n < 10 ? '0' + n : '' + n
+}
+
+/**
+ * 将任意日期类型 (string | number | Date) 安全转为 Date 对象
+ * @param value 输入的日期表示
+ * @return 标准原生 Date 对象
+ */
+export function toDate(value : DateType) : Date {
+	if (value instanceof Date) return value
+	if (typeof value === 'number') return new Date(value)
+	if (value == null) return new Date()
+	// 字符串解析兼容
+	const str = value as string
+	// 兼容 YYYY-MM-DD 或 YYYY-MM-DD HH:mm:ss 或 YYYY/MM/DD
+	const parts = str.split(/[\-\/ :]/)
+	if (parts.length >= 2) {
+		const y = parseInt(parts[0]!)
+		const m = parseInt(parts[1]!) - 1
+		const d = parts.length >= 3 ? parseInt(parts[2]!) : 1
+		const h = parts.length >= 4 ? parseInt(parts[3]!) : 0
+		const mi = parts.length >= 5 ? parseInt(parts[4]!) : 0
+		const s = parts.length >= 6 ? parseInt(parts[5]!) : 0
+		return new Date(y, m, d, h, mi, s)
+	}
+	return new Date(str)
+}
+
+/**
+ * 格式化日期对象为指定模板字符串
+ * 支持占位符: YYYY(年)、MM(月)、DD(日)、HH(时)、mm(分)、ss(秒)
+ * @param date 目标日期
+ * @param formatter 格式化模板，默认 'YYYY-MM-DD'
+ * @return 格式化后的字符串
+ */
+export function formatDate(date : DateType, formatter : string = 'YYYY-MM-DD') : string {
+	const d = toDate(date)
+	let result = formatter
+	const y = d.getFullYear()
+	const m = d.getMonth() + 1
+	const day = d.getDate()
+	const h = d.getHours()
+	const min = d.getMinutes()
+	const s = d.getSeconds()
+
+	// 先替换长占位符，再替换单字符短占位符，防止短占位符破坏长标识
+	result = result.replace('YYYY', '' + y)
+	result = result.replace('YY', ('' + y).slice(-2))
+	result = result.replace('MM', pad2(m))
+	result = result.replace('M', '' + m)
+	result = result.replace('DD', pad2(day))
+	result = result.replace('D', '' + day)
+	result = result.replace('HH', pad2(h))
+	result = result.replace('H', '' + h)
+	result = result.replace('mm', pad2(min))
+	result = result.replace('m', '' + min)
+	result = result.replace('ss', pad2(s))
+	result = result.replace('s', '' + s)
+	return result
+}
+
+/**
+ * 格式化月份标题展示文本
+ * @param date 当前月份的 Date 实例
+ * @param monthFormatter 月份格式化模板，如 'YYYY年MM月'、'YYYY年M月'、'YYYY-MM'
+ * @return 格式化后的月份展示文本
+ */
+export function formatMonthTitle(date : Date, monthFormatter : string = 'YYYY年MM月') : string {
+	let fmt = monthFormatter
+	if (fmt == '') fmt = 'YYYY年MM月'
+	const y = date.getFullYear()
+	const m = date.getMonth() + 1
+	fmt = fmt.replace('YYYY', '' + y)
+	fmt = fmt.replace('YY', ('' + y).slice(-2))
+	// 关键修复：先匹配双 MM (01~12)，再匹配单 M (1~12)
+	fmt = fmt.replace('MM', pad2(m))
+	fmt = fmt.replace('M', '' + m)
+	return fmt
+}
+
+/**
+ * 获取指定年月的自然天数
+ * @param year 公元年份
+ * @param month 0-indexed 月份（0 代表 1 月，11 代表 12 月）
+ * @return 当月实际天数（28、29、30 或 31）
+ */
+export function getMonthDays(year : number, month : number) : number {
+	const isLeapYear = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
+	const daysCount = [31, isLeapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+	return daysCount[month]!
+}
+
+/**
+ * 纯数学计算指定年月包含的周数（日历网格行数，4、5 或 6 行）
+ * 公式：(当月天数 + 1号所在星期) / 7 向上取整
+ * @param year 年份
+ * @param monthZeroIndexed 0-indexed 月份（0-11）
+ */
+export function calcMonthWeeksCount(year : number, monthZeroIndexed : number) : number {
+	const daysCount = getMonthDays(year, monthZeroIndexed)
+	const firstDay = new Date(year, monthZeroIndexed, 1).getDay()
+	return Math.ceil((daysCount + firstDay) / 7.0)
+}
+
+/**
+ * 纯数学计算指定月份卡片的总物理高度
+ * @param weeksCount 当月包含的周行数
+ * @param rowHeight 单行行高 (px)
+ * @param headerHeight 月份头部标题高度 (px)
+ */
+export function calcMonthHeight(weeksCount : number, rowHeight : number = 63, headerHeight : number = 40) : number {
+	return headerHeight + weeksCount * rowHeight
+}
+
+/**
+ * 二分查找根据滚动条垂直偏移量快速定位目标月份索引
+ * @param st 当前滚动距离 scrollTop (px)
+ * @param metas 月份轻量元数据数组
+ * @returns 目标月份的下标索引
+ */
+export function findMonthIndexByScrollTop(st : number, metas : MonthMeta[]) : number {
+	let low = 0
+	let high = metas.length - 1
+	while (low <= high) {
+		const mid = Math.floor((low + high) / 2.0)
+		const meta = metas[mid]
+		if (st < meta.top) {
+			high = mid - 1
+		} else if (st >= meta.end) {
+			low = mid + 1
+		} else {
+			return mid
+		}
+	}
+	return Math.max(0, Math.min(metas.length - 1, low))
+}
+
+/**
+ * 生成轻量级月份元数据列表及其绝对高度坐标体系
+ * 采用纯数学公式计算与前缀和累加，不创建具体日期单元格对象，百月级推导耗时 < 1ms
+ *
+ * @param minDate 最小可选日期限制
+ * @param maxDate 最大可选日期限制
+ * @param defaultDate 默认定位日期
+ * @param monthCount 渲染月份数
+ * @param viewStart 可视起始日期
+ * @param viewEnd 可视截止日期
+ * @param monthFormatter 月份标题展示格式化模板
+ * @param infinite 是否开启前后无限滚动模式
+ * @param infiniteYears 无限模式下单向前溯/后延的年份跨度 (默认 10 年)
+ * @param rowHeight 单元格行高 (px)
+ * @param headerHeight 月份头部高度 (px)
+ * @return 包含月份元数据数组及总推导高度的对象
+ */
+export function generateMonthMetas(
+	minDate : DateType,
+	maxDate : DateType,
+	defaultDate : DateType,
+	monthCount : number = 12,
+	viewStart : DateType = null,
+	viewEnd : DateType = null,
+	monthFormatter : string = 'YYYY年MM月',
+	infinite : boolean = false,
+	infiniteYears : number = 10,
+	rowHeight : number = 63,
+	headerHeight : number = 40
+) : MonthMetasResult {
+	const defaultDay = defaultDate != null ? toDate(defaultDate) : new Date()
+	let sY : number
+	let sM : number
+	let eY : number
+	let eM : number
+
+	// 1. 优先使用显式指定的可视起始/截止日期
+	const effectiveStart = viewStart != null ? viewStart : (infinite ? null : minDate)
+	const effectiveEnd = viewEnd != null ? viewEnd : (infinite ? null : maxDate)
+
+	if (effectiveStart != null) {
+		const start = toDate(effectiveStart)
+		sY = start.getFullYear()
+		sM = start.getMonth() + 1
+	} else if (infinite) {
+		// 开启前后无限滚动模式且无限定起始：以当前基准日期向前推演 N 年
+		sY = defaultDay.getFullYear() - infiniteYears
+		sM = 1
+	} else {
+		// 普通模式：以 defaultDate 作为起始月份
+		sY = defaultDay.getFullYear()
+		sM = defaultDay.getMonth() + 1
+	}
+
+	if (effectiveEnd != null) {
+		const end = toDate(effectiveEnd)
+		eY = end.getFullYear()
+		eM = end.getMonth() + 1
+	} else if (infinite) {
+		// 开启前后无限滚动模式且无限定截止：以当前基准日期向后推演 N 年
+		eY = defaultDay.getFullYear() + infiniteYears
+		eM = 12
+	} else {
+		// 普通模式：根据 monthCount 计算截止年份与月份
+		const totalMonths = sM + monthCount - 1
+		eY = sY + Math.floor((totalMonths - 1) / 12.0)
+		eM = ((totalMonths - 1) % 12) + 1
+	}
+
+	const metas : MonthMeta[] = []
+	let currentTop = 0.0
+
+	for (let y = sY; y <= eY; y++) {
+		const startMonth = (y == sY ? sM : 1)
+		const endMonth = (y == eY ? eM : 12)
+		for (let m = startMonth; m <= endMonth; m++) {
+			const monthDate = new Date(y, m - 1, 1)
+			const key = `${y}-${pad2(m)}`
+			const weeksCount = calcMonthWeeksCount(y, m - 1)
+			const height = calcMonthHeight(weeksCount, rowHeight, headerHeight)
+			const top = currentTop
+			const end = top + height
+			const monthText = formatMonthTitle(monthDate, monthFormatter)
+
+			metas.push({
+				key: key,
+				year: y,
+				month: m,
+				monthText: monthText,
+				bgText: `${m}`,
+				weeksCount: weeksCount,
+				height: height,
+				top: top,
+				end: end
+			} as MonthMeta)
+
+			currentTop = end
+		}
+	}
+
+	return {
+		metas: metas,
+		totalHeight: currentTop
+	} as MonthMetasResult
+}
+
+/**
+ * 按需生成单个月份的详细单元格数据（滑动窗口虚拟化专用）
+ * 仅在月份进入可视视口或预热缓冲区时动态构建其星期与天数对象，离开时即可被 GC 回收
+ *
+ * @param meta 月份轻量元数据
+ * @param minDate 最小可选日期限制
+ * @param maxDate 最大可选日期限制
+ * @param formatter 日期单元格格式化模板，默认 'YYYY-MM-DD'
+ * @param signs 标记点数据映射表
+ * @param todayStr 今日日期的字符串表示，用于高亮今日标识
+ * @return 包含完整矩阵单元格的 MonthType 对象
+ */
+export function generateSingleMonthData(
+	meta : MonthMeta,
+	minDate : DateType,
+	maxDate : DateType,
+	formatter : string = 'YYYY-MM-DD',
+	signs : UTSJSONObject = new UTSJSONObject(),
+	todayStr : string = formatDate(new Date())
+) : MonthType {
+	const year = meta.year
+	const month = meta.month - 1
+	const daysCount = getMonthDays(year, month)
+	const firstDay = new Date(year, month, 1).getDay()
+
+	const monthData : MonthType = {
+		year: year,
+		month: meta.month,
+		monthText: meta.monthText,
+		bgText: meta.bgText,
+		key: meta.key,
+		weeks: []
+	}
+
+	let day = 1
+	for (let w = 0; w < meta.weeksCount; w++) {
+		const week : WeekType[] = []
+		for (let d = 0; d < 7; d++) {
+			let _day = ''
+			if ((w == 0 && d < firstDay) || day > daysCount) {
+				_day = ''
+			} else {
+				_day = '' + day
+				day++
+			}
+
+			let key = ''
+			let dateStr = ''
+			let disabled = false
+			if (_day.length > 0) {
+				const cellDate = new Date(year, month, parseInt(_day))
+				key = formatDate(cellDate, formatter)
+				dateStr = key
+
+				// 检查范围禁选约束
+				let isBefore = false
+				let isAfter = false
+				if (minDate != null) {
+					const minD = toDate(minDate)
+					isBefore = cellDate < new Date(minD.getFullYear(), minD.getMonth(), minD.getDate())
+				}
+				if (maxDate != null) {
+					const maxD = toDate(maxDate)
+					isAfter = cellDate > new Date(maxD.getFullYear(), maxD.getMonth(), maxD.getDate())
+				}
+				disabled = isBefore || isAfter
+			} else {
+				key = '_empty_' + meta.key + '_' + w + '_' + d
+			}
+
+			// 处理日历标记点 (signs)
+			let daySigns : SignType | null = null
+			if (_day.length > 0) {
+				const signObj = signs[key]
+				if (signObj != null && signObj instanceof Array) {
+					const signArr = signObj as Array<UTSJSONObject>
+					const result : SignType = []
+					const max = Math.min(3, signArr.length)
+					for (let s = 0; s < max; s++) {
+						const item = signArr[s]
+						if (item == null) continue
+						const content = item!.get('content')
+						const style = item!.get('style')
+						const className = item!.get('className')
+						result.push({
+							content: content != null ? '' + content : '',
+							style: style != null ? style as UTSJSONObject : null,
+							className: className != null ? '' + className : null,
+							key: s
+						} as SignItem)
+					}
+					daySigns = result
+				}
+			}
+
+			week.push({
+				dayText: _day,
+				key: key,
+				disabled: disabled,
+				weekend: d == 0 || d == 6,
+				today: _day.length > 0 && todayStr == key,
+				date: dateStr,
+				signs: daySigns
+			} as WeekType)
+		}
+		monthData.weeks.push(week)
+	}
+
+	return monthData
+}
+
+/**
+ * 获取日历全量数据（兼容原有接口）
+ * 供单测或标准展示场景调用
+ */
+export function getCalendarData(
+	minDate : DateType,
+	maxDate : DateType,
+	defaultDate : DateType,
+	monthCount : number = 12,
+	formatter : string = 'YYYY-MM-DD',
+	signs : UTSJSONObject = new UTSJSONObject(),
+	viewStart : DateType = null,
+	viewEnd : DateType = null,
+	monthFormatter : string = 'YYYY年MM月',
+	infinite : boolean = false,
+	infiniteYears : number = 10
+) : CalendarData {
+	const res = generateMonthMetas(
+		minDate,
+		maxDate,
+		defaultDate,
+		monthCount,
+		viewStart,
+		viewEnd,
+		monthFormatter,
+		infinite,
+		infiniteYears
+	)
+	const today = formatDate(new Date())
+	const monthDatas : MonthType[] = []
+
+	for (let i = 0; i < res.metas.length; i++) {
+		const m = res.metas[i]
+		monthDatas.push(generateSingleMonthData(m, minDate, maxDate, formatter, signs, today))
+	}
+
+	return {
+		monthDatas: monthDatas,
+		weekTexts: ['日', '一', '二', '三', '四', '五', '六']
+	} as CalendarData
+}

@@ -1,0 +1,47 @@
+<template>
+	<text
+		:style="cmpLinesStyle"
+		:selectable="_selectable"
+		:space="_space"
+		:decode="_decode"
+		:number-of-lines="_lines"
+	>
+		<slot></slot>
+	</text>
+</template>
+
+<script setup lang="uts">
+	import { computed } from 'vue'
+
+	type TextProps = {
+		selectable ?: boolean,
+		space ?: string,
+		decode ?: boolean,
+		lines ?: number,
+	}
+
+	defineOptions({ name: 'ste-text', options: { virtualHost: true } })
+
+	const props = defineProps<TextProps>()
+
+	const _selectable = computed(() : boolean => props.selectable == true)
+	const _decode = computed(() : boolean => props.decode == true)
+	const _lines = computed(() : number => props.lines != null ? props.lines! : 0)
+	const _space = computed(() : string => props.space != null ? props.space! : '')
+
+	// 多行省略样式
+	// APP 端使用 <text> 的 number-of-lines 原生属性实现截断，无需 CSS
+	// MP-WEIXIN/H5 使用 -webkit-box + -webkit-line-clamp 实现（uvue 不支持 CSS 变量，改用内联样式）
+	const cmpLinesStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		// #ifdef MP-WEIXIN || H5
+		if (_lines.value > 0) {
+			style['display'] = '-webkit-box'
+			style['WebkitBoxOrient'] = 'vertical'
+			style['WebkitLineClamp'] = _lines.value
+			style['overflow'] = 'hidden'
+		}
+		// #endif
+		return style
+	})
+</script>

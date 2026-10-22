@@ -1,0 +1,56 @@
+{
+    "name": "ste-dropdown-menu-item",
+    "description": "下拉菜单选项项组件，作为 ste-dropdown-menu 的子项展示。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-dropdown-menu",
+    "attributes": [
+        {
+            "name": "value",
+            "description": "选中项对应的值",
+            "type": "String | Number",
+            "default": ""
+        },
+        {
+            "name": "title",
+            "description": "选中项对应的标题",
+            "type": "String",
+            "default": ""
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "readonly",
+            "description": "只读（不置灰）",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "max",
+            "description": "当前选项目前预留最大数",
+            "type": "number",
+            "default": 1
+        },
+        {
+            "name": "[event]click",
+            "description": "选中时触发 (可拦截选中)",
+            "params": [
+                {
+                    "name": "params",
+                    "description": "{ value, suspend, next }"
+                }
+            ]
+        },
+        {
+            "name": "[slot]title",
+            "description": "标题插槽",
+            "version": "1.21.0"
+        },
+        {
+            "name": "[slot]default",
+            "description": "内容插槽"
+        }
+    ]
+}

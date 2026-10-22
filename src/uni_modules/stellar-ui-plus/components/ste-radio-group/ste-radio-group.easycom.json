@@ -1,0 +1,157 @@
+{
+    "name": "ste-radio-group",
+    "description": "单选框组容器，用于管理一组 ste-radio。支持 vue 和 uvue。",
+    "example": "<ste-radio-group v-model=\"value\"><ste-radio name=\"a\">选项A</ste-radio></ste-radio-group>",
+    "attributes": [
+        {
+            "name": "v-model",
+            "description": "当前选中值。vue/uvue 均支持 string 类型",
+            "type": "string"
+        },
+        {
+            "name": "direction",
+            "description": "排列方式",
+            "type": "String",
+            "default": "column",
+            "values": [
+                {
+                    "name": "row",
+                    "description": "水平排列"
+                },
+                {
+                    "name": "column",
+                    "description": "垂直排列"
+                }
+            ],
+            "enum": [
+                "row",
+                "column"
+            ]
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "readonly",
+            "description": "只读 (不置灰)",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "shape",
+            "description": "形状",
+            "type": "String",
+            "default": "circle",
+            "enum": [
+                "circle",
+                "square"
+            ]
+        },
+        {
+            "name": "iconSize",
+            "description": "图标大小，单位rpx",
+            "type": "Number | String",
+            "default": 36
+        },
+        {
+            "name": "checkedColor",
+            "description": "选中状态的图标颜色",
+            "type": "String",
+            "default": "#0090FF"
+        },
+        {
+            "name": "textPosition",
+            "description": "文本的位置",
+            "type": "String",
+            "default": "right",
+            "enum": [
+                "right",
+                "left"
+            ]
+        },
+        {
+            "name": "textSize",
+            "description": "文本字体大小，单位rpx",
+            "type": "Number | String",
+            "default": 25
+        },
+        {
+            "name": "textInactiveColor",
+            "description": "组内单选框未选中文本颜色",
+            "type": "string",
+            "default": "#000000"
+        },
+        {
+            "name": "textActiveColor",
+            "description": "选中文本颜色",
+            "type": "String",
+            "default": "#000000"
+        },
+        {
+            "name": "textDisabled",
+            "description": "禁用文本点击",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "marginLeft",
+            "description": "左边距，单位rpx",
+            "type": "Number | String",
+            "default": 0,
+            "version": "v1.10.0"
+        },
+        {
+            "name": "marginRight",
+            "description": "右边距，单位rpx",
+            "type": "Number | String",
+            "default": 0,
+            "version": "v1.10.0"
+        },
+        {
+            "name": "columnGap",
+            "description": "单选框和文本间距，单位rpx",
+            "type": "Number | String",
+            "default": 16,
+            "version": "v1.10.0"
+        },
+        {
+            "name": "modelValue",
+            "description": "单选组绑定值，支持 v-model",
+            "type": "string | number"
+        },
+        {
+            "name": "[event]change",
+            "description": "当绑定值变化时触发的事件",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "改变后的绑定值"
+                }
+            ]
+        },
+        {
+            "name": "value",
+            "description": "当前选中值（支持v-model双向绑定）",
+            "type": "String | Number",
+            "default": ""
+        },
+        {
+            "name": "textlnactiveColor",
+            "description": "未选中文本颜色",
+            "type": "String",
+            "default": "#000000"
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，用于承载 ste-radio 子项"
+        }
+    ],
+    "uvue_diff": {
+        "provide_inject": "uvue 使用 provide/inject + getter 函数模式（RadioGroupContext 类型），vue 使用 useInject/useProvide mixin + Symbol key",
+        "css_variables": "uvue 不支持 CSS 变量，使用 computed 内联样式",
+        "default_direction": "uvue 默认 direction 为 row（水平），vue 默认为 column（垂直）"
+    }
+}

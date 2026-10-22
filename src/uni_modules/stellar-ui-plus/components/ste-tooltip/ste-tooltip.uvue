@@ -1,0 +1,312 @@
+<template>
+	<view v-if="visible" class="ste-tooltip-root">
+		<!-- 悬浮气泡容器 -->
+		<view
+			class="tooltip-box"
+			:style="{
+				left: tooltipLeft + 'px',
+				top: tooltipTop + 'px',
+				opacity: opacity,
+			}"
+		>
+			<!-- 1. 当方位为 bottom（气泡在下方）时，箭头置于气泡卡片上方，朝上指向目标 -->
+			<view v-if="placement == 'bottom'" class="arrow-wrapper">
+				<view class="arrow-diamond diamond-bottom" :style="{ left: (arrowLeftPx - 4) + 'px' }" />
+			</view>
+
+			<!-- 2. 气泡文字内容卡片 -->
+			<view class="tooltip-content" :style="{ maxWidth: maxWidth }">
+				<text class="tooltip-text">{{ text }}</text>
+			</view>
+
+			<!-- 3. 当方位为 top（气泡在上方）时，箭头置于气泡卡片下方，朝下指向目标 -->
+			<view v-if="placement == 'top'" class="arrow-wrapper">
+				<view class="arrow-diamond diamond-top" :style="{ left: (arrowLeftPx - 4) + 'px' }" />
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-tooltip.uvue
+	 * @description Tooltip 文字提示组件 - uni-app x / UTS 纯原生版本
+	 * 用于在目标元素旁边弹出文字气泡提示，支持智能防溢出定位与动态小三角指示。
+	 */
+	import { ref, onMounted, onUnmounted, nextTick, getCurrentInstance, ComponentPublicInstance } from 'vue'
+	import {
+		TooltipOptions,
+		DEFAULT_TOOLTIP_PLACEMENT,
+		DEFAULT_TOOLTIP_MAX_WIDTH,
+		TOOLTIP_SCREEN_MARGIN,
+		TOOLTIP_ANIM_DURATION,
+	} from './constants.uts'
+	import { getWindowWidth } from '../../utils/utils.uts'
+
+	defineOptions({
+		name: 'ste-tooltip',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// 当前组件自身的公共实例，供内部 SelectorQuery 测量自身气泡尺寸
+	const instance = getCurrentInstance()?.proxy as ComponentPublicInstance | null
+
+	// ==================== 响应式状态 ====================
+	/** 是否挂载渲染气泡 DOM */
+	const visible = ref(false)
+	/** 当前展示的文本内容 */
+	const text = ref('')
+	/** 气泡水平绝对像素坐标 */
+	const tooltipLeft = ref(0)
+	/** 气泡垂直绝对像素坐标 */
+	const tooltipTop = ref(0)
+	/** 小三角指示箭头相对于气泡卡片左边缘的物理像素偏移（单位 px，解决 Android 端不支持百分比的问题） */
+	const arrowLeftPx = ref(0)
+	/** 气泡最大宽度限制 */
+	const maxWidth = ref(DEFAULT_TOOLTIP_MAX_WIDTH)
+	/** 气泡展示方向：'top' 或 'bottom' */
+	const placement = ref(DEFAULT_TOOLTIP_PLACEMENT)
+	/** 气泡透明度（0 到 1），用于淡入淡出动画过渡 */
+	const opacity = ref(0)
+
+	/** 隐藏延迟定时器 */
+	let hideTimer : number | null = null
+
+	// ==================== 核心定位与显示逻辑 ====================
+
+	/**
+	 * 显示文字提示气泡
+	 * @param options Tooltip 配置选项
+	 */
+	function showTooltip(options : TooltipOptions) {
+		// 清理正在等待的隐藏定时器
+		if (hideTimer != null) {
+			clearTimeout(hideTimer!)
+			hideTimer = null
+		}
+
+		text.value = options.text
+		maxWidth.value = options.maxWidth ?? DEFAULT_TOOLTIP_MAX_WIDTH
+		placement.value = options.placement ?? DEFAULT_TOOLTIP_PLACEMENT
+
+		// 1. 构建针对目标元素的选择器查询
+		let targetQuery = uni.createSelectorQuery()
+		if (options.instance != null) {
+			targetQuery = targetQuery.in(options.instance as ComponentPublicInstance)
+		}
+
+		targetQuery.select(options.selector).boundingClientRect((res) => {
+			if (res == null) {
+				console.warn(`[ste-tooltip] 未找到选择器为 "${options.selector}" 的目标元素`)
+				return
+			}
+			const targetRect = res as NodeInfo
+			const triggerTop = targetRect.top ?? 0
+			const triggerLeft = targetRect.left ?? 0
+			const triggerWidth = targetRect.width ?? 0
+			const triggerHeight = targetRect.height ?? 0
+			const triggerCenter = triggerLeft + triggerWidth / 2
+
+			// 2. 先使气泡节点挂载，初始为透明状态
+			visible.value = true
+			opacity.value = 0
+
+			// 3. 在下一个渲染帧测量气泡自身的物理尺寸，计算防溢出坐标
+			nextTick(() => {
+				let selfQuery = uni.createSelectorQuery()
+				if (instance != null) {
+					selfQuery = selfQuery.in(instance!)
+				}
+				selfQuery.select('.tooltip-content').boundingClientRect((selfRes) => {
+					let tipWidth = 200
+					let tipHeight = 40
+					if (selfRes != null) {
+						const selfRect = selfRes as NodeInfo
+						const measuredW = selfRect.width ?? 0
+						const measuredH = selfRect.height ?? 0
+						if (measuredW > 0) tipWidth = measuredW
+						if (measuredH > 0) tipHeight = measuredH
+					}
+
+					const vw = getWindowWidth()
+					const margin = TOOLTIP_SCREEN_MARGIN
+
+					// 4. 水平坐标防溢出计算（居中对齐目标元素并做屏幕左右安全边距限制）
+					let left = triggerCenter - tipWidth / 2
+					if (left < margin) {
+						left = margin
+					}
+					if (left + tipWidth > vw - margin) {
+						left = vw - tipWidth - margin
+					}
+
+					// 5. 垂直坐标计算（上方或下方偏移）
+					let top = 0
+					if (placement.value == 'top') {
+						top = triggerTop - tipHeight - 12
+					} else {
+						top = triggerTop + triggerHeight + 12
+					}
+
+					// 6. 小三角箭头物理像素位置计算（对齐目标元素中心 triggerCenter，防止超出气泡圆角安全区域）
+					let targetArrowX = triggerCenter - left
+					if (targetArrowX < 16) {
+						targetArrowX = 16
+					}
+					if (targetArrowX > tipWidth - 16) {
+						targetArrowX = tipWidth - 16
+					}
+
+					tooltipLeft.value = Math.round(left)
+					tooltipTop.value = Math.round(top)
+					arrowLeftPx.value = Math.round(targetArrowX)
+
+					// 7. 触发淡入呈现
+					nextTick(() => {
+						opacity.value = 1
+					})
+				}).exec()
+			})
+		}).exec()
+	}
+
+	/**
+	 * 关闭并隐藏文字提示
+	 */
+	function hideTooltip() {
+		// 渐隐淡出
+		opacity.value = 0
+		if (hideTimer != null) {
+			clearTimeout(hideTimer!)
+			hideTimer = null
+		}
+		hideTimer = setTimeout(() => {
+			visible.value = false
+			hideTimer = null
+		}, TOOLTIP_ANIM_DURATION)
+	}
+
+	// ==================== 全局事件广播监听 ====================
+
+	/**
+	 * 处理全局 show 事件
+	 * 兼容两种入参场景：
+	 * 1. 外部传递普通的 UTSJSONObject 字典字面量（如来自通用组件或原生 JS 桥接）
+	 * 2. 外部通过 useTooltip 传递的强类型 TooltipOptions 实例对象（避免 Android 端 ClassCastException）
+	 * @param raw 全局事件携带的原始载荷数据
+	 */
+	function handleGlobalShow(raw : any) {
+		if (raw == null) return
+		if (raw instanceof UTSJSONObject) {
+			const obj = raw as UTSJSONObject
+			const opts : TooltipOptions = {
+				text: (obj['text'] ?? '') as string,
+				selector: (obj['selector'] ?? '') as string,
+				instance: (obj['instance'] != null ? obj['instance'] as ComponentPublicInstance : null),
+				placement: (obj['placement'] ?? DEFAULT_TOOLTIP_PLACEMENT) as string,
+				maxWidth: (obj['maxWidth'] ?? DEFAULT_TOOLTIP_MAX_WIDTH) as string,
+			}
+			showTooltip(opts)
+		} else {
+			// 直接作为 TooltipOptions 强类型实体传入
+			showTooltip(raw as TooltipOptions)
+		}
+	}
+
+	/**
+	 * 处理全局 hide 事件
+	 */
+	function handleGlobalHide() {
+		hideTooltip()
+	}
+
+	onMounted(() => {
+		uni.$on('ste:tooltip:show', handleGlobalShow)
+		uni.$on('ste:tooltip:hide', handleGlobalHide)
+	})
+
+	onUnmounted(() => {
+		uni.$off('ste:tooltip:show', handleGlobalShow)
+		uni.$off('ste:tooltip:hide', handleGlobalHide)
+		if (hideTimer != null) {
+			clearTimeout(hideTimer!)
+			hideTimer = null
+		}
+	})
+
+	// ==================== 暴露组件实例方法 ====================
+	defineExpose({
+		showTooltip,
+		hideTooltip,
+	})
+</script>
+
+<style scoped>
+	/* 根层容器，全屏固定无阻挡 */
+	.ste-tooltip-root {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 9999;
+		pointer-events: none;
+	}
+
+	/* 悬浮气泡主外框：采用垂直方向流式排列，自然包裹内容卡片与箭头包装盒，避免超出边界被 Android 原生裁剪 */
+	.tooltip-box {
+		position: absolute;
+		pointer-events: auto;
+		flex-direction: column;
+		transition-property: opacity;
+		transition-duration: 0.2s;
+		transition-timing-function: ease-out;
+	}
+
+	/* 提示气泡内容卡片 */
+	.tooltip-content {
+		background-color: rgba(0, 0, 0, 0.85);
+		border-radius: 8rpx;
+		padding: 16rpx 24rpx;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* 提示文字 */
+	.tooltip-text {
+		color: #ffffff;
+		font-size: 26rpx;
+		line-height: 36rpx;
+		white-space: normal;
+	}
+
+	/* 箭头安全包装容器：提供真实物理高度，在正常流内占据空间，防止子节点溢出被裁剪 */
+	.arrow-wrapper {
+		position: relative;
+		width: 100%;
+		height: 10rpx;
+	}
+
+	/* 45 度旋转的实体菱形小方块（原生支持硬件加速旋转） */
+	.arrow-diamond {
+		position: absolute;
+		width: 16rpx;
+		height: 16rpx;
+		background-color: rgba(0, 0, 0, 0.85);
+		transform: rotate(45deg);
+		border-radius: 2rpx;
+	}
+
+	/* 当方位在上方时，箭头在卡片下方：菱形上半部向上缩入卡片底边无缝融合，下半部尖角朝下在包装盒内突出 */
+	.diamond-top {
+		top: -8rpx;
+	}
+
+	/* 当方位在下方时，箭头在卡片上方：菱形下半部向下缩入卡片顶边无缝融合，上半部尖角朝上在包装盒内突出 */
+	.diamond-bottom {
+		bottom: -8rpx;
+	}
+</style>

@@ -1,0 +1,62 @@
+// config/index.uts - uni-app x 版本统一导出
+// 全局配置入口，包含字体大小和主题色
+
+// 直接从 font-size.uts 重新导出独立函数
+export {
+	normalizeFontSize,
+	normalizeFontSizeNum,
+	getFontSizeStyle,
+	getFontScale,
+	setFontScale,
+	getFontMin,
+	setFontMin,
+	getFontMax,
+	setFontMax,
+	onFontSizeChange,
+	useFontSize,
+} from './font-size.uts'
+
+// 主题色配置
+import { useColorStore } from '../store/color.uts'
+import type { ColorValueType } from '../store/color.uts'
+
+const _colorStore = useColorStore()
+
+export function setThemeColor(params : UTSJSONObject) {
+	_colorStore.setColor(params)
+}
+
+export function getThemeColor() : ColorValueType {
+	return _colorStore.getColor()
+}
+
+type SetConfigOptions = {
+	minSize ?: number,
+	maxSize ?: number,
+	fontScale ?: number,
+}
+
+export function setConfig(options : SetConfigOptions) {
+	if (options.minSize != null) setFontMin(options.minSize!)
+	if (options.maxSize != null) setFontMax(options.maxSize!)
+	if (options.fontScale != null) setFontScale(options.fontScale!)
+}
+
+// 导出默认配置对象，兼顾传统通用引入
+export default {
+	normalizeFontSize,
+	normalizeFontSizeNum,
+	getFontSizeStyle,
+	getFontScale,
+	setFontScale,
+	getFontMin,
+	setFontMin,
+	getFontMax,
+	setFontMax,
+	onFontSizeChange,
+	useFontSize,
+	setThemeColor,
+	getThemeColor,
+	setConfig,
+}
+

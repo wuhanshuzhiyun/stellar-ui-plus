@@ -1,0 +1,200 @@
+<template>
+	<view class="ste-rate-root">
+		<view class="list">
+			<text
+				v-for="item in cmpRateItems"
+				class="rate-icon-text"
+				:key="item.index"
+				:style="getItemStyle(item.index, item.code, item.color)"
+				@click="onSelect(item.index)"
+			>{{ item.char }}</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { computed, onMounted } from 'vue'
+	import { useColorStore } from '../../store/color.uts'
+	import { formatPx } from '../../utils/utils.uts'
+	import { normalizeFontSize } from '../../config/index.uts'
+
+	defineOptions({ name: 'ste-rate' })
+
+	type RateItem = {
+		index : number,
+		char : string,
+		code : string,
+		color : string,
+	}
+
+	type RateProps = {
+		modelValue ?: number,
+		count ?: number,
+		score ?: number,
+		disabled ?: boolean,
+		readonly ?: boolean,
+		size ?: string | number,
+		inactiveColor ?: string,
+		activeColor ?: string,
+		inactiveCode ?: string,
+		activeCode ?: string,
+		gutter ?: string | number,
+		iconData ?: string[],
+	}
+
+	const props = withDefaults(defineProps<RateProps>(), {
+		modelValue: 0,
+		count: 5,
+		score: 1,
+		disabled: false,
+		readonly: false,
+		size: 44,
+		inactiveColor: '#dddddd',
+		activeColor: '',
+		inactiveCode: '&#xe681;',
+		activeCode: '&#xe684;',
+		gutter: 10,
+		iconData: () => [] as string[],
+	})
+	const emits = defineEmits(['change', 'update:modelValue'])
+
+	const defaultFontFamily = 'ste-iconfont-1709689042473'
+	let fontLoaded = false
+
+	function loadFont() {
+		if (fontLoaded) return
+		uni.loadFontFace({
+			family: defaultFontFamily,
+			source: 'https://at.alicdn.com/t/c/font_4457057_74vgslmjyas.ttf?t=1749781466318',
+			global: true,
+			success: () => {
+				fontLoaded = true
+			},
+			fail: (err) => {
+				console.error('rate字体加载失败:', err)
+			}
+		})
+	}
+
+	onMounted(() => {
+		loadFont()
+	})
+
+	// 颜色 store
+	const colorStore = useColorStore()
+	const colorData = colorStore.getColor()
+
+	const iconSize = computed(() : number => {
+		if (typeof props.size === 'number') return props.size as number
+		return parseFloat(props.size as string)
+	})
+
+	const cmpActiveColor = computed(() : string => {
+		if (props.activeColor != null && props.activeColor != '') return props.activeColor!
+		return colorData.steThemeColor
+	})
+
+	// 将 HTML 实体编码转为 Unicode 字符
+	function codeToChar(code : string) : string {
+		if (code == null || code == '') return ''
+		if (code.indexOf('&#') >= 0) {
+			const cleaned = code.replace('&#', '').replace(';', '')
+			// 去掉可能的 x 前缀（如 &#xe681; → xe681 → e681）
+			const hex = cleaned.startsWith('x') ? cleaned.substring(1) : cleaned
+			const codePoint = parseInt(hex, 16)
+			if (codePoint > 0) {
+				return String.fromCharCode(codePoint)
+			}
+		}
+		return code
+	}
+
+	// 根据iconData来算出每个分值对应的iconCode
+	function getIconCode() : string {
+		if (props.iconData == null || props.iconData.length == 0) return ''
+
+		const curScoreIndex = Math.ceil(props.modelValue / props.score) - 1
+		if (curScoreIndex < 0) return ''
+
+		if (curScoreIndex < props.iconData.length && props.iconData[curScoreIndex] != '') {
+			return props.iconData[curScoreIndex]
+		}
+
+		for (let i = curScoreIndex; i >= 0; i--) {
+			if (props.iconData[i] != '') {
+				return props.iconData[i]
+			}
+		}
+		return ''
+	}
+
+	const cmpActiveCode = computed(() : string => {
+		const code = getIconCode()
+		if (code != '') return code
+		return props.activeCode
+	})
+
+	const cmpInactiveCode = computed(() : string => {
+		const code = getIconCode()
+		if (code != '') return code
+		return props.inactiveCode
+	})
+
+	// 计算每个图标的显示数据
+	const cmpRateItems = computed(() : RateItem[] => {
+		const arr : RateItem[] = []
+		const activeCode = cmpActiveCode.value
+		const inactiveCode = cmpInactiveCode.value
+		const activeColor = props.disabled ? '#C8C9CC' : cmpActiveColor.value
+		const inactiveColor = props.inactiveColor
+		for (let i = 0; i < props.count; i++) {
+			const value = (i + 1) * props.score
+			const checked = props.modelValue >= value
+			const code = checked ? activeCode : inactiveCode
+			arr.push({
+				index: i,
+				char: codeToChar(code),
+				code: code,
+				color: checked ? activeColor : inactiveColor,
+			} as RateItem)
+		}
+		return arr
+	})
+
+	function onSelect(index : number) {
+		if (!props.disabled && !props.readonly) {
+			const value = (index + 1) * props.score
+			if (props.modelValue != value) {
+				emits('update:modelValue', value)
+				emits('change', value)
+			}
+		}
+	}
+
+	// 每个 text 的样式（包含字体、大小、颜色、间距）
+	function getItemStyle(index : number, code : string, color : string) : UTSJSONObject {
+		return {
+			fontFamily: defaultFontFamily,
+			fontSize: normalizeFontSize(iconSize.value),
+			color: color,
+			marginRight: index < props.count - 1 ? formatPx(props.gutter) : '0px',
+			lineHeight: normalizeFontSize(iconSize.value),
+		} as UTSJSONObject
+	}
+</script>
+
+<style>
+.ste-rate-root {
+	width: 100%;
+}
+
+.list {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.rate-icon-text {
+	text-align: center;
+}
+</style>

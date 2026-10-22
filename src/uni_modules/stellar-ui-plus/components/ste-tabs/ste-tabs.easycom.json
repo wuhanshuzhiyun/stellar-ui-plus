@@ -271,6 +271,60 @@
             "default": 1001
         },
         {
+            "name": "tabList",
+            "description": "标签页数据源数组[仅UVue支持，格式为 Array<{title: string, ...}>]",
+            "type": "Array<any>",
+            "default": []
+        },
+        {
+            "name": "titleInactiveColor",
+            "description": "未选中标签标题文本颜色[仅UVue支持]",
+            "type": "string",
+            "default": "#666666"
+        },
+        {
+            "name": "titleActiveColor",
+            "description": "已选中标签标题文本颜色[仅UVue支持]",
+            "type": "string",
+            "default": "#000000"
+        },
+        {
+            "name": "lineScale",
+            "description": "底部指示条缩放比率[仅UVue支持]",
+            "type": "number",
+            "default": 1
+        },
+        {
+            "name": "barType",
+            "description": "指示条形状风格[仅UVue支持]",
+            "type": "string",
+            "default": "line"
+        },
+        {
+            "name": "shrink",
+            "description": "是否开启标签紧凑排列收缩模式[仅UVue支持]",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "scrollable",
+            "description": "标签数量超出一屏时是否允许水平横向滚动[仅UVue支持]",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "swipeHeight",
+            "description": "滑动视图容器高度(rpx)[仅UVue支持]",
+            "type": "number | string",
+            "default": "100%"
+        },
+        {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]click-tab",
             "description": "点击tab触发",
             "params": [
@@ -289,6 +343,18 @@
                     "description": "(tab:TabProps)=>void"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，请传入 ste-tab 标签列表"
+        },
+        {
+            "name": "[slot]header-suffix",
+            "description": "标签栏右侧扩展区域插槽"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "architecture": "Vue 端拥有 30+ 细粒度样式配置属性；UVue 端基于 UTS 纯原生滑动重构，属性结构高度内聚为 tabList, titleInactiveColor, titleActiveColor, lineScale, barType, shrink, scrollable, swipeHeight",
+        "swipeable": "Vue 端与 UVue 端均支持滑动切换，UVue 端需配合 swipeHeight 明确手势区域高度"
+    }
 }

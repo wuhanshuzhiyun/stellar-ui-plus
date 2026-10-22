@@ -1,0 +1,116 @@
+<template>
+	<view
+		class="ste-steps-root"
+		:class="[
+			props.direction == 'column' ? 'ste-steps-column' : 'ste-steps-row',
+			props.reverse ? (props.direction == 'column' ? 'reverse-column' : 'reverse-row') : ''
+		]"
+		:style="[cmpRootStyle, rootStyle]"
+	>
+		<slot></slot>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-steps.uvue
+	 * @description Steps 步骤条容器组件 - uni-app x / UTS 版本
+	 * 负责管理多个步骤项的状态分发与交互事件中继，支持横向/纵向排布、点状步骤、反转排布。
+	 */
+	import { ref, computed, provide } from 'vue'
+	import { StepsProps, StepsContext } from './constants.uts'
+
+	defineOptions({
+		name: 'ste-steps',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== Props 属性与默认值 ====================
+	const props = withDefaults(defineProps<StepsProps>(), {
+		active: 0,
+		direction: 'row',
+		dot: false,
+		reverse: false,
+		lineStyle: 'solid',
+		rootStyle: () => ({}) as UTSJSONObject,
+	})
+
+	// ==================== Emits 事件声明 ====================
+	const emits = defineEmits<{
+		(e: 'click-step', index: number): void
+		(e: 'clickStep', index: number): void
+	}>()
+
+	// ==================== 子步骤注册管理 ====================
+	/** 维护当前所有已注册的子步骤 ID 列表 */
+	const stepIds = ref<string[]>([])
+
+	// ==================== 上下文 Provide ====================
+	const stepsContext: StepsContext = {
+		getActive: (): number => props.active,
+		getDirection: (): string => props.direction,
+		getDot: (): boolean => props.dot,
+		getReverse: (): boolean => props.reverse,
+		getLineStyle: (): string => props.lineStyle,
+		registerStep: (id: string): number => {
+			if (!stepIds.value.includes(id)) {
+				stepIds.value.push(id)
+			}
+			return stepIds.value.indexOf(id) + 1
+		},
+		unregisterStep: (id: string) => {
+			const idx = stepIds.value.indexOf(id)
+			if (idx >= 0) {
+				stepIds.value.splice(idx, 1)
+			}
+		},
+		getStepIndex: (id: string): number => {
+			const idx = stepIds.value.indexOf(id)
+			return idx >= 0 ? idx + 1 : 1
+		},
+		getTotalSteps: (): number => {
+			return stepIds.value.length
+		},
+		onClickStep: (index: number) => {
+			emits('click-step', index)
+			emits('clickStep', index)
+		},
+	}
+
+	provide<StepsContext>('ste-steps', stepsContext)
+
+	// ==================== 样式计算 ====================
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		return {} as UTSJSONObject
+	})
+</script>
+
+<style scoped>
+.ste-steps-root {
+	display: flex;
+	width: 100%;
+}
+
+.ste-steps-row {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	width: 100%;
+}
+
+.reverse-row {
+	flex-direction: row-reverse;
+}
+
+.ste-steps-column {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.reverse-column {
+	flex-direction: column-reverse;
+}
+</style>

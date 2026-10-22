@@ -1,0 +1,66 @@
+<template>
+	<!--
+		ste-swiper-item 轮播滑块子项组件
+		模块职责：作为官方原生 <swiper-item> 的定制增强包装，承载轮播滑块内容，向父级 ste-swiper 容器注册自身
+	-->
+	<swiper-item class="ste-swiper-item-root">
+		<view class="ste-swiper-item-content">
+			<slot></slot>
+		</view>
+	</swiper-item>
+</template>
+
+<script setup lang="uts">
+	import { ref, onMounted, onUnmounted, inject } from 'vue'
+	import { SWIPER_KEY, SwiperContext, SwiperItemRegisterData, generateSwiperItemId } from '../ste-swiper/constants.uts'
+
+	defineOptions({
+		name: 'ste-swiper-item',
+		options: {
+			virtualHost: true
+		}
+	})
+
+	/** 当前滑块分配的唯一 ID 标识 */
+	const itemId = ref(generateSwiperItemId())
+
+	/** 当前滑块在父容器注册列表中所分配的序号下标 */
+	const myIndex = ref(-1)
+
+	/** 注入父级 ste-swiper 容器全局上下文通信接口 */
+	const parentContext = inject<SwiperContext | null>(SWIPER_KEY, null)
+
+	/**
+	 * 组件挂载生命周期：自动向父级轮播容器注册自身并获取索引
+	 */
+	onMounted(() => {
+		if (parentContext != null) {
+			const itemData : SwiperItemRegisterData = {
+				id: itemId.value
+			}
+			myIndex.value = parentContext.registerItem(itemData)
+		}
+	})
+
+	/**
+	 * 组件卸载生命周期：自动向父级轮播容器注销自身
+	 */
+	onUnmounted(() => {
+		if (parentContext != null) {
+			parentContext.unregisterItem(itemId.value)
+		}
+	})
+</script>
+
+<style scoped>
+	.ste-swiper-item-root {
+		width: 100%;
+		height: 100%;
+	}
+
+	.ste-swiper-item-content {
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+	}
+</style>

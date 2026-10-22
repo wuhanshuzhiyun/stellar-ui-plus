@@ -1,0 +1,97 @@
+/**
+ * @file props.uts
+ * @description ste-order-card 订单卡片组件 - uni-app x / UTS 强类型定义与契约
+ */
+
+/**
+ * 订单关联的商品条目强类型定义
+ */
+export type OrderGoods = {
+	/** 商品缩略图 URL */
+	image ?: string,
+	/** 商品主标题 */
+	title ?: string,
+	/** 商品副标题或规格说明 */
+	subTitle ?: string,
+}
+
+/**
+ * ste-order-card 组件 Props 强类型定义
+ */
+export type OrderCardProps = {
+	/**
+	 * 组件整体卡片背景色
+	 * @default '#ffffff'
+	 */
+	background ?: string,
+	/**
+	 * 商品内容区域背景色，留空默认跟随整体卡片背景色
+	 */
+	contentBg ?: string,
+	/**
+	 * 头部商户/店铺圆形头像图片 URL
+	 */
+	image ?: string,
+	/**
+	 * 头部商户/店铺名称或主标题
+	 */
+	title ?: string,
+	/**
+	 * 头部右侧订单状态展示文本（如“待核销”、“待付款”）
+	 */
+	statusText ?: string,
+	/**
+	 * 头部下方业务标签文本（如“自提订单”）
+	 */
+	tagText ?: string,
+	/**
+	 * 头部下方辅助提示信息文本（如“有效期限至 2026-12-31”）
+	 */
+	helperText ?: string,
+	/**
+	 * 订单所包含的商品项列表
+	 */
+	data ?: OrderGoods[],
+	/**
+	 * 订单商品总件数（未传时自动回退为 data 列表长度）
+	 * @default 0
+	 */
+	count ?: number,
+	/**
+	 * 订单总金额（单位：分，或格式化金额字符串）
+	 * @default '0'
+	 */
+	price ?: any,
+	/**
+	 * 主要操作功能按钮文本（如“立即支付”、“去核销”）
+	 */
+	mainBtnText ?: string,
+	/**
+	 * 主要操作按钮背景色
+	 * @default '#EC3E1A'
+	 */
+	mainBtnBg ?: string,
+	/**
+	 * 主要操作按钮文字颜色
+	 * @default '#ffffff'
+	 */
+	mainBtnTextColor ?: string,
+	/**
+	 * 次要操作功能按钮文本（如“查看券码”、“取消订单”）
+	 */
+	subBtnText ?: string,
+	/**
+	 * 单商品展示模式下是否显示“详情 >”入口
+	 * @default false
+	 */
+	showDetail ?: boolean,
+	/**
+	 * 底部按钮左侧是否显示“更多”操作入口
+	 * @default false
+	 */
+	showMore ?: boolean,
+	/**
+	 * 自定义根节点内联样式映射
+	 */
+	rootStyle ?: UTSJSONObject,
+}

@@ -1,0 +1,130 @@
+<template>
+	<view :class="cmpRootClass" :style="cmpRootStyle">
+		<ste-icon v-if="props.loading == true && props.type == 'image'" :size="20" code="&#xe693;"></ste-icon>
+		<slot v-if="props.loading != true"></slot>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
+
+	type SkeletonProps = {
+		loading ?: boolean,
+		type ?: string, // 'text' | 'image' | 'circle' | 'button'
+	}
+
+	defineOptions({ name: 'ste-skeleton' })
+
+	const props = withDefaults(defineProps<SkeletonProps>(), {
+		loading: true,
+		type: 'text',
+	})
+
+	// 闪烁动画状态：true 高亮(opacity=1)，false 暗淡(opacity=0.3)
+	const blink = ref(true)
+	let timer : number = -1
+
+	function stopBlink() {
+		if (timer != -1) {
+			clearInterval(timer)
+			timer = -1
+		}
+	}
+
+	function startBlink() {
+		stopBlink()
+		// 每 1s 切换一次状态，配合 transition: opacity 1s 形成交替闪烁
+		timer = setInterval(() => {
+			blink.value = !blink.value
+		}, 1000) as number
+	}
+
+	onMounted(() => {
+		if (props.loading == true) {
+			startBlink()
+		}
+	})
+
+	onUnmounted(() => {
+		stopBlink()
+	})
+
+	// 监听 loading 变化，启动/停止动画
+	watch(() : boolean => props.loading == true, (val : boolean) => {
+		if (val) {
+			blink.value = true
+			startBlink()
+		} else {
+			stopBlink()
+		}
+	})
+
+	// 动态 class：loading 时叠加 --loading 与 --{type}
+	const cmpRootClass = computed(() : string[] => {
+		const arr : string[] = ['ste-skeleton']
+		if (props.loading == true) {
+			arr.push('ste-skeleton--loading')
+			const t = props.type
+			if (t == 'text') {
+				arr.push('ste-skeleton--text')
+			} else if (t == 'image') {
+				arr.push('ste-skeleton--image')
+			} else if (t == 'circle') {
+				arr.push('ste-skeleton--circle')
+			} else if (t == 'button') {
+				arr.push('ste-skeleton--button')
+			}
+		}
+		return arr
+	})
+
+	// 内联样式：opacity 动画 + transition
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (props.loading == true) {
+			// opacity 在 0.3↔1 之间交替，transition 1s ease 形成闪烁
+			style['opacity'] = blink.value ? '1' : '0.3'
+			style['transitionProperty'] = 'opacity'
+			style['transitionDuration'] = '1s'
+			style['transitionTimingFunction'] = 'ease'
+		}
+		return style
+	})
+</script>
+
+<style>
+/* loading 基底样式：背景色、通用圆角（动画已改用内联 style + transition 实现） */
+.ste-skeleton--loading {
+	background-color: #fafafb;
+	border-radius: 8rpx;
+}
+
+/* 各类型尺寸与圆角 */
+.ste-skeleton--text {
+	width: 300rpx;
+	height: 32rpx;
+	border-radius: 8rpx;
+}
+
+.ste-skeleton--image {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	width: 120rpx;
+	height: 120rpx;
+	border-radius: 16rpx;
+}
+
+.ste-skeleton--circle {
+	border-radius: 60rpx;
+	width: 120rpx;
+	height: 120rpx;
+}
+
+.ste-skeleton--button {
+	border-radius: 16rpx;
+	height: 64rpx;
+	width: 176rpx;
+}
+</style>

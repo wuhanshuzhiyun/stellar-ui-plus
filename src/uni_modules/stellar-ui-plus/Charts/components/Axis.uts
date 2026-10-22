@@ -1,0 +1,244 @@
+/**
+ * @file Axis.uts
+ * @description 直角坐标系 (Cartesian Axis) 绘制与坐标换算器
+ * 负责计算最佳刻度极值 (Nice Numbers 算法)、绘制坐标轴线、网格参考虚线及维度文字
+ */
+
+import { ChartRect, ChartPoint } from '../types/uts-types.uts'
+
+/**
+ * 坐标轴计算结果与刻度参数
+ */
+export type AxisScale = {
+	/** 最小值 */
+	min: number;
+	/** 最大值 */
+	max: number;
+	/** 刻度段数 */
+	splitNumber: number;
+	/** 刻度步长 */
+	step: number;
+	/** 各刻度对应数值列表 */
+	ticks: number[];
+}
+
+/**
+ * 坐标轴组件
+ */
+export class Axis {
+	/**
+	 * 计算平整优美的坐标轴刻度 (Nice Numbers 算法)
+	 * 确保刻度标签为整数或整倍数（如 0, 20, 40, 60, 80, 100）
+	 * @param rawMin 数据集最小值
+	 * @param rawMax 数据集最大值
+	 * @param targetSplits 期望的刻度分段数，默认 4
+	 * @returns 标准刻度比例对象
+	 */
+	public static calculateNiceScale(rawMin: number, rawMax: number, targetSplits: number = 4): AxisScale {
+		let min = rawMin;
+		let max = rawMax;
+
+		// 边界处理：全为 0 或极值相等
+		if (min === max) {
+			if (max > 0) {
+				min = 0;
+				max = max * 1.2;
+			} else if (max < 0) {
+				max = 0;
+				min = min * 1.2;
+			} else {
+				min = 0;
+				max = 10;
+			}
+		}
+
+		// 移动端基准：通常数据大于 0 时将基准线锚定在 0
+		if (min > 0) {
+			min = 0;
+		}
+
+		const range = max - min;
+		const roughStep = range / targetSplits;
+
+		// 计算步长数量级
+		const exponent = Math.floor(Math.log10(roughStep));
+		const fraction = roughStep / Math.pow(10, exponent);
+
+		// 将系数归整为 1, 2, 5, 10
+		let niceFraction = 1;
+		if (fraction <= 1.5) {
+			niceFraction = 1;
+		} else if (fraction <= 3) {
+			niceFraction = 2;
+		} else if (fraction <= 7) {
+			niceFraction = 5;
+		} else {
+			niceFraction = 10;
+		}
+
+		const step = niceFraction * Math.pow(10, exponent);
+		const niceMin = Math.floor(min / step) * step;
+		const niceMax = Math.ceil(max / step) * step;
+
+		const ticks: number[] = [];
+		for (let v = niceMin; v <= niceMax + step * 0.0001; v += step) {
+			ticks.push(Math.round(v * 1000) / 1000);
+		}
+
+		return {
+			min: niceMin,
+			max: niceMax,
+			splitNumber: ticks.length - 1,
+			step: step,
+			ticks: ticks
+		};
+	}
+
+	/**
+	 * 将数据数值转换为直角坐标系中的画布逻辑 Y 坐标
+	 * @param value 目标数值
+	 * @param scale 坐标轴极值刻度
+	 * @param plotArea 绘图区域矩形
+	 * @returns 画布逻辑像素 Y 坐标
+	 */
+	public static valueToY(value: number, scale: AxisScale, plotArea: ChartRect): number {
+		const range = scale.max - scale.min;
+		if (range <= 0) return plotArea.bottom;
+
+		const ratio = (value - scale.min) / range;
+		return plotArea.bottom - ratio * plotArea.height;
+	}
+
+	/**
+	 * 将数据数值转换为横向条状图中的画布逻辑 X 坐标 (BarChart)
+	 * @param value 目标数值
+	 * @param scale 坐标轴极值刻度
+	 * @param plotArea 绘图区域矩形
+	 * @returns 画布逻辑像素 X 坐标
+	 */
+	public static valueToX(value: number, scale: AxisScale, plotArea: ChartRect): number {
+		const range = scale.max - scale.min;
+		if (range <= 0) return plotArea.left;
+
+		const ratio = (value - scale.min) / range;
+		return plotArea.left + ratio * plotArea.width;
+	}
+
+	/**
+	 * 绘制纵向直角坐标系（折线图、柱状图、面积图）的轴线与刻度
+	 * @param ctx 渲染上下文
+	 * @param plotArea 绘图有效区
+	 * @param scale Y 轴数值刻度
+	 * @param categories X 轴分类维度数组
+	 */
+	public static drawCartesianAxes(
+		ctx: CanvasRenderingContext2D,
+		plotArea: ChartRect,
+		scale: AxisScale,
+		categories: string[]
+	) {
+		ctx.save();
+
+		// 1. 绘制水平网格辅助线与 Y 轴数值
+		ctx.font = '10px sans-serif';
+		ctx.textAlign = 'right';
+		ctx.textBaseline = 'middle';
+		ctx.fillStyle = '#8c8c8c';
+		ctx.lineWidth = 1;
+
+		for (let i = 0; i < scale.ticks.length; i++) {
+			const tickVal = scale.ticks[i];
+			const y = Axis.valueToY(tickVal, scale, plotArea);
+
+			// 网格水平虚线
+			ctx.strokeStyle = '#f0f0f0';
+			ctx.beginPath();
+			ctx.moveTo(plotArea.left, y);
+			ctx.lineTo(plotArea.right, y);
+			ctx.stroke();
+
+			// Y 轴刻度文本
+			ctx.fillText(tickVal.toString(), plotArea.left - 6, y);
+		}
+
+		// 2. 绘制 X 轴基线
+		ctx.strokeStyle = '#d9d9d9';
+		ctx.beginPath();
+		ctx.moveTo(plotArea.left, plotArea.bottom);
+		ctx.lineTo(plotArea.right, plotArea.bottom);
+		ctx.stroke();
+
+		// 3. 绘制 X 轴分类标签
+		if (categories.length > 0) {
+			const step = plotArea.width / categories.length;
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'top';
+
+			for (let i = 0; i < categories.length; i++) {
+				const x = plotArea.left + (i + 0.5) * step;
+				const label = categories[i];
+				ctx.fillText(label, x, plotArea.bottom + 6);
+			}
+		}
+
+		ctx.restore();
+	}
+
+	/**
+	 * 绘制横向条形图坐标系 (BarChart)
+	 * @param ctx 渲染上下文
+	 * @param plotArea 绘图有效区
+	 * @param scale X 轴数值刻度
+	 * @param categories Y 轴分类数组
+	 */
+	public static drawBarAxes(
+		ctx: CanvasRenderingContext2D,
+		plotArea: ChartRect,
+		scale: AxisScale,
+		categories: string[]
+	) {
+		ctx.save();
+
+		ctx.font = '10px sans-serif';
+		ctx.fillStyle = '#8c8c8c';
+		ctx.lineWidth = 1;
+
+		// 1. 绘制垂直网格辅助线与 X 轴数值
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'top';
+		for (let i = 0; i < scale.ticks.length; i++) {
+			const tickVal = scale.ticks[i];
+			const x = Axis.valueToX(tickVal, scale, plotArea);
+
+			ctx.strokeStyle = '#f0f0f0';
+			ctx.beginPath();
+			ctx.moveTo(x, plotArea.top);
+			ctx.lineTo(x, plotArea.bottom);
+			ctx.stroke();
+
+			ctx.fillText(tickVal.toString(), x, plotArea.bottom + 6);
+		}
+
+		// 2. 绘制 Y 轴基线
+		ctx.strokeStyle = '#d9d9d9';
+		ctx.beginPath();
+		ctx.moveTo(plotArea.left, plotArea.top);
+		ctx.lineTo(plotArea.left, plotArea.bottom);
+		ctx.stroke();
+
+		// 3. 绘制 Y 轴分类标签
+		if (categories.length > 0) {
+			const step = plotArea.height / categories.length;
+			ctx.textAlign = 'right';
+			ctx.textBaseline = 'middle';
+
+			for (let i = 0; i < categories.length; i++) {
+				const y = plotArea.top + (i + 0.5) * step;
+				const label = categories[i];
+				ctx.fillText(label, plotArea.left - 6, y);
+			}
+		}
+
+		ctx.restore();
+	}
+}

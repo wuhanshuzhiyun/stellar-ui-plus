@@ -241,6 +241,12 @@
             "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
         },
         {
+            "name": "showLegend",
+            "description": "是否显示图表图例[UVue/Vue标准支持]",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "[event]ring-tap",
             "description": "点击图表时触发，命中圆弧返回其 series 下标，未命中返回 -1",
             "params": [
@@ -253,8 +259,13 @@
         },
         {
             "name": "[method]getImage",
-            "description": "获取图表图片地址，异步方法，需在图表绘制后调用",
-            "returnValue": "Promise<string>"
+            "description": "获取图表生成的图片 Base64 字符串",
+            "returnValue": "Promise<string>",
+            "params": [],
+            "return": "Promise<string>"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "engine": "UVue 端基于 uts Canvas 2D 统一引擎重构，标准化了 title, subtitle, activeIndex, inactiveOpacity, extra 等图表配置契约"
+    }
 }

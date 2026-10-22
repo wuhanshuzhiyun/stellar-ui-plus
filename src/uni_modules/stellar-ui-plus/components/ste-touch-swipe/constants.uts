@@ -1,0 +1,50 @@
+/**
+ * ste-touch-swipe 组件常量与上下文类型定义
+ * 
+ * 模块职责：
+ * 1. 提供父组件 (ste-touch-swipe) 与子组件 (ste-touch-swipe-item) 之间的 provide/inject 依赖注入 Key；
+ * 2. 规范子组件注册项数据结构与父级上下文调用契约，消除运行时通信类型歧义。
+ */
+
+/**
+ * ste-touch-swipe 父子组件依赖注入的全局唯一标识 Key
+ */
+export const TOUCH_SWIPE_KEY = 'STE_TOUCH_SWIPE_CONTEXT'
+
+/**
+ * TouchSwipe 子组件项数据契约
+ */
+export type TouchSwipeItemData = {
+	/** 子项唯一标识 ID */
+	id: string
+	/** 子项是否禁用切换 */
+	disabled: boolean
+}
+
+/**
+ * 父级 TouchSwipe 提供给子组件的上下文接口
+ */
+export type TouchSwipeContext = {
+	/**
+	 * 注册子项到父级容器
+	 * @param item 子项数据信息
+	 */
+	registerItem: (item: TouchSwipeItemData) => void
+	/**
+	 * 从父级容器注销子项
+	 * @param id 子项唯一标识 ID
+	 */
+	unregisterItem: (id: string) => void
+	/**
+	 * 更新子项的禁用状态
+	 * @param id 子项唯一标识 ID
+	 * @param disabled 新的禁用状态
+	 */
+	updateItemDisabled: (id: string, disabled: boolean) => void
+	/** 获取父级容器当前像素宽度 */
+	getContainerWidth: () => number
+	/** 获取父级容器当前像素高度 */
+	getContainerHeight: () => number
+	/** 获取父级容器切屏方向 */
+	getDirection: () => string
+}

@@ -1,0 +1,399 @@
+<template>
+	<view
+		class="ste-table-cell-root"
+		:class="[
+			alignClass,
+			hasBorder ? 'cell-border-right' : '',
+			isSubTable ? 'is-sub-table' : ''
+		]"
+		:style="[cmpRootStyle, cmpCustomCellStyle, props.rootStyle]"
+		@click="handleCellClick"
+	>
+		<!-- 1. 多选复选框列 -->
+		<view v-if="props.type == 'checkbox'" class="cell-inner" @click.stop="toggleCheck">
+			<ste-table-checkbox-icon
+				:checked="isRowChecked"
+				:disabled="isRowDisabled"
+				:readonly="isRowReadonly"
+				:icon-color-config="selectionColorConfig"
+			/>
+		</view>
+
+		<!-- 2. 单选单选框列 -->
+		<view v-else-if="props.type == 'radio'" class="cell-inner" @click.stop="toggleCheck">
+			<ste-table-radio-icon
+				:checked="isRowChecked"
+				:disabled="isRowDisabled"
+				:readonly="isRowReadonly"
+				:icon-color-config="selectionColorConfig"
+			/>
+		</view>
+
+		<!-- 3. 自动序号列 -->
+		<view v-else-if="props.type == 'index'" class="cell-inner">
+			<text class="cell-text">{{ displayRowIndex + 1 }}</text>
+		</view>
+
+		<!-- 4. 普通数据内容展示列 -->
+		<view v-else class="cell-inner">
+			<!-- 作用域插槽自定义内容 -->
+			<slot
+				:row="currentRow"
+				:rowIndex="displayRowIndex"
+				:column="currentColumnItem"
+			>
+				<!-- 4.1 嵌套子表格数据（单元格值为数组） -->
+				<ste-sub-table
+					v-if="isSubTable"
+					:rows="subTableRows"
+					:border="hasBorder"
+				/>
+
+				<!-- 4.2 空数据插槽与默认展示 -->
+				<template v-else-if="isEmptyVal">
+					<slot name="empty">
+						<text class="cell-text cell-empty-text">{{ emptyDisplayText }}</text>
+					</slot>
+				</template>
+
+				<!-- 4.3 开启超长 Popover 省略提示 -->
+				<ste-table-popover
+					v-else-if="isPopoverActive"
+					:text="displayCellText"
+					:line="computedPopoverLine"
+				/>
+
+				<!-- 4.4 常规纯文本单元格 -->
+				<text v-else class="cell-text">{{ displayCellText }}</text>
+			</slot>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-table-column.uvue
+	 * @description TableColumn 单元格列组件 - uni-app x / UTS 强类型版本
+	 * 负责声明单列定义并向上注册到 TableContext，渲染各行单元格内容（选框、序号、嵌套子表、Popover 或插槽）。
+	 */
+	import { ref, computed, inject, onMounted, onUnmounted } from 'vue'
+	import { addUnit } from '../../utils/utils.uts'
+	import { TableContext, TableColumnItem, TableSelectionColorConfig, DEFAULT_SELECTION_COLOR_CONFIG } from '../ste-table/constants.uts'
+	import { TableColumnProps } from './constants.uts'
+	import SteTableCheckboxIcon from './checkbox-icon.uvue'
+	import SteTableRadioIcon from './radio-icon.uvue'
+	import SteSubTable from './sub-table.uvue'
+	import SteTablePopover from './table-popover.uvue'
+
+	defineOptions({
+		name: 'ste-table-column',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== 插槽类型声明 ====================
+	defineSlots<{
+		default(props : { row : UTSJSONObject, rowIndex : number, column : TableColumnItem }) : any,
+		empty() : any,
+	}>()
+
+	// ==================== Props 属性与默认值 ====================
+	const props = withDefaults(defineProps<TableColumnProps>(), {
+		type: '',
+		customKey: '',
+		label: '',
+		prop: '',
+		width: '',
+		minWidth: '',
+		align: 'left',
+		headerAlign: '',
+		showPopover: null,
+		popoverLine: null,
+		row: null,
+		rowIndex: null,
+		rootStyle: () => ({}) as UTSJSONObject,
+	})
+
+	// ==================== 依赖注入上下文 ====================
+	const tableContext = inject<TableContext | null>('ste-table-context', null)
+
+	/** 列唯一随机 ID */
+	const columnId = ref<string>('ste-col-' + Math.floor(Math.random() * 10000000).toString())
+
+	// ==================== 构造当前列元数据 ====================
+	const currentColumnItem = computed(() : TableColumnItem => {
+		const alignVal = props.align != '' ? props.align : 'left'
+		const headerAlignVal = props.headerAlign != '' ? props.headerAlign : alignVal
+		return {
+			id: columnId.value,
+			type: props.type,
+			customKey: props.customKey,
+			label: props.label,
+			prop: props.prop,
+			width: props.width != null ? props.width.toString() : '',
+			minWidth: props.minWidth != null ? props.minWidth.toString() : '',
+			align: alignVal,
+			headerAlign: headerAlignVal,
+			showPopover: props.showPopover == true,
+			popoverLine: props.popoverLine != null ? props.popoverLine! : 1,
+		} as TableColumnItem
+	})
+
+	// 注册到父级表格上下文
+	onMounted(() => {
+		if (tableContext != null) {
+			tableContext!.registerColumn(currentColumnItem.value)
+		}
+	})
+
+	// 组件卸载时注销
+	onUnmounted(() => {
+		if (tableContext != null) {
+			tableContext!.unregisterColumn(columnId.value)
+		}
+	})
+
+	// ==================== 行数据与索引解析 ====================
+	const displayRowIndex = computed(() : number => {
+		if (props.rowIndex != null) {
+			return props.rowIndex!
+		}
+		return 0
+	})
+
+	const currentRow = computed(() : UTSJSONObject => {
+		if (props.row != null) {
+			return props.row!
+		}
+		if (tableContext != null) {
+			const resolved = tableContext!.resolveRowData(displayRowIndex.value, props.prop)
+			if (resolved != null && typeof resolved === 'object' && resolved instanceof UTSJSONObject) {
+				return resolved as UTSJSONObject
+			}
+		}
+		return {} as UTSJSONObject
+	})
+
+	// ==================== 选择器状态计算 ====================
+	const selectionColorConfig = computed(() : TableSelectionColorConfig => {
+		if (tableContext != null) {
+			return tableContext!.getSelectionColorConfig()
+		}
+		return DEFAULT_SELECTION_COLOR_CONFIG
+	})
+
+	const isRowChecked = computed(() : boolean => {
+		if (tableContext != null) {
+			return tableContext!.isRowChecked(displayRowIndex.value)
+		}
+		return false
+	})
+
+	const isRowDisabled = computed(() : boolean => {
+		if (tableContext != null) {
+			return !tableContext!.isRowSelectable(currentRow.value, displayRowIndex.value)
+		}
+		return false
+	})
+
+	const isRowReadonly = computed(() : boolean => {
+		if (tableContext != null) {
+			return tableContext!.isRowReadable(currentRow.value, displayRowIndex.value)
+		}
+		return false
+	})
+
+	// ==================== 单元格值计算 ====================
+	/** 单元格原始值 */
+	const cellRawValue = computed(() : any | null => {
+		const rowObj = currentRow.value
+		const propKey = props.prop
+		if (propKey != '' && rowObj[propKey] != null) {
+			return rowObj[propKey]
+		}
+		return null
+	})
+
+	/** 是否属于嵌套子表格（字段值为 Array） */
+	const isSubTable = computed(() : boolean => {
+		const val = cellRawValue.value
+		return val != null && Array.isArray(val)
+	})
+
+	const subTableRows = computed(() : any[] => {
+		const val = cellRawValue.value
+		if (val != null && Array.isArray(val)) {
+			return val as any[]
+		}
+		return [] as any[]
+	})
+
+	/** 单元格值是否为空 */
+	const isEmptyVal = computed(() : boolean => {
+		if (isSubTable.value) return false
+		const val = cellRawValue.value
+		return val == null || val === ''
+	})
+
+	/** 空数据占位文案 */
+	const emptyDisplayText = computed(() : string => {
+		if (tableContext != null) {
+			return tableContext!.getEmptyText()
+		}
+		return '-'
+	})
+
+	/** 格式化后的最终单元格文本 */
+	const displayCellText = computed(() : string => {
+		if (isEmptyVal.value) return emptyDisplayText.value
+		// 1. 尝试使用全局 formatter
+		if (tableContext != null) {
+			const formatter = tableContext!.getFormatter()
+			if (formatter != null) {
+				const formatted = formatter!(currentRow.value, props.customKey != '' ? props.customKey : props.prop)
+				if (formatted != '') return formatted
+			}
+		}
+		// 2. 转为字符串直接展示
+		const val = cellRawValue.value
+		return val != null ? val.toString() : emptyDisplayText.value
+	})
+
+	// ==================== Popover 状态计算 ====================
+	const isPopoverActive = computed(() : boolean => {
+		if (props.showPopover != null) {
+			return props.showPopover == true
+		}
+		if (tableContext != null) {
+			return tableContext!.getIsPopover()
+		}
+		return false
+	})
+
+	const computedPopoverLine = computed(() : number => {
+		if (props.popoverLine != null && props.popoverLine! > 0) {
+			return props.popoverLine!
+		}
+		if (tableContext != null) {
+			return tableContext!.getPopoverLine()
+		}
+		return 1
+	})
+
+	// ==================== 边框与样式计算 ====================
+	const hasBorder = computed(() : boolean => {
+		return tableContext != null && tableContext!.getBorder()
+	})
+
+	const alignClass = computed(() : string => {
+		if (props.align == 'center') return 'align-center'
+		if (props.align == 'right') return 'align-right'
+		return 'align-left'
+	})
+
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (props.width != null && props.width != '') {
+			const w = addUnit(props.width as any)
+			style['width'] = w
+			style['flex'] = '0 0 ' + w
+		} else {
+			style['flex'] = '1 1 0%'
+		}
+		if (props.minWidth != null && props.minWidth != '') {
+			style['minWidth'] = addUnit(props.minWidth as any)
+		}
+		return style
+	})
+
+	const cmpCustomCellStyle = computed(() : UTSJSONObject => {
+		if (tableContext != null) {
+			return tableContext!.getCellStyle(currentRow.value, currentColumnItem.value, displayRowIndex.value, 0)
+		}
+		return {} as UTSJSONObject
+	})
+
+	// ==================== 交互事件处理 ====================
+	/** 切换选择状态 */
+	function toggleCheck() {
+		if (isRowDisabled.value || isRowReadonly.value) return
+		if (tableContext != null) {
+			tableContext!.onRowCheckChange(currentRow.value, displayRowIndex.value)
+		}
+	}
+
+	/** 单元格点击事件 */
+	function handleCellClick() {
+		if (tableContext != null) {
+			tableContext!.onCellClick(currentRow.value, currentColumnItem.value)
+		}
+		// 若为选择器列，点击单元格扩大触控热区
+		if (props.type == 'checkbox' || props.type == 'radio') {
+			toggleCheck()
+		}
+	}
+</script>
+
+<style scoped>
+.ste-table-cell-root {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-left: 24rpx;
+	padding-right: 24rpx;
+	min-height: 80rpx;
+	box-sizing: border-box;
+}
+
+.cell-inner {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.cell-border-right {
+	border-right-width: 1rpx;
+	border-right-style: solid;
+	border-right-color: #ebebeb;
+}
+
+.is-sub-table {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.align-left {
+	justify-content: flex-start;
+}
+
+.align-left .cell-inner {
+	justify-content: flex-start;
+}
+
+.align-center {
+	justify-content: center;
+}
+
+.align-center .cell-inner {
+	justify-content: center;
+}
+
+.align-right {
+	justify-content: flex-end;
+}
+
+.align-right .cell-inner {
+	justify-content: flex-end;
+}
+
+.cell-text {
+	font-size: 24rpx;
+	color: #333333;
+}
+
+.cell-empty-text {
+	color: #999999;
+}
+</style>

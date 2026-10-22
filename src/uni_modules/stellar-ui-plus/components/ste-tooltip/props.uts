@@ -1,0 +1,13 @@
+/**
+ * @file props.uts
+ * @description ste-tooltip 组件 UTS 属性与参数导出
+ */
+
+export {
+	TooltipOptions,
+	UseTooltipResult,
+	DEFAULT_TOOLTIP_PLACEMENT,
+	DEFAULT_TOOLTIP_MAX_WIDTH,
+	TOOLTIP_SCREEN_MARGIN,
+	TOOLTIP_ANIM_DURATION,
+} from './constants.uts'

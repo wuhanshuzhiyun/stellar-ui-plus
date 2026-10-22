@@ -106,9 +106,9 @@
         },
         {
             "name": "colorType",
-            "description": "标题对齐方式",
-            "type": "Number|String",
-            "default": "left",
+            "description": "导航栏预设配色主题[仅Vue支持]",
+            "type": "string",
+            "default": "primary",
             "values": [
                 {
                     "name": 1,
@@ -119,6 +119,18 @@
                     "description": "白色"
                 }
             ]
+        },
+        {
+            "name": "placeholder",
+            "description": "固定在顶部时，是否在相同位置生成占位元素，防止页面内容塌陷上移[仅UVue支持]",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
         },
         {
             "name": "[event]backClick",
@@ -133,6 +145,17 @@
         {
             "name": "[slot]default",
             "description": "导航栏内容"
+        },
+        {
+            "name": "[slot]left",
+            "description": "导航栏左侧自定义插槽（替换默认返回按钮）"
+        },
+        {
+            "name": "[slot]right",
+            "description": "导航栏右侧功能按钮区域插槽"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "placeholder": "UVue 端新增 placeholder 属性（是否自动生成占位节点防止页面内容被导航栏遮挡）与 rootStyle 样式支持；Vue 端拥有 colorType 属性"
+    }
 }

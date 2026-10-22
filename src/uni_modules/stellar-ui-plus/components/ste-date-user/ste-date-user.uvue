@@ -1,0 +1,323 @@
+<template>
+	<view class="ste-date-user-root" data-test="date-user">
+		<view class="box">
+			<!-- 日期类型卡片展示 -->
+			<template v-if="props.type == 'date'">
+				<!-- 左侧号数方块 -->
+				<view class="left">
+					<text class="day">{{ day }}</text>
+				</view>
+				<!-- 右侧年月与星期/节气 -->
+				<view class="right">
+					<view class="top">
+						<text class="year">{{ year }}</text>
+					</view>
+					<view class="bottom">
+						<text class="time">{{ time.weekDay }}</text>
+						<view class="line" v-if="hasJieQi"></view>
+						<text class="time jieqi" v-if="hasJieQi">{{ time.jieQiName }}</text>
+					</view>
+				</view>
+			</template>
+
+			<!-- 人员信息卡片展示 -->
+			<template v-if="props.type == 'user'">
+				<!-- 左侧人员头像 -->
+				<view class="left">
+					<view class="image">
+						<ste-image v-if="props.avatar != ''" :width="80" :height="80" :src="props.avatar"></ste-image>
+						<view v-else class="empty-avatar"></view>
+					</view>
+				</view>
+				<!-- 右侧人员姓名与描述插槽 -->
+				<view class="right">
+					<view class="top">
+						<text class="year">{{ props.nickname }}</text>
+					</view>
+					<view class="bottom">
+						<view class="desc">
+							<!-- @slot desc 自定义人员角色或描述插槽 -->
+							<slot name="desc"></slot>
+						</view>
+					</view>
+				</view>
+			</template>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+/**
+ * ste-date-user 人员信息以及日期展示卡片组件
+ * 
+ * @description 提供了日期展示（含号数、年月、星期与节气）与人员信息卡片（头像、姓名与角色标签插槽）。
+ * 内置本地系统时间与网络日历接口双重引擎，支持离线自愈与优雅兜底。
+ */
+import { DateCalendarData } from './constants.uts';
+
+/**
+ * 组件属性定义
+ */
+const props = withDefaults(
+	defineProps<{
+		/**
+		 * 组件业务类型
+		 * - 'date': 日期展示模式
+		 * - 'user': 人员信息模式
+		 * @default 'date'
+		 */
+		type?: string;
+		/**
+		 * 人员头像图片地址
+		 * @default ''
+		 */
+		avatar?: string;
+		/**
+		 * 人员姓名/昵称
+		 * @default ''
+		 */
+		nickname?: string;
+	}>(),
+	{
+		type: 'date',
+		avatar: '',
+		nickname: ''
+	}
+);
+
+/** 当前展示的日历数据 */
+const time = ref<DateCalendarData>({
+	today: '',
+	weekDay: '',
+	jieQiName: ''
+});
+
+/** 左侧大字号天数（如 '18'） */
+const day = ref<string>('');
+
+/** 右侧顶部年月（如 '2026年09月'） */
+const year = ref<string>('');
+
+/** 是否包含节气或节日信息 */
+const hasJieQi = computed<boolean>(() : boolean => {
+	const jq = time.value.jieQiName;
+	return jq != null && jq != '';
+});
+
+/**
+ * 格式化并设置日历信息
+ * 
+ * @param data 日历结构化数据
+ */
+function setInfo(data: DateCalendarData) {
+	time.value = data;
+	const parts = data.today.split('-');
+	if (parts.length >= 3) {
+		day.value = parts[2];
+		year.value = `${parts[0]}年${parts[1]}月`;
+	} else {
+		day.value = '';
+		year.value = data.today;
+	}
+}
+
+/**
+ * 生成本地系统时间的兜底日历数据
+ * 
+ * @description 当网络未就绪、请求超时或无网络时，自动通过系统本地时钟计算当前公历日期与星期，保证卡片视觉正常呈现。
+ */
+function fallbackLocalCalendar(): DateCalendarData {
+	const now = new Date();
+	const y = now.getFullYear();
+	const m = now.getMonth() + 1;
+	const d = now.getDate();
+	const mStr = m < 10 ? `0${m}` : `${m}`;
+	const dStr = d < 10 ? `0${d}` : `${d}`;
+	const todayStr = `${y}-${mStr}-${dStr}`;
+
+	const weekDayIndex = now.getDay();
+	const weekNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+	const weekDay = weekNames[weekDayIndex];
+
+	const fallbackData: DateCalendarData = {
+		today: todayStr,
+		weekDay: weekDay,
+		jieQiName: ''
+	};
+	return fallbackData;
+}
+
+/**
+ * 初始化日历数据
+ * 
+ * @description 优先载入本地兜底时间防止闪烁，随后读取本地缓存 serverDay；若已跨天或无缓存，则异步发起网络请求更新。
+ */
+function initCalendar() {
+	// 1. 先用本地系统时间立即可视化，消除网络延迟造成的空白闪烁
+	const localFallback = fallbackLocalCalendar();
+	setInfo(localFallback);
+
+	// 2. 读取本地持久化缓存
+	const cachedObj = uni.getStorageSync('serverDay');
+	if (cachedObj != null && cachedObj instanceof UTSJSONObject) {
+		const cached = cachedObj as UTSJSONObject;
+		const cachedToday = cached.getString('today');
+		// 比对是否为今天
+		if (cachedToday != null && cachedToday == localFallback.today) {
+			const cachedData: DateCalendarData = {
+				today: cachedToday,
+				weekDay: cached.getString('weekDay') ?? localFallback.weekDay,
+				jieQiName: cached.getString('jieQiName') ?? ''
+			};
+			setInfo(cachedData);
+			return;
+		}
+	}
+
+	// 3. 发起网络请求同步服务器日历与节气数据
+	uni.request({
+		url: 'https://zboa.whzb.com/inte-cloud-test/inte-tour-base/api/calendar/getCalendar',
+		method: 'GET',
+		timeout: 5000,
+		success: (res) => {
+			if (res.statusCode == 200 && res.data != null) {
+				const resObj = res.data as UTSJSONObject;
+				const dataObj = resObj.get('data') as UTSJSONObject | null;
+				if (dataObj != null && dataObj.getString('today') != null) {
+					const serverData: DateCalendarData = {
+						today: dataObj.getString('today')!,
+						weekDay: dataObj.getString('weekDay') ?? localFallback.weekDay,
+						jieQiName: dataObj.getString('jieQiName') ?? ''
+					};
+					setInfo(serverData);
+					uni.setStorageSync('serverDay', serverData);
+					return;
+				}
+			}
+		},
+		fail: (_err) => {
+			// 网络异常时，已通过本地兜底时间呈现，静默处理
+		}
+	});
+}
+
+onMounted(() => {
+	if (props.type == 'date') {
+		initCalendar();
+	}
+});
+</script>
+
+<style lang="scss" scoped>
+.ste-date-user-root {
+	display: flex;
+	flex-direction: column;
+
+	.box {
+		width: 336rpx;
+		height: 128rpx;
+		border-radius: 12rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		background-color: #ffffff;
+		padding-right: 20rpx;
+
+		.left {
+			width: 80rpx;
+			height: 80rpx;
+			background-color: #f4f5f6;
+			border-radius: 8rpx;
+			margin-left: 28rpx;
+			margin-right: 28rpx;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+
+			.day {
+				font-size: 40rpx;
+				color: #1c1f23;
+				line-height: 56rpx;
+				height: 56rpx;
+				font-weight: 500;
+				text-align: center;
+			}
+
+			.image {
+				width: 80rpx;
+				height: 80rpx;
+				background-color: #ecf6ff;
+				border-radius: 8rpx;
+				overflow: hidden;
+			}
+
+			.empty-avatar {
+				width: 80rpx;
+				height: 80rpx;
+				background-color: #e5e6eb;
+				border-radius: 8rpx;
+			}
+		}
+
+		.right {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			flex: 1;
+
+			.top {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+			}
+
+			.year {
+				line-height: 40rpx;
+				height: 40rpx;
+				font-size: 28rpx;
+				color: #1c1f23;
+				font-weight: 500;
+				width: 170rpx;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.bottom {
+				margin-top: 6rpx;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+
+				.line {
+					width: 4rpx;
+					height: 22rpx;
+					background-color: #8f959e;
+					border-radius: 2rpx;
+					margin-left: 10rpx;
+					margin-right: 10rpx;
+				}
+
+				.time {
+					font-size: 26rpx;
+					color: #1c1f23;
+					line-height: 36rpx;
+				}
+
+				.jieqi {
+					color: #0090ff;
+				}
+
+				.desc {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					min-width: 96rpx;
+					height: 38rpx;
+				}
+			}
+		}
+	}
+}
+</style>

@@ -46,6 +46,12 @@
             "version": "1.22.27"
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]clickStep",
             "description": "点击步骤的标题或图标时触发",
             "params": [
@@ -54,6 +60,23 @@
                     "description": "点击的步骤序号"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，用于承载 ste-step 步骤项"
+        },
+        {
+            "name": "[event]click-step",
+            "description": "点击某一步骤项时触发",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "步骤索引"
+                }
+            ]
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端新增 rootStyle 原生样式对象支持"
+    }
 }

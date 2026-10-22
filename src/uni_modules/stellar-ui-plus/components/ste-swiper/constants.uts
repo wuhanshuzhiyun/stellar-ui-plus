@@ -1,0 +1,41 @@
+/**
+ * ste-swiper 常量契约与上下文类型定义
+ * 模块职责：规范父级 ste-swiper 容器与子级 ste-swiper-item 的跨层级通信协议与数据结构
+ */
+
+/** 父子组件注入使用的全局唯一 Key */
+export const SWIPER_KEY = 'STE_SWIPER_KEY'
+
+/** 递增序列号生成唯一的子项 ID */
+let swiperItemSeq = 0
+
+/**
+ * 生成唯一的轮播子项元素 ID
+ * @return 唯一字符串 ID
+ */
+export function generateSwiperItemId() : string {
+	swiperItemSeq++
+	return `ste_swiper_item_${swiperItemSeq}`
+}
+
+/**
+ * 轮播子项注册数据结构契约
+ */
+export type SwiperItemRegisterData = {
+	/** 子项唯一标识 ID */
+	id : string
+}
+
+/**
+ * 轮播容器注入给子项的上下文契约
+ */
+export type SwiperContext = {
+	/** 获取当前激活的轮播下标 */
+	getCurrentIndex : () => number
+	/** 获取轮播滑动方向 ('horizontal' | 'vertical') */
+	getDirection : () => string
+	/** 注册子项，返回分配的下标序号 */
+	registerItem : (item : SwiperItemRegisterData) => number
+	/** 注销子项 */
+	unregisterItem : (id : string) => void
+}

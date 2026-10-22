@@ -1,0 +1,43 @@
+/**
+ * @file use-message-box.uts
+ * @description MessageBox 弹窗组合式 API 钩子 (Composable)
+ * @author Stellar UI Plus Team
+ */
+
+import { getMessageBoxKey } from './ste-message-box.uts'
+import { MessageBoxOptions } from './constants.uts'
+
+/**
+ * useMessageBox 组合式函数返回接口
+ */
+export type UseMessageBoxReturn = {
+	/** 打开弹窗并传入配置项 */
+	showMsgBox : (options : MessageBoxOptions) => void,
+	/** 关闭弹窗 */
+	hideMsgBox : () => void,
+}
+
+/**
+ * MessageBox 组合式函数
+ * @param customKey 可选的 selector 标识 (默认为空字符串，支持零参调用)
+ * @returns 包含 showMsgBox 和 hideMsgBox 的操作对象
+ */
+export function useMessageBox(customKey : string = '') : UseMessageBoxReturn {
+	const msgKey = getMessageBoxKey(customKey)
+
+	// 使用箭头函数表达式，确保在 Kotlin 编译为 Functional 对象引用而非直接求值
+	const showMsgBox = (options : MessageBoxOptions) => {
+		uni.$emit(`${msgKey}:show`, options as any)
+	}
+
+	const hideMsgBox = () => {
+		uni.$emit(`${msgKey}:hide`, null)
+	}
+
+	return {
+		showMsgBox: showMsgBox,
+		hideMsgBox: hideMsgBox,
+	} as UseMessageBoxReturn
+}
+
+export default useMessageBox

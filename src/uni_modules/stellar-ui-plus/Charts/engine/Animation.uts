@@ -1,0 +1,93 @@
+/**
+ * @file Animation.uts
+ * @description 图表补间动画引擎
+ * 采用轻量级平滑缓动曲线，为折线伸展、柱状生长、扇区张角等提供平滑过渡动效
+ */
+
+/**
+ * 动画每帧更新回调，传入当前插值进度 (0.0 ~ 1.0)
+ */
+export type AnimationFrameCallback = (progress: number) => void;
+
+/**
+ * 动画完成回调
+ */
+export type AnimationCompleteCallback = () => void;
+
+/**
+ * 补间动画控制器类
+ */
+export class AnimationController {
+	/** 动画总时长 (毫秒) */
+	public duration: number = 800;
+	/** 当前动画定时器 ID */
+	private timerId: number | null = null;
+	/** 动画起始时间戳 */
+	private startTime: number = 0;
+	/** 是否正在执行动画 */
+	public isRunning: boolean = false;
+
+	/**
+	 * 构造函数
+	 * @param duration 动画持续时长 (ms)
+	 */
+	constructor(duration: number = 800) {
+		this.duration = duration;
+	}
+
+	/**
+	 * 二次缓出插值函数 (easeOutQuad)
+	 * 动效先快后慢，自然平滑停靠
+	 * @param t 线性归一化时间比例 (0.0 ~ 1.0)
+	 * @returns 缓动后的插值比例
+	 */
+	public static easeOutQuad(t: number): number {
+		return 1 - (1 - t) * (1 - t);
+	}
+
+	/**
+	 * 启动补间动画
+	 * @param onUpdate 每帧渲染更新回调
+	 * @param onComplete 动画结束回调
+	 */
+	public start(onUpdate: AnimationFrameCallback, onComplete: AnimationCompleteCallback | null = null) {
+		this.stop();
+
+		// 如果时长小于等于 0，则直接跳到终态
+		if (this.duration <= 0) {
+			onUpdate(1.0);
+			if (onComplete != null) onComplete();
+			return;
+		}
+
+		this.isRunning = true;
+		this.startTime = Date.now();
+
+		// 采用 16ms (~60 FPS) 步长的心跳驱动
+		this.timerId = setInterval(() => {
+			const elapsed = Date.now() - this.startTime;
+			const linearProgress = Math.min(1.0, Math.max(0.0, elapsed / this.duration));
+			const easedProgress = AnimationController.easeOutQuad(linearProgress);
+
+			onUpdate(easedProgress);
+
+			if (linearProgress >= 1.0) {
+				this.stop();
+				if (onComplete != null) {
+					onComplete();
+				}
+			}
+		}, 16);
+	}
+
+	/**
+	 * 立即终止当前正在运行的动画
+	 */
+	public stop() {
+		if (this.timerId != null) {
+			clearInterval(this.timerId!);
+			this.timerId = null;
+		}
+		this.isRunning = false;
+	}
+}

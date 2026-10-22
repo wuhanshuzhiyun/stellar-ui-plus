@@ -41,6 +41,12 @@
             "default": "#666666"
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]open",
             "description": "展开时触发",
             "params": [
@@ -67,6 +73,14 @@
         {
             "name": "[slot]default",
             "description": "单选框文本内容"
+        },
+        {
+            "name": "[event]close",
+            "description": "展开内容点击收起时触发",
+            "params": []
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端新增 rootStyle 原生样式对象支持"
+    }
 }

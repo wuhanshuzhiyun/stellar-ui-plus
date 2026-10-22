@@ -114,6 +114,12 @@
             "default": "16"
         },
         {
+            "name": "modelValue",
+            "description": "当前复选框选中状态，支持 v-model 双向绑定",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "[event]click",
             "description": "点击复选框时触发的事件",
             "params": [
@@ -144,6 +150,17 @@
                     "description": "当前复选框的绑定值"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "复选框文本内容，插槽参数: { checked: boolean, disabled: boolean, readonly: boolean }"
+        },
+        {
+            "name": "[slot]icon",
+            "description": "复选框图标，插槽参数: { checked: boolean, disabled: boolean, readonly: boolean }"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "v_model": "UVue/Vue 均标准支持 modelValue (v-model) 选中布尔值"
+    }
 }

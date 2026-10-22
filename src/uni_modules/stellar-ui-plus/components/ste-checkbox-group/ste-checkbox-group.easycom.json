@@ -1,0 +1,183 @@
+{
+    "name": "ste-checkbox-group",
+    "description": "复选框组组件，用于管理和统一控制多个复选框的状态与排版。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-checkbox",
+    "attributes": [
+        {
+            "name": "modelValue",
+            "description": "绑定值数组（支持 v-model 双向绑定）",
+            "type": "array",
+            "default": []
+        },
+        {
+            "name": "direction",
+            "description": "排列方式",
+            "type": "String",
+            "default": "row",
+            "values": [
+                {
+                    "name": "row",
+                    "description": "横向水平排列"
+                },
+                {
+                    "name": "column",
+                    "description": "纵向垂直排列"
+                }
+            ],
+            "enum": [
+                "row",
+                "column"
+            ]
+        },
+        {
+            "name": "max",
+            "description": "最大可选数，0 为无限制",
+            "type": "Number",
+            "default": 0
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "readonly",
+            "description": "只读 (不置灰)",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "shape",
+            "description": "形状",
+            "type": "String",
+            "default": "circle",
+            "values": [
+                {
+                    "name": "circle",
+                    "description": "圆形"
+                },
+                {
+                    "name": "square",
+                    "description": "矩形方形"
+                }
+            ],
+            "enum": [
+                "circle",
+                "square"
+            ]
+        },
+        {
+            "name": "iconSize",
+            "description": "图标大小，单位rpx",
+            "type": "Number | String",
+            "default": 36
+        },
+        {
+            "name": "checkedColor",
+            "description": "选中状态的图标颜色",
+            "type": "String",
+            "default": "#0090FF"
+        },
+        {
+            "name": "textPosition",
+            "description": "文本的位置",
+            "type": "String",
+            "default": "right",
+            "values": [
+                {
+                    "name": "left",
+                    "description": "文本在图标左侧"
+                },
+                {
+                    "name": "right",
+                    "description": "文本在图标右侧"
+                }
+            ],
+            "enum": [
+                "right",
+                "left"
+            ]
+        },
+        {
+            "name": "textSize",
+            "description": "文本字体大小，单位rpx",
+            "type": "Number | String",
+            "default": 25
+        },
+        {
+            "name": "textInactiveColor",
+            "description": "统一设置未选中状态下的文本颜色",
+            "type": "string"
+        },
+        {
+            "name": "textActiveColor",
+            "description": "选中文本颜色",
+            "type": "String",
+            "default": "#000000"
+        },
+        {
+            "name": "textDisabled",
+            "description": "禁用文本点击",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "marginLeft",
+            "description": "左边距，单位rpx",
+            "type": "Number | String",
+            "default": 0,
+            "version": "v1.10.0"
+        },
+        {
+            "name": "marginRight",
+            "description": "右边距，单位rpx",
+            "type": "Number | String",
+            "default": 0,
+            "version": "v1.10.0"
+        },
+        {
+            "name": "columnGap",
+            "description": "复选框和文本间距，单位rpx",
+            "type": "Number | String",
+            "default": 16,
+            "version": "v1.10.0"
+        },
+        {
+            "name": "[event]change",
+            "description": "当绑定值变化时触发的事件",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "改变后的绑定值"
+                }
+            ]
+        },
+        {
+            "name": "[event]update:modelValue",
+            "description": "双向绑定值更新时触发",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "更新后的选中值数组"
+                }
+            ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，用于承载 ste-checkbox 子项"
+        },
+        {
+            "name": "value",
+            "description": "当前选中值（支持v-model双向绑定）",
+            "type": "Array",
+            "default": []
+        },
+        {
+            "name": "textlnactiveColor",
+            "description": "未选中文本颜色",
+            "type": "String",
+            "default": "#000000"
+        }
+    ]
+}

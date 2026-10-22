@@ -1,0 +1,48 @@
+<template>
+	<!--
+		ste-scroll-to-item 滚动锚点子项组件
+		模块职责：承载各个分组的具体内容，挂载唯一的锚点 DOM ID，并自动向父级 ste-scroll-to 注册
+	-->
+	<view :id="itemId" class="ste-scroll-to-item-root">
+		<slot></slot>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { ref, onMounted, onUnmounted, inject } from 'vue'
+	import { SCROLL_TO_KEY, ScrollToContext, ScrollToItemRegisterData, generateScrollToItemId } from '../ste-scroll-to/constants.uts'
+
+	defineOptions({
+		name: 'ste-scroll-to-item',
+		options: {
+			virtualHost: true
+		}
+	})
+
+	/** 生成当前子项的唯一 DOM 锚点 ID */
+	const itemId = ref(generateScrollToItemId())
+
+	/** 注入父级 ste-scroll-to 容器上下文 */
+	const parentContext = inject<ScrollToContext | null>(SCROLL_TO_KEY, null)
+
+	onMounted(() => {
+		if (parentContext != null) {
+			const itemData : ScrollToItemRegisterData = {
+				id: itemId.value
+			}
+			parentContext.registerItem(itemData)
+		}
+	})
+
+	onUnmounted(() => {
+		if (parentContext != null) {
+			parentContext.unregisterItem(itemId.value)
+		}
+	})
+</script>
+
+<style scoped>
+	.ste-scroll-to-item-root {
+		width: 100%;
+	}
+</style>

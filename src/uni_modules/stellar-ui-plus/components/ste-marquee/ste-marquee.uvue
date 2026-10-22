@@ -1,0 +1,353 @@
+<template>
+	<view class="ste-marquee" :style="cmpContainerStyle" @touchstart="handleTouchStart" @touchend="handleTouchEnd">
+		<view class="ste-mq-wrapper" :style="cmpWrapperStyle">
+			<view class="ste-mq-content" :style="cmpContentStyle">
+				<view v-for="(item, index) in displayQueue" :key="item['_key'] as string" :style="cmpItemStyles[index]" @click="handleClick(item, index)">
+					<slot name="item" :item="item" :index="index">
+						<image v-if="item['icon'] != null" class="ste-mq-icon" :src="item['icon'] as string" mode="aspectFit" />
+						<text class="ste-mq-text" :style="cmpTextStyles[index]">{{ item['text'] }}</text>
+					</slot>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { ref, computed, onMounted, onUnmounted, watch, nextTick, getCurrentInstance } from 'vue'
+	import { formatPx } from '../../utils/utils.uts'
+
+	defineOptions({ name: 'ste-marquee' })
+
+	// ==================== Props ====================
+	type MarqueeProps = {
+		list: UTSJSONObject[],
+		speed: number,
+		pauseOnHover: boolean,
+		loop: boolean,
+		gap: number,
+		height: string,
+		fillScreen: boolean,
+		clickable: boolean,
+		containerBg: string,
+		containerPadding: string,
+		containerRadius: string,
+		itemBg: string,
+		itemPadding: string,
+		itemRadius: string,
+	}
+
+	const props = withDefaults(defineProps<MarqueeProps>(), {
+		list: [] as UTSJSONObject[],
+		speed: 50,
+		pauseOnHover: true,
+		loop: true,
+		gap: 20,
+		height: 'auto',
+		fillScreen: false,
+		clickable: true,
+		containerBg: 'transparent',
+		containerPadding: '0rpx',
+		containerRadius: '0rpx',
+		itemBg: 'transparent',
+		itemPadding: '0rpx 20rpx',
+		itemRadius: '0rpx',
+	})
+
+	const emits = defineEmits(['click'])
+
+	// ==================== State ====================
+	const displayQueue = ref<UTSJSONObject[]>([])
+	const contentWidth = ref(0)
+	const isReady = ref(false)
+	const isPaused = ref(false)
+	const translateX = ref(0)
+
+	let copyCount = 2
+	let keySeed = 0
+	let _isInitialized = false
+	const instance = getCurrentInstance()
+
+	// ==================== Scroll Animation (JS Timer) ====================
+	// CSS @keyframes + animation 在 uvue APP 端不生效，改用 JS 定时器驱动 translateX
+	let _offset = 0          // 累积偏移量（负数 = 向左移动）
+	let _lastTickTime = 0    // 上次 tick 时间戳
+	let _timer: number = 0   // 定时器 ID，0 表示无定时器
+
+	function tick() {
+		if (isPaused.value || contentWidth.value <= 0 || !isReady.value) return
+		const now = Date.now()
+		if (_lastTickTime == 0) {
+			_lastTickTime = now
+			return
+		}
+		const dt = (now - _lastTickTime) / 1000  // 秒
+		_lastTickTime = now
+
+		// 向左移动 speed * dt 像素
+		_offset -= props.speed * dt
+
+		// 滚动超过一份内容宽度时回绕（无缝循环）
+		if (_offset <= -contentWidth.value) {
+			if (props.loop) {
+				_offset += contentWidth.value
+			} else {
+				_offset = -contentWidth.value
+				isPaused.value = true
+			}
+		}
+
+		translateX.value = _offset
+	}
+
+	// ==================== Computed Styles ====================
+	const cmpContainerStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {
+			flexDirection: 'row',
+			backgroundColor: props.containerBg,
+			padding: props.containerPadding,
+			borderRadius: props.containerRadius,
+		}
+		if (props.height != 'auto') {
+			style['height'] = props.height
+		}
+		return style
+	})
+
+	const cmpWrapperStyle = computed((): UTSJSONObject => {
+		return {
+			flexDirection: 'row',
+			alignItems: 'center',
+		} as UTSJSONObject
+	})
+
+	const cmpContentStyle = computed((): UTSJSONObject => {
+		return {
+			flexDirection: 'row',
+			alignItems: 'center',
+			transform: 'translateX(' + translateX.value + 'px)',
+		} as UTSJSONObject
+	})
+
+	// 每个消息项的样式（不用函数 :style 绑定，改用 computed 数组）
+	const cmpItemStyles = computed((): UTSJSONObject[] => {
+		const result: UTSJSONObject[] = []
+		for (let i = 0; i < displayQueue.value.length; i++) {
+			const item = displayQueue.value[i]
+			const bgVal = item['background'] != null ? (item['background'] as string) : props.itemBg
+			result.push({
+				flexDirection: 'row',
+				alignItems: 'center',
+				flexShrink: 0,
+				backgroundColor: bgVal,
+				padding: props.itemPadding,
+				borderRadius: props.itemRadius,
+				marginRight: formatPx(props.gap),
+			} as UTSJSONObject)
+		}
+		return result
+	})
+
+	// 每个消息项内文本样式（color/fontSize 仅支持 <text>）
+	const cmpTextStyles = computed((): UTSJSONObject[] => {
+		const result: UTSJSONObject[] = []
+		for (let i = 0; i < displayQueue.value.length; i++) {
+			const item = displayQueue.value[i]
+			const colorVal = item['color'] != null ? (item['color'] as string) : ''
+			result.push({
+				color: colorVal,
+				fontSize: '14px',
+			} as UTSJSONObject)
+		}
+		return result
+	})
+
+	// ==================== Measurement ====================
+	function queryWidth(selector: string, callback: (width: number) => void) {
+		uni.createSelectorQuery()
+			.in(instance as any)
+			.select(selector)
+			.boundingClientRect()
+			.exec((ret: Array<any>) => {
+				if (ret.length > 0) {
+					const rect = ret[0] as NodeInfo
+					const w = rect.width
+					if (w != null) {
+						callback(w)
+					} else {
+						callback(0)
+					}
+				} else {
+					callback(0)
+				}
+			})
+	}
+
+	// ==================== Build Queue ====================
+	function mkKey(id: string, copy: number, seed: number): string {
+		return id + '_c' + copy + '_s' + seed
+	}
+
+	// finishBuild 必须在 buildQueue 之前定义（UTS 编译到 Kotlin 无函数声明提升）
+	function finishBuild(sourceList: UTSJSONObject[], containerW: number, singleW: number, seed: number) {
+		// 计算需要多少份拷贝
+		if (singleW <= 0) {
+			copyCount = 2
+		} else if (singleW >= containerW) {
+			copyCount = 2
+		} else {
+			copyCount = Math.max(3, Math.ceil((containerW * 3) / singleW) + 1)
+		}
+
+		// 构建多份
+		const filled: UTSJSONObject[] = []
+		for (let c = 0; c < copyCount; c++) {
+			for (let i = 0; i < sourceList.length; i++) {
+				const item = sourceList[i]
+				const newItem = JSON.parse(JSON.stringify(item)) as UTSJSONObject
+				const id = newItem['id'] != null ? ('' + newItem['id']) : ('idx_' + i)
+				newItem['_key'] = mkKey(id, c, seed)
+				filled.push(newItem)
+			}
+		}
+		displayQueue.value = filled
+
+		nextTick(() => {
+			isReady.value = true
+			_offset = 0
+			translateX.value = 0
+			_lastTickTime = Date.now()
+
+			// 启动定时器（仅首次）
+			if (_timer == 0) {
+				_timer = setInterval(tick, 30)
+			}
+		})
+	}
+
+	function buildQueue(sourceList: UTSJSONObject[]) {
+		if (sourceList.length == 0) {
+			displayQueue.value = []
+			isReady.value = false
+			return
+		}
+
+		isReady.value = false
+		const currentSeed = keySeed
+		keySeed++
+
+		// 先渲染单份用于测量
+		const singleCopy: UTSJSONObject[] = []
+		for (let i = 0; i < sourceList.length; i++) {
+			const item = sourceList[i]
+			const newItem = JSON.parse(JSON.stringify(item)) as UTSJSONObject
+			const id = newItem['id'] != null ? ('' + newItem['id']) : ('idx_' + i)
+			newItem['_key'] = mkKey(id, 0, currentSeed)
+			singleCopy.push(newItem)
+		}
+		displayQueue.value = singleCopy
+
+		nextTick(() => {
+			setTimeout(() => {
+				queryWidth('.ste-marquee', (containerW: number) => {
+					queryWidth('.ste-mq-content', (singleW: number) => {
+						if (singleW <= 0) {
+							// 重试
+							setTimeout(() => {
+								queryWidth('.ste-mq-content', (retryW: number) => {
+									if (retryW <= 0) {
+										contentWidth.value = 0
+										return
+									}
+									contentWidth.value = retryW
+									finishBuild(sourceList, containerW, retryW, currentSeed)
+								})
+							}, 100)
+						} else {
+							contentWidth.value = singleW
+							finishBuild(sourceList, containerW, singleW, currentSeed)
+						}
+					})
+				})
+			}, 50)
+		})
+	}
+
+	// ==================== Init ====================
+	function init(list: UTSJSONObject[]) {
+		isPaused.value = false
+		buildQueue(list)
+	}
+
+	// ==================== Control ====================
+	function play() {
+		isPaused.value = false
+		_lastTickTime = Date.now()
+	}
+	function pause() {
+		isPaused.value = true
+	}
+	function resume() {
+		isPaused.value = false
+		_lastTickTime = Date.now()
+	}
+	function stop() {
+		isPaused.value = true
+		_offset = 0
+		translateX.value = 0
+	}
+
+	// ==================== Watch ====================
+	watch(() : UTSJSONObject[] => props.list, (newList: UTSJSONObject[]) => {
+		if (!_isInitialized) return
+		init(newList)
+	})
+
+	// ==================== Lifecycle ====================
+	onMounted(() => {
+		setTimeout(() => {
+			init(props.list)
+			_isInitialized = true
+		}, 100)
+	})
+
+	onUnmounted(() => {
+		if (_timer != 0) {
+			clearInterval(_timer)
+			_timer = 0
+		}
+	})
+
+	// ==================== Interaction ====================
+	function handleClick(item: UTSJSONObject, index: number) {
+		if (!props.clickable) return
+		emits('click', item, index)
+	}
+	function handleTouchStart() {
+		if (props.pauseOnHover) pause()
+	}
+	function handleTouchEnd() {
+		if (props.pauseOnHover) resume()
+	}
+
+	defineExpose({ play, pause, resume, stop })
+</script>
+
+<style>
+.ste-marquee {
+	flex-direction: row;
+	overflow: hidden;
+}
+
+.ste-mq-icon {
+	width: 40rpx;
+	height: 40rpx;
+	margin-right: 10rpx;
+	border-radius: 50%;
+}
+
+.ste-mq-text {
+	font-size: 28rpx;
+	line-height: 1.5;
+}
+</style>

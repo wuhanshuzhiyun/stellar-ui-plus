@@ -103,6 +103,12 @@
             "default": true
         },
         {
+            "name": "showMask",
+            "description": "是否显示半透明背景遮罩层[UVue/Vue标准支持]",
+            "type": "boolean",
+            "default": true
+        },
+        {
             "name": "[event]close",
             "description": "弹窗关闭前触发，可用于异步拦截关闭",
             "params": [
@@ -134,5 +140,8 @@
             "name": "[slot]default",
             "description": "内容部分插槽"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "mask": "UVue 端明确规范 showMask 属性声明"
+    }
 }

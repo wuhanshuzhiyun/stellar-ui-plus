@@ -25,6 +25,16 @@
                     "description": "(index:number)=>void"
                 }
             ]
+        },
+        {
+            "name": "[method]init",
+            "description": "初始化各锚点元素位置信息，请在渲染完成后调用",
+            "params": [],
+            "return": "void"
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，用于承载 ste-scroll-to-item 锚点项"
         }
     ]
 }

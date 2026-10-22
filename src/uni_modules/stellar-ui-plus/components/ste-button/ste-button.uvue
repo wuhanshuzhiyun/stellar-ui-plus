@@ -1,0 +1,214 @@
+<template>
+	<view v-if="loading" class="ste-button--root ste-button--view ste-button--loading" :style="[cmpBtnStyle, rootStyle]">
+		<text class="btn-text" :style="cmpTextStyle">加载中.......</text>
+	</view>
+	<button v-else-if="stopPropagation" class="ste-button--root" :disabled="disabled"
+		:hover-class="loading != true ? 'ste-button--root-active' : ''" @click.stop="handleClick" :style="[cmpBtnStyle, cmpTextStyle, rootStyle]"
+		:open-type="openType" :scope="scope" @getuserinfo="onGetUserInfo" @contact="onContact"
+		@getphonenumber="onGetPhoneNumber" @getrealtimephonenumber="onGetRealtimePhoneNumber"
+		@agreeprivacyauthorization="onAgreePrivacyAuthorization" @error="onError" @opensetting="onOpenSetting"
+		@launchapp="onLaunchApp" @chooseavatar="onChooseAvatar" @getAuthorize="onGetAuthorize"
+		@followLifestyle="onFollowLifestyle" @chooseaddress="onChooseAddress" @chooseinvoicetitle="onChooseInvoiceTitle"
+		@addgroupapp="onAddGroupApp" @subscribe="onSubscribe" @login="onLogin">
+		<slot></slot>
+	</button>
+	<button v-else class="ste-button--root" :disabled="disabled"
+		:hover-class="loading != true ? 'ste-button--root-active' : ''" @click="handleClick" :style="[cmpBtnStyle, cmpTextStyle, rootStyle]"
+		:open-type="openType" :scope="scope" @getuserinfo="onGetUserInfo" @contact="onContact"
+		@getphonenumber="onGetPhoneNumber" @getrealtimephonenumber="onGetRealtimePhoneNumber"
+		@agreeprivacyauthorization="onAgreePrivacyAuthorization" @error="onError" @opensetting="onOpenSetting"
+		@launchapp="onLaunchApp" @chooseavatar="onChooseAvatar" @getAuthorize="onGetAuthorize"
+		@followLifestyle="onFollowLifestyle" @chooseaddress="onChooseAddress" @chooseinvoicetitle="onChooseInvoiceTitle"
+		@addgroupapp="onAddGroupApp" @subscribe="onSubscribe" @login="onLogin">
+		<slot></slot>
+	</button>
+</template>
+
+<script setup lang="uts">
+	import { computed } from 'vue'
+	import { useColorStore } from '../../store/color.uts'
+	import type { ColorValueType } from '../../store/color.uts'
+	import { formatPx, bg2style, deepMerge } from '../../utils/utils.uts'
+	import { normalizeFontSize } from '../../config/index.uts'
+
+	defineOptions({ name: 'ste-button', options: { virtualHost: true } })
+
+	type ButtonProps = {
+		mode ?: number | string,
+		color ?: string,
+		background ?: string,
+		borderColor ?: string,
+		width ?: string | number,
+		round ?: boolean,
+		disabled ?: boolean,
+		loading ?: boolean,
+		stopPropagation ?: boolean,
+		openType ?: string,
+		scope ?: string,
+		rootStyle ?: UTSJSONObject,
+		bold ?: boolean,
+		borderWidth ?: string | number,
+	}
+
+	const props = defineProps<ButtonProps>()
+	const emit = defineEmits(['click', 'getuserinfo', 'error', 'opensetting', 'launchapp', 'contact', 'chooseavatar', 'agreeprivacyauthorization', 'addgroupapp', 'chooseaddress', 'chooseinvoicetitle', 'subscribe', 'login', 'getrealtimephonenumber', 'getAuthorize', 'followLifestyle'])
+
+	const colorStore = useColorStore()
+
+	// 容器样式
+	const cmpBtnStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {
+			'paddingTop': '0',
+			'paddingRight': '0',
+			'paddingBottom': '0',
+			'paddingLeft': '0',
+			'backgroundColor': 'transparent',
+			'borderStyle': 'solid',
+			'borderColor': 'transparent',
+			'borderWidth': '0',
+			'boxSizing': 'border-box',
+		}
+
+		const _mode = props.mode != null ? props.mode : 200
+		const _background = props.background != null ? props.background : ''
+		const _borderColor = props.borderColor != null ? props.borderColor : ''
+		const _width = props.width != null ? props.width : 'auto'
+		const _round = props.round != null ? props.round : true
+		const _disabled = props.disabled != null ? props.disabled : false
+		const _borderWidth = props.borderWidth != null ? props.borderWidth : 2
+
+		if (_round == true) {
+			style['borderRadius'] = formatPx(48)
+		}
+
+		if (_width === '100%' || _width === 'auto') {
+			style['width'] = _width as string
+		} else {
+			style['width'] = formatPx(_width)
+		}
+
+		const modeNum = typeof _mode === 'number' ? (_mode as number) : parseInt(_mode as string)
+		if (modeNum == 100) {
+			if (_width == 'auto') { style['paddingLeft'] = formatPx(30); style['paddingRight'] = formatPx(30) }
+			style['height'] = formatPx(48)
+		} else if (modeNum == 300) {
+			if (_width == 'auto') { style['paddingLeft'] = formatPx(72); style['paddingRight'] = formatPx(72) }
+			style['height'] = formatPx(80)
+		} else if (modeNum == 400) {
+			if (_width == 'auto') { style['paddingLeft'] = formatPx(72); style['paddingRight'] = formatPx(72) }
+			style['height'] = formatPx(96)
+		} else if (modeNum == 450) {
+			if (_width == 'auto') { style['paddingLeft'] = formatPx(72); style['paddingRight'] = formatPx(72) }
+			style['height'] = formatPx(96)
+		} else {
+			if (_width == 'auto') { style['paddingLeft'] = formatPx(40); style['paddingRight'] = formatPx(40) }
+			style['height'] = formatPx(68)
+		}
+
+		if (_borderColor != null && _borderColor !== '') {
+			style['borderStyle'] = 'solid'
+			style['borderWidth'] = formatPx(_borderWidth)
+			style['borderColor'] = _borderColor
+		}
+
+		const colorData : ColorValueType = colorStore.getColor()
+		const bgColor = _background != null && _background !== '' ? _background : colorData.steThemeColor
+		const bgStyleObj = bg2style(bgColor)
+		const merged = deepMerge(style, bgStyleObj)
+
+		if (_disabled == true) {
+			merged['opacity'] = '0.5'
+		}
+
+		return merged
+	})
+
+	// 文本样式
+	const cmpTextStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		const _mode = props.mode != null ? props.mode : 200
+		const _color = props.color != null ? props.color : '#ffffff'
+		const _bold = props.bold != null ? props.bold : false
+
+		const modeNum = typeof _mode === 'number' ? (_mode as number) : parseInt(_mode as string)
+		if (modeNum == 100) {
+			style['fontSize'] = normalizeFontSize(24)
+			style['lineHeight'] = formatPx(48)
+		} else if (modeNum == 300) {
+			style['fontSize'] = normalizeFontSize(32)
+			style['lineHeight'] = formatPx(80)
+		} else if (modeNum == 400) {
+			style['fontSize'] = normalizeFontSize(36)
+			style['lineHeight'] = formatPx(96)
+		} else if (modeNum == 450) {
+			style['fontSize'] = normalizeFontSize(40)
+			style['lineHeight'] = formatPx(96)
+		} else {
+			style['fontSize'] = normalizeFontSize(28)
+			style['lineHeight'] = formatPx(68)
+		}
+
+		style['color'] = _color
+		style['fontWeight'] = _bold == true ? 'bold' : 'normal'
+
+		return style
+	})
+
+	function handleClick(e : any) {
+		if (props.disabled == true || props.loading == true) return
+		emit('click', e)
+	}
+
+	function onGetUserInfo(e : any) { emit('getuserinfo', e) }
+	function onContact(e : any) { emit('contact', e) }
+	function onGetPhoneNumber(e : any) { emit('getphonenumber', e) }
+	function onGetRealtimePhoneNumber(e : any) { emit('getrealtimephonenumber', e) }
+	function onAgreePrivacyAuthorization(e : any) { emit('agreeprivacyauthorization', e) }
+	function onError(e : any) { emit('error', e) }
+	function onOpenSetting(e : any) { emit('opensetting', e) }
+	function onLaunchApp(e : any) { emit('launchapp', e) }
+	function onChooseAvatar(e : any) { emit('chooseavatar', e) }
+	function onGetAuthorize(e : any) { emit('getAuthorize', e) }
+	function onFollowLifestyle(e : any) { emit('followLifestyle', e) }
+	function onChooseAddress(e : any) { emit('chooseaddress', e) }
+	function onChooseInvoiceTitle(e : any) { emit('chooseinvoicetitle', e) }
+	function onAddGroupApp(e : any) { emit('addgroupapp', e) }
+	function onSubscribe(e : any) { emit('subscribe', e) }
+	function onLogin(e : any) { emit('login', e) }
+</script>
+
+<style scoped>
+	.ste-button--root {
+		position: relative;
+		margin: 0;
+		padding: 0;
+		border-width: 0;
+		border-style: solid;
+		border-color: transparent;
+		background-color: transparent;
+		text-align: center;
+		overflow: hidden;
+	}
+
+	.ste-button--view {
+		align-items: center;
+		justify-content: center;
+		display: flex;
+		flex-direction: row;
+	}
+
+	.ste-button--loading {
+		opacity: 0.5;
+	}
+
+	.btn-text {
+		text-align: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.ste-button--root-active {
+		opacity: 0.85;
+	}
+</style>

@@ -1,0 +1,60 @@
+/**
+ * @file constants.uts
+ * @description MessageBox 弹窗组件常量、图标映射与配置类型定义
+ * @author Stellar UI Plus Team
+ */
+
+/**
+ * 内置图标映射字典
+ */
+export const ICON_OBJ : UTSJSONObject = {
+	info: '&#xe67d;',
+	success: '&#xe67a;',
+	error: '&#xe67b;',
+}
+
+/**
+ * 弹窗动画持续时间（毫秒）
+ */
+export const DURATION : number = 200
+
+/**
+ * 弹窗回调函数类型
+ */
+export type MessageBoxCallback = (value : string) => void
+
+/**
+ * MessageBox 弹窗配置项定义
+ */
+export type MessageBoxOptions = {
+	/** 是否显示弹窗 */
+	show ?: boolean,
+	/** 弹窗标题 */
+	title ?: string,
+	/** 提示内容文本 */
+	content ?: string,
+	/** 提示图标类型 ('info' | 'success' | 'error' | '') */
+	icon ?: string,
+	/** 取消按钮文字 (默认 '取消') */
+	cancelText ?: string,
+	/** 取消按钮文字颜色 (默认 '#333333') */
+	cancelColor ?: string,
+	/** 确认按钮文字 (默认 '确认') */
+	confirmText ?: string,
+	/** 确认按钮文字颜色 (默认 '#0090FF') */
+	confirmColor ?: string,
+	/** 是否显示取消按钮 (默认 true) */
+	showCancel ?: boolean,
+	/** 是否开启可编辑输入框模式 (默认 false) */
+	editable ?: boolean,
+	/** 输入框占位提示文本 */
+	placeholderText ?: string,
+	/** 点击确认按钮的回调函数 */
+	confirm ?: (value : string) => void,
+	/** 点击取消按钮的回调函数 */
+	cancel ?: (value : string) => void,
+	/** 弹窗关闭完成的回调函数 (无论确认还是取消) */
+	complete ?: (value : string) => void,
+	/** 是否允许点击遮罩层关闭 (默认 false) */
+	closeOnClickOverlay ?: boolean,
+}

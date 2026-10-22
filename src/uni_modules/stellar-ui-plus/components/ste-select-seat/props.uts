@@ -1,0 +1,64 @@
+/**
+ * ste-select-seat 属性与默认配置定义
+ *
+ * @description 声明 SelectSeat 组件的所有外部输入 Props 接口与默认值。
+ * 遵循 UTS 泛型宏定义规范，支持与 withDefaults(defineProps<SteSelectSeatProps>(), ...) 无缝集成。
+ */
+import { SteSelectSeatItem, SteSelectSeatValue } from './types.uts'
+
+/**
+ * SelectSeat 组件属性类型定义
+ */
+export type SteSelectSeatProps = {
+	/** 双向绑定的已选中座位列表 */
+	modelValue ?: SteSelectSeatValue[]
+	/** 座位总行数（大于 0 的正整数） */
+	rows ?: number
+	/** 座位总列数（大于 0 的正整数） */
+	cols ?: number
+	/** 画布容器物理宽度（单位：px，默认 350） */
+	width ?: number
+	/** 画布容器物理高度（单位：px，默认 400） */
+	height ?: number
+	/** 自定义座位属性数组（设置已售、禁用或通道空位） */
+	seats ?: SteSelectSeatItem[]
+	/** 单个座位尺寸（单位：rpx，默认 40） */
+	seatSize ?: number
+	/** 座位之间的间隔尺寸（单位：rpx，默认 8） */
+	seatGap ?: number
+	/** 座位圆角弧度（单位：rpx，默认 8） */
+	borderRadius ?: number
+	/** 座位边框线宽（单位：px，默认 1） */
+	borderWidth ?: number
+	/** 未选中座位的默认背景色（默认 '#ffffff'） */
+	bgColor ?: string
+	/** 未选中座位的边框颜色（默认 '#e5e5e5'） */
+	borderColor ?: string
+	/** 选中状态下的高亮背景色（默认空，自动继承主题色） */
+	selectedBgColor ?: string
+	/** 选中状态下的对勾图标颜色（默认 '#ffffff'） */
+	selectedColor ?: string
+	/** 已锁定/已售禁用座位的背景颜色（默认 '#cccccc'） */
+	disabledBgColor ?: string
+	/** 是否在左侧展示浮动行号数字轴（默认 true） */
+	showRowLabels ?: boolean
+	/** 根节点额外样式字符串 */
+	rootStyle ?: string
+}
+
+/** 默认座位尺寸常量 (rpx) */
+export const DEFAULT_SEAT_SIZE = 40
+/** 默认座位间距常量 (rpx) */
+export const DEFAULT_SEAT_GAP = 8
+/** 默认座位圆角常量 (rpx) */
+export const DEFAULT_SEAT_RADIUS = 8
+/** 默认边框线宽常量 (px) */
+export const DEFAULT_BORDER_WIDTH = 1
+/** 默认未选背景色常量 */
+export const DEFAULT_BG_COLOR = '#ffffff'
+/** 默认边框线条颜色常量 */
+export const DEFAULT_BORDER_COLOR = '#e5e5e5'
+/** 默认选中对勾颜色常量 */
+export const DEFAULT_SELECTED_COLOR = '#ffffff'
+/** 默认禁用背景色常量 */
+export const DEFAULT_DISABLED_BG_COLOR = '#cccccc'

@@ -1,0 +1,103 @@
+/**
+ * @file props.uts
+ * @description ste-navbar 导航栏组件 - uni-app x / UTS 强类型属性与参数定义
+ */
+
+/**
+ * 默认返回按钮图标编码
+ */
+export const DEFAULT_NAVBAR_BACK_CODE = '&#xe673;'
+
+/**
+ * 默认标题颜色
+ */
+export const DEFAULT_NAVBAR_TITLE_COLOR = '#181818'
+
+/**
+ * 默认导航栏内容区高度（像素 px）
+ */
+export const DEFAULT_NAVBAR_HEIGHT_PX = 44
+
+/**
+ * ste-navbar 组件 Props 强类型定义
+ */
+export type NavbarProps = {
+	/**
+	 * 导航栏中心或左侧标题文本
+	 */
+	title ?: string,
+	/**
+	 * 标题文字颜色
+	 * @default '#181818'
+	 */
+	titleColor ?: string,
+	/**
+	 * 标题对齐方式：1 为居左，2 为居中
+	 * @default 1
+	 */
+	titleAlignment ?: number,
+	/**
+	 * 是否显示默认返回按钮
+	 * @default true
+	 */
+	autoBack ?: boolean,
+	/**
+	 * 返回按钮图标颜色
+	 * @default '#000000'
+	 */
+	backColor ?: string,
+	/**
+	 * 返回按钮图标 Unicode 编码
+	 * @default '&#xe673;'
+	 */
+	backCode ?: string,
+	/**
+	 * 返回按钮背景填充色
+	 * @default 'transparent'
+	 */
+	backBackgroundColor ?: string,
+	/**
+	 * 返回按钮边框颜色
+	 * @default 'transparent'
+	 */
+	backBorderColor ?: string,
+	/**
+	 * 返回按钮整体透明度（0 到 1）
+	 * @default 1
+	 */
+	backOpacity ?: number,
+	/**
+	 * 是否阻止点击返回按钮后默认执行的返回上一页逻辑
+	 * @default false
+	 */
+	stopNavigateBack ?: boolean,
+	/**
+	 * 是否将导航栏固定在页面顶部
+	 * @default false
+	 */
+	fixed ?: boolean,
+	/**
+	 * 当开启 fixed 固定时，是否在原文档流生成等高的占位容器以防遮挡页面内容
+	 * @default false
+	 */
+	placeholder ?: boolean,
+	/**
+	 * 是否开启顶部状态栏安全区适配（自动注入状态栏高度 padding-top）
+	 * @default true
+	 */
+	safeAreaInsetTop ?: boolean,
+	/**
+	 * 导航栏的定位层级 z-index
+	 * @default 10
+	 */
+	zIndex ?: number,
+	/**
+	 * 导航栏背景颜色（支持十六进制、rgba 或渐变）
+	 * @default 'transparent'
+	 */
+	backgroundColor ?: string,
+	/**
+	 * 根节点自定义内联样式
+	 */
+	rootStyle ?: UTSJSONObject,
+}

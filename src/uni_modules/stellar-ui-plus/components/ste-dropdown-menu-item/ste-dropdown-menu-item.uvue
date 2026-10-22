@@ -1,0 +1,207 @@
+<template>
+	<!-- 选项单元根容器 -->
+	<view
+		:class="[
+			'ste-dropdown-menu-item-root',
+			parentType == 'round' ? 'item-round' : 'item-block',
+			isSelected ? 'item-active' : '',
+			disabled ? 'item-disabled' : '',
+			readonly ? 'item-readonly' : ''
+		]"
+		:style="cmpRootStyle"
+		@click="handleClick"
+	>
+		<!-- 选项标题文本 -->
+		<slot name="title">
+			<text
+				class="item-title-text"
+				:style="cmpTextStyle"
+			>{{ title }}</text>
+		</slot>
+
+		<!-- 列表模式下的选中对勾图标 -->
+		<view
+			v-if="parentType == 'block' && isSelected"
+			class="item-check-icon"
+		>
+			<ste-icon code="&#xe67a;" :size="18" :color="activeColor" />
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-dropdown-menu-item.uvue
+	 * @description DropdownMenuItem 下拉菜单选项项组件 (uni-app x / UTS 版本)
+	 * 注入父级 DropdownMenu 上下文，支持列表打勾与胶囊按钮两种呈现形态，支持点击通知与多选状态高亮。
+	 */
+
+	import { inject, computed, onMounted, onUnmounted, watch } from 'vue'
+	import { DROPDOWN_MENU_KEY, DropdownMenuContext, DropdownItemData } from '../ste-dropdown-menu/constants.uts'
+
+	/**
+	 * 组件入参 Props 声明
+	 */
+	const props = withDefaults(
+		defineProps<{
+			/** 选项绑定值 */
+			value ?: string
+			/** 选项显示文本 */
+			title ?: string
+			/** 是否禁用此项点击 */
+			disabled ?: boolean
+			/** 是否只读（不置灰但无法点击触发变动） */
+			readonly ?: boolean
+			/** 选项目前预留最大数 */
+			max ?: number
+		}>(),
+		{
+			value: '',
+			title: '',
+			disabled: false,
+			readonly: false,
+			max: 1
+		}
+	)
+
+	/**
+	 * 事件 Emits 声明
+	 */
+	const emits = defineEmits<{
+		click: [value: string]
+	}>()
+
+	/** 注入父级上下文 */
+	const parent = inject<DropdownMenuContext>(DROPDOWN_MENU_KEY)
+
+	/** 获取父级排版类型 ('block' 或 'round') */
+	const parentType = computed((): string => {
+		return parent?.getType() ?? 'block'
+	})
+
+	/** 获取父级激活主题色 */
+	const activeColor = computed((): string => {
+		return parent?.getActiveColor() ?? '#0090FF'
+	})
+
+	/** 获取未激活文本颜色 */
+	const inactiveColor = computed((): string => {
+		return parent?.getInactiveColor() ?? '#333333'
+	})
+
+	/** 计算当前项是否处于选中状态 */
+	const isSelected = computed((): boolean => {
+		if (parent == null) return false
+		const chosen = parent!.getChooseItems()
+		return chosen.includes(props.value)
+	})
+
+	/** 根节点动态样式 */
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		if (parentType.value == 'round') {
+			if (isSelected.value) {
+				return {
+					backgroundColor: activeColor.value,
+					borderColor: activeColor.value
+				}
+			} else {
+				return {
+					backgroundColor: '#f7f8fa',
+					borderColor: '#e8eaf0'
+				}
+			}
+		}
+		return {}
+	})
+
+	/** 选项文本样式 */
+	const cmpTextStyle = computed((): UTSJSONObject => {
+		if (props.disabled) {
+			return {
+				color: '#cccccc'
+			}
+		}
+		if (parentType.value == 'round') {
+			return {
+				color: isSelected.value ? '#ffffff' : inactiveColor.value
+			}
+		} else {
+			return {
+				color: isSelected.value ? activeColor.value : inactiveColor.value
+			}
+		}
+	})
+
+	/**
+	 * 点击项事件处理
+	 */
+	function handleClick() {
+		if (props.disabled || props.readonly || parent == null) {
+			return
+		}
+		emits('click', props.value)
+		parent!.choose({ title: props.title, value: props.value } as DropdownItemData)
+	}
+
+	onMounted(() => {
+		if (parent != null) {
+			parent!.registerItem({ title: props.title, value: props.value } as DropdownItemData)
+		}
+	})
+
+	onUnmounted(() => {
+		if (parent != null) {
+			parent!.unregisterItem(props.value)
+		}
+	})
+
+	// 监听 title 或 value 变动更新注册信息
+	watch(
+		(): string => props.title,
+		() => {
+			if (parent != null) {
+				parent!.registerItem({ title: props.title, value: props.value } as DropdownItemData)
+			}
+		}
+	)
+</script>
+
+<style lang="scss">
+	.ste-dropdown-menu-item-root {
+		align-items: center;
+	}
+
+	/* 列表排版项 */
+	.item-block {
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 28rpx 32rpx;
+		background-color: #ffffff;
+		border-bottom: 1rpx solid #f7f8fa;
+	}
+
+	/* 胶囊按钮排版项 */
+	.item-round {
+		width: 216rpx;
+		height: 72rpx;
+		border-radius: 40rpx;
+		border-width: 2rpx;
+		border-style: solid;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 20rpx;
+	}
+
+	.item-title-text {
+		font-size: 28rpx;
+	}
+
+	.item-disabled {
+		opacity: 0.5;
+	}
+
+	.item-check-icon {
+		justify-content: center;
+		align-items: center;
+	}
+</style>

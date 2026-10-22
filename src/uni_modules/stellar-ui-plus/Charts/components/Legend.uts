@@ -1,0 +1,179 @@
+/**
+ * @file Legend.uts
+ * @description 通用图例 (Legend) 排版与绘制器
+ * 负责各序列图例图标排版、文字度量、换行计算及点击置灰状态的高清绘制
+ */
+
+import { ChartLegendItem, ChartSeriesItem, LegendLayoutResult } from '../types/uts-types.uts'
+
+/**
+ * 图例系统计算与绘制管理类
+ */
+export class Legend {
+	/**
+	 * 计算并排版图例列表的物理布局坐标
+	 * @param ctx 渲染上下文（用于 measureText）
+	 * @param series 数据序列列表
+	 * @param canvasWidth 画布总逻辑宽度
+	 * @param startY 图例起始绘制的 Y 坐标
+	 * @param colors 调色板
+	 * @returns 已排版的图例项列表及图例区域占用的总高度
+	 */
+	public static layout(
+		ctx: CanvasRenderingContext2D,
+		series: ChartSeriesItem[],
+		canvasWidth: number,
+		startY: number,
+		colors: string[]
+	): LegendLayoutResult {
+		const items: ChartLegendItem[] = [];
+		if (series.length == 0) {
+			const emptyRes: LegendLayoutResult = { items, totalHeight: 0 };
+			return emptyRes;
+		}
+
+		ctx.save();
+		ctx.font = '11px sans-serif';
+
+		const itemGap = 16; // 图例项之间的水平间隔
+		const lineHeight = 18; // 单行高度
+		const iconWidth = 12; // 图例图标宽度
+		const textGap = 6; // 图标与文字间距
+
+		// 1. 测量每个图例项的宽度
+		const measuredWidths: number[] = [];
+		for (let i = 0; i < series.length; i++) {
+			const s = series[i];
+			const textMetrics = ctx.measureText(s.name);
+			const textW = textMetrics != null ? textMetrics.width : s.name.length * 11;
+			const totalW = iconWidth + textGap + textW;
+			measuredWidths.push(totalW);
+		}
+
+		// 2. 逐行分行排版（居中对齐）
+		let currentLine: number[] = [];
+		let currentLineWidth = 0;
+		const lines: number[][] = [];
+
+		for (let i = 0; i < series.length; i++) {
+			const w = measuredWidths[i];
+			if (currentLine.length > 0 && currentLineWidth + itemGap + w > canvasWidth - 20) {
+				lines.push(currentLine);
+				currentLine = [i];
+				currentLineWidth = w;
+			} else {
+				if (currentLine.length > 0) {
+					currentLineWidth += itemGap;
+				}
+				currentLine.push(i);
+				currentLineWidth += w;
+			}
+		}
+		if (currentLine.length > 0) {
+			lines.push(currentLine);
+		}
+
+		// 3. 计算每个图例项的具体 X, Y
+		let curY = startY;
+		for (let l = 0; l < lines.length; l++) {
+			const lineIndices = lines[l];
+			let lineTotalW = 0;
+			for (let idx = 0; idx < lineIndices.length; idx++) {
+				const i = lineIndices[idx];
+				lineTotalW += measuredWidths[i];
+				if (idx < lineIndices.length - 1) {
+					lineTotalW += itemGap;
+				}
+			}
+
+			// 水平居中起始点
+			let startX = Math.max(10, (canvasWidth - lineTotalW) / 2);
+
+			for (let idx = 0; idx < lineIndices.length; idx++) {
+				const i = lineIndices[idx];
+				const s = series[i];
+				const w = measuredWidths[i];
+				const fallbackColor = colors[i % colors.length];
+				const color = s.color != null && s.color != '' ? s.color! : fallbackColor;
+				const isShow = s.show != null ? s.show! : true;
+
+				items.push({
+					name: s.name,
+					color: color,
+					shape: s.legendShape != null && s.legendShape != '' ? s.legendShape! : 'rect',
+					show: isShow,
+					seriesIndex: i,
+					x: startX,
+					y: curY,
+					width: w,
+					height: lineHeight
+				});
+
+				startX += w + itemGap;
+			}
+
+			curY += lineHeight + 4;
+		}
+
+		ctx.restore();
+
+		const totalHeight = curY - startY;
+		const res: LegendLayoutResult = { items, totalHeight };
+		return res;
+	}
+
+	/**
+	 * 绘制图例列表
+	 * @param ctx 渲染上下文
+	 * @param items 排版后的图例列表
+	 */
+	public static draw(ctx: CanvasRenderingContext2D, items: ChartLegendItem[]) {
+		if (items.length == 0) return;
+
+		ctx.save();
+		ctx.font = '11px sans-serif';
+		ctx.textBaseline = 'middle';
+
+		for (let i = 0; i < items.length; i++) {
+			const item = items[i];
+			const iconW = 12;
+			const iconH = 8;
+			const iconY = item.y + (item.height - iconH) / 2;
+			const textX = item.x + iconW + 6;
+			const textY = item.y + item.height / 2;
+
+			// 如果被点击置灰，以浅半透明灰色绘制
+			const drawColor = item.show ? item.color : '#cccccc';
+			const textColor = item.show ? '#595959' : '#bfbfbf';
+
+			// 绘制图例图形
+			ctx.fillStyle = drawColor;
+			ctx.strokeStyle = drawColor;
+
+			if (item.shape === 'circle') {
+				ctx.beginPath();
+				ctx.arc(item.x + iconW / 2, item.y + item.height / 2, iconH / 2, 0, Math.PI * 2);
+				ctx.fill();
+			} else if (item.shape === 'line') {
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+				ctx.moveTo(item.x, item.y + item.height / 2);
+				ctx.lineTo(item.x + iconW, item.y + item.height / 2);
+				ctx.stroke();
+				ctx.beginPath();
+				ctx.arc(item.x + iconW / 2, item.y + item.height / 2, 2.5, 0, Math.PI * 2);
+				ctx.fill();
+			} else {
+				// 默认带微圆角的矩形
+				ctx.fillRect(item.x, iconY, iconW, iconH);
+			}
+
+			// 绘制图例文本
+			ctx.textAlign = 'left';
+			ctx.fillStyle = textColor;
+			ctx.fillText(item.name, textX, textY);
+		}
+
+		ctx.restore();
+	}
+}

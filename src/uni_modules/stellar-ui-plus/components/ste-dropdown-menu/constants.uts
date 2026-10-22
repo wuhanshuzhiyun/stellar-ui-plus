@@ -1,0 +1,62 @@
+/**
+ * @file constants.uts
+ * @description ste-dropdown-menu 下拉菜单组件常量与强类型接口契约声明
+ */
+
+/**
+ * 下拉菜单选项数据契约
+ */
+export type DropdownItemData = {
+	/** 选项展示的文本标题 */
+	title: string
+	/** 选项关联的唯一值标识 */
+	value: string
+}
+
+/**
+ * 菜单栏测量矩形边界契约
+ */
+export type MenuRootQuery = {
+	/** 节点高度 (px) */
+	height: number
+	/** 节点左偏移 (px) */
+	left: number
+	/** 节点顶部距离视窗顶部的距离 (px) */
+	top: number
+	/** 节点底部距离视窗顶部的距离 (px) */
+	bottom: number
+}
+
+/**
+ * ste-dropdown-menu 向子选项 ste-dropdown-menu-item 提供的依赖注入上下文契约
+ */
+export type DropdownMenuContext = {
+	/** 获取菜单排版模式：'block' 列表模式 或 'round' 胶囊按钮模式 */
+	getType: () => string
+	/** 获取弹出方向：'down' 向下 或 'up' 向上 */
+	getDirection: () => string
+	/** 获取激活高亮主题颜色 */
+	getActiveColor: () => string
+	/** 获取未激活文字默认颜色 */
+	getInactiveColor: () => string
+	/** 获取当前选中的选项值列表 */
+	getChooseItems: () => string[]
+	/** 获取动画过渡时长（秒） */
+	getDuration: () => number
+	/** 子项选中时触发的回调处理 */
+	choose: (item: DropdownItemData) => void
+	/** 注册子项数据至父容器以实现标题反查 */
+	registerItem: (item: DropdownItemData) => void
+	/** 移除已注销的子项数据 */
+	unregisterItem: (value: string) => void
+}
+
+/** provide / inject 跨层级通信唯一 key */
+export const DROPDOWN_MENU_KEY = 'ste-dropdown-menu'
+
+/** 默认动画过渡时长（秒） */
+export const DEFAULT_DURATION: number = 0.2
+/** 最小动画时长限制（秒） */
+export const MIN_DURATION: number = 0
+/** 最大动画时长限制（秒） */
+export const MAX_DURATION: number = 10

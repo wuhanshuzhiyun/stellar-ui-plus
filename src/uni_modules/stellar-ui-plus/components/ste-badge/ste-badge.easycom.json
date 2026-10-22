@@ -93,12 +93,26 @@
             "default": false
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[slot]default",
             "description": "默认插槽"
         },
         {
             "name": "[slot]content",
             "description": "自定义徽标内容"
+        },
+        {
+            "name": "[event]click",
+            "description": "点击徽标时触发",
+            "params": []
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端支持 rootStyle 原生内联样式"
+    }
 }

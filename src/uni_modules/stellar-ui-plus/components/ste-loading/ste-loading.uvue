@@ -1,0 +1,160 @@
+<template>
+	<view class="ste-loading-root" :style="cmpRootStyle" data-test="loading">
+		<view :class="'loading loading-type-' + type" :style="cmpLoadingStyle">
+			<view v-for="(barStyle, index) in cmpBarStyles" :key="index" :style="barStyle">
+				<view :style="cmpBarColorStyle"></view>
+			</view>
+		</view>
+		<text v-if="$slots['default']" class="text" :style="cmpTextStyle">
+			<slot></slot>
+		</text>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { computed, ref, onMounted, onUnmounted } from 'vue'
+	import { formatPx } from '../../utils/utils.uts'
+
+	defineOptions({ name: 'ste-loading' })
+
+	// ==================== Props 类型定义 ====================
+	type LoadingProps = {
+		color ?: string,
+		textColor ?: string,
+		textSize ?: number,
+		type ?: number,
+		size ?: number,
+		vertical ?: boolean,
+	}
+
+	const props = withDefaults(defineProps<LoadingProps>(), {
+		color: '#999999',
+		textColor: '',
+		textSize: 28,
+		type: 1,
+		size: 60,
+		vertical: false,
+	})
+
+	// ==================== 根布局（横/竖排列） ====================
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		return {
+			flexDirection: props.vertical ? 'column' : 'row',
+		} as UTSJSONObject
+	})
+
+	// ==================== 旋转角度（JS 定时器驱动） ====================
+	// type=1：阶梯旋转，0.8s 内 8 步（每步 45°），还原 CSS steps(8)
+	// type=2：平滑旋转，1s 一圈
+	const rotation = ref(0)
+	let _startTime = 0
+	let _timer: number = 0
+
+	function tick() {
+		const elapsed = Date.now() - _startTime
+		if (props.type == 2) {
+			rotation.value = (elapsed / 1000 * 360) % 360
+		} else {
+			const step = Math.floor((elapsed / 100) % 8)
+			rotation.value = step * 45
+		}
+	}
+
+	onMounted(() => {
+		_startTime = Date.now()
+		_timer = setInterval(tick, 30)
+	})
+
+	onUnmounted(() => {
+		if (_timer != 0) {
+			clearInterval(_timer)
+			_timer = 0
+		}
+	})
+
+	// ==================== 加载图标容器样式 ====================
+	// type=1：父容器无 transform，旋转角度由每个子元素自行处理
+	// type=2：父容器有 transform（无子元素，不会冲突）
+	const cmpLoadingStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {
+			width: formatPx(props.size),
+			height: formatPx(props.size),
+		}
+		if (props.type == 2) {
+			style['transform'] = 'rotate(' + rotation.value + 'deg)'
+			style['transformOrigin'] = '50% 50%'
+			style['borderWidth'] = formatPx(4)
+			style['borderStyle'] = 'solid'
+			style['borderTopColor'] = props.color
+			style['borderRightColor'] = props.color
+			style['borderBottomColor'] = props.color
+			style['borderLeftColor'] = 'transparent'
+		}
+		return style
+	})
+
+	// ==================== 9 根光线样式（type=1） ====================
+	// 每根光线的旋转角度 = 静态角度 + 动态旋转角度
+	// 父容器无 transform，避免 uvue 原生渲染中父容器 transform 导致子元素不渲染
+	const cmpBarStyles = computed((): UTSJSONObject[] => {
+		if (props.type != 1) return []
+		const styles: UTSJSONObject[] = []
+		for (let i = 0; i < 9; i++) {
+			const opacityVal = i == 0 ? 1 : (i + 1) / 10
+			const angle = i * 40 + 80 + rotation.value
+			styles.push({
+				position: 'absolute',
+				top: '0',
+				left: '0',
+				width: formatPx(props.size),
+				height: formatPx(props.size),
+				transform: 'rotate(' + angle + 'deg)',
+				transformOrigin: '50% 50%',
+				opacity: opacityVal,
+			} as UTSJSONObject)
+		}
+		return styles
+	})
+
+	// ==================== 光线条样式（type=1 的每根光线本体） ====================
+	// 用 position:absolute 精确定位，不依赖 flexbox（uvue 默认 flex-direction 是 column 不是 row）
+	// 水平居中：left = (容器宽度 - 光线宽度) / 2 = size * 0.45
+	const cmpBarColorStyle = computed((): UTSJSONObject => {
+		return {
+			position: 'absolute',
+			top: '0',
+			left: formatPx(props.size * 0.45),
+			width: formatPx(props.size * 0.1),
+			height: formatPx(props.size * 0.25),
+			backgroundColor: props.color,
+			borderRadius: '40%',
+		} as UTSJSONObject
+	})
+
+	// ==================== 加载文案样式 ====================
+	const cmpTextStyle = computed((): UTSJSONObject => {
+		const colorVal = props.textColor != '' ? props.textColor : props.color
+		const marginVal = props.vertical ? (formatPx(16) + ' 0 0 0') : ('0 0 0 ' + formatPx(16))
+		return {
+			color: colorVal,
+			fontSize: formatPx(props.textSize),
+			margin: marginVal,
+		} as UTSJSONObject
+	})
+</script>
+
+<style>
+.ste-loading-root {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.loading {
+	position: relative;
+}
+
+.loading-type-2 {
+	border-radius: 50%;
+}
+</style>

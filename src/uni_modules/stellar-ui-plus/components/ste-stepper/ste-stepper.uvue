@@ -1,0 +1,442 @@
+<template>
+	<view class="ste-stepper-root" :class="cmpThemeClass" :style="cmpRootStyle">
+		<!-- ========== 减号按钮 ========== -->
+		<!-- simple / circle：纯 view -->
+		<view v-if="theme != 'add' && (theme == 'simple' || theme == 'circle')" class="btn-view minus" @click="handleMinus">
+			<text class="btn-icon-text" :style="cmpMinusTextStyle">−</text>
+		</view>
+		<!-- card / line：styled view -->
+		<view v-else-if="theme != 'add'" class="btn-wrap" :style="cmpLeftBtnStyle" @click="handleMinus">
+			<text class="btn-icon-text" :style="cmpMinusTextStyle">−</text>
+		</view>
+
+		<!-- ========== 输入框 ========== -->
+		<view v-if="theme != 'add'" class="input-box" :style="cmpInputStyle" @click="handleClickInput">
+			<input
+				class="input-element"
+				:style="cmpInputTextStyle"
+				:type="precision > 0 ? 'digit' : 'number'"
+				:value="displayValue"
+				:disabled="disabled || disableInput"
+				@input="onInput"
+				@blur="onBlur"
+				@focus="onFocus"
+			/>
+		</view>
+
+		<!-- ========== 加号按钮 ========== -->
+		<!-- simple / circle：纯 view -->
+		<view v-if="theme != 'add' && (theme == 'simple' || theme == 'circle')" class="btn-view plus" @click="handlePlus">
+			<text class="btn-icon-text" :style="cmpPlusTextStyle">+</text>
+		</view>
+		<!-- card / line：styled view -->
+		<view v-else-if="theme != 'add'" class="btn-wrap" :style="cmpRightBtnStyle" @click="handlePlus">
+			<text class="btn-icon-text" :style="cmpPlusTextStyle">+</text>
+		</view>
+
+		<!-- add 主题：徽标 + 按钮 -->
+		<ste-badge v-else :content="modelValue" :background="background" :showDot="showDot" :position="position" :offsetX="offsetX" :offsetY="offsetY" :showZero="showZero" :max="badgeMax">
+			<view class="btn-wrap" :style="cmpRightBtnStyle" @click="handlePlus">
+				<text class="btn-icon-text" style="color: #ffffff;">+</text>
+			</view>
+		</ste-badge>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { ref, computed, watch } from 'vue'
+	import { useColorStore } from '../../store/color.uts'
+	import { formatPx, deepMerge, deepClone } from '../../utils/utils.uts'
+
+	defineOptions({ name: 'ste-stepper', options: { virtualHost: true } })
+
+	const colorStore = useColorStore()
+
+	// ============== Props ==============
+
+	type StepperProps = {
+		modelValue ?: number,
+		min ?: number,
+		max ?: number,
+		step ?: number,
+		inputWidth ?: number | string,
+		btnSize ?: number | string,
+		precision ?: number,
+		theme ?: string,
+		mainColor ?: string,
+		disabled ?: boolean,
+		disablePlus ?: boolean,
+		disableMinus ?: boolean,
+		disableInput ?: boolean,
+		readonlyInput ?: boolean,
+		// 徽标相关（add 主题）
+		background ?: string,
+		showDot ?: boolean,
+		offsetX ?: string | number,
+		offsetY ?: string | number,
+		showZero ?: boolean,
+		position ?: string,
+		badgeMax ?: number,
+	}
+
+	const props = withDefaults(defineProps<StepperProps>(), {
+		modelValue: 1,
+		min: 0,
+		max: 99999999,
+		step: 1,
+		inputWidth: 64,
+		precision: 0,
+		theme: 'card',
+		mainColor: '',
+		disabled: false,
+		disablePlus: false,
+		disableMinus: false,
+		disableInput: false,
+		readonlyInput: false,
+		background: '#ee0a24',
+		showDot: false,
+		offsetX: 'auto',
+		offsetY: 'auto',
+		showZero: false,
+		position: 'topRight',
+		badgeMax: 99,
+	})
+
+	const emit = defineEmits(['change', 'input', 'update:modelValue', 'plus', 'minus', 'blur', 'focus', 'click-input'])
+
+	// ============== 响应式状态 ==============
+
+	const displayValue = ref<string>(props.modelValue.toString())
+
+	// 异步拦截控制标志（同步 emit plus/minus 后检查，可通过 defineExpose 暴露取消方法给父组件）
+	let cancelNextAction = false
+
+	// ============== 计算属性（严格按依赖顺序声明） ==============
+
+	function getMainColor() : string {
+		const colorData = colorStore.getColor()
+		return props.mainColor != '' ? props.mainColor : colorData.steThemeColor
+	}
+
+	const cmpMainColor = computed(() : string => getMainColor())
+
+	/** 按钮尺寸 */
+	const cmpBtnSize = computed(() : number => {
+		if (props.btnSize != null) {
+			const v = props.btnSize!
+			if (typeof v === 'number') return v as number
+			return parseFloat((v as string))
+		}
+		return props.theme == 'card' ? 48 : 60
+	})
+
+	/** 图标尺寸 */
+	const cmpIconSize = computed(() : number => {
+		const base = props.theme == 'card' ? cmpBtnSize.value : cmpBtnSize.value * 0.8
+		return base * 0.65
+	})
+
+	/** 加号是否禁用（必须在 cmpPlusIconColor 之前声明） */
+	const cmpDisablePlus = computed(() : boolean => {
+		if (props.disabled || props.disablePlus) return true
+		return props.modelValue >= props.max
+	})
+
+	/** 减号是否禁用（必须在 cmpMinusIconColor 之前声明） */
+	const cmpDisableMinus = computed(() : boolean => {
+		if (props.disabled || props.disableMinus) return true
+		return props.modelValue <= props.min
+	})
+
+	/** 减号图标颜色 */
+	const cmpMinusIconColor = computed(() : string => {
+		if (cmpDisableMinus.value) return '#cccccc'
+		if (props.theme == 'line') return '#000000'
+		return cmpMainColor.value
+	})
+
+	/** 加号图标颜色 */
+	const cmpPlusIconColor = computed(() : string => {
+		if (props.theme == 'line') {
+			return cmpDisablePlus.value ? '#cccccc' : '#000000'
+		}
+		return '#ffffff'
+	})
+
+	/** 减号文字样式 */
+	const cmpMinusTextStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['fontSize'] = cmpIconSize.value + 'rpx'
+		s['color'] = cmpMinusIconColor.value
+		return s
+	})
+
+	/** 加号文字样式 */
+	const cmpPlusTextStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['fontSize'] = cmpIconSize.value + 'rpx'
+		s['color'] = cmpPlusIconColor.value
+		return s
+	})
+
+	/** 根容器样式（仅 line 主题有边框） */
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (props.theme == 'line') {
+			style['borderWidth'] = '1px'
+			style['borderStyle'] = 'solid'
+			style['borderColor'] = '#EEEEEE'
+			style['height'] = formatPx(cmpBtnSize.value)
+			style['borderRadius'] = formatPx(24)
+			style['overflow'] = 'hidden'
+		}
+		if (props.theme == 'add') {
+			style['overflow'] = 'visible'
+		}
+		return style
+	})
+
+	/** 根容器 class */
+	const cmpThemeClass = computed(() : string => props.theme)
+
+	/** 按钮基础样式 */
+	const cmpBtnBaseStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['width'] = formatPx(cmpBtnSize.value)
+		s['height'] = formatPx(props.theme == 'card' ? cmpBtnSize.value : cmpBtnSize.value * 0.8)
+		s['padding'] = '0'
+		s['borderRadius'] = props.theme == 'line' ? '0' : formatPx(16)
+		s['borderWidth'] = '0px'
+		s['borderStyle'] = 'solid'
+		s['borderColor'] = 'transparent'
+		return s
+	})
+
+	/** 减号按钮完整样式 */
+	const cmpLeftBtnStyle = computed(() : UTSJSONObject => {
+		let style : UTSJSONObject = {}
+		if (props.theme == 'card') {
+			const borderColor = (cmpDisableMinus.value ? '#cccccc' : cmpMainColor.value) + '80'
+			style['borderWidth'] = '2px'
+			style['borderStyle'] = 'solid'
+			style['borderColor'] = borderColor
+		}
+		if (props.theme == 'line') {
+			style['borderWidth'] = '0px'
+			style['height'] = '100%'
+		}
+		style['background'] = '#ffffff'
+		style['backgroundColor'] = '#ffffff'
+		return deepMerge(deepClone(cmpBtnBaseStyle.value), style) as UTSJSONObject
+	})
+
+	/** 加号按钮完整样式 */
+	const cmpRightBtnStyle = computed(() : UTSJSONObject => {
+		let style : UTSJSONObject = {}
+		if (props.theme == 'card' || props.theme == 'add') {
+			const bg = cmpDisablePlus.value ? '#cccccc' : cmpMainColor.value
+			style['background'] = bg
+			style['backgroundColor'] = bg
+		}
+		if (props.theme == 'line') {
+			style['background'] = '#ffffff'
+			style['backgroundColor'] = '#ffffff'
+			style['height'] = '100%'
+		}
+		return deepMerge(deepClone(cmpBtnBaseStyle.value), style) as UTSJSONObject
+	})
+
+	/** 输入框样式 */
+	const cmpInputStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['width'] = formatPx(props.inputWidth)
+		s['height'] = formatPx(props.theme == 'card' ? cmpBtnSize.value : cmpBtnSize.value * 0.8)
+		s['marginLeft'] = formatPx(4)
+		s['marginRight'] = formatPx(4)
+		if (props.theme == 'line') {
+			s['borderLeftWidth'] = '1px'
+			s['borderLeftStyle'] = 'solid'
+			s['borderLeftColor'] = '#EEEEEE'
+			s['borderRightWidth'] = '1px'
+			s['borderRightStyle'] = 'solid'
+			s['borderRightColor'] = '#EEEEEE'
+			s['marginLeft'] = '0px'
+			s['marginRight'] = '0px'
+			s['paddingLeft'] = formatPx(8)
+			s['paddingRight'] = formatPx(8)
+			s['width'] = formatPx(parseFloat(props.inputWidth.toString()) + 16)
+			s['height'] = '100%'
+		}
+		return s
+	})
+
+	/** 输入框文字样式（color 只能用在 text/input 等元素上） */
+	const cmpInputTextStyle = computed(() : UTSJSONObject => {
+		const s : UTSJSONObject = {}
+		s['color'] = (props.disabled || props.disableInput) ? '#cccccc' : '#000000'
+		return s
+	})
+
+	// ============== Watch ==============
+
+	watch(() : number => props.modelValue, (val : number) => {
+		displayValue.value = props.precision > 0 ? val.toFixed(props.precision) : val.toString()
+	}, { immediate: true })
+
+	// ============== 核心函数（必须在事件处理函数之前声明） ==============
+
+	/** 约束值到 [min, max] 并保留精度 */
+	function handleValue(val : number) : number {
+		if (val <= props.min) val = props.min
+		if (val >= props.max) val = props.max
+		if (props.precision > 0) {
+			return parseFloat(val.toFixed(props.precision))
+		}
+		return Math.round(val)
+	}
+
+	/** 约束并提交输入值 */
+	function commitValue(str : string) {
+		let num = parseFloat(str)
+		if (isNaN(num)) num = props.min
+		if (num <= props.min) num = props.min
+		if (num >= props.max) num = props.max
+		if (props.precision > 0) {
+			num = parseFloat(num.toFixed(props.precision))
+		} else {
+			num = Math.round(num)
+		}
+		displayValue.value = props.precision > 0 ? num.toFixed(props.precision) : num.toString()
+		emit('update:modelValue', num)
+		emit('input', num)
+		emit('change', num)
+	}
+
+	// ============== 事件处理 ==============
+
+	function onInput(e : any) {
+		// @input 事件：APP 端 input 原生组件会在 value 变化时更新 :value 绑定
+		// 此处仅做 H5/MP 端的实时同步，APP 端依赖 @blur 提交
+		// #ifndef APP-ANDROID || APP-IOS
+		const detail = (e as Any).detail
+		if (detail != null) {
+			const val = detail['value'] as string | null
+			if (val != null) {
+				displayValue.value = val!
+			}
+		}
+		// #endif
+	}
+
+	function onBlur(e : any) {
+		commitValue(displayValue.value)
+		emit('blur', e)
+	}
+
+	function onFocus(e : any) {
+		emit('focus', e)
+	}
+
+	function handleClickInput() {
+		emit('click-input')
+	}
+
+	/** 加 */
+	function handlePlus() {
+		if (props.disabled || cmpDisablePlus.value) return
+		cancelNextAction = false
+		emit('plus', props.modelValue)
+		if (cancelNextAction) {
+			cancelNextAction = false
+			return
+		}
+		const raw = props.modelValue + props.step
+		const stepped = Math.round(raw * Math.pow(10, props.precision)) / Math.pow(10, props.precision)
+		const result = handleValue(stepped)
+		emit('update:modelValue', result)
+		emit('input', result)
+		emit('change', result)
+	}
+
+	/** 减 */
+	function handleMinus() {
+		if (props.disabled || cmpDisableMinus.value) return
+		cancelNextAction = false
+		emit('minus', props.modelValue)
+		if (cancelNextAction) {
+			cancelNextAction = false
+			return
+		}
+		const raw = props.modelValue - props.step
+		const stepped = Math.round(raw * Math.pow(10, props.precision)) / Math.pow(10, props.precision)
+		const result = handleValue(stepped)
+		emit('update:modelValue', result)
+		emit('input', result)
+		emit('change', result)
+	}
+
+	// ============== 暴露给父组件 ==============
+
+	/** 取消当前待执行的 plus/minus 操作（在 plus/minus 事件回调中调用） */
+	function cancelPendingAction() {
+		cancelNextAction = true
+	}
+
+	defineExpose({ cancelPendingAction })
+</script>
+
+<style>
+	.ste-stepper-root {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		overflow: visible;
+	}
+
+	.input-box {
+	}
+
+	.input-element {
+		height: 100%;
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #000000;
+		text-align: center;
+	}
+
+	.btn-view {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.btn-wrap {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.btn-icon-text {
+		font-weight: bold;
+		text-align: center;
+	}
+
+	.simple .btn-view {
+		border-width: 0;
+		border-style: solid;
+		border-color: transparent;
+		background-color: transparent;
+	}
+
+	.circle .btn-view {
+		padding: 5rpx;
+		background-color: transparent;
+		border-radius: 50%;
+		border-width: 4rpx;
+		border-style: solid;
+		border-color: #f5f5f5;
+	}
+
+</style>

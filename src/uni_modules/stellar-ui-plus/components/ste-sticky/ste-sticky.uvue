@@ -1,0 +1,145 @@
+<template>
+	<!--
+		ste-sticky 吸顶组件
+		使用方式：父组件传 scrollTop prop，组件内部检测吸顶
+	-->
+	<view>
+		<!-- 占位元素：用于检测原位置是否滚动出可视区 -->
+		<view :id="placeholderId" :style="placeholderStyle"></view>
+		<!-- 吸顶元素：仅在 isFixed 时 fixed 定位 -->
+		<view v-if="isFixed" :style="fixedStyle">
+			<slot></slot>
+		</view>
+		<!-- 正常位置：未吸顶时在原位渲染 -->
+		<view v-else :style="normalStyle">
+			<slot></slot>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue'
+
+	type StickyProps = {
+		offsetTop ?: number,
+		zIndex ?: number,
+		// 外部传入的滚动位置（由父组件 scroll-view 的 @scroll 事件计算后传入）
+		scrollTop ?: number,
+		// 占位元素 id（多实例时用于区分）
+		placeholderId ?: string,
+	}
+
+	defineOptions({ name: 'ste-sticky', options: { virtualHost: true } })
+
+	// #ifdef MP-WEIXIN
+	// 微信小程序需要组件实例用于 createSelectorQuery().in() 限定查询作用域到组件内
+	const mpInstance = getCurrentInstance()
+	// #endif
+
+	const props = withDefaults(defineProps<StickyProps>(), {
+		offsetTop: 0,
+		zIndex: 99,
+		scrollTop: 0,
+		placeholderId: 'ste-sticky-placeholder',
+	})
+
+	const emit = defineEmits(['fixed', 'unfixed'])
+
+	// 吸顶状态
+	const isFixed = ref(false)
+	// 占位元素高度（吸顶时撑起原位空间）
+	const placeholderHeight = ref(0)
+
+	// 占位元素样式：吸顶时设置一个固定高度，未吸顶时高度为 0
+	const placeholderStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (isFixed.value == true) {
+			style['height'] = placeholderHeight.value + 'px'
+		}
+		return style
+	})
+
+	// 正常位置样式：原生 flex 布局
+	const normalStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		style['display'] = 'flex'
+		style['flexDirection'] = 'row'
+		return style
+	})
+
+	// 吸顶位置样式：fixed 定位到屏幕顶部
+	const fixedStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		style['position'] = 'fixed'
+		style['left'] = '0'
+		style['right'] = '0'
+		style['top'] = props.offsetTop + 'px'
+		style['zIndex'] = props.zIndex
+		style['display'] = 'flex'
+		style['flexDirection'] = 'row'
+		return style
+	})
+
+	// 上次吸顶状态（用于避免重复触发事件）
+	let lastFixed = false
+
+	// 检测吸顶状态
+	function updateState(rectTop : number, rectHeight : number) {
+		const offsetTop = props.offsetTop
+		// 当元素顶部距离视口顶部的距离 <= offsetTop 时，认为已吸顶
+		const shouldFixed = rectTop <= offsetTop
+		if (shouldFixed != lastFixed) {
+			isFixed.value = shouldFixed
+			if (shouldFixed == true) {
+				placeholderHeight.value = rectHeight
+				emit('fixed')
+			} else {
+				placeholderHeight.value = 0
+				emit('unfixed')
+			}
+			lastFixed = shouldFixed
+		}
+	}
+
+	// 主动检测：查询占位元素位置
+	function checkPosition() {
+		try {
+			const query = uni.createSelectorQuery()
+			// #ifdef MP-WEIXIN
+			// 微信小程序必须 .in(mpInstance) 限定查询作用域到组件内，否则 select 查不到元素
+			if (mpInstance != null) {
+				query.in(mpInstance as any)
+			}
+			// #endif
+			// 用 boundingClientRect 的回调直接获取 NodeInfo，避免 exec 返回数组中的类型转换问题
+			query.select('#' + props.placeholderId).boundingClientRect()
+			query.exec((res : Array<any>) => {
+				if (res == null) return
+				if (res.length == 0) return
+				const node = res[0]
+				if (node == null) return
+				// NodeInfo 是强类型 class，通过 JSON 序列化中转后转为 UTSJSONObject
+				const json = JSON.stringify(node)
+				const rect = JSON.parse(json) as UTSJSONObject
+				const top = rect.getNumber('top') ?? 0
+				const height = rect.getNumber('height') ?? 0
+				updateState(top, height)
+			})
+		} catch (e) {
+			console.error('ste-sticky checkPosition error:', e)
+		}
+	}
+
+	// 监听 scrollTop 变化时检测
+	watch(() : number => props.scrollTop, (_val : number) => {
+		checkPosition()
+	})
+
+	// 挂载后立即检测一次（占位元素初始位置）
+	onMounted(() => {
+		// 延迟一帧确保 DOM 渲染完成
+		setTimeout(() => {
+			checkPosition()
+		}, 50)
+	})
+</script>

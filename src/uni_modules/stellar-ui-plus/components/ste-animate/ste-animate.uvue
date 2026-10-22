@@ -1,0 +1,538 @@
+<!--
+  ste-animate 动画组件 - uvue 版本
+
+  平台差异说明：
+  - APP 端：使用 UniElement.animate() API 实现关键帧动画
+    （因 uvue CSS 限制，部分场景下 animate() API 更可靠）
+  - H5/小程序端：使用 CSS @keyframes + animation class 实现
+
+  animate() API 关键帧格式（参考官方文档）：
+  - 支持数组格式：[{ offset: 0, transform: "scale(1)" }, { offset: 1, transform: "scale(1.1)" }]
+  - 支持对象简写：{ transform: ["scale(1)", "scale(1.1)"] }（属性值是数组）
+  - 关键帧必须有 offset 才能正确分布
+-->
+<template>
+	<view :id="rootId" class="ste-animate-root" :class="[cmpRootClass]" :style="[cmpRootStyle]" @click="handleClick">
+		<!-- 水波效果：使用真实子元素代替伪元素（uvue 不支持 ::before/::after） -->
+		<view v-if="isTwinkle" :id="rootId + '-before'" class="twinkle-circle twinkle-before"></view>
+		<view v-if="isTwinkle" :id="rootId + '-after'" class="twinkle-circle twinkle-after"></view>
+		<slot></slot>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { computed, ref, watch, onMounted, onReady } from 'vue'
+
+	defineOptions({ name: 'ste-animate' })
+
+	// ==================== Props 类型定义 ====================
+	type AnimateProps = {
+		show ?: boolean,
+		type ?: string,
+		loop ?: boolean,
+		duration ?: number,
+		action ?: string,
+	}
+
+	const props = defineProps<AnimateProps>()
+
+	// ==================== 元素引用与状态 ====================
+	// 根元素的唯一 ID
+	const rootId = ref('ste-animate-' + Math.floor(Math.random() * 1000000).toString())
+	// 一次性动画播放标识
+	const animationFlag = ref(false)
+
+	// ==================== 默认值计算属性 ====================
+	const _duration = computed((): number => props.duration != null ? props.duration : 300)
+	const _type = computed((): string => props.type != null ? props.type : '')
+	const _loop = computed((): boolean => props.loop == true)
+	const _action = computed((): string => props.action != null ? props.action : '')
+
+	// 暴露给模板使用（必须用 setup 顶层声明的 ref/computed）
+	const isLoop = _loop
+	const isTwinkle = computed((): boolean => _type.value == 'twinkle')
+
+	// ==================== 根元素 class 计算 ====================
+	const cmpRootClass = computed((): string => {
+		// #ifdef APP-ANDROID || APP-IOS || APP-HARMONY
+		return ''
+		// #endif
+		// #ifdef H5 || MP-WEIXIN || MP-ALIPAY
+		let classArr: string[] = []
+		const t = _type.value
+		if (t !== '') {
+			classArr.push('ste-animate-' + t)
+		}
+		if (_loop.value) {
+			classArr.push('loop')
+		}
+		else if (animationFlag.value) {
+			classArr.push('animate-active')
+		}
+		return classArr.join(' ')
+		// #endif
+		return ''
+	})
+
+	// ==================== 根元素 style 计算 ====================
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {}
+		const d = _duration.value
+		if (d > 0) {
+			style['animationDuration'] = (d as number / 1000 as number) + 's'
+		}
+		return style
+	})
+
+	// ==================== APP 端关键帧生成 ====================
+	// 关键帧格式：{ 属性: ["值1", "值2", ...] }
+	// 每个属性值数组会自动按 offset 0, 0.5, 1 等分布
+	function getKeyframes(elWidth: number, elHeight: number): UniAnimationKeyframe | null {
+		const t = _type.value
+
+		if (t == 'shakeX') {
+			return {
+				transform: ['translateX(0)', 'translateX(-9px)', 'translateX(8px)', 'translateX(-7px)', 'translateX(6px)', 'translateX(-5px)', 'translateX(4px)', 'translateX(-3px)', 'translateX(2px)', 'translateX(-1px)', 'translateX(0)']
+			}
+		}
+
+		if (t == 'shakeY') {
+			return {
+				transform: ['translateY(0)', 'translateY(-9px)', 'translateY(8px)', 'translateY(-7px)', 'translateY(6px)', 'translateY(-5px)', 'translateY(4px)', 'translateY(-3px)', 'translateY(2px)', 'translateY(-1px)', 'translateY(0)']
+			}
+		}
+
+		if (t == 'ripple') {
+			return {
+				transform: ['scale(1)', 'scale(1.1)', 'scale(1)']
+			}
+		}
+
+		if (t == 'breath') {
+			return {
+				transform: ['scale(1)', 'scale(1.1)', 'scale(1)']
+			}
+		}
+
+		if (t == 'float') {
+			return {
+				transform: ['translateY(0)', 'translateY(-2px)', 'translateY(-4px)', 'translateY(-2px)', 'translateY(0)']
+			}
+		}
+
+		if (t == 'slide-right') {
+			return {
+				opacity: ['0', '1'],
+				transform: ['translateX(' + elWidth + 'px)', 'translateX(0)']
+			}
+		}
+
+		if (t == 'slide-left') {
+			return {
+				opacity: ['0', '1'],
+				transform: ['translateX(-' + elWidth + 'px)', 'translateX(0)']
+			}
+		}
+
+		if (t == 'slide-top') {
+			return {
+				opacity: ['0', '1'],
+				transform: ['translateY(-' + elHeight + 'px)', 'translateY(0)']
+			}
+		}
+
+		if (t == 'slide-bottom') {
+			return {
+				opacity: ['0', '1'],
+				transform: ['translateY(' + elHeight + 'px)', 'translateY(0)']
+			}
+		}
+
+		if (t == 'jump') {
+			return {
+				transform: ['rotate(0) translateY(0)', 'rotate(10deg) translateY(-20px)', 'rotate(0) translateY(10px)', 'rotate(-10deg) translateY(-20px)', 'rotate(0) translateY(0)']
+			}
+		}
+
+		if (t == 'twinkle') {
+			// 水波效果：在 getTwinkleKeyframes 中单独处理（因为需要对不同子元素应用）
+			// 返回 null，由专门的 twinkle 处理逻辑接管
+			return null
+		}
+
+		if (t == 'flicker') {
+			return {
+				opacity: ['1', '0.5', '1']
+			}
+		}
+
+		return null
+	}
+
+	// ==================== 动画执行函数 ====================
+
+	// 水波动画：对两个真实子元素应用缩放和透明度动画
+	// 注意：UTS 不支持函数提升，必须在 doAnimatedApp 之前定义
+	function animateTwinkle() {
+		const t = _type.value
+		if (t == '') return
+		// #ifdef APP-ANDROID || APP-IOS || APP-HARMONY
+		// 给 twinkle-before 圆圈添加动画
+		const beforeEl = uni.getElementById(rootId.value + '-before')
+		if (beforeEl != null) {
+			beforeEl.animate(
+				{
+					transform: ['scale(0)', 'scale(0)', 'scale(1.4)'],
+					opacity: ['1', '1', '0']
+				} as UniAnimationKeyframe,
+				{
+					duration: 2000,
+					iterations: Infinity,
+					easing: 'ease-out',
+					fill: 'none'
+				} as UniAnimationOption
+			)
+		}
+
+		// 给 twinkle-after 圆圈添加动画（延迟 0.4s）
+		const afterEl = uni.getElementById(rootId.value + '-after')
+		if (afterEl != null) {
+			afterEl.animate(
+				{
+					transform: ['scale(0)', 'scale(0)', 'scale(1.4)'],
+					opacity: ['1', '1', '0']
+				} as UniAnimationKeyframe,
+				{
+					duration: 2000,
+					iterations: Infinity,
+					easing: 'ease-out',
+					fill: 'none',
+					delay: 400
+				} as UniAnimationOption
+			)
+		}
+		console.log('ste-animate: 水波动画已启动')
+		// #endif
+	}
+
+	// APP 端：通过 UniElement.animate() API 执行动画
+	function doAnimatedApp() {
+		const t = _type.value
+		if (t == '') return
+
+		// #ifdef APP-ANDROID || APP-IOS || APP-HARMONY
+		// 使用 setTimeout 确保 DOM 完全渲染后再获取元素
+		setTimeout(() => {
+			const currentEl = uni.getElementById(rootId.value)
+			if (currentEl == null) {
+				console.error('ste-animate: 获取元素失败，id=' + rootId.value)
+				return
+			}
+
+			// 水波效果：单独处理
+			if (t == 'twinkle') {
+				animateTwinkle()
+				return
+			}
+
+			const dur = _duration.value
+			const isLoop = _loop.value
+			const iter = isLoop ? Infinity : 1
+
+			let easingVal = 'ease-out'
+			if (t == 'breath') {
+				easingVal = 'ease-in-out'
+			}
+
+			let directionVal = 'normal'
+			if (t == 'breath') {
+				directionVal = 'alternate'
+			}
+
+			// slide-* 动画需要元素尺寸
+			const needSize = t == 'slide-right' || t == 'slide-left' || t == 'slide-top' || t == 'slide-bottom'
+
+			const exec = (elWidth: number, elHeight: number) => {
+				const keyframes = getKeyframes(elWidth, elHeight)
+				if (keyframes == null) return
+
+				const options: UniAnimationOption = {
+					duration: dur,
+					iterations: iter,
+					easing: easingVal,
+					direction: directionVal,
+					fill: isLoop ? 'none' : 'forwards',
+				} as UniAnimationOption
+
+				// 再次获取元素（确保使用最新的引用）
+				const el = uni.getElementById(rootId.value)
+				if (el == null) return
+
+				const anim = el.animate(keyframes, options)
+				console.log('ste-animate: 动画已启动，type=' + t + ', loop=' + isLoop)
+			}
+
+			if (needSize) {
+				uni.createSelectorQuery()
+					.select('#' + rootId.value)
+					.boundingClientRect((res: any) => {
+						if (res != null) {
+							const r = res as NodeInfo
+							const elWidth = r.width!
+							const elHeight = r.height!
+							exec(elWidth, elHeight)
+						} else {
+							exec(0, 0)
+						}
+					}).exec()
+			} else {
+				exec(0, 0)
+			}
+		}, 100)
+		// #endif
+	}
+
+	// H5/小程序端：通过 class 切换触发 CSS 动画
+	function doAnimatedH5() {
+		animationFlag.value = false
+		setTimeout(() => {
+			animationFlag.value = true
+			setTimeout(() => {
+				animationFlag.value = false
+			}, (_duration.value as number) + 100)
+		}, 50)
+	}
+
+	// 统一动画触发入口
+	function doAnimated() {
+		// #ifdef APP-ANDROID || APP-IOS || APP-HARMONY
+		doAnimatedApp()
+		// #endif
+		// #ifdef H5 || MP-WEIXIN || MP-ALIPAY
+		doAnimatedH5()
+		// #endif
+	}
+
+	// ==================== 事件处理 ====================
+
+	function handleClick() {
+		if (_action.value == 'click') {
+			doAnimated()
+		}
+	}
+
+	// 监听 show 变化
+	watch(() : boolean => (props.show == true), (val: boolean) => {
+		if (val == true) {
+			doAnimated()
+		}
+	})
+
+	// ==================== 生命周期 ====================
+
+	// 使用 onMounted + onReady 双重保险
+	// onMounted 时 props 已经初始化完成，可以立即触发
+	// onReady 时元素已完全渲染，animate() API 可以工作
+
+	onMounted(() => {
+		console.log('ste-animate onMounted: type=' + _type.value + ', loop=' + _loop.value + ', action=' + _action.value)
+
+		// 循环动画：自动播放（最优先）
+		if (_loop.value == true) {
+			console.log('ste-animate: 触发循环动画')
+			doAnimated()
+		}
+	})
+
+	onReady(() => {
+		const t = _type.value
+		if (t == '') return
+
+		// 循环动画：onMounted 已触发，这里跳过
+		if (_loop.value == true) {
+			return
+		}
+
+		// 非循环动画：根据 action 决定
+		const action = _action.value
+		if (action == 'initial') {
+			doAnimated()
+		} else if (action != 'click') {
+			const showVal: boolean = props.show == true
+			if (showVal == true) {
+				doAnimated()
+			}
+		}
+	})
+</script>
+
+<style>
+	.ste-animate-root {
+		display: flex;
+		flex-direction: column;
+		/* 水波效果需要 relative 定位，twinkle 圆圈才能绝对定位 */
+		position: relative;
+	}
+
+	/* 水波圆圈样式：模拟 Vue ::before/::after */
+	.twinkle-circle {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 60px;
+		height: 60px;
+		margin-top: -30px;
+		margin-left: -30px;
+		border: 2px solid rgba(64, 158, 255, 0.6);
+		border-radius: 30px;
+		transform: scale(0);
+		opacity: 1;
+		pointer-events: none;
+		/* 防止动画影响布局 */
+		z-index: 1;
+	}
+
+	/* H5/小程序端：通过 CSS 动画实现水波 */
+	/* #ifdef H5 || MP-WEIXIN || MP-ALIPAY */
+	.ste-animate-root.ste-animate-twinkle .twinkle-before {
+		animation: twinkle-anim 2s ease-out infinite;
+	}
+	.ste-animate-root.ste-animate-twinkle .twinkle-after {
+		animation: twinkle-anim 2s ease-out infinite;
+		animation-delay: 0.4s;
+	}
+
+	@keyframes twinkle-anim {
+		0% { transform: scale(0); opacity: 1; }
+		20% { opacity: 1; }
+		50%, 100% { transform: scale(1.4); opacity: 0; }
+	}
+	/* #endif */
+
+	/* #ifdef H5 || MP-WEIXIN || MP-ALIPAY */
+	.ste-animate-root[class*='ste-animate-'] {
+		animation-duration: 0.5s;
+		animation-timing-function: ease-out;
+		animation-fill-mode: none;
+		animation-iteration-count: 1;
+	}
+
+	.ste-animate-root.loop {
+		animation-iteration-count: infinite;
+	}
+
+	.ste-animate-root.animate-active {
+		animation-iteration-count: 1;
+	}
+
+	.ste-animate-shakeX { animation-name: shakeX; }
+	.ste-animate-shakeY { animation-name: shakeY; }
+	.ste-animate-ripple { animation-name: ripple; }
+	.ste-animate-breath {
+		animation-name: breath;
+		animation-duration: 2700ms;
+		animation-timing-function: ease-in-out;
+		animation-direction: alternate;
+	}
+	.ste-animate-float { animation-name: floatPop; }
+	.ste-animate-slide-right { animation-name: slideRight; }
+	.ste-animate-slide-left { animation-name: slideLeft; }
+	.ste-animate-slide-top { animation-name: slideTop; }
+	.ste-animate-slide-bottom { animation-name: slideBottom; }
+	.ste-animate-jump {
+		animation-name: jump;
+		animation-duration: 0.7s;
+		animation-timing-function: linear;
+	}
+	.ste-animate-twinkle { animation-name: twinkle; }
+	.ste-animate-flicker { animation-name: flicker; }
+
+	@keyframes shakeX {
+		0% { transform: translateX(0); }
+		10% { transform: translateX(-9px); }
+		20% { transform: translateX(8px); }
+		30% { transform: translateX(-7px); }
+		40% { transform: translateX(6px); }
+		50% { transform: translateX(-5px); }
+		60% { transform: translateX(4px); }
+		70% { transform: translateX(-3px); }
+		80% { transform: translateX(2px); }
+		90% { transform: translateX(-1px); }
+		100% { transform: translateX(0); }
+	}
+
+	@keyframes shakeY {
+		0% { transform: translateY(0); }
+		10% { transform: translateY(-9px); }
+		20% { transform: translateY(8px); }
+		30% { transform: translateY(-7px); }
+		40% { transform: translateY(6px); }
+		50% { transform: translateY(-5px); }
+		60% { transform: translateY(4px); }
+		70% { transform: translateY(-3px); }
+		80% { transform: translateY(2px); }
+		90% { transform: translateY(-1px); }
+		100% { transform: translateY(0); }
+	}
+
+	@keyframes ripple {
+		0% { transform: scale(1); }
+		50% { transform: scale(1.1); }
+		100% { transform: scale(1); }
+	}
+
+	@keyframes breath {
+		0% { transform: scale(1); }
+		50% { transform: scale(1.1); }
+		100% { transform: scale(1); }
+	}
+
+	@keyframes floatPop {
+		0% { transform: translateY(0); }
+		25% { transform: translateY(-2px); }
+		50% { transform: translateY(-4px); }
+		75% { transform: translateY(-2px); }
+		100% { transform: translateY(0); }
+	}
+
+	@keyframes slideRight {
+		0% { opacity: 0; transform: translateX(100%); }
+		100% { opacity: 1; transform: translateX(0); }
+	}
+
+	@keyframes slideLeft {
+		0% { opacity: 0; transform: translateX(-100%); }
+		100% { opacity: 1; transform: translateX(0); }
+	}
+
+	@keyframes slideTop {
+		0% { opacity: 0; transform: translateY(-100%); }
+		100% { opacity: 1; transform: translateY(0); }
+	}
+
+	@keyframes slideBottom {
+		0% { opacity: 0; transform: translateY(100%); }
+		100% { opacity: 1; transform: translateY(0); }
+	}
+
+	@keyframes jump {
+		0% { transform: rotate(0deg) translateY(0); }
+		25% { transform: rotate(10deg) translateY(-20px); }
+		50% { transform: rotate(0deg) translateY(10px); }
+		75% { transform: rotate(-10deg) translateY(-20px); }
+		100% { transform: rotate(0deg) translateY(0); }
+	}
+
+	@keyframes twinkle {
+		0% { opacity: 1; }
+		50% { opacity: 0.3; }
+		100% { opacity: 1; }
+	}
+
+	@keyframes flicker {
+		0% { opacity: 1; }
+		50% { opacity: 0.5; }
+		100% { opacity: 1; }
+	}
+	/* #endif */
+</style>

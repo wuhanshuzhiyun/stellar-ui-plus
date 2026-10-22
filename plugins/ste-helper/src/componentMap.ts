@@ -16,7 +16,7 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "type",
-                "description": "动画类型",
+                "description": "动画类型名称[仅Vue支持，UVue端采用内置类名控制]",
                 "type": "string",
                 "default": "",
                 "values": [
@@ -438,6 +438,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "额外配置项，圆弧配置见 extra.arcbar，默认 { type: \"circle\", width: 8, gap: 4, lineCap: \"round\", startAngle: 1.5, backgroundColor: \"#E9E9E9\" }",
                 "type": "-",
                 "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "showLegend",
+                "description": "是否显示图表图例[UVue/Vue标准支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": [
@@ -699,6 +705,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "事件",
                 "type": "-",
                 "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "showLegend",
+                "description": "是否显示图例[仅UVue支持/补充声明]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": []
@@ -796,6 +808,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "display属性是否为inline-block",
                 "type": "boolean",
                 "default": false
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": []
@@ -1027,6 +1045,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "额外配置项",
                 "type": "-",
                 "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "categories",
+                "description": "条形图 Y 轴分类标签列表[UVue/Vue标准支持]",
+                "type": "Array<string>",
+                "default": []
+            },
+            {
+                "name": "showLegend",
+                "description": "是否展示图例[UVue/Vue标准支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": []
@@ -1044,13 +1074,15 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "width",
-                "description": "条形码宽度，单位`px`",
-                "type": "number"
+                "description": "条形码宽度(单位px/rpx)。Vue端默认300，UVue端默认480",
+                "type": "number",
+                "default": 300
             },
             {
                 "name": "height",
-                "description": "条形码高度，单位`px`",
-                "type": "number"
+                "description": "条形码高度(单位px/rpx)。Vue端默认100，UVue端默认120",
+                "type": "number",
+                "default": 100
             },
             {
                 "name": "background",
@@ -1059,8 +1091,69 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "foreground",
-                "description": "前景色(条形码画笔颜色)",
-                "type": "string"
+                "description": "前景色/条形码画笔线条颜色[仅Vue支持，UVue端对应为lineColor]",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "lineColor",
+                "description": "条形码画笔线条颜色[仅UVue支持，Vue端对应为foreground]",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "showText",
+                "description": "是否显示底部条码文字[仅UVue支持]",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "textSize",
+                "description": "底部文字大小，单位rpx[仅UVue支持]",
+                "type": "number",
+                "default": 28
+            },
+            {
+                "name": "textColor",
+                "description": "底部文字颜色[仅UVue支持]",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "textMargin",
+                "description": "文字与条码间距，单位rpx[仅UVue支持]",
+                "type": "number",
+                "default": 8
+            },
+            {
+                "name": "textAlign",
+                "description": "文字对齐方式（left/center/right）[仅UVue支持]",
+                "type": "string",
+                "default": "center"
+            },
+            {
+                "name": "borderWidth",
+                "description": "容器边框宽度，单位rpx[仅UVue支持]",
+                "type": "number",
+                "default": 0
+            },
+            {
+                "name": "borderColor",
+                "description": "容器边框颜色[仅UVue支持]",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "borderRadius",
+                "description": "容器圆角，单位rpx[仅UVue支持]",
+                "type": "number",
+                "default": 0
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -1182,6 +1275,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "rootStyle",
                 "description": "按钮样式属性",
                 "type": "object"
+            },
+            {
+                "name": "bold",
+                "description": "按钮文本是否加粗显示[UVue/Vue标准支持]",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "borderWidth",
+                "description": "按钮边框线宽，单位rpx[UVue/Vue标准支持]",
+                "type": "number | string",
+                "default": 2
             }
         ],
         "events": [
@@ -1517,6 +1622,24 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "boolean",
                 "default": "true",
                 "version": "1.22.27"
+            },
+            {
+                "name": "infinite",
+                "description": "是否开启前后无限滚动模式（基于虚拟滑动窗口，无论跨度多少年均恒定极低内存开销）",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "infiniteYears",
+                "description": "无限滚动模式下预设的单向年份跨度（如设为 10 即向前 10 年、向后 10 年）",
+                "type": "number",
+                "default": 10
+            },
+            {
+                "name": "bufferCount",
+                "description": "虚拟列表可视区域上下预渲染的月份缓冲区数量",
+                "type": "number",
+                "default": 3
             }
         ],
         "events": [
@@ -1706,6 +1829,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "复选框和文本间距，单位rpx",
                 "type": "number | string",
                 "default": "16"
+            },
+            {
+                "name": "modelValue",
+                "description": "当前复选框选中状态，支持 v-model 双向绑定",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": [
@@ -1745,10 +1874,154 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-checkbox-group": {
+    "checkbox-group": {
         "site": "ste-checkbox-group",
         "attr": [
-            ""
+            "modelValue=''"
+        ],
+        "props": [
+            {
+                "name": "modelValue",
+                "description": "绑定值数组（支持 v-model 双向绑定）",
+                "type": "array",
+                "default": []
+            },
+            {
+                "name": "direction",
+                "description": "排列方向",
+                "type": "string",
+                "default": "column",
+                "values": [
+                    {
+                        "name": "row",
+                        "description": "横向水平排列"
+                    },
+                    {
+                        "name": "column",
+                        "description": "纵向垂直排列"
+                    }
+                ]
+            },
+            {
+                "name": "max",
+                "description": "最大可选数量，0 为不限制",
+                "type": "number",
+                "default": 0
+            },
+            {
+                "name": "disabled",
+                "description": "统一禁用组内所有复选框",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "readonly",
+                "description": "统一设置组内所有复选框为只读状态",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "shape",
+                "description": "统一设置复选框图标形状",
+                "type": "string",
+                "default": "circle",
+                "values": [
+                    {
+                        "name": "circle",
+                        "description": "圆形"
+                    },
+                    {
+                        "name": "square",
+                        "description": "矩形方形"
+                    }
+                ]
+            },
+            {
+                "name": "iconSize",
+                "description": "统一设置复选框图标尺寸（单位 px/rpx）",
+                "type": "number | string"
+            },
+            {
+                "name": "checkedColor",
+                "description": "统一设置选中状态下的主题色",
+                "type": "string"
+            },
+            {
+                "name": "textPosition",
+                "description": "统一设置文本相对于图标的位置",
+                "type": "string",
+                "default": "right",
+                "values": [
+                    {
+                        "name": "left",
+                        "description": "文本在图标左侧"
+                    },
+                    {
+                        "name": "right",
+                        "description": "文本在图标右侧"
+                    }
+                ]
+            },
+            {
+                "name": "textSize",
+                "description": "统一设置文本字号大小（单位 px/rpx）",
+                "type": "number | string"
+            },
+            {
+                "name": "textInactiveColor",
+                "description": "统一设置未选中状态下的文本颜色",
+                "type": "string"
+            },
+            {
+                "name": "textActiveColor",
+                "description": "统一设置选中状态下的文本颜色",
+                "type": "string"
+            },
+            {
+                "name": "textDisabled",
+                "description": "是否统一禁用文本点击切换",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "marginLeft",
+                "description": "统一设置复选框左边距",
+                "type": "number | string"
+            },
+            {
+                "name": "marginRight",
+                "description": "统一设置复选框右边距",
+                "type": "number | string"
+            },
+            {
+                "name": "columnGap",
+                "description": "复选框图标与文本之间的间距",
+                "type": "number | string"
+            }
+        ],
+        "events": [
+            {
+                "name": "change",
+                "description": "当组内选中的值数组发生变化时触发",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "改变后的当前选中值数组"
+                    }
+                ],
+                "type": ""
+            },
+            {
+                "name": "update:modelValue",
+                "description": "双向绑定值更新时触发",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "更新后的选中值数组"
+                    }
+                ],
+                "type": ""
+            }
         ]
     },
     "code-input": {
@@ -2087,6 +2360,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "额外配置项",
                 "type": "-",
                 "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "categories",
+                "description": "柱状图 X 轴分类标签列表[UVue/Vue标准支持]",
+                "type": "Array<string>",
+                "default": []
+            },
+            {
+                "name": "showLegend",
+                "description": "是否展示图例[UVue/Vue标准支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": []
@@ -2165,6 +2450,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "背景颜色",
                 "type": "string",
                 "default": "#fff"
+            },
+            {
+                "name": "progressText",
+                "description": "优惠券领券进度自定义文本（如'已抢80%'）",
+                "type": "string",
+                "default": ""
             }
         ],
         "events": [
@@ -2338,6 +2629,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "确定按钮文字颜色",
                 "type": "string",
                 "default": "#ffffff"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -2619,9 +2916,9 @@ export const componentMap: Record<string, ComponentDesc> = {
         "props": [
             {
                 "name": "type",
-                "description": "组件类型",
-                "type": "String",
-                "default": "date",
+                "description": "选择器展示类型[仅Vue支持]",
+                "type": "string",
+                "default": "",
                 "values": [
                     {
                         "name": "date",
@@ -2880,6 +3177,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "boolean",
                 "default": "false",
                 "version": "1.21.0"
+            },
+            {
+                "name": "modelValue",
+                "description": "当前菜单选中值，支持 v-model[仅UVue支持]",
+                "type": "string | number | Array<any>"
+            },
+            {
+                "name": "dropDownIconColor",
+                "description": "下拉箭头图标颜色[仅UVue支持]",
+                "type": "string",
+                "default": "#999999"
             }
         ],
         "events": [
@@ -2918,10 +3226,55 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-dropdown-menu-item": {
+    "dropdown-menu-item": {
         "site": "ste-dropdown-menu-item",
         "attr": [
-            ""
+            "value=''"
+        ],
+        "props": [
+            {
+                "name": "value",
+                "description": "选项绑定值",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "title",
+                "description": "选项展示文本",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "disabled",
+                "description": "是否禁用当前选项点击",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "readonly",
+                "description": "是否只读（不置灰但无法点击触发变动）",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "max",
+                "description": "当前选项目前预留最大数",
+                "type": "number",
+                "default": 1
+            }
+        ],
+        "events": [
+            {
+                "name": "click",
+                "description": "点击选项项时触发",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "被点击选项的绑定值"
+                    }
+                ],
+                "type": ""
+            }
         ]
     },
     "filter-tool": {
@@ -2977,6 +3330,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否禁用默认确认按钮",
                 "type": "boolean",
                 "default": "false"
+            },
+            {
+                "name": "value",
+                "description": "当前筛选选中的过滤项数据数组",
+                "type": "Array<any>",
+                "default": []
             }
         ],
         "events": [
@@ -3372,6 +3731,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "额外配置项",
                 "type": "-",
                 "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "showLegend",
+                "description": "是否展示图例[UVue/Vue标准支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": []
@@ -3869,6 +4234,24 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "容器对齐方式",
                 "type": "boolean",
                 "default": true
+            },
+            {
+                "name": "scale",
+                "description": "图标缩放比例[仅Vue支持，UVue端请直接使用size控制尺寸]",
+                "type": "number",
+                "default": 1
+            },
+            {
+                "name": "showBorder",
+                "description": "是否显示图标外边框[仅UVue支持]",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -4076,11 +4459,26 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-index-item": {
+    "index-item": {
         "site": "ste-index-item",
         "attr": [
-            ""
-        ]
+            "title=''"
+        ],
+        "props": [
+            {
+                "name": "title",
+                "description": "分组索引标题（如 A、B），必填项",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "list",
+                "description": "该分组下的文本列表数组（未提供时可通过默认插槽自定义）",
+                "type": "array",
+                "default": []
+            }
+        ],
+        "events": []
     },
     "index-list": {
         "site": "ste-index-list",
@@ -4377,9 +4775,15 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "filter",
-                "description": "过滤器函数，用于在输入时对值进行预处理",
-                "type": "(value: any) => string",
+                "description": "输入文本正则或校验函数[仅Vue支持]",
+                "type": "Function",
                 "default": "null"
+            },
+            {
+                "name": "modelValue",
+                "description": "输入框当前绑定文本内容，支持 v-model[UVue/Vue标准支持]",
+                "type": "string | number",
+                "default": ""
             }
         ],
         "events": [
@@ -4664,6 +5068,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "额外配置项",
                 "type": "-",
                 "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "categories",
+                "description": "折线图 X 轴分类标签列表[UVue/Vue标准支持]",
+                "type": "Array<string>",
+                "default": []
+            },
+            {
+                "name": "showLegend",
+                "description": "是否展示图例[UVue/Vue标准支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": []
@@ -4964,6 +5380,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "未登录标题",
                 "type": "string",
                 "default": ""
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -5292,6 +5714,24 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "弹框关闭的回调函数（无论是确认关闭还是取消关闭）",
                 "type": "Function",
                 "default": null
+            },
+            {
+                "name": "show",
+                "description": "是否展示消息弹窗（支持双向绑定）[仅UVue支持]",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "closeOnClickOverlay",
+                "description": "点击背景遮罩层是否允许自动关闭弹窗[仅UVue支持]",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "zIndex",
+                "description": "弹窗的层级 z-index 数值[仅UVue支持]",
+                "type": "number",
+                "default": 9999
             }
         ],
         "events": []
@@ -5404,9 +5844,9 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "colorType",
-                "description": "标题对齐方式",
-                "type": "Number|String",
-                "default": "left",
+                "description": "导航栏预设配色主题[仅Vue支持]",
+                "type": "string",
+                "default": "primary",
                 "values": [
                     {
                         "name": 1,
@@ -5417,6 +5857,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                         "description": "白色"
                     }
                 ]
+            },
+            {
+                "name": "placeholder",
+                "description": "固定在顶部时，是否在相同位置生成占位元素，防止页面内容塌陷上移[仅UVue支持]",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -5524,6 +5976,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否可以滚动",
                 "type": "Boolean",
                 "default": true
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -5677,6 +6135,17 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "确定按钮文字颜色",
                 "type": "string",
                 "default": "#ffffff"
+            },
+            {
+                "name": "activeInputRef",
+                "description": "关联绑定的输入框引用实例，用于自动同步按键与删除[仅UVue支持]",
+                "type": "any"
+            },
+            {
+                "name": "inputValues",
+                "description": "输入内容数组[仅Vue支持]",
+                "type": "Array<string>",
+                "default": []
             }
         ],
         "events": [
@@ -5875,6 +6344,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否显示更多",
                 "type": "boolean",
                 "default": "false"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -5917,10 +6392,101 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-picker": {
+    "picker": {
         "site": "ste-picker",
         "attr": [
-            ""
+            "columns=''"
+        ],
+        "props": [
+            {
+                "name": "columns",
+                "description": "选择器数据，二维数组，每个子数组为一列",
+                "type": "string[][]",
+                "default": "[]"
+            },
+            {
+                "name": "itemHeight",
+                "description": "各列中，单个选项的高度",
+                "type": "string | number",
+                "default": 44
+            },
+            {
+                "name": "visibleItemCount",
+                "description": "每列中可见选项的数量",
+                "type": "string | number",
+                "default": 5
+            },
+            {
+                "name": "showToolbar",
+                "description": "是否显示顶部的操作栏",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "title",
+                "description": "顶部标题",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "cancelText",
+                "description": "取消按钮的文字",
+                "type": "string",
+                "default": "取消"
+            },
+            {
+                "name": "cancelColor",
+                "description": "取消按钮的颜色",
+                "type": "string",
+                "default": "#969799"
+            },
+            {
+                "name": "confirmText",
+                "description": "确认按钮的文字",
+                "type": "string",
+                "default": "确认"
+            },
+            {
+                "name": "confirmColor",
+                "description": "确认按钮的颜色",
+                "type": "string",
+                "default": "#0090FF"
+            },
+            {
+                "name": "defaultIndex",
+                "description": "默认选中的索引数组，对应每列的选中项下标",
+                "type": "number[]",
+                "default": "[]"
+            },
+            {
+                "name": "rootClass",
+                "description": "根节点的自定义类名",
+                "type": "string",
+                "default": ""
+            }
+        ],
+        "events": [
+            {
+                "name": "change",
+                "description": "当选择值变化时触发",
+                "params": [
+                    {
+                        "name": "changeObj",
+                        "description": "包含 value(选中值数组)、index(变化列选中索引)、indexs(各列选中索引数组)、values(各列数据)、columnIndex(变化列索引)"
+                    }
+                ],
+                "type": ""
+            },
+            {
+                "name": "confirm",
+                "description": "点击确认按钮时触发",
+                "type": ""
+            },
+            {
+                "name": "cancel",
+                "description": "点击取消按钮时触发",
+                "type": ""
+            }
         ]
     },
     "pie-chart": {
@@ -6150,6 +6716,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "额外配置项",
                 "type": "-",
                 "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "showLegend",
+                "description": "是否展示图例[UVue/Vue标准支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": []
@@ -6255,6 +6827,12 @@ export const componentMap: Record<string, ComponentDesc> = {
             {
                 "name": "keepContent",
                 "description": "隐藏后是否不销毁弹窗内容元素",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "showMask",
+                "description": "是否显示半透明背景遮罩层[UVue/Vue标准支持]",
                 "type": "boolean",
                 "default": true
             }
@@ -6538,6 +7116,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "阶段配置信息，该值存在时percentage将不生效",
                 "type": "object",
                 "default": "{}"
+            },
+            {
+                "name": "showPivot",
+                "description": "是否显示进度条文字比例徽标[仅UVue支持]",
+                "type": "boolean",
+                "default": true
             }
         ],
         "events": []
@@ -6584,6 +7168,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "logo图高度，默认二维码尺寸的四分之一",
                 "type": "string",
                 "default": "size / 4"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -6713,6 +7303,11 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "单选框和文本间距，单位rpx",
                 "type": "number | string",
                 "default": "16"
+            },
+            {
+                "name": "modelValue",
+                "description": "单选框当前绑定值，支持 v-model",
+                "type": "string | number | boolean"
             }
         ],
         "events": [
@@ -6752,10 +7347,129 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-radio-group": {
+    "radio-group": {
         "site": "ste-radio-group",
         "attr": [
-            ""
+            "v-model=''"
+        ],
+        "props": [
+            {
+                "name": "v-model",
+                "description": "当前选中值。vue/uvue 均支持 string 类型",
+                "type": "string"
+            },
+            {
+                "name": "direction",
+                "description": "排列方向",
+                "type": "string",
+                "default": "row",
+                "values": [
+                    {
+                        "name": "row",
+                        "description": "水平排列"
+                    },
+                    {
+                        "name": "column",
+                        "description": "垂直排列"
+                    }
+                ]
+            },
+            {
+                "name": "disabled",
+                "description": "禁用组内所有单选框",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "readonly",
+                "description": "只读组内所有单选框（不置灰）",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "shape",
+                "description": "组内单选框形状",
+                "type": "string",
+                "default": "circle"
+            },
+            {
+                "name": "iconSize",
+                "description": "组内单选框图标大小，单位rpx",
+                "type": "number | string",
+                "default": "36"
+            },
+            {
+                "name": "checkedColor",
+                "description": "组内单选框选中颜色",
+                "type": "string",
+                "default": "主题色"
+            },
+            {
+                "name": "textPosition",
+                "description": "组内单选框文本位置",
+                "type": "string",
+                "default": "right"
+            },
+            {
+                "name": "textSize",
+                "description": "组内单选框文本大小，单位rpx",
+                "type": "number | string",
+                "default": "28"
+            },
+            {
+                "name": "textInactiveColor",
+                "description": "组内单选框未选中文本颜色",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "textActiveColor",
+                "description": "组内单选框选中文本颜色",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "textDisabled",
+                "description": "禁用组内单选框文本点击",
+                "type": "boolean",
+                "default": "false"
+            },
+            {
+                "name": "marginLeft",
+                "description": "组内单选框左边距，单位rpx",
+                "type": "number | string",
+                "default": "0"
+            },
+            {
+                "name": "marginRight",
+                "description": "组内单选框右边距，单位rpx",
+                "type": "number | string",
+                "default": "0"
+            },
+            {
+                "name": "columnGap",
+                "description": "组内单选框和文本间距，单位rpx",
+                "type": "number | string",
+                "default": "16"
+            },
+            {
+                "name": "modelValue",
+                "description": "单选组绑定值，支持 v-model",
+                "type": "string | number"
+            }
+        ],
+        "events": [
+            {
+                "name": "change",
+                "description": "当绑定值变化时触发的事件",
+                "params": [
+                    {
+                        "name": "value",
+                        "description": "当前选中的值"
+                    }
+                ],
+                "type": ""
+            }
         ]
     },
     "rate": {
@@ -6892,6 +7606,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "文本颜色",
                 "type": "string",
                 "default": "#666666"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -7199,6 +7919,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "事件",
                 "type": "-",
                 "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
+            },
+            {
+                "name": "showLegend",
+                "description": "是否展示图例[UVue/Vue标准支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": []
@@ -7236,11 +7962,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-scroll-to-item": {
+    "scroll-to-item": {
         "site": "ste-scroll-to-item",
-        "attr": [
-            ""
-        ]
+        "attr": [],
+        "props": [],
+        "events": []
     },
     "search": {
         "site": "ste-search",
@@ -7407,6 +8133,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "搜索建议对应的数据",
                 "type": "array",
                 "default": "[]"
+            },
+            {
+                "name": "suggestionList",
+                "description": "搜索框下拉联想推荐列表数据[UVue/Vue标准支持]",
+                "type": "Array<string>",
+                "default": []
             }
         ],
         "events": [
@@ -7557,6 +8289,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "确认按钮类型",
                 "type": "string",
                 "default": "done"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -7592,7 +8330,7 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "mode",
-                "description": "选择模式",
+                "description": "选择模式（filterable/tree/date等）[仅Vue支持，UVue仅支持普通单选与多选]",
                 "type": "string",
                 "default": "default",
                 "values": [
@@ -7677,13 +8415,13 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "maskClose",
-                "description": "点击遮罩层是否关闭",
+                "description": "点击背景遮罩是否允许关闭下拉框",
                 "type": "boolean",
                 "default": true
             },
             {
                 "name": "optionsWidth",
-                "description": "选项框宽度，默认跟随width",
+                "description": "下拉选项面板自定义宽度（如'100%'或数值rpx）[仅UVue支持]",
                 "type": "number | string",
                 "default": "auto"
             },
@@ -7932,6 +8670,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "点击遮罩层是否关闭弹窗",
                 "type": "boolean",
                 "default": true
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -8012,6 +8756,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "座位间距(rpx)",
                 "type": "number",
                 "default": "8"
+            },
+            {
+                "name": "showRowLabels",
+                "description": "是否展示左侧行号排号标签[仅UVue支持]",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -8095,6 +8851,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "高度",
                 "type": "string | number",
                 "default": "100%"
+            },
+            {
+                "name": "action",
+                "description": "操作按钮区域配置或插槽标识[仅UVue支持]",
+                "type": "boolean | string",
+                "default": true
             }
         ],
         "events": [
@@ -8171,15 +8933,21 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "customStyle",
-                "description": "自定义根节点样式对象",
+                "description": "自定义样式对象[仅Vue支持，UVue端对应为rootStyle]",
                 "type": "object",
-                "default": "{}"
+                "default": {}
             },
             {
                 "name": "customClass",
                 "description": "自定义根节点 class",
                 "type": "string",
                 "default": ""
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持，Vue端对应为customStyle]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -8347,6 +9115,18 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "失败态颜色",
                 "type": "String",
                 "default": "#ee0a24"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
+            },
+            {
+                "name": "customClass",
+                "description": "自定义样式类名[仅UVue支持]",
+                "type": "string",
+                "default": ""
             }
         ],
         "events": [
@@ -8466,6 +9246,28 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "marks",
                 "description": "标记，key 的类型必须为 number 且取值在闭区间 [min, max] 内，每个标记可以单独设置样式",
                 "type": "object"
+            },
+            {
+                "name": "rangeStart",
+                "description": "双滑块范围选择时的起始区间数值[仅UVue支持]",
+                "type": "number"
+            },
+            {
+                "name": "rangeEnd",
+                "description": "双滑块范围选择时的结束区间数值[仅UVue支持]",
+                "type": "number"
+            },
+            {
+                "name": "verticalHeight",
+                "description": "垂直方向滑块组件的高度，单位rpx[仅UVue支持]",
+                "type": "number | string",
+                "default": "400rpx"
+            },
+            {
+                "name": "showStops",
+                "description": "是否显示步长刻度断点[仅UVue支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": [
@@ -8515,11 +9317,44 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-step": {
+    "step": {
         "site": "ste-step",
         "attr": [
-            ""
-        ]
+            "title=''"
+        ],
+        "props": [
+            {
+                "name": "title",
+                "description": "步骤标题",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "description",
+                "description": "步骤详细描述信息",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "icon",
+                "description": "自定义图标编码（如 '&#xe67a;'）",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "status",
+                "description": "当前步骤指定状态（'finished'/'process'/'error'）",
+                "type": "String",
+                "default": ""
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
+            }
+        ],
+        "events": []
     },
     "stepper": {
         "site": "ste-stepper",
@@ -8692,6 +9527,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "徽标：徽标最大显示值",
                 "type": "number",
                 "default": "99"
+            },
+            {
+                "name": "modelValue",
+                "description": "步进器当前计数值，支持 v-model",
+                "type": "number",
+                "default": 1
             }
         ],
         "events": [
@@ -8823,6 +9664,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "type": "string",
                 "default": "solid",
                 "version": "1.22.27"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -8853,9 +9700,9 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "customNavHeight",
-                "description": "航栏的高度（没有导航栏时，请设置为0）",
-                "type": "string | number",
-                "default": null
+                "description": "自定义顶部导航栏高度[仅Vue支持]",
+                "type": "number",
+                "default": 0
             },
             {
                 "name": "disabled",
@@ -8865,15 +9712,27 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "background",
-                "description": "组件背景",
+                "description": "吸顶背景颜色[仅Vue支持，UVue可通过内联样式或rootStyle定制]",
                 "type": "string",
-                "default": "#fff"
+                "default": "transparent"
             },
             {
                 "name": "zIndex",
                 "description": "吸顶时的z-index值",
                 "type": "string | number",
                 "default": 98
+            },
+            {
+                "name": "scrollTop",
+                "description": "当前页面滚动垂直偏移距离，由宿主页面 onPageScroll 传入[仅UVue支持]",
+                "type": "number",
+                "default": 0
+            },
+            {
+                "name": "placeholderId",
+                "description": "吸顶占位唯一节点 ID[仅UVue支持]",
+                "type": "string",
+                "default": ""
             }
         ],
         "events": [
@@ -8956,6 +9815,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否显示右侧图标",
                 "type": "boolean",
                 "default": false
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -9044,6 +9909,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否显示右侧图标",
                 "type": "boolean",
                 "default": false
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -9171,19 +10042,19 @@ export const componentMap: Record<string, ComponentDesc> = {
             },
             {
                 "name": "previousMargin",
-                "description": "前边距，可用于露出前一项的一小部分，单位rpx",
-                "type": "number | string",
-                "default": 0
+                "description": "前边距，用于透出上一项[仅Vue支持]",
+                "type": "string",
+                "default": "0px"
             },
             {
                 "name": "nextMargin",
-                "description": "后边距，可用于露出后一项的一小部分，单位rpx",
-                "type": "number | string",
-                "default": 0
+                "description": "后边距，用于透出下一项[仅Vue支持]",
+                "type": "string",
+                "default": "0px"
             },
             {
                 "name": "highlightActive",
-                "description": "是否启用突出显示模式（当前项正常大小，非当前项缩小）",
+                "description": "是否启用当前激活项高亮放大特效[仅Vue支持]",
                 "type": "boolean",
                 "default": false,
                 "version": "1.22.20"
@@ -9222,11 +10093,11 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-swiper-item": {
+    "swiper-item": {
         "site": "ste-swiper-item",
-        "attr": [
-            ""
-        ]
+        "attr": [],
+        "props": [],
+        "events": []
     },
     "switch": {
         "site": "ste-switch",
@@ -9356,6 +10227,24 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "徽标数量为0时是否展示",
                 "type": "boolean",
                 "default": false
+            },
+            {
+                "name": "activeImage",
+                "description": "选中状态下的图标图片地址[仅UVue支持]",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "icon",
+                "description": "内置图标编码或类名[仅UVue支持]",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": []
@@ -9524,6 +10413,24 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "popoverLine",
                 "description": "单元格开启isPopover时，超过多少行才显示省略提示",
                 "type": "number | string"
+            },
+            {
+                "name": "columns",
+                "description": "表格列定义数组[仅UVue支持]",
+                "type": "Array<any>",
+                "default": []
+            },
+            {
+                "name": "sticky",
+                "description": "是否固定表头[仅UVue支持]",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -9596,11 +10503,119 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-table-column": {
+    "table-column": {
         "site": "ste-table-column",
         "attr": [
-            ""
-        ]
+            "label=''"
+        ],
+        "props": [
+            {
+                "name": "label",
+                "description": "列标题显示的文本内容",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "prop",
+                "description": "对应列内容的字段名",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "type",
+                "description": "对应列的特殊展示类型",
+                "type": "string",
+                "values": [
+                    {
+                        "name": "checkbox",
+                        "description": "多选复选框列"
+                    },
+                    {
+                        "name": "radio",
+                        "description": "单选单选框列"
+                    },
+                    {
+                        "name": "index",
+                        "description": "自动自增行序号列"
+                    }
+                ]
+            },
+            {
+                "name": "width",
+                "description": "对应列的宽度（支持 px/rpx）",
+                "type": "string | number",
+                "default": ""
+            },
+            {
+                "name": "minWidth",
+                "description": "对应列的最小宽度（支持 px/rpx）",
+                "type": "string | number",
+                "default": ""
+            },
+            {
+                "name": "align",
+                "description": "单元格内容对齐方式",
+                "type": "string",
+                "default": "left",
+                "values": [
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "center",
+                        "description": "居中对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "headerAlign",
+                "description": "表头标题对齐方式（缺省时同 align）",
+                "type": "string",
+                "default": "left",
+                "values": [
+                    {
+                        "name": "left",
+                        "description": "左对齐"
+                    },
+                    {
+                        "name": "center",
+                        "description": "居中对齐"
+                    },
+                    {
+                        "name": "right",
+                        "description": "右对齐"
+                    }
+                ]
+            },
+            {
+                "name": "showPopover",
+                "description": "文本超长时是否显示 Popover 气泡提示（优先级高于表格级别）",
+                "type": "boolean"
+            },
+            {
+                "name": "popoverLine",
+                "description": "Popover 提示的触发超出行数（优先级高于表格级别）",
+                "type": "number"
+            },
+            {
+                "name": "customKey",
+                "description": "自定义唯一标识 key 值",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "rootStyle",
+                "description": "列根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
+            }
+        ],
+        "events": []
     },
     "tabs": {
         "site": "ste-tabs",
@@ -9874,6 +10889,60 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "下拉蒙层层级",
                 "type": "number | string",
                 "default": 1001
+            },
+            {
+                "name": "tabList",
+                "description": "标签页数据源数组[仅UVue支持，格式为 Array<{title: string, ...}>]",
+                "type": "Array<any>",
+                "default": []
+            },
+            {
+                "name": "titleInactiveColor",
+                "description": "未选中标签标题文本颜色[仅UVue支持]",
+                "type": "string",
+                "default": "#666666"
+            },
+            {
+                "name": "titleActiveColor",
+                "description": "已选中标签标题文本颜色[仅UVue支持]",
+                "type": "string",
+                "default": "#000000"
+            },
+            {
+                "name": "lineScale",
+                "description": "底部指示条缩放比率[仅UVue支持]",
+                "type": "number",
+                "default": 1
+            },
+            {
+                "name": "barType",
+                "description": "指示条形状风格[仅UVue支持]",
+                "type": "string",
+                "default": "line"
+            },
+            {
+                "name": "shrink",
+                "description": "是否开启标签紧凑排列收缩模式[仅UVue支持]",
+                "type": "boolean",
+                "default": false
+            },
+            {
+                "name": "scrollable",
+                "description": "标签数量超出一屏时是否允许水平横向滚动[仅UVue支持]",
+                "type": "boolean",
+                "default": true
+            },
+            {
+                "name": "swipeHeight",
+                "description": "滑动视图容器高度(rpx)[仅UVue支持]",
+                "type": "number | string",
+                "default": "100%"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -10011,14 +11080,47 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "name": "close",
                 "description": "提示关闭的的回调函数",
                 "type": "() => void"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": []
     },
     "tooltip": {
         "site": "ste-tooltip",
-        "attr": [],
-        "props": [],
+        "attr": [
+            "text=''"
+        ],
+        "props": [
+            {
+                "name": "text",
+                "description": "气泡提示显示的文本内容[仅UVue支持]",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "selector",
+                "description": "目标挂载绑定元素的 CSS 选择器（如 '#my-btn'）[仅UVue支持]",
+                "type": "string",
+                "default": ""
+            },
+            {
+                "name": "placement",
+                "description": "气泡提示弹出方位（top/bottom/left/right）[仅UVue支持]",
+                "type": "string",
+                "default": "top"
+            },
+            {
+                "name": "maxWidth",
+                "description": "气泡最大宽度，支持px/rpx[仅UVue支持]",
+                "type": "string | number",
+                "default": 300
+            }
+        ],
         "events": []
     },
     "touch-swipe": {
@@ -10106,11 +11208,20 @@ export const componentMap: Record<string, ComponentDesc> = {
             }
         ]
     },
-    "ste-touch-swipe-item": {
+    "touch-swipe-item": {
         "site": "ste-touch-swipe-item",
         "attr": [
-            ""
-        ]
+            "disabled=''"
+        ],
+        "props": [
+            {
+                "name": "disabled",
+                "description": "是否禁用当前滑块项滑动",
+                "type": "boolean",
+                "default": false
+            }
+        ],
+        "events": []
     },
     "tour": {
         "site": "ste-tour",
@@ -10216,6 +11327,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "完成按钮文字",
                 "type": "string",
                 "default": "完成"
+            },
+            {
+                "name": "maskClose",
+                "description": "点击背景遮罩层时是否触发关闭引导流程[仅UVue支持]",
+                "type": "boolean",
+                "default": false
             }
         ],
         "events": [
@@ -10290,6 +11407,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "默认展开的节点数组",
                 "type": "Array<number | string>",
                 "default": []
+            },
+            {
+                "name": "searchTitle",
+                "description": "树节点搜索关键词，匹配项将自动高亮展示",
+                "type": "string",
+                "default": ""
             }
         ],
         "events": [
@@ -10756,6 +11879,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "登录按钮背景色",
                 "type": "String",
                 "default": "主题色"
+            },
+            {
+                "name": "rootStyle",
+                "description": "根节点原生样式对象[仅UVue支持]",
+                "type": "object",
+                "default": {}
             }
         ],
         "events": [
@@ -11028,6 +12157,12 @@ export const componentMap: Record<string, ComponentDesc> = {
                 "description": "是否为直播源",
                 "type": "boolean",
                 "default": "false"
+            },
+            {
+                "name": "id",
+                "description": "视频播放器唯一实例标识 ID[仅UVue支持]",
+                "type": "string",
+                "default": "ste-video"
             }
         ],
         "events": []

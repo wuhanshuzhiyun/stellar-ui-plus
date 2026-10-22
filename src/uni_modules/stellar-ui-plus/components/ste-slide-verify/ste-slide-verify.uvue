@@ -1,0 +1,651 @@
+<template>
+	<!-- ste-slide-verify 滑动验证根容器 -->
+	<view
+		class="ste-slide-verify-root"
+		:class="[rootClass, props.customClass]"
+		:style="[props.rootStyle]"
+		data-test="slide-verify"
+	>
+		<!-- 1. 旋转校验图片展示区（仅在 image 模式下展示） -->
+		<image
+			v-if="props.mode === 'image' && props.imageUrl != ''"
+			class="ste-slide-verify-image"
+			:src="props.imageUrl"
+			:style="cmpImageStyle"
+			mode="aspectFill"
+		/>
+
+		<!-- 2. 滑道主体容器 -->
+		<view :id="trackId" class="ste-slide-verify-track" :style="cmpTrackStyle">
+			<!-- 2.1 背景滑动进度条 -->
+			<view class="ste-slide-verify-progress" :style="cmpProgressStyle"></view>
+
+			<!-- 2.2 提示引导文案层 -->
+			<view class="ste-slide-verify-text-wrap">
+				<text class="ste-slide-verify-text" :style="{ color: cmpTextColor }">
+					{{ currentText }}
+				</text>
+			</view>
+
+			<!-- 2.3 手势拖拽滑块 -->
+			<view
+				class="ste-slide-verify-slider"
+				:style="cmpSliderStyle"
+				@touchstart.stop="onTouchStart"
+				@touchmove.stop.prevent="onTouchMove"
+				@touchend="onTouchEnd"
+				@touchcancel="onTouchEnd"
+			>
+				<!-- 滑块内部图标：成功展示对勾，常规展示向右双箭头 -->
+				<view class="slider-icon-box">
+					<ste-icon
+						v-if="isSuccess"
+						code="&#xe67a;"
+						:size="28"
+						color="#ffffff"
+					/>
+					<template v-else>
+						<view class="slider-icon-item">
+							<ste-icon code="&#xe674;" :size="22" :color="sliderIconColor" />
+						</view>
+						<view class="slider-icon-item slider-icon-item-overlap">
+							<ste-icon code="&#xe674;" :size="22" :color="sliderIconColor" />
+						</view>
+					</template>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-slide-verify.uvue
+	 * @description Slide Verify 滑动验证组件 - uni-app x / UTS 纯原生版本
+	 * 支持普通滑动解锁与旋转图片角度校准验证两种模式，内置高精度手势位移、阻尼钳制与复位动画。
+	 */
+	import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, getCurrentInstance } from 'vue'
+	import {
+		SlideVerifyProps,
+		SlideVerifyDetail,
+		SlideVerifyExpose,
+		DEFAULT_SLIDE_VERIFY_SIZE,
+		DEFAULT_SLIDE_VERIFY_IMAGE_SIZE,
+		DEFAULT_SLIDE_VERIFY_ANGLE_THRESHOLD,
+		DEFAULT_SLIDE_VERIFY_SUCCESS_TEXT,
+		DEFAULT_SLIDE_VERIFY_FAIL_TEXT,
+		DEFAULT_SLIDE_VERIFY_FAIL_DURATION,
+		DEFAULT_SLIDE_VERIFY_SUCCESS_COLOR,
+		DEFAULT_SLIDE_VERIFY_FAIL_COLOR,
+	} from './props.uts'
+	import { useColorStore } from '../../store/color.uts'
+	import { formatPx } from '../../utils/utils.uts'
+
+	defineOptions({
+		name: 'ste-slide-verify',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== 组件 Props 声明 ====================
+	const props = withDefaults(defineProps<SlideVerifyProps>(), {
+		modelValue: false,
+		mode: 'slide',
+		size: DEFAULT_SLIDE_VERIFY_SIZE,
+		disabled: false,
+		imageUrl: '',
+		imageSize: DEFAULT_SLIDE_VERIFY_IMAGE_SIZE,
+		angleThreshold: DEFAULT_SLIDE_VERIFY_ANGLE_THRESHOLD,
+		text: '',
+		successText: DEFAULT_SLIDE_VERIFY_SUCCESS_TEXT,
+		showFail: true,
+		failText: DEFAULT_SLIDE_VERIFY_FAIL_TEXT,
+		failDuration: DEFAULT_SLIDE_VERIFY_FAIL_DURATION,
+		activeColor: '',
+		inactiveColor: '#f4f4f5',
+		successColor: DEFAULT_SLIDE_VERIFY_SUCCESS_COLOR,
+		failColor: DEFAULT_SLIDE_VERIFY_FAIL_COLOR,
+		rootStyle: () => ({} as UTSJSONObject),
+		customClass: '',
+	})
+
+	// ==================== 组件 Emits 声明 ====================
+	const emit = defineEmits<{
+		(e: 'update:modelValue', value: boolean) : void,
+		(e: 'success', detail: SlideVerifyDetail) : void,
+		(e: 'fail', detail: SlideVerifyDetail) : void,
+		(e: 'change', detail: SlideVerifyDetail) : void,
+	}>()
+
+	// ==================== 全局主题色彩 ====================
+	const { getColor } = useColorStore()
+
+	const currentThemeColor = computed(() : string => {
+		const config = getColor()
+		return (config.steThemeColor != '') ? config.steThemeColor : '#0090FF'
+	})
+
+	const activeThemeColor = computed(() : string => {
+		return (props.activeColor != '') ? props.activeColor : currentThemeColor.value
+	})
+
+	// ==================== 内部核心状态 ====================
+	const instance = getCurrentInstance()
+	const trackId = ref('ste-slide-verify-track-' + Math.floor(Math.random() * 1000000))
+	const isDragging = ref(false)
+	const isSuccess = ref(false)
+	const isFail = ref(false)
+	const trackWidth = ref(0)
+	const sliderLeft = ref(0)
+	const startX = ref(0)
+	const startLeft = ref(0)
+	const imageSuccessProgress = ref(1.0)
+	const currentAngle = ref(0.0)
+	const disableImageTransition = ref(false)
+
+	let failTimer : number | null = null
+
+	// ==================== 尺寸计算属性 ====================
+
+	/**
+	 * 将滑块配置尺寸转为像素数值
+	 */
+	const sliderSizePx = computed(() : number => {
+		const sizeNum = parseFloat(formatPx(props.size))
+		return Number.isNaN(sizeNum) ? 40 : sizeNum
+	})
+
+	/**
+	 * 滑块最大水平滑动距离
+	 */
+	const maxSliderLeft = computed(() : number => {
+		const max = trackWidth.value - sliderSizePx.value
+		return max > 0 ? max : 0
+	})
+
+	/**
+	 * 当前滑动进度比率（0.0 ~ 1.0）
+	 */
+	const progress = computed(() : number => {
+		if (maxSliderLeft.value <= 0) return 0.0
+		const p = sliderLeft.value / maxSliderLeft.value
+		return Math.max(0.0, Math.min(1.0, p))
+	})
+
+	/**
+	 * 当前中间引导文字
+	 */
+	const currentText = computed(() : string => {
+		if (isSuccess.value) return props.successText
+		if (isFail.value) return props.failText
+		if (props.text != '') return props.text
+		return props.mode === 'image' ? '向右滑动转动图片' : '向右滑动验证'
+	})
+
+	/**
+	 * 当前文字显示颜色
+	 */
+	const cmpTextColor = computed(() : string => {
+		if (isSuccess.value) return props.successColor
+		if (isFail.value) return props.failColor
+		return isDragging.value ? activeThemeColor.value : '#5f6b7a'
+	})
+
+	/**
+	 * 滑块内部图标颜色
+	 */
+	const sliderIconColor = computed(() : string => {
+		if (isSuccess.value || isFail.value) return '#ffffff'
+		return activeThemeColor.value
+	})
+
+	// ==================== 动态样式映射 ====================
+
+	const rootClass = computed(() : string => {
+		let cls = ''
+		if (isDragging.value) cls += ' ste-slide-verify-dragging'
+		if (isSuccess.value) cls += ' ste-slide-verify-success'
+		if (isFail.value) cls += ' ste-slide-verify-fail'
+		if (props.disabled) cls += ' ste-slide-verify-disabled'
+		if (props.mode === 'image') cls += ' ste-slide-verify-image-mode'
+		return cls
+	})
+
+	/**
+	 * 旋转图片样式映射
+	 */
+	const cmpImageStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		const sizeStr = formatPx(props.imageSize)
+		style['width'] = sizeStr
+		style['height'] = sizeStr
+		style['transform'] = `rotate(${currentAngle.value}deg)`
+		// 拖拽过程中严禁过渡动画以实现 0 延迟 120Hz 极速跟手响应，松手时恢复平滑回弹过渡
+		if (isDragging.value || disableImageTransition.value) {
+			style['transition'] = 'none'
+		} else {
+			style['transition'] = 'transform 0.3s ease'
+		}
+		return style
+	})
+
+	/**
+	 * 滑道容器样式
+	 */
+	const cmpTrackStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		style['height'] = formatPx(props.size)
+		style['backgroundColor'] = props.inactiveColor
+		return style
+	})
+
+	/**
+	 * 背景进度条样式
+	 */
+	const cmpProgressStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		const widthPx = Math.min(trackWidth.value, sliderLeft.value + sliderSizePx.value / 2)
+		style['width'] = `${widthPx}px`
+		style['opacity'] = isSuccess.value || isFail.value ? 0.35 : (isDragging.value ? 0.25 : 0.15)
+
+		if (isSuccess.value) {
+			style['backgroundColor'] = props.successColor
+		} else if (isFail.value) {
+			style['backgroundColor'] = props.failColor
+		} else {
+			style['backgroundColor'] = activeThemeColor.value
+		}
+
+		if (isDragging.value) {
+			style['transition'] = 'none'
+		} else {
+			style['transition'] = 'width 0.3s ease, opacity 0.3s ease, background-color 0.3s ease'
+		}
+		return style
+	})
+
+	/**
+	 * 滑块本身样式
+	 */
+	const cmpSliderStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		style['width'] = `${sliderSizePx.value}px`
+		style['height'] = formatPx(props.size)
+		style['left'] = `${sliderLeft.value}px`
+		style['backgroundColor'] = '#ffffff'
+		style['borderColor'] = isDragging.value ? activeThemeColor.value : '#e2e8f0'
+
+		if (isSuccess.value) {
+			style['backgroundColor'] = props.successColor
+			style['borderColor'] = props.successColor
+		} else if (isFail.value) {
+			style['backgroundColor'] = props.failColor
+			style['borderColor'] = props.failColor
+		}
+
+		// 拖拽过程禁用 transition 保证滑动完全跟手，松手失败时保留缓动回弹
+		if (isDragging.value) {
+			style['transition'] = 'none'
+		} else {
+			style['transition'] = 'left 0.3s ease, background-color 0.3s ease, border-color 0.3s ease'
+		}
+		return style
+	})
+
+	// ==================== 辅助算法与数据构造 ====================
+
+	/**
+	 * 生成 0.23 ~ 0.77 范围内的随机成功进度比率
+	 */
+	const getRandomImageSuccessProgress = () : number => {
+		const r = Math.random() * 0.54 + 0.23
+		return parseFloat(r.toFixed(4))
+	}
+
+	/**
+	 * 将任意角度规范化至 0 ~ 360 度区间
+	 */
+	const normalizeAngle = (angle : number) : number => {
+		const result = angle % 360
+		return result >= 0 ? result : result + 360
+	}
+
+	/**
+	 * 注销失败红态计时器
+	 */
+	const clearFailTimer = () => {
+		if (failTimer != null) {
+			clearTimeout(failTimer!)
+			failTimer = null
+		}
+	}
+
+	/**
+	 * 构造当前的交互状态明细对象
+	 */
+	const buildDetail = () : SlideVerifyDetail => {
+		return {
+			mode: props.mode,
+			progress: progress.value,
+			angle: normalizeAngle(currentAngle.value),
+			left: sliderLeft.value,
+			maxLeft: maxSliderLeft.value,
+		} as SlideVerifyDetail
+	}
+
+	const getImageSuccessLeft = () : number => {
+		return parseFloat((maxSliderLeft.value * imageSuccessProgress.value).toFixed(2))
+	}
+
+	/**
+	 * 切换为验证成功状态
+	 */
+	const setSuccessState = () => {
+		clearFailTimer()
+		isDragging.value = false
+		isFail.value = false
+		isSuccess.value = true
+
+		if (props.mode === 'image') {
+			sliderLeft.value = getImageSuccessLeft()
+			currentAngle.value = 0
+		} else {
+			sliderLeft.value = maxSliderLeft.value
+			currentAngle.value = 0
+		}
+	}
+
+	/**
+	 * 重置为初始默认状态
+	 */
+	const setDefaultState = () => {
+		clearFailTimer()
+		isDragging.value = false
+		isSuccess.value = false
+		isFail.value = false
+		sliderLeft.value = 0
+		startLeft.value = 0
+		startX.value = 0
+
+		if (props.mode === 'image') {
+			imageSuccessProgress.value = getRandomImageSuccessProgress()
+			currentAngle.value = parseFloat((imageSuccessProgress.value * 360).toFixed(2))
+		} else {
+			imageSuccessProgress.value = 1.0
+			currentAngle.value = 0
+		}
+	}
+
+	/**
+	 * 响应双向绑定 modelValue
+	 */
+	const syncModelValue = (value : boolean) => {
+		if (value) {
+			setSuccessState()
+		} else if (!isDragging.value) {
+			setDefaultState()
+		}
+	}
+
+	/**
+	 * 校验是否满足通过条件
+	 */
+	const checkVerification = () : boolean => {
+		if (props.mode === 'slide') {
+			// 普通滑块拖拽至 98% 以上视为成功
+			return progress.value >= 0.98
+		}
+
+		// 旋转图片模式：判定角度误差是否在容差角度内
+		const angle = normalizeAngle(currentAngle.value)
+		const threshold = props.angleThreshold
+		return (angle <= threshold || angle >= 360 - threshold)
+	}
+
+	/**
+	 * 重置验证组件至初始状态
+	 */
+	const reset = () => {
+		setDefaultState()
+	}
+
+	// ==================== 尺寸测量 ====================
+
+	const measureTrack = () => {
+		try {
+			if (instance != null) {
+				uni.createSelectorQuery()
+					.in(instance!)
+					.select('#' + trackId.value)
+					.boundingClientRect((data : any) => {
+						if (data != null) {
+							const r = data as NodeInfo
+							if (r.width != null) {
+								const w = r.width as number
+								if (w > 0) {
+									trackWidth.value = w
+								}
+							}
+						}
+					})
+					.exec()
+			}
+		} catch (_e) {
+			// 忽略异常
+		}
+	}
+
+	// ==================== 手势触摸事件处理 ====================
+
+	/**
+	 * 提取触摸点的 clientX
+	 */
+	const getClientX = (e : TouchEvent) : number => {
+		if (e.touches.length > 0) {
+			return e.touches[0].clientX
+		}
+		return startX.value
+	}
+
+	const onTouchStart = (e : TouchEvent) => {
+		if (props.disabled || isSuccess.value || isFail.value) return
+
+		// 在开始拖拽前立即二次校准滑道宽度，防止页面初次加载时布局尚未稳定
+		if (trackWidth.value <= 0) {
+			measureTrack()
+		}
+
+		clearFailTimer()
+		isFail.value = false
+		isDragging.value = true
+		startX.value = getClientX(e)
+		startLeft.value = sliderLeft.value
+	}
+
+	const onTouchMove = (e : TouchEvent) => {
+		if (!isDragging.value || props.disabled || isSuccess.value || isFail.value) return
+		if (maxSliderLeft.value <= 0) return
+
+		const clientX = getClientX(e)
+		let left = startLeft.value + clientX - startX.value
+		if (left < 0) left = 0
+		if (left > maxSliderLeft.value) left = maxSliderLeft.value
+
+		sliderLeft.value = left
+
+		if (props.mode === 'image') {
+			// 直接使用当前物理像素比例计算目标角度，杜绝响应式 computed 间接派生微小延迟
+			const curProgress = maxSliderLeft.value > 0 ? left / maxSliderLeft.value : 0.0
+			currentAngle.value = parseFloat(normalizeAngle((imageSuccessProgress.value - curProgress) * 360).toFixed(2))
+		}
+
+		emit('change', buildDetail())
+	}
+
+	const onTouchEnd = () => {
+		if (!isDragging.value || props.disabled || isSuccess.value || isFail.value) return
+
+		isDragging.value = false
+		const detail = buildDetail()
+
+		if (checkVerification()) {
+			setSuccessState()
+			emit('update:modelValue', true)
+			emit('success', buildDetail())
+			return
+		}
+
+		// 验证未通过
+		emit('update:modelValue', false)
+
+		if (props.showFail) {
+			isFail.value = true
+			emit('fail', detail)
+
+			if (props.failDuration > 0) {
+				failTimer = setTimeout(() => {
+					reset()
+				}, props.failDuration)
+			}
+		} else {
+			emit('fail', detail)
+			reset()
+		}
+	}
+
+	// ==================== 组件初始化 ====================
+
+	const init = () => {
+		nextTick(() => {
+			measureTrack()
+			// 延迟 50ms 二次测量，确保在复杂卡片布局或 Yoga 引擎排版完全稳定后获取最准确尺寸
+			setTimeout(() => {
+				measureTrack()
+			}, 50)
+			syncModelValue(props.modelValue)
+		})
+	}
+
+	// ==================== 响应式侦听与生命周期 ====================
+
+	watch(
+		() : boolean => props.modelValue,
+		(val : boolean) => {
+			syncModelValue(val)
+		}
+	)
+
+	watch(
+		() : any[] => [props.mode, props.imageUrl, props.size, props.imageSize],
+		() => {
+			init()
+		}
+	)
+
+	onMounted(() => {
+		init()
+	})
+
+	onBeforeUnmount(() => {
+		clearFailTimer()
+	})
+
+	// ==================== 暴露实例方法 ====================
+	defineExpose({
+		init,
+		reset,
+	})
+</script>
+
+<style scoped>
+	.ste-slide-verify-root {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.ste-slide-verify-disabled {
+		opacity: 0.6;
+	}
+
+	/* 旋转校验图片 */
+	.ste-slide-verify-image {
+		border-radius: 9999rpx;
+		background-color: #ffffff;
+		margin-bottom: 28rpx;
+	}
+
+	/* 滑道主体 */
+	.ste-slide-verify-track {
+		width: 100%;
+		position: relative;
+		overflow: hidden;
+		border-radius: 14rpx;
+		box-sizing: border-box;
+	}
+
+	/* 激活进度遮罩条 */
+	.ste-slide-verify-progress {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		border-radius: 14rpx;
+	}
+
+	/* 中间文案居中层 */
+	.ste-slide-verify-text-wrap {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		padding: 0 56rpx;
+		z-index: 1;
+	}
+
+	.ste-slide-verify-text {
+		font-size: 28rpx;
+		font-weight: bold;
+		text-align: center;
+	}
+
+	/* 滑动操作块 */
+	.ste-slide-verify-slider {
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 2;
+		border-radius: 12rpx;
+		border-width: 2rpx;
+		border-style: solid;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.slider-icon-box {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.slider-icon-item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.slider-icon-item-overlap {
+		margin-left: -14rpx;
+	}
+</style>

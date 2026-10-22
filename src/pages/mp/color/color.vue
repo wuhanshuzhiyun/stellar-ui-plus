@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import useColor from '../../../uni_modules/stellar-ui-plus/config/color';
+// 显式指定 .ts 扩展名，使用 Vue3 响应式主题配置
+import useColor from '../../../uni_modules/stellar-ui-plus/config/color.ts';
 let color = useColor();
 import utils from '../../../uni_modules/stellar-ui-plus/utils/utils';
 import { ref, onMounted } from 'vue';

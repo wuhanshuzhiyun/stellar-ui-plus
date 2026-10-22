@@ -101,6 +101,18 @@
             "default": "#ee0a24"
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
+            "name": "customClass",
+            "description": "自定义样式类名[仅UVue支持]",
+            "type": "string",
+            "default": ""
+        },
+        {
             "name": "[event]change",
             "description": "拖动过程中实时触发",
             "params": [
@@ -132,11 +144,18 @@
         },
         {
             "name": "[method]init",
-            "description": "重新计算轨道宽度并同步状态"
+            "description": "初始化验证码滑块及拼图位置",
+            "params": [],
+            "return": "void"
         },
         {
             "name": "[method]reset",
-            "description": "重置验证状态"
+            "description": "重置滑块验证状态到初始未验证位置",
+            "params": [],
+            "return": "void"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端支持 rootStyle 与 customClass 原生节点样式注入"
+    }
 }

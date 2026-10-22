@@ -1,0 +1,99 @@
+/**
+ * 座位网格视口几何运算与尺寸自适应计算引擎
+ *
+ * @description 计算座位总内容区域、屏幕自适应缩放比 (fitScale)、
+ * 缩放上下限限制与浮动行号轴位置。纯数学无状态函数，保证极致的原生执行性能。
+ */
+
+/** 系统默认最大缩放倍数上限（默认 3.0 倍） */
+export const INTERNAL_MAX_SCALE : number = 3.0
+
+/**
+ * 获取左侧行号轴预留的横向偏移宽度
+ *
+ * @param showRowLabels 是否开启行号显示
+ * @param seatSize 单个座位像素尺寸
+ * @param seatGap 座位像素间距
+ * @returns 预留像素宽度
+ */
+export function getLabelWidth(showRowLabels : boolean, seatSize : number, seatGap : number) : number {
+	return showRowLabels ? (seatSize + seatGap) : 0
+}
+
+/**
+ * 计算座位全部铺开时的总物理内容宽高
+ *
+ * @param rows 座位总行数
+ * @param cols 座位总列数
+ * @param seatSize 单个座位尺寸 (px)
+ * @param seatGap 座位间距 (px)
+ * @param labelWidth 行号轴占据的宽度 (px)
+ * @returns 内容宽高对象 { width, height }
+ */
+export function getSeatContentSize(
+	rows : number,
+	cols : number,
+	seatSize : number,
+	seatGap : number,
+	labelWidth : number
+) : UTSJSONObject {
+	if (rows <= 0 || cols <= 0) {
+		const emptyRes : UTSJSONObject = {}
+		emptyRes['width'] = 0.0
+		emptyRes['height'] = 0.0
+		return emptyRes
+	}
+
+	const totalW = labelWidth + cols * (seatSize + seatGap) + seatGap
+	const totalH = rows * (seatSize + seatGap) + seatGap
+
+	const res : UTSJSONObject = {}
+	res['width'] = totalW
+	res['height'] = totalH
+	return res
+}
+
+/**
+ * 计算将所有座位完整容纳在当前视口内所需的最小“全景适配缩放比”
+ *
+ * @param width 视口宽度 (px)
+ * @param height 视口高度 (px)
+ * @param contentWidth 内容总宽度 (px)
+ * @param contentHeight 内容总高度 (px)
+ * @returns 自适应缩放比例（最大不超过 1.0）
+ */
+export function getFitScale(
+	width : number,
+	height : number,
+	contentWidth : number,
+	contentHeight : number
+) : number {
+	if (contentWidth <= 0 || contentHeight <= 0 || width <= 0 || height <= 0) {
+		return 1.0
+	}
+	const scaleX = width / contentWidth
+	const scaleY = height / contentHeight
+	// 取较小缩放比以保证长宽两个方向都能完整展示
+	const fit = Math.min(scaleX, scaleY)
+	return Math.min(1.0, fit)
+}
+
+/**
+ * 约束缩放比例在安全合法范围内
+ *
+ * @param scale 当前用户期望缩放倍数
+ * @param fitScale 自适应最小缩放比
+ * @param maxScale 允许的最大缩放倍数
+ * @returns 安全受限后的实际缩放倍数
+ */
+export function clampSeatScale(
+	scale : number,
+	fitScale : number,
+	maxScale : number
+) : number {
+	let min = fitScale
+	if (min <= 0) {
+		min = 0.1
+	}
+	return Math.min(Math.max(scale, min), maxScale)
+}

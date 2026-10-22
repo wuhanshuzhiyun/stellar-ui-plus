@@ -1,0 +1,110 @@
+<template>
+	<!-- 单个滑动面板项：填满容器并禁止收缩，承载具体子内容 -->
+	<view class="ste-touch-swipe-item-root" :style="itemStyle">
+		<slot></slot>
+	</view>
+</template>
+
+<script setup lang="uts">
+/**
+ * ste-touch-swipe-item 手势切屏子项组件
+ *
+ * 模块职责：
+ * 1. 作为 ste-touch-swipe 的直接子节点，承载独立的面板页面内容；
+ * 2. 具备 100% 视口填充能力 (flex-shrink: 0)，跟随轨道滑动无缝排布；
+ * 3. 向上与父级 ste-touch-swipe 上下文握手，向父级注册自身、同步 disabled 禁用状态与卸载注销；
+ * 4. 配置 virtualHost: true 消除自定义组件外层原生包装节点，由父级上下文提供精准单屏像素尺寸。
+ */
+import { ref, computed, inject, onMounted, onUnmounted, watch } from 'vue'
+import { guid } from '../../utils/utils.uts'
+import { TOUCH_SWIPE_KEY, TouchSwipeContext, TouchSwipeItemData } from '../ste-touch-swipe/constants.uts'
+
+defineOptions({
+	name: 'ste-touch-swipe-item',
+	options: {
+		virtualHost: true
+	}
+})
+
+/**
+ * 子项 Props 参数声明
+ */
+const props = withDefaults(
+	defineProps<{
+		/** 当前面板项是否禁用（禁用后手势无法滑动到该面板） */
+		disabled?: boolean
+	}>(),
+	{
+		disabled: false
+	}
+)
+
+/** 生成当前子项的唯一标识 */
+const itemId = guid()
+
+/** 注入父级 TouchSwipe 上下文 */
+const parentContext = inject<TouchSwipeContext | null>(TOUCH_SWIPE_KEY, null)
+
+/**
+ * 根据父级容器切屏方向与测量尺寸动态计算子项样式
+ * 水平模式下固定单屏像素宽度，垂直模式下固定单屏像素高度，彻底杜绝空白与挤压
+ */
+const itemStyle = computed<string>(() : string => {
+	if (parentContext == null) {
+		return 'width: 100%; height: 100%; flex-shrink: 0;'
+	}
+	const isVertical = parentContext.getDirection() == 'vertical'
+	const w = parentContext.getContainerWidth()
+	const h = parentContext.getContainerHeight()
+
+	if (isVertical) {
+		const hStyle = h > 0 ? `height: ${h}px;` : 'height: 100%;'
+		return `width: 100%; ${hStyle} flex-shrink: 0;`
+	} else {
+		const wStyle = w > 0 ? `width: ${w}px;` : 'width: 100%;'
+		return `${wStyle} height: 100%; flex-shrink: 0;`
+	}
+})
+
+/**
+ * 监听 disabled 属性变更，动态通知父级更新禁用状态
+ */
+watch(
+	() : boolean => props.disabled,
+	(newVal: boolean) => {
+		if (parentContext != null) {
+			parentContext.updateItemDisabled(itemId, newVal)
+		}
+	}
+)
+
+/**
+ * 挂载生命周期：向父级容器注册自身
+ */
+onMounted(() => {
+	if (parentContext != null) {
+		const itemData: TouchSwipeItemData = {
+			id: itemId,
+			disabled: props.disabled
+		}
+		parentContext.registerItem(itemData)
+	}
+})
+
+/**
+ * 卸载生命周期：从父级容器注销自身
+ */
+onUnmounted(() => {
+	if (parentContext != null) {
+		parentContext.unregisterItem(itemId)
+	}
+})
+</script>
+
+<style>
+.ste-touch-swipe-item-root {
+	width: 100%;
+	height: 100%;
+	flex-shrink: 0;
+}
+</style>

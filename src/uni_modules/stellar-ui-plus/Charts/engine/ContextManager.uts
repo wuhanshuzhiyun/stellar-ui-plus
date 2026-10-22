@@ -1,0 +1,131 @@
+/**
+ * @file ContextManager.uts
+ * @description Canvas 2D 绘图上下文与跨端视口管理器
+ * 负责统一抹平 App (Android/iOS)、Web、小程序等跨端 Canvas 2D 差异，自动完成 DPR 高清缩放
+ */
+
+import { ChartRect } from '../types/uts-types.uts'
+
+/**
+ * 上下文初始化完成回调签名
+ */
+export type ContextReadyCallback = (ctx: CanvasRenderingContext2D) => void;
+
+/**
+ * 绘图上下文管理器类
+ */
+export class ContextManager {
+	/** Canvas 节点的唯一 ID */
+	private canvasId: string;
+	/** 逻辑像素宽度 */
+	public width: number = 0;
+	/** 逻辑像素高度 */
+	public height: number = 0;
+	/** 设备物理像素比 (Device Pixel Ratio) */
+	public dpr: number = 1;
+	/** W3C 标准 2D 渲染上下文实例 */
+	public ctx: CanvasRenderingContext2D | null = null;
+	/** 是否已初始化就绪 */
+	public isReady: boolean = false;
+	/** 是否已销毁 */
+	public isDestroyed: boolean = false;
+
+	/**
+	 * 构造函数
+	 * @param canvasId 画布元素唯一标识
+	 * @param width 逻辑宽度 (px)
+	 * @param height 逻辑高度 (px)
+	 */
+	constructor(canvasId: string, width: number, height: number) {
+		this.canvasId = canvasId;
+		this.width = width;
+		this.height = height;
+
+		// 获取系统像素比，默认兜底 1
+		const winInfo = uni.getWindowInfo();
+		if (winInfo.pixelRatio != null && winInfo.pixelRatio > 0) {
+			this.dpr = winInfo.pixelRatio;
+		}
+	}
+
+	/**
+	 * 异步初始化获取 2D 渲染上下文并完成视口 DPR 校准
+	 * @param onReady 初始化就绪后的回调函数
+	 */
+	public init(onReady: ContextReadyCallback) {
+		if (this.isDestroyed) return;
+
+		uni.createCanvasContextAsync({
+			id: this.canvasId,
+			success: (context: CanvasContext) => {
+				if (this.isDestroyed) return;
+
+				const rawCtx = context.getContext('2d') as CanvasRenderingContext2D | null;
+				if (rawCtx == null) {
+					console.error('[StellarChartEngine] 获取 2D 上下文失败: ' + this.canvasId);
+					return;
+				}
+
+				this.ctx = rawCtx;
+				this.setupResolution();
+				this.isReady = true;
+				onReady(this.ctx!);
+			},
+			fail: (err: any) => {
+				console.error('[StellarChartEngine] createCanvasContextAsync 失败:', err);
+			}
+		});
+	}
+
+	/**
+	 * 配置 Canvas 物理像素缓冲区分辨率，并做 DPR 缩放抗锯齿
+	 */
+	public setupResolution() {
+		if (this.ctx == null) return;
+		// 逻辑像素转物理像素
+		const pWidth = Math.round(this.width * this.dpr);
+		const pHeight = Math.round(this.height * this.dpr);
+
+		// 如果能访问到 canvas 宿主 DOM，则同步物理宽高
+		const el = uni.getElementById(this.canvasId);
+		if (el != null) {
+			// 在 uni-app x 原生画布节点中设置缓冲区大小
+			el.style.setProperty('width', this.width.toString() + 'px');
+			el.style.setProperty('height', this.height.toString() + 'px');
+		}
+
+		// 缩放上下文，使开发者后续全部按逻辑像素操作
+		this.ctx!.scale(this.dpr, this.dpr);
+	}
+
+	/**
+	 * 清空整个逻辑画布视口
+	 */
+	public clear() {
+		if (this.ctx != null && this.width > 0 && this.height > 0) {
+			this.ctx!.clearRect(0, 0, this.width, this.height);
+		}
+	}
+
+	/**
+	 * 更新画布逻辑尺寸并重置分辨率
+	 * @param width 新的宽度
+	 * @param height 新的高度
+	 */
+	public resize(width: number, height: number) {
+		this.width = width;
+		this.height = height;
+		if (this.ctx != null) {
+			this.setupResolution();
+		}
+	}
+
+	/**
+	 * 销毁上下文管理器，释放资源
+	 */
+	public destroy() {
+		this.isDestroyed = true;
+		this.ctx = null;
+		this.isReady = false;
+	}
+}

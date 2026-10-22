@@ -1,0 +1,825 @@
+<script setup lang="uts">
+	import { computed, nextTick, ref } from 'vue'
+	import { formatPx, getWindowHeight } from '../../utils/utils.uts'
+	import { useColorStore } from '../../store/color.uts'
+
+	defineOptions({ name: 'ste-select' })
+
+	type SelectValue = string | number | Array<string | number> | null
+
+	type SelectProps = {
+		modelValue ?: any,
+		list ?: any,
+		width ?: number | string,
+		height ?: number | string,
+		paddingLeft ?: number | string,
+		fontSize ?: number | string,
+		background ?: string,
+		placeholder ?: string,
+		labelKey ?: string,
+		valueKey ?: string,
+		multiple ?: boolean,
+		borderColor ?: string,
+		borderRadius ?: number | string,
+		disabled ?: boolean,
+		loading ?: boolean,
+		clearable ?: boolean,
+		maskClose ?: boolean,
+		optionsWidth ?: number | string,
+	}
+
+	const { getColor } = useColorStore()
+	const themeColor = getColor().steThemeColor
+
+	const props = withDefaults(defineProps<SelectProps>(), {
+		modelValue: null,
+		list: () => [] as any[],
+		width: '100%',
+		height: 64,
+		paddingLeft: 20,
+		fontSize: 28,
+		background: '#ffffff',
+		placeholder: '请选择',
+		labelKey: 'label',
+		valueKey: 'value',
+		multiple: false,
+		borderColor: '#ebebeb',
+		borderRadius: 8,
+		disabled: false,
+		loading: false,
+		clearable: false,
+		maskClose: true,
+		optionsWidth: 'auto',
+	})
+
+	const emits = defineEmits(['update:modelValue', 'change', 'cancel', 'confirm', 'loadMore'])
+
+	// 内部状态
+	const showOptions = ref(false)
+	const selected = ref<any[]>([])
+	const confirmValue = ref<any[]>([])
+	const dataOptions = ref<UTSJSONObject[][]>([])
+	const multiseriateIndex = ref<number[]>([])
+	const isMultiseriateUpdating = ref<boolean>(false)
+	const dynamicContentStyle = ref<UTSJSONObject>({} as UTSJSONObject)
+	const dynamicOptionsStyle = ref<UTSJSONObject>({} as UTSJSONObject)
+	
+	const uniqueId = 'ste-select-' + Math.random().toString(36).substring(2, 11)
+
+	// 辅助函数（必须在 computed 之前定义）
+	function findOption(list : UTSJSONObject[], value : string | number) : UTSJSONObject | null {
+		for (let i = 0; i < list.length; i++) {
+			const item = list[i]
+			const itemValue = item[props.valueKey] as string | number
+			if (itemValue == value) {
+				return item
+			}
+		}
+		return null
+	}
+
+	function findOptionIndex(list : UTSJSONObject[], value : string | number) : number {
+		for (let i = 0; i < list.length; i++) {
+			const item = list[i]
+			const itemValue = item[props.valueKey] as string | number
+			if (itemValue == value) {
+				return i
+			}
+		}
+		return -1
+	}
+
+	// 预计算样式
+	const cmpFontSize = computed(() : string => {
+		const size = typeof props.fontSize === 'number' ? props.fontSize : parseInt(props.fontSize as string)
+		return `${size}rpx`
+	})
+
+	const cmpLineHeight = computed(() : string => {
+		const heightVal = props.height as Number
+		const h : Number = heightVal > 0 ? heightVal : parseInt(props.height as string)
+		const hn : number = h as number
+		return (hn - 2) + 'rpx'
+	})
+
+	const cmpViewItemHeight = computed(() : string => {
+		const heightVal = props.height as Number
+		const h : Number = heightVal > 0 ? heightVal : parseInt(props.height as string)
+		const hn : number = h as number
+		return (hn - 16) + 'rpx'
+	})
+
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		return {
+			width: formatPx(props.width),
+			height: formatPx(props.height),
+		} as UTSJSONObject
+	})
+
+	const cmpContentStyle = computed(() : UTSJSONObject => {
+		const heightVal = props.height as Number
+		const paddingLeftVal = props.paddingLeft as Number
+		const h : Number = heightVal > 0 ? heightVal : parseInt(props.height as string)
+		const hn : number = h as number
+		const paddingRight = (hn - 8) + 'rpx'
+		return {
+			width: formatPx(props.width),
+			height: formatPx(props.height),
+			backgroundColor: props.disabled ? '#eeeeee' : props.background,
+			borderWidth: '1px',
+			borderStyle: 'solid',
+			borderColor: props.borderColor,
+			borderRadius: formatPx(props.borderRadius),
+			paddingLeft: formatPx(props.paddingLeft),
+			paddingRight: paddingRight,
+		} as UTSJSONObject
+	})
+
+	const cmpMultiple = computed(() : boolean => {
+		return props.multiple
+	})
+
+	const cmpMultiseriate = computed(() : boolean => {
+		return dataOptions.value.length > 1
+	})
+
+	const cmpViewValue = computed(() : string | string[] => {
+		const view : string[] = []
+		confirmValue.value.forEach((value, index) => {
+			let item : UTSJSONObject | null = null
+			if (props.multiple && dataOptions.value.length == 1) {
+				item = findOption(dataOptions.value[0], value)
+			} else {
+				item = findOption(dataOptions.value[index], value)
+			}
+			view.push(item != null ? (item![props.labelKey] as string) : '')
+		})
+		if (cmpMultiseriate.value || cmpMultiple.value) {
+			return view
+		}
+		return view.length > 0 ? view[0] : ''
+	})
+
+	const cmpShowClearable = computed(() : boolean => {
+		return props.clearable && confirmValue.value.length > 0
+	})
+
+	const cmpViewValueArray = computed(() : string[] => {
+		const result = cmpViewValue.value
+		if (Array.isArray(result)) {
+			return result as string[]
+		}
+		return [result as string]
+	})
+
+	const cmpViewValueString = computed(() : string => {
+		const result = cmpViewValue.value
+		if (typeof result === 'string') {
+			return result
+		}
+		if (Array.isArray(result) && result.length > 0) {
+			return result[0]
+		}
+		return ''
+	})
+
+	const pickerValue = ref<number[]>([] as number[])
+
+	function isData(d : any | null) : boolean {
+		return d != null
+	}
+
+	// 初始化选项
+	function initOptions() {
+		const rawList = props.list
+		if (rawList == null) {
+			dataOptions.value = [[]] as UTSJSONObject[][]
+			return
+		}
+		const str = JSON.stringify(rawList)
+		if (str == '[]') {
+			dataOptions.value = [[]] as UTSJSONObject[][]
+			return
+		}
+		// 通过 JSON 字符串前缀判断一维还是二维
+		const secondChar = str.substring(1, 2)
+		if (secondChar == '{') {
+			// 一维数组：包装成二维
+			const objArr : UTSJSONObject[] = JSON.parse(str) as UTSJSONObject[]
+			const result : UTSJSONObject[][] = [] as UTSJSONObject[][]
+			result.push(objArr)
+			dataOptions.value = result
+		} else {
+			// 二维数组
+			dataOptions.value = JSON.parse(str) as UTSJSONObject[][]
+		}
+	}
+
+	// 初始化
+	initOptions()
+
+	// 初始化 modelValue
+	const mv = props.modelValue as SelectValue
+	if (Array.isArray(mv)) {
+		confirmValue.value = mv as any[]
+	} else {
+		if (dataOptions.value.length > 1 || props.multiple) {
+			console.error('ste-select: value必须为数组（单列单选模式value可以为string或number类型）')
+		}
+		confirmValue.value = (isData(mv) && mv != '') ? [mv as string | number] : []
+	}
+	selected.value = [...confirmValue.value]
+
+	// 初始化 pickerValue
+	if (dataOptions.value.length > 1) {
+		const initPickerVal : number[] = []
+		for (let i = 0; i < dataOptions.value.length; i++) {
+			initPickerVal.push(0)
+		}
+		pickerValue.value = initPickerVal
+	}
+
+	// 构建选项面板样式
+	function buildOptionsStyle(left : number, top : number, bottom : number, width : number, showAbove : boolean, panelHeight : number, visible : boolean) : UTSJSONObject {
+		const style : UTSJSONObject = {
+			position: 'fixed',
+			display: 'block',
+			width: width + 'px',
+			left: left + 'px',
+			opacity: visible ? 1 : 0,
+		} as UTSJSONObject
+
+		if (showAbove) {
+			// 上方空间更大，显示在上方
+			// 面板顶部位置 = 触发栏顶部 - 面板高度 - 间距
+			style['top'] = (top - panelHeight - 8) + 'px'
+		} else {
+			// 下方空间更大，显示在下方
+			style['top'] = (bottom + 8) + 'px'
+		}
+		return style
+	}
+
+	// 打开选项
+	function openOptions() {
+		if (props.disabled) return
+		
+		if (!props.multiple) {
+			const initSelected : any[] = []
+			const initIndex : number[] = []
+			
+			if (selected.value.length > 0 && isData(selected.value[0])) {
+					// 使用已选中的值
+					for (let i = 0; i < dataOptions.value.length; i++) {
+						const col = dataOptions.value[i]
+						const current = i < selected.value.length ? selected.value[i] : null
+						const idx = current != null ? findOptionIndex(col, current!) : -1
+						
+						if (idx >= 0) {
+							initSelected.push(current!)
+							initIndex.push(idx)
+						} else if (col.length > 0) {
+							initSelected.push(col[0][props.valueKey] as string | number)
+							initIndex.push(0)
+						} else {
+							initSelected.push('')
+							initIndex.push(0)
+						}
+					}
+					selected.value = initSelected
+			} else {
+				// 首次打开：只定位指示器到第一项，不预选值
+				for (let i = 0; i < dataOptions.value.length; i++) {
+					initIndex.push(0)
+				}
+				// selected 保持空，等待用户滑动后才由 onMultiseriateChange 更新
+			}
+			
+			pickerValue.value = initIndex
+		}
+		
+		const query = uni.createSelectorQuery()
+			query.select('#' + uniqueId).fields({
+				rect: true,
+				size: true,
+			}, (res : any) => {
+				if (res != null) {
+					const rect = JSON.parse(JSON.stringify(res)) as UTSJSONObject
+					const left = rect['left'] as number
+					const top = rect['top'] as number
+					const width = rect['width'] as number
+					const height = rect['height'] as number
+					const bottom = rect['bottom'] as number
+
+					dynamicContentStyle.value = {
+						position: 'fixed',
+						left: left + 'px',
+						top: top + 'px',
+						width: width + 'px',
+						height: height + 'px',
+					} as UTSJSONObject
+
+					// 自动判断方向：下方空间不足则显示在上方
+					const windowHeight = getWindowHeight()
+					const spaceBelow = windowHeight - bottom
+					const spaceAbove = top
+					const showAbove = spaceAbove > spaceBelow
+
+					console.log('定位调试信息：')
+					console.log('  top:', top, 'bottom:', bottom, 'height:', height)
+					console.log('  windowHeight:', windowHeight)
+					console.log('  spaceAbove:', spaceAbove, 'spaceBelow:', spaceBelow)
+					console.log('  showAbove:', showAbove)
+
+					// 先用预估高度设置初始位置（不可见），显示后再测量实际高度精确调整
+					const initialStyle = buildOptionsStyle(left, top, bottom, width, showAbove, 300, false)
+					dynamicOptionsStyle.value = initialStyle
+
+					// 显示面板
+					showOptions.value = true
+
+					// 显示面板后测量实际高度并重新定位
+					nextTick(() : void => {
+						setTimeout(() : void => {
+							console.log('开始测量面板实际高度')
+							const panelQuery = uni.createSelectorQuery()
+							panelQuery.select('.options-content').fields({
+								size: true,
+								rect: true,
+							}, (panelRes : any) => {
+								console.log('面板测量结果：', panelRes)
+								if (panelRes == null) {
+									console.log('面板测量结果为空')
+									return
+								}
+								const panelRect = JSON.parse(JSON.stringify(panelRes)) as UTSJSONObject
+								const panelHeight = panelRect['height'] as number
+								console.log('面板高度：', panelHeight)
+								if (panelHeight <= 0) return
+
+								const finalStyle = buildOptionsStyle(left, top, bottom, width, showAbove, panelHeight, true)
+								console.log('重新定位样式：', finalStyle)
+								dynamicOptionsStyle.value = finalStyle
+							}).exec()
+						}, 200)
+					})
+				}
+			}).exec()
+	}
+
+	// 关闭选项
+	function closeOptions() {
+		showOptions.value = false
+		dynamicContentStyle.value = {} as UTSJSONObject
+		dynamicOptionsStyle.value = {} as UTSJSONObject
+	}
+
+	// 点击取消
+	function clickCancel() {
+		// 取消时恢复为上次确认的值，丢弃滑动后未确认的临时选择
+		selected.value = [...confirmValue.value]
+		closeOptions()
+		emits('cancel')
+	}
+
+	// 点击遮罩
+	function clickMask() {
+		if (!props.maskClose) return
+		clickCancel()
+	}
+
+	// 确认选择
+	function onConfirm() : SelectValue {
+		// 如果用户未滑动（selected 为空），用 pickerValue 的索引从 dataOptions 取值
+		if (selected.value.length == 0 && dataOptions.value.length > 1) {
+			const fallback : any[] = []
+			for (let i = 0; i < dataOptions.value.length; i++) {
+				const col = dataOptions.value[i]
+				const idx = i < pickerValue.value.length ? pickerValue.value[i] : 0
+				fallback.push(idx >= 0 && idx < col.length ? (col[idx][props.valueKey] as string | number) : '')
+			}
+			selected.value = fallback
+		}
+
+		confirmValue.value = [...selected.value]
+		let value : SelectValue = confirmValue.value as any[]
+
+		let objs : UTSJSONObject | UTSJSONObject[] = [] as UTSJSONObject[]
+		if (dataOptions.value.length == 1) {
+			const arr : UTSJSONObject[] = []
+			for (let i = 0; i < dataOptions.value[0].length; i++) {
+				const item = dataOptions.value[0][i]
+				if (confirmValue.value.indexOf(item[props.valueKey] as string | number) >= 0) {
+					arr.push(item)
+				}
+			}
+			objs = arr
+		} else {
+			const arr : UTSJSONObject[] = []
+			for (let i = 0; i < confirmValue.value.length; i++) {
+				const col = dataOptions.value[i]
+				const found = findOption(col, confirmValue.value[i])
+				if (found != null) arr.push(found)
+			}
+			objs = arr
+		}
+
+		if (dataOptions.value.length == 1 && !props.multiple && !Array.isArray(props.modelValue)) {
+			if (confirmValue.value.length > 0) {
+				value = confirmValue.value[0]
+				objs = (objs as UTSJSONObject[])[0]
+			} else {
+				value = null
+			}
+		}
+
+		emits('update:modelValue', value)
+		emits('change', value, objs as UTSJSONObject)
+		return value
+	}
+
+	// 点击确定
+	function clickConfirm() {
+		const value = onConfirm()
+		emits('confirm', value)
+		nextTick(() : void => { closeOptions() })
+	}
+
+	// 点击清除
+	function clickClearable() {
+		confirmValue.value = []
+		selected.value = []
+		onConfirm()
+	}
+
+	// 选择选项
+	function onSelect(col : number, item : UTSJSONObject) {
+		if (props.multiple && dataOptions.value.length == 1) {
+			const index = selected.value.indexOf(item[props.valueKey] as string | number)
+			if (index > -1) {
+				selected.value.splice(index, 1)
+			} else {
+				selected.value.push(item[props.valueKey] as string | number)
+			}
+		} else {
+			// 单选模式：直接用索引赋值，UTS 中需确保数组长度足够
+			const _selected : any[] = []
+			for (let i = 0; i <= col && i < dataOptions.value.length; i++) {
+				if (i < selected.value.length) {
+					_selected.push(selected.value[i])
+				} else {
+					_selected.push('')
+				}
+			}
+			_selected[col] = item[props.valueKey] as string | number
+			selected.value = _selected
+		}
+		onConfirm()
+		if (!props.multiple) nextTick(() : void => { closeOptions() })
+	}
+
+	// 判断是否选中
+	function active(index : number, item : UTSJSONObject) : boolean {
+		if (dataOptions.value.length > 1) {
+			return selected.value[index] == item[props.valueKey]
+		} else {
+			return selected.value.indexOf(item[props.valueKey] as string | number) >= 0
+		}
+	}
+
+	// 多列选择变化
+	// 使用 UniPickerViewChangeEvent 类型替代 any，才能正确访问 e.detail.value
+	function onMultiseriateChange(e : UniPickerViewChangeEvent) {
+		const valArr = e.detail.value
+		if (valArr == null || valArr.length == 0) return
+
+		const newSelected : any[] = []
+
+		for (let i = 0; i < dataOptions.value.length; i++) {
+			const col = dataOptions.value[i]
+			const idx = i < valArr.length && valArr[i] >= 0 && valArr[i] < col.length ? valArr[i] : 0
+			if (col.length > 0) {
+				newSelected.push(col[idx][props.valueKey] as string | number)
+			} else {
+				newSelected.push('')
+			}
+		}
+
+		selected.value = newSelected
+	}
+
+	// 加载更多
+	function loadMore() {
+		emits('loadMore')
+	}
+</script>
+
+<template>
+	<view class="ste-select-root" :id="uniqueId" :style="cmpRootStyle" flatten>
+		<!-- 关闭状态：触发栏在正常流中 -->
+		<view class="select-content" v-if="!showOptions" :style="cmpContentStyle" @click="openOptions">
+			<scroll-view scroll-x="true" class="content-text" :class="{ multiple: cmpMultiple }">
+				<template v-if="confirmValue.length > 0">
+					<template v-if="cmpMultiple">
+						<view class="multiple-row">
+							<view class="view-item" v-for="(v, i) in cmpViewValueArray" :key="i" :style="{ borderColor: themeColor, backgroundColor: themeColor + '10', color: themeColor, height: cmpViewItemHeight }">
+								<text :style="{ fontSize: cmpFontSize, lineHeight: cmpViewItemHeight, color: themeColor }">{{ v }}</text>
+							</view>
+						</view>
+					</template>
+					<text v-else :style="{ fontSize: cmpFontSize, lineHeight: cmpLineHeight }">{{ cmpMultiseriate ? cmpViewValueArray.join(' / ') : cmpViewValueString }}</text>
+				</template>
+				<text v-else class="placeholder-text" :style="{ fontSize: cmpFontSize, lineHeight: cmpLineHeight }">{{ placeholder }}</text>
+			</scroll-view>
+
+			<view class="open-icon-event" @click.stop="openOptions">
+				<view class="open-icon">
+					<ste-icon code="&#xe676;" size="20"></ste-icon>
+				</view>
+			</view>
+
+			<view class="clearable-icon" v-if="cmpShowClearable" @click.stop="clickClearable">
+				<ste-icon code="&#xe694;" color="#bbbbbb" size="34"></ste-icon>
+			</view>
+		</view>
+
+		<!-- 打开状态：触发栏（fixed 覆盖原位） -->
+		<view class="select-content" v-if="showOptions" :style="[cmpContentStyle, dynamicContentStyle]" @click.stop="openOptions" flatten>
+			<scroll-view scroll-x="true" class="content-text" :class="{ multiple: cmpMultiple }">
+				<template v-if="confirmValue.length > 0">
+					<template v-if="cmpMultiple">
+					<view class="multiple-row">
+						<view class="view-item" v-for="(v, i) in cmpViewValueArray" :key="i" :style="{ borderColor: themeColor, backgroundColor: themeColor + '10', color: themeColor, height: cmpViewItemHeight }">
+							<text :style="{ fontSize: cmpFontSize, lineHeight: cmpViewItemHeight, color: themeColor }">{{ v }}</text>
+						</view>
+					</view>
+				</template>
+				<text v-else :style="{ fontSize: cmpFontSize, lineHeight: cmpLineHeight }">{{ cmpMultiseriate ? cmpViewValueArray.join(' / ') : cmpViewValueString }}</text>
+				</template>
+				<text v-else class="placeholder-text" :style="{ fontSize: cmpFontSize, lineHeight: cmpLineHeight }">{{ placeholder }}</text>
+			</scroll-view>
+
+			<view class="open-icon-event" @click.stop="openOptions">
+				<view class="open-icon open-icon-rotated">
+					<ste-icon code="&#xe676;" size="20"></ste-icon>
+				</view>
+			</view>
+
+			<view class="clearable-icon" v-if="cmpShowClearable" @click.stop="clickClearable">
+				<ste-icon code="&#xe694;" color="#bbbbbb" size="34"></ste-icon>
+			</view>
+		</view>
+
+		<!-- 遮罩层 -->
+		<view class="select-mask" v-if="showOptions" @click="clickMask" flatten></view>
+
+		<!-- 选项面板 -->
+		<view class="options-content" v-if="showOptions" :style="dynamicOptionsStyle" @click.stop="" flatten>
+			<view class="select-options">
+				<template v-if="dataOptions.length > 1">
+					<picker-view style="height: 450rpx" indicator-style="height: 43px" :value="pickerValue" @change="onMultiseriateChange">
+						<picker-view-column v-for="(col, index) in dataOptions" :key="index">
+							<view class="time-item" style="height: 43px" v-for="item in col" :key="item[props.valueKey]">
+								<text :style="{ fontSize: cmpFontSize }">{{ item[props.labelKey] }}</text>
+							</view>
+						</picker-view-column>
+					</picker-view>
+				</template>
+
+				<template v-else>
+					<view class="one-col-options">
+						<view class="options-col">
+							<scroll-view scroll-y="true" style="max-height: 450rpx" @scrolltolower="loadMore">
+									<view class="options-item" v-for="(item, i) in dataOptions[0]" :key="item[props.valueKey]" :class="{ active: active(0, item) }" @click="onSelect(0, item)">
+										<text :style="{ fontSize: cmpFontSize, lineHeight: '42rpx', color: active(0, item) ? themeColor : '#333333' }">{{ item[props.labelKey] }}</text>
+										<ste-icon v-if="active(0, item)" code="&#xe631;" :color="themeColor" size="24" class="check-icon"></ste-icon>
+									</view>
+									<view class="options-empty" v-if="dataOptions[0].length == 0">
+										<text style="color: #999999; font-size: 28rpx">暂无数据</text>
+									</view>
+								</scroll-view>
+						</view>
+					</view>
+				</template>
+			</view>
+			<view class="options-btns" v-if="dataOptions.length > 1">
+				<view class="options-cancel" @click="clickCancel">
+					<text style="color: #999999; font-size: 28rpx">取消</text>
+				</view>
+				<view class="options-confirm" @click="clickConfirm">
+					<text :style="{ color: themeColor, fontSize: '28rpx' }">确定</text>
+				</view>
+			</view>
+			<view class="loading-mark" v-if="loading">
+				<view class="loading-icon">
+					<ste-icon code="&#xe6a2;" size="60" color="#555555"></ste-icon>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<style>
+.ste-select-root {
+	position: relative;
+	z-index: 1;
+}
+
+.select-mask {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 996;
+}
+
+.select-content {
+	position: relative;
+	z-index: 997;
+	overflow: hidden;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.content-text {
+	flex: 1;
+	height: 100%;
+}
+
+.content-text.multiple {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.multiple-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 100%;
+}
+
+.view-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-left: 12rpx;
+	padding-right: 12rpx;
+	border-radius: 6rpx;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #eeeeee;
+	margin-right: 8px;
+	overflow: hidden;
+}
+
+.placeholder-text {
+	color: #999999;
+}
+
+.open-icon-event {
+	width: 60rpx;
+	height: 60rpx;
+	position: absolute;
+	display: flex;
+	z-index: 100;
+	align-items: center;
+	justify-content: center;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.open-icon {
+	border-radius: 16rpx;
+	width: 32rpx;
+	height: 32rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.open-icon-rotated {
+	transform: rotate(180deg);
+}
+
+.clearable-icon {
+	width: 60rpx;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	right: 48rpx;
+	top: 50%;
+	z-index: 10;
+	transform: translateY(-50%);
+}
+
+.options-content {
+	position: absolute;
+	z-index: 998;
+	border-radius: 8rpx;
+	background-color: #ffffff;
+	overflow: hidden;
+}
+
+.select-options {
+	width: 100%;
+	max-height: 546rpx;
+}
+
+.one-col-options {
+	padding-top: 20rpx;
+	padding-bottom: 20rpx;
+}
+
+.options-col {
+	padding-left: 16rpx;
+	padding-right: 16rpx;
+	height: 100%;
+	max-height: 450rpx;
+}
+
+.options-item {
+	width: 100%;
+	padding-top: 20rpx;
+	padding-bottom: 20rpx;
+	overflow: hidden;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.check-icon {
+	flex-shrink: 0;
+}
+
+.options-item + .options-item {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #f5f5f5;
+}
+
+.time-item {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.options-empty {
+	width: 100%;
+	height: 82rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.options-btns {
+	width: 100%;
+	height: 96rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #f5f5f5;
+}
+
+.options-cancel {
+	padding-left: 40rpx;
+	padding-right: 40rpx;
+}
+
+.options-confirm {
+	padding-left: 40rpx;
+	padding-right: 40rpx;
+}
+
+.loading-mark {
+	position: absolute;
+	z-index: 100;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, 0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.loading-icon {
+	width: 60rpx;
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+</style>

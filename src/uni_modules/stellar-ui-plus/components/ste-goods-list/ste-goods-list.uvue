@@ -1,0 +1,198 @@
+<template>
+	<view
+		class="ste-goods-list-root"
+		:class="{
+			'has-icon': !props.hideTitleIcon && props.titleIcon != '',
+			'has-line': !props.hideTitleIcon && props.titleIcon == ''
+		}"
+		data-test="goods-list"
+	>
+		<!-- 头部标题与操作区 -->
+		<view class="ste-goods-list-header">
+			<view class="ste-goods-list-title" :style="props.titleStyle">
+				<!-- 标题指示器：自定义图标 或 主题色竖条 -->
+				<view class="ste-goods-list-title-icon" v-if="!props.hideTitleIcon">
+					<ste-icon v-if="props.titleIcon != ''" :code="props.titleIcon" :size="20"></ste-icon>
+					<view class="ste-goods-list-title-line" :style="{ backgroundColor: themeColor }" v-else></view>
+				</view>
+				<!-- 标题文本 -->
+				<text class="ste-goods-list-title-text">{{ props.title }}</text>
+			</view>
+
+			<!-- 右侧自定义操作插槽 -->
+			<view class="ste-goods-list-method">
+				<!-- @slot method 标题栏右侧操作区插槽 -->
+				<slot name="method"></slot>
+			</view>
+		</view>
+
+		<!-- 键值数据列表区域 -->
+		<view class="ste-goods-list-body" v-if="props.data.length > 0">
+			<view class="ste-goods-list-body-item" v-for="(item, index) in props.data" :key="index">
+				<text class="item-label">{{ item.label }}</text>
+				<text class="item-value">{{ item.value }}</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+/**
+ * ste-goods-list 商品信息清单组件
+ * 
+ * @description 用于以键值清单形式展示商品、订单、调价或仓储属性，支持主题色竖条、自定义图标与操作插槽。
+ * 兼容 uni-app x 原生弹性盒布局规范。
+ */
+import { GoodsListItem } from './constants.uts';
+import { useColorStore } from '../../store/color.uts';
+
+defineOptions({
+	name: 'ste-goods-list'
+});
+
+/**
+ * 组件入参 Props 规范定义
+ */
+const props = withDefaults(
+	defineProps<{
+		/** 顶部标题文案 */
+		title ?: string;
+		/** 是否隐藏标题左侧的指示图标/竖线 */
+		hideTitleIcon ?: boolean;
+		/** 标题左侧自定义图标代码 */
+		titleIcon ?: string;
+		/** 标题自定义样式对象 */
+		titleStyle ?: UTSJSONObject;
+		/** 清单属性数据列表 */
+		data ?: GoodsListItem[];
+	}>(),
+	{
+		title: '',
+		hideTitleIcon: false,
+		titleIcon: '',
+		titleStyle: () : UTSJSONObject => ({} as UTSJSONObject),
+		data: () : GoodsListItem[] => [] as GoodsListItem[]
+	}
+);
+
+const colorStore = useColorStore();
+
+/**
+ * 动态获取当前主题色
+ */
+const themeColor = computed<string>(() : string => {
+	return colorStore.getColor().steThemeColor;
+});
+</script>
+
+<style scoped>
+/* 根卡片容器 */
+.ste-goods-list-root {
+	width: 100%;
+	background-color: #ffffff;
+	padding: 28rpx 40rpx;
+	border-radius: 12rpx;
+}
+
+/* 带有自定义图标时的左边距适配 */
+.ste-goods-list-root.has-icon {
+	padding-left: 16rpx;
+}
+
+.ste-goods-list-root.has-icon .ste-goods-list-title-icon {
+	margin-right: 8rpx;
+}
+
+.ste-goods-list-root.has-icon .ste-goods-list-body {
+	padding-left: 28rpx;
+}
+
+/* 带有竖线指示器时的左边距适配 */
+.ste-goods-list-root.has-line {
+	padding-left: 16rpx;
+}
+
+.ste-goods-list-root.has-line .ste-goods-list-body {
+	padding-left: 24rpx;
+}
+
+/* 标题头部栏 */
+.ste-goods-list-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* 标题左侧区域 */
+.ste-goods-list-title {
+	height: 40rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+/* 标题图标包装容器 */
+.ste-goods-list-title-icon {
+	height: 24rpx;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+/* 主题色竖线指示器 */
+.ste-goods-list-title-line {
+	width: 8rpx;
+	height: 24rpx;
+	margin-right: 16rpx;
+	border-radius: 4rpx;
+}
+
+/* 标题文本 */
+.ste-goods-list-title-text {
+	font-size: 28rpx;
+	font-weight: bold;
+	color: #1d2129;
+	line-height: 40rpx;
+}
+
+/* 右侧操作插槽区域 */
+.ste-goods-list-method {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	line-height: 40rpx;
+}
+
+/* 清单列表主体 */
+.ste-goods-list-body {
+	width: 100%;
+}
+
+/* 清单数据项 */
+.ste-goods-list-body-item {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 28rpx;
+	min-height: 40rpx;
+}
+
+/* 属性标签（左） */
+.item-label {
+	font-size: 26rpx;
+	color: #555a61;
+	line-height: 40rpx;
+}
+
+/* 属性取值（右） */
+.item-value {
+	font-size: 26rpx;
+	color: #1c1f23;
+	line-height: 40rpx;
+	font-weight: 500;
+}
+</style>

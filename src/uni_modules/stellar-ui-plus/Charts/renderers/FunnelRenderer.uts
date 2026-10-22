@@ -1,0 +1,146 @@
+/**
+ * @file FunnelRenderer.uts
+ * @description 漏斗图渲染策略器
+ * 采用梯形截面由上至下梯度收窄，呈现转化率与业务漏斗递减流转过程，支持多层平滑梯形过渡
+ */
+
+import { ChartRect, ChartSeriesItem, FunnelExtraConfig, FunnelActiveSeriesItem } from '../types/uts-types.uts'
+
+/**
+ * 漏斗层级几何数据
+ */
+export type FunnelLayer = {
+	topY: number;
+	bottomY: number;
+	topLeftX: number;
+	topRightX: number;
+	bottomLeftX: number;
+	bottomRightX: number;
+	seriesIndex: number;
+}
+
+/**
+ * 漏斗图渲染策略类
+ */
+export class FunnelRenderer {
+	/**
+	 * 执行漏斗图绘制
+	 * @param ctx 渲染上下文
+	 * @param series 数据序列列表
+	 * @param plotArea 绘图有效区
+	 * @param colors 调色板
+	 * @param progress 补间动画进度 (0.0 ~ 1.0)
+	 * @param extra 扩展配置
+	 * @param dataLabel 是否显示标签
+	 * @returns 各层梯形几何参数
+	 */
+	public static render(
+		ctx: CanvasRenderingContext2D,
+		series: ChartSeriesItem[],
+		plotArea: ChartRect,
+		colors: string[],
+		progress: number,
+		extra: FunnelExtraConfig | null = null,
+		dataLabel: boolean = true
+	): FunnelLayer[] {
+		const layers: FunnelLayer[] = [];
+		if (series.length == 0 || plotArea.height <= 0) return layers;
+
+		const activeSeries: FunnelActiveSeriesItem[] = [];
+		for (let i = 0; i < series.length; i++) {
+			const s = series[i];
+			if (s.show == null || s.show!) {
+				const val = s.value != null ? s.value! : (s.data.length > 0 ? s.data[0] : 0);
+				activeSeries.push({ item: s, originalIndex: i, val: val });
+			}
+		}
+
+		if (activeSeries.length == 0) return layers;
+
+		const count = activeSeries.length;
+		const gap = extra?.gap != null ? extra?.gap! : 3;
+		const totalGap = (count - 1) * gap;
+		const usableHeight = plotArea.height - totalGap;
+		const layerHeight = usableHeight / count;
+
+		const maxW = plotArea.width * (extra?.maxWidthRatio != null ? extra?.maxWidthRatio! : 0.85);
+		const minW = plotArea.width * (extra?.minWidthRatio != null ? extra?.minWidthRatio! : 0.25);
+		const centerX = plotArea.left + plotArea.width / 2;
+
+		// 找到最大值作为 100% 基准
+		let maxVal = 0;
+		for (let i = 0; i < count; i++) {
+			if (activeSeries[i].val > maxVal) {
+				maxVal = activeSeries[i].val;
+			}
+		}
+		if (maxVal <= 0) maxVal = 1;
+
+		ctx.save();
+		ctx.font = '11px sans-serif';
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+
+		let curY = plotArea.top;
+
+		for (let i = 0; i < count; i++) {
+			const current = activeSeries[i];
+			const next = i < count - 1 ? activeSeries[i + 1] : null;
+
+			// 上边宽与下边宽
+			const curRatio = Math.max(0.1, current.val / maxVal);
+			const nextRatio = next != null ? Math.max(0.1, next.val / maxVal) : curRatio * 0.7;
+
+			const topWidth = (minW + (maxW - minW) * curRatio) * progress;
+			const bottomWidth = (minW + (maxW - minW) * nextRatio) * progress;
+
+			const topY = curY;
+			const bottomY = topY + layerHeight;
+
+			const topLeftX = centerX - topWidth / 2;
+			const topRightX = centerX + topWidth / 2;
+			const bottomLeftX = centerX - bottomWidth / 2;
+			const bottomRightX = centerX + bottomWidth / 2;
+
+			layers.push({
+				topY,
+				bottomY,
+				topLeftX,
+				topRightX,
+				bottomLeftX,
+				bottomRightX,
+				seriesIndex: current.originalIndex
+			});
+
+			const s = current.item;
+			const color = s.color != null && s.color != '' ? s.color! : colors[current.originalIndex % colors.length];
+
+			// 绘制梯形
+			ctx.fillStyle = color;
+			ctx.strokeStyle = '#ffffff';
+			ctx.lineWidth = 1.5;
+
+			ctx.beginPath();
+			ctx.moveTo(topLeftX, topY);
+			ctx.lineTo(topRightX, topY);
+			ctx.lineTo(bottomRightX, bottomY);
+			ctx.lineTo(bottomLeftX, bottomY);
+			ctx.closePath();
+			ctx.fill();
+			ctx.stroke();
+
+			// 绘制梯形内部居中文本
+			if (dataLabel && progress >= 0.8) {
+				ctx.fillStyle = '#ffffff';
+				const midY = (topY + bottomY) / 2;
+				const text = s.name + ': ' + current.val.toString();
+				ctx.fillText(text, centerX, midY);
+			}
+
+			curY += layerHeight + gap;
+		}
+
+		ctx.restore();
+		return layers;
+	}
+}

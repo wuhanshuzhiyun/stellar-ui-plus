@@ -1,0 +1,550 @@
+<template>
+	<view class="ste-swipe-action-root" :style="[cmpRootStyle, rootStyle]">
+		<!-- 1. 左侧操作按钮区域 (固定在底层左侧，z-index: 1，显式高度绑定) -->
+		<view
+			v-if="cmpLeft"
+			:id="leftId"
+			class="swipe-action-left"
+			:style="cmpActionStyle"
+		>
+			<slot name="left"></slot>
+		</view>
+
+		<!-- 2. 右侧操作按钮区域 (固定在底层右侧，z-index: 1，显式高度绑定) -->
+		<view
+			v-if="cmpRight"
+			:id="rightId"
+			class="swipe-action-right"
+			:style="cmpActionStyle"
+		>
+			<slot name="right"></slot>
+		</view>
+
+		<!-- 3. 边缘指示快捷按钮 (固定在左右边缘最上层，z-index: 10) -->
+		<view
+			v-if="cmpLeftIcon"
+			class="swipe-action-left-icon"
+			@click="handleIconClick('left')"
+		>
+			<view class="swipe-icon-wrap" :class="[currentStatus == 'left' ? 'swipe-icon-active' : '']">
+				<ste-icon code="&#xe674;" size="30rpx" />
+			</view>
+		</view>
+		<view
+			v-if="cmpRightIcon"
+			class="swipe-action-right-icon"
+			@click="handleIconClick('right')"
+		>
+			<view class="swipe-icon-wrap" :class="[currentStatus == 'right' ? 'swipe-icon-active' : '']">
+				<ste-icon code="&#xe673;" size="30rpx" />
+			</view>
+		</view>
+
+		<!-- 4. 主内容区域 (覆盖在按钮上方，z-index: 2，白色背景，滑动时平移露底) -->
+		<view
+			:id="contentId"
+			class="swipe-action-content"
+			:style="cmpContentTransform"
+			@touchstart="onTouchStart"
+			@touchmove="onTouchMove"
+			@touchend="onTouchEnd"
+			@touchcancel="onTouchEnd"
+			@click="onContentClick"
+		>
+			<slot></slot>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-swipe-action.uvue
+	 * @description SwipeAction 滑动单元格组件 - uni-app x / UTS 底层操作区露底架构版本
+	 * 操作按钮固定在根容器底层两端 (z-index: 1)，主内容覆盖在上方 (z-index: 2)，
+	 * 滑动时主内容平移露底，彻底消除跨容器边界裁切与高度塌陷问题，实现 100% 稳定可见与排他互斥。
+	 */
+	import { ref, computed, inject, onMounted, onUnmounted, getCurrentInstance } from 'vue'
+	import { SwipeActionProps, SwipeActionItemHandler, SwipeActionGroupContext } from './constants.uts'
+
+	defineOptions({
+		name: 'ste-swipe-action',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== Props 属性与默认值 ====================
+	const props = withDefaults(defineProps<SwipeActionProps>(), {
+		mode: '',
+		disabled: false,
+		swipeThreshold: null,
+		duration: null,
+		leftIcon: false,
+		rightIcon: false,
+		rootStyle: () => ({}) as UTSJSONObject,
+	})
+
+	// ==================== Emits 事件声明 ====================
+	const emits = defineEmits<{
+		(e: 'open', direction: string): void
+		(e: 'close'): void
+	}>()
+
+	// ==================== 实例与上下文 ====================
+	const instance = getCurrentInstance()
+	const parentContext = inject<SwipeActionGroupContext | null>('ste-swipe-action', null)
+
+	/** 组件唯一 ID */
+	const itemId = ref<string>('ste-sa-' + Math.floor(Math.random() * 10000000).toString())
+	const contentId = computed((): string => itemId.value + '-content')
+	const leftId = computed((): string => itemId.value + '-left')
+	const rightId = computed((): string => itemId.value + '-right')
+
+	// ==================== 响应式属性计算（自身 > 父级 > 默认） ====================
+	function parseNumberVal(val: any | null, defaultVal: number): number {
+		if (val == null) return defaultVal
+		if (typeof val === 'number') return val as number
+		const n = parseFloat(val.toString())
+		return isNaN(n) ? defaultVal : n
+	}
+
+	const cmpMode = computed((): string => {
+		if (props.mode != '') return props.mode
+		return parentContext != null ? parentContext!.getMode() : 'right'
+	})
+
+	const cmpLeft = computed((): boolean => {
+		return cmpMode.value == 'all' || cmpMode.value == 'left'
+	})
+
+	const cmpRight = computed((): boolean => {
+		return cmpMode.value == 'all' || cmpMode.value == 'right'
+	})
+
+	const cmpDisabled = computed((): boolean => {
+		if (props.disabled) return true
+		return parentContext != null ? parentContext!.getDisabled() : false
+	})
+
+	const cmpSwipeThreshold = computed((): number => {
+		const st = props.swipeThreshold
+		if (st != null) {
+			return parseNumberVal(st, 0.35)
+		}
+		return parentContext != null ? parentContext!.getSwipeThreshold() : 0.35
+	})
+
+	const cmpDuration = computed((): number => {
+		const dur = props.duration
+		if (dur != null) {
+			return parseNumberVal(dur, 300)
+		}
+		return parentContext != null ? parentContext!.getDuration() : 300
+	})
+
+	const cmpLeftIcon = computed((): boolean => {
+		if (props.leftIcon) return true
+		return parentContext != null ? parentContext!.getLeftIcon() : false
+	})
+
+	const cmpRightIcon = computed((): boolean => {
+		if (props.rightIcon) return true
+		return parentContext != null ? parentContext!.getRightIcon() : false
+	})
+
+	// ==================== 交互状态机与尺寸测量 ====================
+	/** 当前内容平移偏移量（[-rightWidth, leftWidth]） */
+	const offset = ref<number>(0)
+	/** 当前业务状态：'closed' | 'left' | 'right' */
+	const currentStatus = ref<string>('closed')
+	/** 是否处于手势拖拽中 */
+	const isMoving = ref<boolean>(false)
+	/** 主内容实际测量高度 */
+	const contentHeight = ref<number>(0)
+	/** 左侧按钮实际测量宽度 */
+	const leftWidth = ref<number>(0)
+	/** 右侧按钮实际测量宽度 */
+	const rightWidth = ref<number>(0)
+
+	let startX: number = 0
+	let startY: number = 0
+	let baseOffset: number = 0
+	let isHorizontalMove: boolean = false
+	let hasDeterminedDirection: boolean = false
+
+	/**
+	 * 测量主内容高度及左右操作按钮宽度
+	 */
+	function measureDimensions() {
+		// #ifdef APP-ANDROID || APP-IOS || H5
+		const contentEl = uni.getElementById(contentId.value)
+		if (contentEl != null) {
+			const h = contentEl.offsetHeight
+			if (h > 0) contentHeight.value = h
+		}
+		const leftEl = uni.getElementById(leftId.value)
+		if (leftEl != null) {
+			const w = leftEl.offsetWidth
+			if (w > 0) leftWidth.value = w
+		}
+		const rightEl = uni.getElementById(rightId.value)
+		if (rightEl != null) {
+			const w = rightEl.offsetWidth
+			if (w > 0) rightWidth.value = w
+		}
+		// #endif
+
+		// #ifdef MP-WEIXIN || MP-ALIPAY
+		uni.createSelectorQuery()
+			.in(instance?.proxy)
+			.select('#' + contentId.value)
+			.boundingClientRect(res => {
+				if (res != null) {
+					const h = (res as UTSJSONObject)['height'] as number | null
+					if (h != null && h > 0) contentHeight.value = h
+				}
+			})
+			.select('#' + leftId.value)
+			.boundingClientRect(res => {
+				if (res != null) {
+					const w = (res as UTSJSONObject)['width'] as number | null
+					if (w != null && w > 0) leftWidth.value = w
+				}
+			})
+			.select('#' + rightId.value)
+			.boundingClientRect(res => {
+				if (res != null) {
+					const w = (res as UTSJSONObject)['width'] as number | null
+					if (w != null && w > 0) rightWidth.value = w
+				}
+			})
+			.exec()
+		// #endif
+	}
+
+	/**
+	 * 主内容平移动态样式
+	 */
+	const cmpContentTransform = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {}
+		style['transform'] = 'translateX(' + offset.value.toString() + 'px)'
+		style['transitionDuration'] = isMoving.value ? '0ms' : cmpDuration.value.toString() + 'ms'
+		style['transitionProperty'] = 'transform'
+		style['transitionTimingFunction'] = 'ease-out'
+		return style
+	})
+
+	/**
+	 * 底层操作菜单样式：显式绑定测量高度，彻底解决 Yoga 在 height:auto 容器下高度为 0 问题
+	 */
+	const cmpActionStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {}
+		if (contentHeight.value > 0) {
+			style['height'] = contentHeight.value.toString() + 'px'
+		}
+		return style
+	})
+
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		return {} as UTSJSONObject
+	})
+
+	// ==================== 状态机吸附与事件分发 ====================
+	/**
+	 * 吸附至目标偏移量并分发业务事件
+	 */
+	function snapTo(targetOffset: number, targetStatus: string) {
+		offset.value = targetOffset
+		if (targetStatus != currentStatus.value) {
+			currentStatus.value = targetStatus
+			if (targetStatus == 'closed') {
+				emits('close')
+				parentContext?.onItemClose(itemId.value)
+			} else if (targetStatus == 'right') {
+				emits('open', 'right')
+				parentContext?.onItemOpen(itemId.value, 'right')
+			} else if (targetStatus == 'left') {
+				emits('open', 'left')
+				parentContext?.onItemOpen(itemId.value, 'left')
+			}
+		}
+	}
+
+	// ==================== 手势触摸事件 ====================
+	function onTouchStart(e: TouchEvent) {
+		if (cmpDisabled.value) return
+		if (e.touches.length > 0) {
+			const touch = e.touches[0]
+			startX = touch.clientX
+			startY = touch.clientY
+			baseOffset = offset.value
+			isHorizontalMove = false
+			hasDeterminedDirection = false
+			measureDimensions()
+
+			// 触碰即互斥：用户手指触碰当前项时，立即命令组内其他展开项平滑收起
+			parentContext?.closeOtherItems(itemId.value)
+		}
+	}
+
+	function onTouchMove(e: TouchEvent) {
+		if (cmpDisabled.value) return
+		if (e.touches.length > 0) {
+			const touch = e.touches[0]
+			const deltaX = touch.clientX - startX
+			const deltaY = touch.clientY - startY
+
+			// 滑动方向仲裁（判断是水平滑动还是页面垂直滚动）
+			if (!hasDeterminedDirection) {
+				if (Math.abs(deltaX) > 6 || Math.abs(deltaY) > 6) {
+					hasDeterminedDirection = true
+					isHorizontalMove = Math.abs(deltaX) > Math.abs(deltaY)
+				}
+			}
+
+			// 若为垂直滚动则不拦截、不移动单元格
+			if (!isHorizontalMove) {
+				return
+			}
+
+			isMoving.value = true
+			let target = baseOffset + deltaX
+
+			// 边界限制
+			if (!cmpLeft.value && target > 0) {
+				target = 0
+			}
+			if (!cmpRight.value && target < 0) {
+				target = 0
+			}
+			const effectiveLeft = leftWidth.value > 0 ? leftWidth.value : uni.rpx2px(140)
+			const effectiveRight = rightWidth.value > 0 ? rightWidth.value : uni.rpx2px(140)
+			if (target > effectiveLeft) {
+				target = effectiveLeft
+			}
+			if (target < -effectiveRight) {
+				target = -effectiveRight
+			}
+
+			offset.value = target
+		}
+	}
+
+	function onTouchEnd(_e: TouchEvent) {
+		if (!isMoving.value) return
+		isMoving.value = false
+
+		const current = offset.value
+		const effectiveLeft = leftWidth.value > 0 ? leftWidth.value : uni.rpx2px(140)
+		const effectiveRight = rightWidth.value > 0 ? rightWidth.value : uni.rpx2px(140)
+
+		if (baseOffset === 0) {
+			// 原本关闭状态
+			if (current < 0 && cmpRight.value) {
+				const threshold = effectiveRight * cmpSwipeThreshold.value
+				if (Math.abs(current) >= threshold) {
+					snapTo(-effectiveRight, 'right')
+				} else {
+					snapTo(0, 'closed')
+				}
+			} else if (current > 0 && cmpLeft.value) {
+				const threshold = effectiveLeft * cmpSwipeThreshold.value
+				if (current >= threshold) {
+					snapTo(effectiveLeft, 'left')
+				} else {
+					snapTo(0, 'closed')
+				}
+			} else {
+				snapTo(0, 'closed')
+			}
+		} else if (baseOffset < 0) {
+			// 原本右侧打开状态 (offset < 0)，向右滑准备收起
+			const diff = current - baseOffset
+			const threshold = effectiveRight * cmpSwipeThreshold.value
+			if (diff >= threshold) {
+				snapTo(0, 'closed')
+			} else {
+				snapTo(-effectiveRight, 'right')
+			}
+		} else if (baseOffset > 0) {
+			// 原本左侧打开状态 (offset > 0)，向左滑准备收起
+			const diff = baseOffset - current
+			const threshold = effectiveLeft * cmpSwipeThreshold.value
+			if (diff >= threshold) {
+				snapTo(0, 'closed')
+			} else {
+				snapTo(effectiveLeft, 'left')
+			}
+		}
+	}
+
+	// ==================== 暴露外部调用方法 ====================
+	/**
+	 * 关闭操作区
+	 */
+	function close() {
+		snapTo(0, 'closed')
+	}
+
+	/**
+	 * 打开操作区
+	 * @param direction 打开方向（'left' | 'right'），默认根据 mode 选择
+	 */
+	function open(direction: string = '') {
+		if (cmpDisabled.value) return
+		const dir = direction != '' ? direction : (cmpRight.value ? 'right' : 'left')
+		measureDimensions()
+		if (dir == 'left') {
+			const w = leftWidth.value > 0 ? leftWidth.value : uni.rpx2px(140)
+			snapTo(w, 'left')
+		} else {
+			const w = rightWidth.value > 0 ? rightWidth.value : uni.rpx2px(140)
+			snapTo(-w, 'right')
+		}
+	}
+
+	/**
+	 * 内容区点击处理：若当前处于展开状态，点击内容自动收起
+	 */
+	function onContentClick() {
+		if (currentStatus.value != 'closed') {
+			close()
+		}
+	}
+
+	/**
+	 * 边缘箭头点击切换
+	 */
+	function handleIconClick(dir: string) {
+		if (cmpDisabled.value) return
+		if (currentStatus.value != 'closed') {
+			close()
+		} else {
+			open(dir)
+		}
+	}
+
+	defineExpose({
+		open: (direction ?: string) => {
+			const d = direction != null ? direction! : ''
+			open(d)
+		},
+		close: () => {
+			close()
+		},
+	})
+
+	// ==================== 生命周期 ====================
+	const itemHandler: SwipeActionItemHandler = {
+		getId: (): string => itemId.value,
+		open: (direction: string) => {
+			open(direction)
+		},
+		close: () => {
+			close()
+		},
+	}
+
+	onMounted(() => {
+		if (parentContext != null) {
+			parentContext!.registerItem(itemHandler)
+		}
+		measureDimensions()
+		setTimeout(() => {
+			measureDimensions()
+		}, 50)
+		setTimeout(() => {
+			measureDimensions()
+		}, 150)
+		setTimeout(() => {
+			measureDimensions()
+		}, 300)
+	})
+
+	onUnmounted(() => {
+		if (parentContext != null) {
+			parentContext!.unregisterItem(itemId.value)
+		}
+	})
+</script>
+
+<style scoped>
+.ste-swipe-action-root {
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+/* 左侧操作菜单：固定于底层左侧 */
+.swipe-action-left {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 1;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+}
+
+/* 右侧操作菜单：固定于底层右侧 */
+.swipe-action-right {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 1;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+}
+
+/* 主内容：顶层，带背景色，滑动时平移露底 */
+.swipe-action-content {
+	position: relative;
+	width: 100%;
+	z-index: 2;
+	background-color: #ffffff;
+}
+
+/* 边缘快捷指示按钮（固定于根容器左右两侧垂直居中） */
+.swipe-action-left-icon,
+.swipe-action-right-icon {
+	width: 36rpx;
+	height: 72rpx;
+	position: absolute;
+	top: 50%;
+	z-index: 10;
+	transform: translateY(-50%);
+	overflow: hidden;
+	background-color: #ffffff;
+	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.12);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.swipe-action-left-icon {
+	left: 0;
+	border-radius: 0 36rpx 36rpx 0;
+}
+
+.swipe-action-right-icon {
+	right: 0;
+	border-radius: 36rpx 0 0 36rpx;
+}
+
+.swipe-icon-wrap {
+	width: 30rpx;
+	height: 30rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition-duration: 300ms;
+	transition-property: transform;
+}
+
+.swipe-icon-active {
+	transform: rotate(180deg);
+}
+</style>

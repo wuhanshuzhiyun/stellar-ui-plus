@@ -1,0 +1,647 @@
+<template>
+	<!-- NoticeBar 公告栏根节点 -->
+	<view v-if="visible" class="ste-notice-bar-root" :style="[cmpRootStyle, rootStyle]" data-test="notice-bar">
+		<view
+			class="ste-notice-bar-content"
+			@touchstart="handleTouchStart"
+			@touchend="handleTouchEnd"
+			@mousedown="handleTouchStart"
+			@mouseup="handleTouchEnd"
+		>
+			<!-- 左侧图标插槽 / 默认喇叭提示图标 -->
+			<view class="ste-notice-bar-left">
+				<slot name="leftIcon">
+					<image class="ste-notice-bar-left-img" :src="DEFAULT_LEFT_ICON" mode="aspectFit" />
+				</slot>
+			</view>
+
+			<!-- 中间消息展示区：水平滚动模式 (direction == 'across') -->
+			<view
+				v-if="direction == 'across'"
+				:id="contentBoxId"
+				class="ste-notice-bar-center"
+				@click="handleClick"
+			>
+				<view
+					:id="textWrapId"
+					class="ste-notice-bar-item-across"
+					:style="cmpAcrossStyle"
+				>
+					<text class="ste-notice-bar-text" :style="cmpTextStyle">{{ currentText }}</text>
+				</view>
+			</view>
+
+			<!-- 中间消息展示区：垂直轮播模式 (direction == 'vertical') -->
+			<view
+				v-else
+				:id="contentBoxId"
+				class="ste-notice-bar-center ste-notice-bar-vertical"
+				@click="handleClick"
+			>
+				<view class="ste-notice-bar-item-vertical-box" :style="cmpVerticalBoxStyle">
+					<!-- 当前展示的公告项 -->
+					<view class="ste-notice-bar-item-vertical">
+						<text class="ste-notice-bar-text" :style="cmpTextStyle">{{ currentText }}</text>
+					</view>
+					<!-- 即将向上滚动进入的下一项公告（双缓冲槽） -->
+					<view class="ste-notice-bar-item-vertical">
+						<text class="ste-notice-bar-text" :style="cmpTextStyle">{{ nextText }}</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 右侧插槽 / 关闭按钮 -->
+			<view v-if="closeMode" class="ste-notice-bar-right">
+				<slot name="rightIcon">
+					<view class="ste-notice-bar-close-btn" @click.stop="handleClose">
+						<ste-icon code="&#xe694;" size="32" :color="color"></ste-icon>
+					</view>
+				</slot>
+			</view>
+			<view v-else class="ste-notice-bar-right-slot">
+				<slot name="rightIcon"></slot>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-notice-bar.uvue
+	 * @description NoticeBar 公告栏组件 - uni-app x / UTS 版本
+	 * 采用基于时间增量（Δt）的物理位移定时器与双缓冲槽状态机，支持全端流畅的水平滚动与垂直轮播。
+	 */
+	import { ref, computed, watch, onMounted, onUnmounted, nextTick, getCurrentInstance } from 'vue'
+	import { bg2style, addUnit } from '../../utils/utils.uts'
+	import { NoticeBarProps, DEFAULT_LEFT_ICON } from './constants.uts'
+
+	defineOptions({
+		name: 'ste-notice-bar',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== Props 属性定义与默认值 ====================
+	const props = withDefaults(defineProps<NoticeBarProps>(), {
+		list: () => [] as string[],
+		direction: 'across',
+		closeMode: false,
+		color: '#000000',
+		background: '#ffffff',
+		width: '100%',
+		acrossSpeed: 50,
+		verticalSpeed: 500,
+		delay: 1000,
+		standTime: 1000,
+		scrollable: true,
+		rootStyle: () => ({}) as UTSJSONObject,
+	})
+
+	// ==================== Emits 事件声明 ====================
+	const emits = defineEmits<{
+		/**
+		 * 滚动播放完成一条消息时触发
+		 * @param value 当前完成消息的索引
+		 */
+		(e: 'end', value: number): void
+		/**
+		 * 点击关闭按钮隐藏公告栏时触发
+		 */
+		(e: 'close', value: any): void
+		/**
+		 * 点击公告栏内容区域时触发
+		 * @param value 当前点击消息的索引
+		 */
+		(e: 'click', value: number): void
+	}>()
+
+	// ==================== 响应式状态定义 ====================
+	/** 公告栏是否可见（用于 closeMode 关闭控制） */
+	const visible = ref(true)
+	/** 当前播放的消息索引 */
+	const currentIndex = ref(0)
+	/** 是否处于触摸/按住暂停状态 */
+	const isPaused = ref(false)
+	/** 是否已完成首次延迟启动 */
+	const isFirstDone = ref(false)
+
+	/** 水平滚动的 X 轴像素偏移量（px） */
+	const translateX = ref(0)
+	/** 垂直滚动的 Y 轴像素偏移量（px） */
+	const translateY = ref(0)
+
+	/** 容器可视区域宽度（px） */
+	const containerWidth = ref(0)
+	/** 当前文本内容的实际宽度（px） */
+	const textWidth = ref(0)
+	/** 垂直滚动单行高度（px） */
+	const itemHeight = ref(18) // 默认 18px (36rpx)
+
+	/** 唯一 ID 生成，避免多实例选择器冲突 */
+	const randomSeed = Math.floor(Math.random() * 1000000).toString()
+	const contentBoxId = 'ste-notice-box-' + randomSeed
+	const textWrapId = 'ste-notice-text-' + randomSeed
+
+	/** 组件实例引用 */
+	const instance = getCurrentInstance()
+
+	/** 定时器句柄 */
+	let _acrossTimer: number = 0
+	let _verticalTimer: number = 0
+	let _delayTimer: number = 0
+	let _animTimer: number = 0
+	let _lastTickTime: number = 0
+
+	// ==================== 计算属性 ====================
+	/**
+	 * 当前展示的文本内容
+	 */
+	const currentText = computed((): string => {
+		const list = props.list
+		if (list.length == 0) return ''
+		const idx = currentIndex.value
+		if (idx >= 0 && idx < list.length) {
+			return list[idx]
+		}
+		return list[0]
+	})
+
+	/**
+	 * 下一条展示的文本内容（用于垂直模式平滑轮播）
+	 */
+	const nextText = computed((): string => {
+		const list = props.list
+		if (list.length <= 1) return ''
+		const nextIdx = (currentIndex.value + 1) % list.length
+		return list[nextIdx]
+	})
+
+	/**
+	 * 根节点容器样式计算 (注意：color 不作用于 view)
+	 */
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {}
+		
+		// 宽度处理（支持数字或单位字符串）
+		const w = props.width
+		if (w != null) {
+			const formattedWidth = addUnit(w as any)
+			if (formattedWidth != '') {
+				style['width'] = formattedWidth
+			}
+		}
+
+		// 背景颜色或渐变背景转换
+		const bg = props.background
+		if (bg != '') {
+			const bgObj = bg2style(bg)
+			// #ifdef APP-ANDROID || APP-IOS
+			const bgMap = bgObj.toMap()
+			const iter = bgMap.keys.iterator()
+			while (iter.hasNext()) {
+				const key = iter.next()!
+				style[key] = bgObj[key]!
+			}
+			// #endif
+			// #ifdef H5 || MP-WEIXIN || MP-ALIPAY
+			const bgKeys = Object.keys(bgObj as Any) as string[]
+			for (let i = 0; i < bgKeys.length; i++) {
+				const key = bgKeys[i]
+				style[key] = (bgObj as Any)[key]
+			}
+			// #endif
+		}
+
+		return style
+	})
+
+	/**
+	 * 水平滚动元素样式计算
+	 */
+	const cmpAcrossStyle = computed((): UTSJSONObject => {
+		return {
+			transform: 'translateX(' + translateX.value + 'px)',
+		} as UTSJSONObject
+	})
+
+	/**
+	 * 垂直滚动双缓冲容器样式计算
+	 */
+	const cmpVerticalBoxStyle = computed((): UTSJSONObject => {
+		return {
+			transform: 'translateY(' + translateY.value + 'px)',
+		} as UTSJSONObject
+	})
+
+	/**
+	 * 文本样式计算 (承载 color 与文字相关样式)
+	 */
+	const cmpTextStyle = computed((): UTSJSONObject => {
+		const style: UTSJSONObject = {}
+		if (props.color != '') {
+			style['color'] = props.color
+		}
+		return style
+	})
+
+	// ==================== 节点尺寸测量 ====================
+	/**
+	 * 测量指定选择器节点尺寸
+	 * @param selector 选择器字符串
+	 * @param callback 测量完成回调函数
+	 */
+	function queryNode(selector: string, callback: (rect: NodeInfo | null) => void) {
+		uni.createSelectorQuery()
+			.in(instance as any)
+			.select(selector)
+			.boundingClientRect()
+			.exec((ret: Array<any>) => {
+				if (ret.length > 0 && ret[0] != null) {
+					callback(ret[0] as NodeInfo)
+				} else {
+					callback(null)
+				}
+			})
+	}
+
+	// ==================== 定时器管理 ====================
+	/**
+	 * 清理所有定时器
+	 */
+	function clearAllTimers() {
+		if (_acrossTimer != 0) {
+			clearInterval(_acrossTimer)
+			_acrossTimer = 0
+		}
+		if (_animTimer != 0) {
+			clearInterval(_animTimer)
+			_animTimer = 0
+		}
+		if (_delayTimer != 0) {
+			clearTimeout(_delayTimer)
+			_delayTimer = 0
+		}
+		if (_verticalTimer != 0) {
+			clearTimeout(_verticalTimer)
+			_verticalTimer = 0
+		}
+	}
+
+	// ==================== 水平滚动引擎 (Across) ====================
+	/**
+	 * 启动水平滚动定时器
+	 */
+	function startAcrossLoop() {
+		clearAllTimers()
+		if (!props.scrollable || props.list.length == 0) return
+
+		// 重新测量当前文本宽度
+		queryNode('#' + textWrapId, (textRect: NodeInfo | null) => {
+			if (textRect != null && textRect.width != null && textRect.width! > 0) {
+				textWidth.value = textRect.width!
+			}
+
+			// 首次延迟启动；后续消息直接循环
+			const delayTime = isFirstDone.value ? 0 : props.delay
+			_lastTickTime = Date.now()
+
+			_delayTimer = setTimeout(() => {
+				_lastTickTime = Date.now()
+				_acrossTimer = setInterval(() => {
+					if (isPaused.value || !props.scrollable) {
+						_lastTickTime = Date.now()
+						return
+					}
+
+					const now = Date.now()
+					const dt = (now - _lastTickTime) / 1000 // 转换为秒
+					_lastTickTime = now
+
+					// 计算当前帧的位移量
+					const moveDist = props.acrossSpeed * dt
+					translateX.value -= moveDist
+
+					// 文本完整移出视口左侧时，切换下一条消息
+					const minTranslate = -(textWidth.value > 0 ? textWidth.value : 200)
+					if (translateX.value <= minTranslate) {
+						const endedIndex = currentIndex.value
+						isFirstDone.value = true
+
+						// 索引切换至下一条
+						const nextIdx = (currentIndex.value + 1) % props.list.length
+						currentIndex.value = nextIdx
+
+						// 重置位移至容器右侧
+						const boxW = containerWidth.value > 0 ? containerWidth.value : 300
+						translateX.value = boxW
+
+						// 触发结束事件
+						emits('end', endedIndex)
+
+						// 重新测量并启动下一轮
+						nextTick(() => {
+							queryNode('#' + textWrapId, (newRect: NodeInfo | null) => {
+								if (newRect != null && newRect.width != null && newRect.width! > 0) {
+									textWidth.value = newRect.width!
+								}
+							})
+						})
+					}
+				}, 20)
+			}, delayTime)
+		})
+	}
+
+	// ==================== 垂直轮播引擎 (Vertical) ====================
+	/**
+	 * 启动垂直轮播定时器
+	 */
+	function startVerticalLoop() {
+		clearAllTimers()
+		if (!props.scrollable || props.list.length <= 1) return
+
+		// 获取单行高度
+		queryNode('#' + contentBoxId, (boxRect: NodeInfo | null) => {
+			if (boxRect != null && boxRect.height != null && boxRect.height! > 0) {
+				itemHeight.value = boxRect.height!
+			}
+
+			const waitTime = isFirstDone.value ? props.standTime : props.delay
+
+			_verticalTimer = setTimeout(() => {
+				if (!props.scrollable) return
+
+				// 执行平滑垂直翻滚动画
+				const totalDuration = props.verticalSpeed > 0 ? props.verticalSpeed : 500
+				const frameInterval = 20
+				const totalFrames = Math.max(1, Math.floor(totalDuration / frameInterval))
+				const stepDist = itemHeight.value / totalFrames
+				let currentFrame = 0
+
+				_animTimer = setInterval(() => {
+					if (isPaused.value) return
+
+					currentFrame++
+					translateY.value = -(currentFrame * stepDist)
+
+					if (currentFrame >= totalFrames) {
+						if (_animTimer != 0) {
+							clearInterval(_animTimer)
+							_animTimer = 0
+						}
+
+						const endedIndex = currentIndex.value
+						isFirstDone.value = true
+
+						// 切换到下一条数据并复位 Y 轴偏移
+						const nextIdx = (currentIndex.value + 1) % props.list.length
+						currentIndex.value = nextIdx
+						translateY.value = 0
+
+						// 触发结束事件
+						emits('end', endedIndex)
+
+						// 开启下一轮垂直轮播
+						startVerticalLoop()
+					}
+				}, frameInterval)
+			}, waitTime)
+		})
+	}
+
+	// ==================== 动画初始化调度 ====================
+	/**
+	 * 测量容器尺寸并初始化动画
+	 */
+	function initAnimation() {
+		clearAllTimers()
+		translateX.value = 0
+		translateY.value = 0
+
+		if (props.list.length == 0) return
+
+		// 测量容器尺寸
+		queryNode('#' + contentBoxId, (rect: NodeInfo | null) => {
+			if (rect != null) {
+				if (rect.width != null && rect.width! > 0) {
+					containerWidth.value = rect.width!
+				}
+				if (rect.height != null && rect.height! > 0) {
+					itemHeight.value = rect.height!
+				}
+			}
+
+			if (props.direction == 'across') {
+				startAcrossLoop()
+			} else {
+				startVerticalLoop()
+			}
+		})
+	}
+
+	// ==================== 交互事件处理 ====================
+	/** 触摸/按下：暂停播放 */
+	function handleTouchStart() {
+		isPaused.value = true
+	}
+
+	/** 触摸离开/松开：恢复播放 */
+	function handleTouchEnd() {
+		isPaused.value = false
+		_lastTickTime = Date.now()
+	}
+
+	/** 点击公告栏区域 */
+	function handleClick() {
+		emits('click', currentIndex.value)
+	}
+
+	/** 点击关闭按钮 */
+	function handleClose(e: any) {
+		visible.value = false
+		clearAllTimers()
+		emits('close', e)
+	}
+
+	// ==================== 对外暴露方法 ====================
+	/** 暂停滚动 */
+	function pause() {
+		isPaused.value = true
+	}
+
+	/** 恢复/开始滚动 */
+	function play() {
+		isPaused.value = false
+		_lastTickTime = Date.now()
+	}
+
+	/** 重置公告栏状态 */
+	function reset() {
+		currentIndex.value = 0
+		isFirstDone.value = false
+		initAnimation()
+	}
+
+	defineExpose({
+		play,
+		pause,
+		reset,
+	})
+
+	// ==================== 数据监听 ====================
+	watch(
+		(): string[] => props.list,
+		(newVal: string[]) => {
+			currentIndex.value = 0
+			isFirstDone.value = false
+			nextTick(() => {
+				initAnimation()
+			})
+		},
+		{ deep: true }
+	)
+
+	watch(
+		(): boolean => props.scrollable,
+		(canScroll: boolean) => {
+			if (canScroll) {
+				initAnimation()
+			} else {
+				clearAllTimers()
+				translateX.value = 0
+				translateY.value = 0
+			}
+		}
+	)
+
+	watch(
+		(): string => props.direction,
+		() => {
+			currentIndex.value = 0
+			isFirstDone.value = false
+			nextTick(() => {
+				initAnimation()
+			})
+		}
+	)
+
+	// ==================== 生命周期 ====================
+	onMounted(() => {
+		// 延迟 100ms 确保各端 DOM/节点完全布局渲染完成
+		setTimeout(() => {
+			initAnimation()
+		}, 100)
+	})
+
+	onUnmounted(() => {
+		clearAllTimers()
+	})
+</script>
+
+<style scoped>
+.ste-notice-bar-root {
+	width: 100%;
+	height: 68rpx;
+	padding: 16rpx;
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.ste-notice-bar-content {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	overflow: hidden;
+	justify-content: flex-start;
+	flex: 1;
+	height: 100%;
+}
+
+.ste-notice-bar-left {
+	flex-shrink: 0;
+	margin-right: 16rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	height: 36rpx;
+	width: 36rpx;
+}
+
+.ste-notice-bar-left-img {
+	width: 36rpx;
+	height: 36rpx;
+}
+
+.ste-notice-bar-center {
+	flex: 1;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	overflow: hidden;
+	height: 36rpx;
+}
+
+.ste-notice-bar-item-across {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.ste-notice-bar-text {
+	font-size: 24rpx;
+	white-space: nowrap;
+	line-height: 36rpx;
+}
+
+.ste-notice-bar-vertical {
+	flex-direction: column;
+	height: 36rpx;
+	overflow: hidden;
+}
+
+.ste-notice-bar-item-vertical-box {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.ste-notice-bar-item-vertical {
+	height: 36rpx;
+	overflow: hidden;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.ste-notice-bar-right {
+	margin-left: 16rpx;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.ste-notice-bar-right-slot {
+	margin-left: 16rpx;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.ste-notice-bar-close-btn {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+</style>

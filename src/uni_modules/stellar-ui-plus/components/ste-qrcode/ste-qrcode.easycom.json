@@ -42,6 +42,12 @@
             "default": "size / 4"
         },
         {
+            "name": "rootStyle",
+            "description": "根节点原生样式对象[仅UVue支持]",
+            "type": "object",
+            "default": {}
+        },
+        {
             "name": "[event]loadImage",
             "description": "加载完成后返回条形码对应的图片数据",
             "params": [
@@ -50,6 +56,34 @@
                     "description": "图片数据"
                 }
             ]
+        },
+        {
+            "name": "[event]success",
+            "description": "二维码生成成功时触发",
+            "params": [
+                {
+                    "name": "result",
+                    "description": "生成结果对象"
+                }
+            ]
+        },
+        {
+            "name": "[event]error",
+            "description": "二维码生成失败时触发",
+            "params": [
+                {
+                    "name": "error",
+                    "description": "错误信息"
+                }
+            ]
+        },
+        {
+            "name": "[event]click",
+            "description": "点击二维码图片时触发",
+            "params": []
         }
-    ]
+    ],
+    "uvue_diff": {
+        "styling": "UVue 端新增 rootStyle 原生样式对象支持；基于 uts 原生 Canvas 2D 绘制"
+    }
 }

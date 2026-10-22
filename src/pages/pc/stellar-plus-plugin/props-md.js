@@ -2,6 +2,20 @@ const path = require('node:path');
 const fs = require('node:fs');
 const { getDir } = require('./utils');
 
+/**
+ * 将组件 kebab-case 名称转为 PascalCase 大驼峰（去除 ste- 前缀）
+ * 示例：ste-swiper-item -> SwiperItem；ste-touch-swipe -> TouchSwipe
+ * @param {string} component 组件目录名称
+ * @returns {string} PascalCase 组件名
+ */
+function getComponentPascalName(component = '') {
+    const clean = component.replace(/^ste-/, '');
+    return clean
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+}
+
 module.exports = function (components) {
     components.forEach(component => {
         const filePath = path.join(getDir(), '/components', `${component}/${component}.easycom.json`);
@@ -23,16 +37,18 @@ module.exports = function (components) {
         const data = JSON.parse(content);
 
         if (data.attributes?.length) {
-            let props = `### Props\n`;
+            const compTitle = getComponentPascalName(component);
+
+            let props = `### ${compTitle} Props\n`;
             props += `| 属性名 | 说明  | 类型 | 默认值  | 可选值 | 支持版本 |\n| ----- | ----- | --- | ------- | ------ | -------- |\n`;
             let isProps = false;
-            let event = `### Events\n`;
+            let event = `### ${compTitle} Events\n`;
             event += `| 事件名 | 说明  | 事件参数 | 支持版本 |\n| ----- | ----- | ------- | -------- |\n`;
             let isEvent = false;
-            let methods = `### Methods\n`;
+            let methods = `### ${compTitle} Methods\n`;
             methods += `| 方法名 | 说明  | 参数 | 返回值 | 支持版本 |\n| ----- | ----- | --- | ------ | -------- |\n`;
             let isMethods = false;
-            let slots = `### Slots\n`;
+            let slots = `### ${compTitle} Slots\n`;
             slots += `| 插槽名 | 说明  | 参数 | 支持版本 |\n| ----- | ----- | --- | -------- |\n`;
             let isSlots = false;
 
@@ -60,8 +76,9 @@ module.exports = function (components) {
                     const params = item.params?.length ? item.params.map(param => `\`${param.name}\`：${param.description}`).join('<br/>') : '-';
                     slots += `| \`${name}\` | ${description} | ${params} | ${version} |\n`;
                 } else {
-                    // Props
+                    // Props (兼容可能存在的 [props] 前缀，规范去除)
                     isProps = true;
+                    const propName = item.name.replace(/^\[props\]/, '');
                     const type = `\`${item.type}\``;
                     let def = '-';
 
@@ -76,7 +93,7 @@ module.exports = function (components) {
                     }
 
                     const values = item.values?.length ? item.values.map(value => `\`${value.name}\`：${value.description}`).join('<br/>') : '-';
-                    props += `| \`${item.name}\` | ${description} | ${type} | ${def} | ${values} | ${version} |\n`;
+                    props += `| \`${propName}\` | ${description} | ${type} | ${def} | ${values} | ${version} |\n`;
                 }
             });
 
@@ -86,7 +103,8 @@ module.exports = function (components) {
             slots += '\n\n';
 
             const mdFile = path.join(getDir(), '/components', `${component}/ATTRIBUTES.md`);
-            let result = '## API\n\n';
+            // 去掉 ## API 标题，直接拼接各分类内容
+            let result = '';
             result += isProps ? props : '';
             result += isEvent ? event : '';
             result += isMethods ? methods : '';

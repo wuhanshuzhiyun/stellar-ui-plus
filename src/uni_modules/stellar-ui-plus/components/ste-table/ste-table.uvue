@@ -1,0 +1,832 @@
+<template>
+	<view
+		class="ste-table-root"
+		:class="[
+			props.border ? 'has-border' : '',
+			hasScrollHeight ? 'is-scroll-container' : '',
+		]"
+		:style="[cmpRootStyle, props.rootStyle]"
+	>
+		<!-- 1. 表格内容容器 -->
+		<view class="ste-table-content" :class="[props.border ? 'content-border' : '']">
+			<!-- 固定表头吸顶占位块（防止内容塌陷） -->
+			<view v-if="cmpShowFixedPlaceholder" class="fixed-placeholder" />
+
+			<!-- 2. 表头区域 -->
+			<view
+				v-if="props.showHeader"
+				class="ste-table-header"
+				:class="[
+					props.fixed ? 'header-fixed' : '',
+					props.headerRowClassName != null ? props.headerRowClassName! : ''
+				]"
+				:style="[cmpHeaderStyle, props.headerRowStyle]"
+			>
+				<view
+					v-for="(column, colIndex) in finalColumns"
+					:key="column.id != '' ? column.id : colIndex.toString()"
+					class="ste-header-cell"
+					:class="[
+						getHeaderAlignClass(column),
+						props.border ? 'cell-border-right' : '',
+						props.headerCellClassName != null ? props.headerCellClassName! : ''
+					]"
+					:style="[getHeaderColStyle(column), props.headerCellStyle]"
+					@click="handleHeaderClick(column, colIndex)"
+				>
+					<!-- 2.1 复选框全选控制单元格 -->
+					<view v-if="column.type == 'checkbox'" class="header-cell-inner" @click.stop="toggleCheckAll">
+						<!-- 全选状态 -->
+						<ste-icon
+							v-if="checkAllState == 'all'"
+							code="&#xe6ac;"
+							:color="headerMainColor"
+							:size="CHECK_ICON_SIZE"
+						/>
+						<!-- 半选状态 -->
+						<ste-icon
+							v-else-if="checkAllState == 'indeterminate'"
+							code="&#xe6ad;"
+							:color="headerMainColor"
+							:size="CHECK_ICON_SIZE"
+						/>
+						<!-- 未选中状态 -->
+						<ste-icon
+							v-else
+							code="&#xe6af;"
+							:color="headerUnselectedColor"
+							:size="CHECK_ICON_SIZE"
+						/>
+					</view>
+
+					<!-- 2.2 普通表头文案单元格 -->
+					<view v-else class="header-cell-inner">
+						<text class="header-cell-text">{{ getHeaderDisplayText(column) }}</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 3. 表格主体数据区域 -->
+			<!-- 3.1 设定固定高度时使用 scroll-view -->
+			<scroll-view
+				v-if="hasScrollHeight"
+				scroll-y="true"
+				class="ste-table-scroll-view"
+				:style="cmpScrollStyle"
+				@scrolltolower="handleScrollToLower"
+			>
+				<view class="ste-table-body">
+					<!-- 空数据状态展示 -->
+					<view v-if="dataList.length == 0" class="ste-table-empty-box">
+						<text class="empty-placeholder-text">{{ props.emptyText != '' ? props.emptyText : '- 暂无数据 -' }}</text>
+					</view>
+
+					<!-- 数据行渲染 -->
+					<template v-else>
+						<view
+							v-for="(row, rowIndex) in dataList"
+							:key="rowIndex"
+							class="ste-table-row"
+							:class="[
+								getRowClass(row, rowIndex),
+								props.stripe && rowIndex % 2 == 1 ? 'row-stripe' : '',
+								props.highlightCurrentRow && currentRowIndex == rowIndex ? 'row-highlight' : '',
+								props.highlightSelectionRow && isRowChecked(rowIndex) ? 'row-selection-highlight' : '',
+								props.rowClassName != null ? props.rowClassName! : ''
+							]"
+							:style="[props.rowStyle]"
+							@click="handleRowClick(row, rowIndex)"
+						>
+							<slot :row="row" :rowIndex="rowIndex">
+								<!-- 若外部未定义作用域插槽，自动使用 columns 快速渲染各单元格 -->
+								<ste-table-column
+									v-for="(column, colIdx) in finalColumns"
+									:key="column.id != '' ? column.id : colIdx.toString()"
+									:row="row"
+									:rowIndex="rowIndex"
+									:type="column.type"
+									:customKey="column.customKey"
+									:label="column.label"
+									:prop="column.prop"
+									:width="column.width"
+									:minWidth="column.minWidth"
+									:align="column.align"
+									:headerAlign="column.headerAlign"
+									:showPopover="column.showPopover"
+									:popoverLine="column.popoverLine"
+								/>
+							</slot>
+						</view>
+
+						<!-- 表尾合计行 -->
+						<view v-if="props.showSummary" class="ste-table-row ste-table-sum-row">
+							<view
+								v-for="(column, colIndex) in finalColumns"
+								:key="colIndex"
+								class="ste-header-cell"
+								:class="[
+									getHeaderAlignClass(column),
+									props.border ? 'cell-border-right' : ''
+								]"
+								:style="[getHeaderColStyle(column)]"
+							>
+								<view class="header-cell-inner">
+									<text class="header-cell-text sum-text">
+										{{ colIndex == 0 ? (props.sumText != '' ? props.sumText : DEFAULT_SUM_TEXT) : getSumColValue(colIndex) }}
+									</text>
+								</view>
+							</view>
+						</view>
+					</template>
+				</view>
+			</scroll-view>
+
+			<!-- 3.2 未设定高度时的常规流式渲染主体 -->
+			<view v-else class="ste-table-body">
+				<!-- 空数据状态展示 -->
+				<view v-if="dataList.length == 0" class="ste-table-empty-box">
+					<text class="empty-placeholder-text">{{ props.emptyText != '' ? props.emptyText : '- 暂无数据 -' }}</text>
+				</view>
+
+				<!-- 数据行渲染 -->
+				<template v-else>
+					<view
+						v-for="(row, rowIndex) in dataList"
+						:key="rowIndex"
+						class="ste-table-row"
+						:class="[
+							getRowClass(row, rowIndex),
+							props.stripe && rowIndex % 2 == 1 ? 'row-stripe' : '',
+							props.highlightCurrentRow && currentRowIndex == rowIndex ? 'row-highlight' : '',
+							props.highlightSelectionRow && isRowChecked(rowIndex) ? 'row-selection-highlight' : '',
+							props.rowClassName != null ? props.rowClassName! : ''
+						]"
+						:style="[props.rowStyle]"
+						@click="handleRowClick(row, rowIndex)"
+					>
+						<slot :row="row" :rowIndex="rowIndex">
+							<!-- 自动基于 columns 渲染单元格 -->
+							<ste-table-column
+								v-for="(column, colIdx) in finalColumns"
+								:key="column.id != '' ? column.id : colIdx.toString()"
+								:row="row"
+								:rowIndex="rowIndex"
+								:type="column.type"
+								:customKey="column.customKey"
+								:label="column.label"
+								:prop="column.prop"
+								:width="column.width"
+								:minWidth="column.minWidth"
+								:align="column.align"
+								:headerAlign="column.headerAlign"
+								:showPopover="column.showPopover"
+								:popoverLine="column.popoverLine"
+							/>
+						</slot>
+					</view>
+
+					<!-- 表尾合计行 -->
+					<view v-if="props.showSummary" class="ste-table-row ste-table-sum-row">
+						<view
+							v-for="(column, colIndex) in finalColumns"
+							:key="colIndex"
+							class="ste-header-cell"
+							:class="[
+								getHeaderAlignClass(column),
+								props.border ? 'cell-border-right' : ''
+							]"
+							:style="[getHeaderColStyle(column)]"
+						>
+							<view class="header-cell-inner">
+								<text class="header-cell-text sum-text">
+									{{ colIndex == 0 ? (props.sumText != '' ? props.sumText : DEFAULT_SUM_TEXT) : getSumColValue(colIndex) }}
+								</text>
+							</view>
+						</view>
+					</view>
+				</template>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-table.uvue
+	 * @description Table 表格核心容器组件 - uni-app x / UTS 强类型版本
+	 * 支持原生 Flexbox 排版、表头吸顶、固定滚动、复选/单选状态管理、合计行计算与全场景单元格自定义。
+	 */
+	import { ref, computed, watch, provide } from 'vue'
+	import { addUnit } from '../../utils/utils.uts'
+	import { Color } from '../../utils/Color.uts'
+	import { useColorStore } from '../../store/color.uts'
+	import {
+		TableProps,
+		TableColumnItem,
+		TableContext,
+		TableAllStateType,
+		TableSelectionColorConfig,
+		DEFAULT_SELECTION_COLOR_CONFIG,
+		DEFAULT_SUM_TEXT,
+		CHECK_ICON_SIZE
+	} from './constants.uts'
+	import SteTableColumn from '../ste-table-column/ste-table-column.uvue'
+
+	defineOptions({
+		name: 'ste-table',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== 插槽声明 ====================
+	defineSlots<{
+		default(props : { row : UTSJSONObject, rowIndex : number }) : any
+	}>()
+
+	// ==================== Props 声明与默认值 ====================
+	const props = withDefaults(defineProps<TableProps>(), {
+		data: () => [] as Array<UTSJSONObject>,
+		columns: () => [] as Array<TableColumnItem>,
+		sticky: false,
+		offsetTop: 0,
+		border: false,
+		stripe: true,
+		emptyText: '-',
+		showSummary: false,
+		sumText: DEFAULT_SUM_TEXT,
+		summaryMethod: null,
+		selectable: null,
+		readable: null,
+		fixed: false,
+		formatter: null,
+		header: null,
+		height: '',
+		maxHeight: '',
+		headerRowClassName: '',
+		headerRowStyle: () => ({}) as UTSJSONObject,
+		headerCellClassName: '',
+		headerCellStyle: () => ({}) as UTSJSONObject,
+		rowClassName: '',
+		rowStyle: () => ({}) as UTSJSONObject,
+		cellClassName: '',
+		cellStyle: () => ({}) as UTSJSONObject,
+		highlightCurrentRow: false,
+		highlightSelectionRow: false,
+		showHeader: true,
+		selectionIconColor: () => ({ ...DEFAULT_SELECTION_COLOR_CONFIG }) as TableSelectionColorConfig,
+		isPopover: false,
+		popoverLine: 1,
+		rootStyle: () => ({}) as UTSJSONObject,
+	})
+
+	// ==================== Emits 声明 ====================
+	const emits = defineEmits<{
+		(e : 'selectAll', selectionList : UTSJSONObject[]) : void,
+		(e : 'select', selectionList : UTSJSONObject[], row : UTSJSONObject) : void,
+		(e : 'cellClick', row : UTSJSONObject, column : TableColumnItem) : void,
+		(e : 'rowClick', row : UTSJSONObject, rowIndex : number) : void,
+		(e : 'headerClick', column : TableColumnItem, colIndex : number) : void,
+		(e : 'scrollToLower') : void,
+	}>()
+
+	// ==================== 响应式基础数据与状态 ====================
+	const colorStore = useColorStore()
+
+	/** 选择图标调色板配置（计算属性暴露给模板） */
+	const selectionColorConfig = computed(() : TableSelectionColorConfig => {
+		return props.selectionIconColor
+	})
+
+	const headerMainColor = computed(() : string => {
+		const cfg = props.selectionIconColor
+		return cfg.main != null && cfg.main != '' ? cfg.main! : DEFAULT_SELECTION_COLOR_CONFIG.main!
+	})
+
+	const headerUnselectedColor = computed(() : string => {
+		const cfg = props.selectionIconColor
+		return cfg.unSelected != null && cfg.unSelected != '' ? cfg.unSelected! : DEFAULT_SELECTION_COLOR_CONFIG.unSelected!
+	})
+
+	const dataList = computed(() : Array<UTSJSONObject> => {
+		if (props.data == null) return [] as Array<UTSJSONObject>
+		return props.data!
+	})
+
+	/** 子组件动态注册的列集合 */
+	const registeredColumns = ref<TableColumnItem[]>([])
+
+	/** 综合计算得到的最终列配置列表 */
+	const finalColumns = computed(() : TableColumnItem[] => {
+		if (props.columns != null && props.columns!.length > 0) {
+			return props.columns!
+		}
+		return registeredColumns.value
+	})
+
+	/** 当前高亮行索引 */
+	const currentRowIndex = ref<number>(-1)
+
+	/** 当前所有已被勾选的数据行索引列表 */
+	const checkStates = ref<number[]>([])
+
+	/** 监测当前表格选择列类型 */
+	const selectType = computed(() : string => {
+		for (let i = 0; i < finalColumns.value.length; i++) {
+			const t = finalColumns.value[i].type
+			if (t == 'checkbox' || t == 'radio') {
+				return t
+			}
+		}
+		return ''
+	})
+
+	/** 当前所有处于可选且非只读状态的行索引列表 */
+	const canCheckStates = computed(() : number[] => {
+		const arr : number[] = []
+		const list = dataList.value
+		for (let i = 0; i < list.length; i++) {
+			const item = list[i]
+			const isSel = props.selectable != null ? props.selectable!(item, i) : true
+			const isRead = props.readable != null ? props.readable!(item, i) : false
+			if (isSel && !isRead) {
+				arr.push(i)
+			}
+		}
+		return arr
+	})
+
+	/** 全选复选框的状态机计算 */
+	const checkAllState = computed(() : TableAllStateType => {
+		const totalCan = canCheckStates.value.length
+		if (totalCan == 0) return 'none'
+
+		let checkedCount = 0
+		for (let i = 0; i < canCheckStates.value.length; i++) {
+			if (checkStates.value.includes(canCheckStates.value[i])) {
+				checkedCount++
+			}
+		}
+
+		if (checkedCount == 0) return 'none'
+		if (checkedCount == totalCan) return 'all'
+		return 'indeterminate'
+	})
+
+	// 当数据源变动时，清理已失效的勾选索引
+	watch((): number => {
+		return dataList.value.length
+	}, () => {
+		const maxLen = dataList.value.length
+		const nextArr : number[] = []
+		for (let i = 0; i < checkStates.value.length; i++) {
+			const idx = checkStates.value[i]
+			if (idx < maxLen) {
+				nextArr.push(idx)
+			}
+		}
+		checkStates.value = nextArr
+	})
+
+	// ==================== 合计行数据计算 ====================
+	const sumDataList = computed(() : string[] => {
+		if (!props.showSummary) return [] as string[]
+		if (props.summaryMethod != null) {
+			const param : UTSJSONObject = {
+				columns: finalColumns.value,
+				data: dataList.value,
+			}
+			return props.summaryMethod!(param)
+		}
+		return [] as string[]
+	})
+
+	function getSumColValue(colIndex : number) : string {
+		const list = sumDataList.value
+		if (colIndex < list.length) {
+			return list[colIndex]
+		}
+		return '-'
+	}
+
+	// ==================== 选择器核心逻辑（提前声明供上下文使用） ====================
+	/** 获取当前勾选中的数据行对象列表 */
+	function getSelection() : UTSJSONObject[] {
+		const list = dataList.value
+		const res : UTSJSONObject[] = []
+		for (let i = 0; i < checkStates.value.length; i++) {
+			const idx = checkStates.value[i]
+			if (idx >= 0 && idx < list.length) {
+				res.push(list[idx])
+			}
+		}
+		return res
+	}
+
+	/**
+	 * 单行选择翻转处理
+	 * @param row 数据行对象
+	 * @param rowIndex 行在列表中的索引
+	 * @param isEmit 是否触发 select 事件
+	 */
+	function handleRowCheckToggle(row : UTSJSONObject, rowIndex : number, isEmit : boolean = true) {
+		const isRadio = selectType.value == 'radio'
+		const currentIdxList = [...checkStates.value]
+		const existIdx = currentIdxList.indexOf(rowIndex)
+
+		if (isRadio) {
+			// 单选模式：清空并只激活当前行
+			checkStates.value = [rowIndex]
+		} else {
+			// 多选模式：选中则移除，未选则添加
+			if (existIdx >= 0) {
+				currentIdxList.splice(existIdx, 1)
+			} else {
+				currentIdxList.push(rowIndex)
+			}
+			checkStates.value = currentIdxList
+		}
+
+		if (isEmit) {
+			emits('select', getSelection(), row)
+		}
+	}
+
+	/** 切换表头全选状态 */
+	function toggleCheckAll() {
+		const currentState = checkAllState.value
+		if (currentState == 'all') {
+			// 全选状态下点击 -> 全部取消
+			checkStates.value = []
+			emits('selectAll', [] as UTSJSONObject[])
+		} else {
+			// 未选或半选状态下点击 -> 全部勾选所有可选行
+			checkStates.value = [...canCheckStates.value]
+			emits('selectAll', getSelection())
+		}
+	}
+
+	// ==================== 上下文 Provide 声明 ====================
+	const tableContext : TableContext = {
+		registerColumn: (col : TableColumnItem) : number => {
+			const list = registeredColumns.value
+			// 根据 prop + label + customKey 防重去重
+			const key = col.prop + '-' + col.label + '-' + col.customKey
+			let foundIdx = -1
+			for (let i = 0; i < list.length; i++) {
+				const item = list[i]
+				if (item.prop + '-' + item.label + '-' + item.customKey == key) {
+					foundIdx = i
+					break
+				}
+			}
+			if (foundIdx >= 0) {
+				return foundIdx
+			}
+			list.push(col)
+			return list.length - 1
+		},
+		unregisterColumn: (id : string) => {
+			const list = registeredColumns.value
+			for (let i = 0; i < list.length; i++) {
+				if (list[i].id == id) {
+					list.splice(i, 1)
+					break
+				}
+			}
+		},
+		getSelectionColorConfig: () : TableSelectionColorConfig => {
+			return props.selectionIconColor
+		},
+		isRowSelectable: (row : UTSJSONObject, index : number) : boolean => {
+			if (props.selectable != null) {
+				return props.selectable!(row, index)
+			}
+			return true
+		},
+		isRowReadable: (row : UTSJSONObject, index : number) : boolean => {
+			if (props.readable != null) {
+				return props.readable!(row, index)
+			}
+			return false
+		},
+		isRowChecked: (rowIndex : number) : boolean => {
+			return checkStates.value.includes(rowIndex)
+		},
+		onRowCheckChange: (row : UTSJSONObject, rowIndex : number) => {
+			handleRowCheckToggle(row, rowIndex, true)
+		},
+		onCellClick: (row : UTSJSONObject, col : TableColumnItem) => {
+			emits('cellClick', row, col)
+		},
+		getBorder: () : boolean => props.border,
+		getEmptyText: () : string => props.emptyText != '' ? props.emptyText : '-',
+		getFormatter: () : ((row : UTSJSONObject, customKey : string) => string) | null => props.formatter,
+		getIsPopover: () : boolean => props.isPopover,
+		getPopoverLine: () : number => props.popoverLine > 0 ? props.popoverLine : 1,
+		getCellStyle: (_row : UTSJSONObject, _col : TableColumnItem, _rowIndex : number, _colIndex : number) : UTSJSONObject => {
+			return props.cellStyle != null ? props.cellStyle! : {} as UTSJSONObject
+		},
+		getCellClass: (_row : UTSJSONObject, _col : TableColumnItem, _rowIndex : number, _colIndex : number) : string => {
+			return props.cellClassName != null ? props.cellClassName! : ''
+		},
+		resolveRowData: (rowIndex : number, prop : string) : any | null => {
+			const list = dataList.value
+			if (rowIndex >= 0 && rowIndex < list.length) {
+				const r = list[rowIndex]
+				if (prop != '') {
+					return r[prop]
+				}
+				return r
+			}
+			return null
+		},
+	}
+
+	provide('ste-table-context', tableContext)
+
+	// ==================== 表头文案与样式计算 ====================
+	function getHeaderDisplayText(col : TableColumnItem) : string {
+		if (props.header != null) {
+			const customH = props.header!(col, dataList.value)
+			if (customH != '') return customH
+		}
+		return col.label != '' ? col.label : '-'
+	}
+
+	function getHeaderAlignClass(col : TableColumnItem) : string {
+		const alignVal = col.headerAlign != '' ? col.headerAlign : col.align
+		if (alignVal == 'center') return 'align-center'
+		if (alignVal == 'right') return 'align-right'
+		return 'align-left'
+	}
+
+	function getHeaderColStyle(col : TableColumnItem) : UTSJSONObject {
+		const style : UTSJSONObject = {}
+		if (col.width != '') {
+			const w = addUnit(col.width as any)
+			style['width'] = w
+			style['flex'] = '0 0 ' + w
+		} else {
+			style['flex'] = '1 1 0%'
+		}
+		if (col.minWidth != '') {
+			style['minWidth'] = addUnit(col.minWidth as any)
+		}
+		return style
+	}
+
+	const cmpHeaderStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		// 表头背景色：取主题色浅色系
+		const theme = colorStore.getColor().steThemeColor
+		style['backgroundColor'] = Color.formatColor(theme, 0.08)
+		if (props.fixed) {
+			const offTop = addUnit(props.offsetTop as any)
+			style['top'] = offTop
+		}
+		return style
+	})
+
+	const cmpShowFixedPlaceholder = computed(() : boolean => {
+		return props.fixed
+	})
+
+	// ==================== 滚动容器高度与整体样式 ====================
+	const hasScrollHeight = computed(() : boolean => {
+		const h = props.height != null ? props.height.toString() : ''
+		const mh = props.maxHeight != null ? props.maxHeight.toString() : ''
+		return h != '' || mh != ''
+	})
+
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		return {} as UTSJSONObject
+	})
+
+	const cmpScrollStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (props.height != null && props.height.toString() != '') {
+			style['height'] = addUnit(props.height as any)
+		}
+		if (props.maxHeight != null && props.maxHeight.toString() != '') {
+			style['maxHeight'] = addUnit(props.maxHeight as any)
+		}
+		return style
+	})
+
+	// ==================== 行点击与样式辅助 ====================
+	function getRowClass(_row : UTSJSONObject, rowIndex : number) : string {
+		return 'ste-table-row-' + rowIndex.toString()
+	}
+
+	function handleRowClick(row : UTSJSONObject, rowIndex : number) {
+		currentRowIndex.value = rowIndex
+		emits('rowClick', row, rowIndex)
+	}
+
+	function handleHeaderClick(column : TableColumnItem, colIndex : number) {
+		emits('headerClick', column, colIndex)
+	}
+
+	function handleScrollToLower() {
+		emits('scrollToLower')
+	}
+
+	function isRowChecked(rowIndex : number) : boolean {
+		return checkStates.value.includes(rowIndex)
+	}
+
+	// ==================== Expose 导出对外方法 ====================
+	/** 清空所有勾选状态 */
+	function clearSelection() {
+		checkStates.value = []
+	}
+
+	/** 切换全选/全不选 */
+	function toggleAllSelection() {
+		toggleCheckAll()
+	}
+
+	/** 切换某行的选中状态 */
+	function toggleRowSelection(row : UTSJSONObject, isTriggerSelectEvent : boolean = true) {
+		const list = dataList.value
+		const targetIdx = list.indexOf(row)
+		if (targetIdx >= 0) {
+			handleRowCheckToggle(row, targetIdx, isTriggerSelectEvent)
+		}
+	}
+
+	defineExpose({
+		getSelection,
+		clearSelection,
+		toggleAllSelection,
+		toggleRowSelection,
+	})
+</script>
+
+<style scoped>
+.ste-table-root {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.ste-table-content {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.content-border {
+	border-left-width: 1rpx;
+	border-left-style: solid;
+	border-left-color: #ebebeb;
+	border-top-width: 1rpx;
+	border-top-style: solid;
+	border-top-color: #ebebeb;
+	border-bottom-width: 1rpx;
+	border-bottom-style: solid;
+	border-bottom-color: #ebebeb;
+}
+
+/* 固定吸顶占位块 */
+.fixed-placeholder {
+	width: 100%;
+	height: 80rpx;
+}
+
+/* 表头容器 */
+.ste-table-header {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-bottom-width: 1rpx;
+	border-bottom-style: solid;
+	border-bottom-color: #ebebeb;
+}
+
+.header-fixed {
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 100;
+}
+
+.ste-header-cell {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-left: 24rpx;
+	padding-right: 24rpx;
+	min-height: 80rpx;
+	box-sizing: border-box;
+}
+
+.header-cell-inner {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.header-cell-text {
+	font-size: 28rpx;
+	font-weight: bold;
+	color: #333333;
+}
+
+.cell-border-right {
+	border-right-width: 1rpx;
+	border-right-style: solid;
+	border-right-color: #ebebeb;
+}
+
+.align-left {
+	justify-content: flex-start;
+}
+
+.align-left .header-cell-inner {
+	justify-content: flex-start;
+}
+
+.align-center {
+	justify-content: center;
+}
+
+.align-center .header-cell-inner {
+	justify-content: center;
+}
+
+.align-right {
+	justify-content: flex-end;
+}
+
+.align-right .header-cell-inner {
+	justify-content: flex-end;
+}
+
+/* 表格主体 */
+.ste-table-body {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.ste-table-scroll-view {
+	width: 100%;
+}
+
+.ste-table-row {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-bottom-width: 1rpx;
+	border-bottom-style: solid;
+	border-bottom-color: #ebebeb;
+}
+
+.row-stripe {
+	background-color: #f8f8f8;
+}
+
+.row-highlight {
+	background-color: #ecf5ff;
+}
+
+.row-selection-highlight {
+	background-color: #ecf5ff;
+}
+
+.ste-table-sum-row {
+	background-color: #fafafa;
+}
+
+.sum-text {
+	font-weight: bold;
+	color: #1989fa;
+}
+
+/* 空数据状态占位 */
+.ste-table-empty-box {
+	width: 100%;
+	padding: 48rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	border-bottom-width: 1rpx;
+	border-bottom-style: solid;
+	border-bottom-color: #ebebeb;
+	border-right-width: 1rpx;
+	border-right-style: solid;
+	border-right-color: #ebebeb;
+}
+
+.empty-placeholder-text {
+	font-size: 28rpx;
+	color: #999999;
+}
+</style>

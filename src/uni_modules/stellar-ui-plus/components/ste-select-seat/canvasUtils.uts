@@ -1,0 +1,78 @@
+/**
+ * Canvas 2D 图形底层绘制工具函数
+ *
+ * @description 基于标准 W3C 2D Canvas 路径指令实现，不依赖外部环境，
+ * 专用于座位网格圆角矩形与选中对勾标志的高性能原生绘制。
+ */
+
+/**
+ * 在 Canvas 上构建圆角矩形闭合路径
+ *
+ * @param ctx 2D 画布渲染上下文
+ * @param x 矩形左上角 X 物理像素坐标
+ * @param y 矩形左上角 Y 物理像素坐标
+ * @param w 矩形物理宽度
+ * @param h 矩形物理高度
+ * @param r 圆角半径（当尺寸过小时自动收缩避免畸变）
+ */
+export function drawRoundRect(
+	ctx : CanvasRenderingContext2D,
+	x : number,
+	y : number,
+	w : number,
+	h : number,
+	r : number
+) {
+	// 防止圆角半径超过矩形宽高的 50% 产生渲染破面
+	let validRadius = r
+	const maxR = Math.min(w, h) / 2
+	if (validRadius > maxR) {
+		validRadius = maxR
+	}
+	if (validRadius < 0) {
+		validRadius = 0
+	}
+
+	ctx.beginPath()
+	ctx.moveTo(x + validRadius, y)
+	ctx.lineTo(x + w - validRadius, y)
+	ctx.arcTo(x + w, y, x + w, y + validRadius, validRadius)
+	ctx.lineTo(x + w, y + h - validRadius)
+	ctx.arcTo(x + w, y + h, x + w - validRadius, y + h, validRadius)
+	ctx.lineTo(x + validRadius, y + h)
+	ctx.arcTo(x, y + h, x, y + h - validRadius, validRadius)
+	ctx.lineTo(x, y + validRadius)
+	ctx.arcTo(x, y, x + validRadius, y, validRadius)
+	ctx.closePath()
+}
+
+/**
+ * 在座位正中心绘制白色或自定义颜色的对勾选中标记
+ *
+ * @param ctx 2D 画布渲染上下文
+ * @param cx 座位中心 X 像素坐标
+ * @param cy 座位中心 Y 像素坐标
+ * @param size 座位物理宽高，用于动态等比缩放线宽与折线长度
+ * @param color 对勾线条颜色值（例如 '#ffffff'）
+ */
+export function drawCheck(
+	ctx : CanvasRenderingContext2D,
+	cx : number,
+	cy : number,
+	size : number,
+	color : string
+) {
+	ctx.beginPath()
+	ctx.strokeStyle = color
+	// 动态线宽：基准线宽 1.4px，随缩放等比自适应增强
+	ctx.lineWidth = Math.max(1.4, size * 0.1)
+	ctx.lineCap = 'round'
+	ctx.lineJoin = 'round'
+
+	const s = size * 0.34
+	// 三点折线构建优美的矢量对勾
+	ctx.moveTo(cx - s * 0.62, cy - s * 0.02)
+	ctx.lineTo(cx - s * 0.14, cy + s * 0.42)
+	ctx.lineTo(cx + s * 0.62, cy - s * 0.36)
+	ctx.stroke()
+}

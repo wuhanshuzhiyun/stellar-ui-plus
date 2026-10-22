@@ -1,0 +1,17 @@
+{
+    "name": "ste-touch-swipe-item",
+    "description": "触摸滑块子项组件，配合 ste-touch-swipe 容器使用，承载单个滑动单元格的内容。",
+    "tutorial": "https://stellar-ui.intecloud.com.cn/?projectName=stellar-ui-plus&menu=%E7%BB%84%E4%BB%B6&active=ste-touch-swipe",
+    "attributes": [
+        {
+            "name": "disabled",
+            "description": "是否禁用当前滑块项滑动",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，承载触摸滑块内容"
+        }
+    ]
+}

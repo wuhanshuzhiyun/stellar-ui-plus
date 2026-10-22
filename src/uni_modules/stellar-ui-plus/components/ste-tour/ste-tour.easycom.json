@@ -104,6 +104,12 @@
             "default": "完成"
         },
         {
+            "name": "maskClose",
+            "description": "点击背景遮罩层时是否触发关闭引导流程[仅UVue支持]",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "[event]change",
             "description": "步骤切换时触发",
             "params": [
@@ -122,6 +128,13 @@
                     "description": "()=>void"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，承载子内容"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "mask_close": "UVue 端新增支持 maskClose（点击半透明遮罩是否允许提前关闭引导）"
+    }
 }

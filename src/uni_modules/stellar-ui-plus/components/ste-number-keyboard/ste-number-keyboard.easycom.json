@@ -115,6 +115,17 @@
             "default": "#ffffff"
         },
         {
+            "name": "activeInputRef",
+            "description": "关联绑定的输入框引用实例，用于自动同步按键与删除[仅UVue支持]",
+            "type": "any"
+        },
+        {
+            "name": "inputValues",
+            "description": "输入内容数组[仅Vue支持]",
+            "type": "Array<string>",
+            "default": []
+        },
+        {
             "name": "[event]change",
             "description": "输入值value改变时触发",
             "params": [
@@ -213,6 +224,19 @@
         {
             "name": "[slot]header",
             "description": "在键盘上方显示的内容"
+        },
+        {
+            "name": "[event]input",
+            "description": "点击数字键盘按键输入时触发",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "按键字符"
+                }
+            ]
         }
-    ]
+    ],
+    "uvue_diff": {
+        "input_bind": "UVue 端支持 activeInputRef 双向联动注入输入框引用；Vue 端支持 inputValues 数组映射"
+    }
 }

@@ -170,6 +170,12 @@
             "default": "99"
         },
         {
+            "name": "modelValue",
+            "description": "步进器当前计数值，支持 v-model",
+            "type": "number",
+            "default": 1
+        },
+        {
             "name": "[event]change",
             "description": "当绑定值变化时触发的事件 `value`: 改变后的绑定值",
             "params": [
@@ -242,6 +248,20 @@
                     "description": "() => void"
                 }
             ]
+        },
+        {
+            "name": "[method]cancelPendingAction",
+            "description": "取消异步前置拦截等待中的操作状态，恢复可点击",
+            "params": [],
+            "return": "void"
+        },
+        {
+            "name": "[event]click-input",
+            "description": "点击步进器输入框时触发",
+            "params": []
         }
-    ]
+    ],
+    "uvue_diff": {
+        "v_model": "UVue/Vue 均支持 modelValue (v-model) 步进数值绑定"
+    }
 }

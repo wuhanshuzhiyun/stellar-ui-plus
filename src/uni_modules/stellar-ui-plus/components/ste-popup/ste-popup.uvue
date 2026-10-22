@@ -1,0 +1,338 @@
+<template>
+	<view
+		v-if="isShow"
+		flatten
+		:style="maskStyle"
+		@click="onMaskClick"
+	>
+		<view
+			:style="contentStyle"
+			@click.stop="onContentClick"
+		>
+			<view
+				v-if="showClose && props.position != 'center'"
+				:style="closeHeaderStyle"
+				@click.stop="handleClose"
+			>
+				<ste-icon code="&#xe6a0;" :size="60" color="#666"></ste-icon>
+			</view>
+			<slot></slot>
+		</view>
+
+		<view
+			v-if="showClose && props.position == 'center' && contentVisible"
+			:style="closeCenterStyle"
+			@click.stop="handleClose"
+		>
+			<ste-icon code="&#xe6a0;" :size="60" color="#fff"></ste-icon>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { ref, computed, watch, onUnmounted } from 'vue'
+	import { addUnit } from '../../utils/utils.uts'
+
+	defineOptions({ name: 'ste-popup', options: { virtualHost: true } })
+
+	type PopupProps = {
+		show ?: boolean,
+		position ?: string,
+		width ?: string | number,
+		height ?: string | number,
+		isMaskClick ?: boolean,
+		showMask ?: boolean,
+		showClose ?: boolean,
+		backgroundColor ?: string,
+		round ?: boolean,
+		offsetX ?: string | number,
+		offsetY ?: string | number,
+		duration ?: number,
+		zIndex ?: number | string,
+		keepContent ?: boolean,
+	}
+
+	const props = withDefaults(defineProps<PopupProps>(), {
+		show: false,
+		position: 'center',
+		isMaskClick: true,
+		showMask: true,
+		showClose: true,
+		backgroundColor: '#ffffff',
+		round: false,
+		offsetX: 0,
+		offsetY: 0,
+		duration: 200,
+		zIndex: 998,
+		keepContent: true,
+	})
+
+	const emit = defineEmits(['update:show', 'clickMask', 'close', 'open-after'])
+
+	// 内部状态
+	const isShow = ref(false)
+	const contentVisible = ref(false)
+	// 动画状态: 'init' | 'open' | 'close'
+	const animState = ref('init')
+
+	let openTimer : number | null = null
+	let closeTimer : number | null = null
+	// 异步关闭控制状态
+	// - nextFlag: 是否进入下一步关闭（默认 true；suspend() 设为 false）
+	// - waiting: 是否正在等待父组件 next() 回调
+	let nextFlag = true
+	let waiting = false
+
+	// 宽度
+	const _width = computed(() : string => {
+		const w = props.width
+		if (w == null) {
+			if (props.position == 'top' || props.position == 'bottom') return '100%'
+			if (props.position == 'left' || props.position == 'right') return '300rpx'
+			return '600rpx'
+		}
+		return addUnit(w as any)
+	})
+
+	// 高度
+	const _height = computed(() : string => {
+		const h = props.height
+		if (h == null) {
+			if (props.position == 'top' || props.position == 'bottom') return '300rpx'
+			if (props.position == 'left' || props.position == 'right') return '100%'
+			return '400rpx'
+		}
+		return addUnit(h as any)
+	})
+
+	const _offsetX = computed(() : number => {
+		const x = props.offsetX
+		if (typeof x === 'number') return x as number
+		return parseFloat(x as string)
+	})
+
+	const _offsetY = computed(() : number => {
+		const y = props.offsetY
+		if (typeof y === 'number') return y as number
+		return parseFloat(y as string)
+	})
+
+	const _zIndex = computed(() : number => {
+		const z = props.zIndex
+		if (typeof z === 'number') return z as number
+		return parseInt(z as string)
+	})
+
+	const _duration = computed(() : number => props.duration as number)
+
+	const _DURATION_STR = computed(() : string => _duration.value + 'ms')
+
+	const maskStyle = computed(() : UTSJSONObject => {
+		const pos = props.position
+		const style : UTSJSONObject = {
+			position: 'fixed',
+			top: '0',
+			left: '0',
+			width: '100%',
+			height: '100%',
+			zIndex: _zIndex.value,
+			backgroundColor: props.showMask ? 'rgba(0,0,0,0.6)' : 'transparent',
+			display: 'flex',
+			flexDirection: 'row',
+			justifyContent: 'center',
+			alignItems: 'center',
+		}
+		if (pos == 'top') {
+			style['justifyContent'] = 'flex-start'
+			style['alignItems'] = 'flex-start'
+		} else if (pos == 'bottom') {
+			style['justifyContent'] = 'flex-end'
+			style['alignItems'] = 'flex-end'
+		} else if (pos == 'left') {
+			style['justifyContent'] = 'flex-start'
+		} else if (pos == 'right') {
+			style['justifyContent'] = 'flex-end'
+		}
+		return style
+	})
+
+	// 圆角按 position 分配（与原版一致）
+	// - center: 全圆角
+	// - top: 只有下圆角（紧贴屏幕顶部的边无圆角）
+	// - bottom: 只有上圆角（紧贴屏幕底部的边无圆角）
+	// - left: 只有右圆角（紧贴屏幕左侧的边无圆角）
+	// - right: 只有左圆角（紧贴屏幕右侧的边无圆角）
+	const cmpBorderRadius = computed(() : UTSJSONObject => {
+		const pos = props.position
+		const style : UTSJSONObject = {}
+		if (props.round) {
+			const r = '32rpx'
+			if (pos == 'center') {
+				style['borderRadius'] = r
+			} else if (pos == 'top') {
+				style['borderBottomLeftRadius'] = r
+				style['borderBottomRightRadius'] = r
+			} else if (pos == 'bottom') {
+				style['borderTopLeftRadius'] = r
+				style['borderTopRightRadius'] = r
+			} else if (pos == 'left') {
+				style['borderTopRightRadius'] = r
+				style['borderBottomRightRadius'] = r
+			} else if (pos == 'right') {
+				style['borderTopLeftRadius'] = r
+				style['borderBottomLeftRadius'] = r
+			}
+		}
+		return style
+	})
+
+	const contentStyle = computed(() : UTSJSONObject => {
+		const pos = props.position
+		const style : UTSJSONObject = {
+			width: _width.value,
+			height: _height.value,
+			backgroundColor: props.backgroundColor,
+			opacity: animState.value == 'open' ? '1' : '0',
+			transitionProperty: 'opacity',
+			transitionDuration: _DURATION_STR.value,
+			transitionTimingFunction: 'ease-out',
+			display: 'flex',
+			flexDirection: 'column',
+		}
+		// 合并圆角样式
+		const br = cmpBorderRadius.value
+		// #ifdef APP-ANDROID || APP-IOS
+		const brMap = br.toMap()
+		const brIter = brMap.keys.iterator()
+		while (brIter.hasNext()) {
+			const k = brIter.next()
+			style[k] = brMap[k]
+		}
+		// #endif
+		// #ifdef H5 || MP-WEIXIN || MP-ALIPAY
+		const brKeys = Object.keys(br as Any)
+		for (let i = 0; i < brKeys.length; i++) {
+			const k = brKeys[i]
+			style[k] = br[k]
+		}
+		// #endif
+		style['overflow'] = 'hidden'
+		if (_offsetX.value != 0) style['marginLeft'] = _offsetX.value + 'px'
+		if (_offsetY.value != 0) style['marginTop'] = _offsetY.value + 'px'
+		if (pos == 'center') {
+			style['justifyContent'] = 'center'
+			style['alignItems'] = 'center'
+		}
+		return style
+	})
+
+	const closeHeaderStyle : UTSJSONObject = {
+		width: '100%',
+		height: '80rpx',
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		paddingRight: '24rpx',
+	}
+
+	const closeCenterStyle : UTSJSONObject = {
+		position: 'absolute',
+		top: '60%',
+		padding: '10rpx',
+	}
+
+	function openAnimation() {
+		if (isShow.value && contentVisible.value) return
+
+		isShow.value = true
+		contentVisible.value = false
+		animState.value = 'init'
+
+		// 下一帧切换为 open 触发 transition
+		setTimeout(() => {
+			animState.value = 'open'
+		}, 50)
+
+		if (openTimer != null) clearTimeout(openTimer!)
+		openTimer = setTimeout(() => {
+			contentVisible.value = true
+			emit('open-after')
+		}, _duration.value + 50)
+	}
+
+	function closeAnimation() {
+		animState.value = 'close'
+
+		if (closeTimer != null) clearTimeout(closeTimer!)
+		closeTimer = setTimeout(() => {
+			isShow.value = false
+			contentVisible.value = false
+			animState.value = 'init'
+		}, _duration.value)
+	}
+
+	// 原版三参数异步关闭：
+	// - suspend(): 挂起关闭流程，等待 next() 或 stop()
+	// - next(): 继续执行关闭
+	// - stop(): 终止关闭（保持打开状态）
+	function handleClose() {
+		// 正在等待异步回调，禁止再次触发
+		if (waiting) return
+
+		// 重置状态
+		nextFlag = true
+		let stopped = false
+
+		const suspend = () => {
+			nextFlag = false
+		}
+		const next = () => {
+			if (stopped) return
+			waiting = false
+			closeAnimation()
+			emit('update:show', false)
+		}
+		const stop = () => {
+			stopped = true
+			waiting = false
+			// 终止关闭，保持当前打开状态
+		}
+
+		// 通知父组件，传递三个回调函数
+		emit('close', suspend, next, stop)
+
+		if (nextFlag) {
+			// 父组件未调用 suspend()，同步关闭
+			closeAnimation()
+			emit('update:show', false)
+		} else {
+			// 父组件调用了 suspend()，等待 next()/stop()
+			waiting = true
+		}
+	}
+
+	function onMaskClick() {
+		emit('clickMask')
+		if (props.isMaskClick) {
+			handleClose()
+		}
+	}
+
+	function onContentClick() {
+		// 阻止冒泡
+	}
+
+	watch(() : boolean => props.show, (val : boolean) => {
+		if (val) {
+			openAnimation()
+		} else {
+			closeAnimation()
+		}
+	}, { immediate: true })
+
+	onUnmounted(() => {
+		if (openTimer != null) clearTimeout(openTimer!)
+		if (closeTimer != null) clearTimeout(closeTimer!)
+	})
+</script>

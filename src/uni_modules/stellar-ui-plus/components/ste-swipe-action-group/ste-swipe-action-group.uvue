@@ -1,0 +1,172 @@
+<template>
+	<view class="ste-swipe-action-group-root" :style="[cmpRootStyle, rootStyle]">
+		<slot></slot>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file ste-swipe-action-group.uvue
+	 * @description SwipeActionGroup 滑动单元格组容器组件 - uni-app x / UTS 版本
+	 * 统一分发滑动配置，管理子单元格列表，提供 autoClose 互斥排他控制与批量方法调用。
+	 */
+	import { ref, computed, provide } from 'vue'
+	import { SwipeActionItemHandler, SwipeActionGroupContext } from '../ste-swipe-action/constants.uts'
+	import { SwipeActionGroupProps } from './constants.uts'
+
+	defineOptions({
+		name: 'ste-swipe-action-group',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	// ==================== Props 属性与默认值 ====================
+	const props = withDefaults(defineProps<SwipeActionGroupProps>(), {
+		mode: 'right',
+		autoClose: true,
+		disabled: false,
+		swipeThreshold: 0.35,
+		duration: 300,
+		leftIcon: false,
+		rightIcon: false,
+		rootStyle: () => ({}) as UTSJSONObject,
+	})
+
+	// ==================== Emits 事件声明 ====================
+	const emits = defineEmits<{
+		(e: 'open', direction: string, index: number): void
+		(e: 'close', index: number): void
+	}>()
+
+	// ==================== 子项注册列表与管理 ====================
+	const registeredItems = ref<SwipeActionItemHandler[]>([])
+
+	function parseNumberVal(val: any | null, defaultVal: number): number {
+		if (val == null) return defaultVal
+		if (typeof val === 'number') return val as number
+		const n = parseFloat(val.toString())
+		return isNaN(n) ? defaultVal : n
+	}
+
+	const groupContext: SwipeActionGroupContext = {
+		getMode: (): string => props.mode,
+		getDisabled: (): boolean => props.disabled,
+		getSwipeThreshold: (): number => {
+			const st = props.swipeThreshold
+			return parseNumberVal(st, 0.35)
+		},
+		getDuration: (): number => {
+			const dur = props.duration
+			return parseNumberVal(dur, 300)
+		},
+		getLeftIcon: (): boolean => props.leftIcon,
+		getRightIcon: (): boolean => props.rightIcon,
+		getAutoClose: (): boolean => props.autoClose,
+		registerItem: (item: SwipeActionItemHandler) => {
+			registeredItems.value.push(item)
+		},
+		unregisterItem: (id: string) => {
+			const idx = registeredItems.value.findIndex((it: SwipeActionItemHandler): boolean => it.getId() == id)
+			if (idx >= 0) {
+				registeredItems.value.splice(idx, 1)
+			}
+		},
+		onItemOpen: (id: string, direction: string) => {
+			const idx = registeredItems.value.findIndex((it: SwipeActionItemHandler): boolean => it.getId() == id)
+			if (idx >= 0) {
+				emits('open', direction, idx)
+			}
+			// 若开启 autoClose，自动关闭除当前项之外的所有其他子项
+			if (props.autoClose) {
+				for (let i = 0; i < registeredItems.value.length; i++) {
+					const item = registeredItems.value[i]
+					if (item.getId() != id) {
+						item.close()
+					}
+				}
+			}
+		},
+		onItemClose: (id: string) => {
+			const idx = registeredItems.value.findIndex((it: SwipeActionItemHandler): boolean => it.getId() == id)
+			if (idx >= 0) {
+				emits('close', idx)
+			}
+		},
+		closeOtherItems: (id: string) => {
+			if (props.autoClose) {
+				for (let i = 0; i < registeredItems.value.length; i++) {
+					const item = registeredItems.value[i]
+					if (item.getId() != id) {
+						item.close()
+					}
+				}
+			}
+		},
+	}
+
+	provide<SwipeActionGroupContext>('ste-swipe-action', groupContext)
+
+	// ==================== 暴露外部调用方法 ====================
+	/**
+	 * 打开指定下标的滑动单元格
+	 * @param direction 打开方向（'left' | 'right'）
+	 * @param index 单元格下标（从 0 开始）
+	 */
+	function open(direction: string, index: number) {
+		if (index >= 0 && index < registeredItems.value.length) {
+			const target = registeredItems.value[index]
+			target.open(direction)
+			if (props.autoClose) {
+				for (let i = 0; i < registeredItems.value.length; i++) {
+					if (i != index) {
+						registeredItems.value[i].close()
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * 关闭指定下标的滑动单元格
+	 * @param index 单元格下标（从 0 开始）
+	 */
+	function close(index: number) {
+		if (index >= 0 && index < registeredItems.value.length) {
+			registeredItems.value[index].close()
+		}
+	}
+
+	/**
+	 * 关闭所有已打开的单元格
+	 */
+	function closeAll() {
+		for (let i = 0; i < registeredItems.value.length; i++) {
+			registeredItems.value[i].close()
+		}
+	}
+
+	defineExpose({
+		open: (direction: string, index: number) => {
+			open(direction, index)
+		},
+		close: (index: number) => {
+			close(index)
+		},
+		closeAll: () => {
+			closeAll()
+		},
+	})
+
+	const cmpRootStyle = computed((): UTSJSONObject => {
+		return {} as UTSJSONObject
+	})
+</script>
+
+<style scoped>
+.ste-swipe-action-group-root {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+</style>

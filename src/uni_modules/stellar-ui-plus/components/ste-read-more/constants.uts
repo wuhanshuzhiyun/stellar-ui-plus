@@ -1,0 +1,44 @@
+/**
+ * @file constants.uts
+ * @description ste-read-more 展开更多组件的属性类型定义与默认常量配置
+ */
+
+/**
+ * ReadMore 组件属性类型定义
+ */
+export type ReadMoreProps = {
+    /**
+     * 折叠状态下的默认展示高度（支持 number 如 400 表示 400rpx，或 string 如 '300px'、'500rpx'）
+     * @default 400
+     */
+    showHeight ?: any,
+    /**
+     * 展开后是否显示收起按钮
+     * @default false
+     */
+    toggle ?: boolean,
+    /**
+     * '展开阅读'的操作按钮文本
+     * @default '展开阅读全文'
+     */
+    closeText ?: string,
+    /**
+     * '收起'的操作按钮文本
+     * @default '收起'
+     */
+    openText ?: string,
+    /**
+     * 操作按钮文字大小（单位: rpx 或 px）
+     * @default 28
+     */
+    fontSize ?: any,
+    /**
+     * 操作按钮文字与图标颜色
+     * @default '#666666'
+     */
+    color ?: string,
+    /**
+     * 根节点自定义样式
+     */
+    rootStyle ?: UTSJSONObject,
+}

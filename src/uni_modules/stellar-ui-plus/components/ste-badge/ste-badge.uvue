@@ -1,0 +1,206 @@
+<template>
+	<view class="ste-badge-root" :style="[cmpRootStyle, rootStyle]" @click="onClick">
+		<view v-if="showDot == true || cmpShowContent" class="ste-badge-content" :class="'ste-badge-' + _position"
+			:style="[cmpContentStyle, cmpPositionStyle]">
+			<view v-if="showDot == true" class="dot-box"></view>
+			<view v-else class="content-box" :class="cmpContentBoxClass">
+				<slot name="content">
+					<text class="ste-badge-content-text" :style="cmpTextStyle">{{ cmpContent }}</text>
+				</slot>
+			</view>
+		</view>
+		<slot></slot>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { computed } from 'vue'
+	import { bg2style, addUnit } from '../../utils/utils.uts'
+	import { normalizeFontSize } from '../../config/index.uts'
+
+	type BadgeProps = {
+		content ?: string | number,
+		background ?: string,
+		showDot ?: boolean,
+		offsetX ?: string | number,
+		offsetY ?: string | number,
+		showZero ?: boolean,
+		position ?: string,
+		max ?: number,
+		showBorder ?: boolean,
+		borderColor ?: string,
+		zIndex ?: number,
+		isInline ?: boolean,
+		rootStyle ?: UTSJSONObject,
+	}
+
+	defineOptions({ name: 'ste-badge', options: { virtualHost: true } })
+
+	const props = defineProps<BadgeProps>()
+	const emit = defineEmits(['click'])
+
+	const _background = computed(() : string => props.background != null ? props.background : '#ee0a24')
+	const _offsetX = computed(() : string => props.offsetX != null ? ('' + (props.offsetX as any)) : 'auto')
+	const _offsetY = computed(() : string => props.offsetY != null ? ('' + (props.offsetY as any)) : 'auto')
+	const _position = computed(() : string => props.position != null ? props.position : 'topRight')
+	const _max = computed(() : number => props.max != null ? props.max : 99)
+	const _zIndex = computed(() : number => props.zIndex != null ? props.zIndex : 2)
+	const _isInline = computed(() : boolean => props.isInline == true)
+	const _showBorder = computed(() : boolean => props.showBorder == true)
+	const _showZero = computed(() : boolean => props.showZero == true)
+	const _borderColor = computed(() : string => props.borderColor != null ? props.borderColor : '')
+
+	// root 展示类型
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		style['position'] = 'relative'
+		style['display'] = _isInline.value ? 'inline-flex' : 'flex'
+		style['flexDirection'] = 'row'
+		return style
+	})
+
+	// 内容容器样式
+	const cmpContentStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		style['backgroundColor'] = _background.value
+		style['borderRadius'] = '9999rpx'
+
+		// 背景渐变
+		if (_background.value !== '' && _background.value !== '#ee0a24') {
+			const bgObj = bg2style(_background.value)
+			// #ifdef APP-ANDROID || APP-IOS
+			const bgMap = bgObj.toMap()
+			const iter = bgMap.keys.iterator()
+			while (iter.hasNext()) {
+				const key = iter.next()!
+				style[key] = bgObj[key]!
+			}
+			// #endif
+			// #ifdef H5 || MP-WEIXIN || MP-ALIPAY
+			const bgKeys = Object.keys(bgObj as Any) as string[]
+			for (let i = 0; i < bgKeys.length; i++) {
+				const key = bgKeys[i]
+				style[key] = (bgObj as Any)[key]
+			}
+			// #endif
+		}
+
+		if (_showBorder.value && _borderColor.value !== '') {
+			style['borderStyle'] = 'solid'
+			style['borderWidth'] = '1px'
+			style['borderColor'] = _borderColor.value
+		}
+
+		style['zIndex'] = _zIndex.value
+		return style
+	})
+
+	// 位置偏移样式
+	const cmpPositionStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		const pos = _position.value
+		const ox = _offsetX.value
+		const oy = _offsetY.value
+
+		// 根据位置设置 top/bottom + left/right
+		if (pos == 'topRight') {
+			style['top'] = '0'
+			style['right'] = '0'
+		} else if (pos == 'topLeft') {
+			style['top'] = '0'
+			style['left'] = '0'
+		} else if (pos == 'bottomLeft') {
+			style['bottom'] = '0'
+			style['left'] = '0'
+		} else if (pos == 'bottomRight') {
+			style['bottom'] = '0'
+			style['right'] = '0'
+		}
+
+		// 偏移
+		if (ox != 'auto' && ox != '0') {
+			if (pos == 'topLeft' || pos == 'bottomLeft') {
+				style['left'] = addUnit(props.offsetX as any) as string
+			} else {
+				style['right'] = addUnit(props.offsetX as any) as string
+			}
+		}
+		if (oy != 'auto' && oy != '0') {
+			if (pos == 'topRight' || pos == 'topLeft') {
+				style['top'] = addUnit(props.offsetY as any) as string
+			} else {
+				style['bottom'] = addUnit(props.offsetY as any) as string
+			}
+		}
+
+		return style
+	})
+
+	// 文字样式
+	const cmpTextStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		style['fontSize'] = normalizeFontSize(22)
+		style['color'] = '#ffffff'
+		return style
+	})
+
+	// content-box 是否 no-padding
+	const cmpContentBoxClass = computed(() : string => {
+		return ''
+	})
+
+	// 是否显示内容
+	const cmpShowContent = computed(() : boolean => {
+		if (_showZero.value) return true
+		const c = props.content
+		if (c == null) return false
+		return ('' + (c as any)) != '0'
+	})
+
+	// 显示的文字内容
+	const cmpContent = computed(() : string => {
+		const c = props.content
+		if (c == null) return ''
+		const str = '' + (c as any)
+		// 判断是否数字且超过 max
+		const reg = /^-?\d+(\.\d+)?$/
+		if (reg.test(str)) {
+			const num = parseFloat(str)
+			if (num > _max.value) {
+				return '' + _max.value + '+'
+			}
+		}
+		return str
+	})
+
+	function onClick(e : any) {
+		emit('click', e)
+	}
+</script>
+
+<style scoped>
+.ste-badge-root {
+	position: relative;
+}
+
+.ste-badge-content {
+	position: absolute;
+	pointer-events: none;
+}
+
+.content-box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 28rpx;
+	height: 28rpx;
+	padding-left: 8rpx;
+	padding-right: 8rpx;
+	overflow: hidden;
+}
+
+.dot-box {
+	width: 12rpx;
+	height: 12rpx;
+}
+</style>

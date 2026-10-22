@@ -391,11 +391,7 @@ const selectedValues = ref([
 
 ---$
 
-| type | 类型 | 默认值 | 必填 | 说明 |
-| --- | --- | --- | --- | --- |
-| closeMenu | `() => void` | - | - | 收起弹框 |
-
-<!-- methods -->
+<!-- props -->
 
 ---$
 {{fuyuwei}}

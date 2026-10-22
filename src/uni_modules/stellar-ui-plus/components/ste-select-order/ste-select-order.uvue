@@ -1,0 +1,563 @@
+<!--
+ * ste-select-order 订单选择/状态下拉组件
+ * 
+ * @description 专为电商订单筛选、流程状态流转设计的下拉选择组件。
+ * 具备智能计算屏幕中线自动判断向上/向下展开定位、多端适配、防穿透遮罩层等特性。
+ * 全面兼容 uni-app x 原生渲染引擎 (Android / iOS / Web)。
+-->
+<template>
+    <view class="ste-select-order-root" :class="{ 'is-open': open, 'is-disabled': props.disabled }" :style="props.rootStyle">
+        <!-- 半透明防穿透遮罩层 -->
+        <view
+            v-if="open"
+            class="ste-select-order-shade"
+            @click.stop="onShadeClick"
+            @touchmove.stop="onTouchMove"
+        ></view>
+
+        <!-- 选择器常规流触发头 (未展开时占位与基准测量) -->
+        <view
+            :id="headerId"
+            class="ste-select-order-header"
+            :class="{ 'is-disabled': props.disabled }"
+            @click.stop="onTitleClick"
+        >
+            <!-- 有选中项时展示标题 -->
+            <view v-if="viewTitle.length > 0" class="ste-select-order-title">
+                <text class="ste-select-order-title-text">{{ viewTitle }}</text>
+                <ste-icon code="&#xe699;" size="24rpx" color="#999999" />
+            </view>
+
+            <!-- 无选中项时展示占位提示 -->
+            <view v-else class="ste-select-order-placeholder">
+                <text class="ste-select-order-placeholder-text">{{ props.placeholder }}</text>
+                <ste-icon code="&#xe699;" size="24rpx" color="#999999" />
+            </view>
+        </view>
+
+        <!-- 展开状态下的顶层一体化浮动层（置于遮罩上方 z-index: 999，Header 完美高亮透出） -->
+        <view
+            v-if="open"
+            class="ste-select-order-top-layer"
+            :class="{ 'is-upward': isUpward }"
+            :style="dropdownPlacementStyle"
+            @touchmove.stop="onTouchMove"
+        >
+            <!-- 向上展开时：列表在上，Header 镜像在下 -->
+            <template v-if="isUpward">
+                <!-- 下拉列表 -->
+                <view class="ste-select-order-list list-upward">
+                    <view
+                        v-for="(item, index) in props.list"
+                        :key="index"
+                        class="ste-select-order-item"
+                        :class="{ 'is-active': isItemActive(item), 'is-disabled': isItemDisabled(item) }"
+                        @click.stop="onSelect(item)"
+                    >
+                        <text
+                            class="ste-select-order-item-text"
+                            :style="{ color: isItemActive(item) ? themeColor : (isItemDisabled(item) ? '#CCCCCC' : '#0A0A0A') }"
+                        >
+                            {{ getItemLabel(item) }}
+                        </text>
+                        <view class="ste-select-order-item-icon-box" :style="getIconBoxStyle(item)">
+                            <ste-icon v-if="isItemActive(item)" code="&#xe67a;" size="22rpx" color="#FFFFFF" />
+                        </view>
+                    </view>
+                </view>
+
+                <!-- 底部高亮 Header 镜像 -->
+                <view class="ste-select-order-header header-upward" @click.stop="onTitleClick">
+                    <view v-if="viewTitle.length > 0" class="ste-select-order-title">
+                        <text class="ste-select-order-title-text">{{ viewTitle }}</text>
+                        <ste-icon code="&#xe698;" size="24rpx" color="#999999" />
+                    </view>
+                    <view v-else class="ste-select-order-placeholder">
+                        <text class="ste-select-order-placeholder-text">{{ props.placeholder }}</text>
+                        <ste-icon code="&#xe698;" size="24rpx" color="#999999" />
+                    </view>
+                </view>
+            </template>
+
+            <!-- 向下展开时：Header 镜像在上，列表在下 -->
+            <template v-else>
+                <!-- 顶部高亮 Header 镜像 -->
+                <view class="ste-select-order-header header-downward" @click.stop="onTitleClick">
+                    <view v-if="viewTitle.length > 0" class="ste-select-order-title">
+                        <text class="ste-select-order-title-text">{{ viewTitle }}</text>
+                        <ste-icon code="&#xe698;" size="24rpx" color="#999999" />
+                    </view>
+                    <view v-else class="ste-select-order-placeholder">
+                        <text class="ste-select-order-placeholder-text">{{ props.placeholder }}</text>
+                        <ste-icon code="&#xe698;" size="24rpx" color="#999999" />
+                    </view>
+                </view>
+
+                <!-- 下拉列表 -->
+                <view class="ste-select-order-list list-downward">
+                    <view
+                        v-for="(item, index) in props.list"
+                        :key="index"
+                        class="ste-select-order-item"
+                        :class="{ 'is-active': isItemActive(item), 'is-disabled': isItemDisabled(item) }"
+                        @click.stop="onSelect(item)"
+                    >
+                        <text
+                            class="ste-select-order-item-text"
+                            :style="{ color: isItemActive(item) ? themeColor : (isItemDisabled(item) ? '#CCCCCC' : '#0A0A0A') }"
+                        >
+                            {{ getItemLabel(item) }}
+                        </text>
+                        <view class="ste-select-order-item-icon-box" :style="getIconBoxStyle(item)">
+                            <ste-icon v-if="isItemActive(item)" code="&#xe67a;" size="22rpx" color="#FFFFFF" />
+                        </view>
+                    </view>
+                </view>
+            </template>
+        </view>
+    </view>
+</template>
+
+<script setup lang="uts">
+import { ref, computed, watch, getCurrentInstance } from 'vue';
+import { SteSelectOrderProps } from './props.uts';
+import { useColorStore } from '../../store/color';
+
+defineOptions({
+    name: 'ste-select-order'
+});
+
+/**
+ * 组件属性定义（遵循 UTS 宏规范，通过泛型接口与默认值函数声明）
+ */
+const props = withDefaults(defineProps<SteSelectOrderProps>(), {
+    modelValue: null,
+    list: (): any[] => [] as any[],
+    placeholder: '请选择',
+    labelKey: 'label',
+    valueKey: 'value',
+    disabled: false,
+    maskClose: true,
+    rootStyle: ''
+});
+
+/**
+ * 组件对外事件派发
+ */
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: any): void;
+    (e: 'change', value: any, option: any): void;
+}>();
+
+/** Header 节点动态唯一 ID 用于精确测量视口绝对坐标 */
+const headerId = ref<string>('ste-so-hdr-' + Math.floor(Math.random() * 1000000).toString());
+
+/** 展开/收起状态 */
+const open = ref<boolean>(false);
+
+/** 内部缓存绑定的当前选中值（支持 null 状态） */
+const viewValue = ref<any | null>(props.modelValue);
+
+/** 是否向上展开（当选择器位于屏幕下半区时自动向上展开，防止溢出屏幕可视区） */
+const isUpward = ref<boolean>(false);
+
+/** Header 在屏幕视口中的绝对物理坐标与尺寸 */
+const headerTop = ref<number>(0);
+const headerBottom = ref<number>(0);
+const headerLeft = ref<number>(0);
+const headerWidth = ref<number>(0);
+const winHeight = ref<number>(0);
+
+/**
+ * 监听父组件绑定的 modelValue 外部变更
+ */
+watch((): any | null => props.modelValue, (newVal: any | null) => {
+    if (`${newVal}` != `${viewValue.value}`) {
+        viewValue.value = newVal;
+    }
+});
+
+/**
+ * 获取全局主题色配置
+ */
+const { getColor } = useColorStore();
+const themeColor = computed((): string => {
+    const c = getColor();
+    if (c != null && c.steThemeColor != null && c.steThemeColor.length > 0) {
+        return c.steThemeColor;
+    }
+    return '#0090FF';
+});
+
+/**
+ * 从 item 数据对象中提取指定属性的值
+ * 
+ * @param item 选项数据
+ * @param key 属性键名
+ * @returns 对应属性值
+ */
+function getItemProp(item: any | null, key: string): any | null {
+    if (item == null) return null;
+    if (item instanceof UTSJSONObject) {
+        const obj = item as UTSJSONObject;
+        return obj.get(key);
+    }
+    try {
+        const json = JSON.parse(JSON.stringify(item)) as UTSJSONObject | null;
+        if (json != null) {
+            return json.get(key);
+        }
+    } catch (_e) {}
+    return null;
+}
+
+/**
+ * 从 item 数据对象中提取绑定的 value 值
+ * 
+ * @param item 选项数据
+ * @returns 选项对应的数据值（可能为 null）
+ */
+function getItemValue(item: any | null): any | null {
+    return getItemProp(item, props.valueKey);
+}
+
+/**
+ * 从 item 数据对象中提取展示的 label 文案
+ * 
+ * @param item 选项数据
+ * @returns 选项展示文本
+ */
+function getItemLabel(item: any | null): string {
+    if (item == null) return '';
+    const labelVal = getItemProp(item, props.labelKey);
+    if (labelVal != null) {
+        return `${labelVal}`;
+    }
+    const val = getItemValue(item);
+    return val != null ? `${val}` : '';
+}
+
+/**
+ * 判断指定项是否处于被选中激活状态
+ * 
+ * @param item 选项条目
+ * @returns 是否激活
+ */
+function isItemActive(item: any | null): boolean {
+    const val = getItemValue(item);
+    if (val == null && viewValue.value == null) return false;
+    return `${val}` == `${viewValue.value}`;
+}
+
+/**
+ * 判断指定项是否处于禁用不可点击状态
+ * 
+ * @param item 选项条目
+ * @returns 是否禁用
+ */
+function isItemDisabled(item: any | null): boolean {
+    if (item == null) return false;
+    const dis = getItemProp(item, 'disabled');
+    return dis == true || `${dis}` == 'true';
+}
+
+/**
+ * 动态计算当前展示的标题文字
+ */
+const viewTitle = computed((): string => {
+    if (viewValue.value == null) return '';
+    for (let i = 0; i < props.list.length; i++) {
+        const item = props.list[i];
+        if (isItemActive(item)) {
+            return getItemLabel(item);
+        }
+    }
+    return `${viewValue.value}`;
+});
+
+/**
+ * 下拉面板定位样式
+ * 将 Header 镜像与列表作为一个整体，使用 position: fixed 提升至窗口顶层，彻底高亮透出在遮罩层之上
+ */
+const dropdownPlacementStyle = computed((): string => {
+    const w = headerWidth.value > 0 ? `${headerWidth.value}px` : '100%';
+    const l = `${headerLeft.value}px`;
+    if (isUpward.value) {
+        // 向上展开：浮动容器底边缘紧贴 Header 下边缘，往上生长
+        const bottomOffset = winHeight.value - headerBottom.value;
+        return `position: fixed; left: ${l}; width: ${w}; bottom: ${bottomOffset}px; z-index: 999;`;
+    } else {
+        // 向下展开：浮动容器顶边缘精确覆盖 Header 顶边缘，往下生长
+        return `position: fixed; left: ${l}; width: ${w}; top: ${headerTop.value}px; z-index: 999;`;
+    }
+});
+
+/**
+ * 获取选项右侧圆形指示器的样式
+ * 
+ * @param item 选项条目
+ * @returns 内联样式字符串
+ */
+function getIconBoxStyle(item: any | null): string {
+    if (isItemActive(item)) {
+        return `background-color: ${themeColor.value}; border-color: ${themeColor.value};`;
+    }
+    if (isItemDisabled(item)) {
+        return 'background-color: #F5F5F5; border-color: #E0E0E0;';
+    }
+    return 'background-color: #FFFFFF; border-color: #CECECE;';
+}
+
+/**
+ * 阻止遮罩层和面板的默认触摸移动穿透
+ * 
+ * @param _e 触摸事件对象
+ */
+function onTouchMove(_e: TouchEvent) {
+    // 阻止原生页面滚动穿透
+}
+
+/**
+ * 测量 Header 元素在视口中的垂直坐标与高度，智能决定展开方向
+ * 
+ * @param callback 测量完成后的回调执行函数
+ */
+function measureAndToggle(callback: () => void) {
+    const query = uni.createSelectorQuery();
+    query.select('#' + headerId.value).boundingClientRect((data: any | null) => {
+        if (data != null) {
+            const rect = data as NodeInfo;
+            const top = rect.top != null ? rect.top! : 0;
+            const bottom = rect.bottom != null ? rect.bottom! : 0;
+            const left = rect.left != null ? rect.left! : 0;
+            const width = rect.width != null ? rect.width! : 0;
+            const height = rect.height != null ? rect.height! : 48;
+
+            headerTop.value = top;
+            headerBottom.value = bottom;
+            headerLeft.value = left;
+            headerWidth.value = width;
+
+            const sys = uni.getWindowInfo();
+            const vh = sys.windowHeight;
+            winHeight.value = vh;
+            // 若中心线超过视口 50%，则向上展开，否则向下展开
+            const centerY = top + height / 2;
+            isUpward.value = centerY > (vh / 2);
+        }
+        callback();
+    }).exec();
+}
+
+/**
+ * 标题区域点击事件处理：切换面板展开/收起状态
+ */
+function onTitleClick() {
+    if (props.disabled) return;
+    if (!open.value) {
+        // 打开前先测量定位，保证方向与对齐精准
+        measureAndToggle(() => {
+            open.value = true;
+        });
+    } else {
+        open.value = false;
+    }
+}
+
+/**
+ * 遮罩层点击事件：若开启了 maskClose 则自动收起
+ */
+function onShadeClick() {
+    if (props.maskClose) {
+        open.value = false;
+    }
+}
+
+/**
+ * 用户点击选中某个具体选项
+ * 
+ * @param item 被选中的选项条目
+ */
+function onSelect(item: any | null) {
+    if (item == null || isItemDisabled(item) || props.disabled) return;
+    const val = getItemValue(item);
+    
+    // 更新内部状态与触发双向绑定事件
+    viewValue.value = val;
+    emit('update:modelValue', val);
+    emit('change', val, item);
+
+    // 延时关闭下拉面板，提供流畅的点击选中反馈体验
+    setTimeout(() => {
+        open.value = false;
+    }, 200);
+}
+</script>
+
+<style scoped>
+.ste-select-order-root {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    overflow: visible;
+}
+
+.ste-select-order-root.is-open {
+    z-index: 998;
+}
+
+.ste-select-order-root.is-disabled {
+    opacity: 0.5;
+}
+
+/* 全屏防穿透遮罩层 */
+.ste-select-order-shade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    z-index: 998;
+}
+
+/* 内容容器 */
+.ste-select-order-content {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    overflow: visible;
+}
+
+.ste-select-order-content.is-open {
+    z-index: 999;
+}
+
+/* Header 触发头 */
+.ste-select-order-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 24rpx;
+    padding-bottom: 24rpx;
+    padding-left: 28rpx;
+    padding-right: 28rpx;
+    background-color: #FFFFFF;
+    border-radius: 16rpx;
+}
+
+.ste-select-order-header.is-open {
+    background-color: #FFFFFF;
+    border-bottom-left-radius: 0rpx;
+    border-bottom-right-radius: 0rpx;
+}
+
+.ste-select-order-header.is-open.is-upward {
+    border-bottom-left-radius: 16rpx;
+    border-bottom-right-radius: 16rpx;
+    border-top-left-radius: 0rpx;
+    border-top-right-radius: 0rpx;
+}
+
+.ste-select-order-title {
+    flex-direction: row;
+    align-items: center;
+}
+
+.ste-select-order-title-text {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #0A0A0A;
+    margin-right: 12rpx;
+}
+
+.ste-select-order-placeholder {
+    flex-direction: row;
+    align-items: center;
+}
+
+.ste-select-order-placeholder-text {
+    font-size: 32rpx;
+    color: #999999;
+    margin-right: 12rpx;
+}
+
+/* 展开状态下的顶层一体化浮动层（置于遮罩上方 z-index: 999） */
+.ste-select-order-top-layer {
+    position: fixed;
+    background-color: #FFFFFF;
+    z-index: 999;
+    border-radius: 16rpx;
+    box-shadow: 0 12rpx 36rpx rgba(0, 0, 0, 0.15);
+    overflow: visible;
+}
+
+.ste-select-order-top-layer.is-upward {
+    box-shadow: 0 -12rpx 36rpx rgba(0, 0, 0, 0.15);
+}
+
+/* 顶部高亮 Header 镜像（向下展开时位于顶层容器上方） */
+.header-downward {
+    background-color: #FFFFFF;
+    border-top-left-radius: 16rpx;
+    border-top-right-radius: 16rpx;
+    border-bottom-left-radius: 0rpx;
+    border-bottom-right-radius: 0rpx;
+}
+
+/* 底部高亮 Header 镜像（向上展开时位于顶层容器下方） */
+.header-upward {
+    background-color: #FFFFFF;
+    border-top-left-radius: 0rpx;
+    border-top-right-radius: 0rpx;
+    border-bottom-left-radius: 16rpx;
+    border-bottom-right-radius: 16rpx;
+}
+
+/* 列表展示容器：自然垂直撑开高度，100% 宽度，实体白色背景 */
+.ste-select-order-list {
+    width: 100%;
+    padding-left: 28rpx;
+    padding-right: 28rpx;
+    background-color: #FFFFFF;
+}
+
+.list-downward {
+    border-bottom-left-radius: 16rpx;
+    border-bottom-right-radius: 16rpx;
+}
+
+.list-upward {
+    border-top-left-radius: 16rpx;
+    border-top-right-radius: 16rpx;
+}
+
+/* 列表单项 */
+.ste-select-order-item {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 26rpx;
+    padding-bottom: 26rpx;
+    background-color: #FFFFFF;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #F6F6F6;
+}
+
+.ste-select-order-item-text {
+    font-size: 28rpx;
+    line-height: 40rpx;
+}
+
+/* 选项勾选圆圈 */
+.ste-select-order-item-icon-box {
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 18rpx;
+    border-width: 1px;
+    border-style: solid;
+    align-items: center;
+    justify-content: center;
+}
+</style>

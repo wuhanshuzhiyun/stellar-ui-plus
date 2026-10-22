@@ -1,0 +1,76 @@
+/**
+ * ste-goods-info 商品信息组件常量与类型定义
+ * 
+ * @description 提供了 ste-goods-info 组件在 UTS 环境下的强类型支持，包括商品数据结构、建议数据、事件载荷等规范定义。
+ */
+
+/**
+ * 基础商品数据模型
+ */
+export type GoodsInfoType = {
+	/** 商品主图 URL */
+	image ?: string;
+	/** 商品标题名称 */
+	title ?: string;
+	/** 商品副标题或描述说明 */
+	subTitle ?: string;
+	/** 标红/主题色商品标签（如：新品、热销） */
+	tag ?: string;
+	/** 商品条形码 */
+	barCode ?: string;
+	/** 商品自编码 */
+	code ?: string;
+	/** 销售现价（支持数字或字符串格式，由 ste-price 格式化） */
+	price ?: any;
+	/** 划线原价/市场参考价 */
+	originalPrice ?: any;
+};
+
+/**
+ * 建议用量明细项
+ */
+export type SuggestDataItem = {
+	/** 建议条目标签文本（如：周均销量、当前在途等） */
+	label : string;
+	/** 建议数值 */
+	value : any;
+};
+
+/**
+ * 建议用量面板数据结构
+ */
+export type SuggestData = {
+	/** 建议标题，默认“建议” */
+	title ?: string;
+	/** 建议参考总数量 */
+	number ?: number;
+	/** 申请输入框左侧描述文本（如：申请用量） */
+	applyForText ?: string;
+	/** 当前申请输入的数量 */
+	applyForNumber ?: number;
+	/** 展开的建议明细列表项 */
+	items : SuggestDataItem[];
+};
+
+/**
+ * 获取默认建议数据工厂函数
+ */
+export function defaultSuggestData() : SuggestData {
+	return {
+		title: '建议',
+		number: 0,
+		items: [] as SuggestDataItem[]
+	} as SuggestData;
+}
+
+/**
+ * 数据变更事件通知载荷
+ */
+export type GoodsInfoChangePayload = {
+	/** 当前变更的步进器数量 */
+	number ?: number;
+	/** 当前变更的勾选状态 */
+	checked ?: boolean;
+	/** 当前变更的建议申请数量 */
+	applyForNumber ?: number;
+};

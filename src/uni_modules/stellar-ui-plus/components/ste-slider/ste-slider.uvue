@@ -1,0 +1,749 @@
+<template>
+	<view class="ste-slider-root" :style="cmpRootStyle" :class="cmpRootClass" @click="handleClick">
+		<!-- 轨道背景 -->
+		<view class="inactive-box" :style="cmpInactiveStyle"></view>
+		<!-- 已填充部分 -->
+		<view class="active-box" :style="cmpActiveStyle"></view>
+
+		<!-- 第一个滑块 -->
+		<view
+			class="slider-bar-box"
+			:class="{ 'range-min': realPercentage == 0, 'range-max': realPercentage == 100 }"
+			:style="cmpBarStyle1"
+			@touchstart.stop="onTouchStart"
+			@touchmove.stop.prevent="onTouchMove"
+			@touchend.stop="onTouchEnd"
+			@touchcancel.stop="onTouchCancel"
+		>
+			<view class="slider-touch-area"></view>
+			<slot v-if="range" name="leftButton">
+				<view class="slider-bar"></view>
+			</slot>
+			<slot v-else name="button">
+				<view class="slider-bar"></view>
+			</slot>
+		</view>
+
+		<!-- 第二个滑块（范围模式） -->
+		<view
+			v-if="range"
+			class="slider-bar-box range"
+			:class="{ 'range-min': realPercentage2 == 0, 'range-max': realPercentage2 == 100 }"
+			:style="cmpBarStyle2"
+			@touchstart.stop="onTouchStartSecond"
+			@touchmove.stop.prevent="onTouchMove"
+			@touchend.stop="onTouchEnd"
+			@touchcancel.stop="onTouchCancel"
+		>
+			<view class="slider-touch-area"></view>
+			<slot name="rightButton">
+				<view class="slider-bar"></view>
+			</slot>
+		</view>
+
+		<!-- 刻度标记 -->
+		<view v-if="showStops" class="marks-container">
+			<view v-for="(item, index) in markList" :key="index" class="mark-box" :style="item.positionStyle">
+				<view class="dot"></view>
+				<text v-if="item.label !== ''" class="marks-label" :style="item.labelStyle">{{ item.label }}</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue'
+	import { useColorStore } from '../../store/color.uts'
+	import { addUnit, bg2style, deepMerge } from '../../utils/utils.uts'
+
+	defineOptions({ name: 'ste-slider', options: { virtualHost: true } })
+
+	const colorStore = useColorStore()
+
+	// ============== Props 定义 ==============
+	type MarkItem = {
+		positionStyle : UTSJSONObject,
+		labelStyle : UTSJSONObject,
+		label : string,
+	}
+
+	type SliderProps = {
+		value ?: number,
+		rangeStart ?: number,
+		rangeEnd ?: number,
+		min ?: number,
+		max ?: number,
+		step ?: number,
+		barHeight ?: number | string,
+		buttonSize ?: number | string,
+		activeColor ?: string,
+		inactiveColor ?: string,
+		range ?: boolean,
+		vertical ?: boolean,
+		verticalHeight ?: string,
+		disabled ?: boolean,
+		readonly ?: boolean,
+		showStops ?: boolean,
+		marks ?: UTSJSONObject,
+	}
+
+	const props = withDefaults(defineProps<SliderProps>(), {
+		value: 0,
+		rangeStart: 0,
+		rangeEnd: 100,
+		min: 0,
+		max: 100,
+		step: 1,
+		barHeight: 8,
+		buttonSize: 40,
+		activeColor: '',
+		inactiveColor: '#eeeeee',
+		range: false,
+		vertical: false,
+		verticalHeight: '100%',
+		disabled: false,
+		readonly: false,
+		showStops: false,
+		marks: () => ({} as UTSJSONObject),
+	})
+
+	const emit = defineEmits(['input', 'change', 'dragStart', 'dragEnd'])
+
+	// ============== 响应式状态 ==============
+	const realPercentage = ref<number>(0)
+	const realPercentage2 = ref<number>(0)
+	const isDrag = ref<boolean>(false)
+	const markList = ref<MarkItem[]>([] as MarkItem[])
+
+	// 普通变量（无需响应式）
+	let rootWidth : number = 0
+	let rootHeight : number = 0
+	let rootLeft : number = 0
+	let rootTop : number = 0
+	let startX : number = 0
+	let startY : number = 0
+	let startPct : number = 0
+	let isSecondSlider : boolean = false
+	let hasMarks : boolean = false
+
+	// ============== 计算属性 ==============
+
+	/** 获取当前激活色 */
+	function getActiveColor() : string {
+		const colorData = colorStore.getColor()
+		return props.activeColor !== '' ? props.activeColor : colorData.steThemeColor
+	}
+
+	/** 根容器动态样式（替代 CSS 变量） */
+	const cmpRootStyle = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		style['width'] = '100%'
+		style['height'] = addUnit(props.barHeight)
+		if (props.vertical) {
+			style['width'] = addUnit(props.barHeight)
+			style['height'] = props.verticalHeight
+			style['marginLeft'] = '16rpx'
+			style['marginRight'] = '16rpx'
+		} else {
+			style['marginTop'] = '16rpx'
+			style['marginBottom'] = '16rpx'
+		}
+		return style
+	})
+
+	/** 根容器动态 class */
+	const cmpRootClass = computed(() : string => {
+		let cls = ''
+		if (isDrag.value) cls += 'ste-slider-drag '
+		if (props.range) cls += 'ste-slider-range '
+		if (props.disabled) cls += 'ste-slider-disabled '
+		if (props.vertical) {
+			cls += 'ste-slider-vertical '
+		} else {
+			cls += 'ste-slider-horizontal '
+		}
+		return cls
+	})
+
+	/** 轨道完整样式（尺寸 + 背景色） */
+	const cmpInactiveStyle = computed(() : UTSJSONObject => {
+		let style : UTSJSONObject = {}
+		if (props.vertical) {
+			style['width'] = addUnit(props.barHeight)
+		} else {
+			style['height'] = addUnit(props.barHeight)
+		}
+		if (!props.disabled) {
+			style = deepMerge(style, bg2style(props.inactiveColor)) as UTSJSONObject
+		}
+		return style
+	})
+
+	/** 已填充轨道完整样式（背景色 + 定位尺寸） */
+	const cmpActiveStyle = computed(() : UTSJSONObject => {
+		let style : UTSJSONObject = {}
+		if (!props.disabled) {
+			style = deepMerge(style, bg2style(getActiveColor())) as UTSJSONObject
+		}
+		if (props.vertical) {
+			style['width'] = addUnit(props.barHeight)
+			if (props.range) {
+				style['top'] = realPercentage.value + '%'
+				style['height'] = (realPercentage2.value - realPercentage.value) + '%'
+			} else {
+				style['top'] = '0%'
+				style['height'] = realPercentage.value + '%'
+			}
+		} else {
+			style['height'] = addUnit(props.barHeight)
+			style['top'] = '0%'
+			if (props.range) {
+				style['left'] = realPercentage.value + '%'
+				style['width'] = (realPercentage2.value - realPercentage.value) + '%'
+			} else {
+				style['width'] = realPercentage.value + '%'
+			}
+		}
+		return style
+	})
+
+	/** 滑块1定位样式（仅 left/top，极轻量） */
+	const cmpBarStyle1 = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (props.vertical) {
+			style['top'] = realPercentage.value + '%'
+		} else {
+			style['left'] = realPercentage.value + '%'
+		}
+		return style
+	})
+
+	/** 滑块2定位样式（仅 left/top，极轻量） */
+	const cmpBarStyle2 = computed(() : UTSJSONObject => {
+		const style : UTSJSONObject = {}
+		if (props.vertical) {
+			style['top'] = realPercentage2.value + '%'
+		} else {
+			style['left'] = realPercentage2.value + '%'
+		}
+		return style
+	})
+
+	// ============== 核心计算函数 ==============
+
+	/** 百分比 → 真实值（含步长吸附） */
+	function getValueFromPercentage(percentage : number) : number {
+		const min = props.min
+		const max = props.max
+		const step = props.step
+		const value = min + ((max - min) * percentage) / 100
+		return Math.round(value / step) * step
+	}
+
+	/** 真实值 → 百分比 */
+	function getPercentageFromValue(value : number) : number {
+		const min = props.min
+		const max = props.max
+		const range = max - min
+		if (range == 0) return 0
+		const clamped = Math.max(Math.min(value, max), min)
+		return ((clamped - min) / range) * 100
+	}
+
+	/** 将值限制在 [min, max] 区间内 */
+	function getRealValue(value : number, max : number, min : number) : number {
+		return Math.max(Math.min(value, max), min)
+	}
+
+	/** 根据步长/范围约束计算滑动后的百分比值 */
+	function calculateValue(percentage : number) : number {
+		const step = hasMarks ? 1 : props.step
+		let minPct : number = 0
+		let maxPct : number = 100
+
+		// 范围模式下两个滑块不能交叉
+		if (props.range) {
+			if (isSecondSlider) {
+				minPct = realPercentage.value
+			} else {
+				maxPct = realPercentage2.value
+			}
+		}
+
+		const offset = percentage - minPct
+		const targetValue = Math.round(offset / step) * step + minPct
+		return getRealValue(targetValue, maxPct, minPct)
+	}
+
+	/** 计算刻度标记列表 */
+	function calculateStepMarks() {
+		if (!props.showStops) return
+		markList.value = [] as MarkItem[]
+		const min = props.min
+		const max = props.max
+
+		// #ifndef APP-ANDROID || APP-IOS
+		const marksKeys = Object.keys(props.marks as Any)
+		if (marksKeys.length > 0) {
+			const sortedKeys = marksKeys.sort((a : string, b : string) : number => {
+				return parseFloat(a) - parseFloat(b)
+			})
+			for (let i = 0; i < sortedKeys.length; i++) {
+				const key = sortedKeys[i]!
+				const percentage = parseFloat(key)
+				const markData = (props.marks as Any)[key]
+				const posStyle : UTSJSONObject = {}
+				posStyle['position'] = 'absolute'
+				posStyle['zIndex'] = 3
+				if (props.vertical) {
+					posStyle['left'] = '0'
+					posStyle['top'] = percentage + '%'
+				} else {
+					posStyle['left'] = percentage + '%'
+					posStyle['top'] = '0'
+				}
+				let labelText = ''
+				let lblStyle : UTSJSONObject = {}
+				if (typeof markData === 'string') {
+					labelText = markData as string
+				} else if (typeof markData === 'object') {
+					const mData = markData as UTSJSONObject
+					labelText = (mData['label'] as string | null) ?? ''
+					const customStyle = mData['style'] as UTSJSONObject | null
+					if (customStyle != null) {
+						lblStyle = customStyle!
+					}
+				}
+				markList.value.push({
+					positionStyle: posStyle,
+					labelStyle: lblStyle,
+					label: labelText,
+				} as MarkItem)
+			}
+		} else {
+			for (let i = min; i <= max; i += props.step) {
+				if (i == min || i == max) continue
+				const percentage = ((i - min) / (max - min)) * 100
+				const posStyle : UTSJSONObject = {}
+				posStyle['position'] = 'absolute'
+				posStyle['zIndex'] = 3
+				if (props.vertical) {
+					posStyle['left'] = '0'
+					posStyle['top'] = percentage + '%'
+				} else {
+					posStyle['left'] = percentage + '%'
+					posStyle['top'] = '0'
+				}
+				markList.value.push({
+					positionStyle: posStyle,
+					labelStyle: {} as UTSJSONObject,
+					label: '',
+				} as MarkItem)
+			}
+		}
+		// #endif
+
+		// #ifdef APP-ANDROID || APP-IOS
+		const marksMap = props.marks.toMap()
+		if (marksMap.size > 0) {
+			const marksIter = marksMap.keys.iterator()
+			while (marksIter.hasNext()) {
+				const key = marksIter.next()!
+				const percentage = parseFloat(key)
+				const markData = props.marks[key]
+				const posStyle : UTSJSONObject = {}
+				posStyle['position'] = 'absolute'
+				posStyle['zIndex'] = 3
+				if (props.vertical) {
+					posStyle['left'] = '0'
+					posStyle['top'] = percentage + '%'
+				} else {
+					posStyle['left'] = percentage + '%'
+					posStyle['top'] = '0'
+				}
+				let labelText = ''
+				let lblStyle : UTSJSONObject = {}
+				if (typeof markData === 'string') {
+					labelText = markData as string
+				} else if (typeof markData === 'object') {
+					const mData = markData as UTSJSONObject
+					labelText = (mData['label'] as string | null) ?? ''
+					const customStyle = mData['style'] as UTSJSONObject | null
+					if (customStyle != null) {
+						lblStyle = customStyle!
+					}
+				}
+				markList.value.push({
+					positionStyle: posStyle,
+					labelStyle: lblStyle,
+					label: labelText,
+				} as MarkItem)
+			}
+		} else {
+			for (let i = min; i <= max; i += props.step) {
+				if (i == min || i == max) continue
+				const percentage = ((i - min) / (max - min)) * 100
+				const posStyle : UTSJSONObject = {}
+				posStyle['position'] = 'absolute'
+				posStyle['zIndex'] = 3
+				if (props.vertical) {
+					posStyle['left'] = '0'
+					posStyle['top'] = percentage + '%'
+				} else {
+					posStyle['left'] = percentage + '%'
+					posStyle['top'] = '0'
+				}
+				markList.value.push({
+					positionStyle: posStyle,
+					labelStyle: {} as UTSJSONObject,
+					label: '',
+				} as MarkItem)
+			}
+		}
+		// #endif
+	}
+
+	// ============== 布局测量 ==============
+
+	/** 屏幕宽度（px） */
+	const _screenWidth = uni.getSystemInfoSync().windowWidth
+
+	/** 从 verticalHeight prop 计算实际像素高度（绕过 createSelectorQuery 单位不确定性） */
+	function calcVerticalHeightPx() : number {
+		if (!props.vertical) return 0
+		const h = props.verticalHeight
+		if (h.length > 3 && h.substring(h.length - 3) == 'rpx') {
+			const num = parseFloat(h.substring(0, h.length - 3))
+			if (!isNaN(num)) {
+				return Math.round(num * _screenWidth / 750)
+			}
+		} else if (h.length > 2 && h.substring(h.length - 2) == 'px') {
+			const num = parseFloat(h.substring(0, h.length - 2))
+			if (!isNaN(num)) return Math.round(num)
+		}
+		return 0
+	}
+
+	/** 测量根容器尺寸和位置 */
+	function measureRoot(instance : any) {
+		const query = uni.createSelectorQuery().in(instance)
+		query.select('.ste-slider-root').boundingClientRect((rect : any) => {
+			const r = rect as NodeInfo
+			if (r != null) {
+				rootWidth = r.width!
+				rootHeight = r.height!
+				rootLeft = r.left!
+				rootTop = r.top!
+
+				// 竖向模式：用 prop 计算值校验测量结果
+				if (props.vertical) {
+					const calcH = calcVerticalHeightPx()
+					if (calcH > 0) {
+						console.log('[ste-slider] 竖向尺寸对比 - 测量rootHeight=' + rootHeight + ' 计算高度=' + calcH + ' 屏幕宽度=' + _screenWidth)
+						// 若测量值远小于计算值（差距>50%），说明测量不可靠，用计算值
+						if (rootHeight < calcH * 0.5) {
+							console.log('[ste-slider] 测量值偏小，使用计算值: ' + calcH)
+							rootHeight = calcH
+						}
+					}
+				}
+
+				console.log('[ste-slider] 最终尺寸 - rootWidth=' + rootWidth + ' rootHeight=' + rootHeight + ' rootLeft=' + rootLeft + ' rootTop=' + rootTop)
+			} else {
+				console.log('[ste-slider] 测量失败: rect 为 null')
+			}
+		}).exec()
+	}
+
+	// ============== 生命周期 ==============
+
+	onMounted(() => {
+		const instance = getCurrentInstance() as any
+		calculateStepMarks()
+		// 首次测量
+		measureRoot(instance)
+		// 延迟复测：确保 inline style 已渲染到布局
+		setTimeout(() => {
+			measureRoot(instance)
+		}, 150)
+	})
+
+	// ============== Watch 监听 ==============
+
+	watch(() : number => props.value, (val : number) => {
+		if (!props.range) {
+			realPercentage.value = getPercentageFromValue(val)
+		}
+	}, { immediate: true })
+
+	watch(() : number => props.rangeStart, (val : number) => {
+		if (props.range) {
+			realPercentage.value = getPercentageFromValue(val)
+		}
+	}, { immediate: true })
+
+	watch(() : number => props.rangeEnd, (val : number) => {
+		if (props.range) {
+			realPercentage2.value = getPercentageFromValue(val)
+		}
+	}, { immediate: true })
+
+	watch(() : UTSJSONObject => props.marks, (val : UTSJSONObject) => {
+		// #ifdef APP-ANDROID || APP-IOS
+		hasMarks = val.toMap().size > 0
+		// #endif
+		// #ifndef APP-ANDROID || APP-IOS
+		hasMarks = Object.keys(val as Any).length > 0
+		// #endif
+	}, { immediate: true })
+
+	// ============== 事件处理 ==============
+
+	/** 更新滑块位置百分比（必须在 handleClick/onTouchMove 之前声明，UTS 无函数提升） */
+	function updateWidth(offsetPct : number, drag : boolean) {
+		isDrag.value = drag
+		let realPct : number
+		if (drag) {
+			realPct = startPct + offsetPct
+		} else {
+			realPct = offsetPct
+		}
+		const calculated = calculateValue(realPct)
+		if (isSecondSlider) {
+			realPercentage2.value = calculated
+		} else {
+			realPercentage.value = calculated
+		}
+		if (props.range) {
+			emit('input', [realPercentage.value, realPercentage2.value])
+		} else {
+			emit('input', realPercentage.value)
+		}
+	}
+
+	/** 点击轨道设定值（仅非范围模式，仅 H5/MP 平台） */
+	function handleClick(e : Event) {
+		if (props.readonly || props.disabled || props.range) return
+		// #ifndef APP-ANDROID || APP-IOS
+		if (rootWidth == 0 && rootHeight == 0) return
+		let offsetPct : number = 0
+		const detail = (e as Any).detail
+		if (props.vertical) {
+			const clientY = (detail['y'] as number | null) ?? (detail['clientY'] as number | null) ?? 0
+			offsetPct = ((clientY - rootTop) / rootHeight) * 100
+		} else {
+			const clientX = (detail['x'] as number | null) ?? (detail['clientX'] as number | null) ?? 0
+			offsetPct = ((clientX - rootLeft) / rootWidth) * 100
+		}
+		updateWidth(offsetPct, false)
+		emit('change', getValueFromPercentage(realPercentage.value))
+		// #endif
+	}
+
+	/** 滑块1触摸开始 */
+	function onTouchStart(e : TouchEvent) {
+		isSecondSlider = false
+		if (e.touches.length > 0) {
+			const touch = e.touches[0]
+			startX = touch.clientX
+			startY = touch.clientY
+		}
+		startPct = realPercentage.value
+		if (props.vertical) {
+			console.log('[ste-slider] touchStart: clientY=' + startY + ' startPct=' + startPct + ' rootHeight=' + rootHeight)
+		}
+		emit('dragStart', e)
+	}
+
+	/** 滑块2触摸开始 */
+	function onTouchStartSecond(e : TouchEvent) {
+		isSecondSlider = true
+		if (e.touches.length > 0) {
+			const touch = e.touches[0]
+			startX = touch.clientX
+			startY = touch.clientY
+		}
+		startPct = realPercentage2.value
+		emit('dragStart', e)
+	}
+
+	/** 触摸移动 */
+	function onTouchMove(e : TouchEvent) {
+		if (props.readonly || props.disabled) return
+		if (e.touches.length == 0) return
+		const touch = e.touches[0]
+		const distance = props.vertical
+			? touch.clientY - startY
+			: touch.clientX - startX
+		const containerLength = props.vertical ? rootHeight : rootWidth
+		if (containerLength == 0) return
+		const offsetPct = (distance / containerLength) * 100
+		// 调试日志：竖向模式时输出触摸细节
+		if (props.vertical && Math.abs(distance) > 2) {
+			console.log('[ste-slider] touchMove: clientY=' + touch.clientY + ' startY=' + startY + ' distance=' + distance + ' rootHeight=' + rootHeight + ' offsetPct=' + offsetPct.toFixed(1))
+		}
+		updateWidth(offsetPct, true)
+	}
+
+	/** 触摸结束 */
+	function onTouchEnd(e : TouchEvent) {
+		isDrag.value = false
+		emit('dragEnd', e)
+		if (props.range) {
+			emit('change', [getValueFromPercentage(realPercentage.value), getValueFromPercentage(realPercentage2.value)])
+		} else {
+			emit('change', getValueFromPercentage(realPercentage.value))
+		}
+	}
+
+	/** 触摸取消 */
+	function onTouchCancel(e : TouchEvent) {
+		isDrag.value = false
+		emit('dragEnd', e)
+	}
+</script>
+
+<style scoped>
+	.ste-slider-root {
+		position: relative;
+		z-index: 1;
+		overflow: visible;
+		border-radius: 24rpx;
+	}
+
+	.ste-slider-disabled .active-box {
+		background-color: #cccccc !important;
+	}
+
+	.ste-slider-disabled .inactive-box {
+		background-color: #eeeeee !important;
+	}
+
+	.ste-slider-disabled .slider-bar-box .slider-bar {
+		border-color: #cccccc !important;
+	}
+
+	.ste-slider-drag .active-box {
+		transition: none !important;
+	}
+
+	.ste-slider-drag .slider-bar-box {
+		transition: none !important;
+	}
+
+	.inactive-box {
+		width: 100%;
+		border-radius: 24rpx;
+	}
+
+	.active-box {
+		position: absolute;
+		z-index: 2;
+		border-radius: 24rpx;
+		left: 0;
+		display: flex;
+		align-items: center;
+		transition-property: width;
+		transition-duration: 0.3s;
+		transition-timing-function: ease;
+	}
+
+	.ste-slider-vertical .inactive-box {
+		height: 100%;
+	}
+
+	.ste-slider-vertical .active-box {
+		align-items: flex-end;
+		justify-content: center;
+		transition-property: height;
+	}
+
+	.ste-slider-vertical .slider-bar-box {
+		left: 50%;
+		transition-property: top;
+	}
+
+	.ste-slider-horizontal .slider-bar-box {
+		transition-property: left;
+	}
+
+	.ste-slider-vertical .mark-box {
+		display: flex;
+		align-items: center;
+		transform: translateY(-50%);
+	}
+
+	.ste-slider-vertical .mark-box .dot {
+		margin-right: 20rpx;
+	}
+
+	.ste-slider-horizontal .mark-box {
+		transform: translateX(-50%);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.ste-slider-horizontal .mark-box .dot {
+		margin-bottom: 20rpx;
+	}
+
+	.slider-bar-box {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 9;
+		transition-duration: 0.3s;
+		transition-timing-function: ease;
+	}
+
+	.slider-touch-area {
+		position: absolute;
+		width: 80rpx;
+		height: 80rpx;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		background-color: transparent;
+	}
+
+	.slider-bar {
+		min-width: 40rpx;
+		height: 40rpx;
+		width: 40rpx;
+		border-radius: 50%;
+		background-color: #ffffff;
+		border-width: 2rpx;
+		border-style: solid;
+		border-color: #0090FF;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.mark-box {
+		position: absolute;
+		z-index: 3;
+	}
+
+	.dot {
+		height: 8rpx;
+		width: 8rpx;
+		border-radius: 100%;
+		background-color: #ffffff;
+	}
+
+	.marks-label {
+		font-size: 24rpx;
+	}
+
+	.marks-container {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>

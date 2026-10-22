@@ -81,6 +81,28 @@
             "type": "object"
         },
         {
+            "name": "rangeStart",
+            "description": "双滑块范围选择时的起始区间数值[仅UVue支持]",
+            "type": "number"
+        },
+        {
+            "name": "rangeEnd",
+            "description": "双滑块范围选择时的结束区间数值[仅UVue支持]",
+            "type": "number"
+        },
+        {
+            "name": "verticalHeight",
+            "description": "垂直方向滑块组件的高度，单位rpx[仅UVue支持]",
+            "type": "number | string",
+            "default": "400rpx"
+        },
+        {
+            "name": "showStops",
+            "description": "是否显示步长刻度断点[仅UVue支持]",
+            "type": "boolean",
+            "default": false
+        },
+        {
             "name": "[event]change",
             "description": "进度变化且结束拖动后触发",
             "params": [
@@ -132,5 +154,8 @@
             "name": "[slot]rightButton",
             "description": "自定义右侧滑块按钮（范围选择下）"
         }
-    ]
+    ],
+    "uvue_diff": {
+        "range_control": "UVue 端增加了 rangeStart, rangeEnd 双向区间范围值独立控制，以及 verticalHeight 垂直模式自定义高度属性"
+    }
 }

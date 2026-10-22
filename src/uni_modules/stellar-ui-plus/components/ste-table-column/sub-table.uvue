@@ -1,0 +1,84 @@
+<template>
+	<view class="ste-sub-table-root" :class="[props.border ? 'has-border' : '']">
+		<view
+			v-for="(item, index) in rowsList"
+			:key="index"
+			class="ste-sub-table-row"
+			:class="[index < rowsList.length - 1 && props.border ? 'row-border-bottom' : '']"
+		>
+			<text class="ste-sub-table-cell-text">{{ formatItemText(item) }}</text>
+		</view>
+	</view>
+</template>
+
+<script setup lang="uts">
+	/**
+	 * @file sub-table.uvue
+	 * @description 嵌套子表格单元格组件 - uni-app x / UTS 强类型版本
+	 * 当表格单元格对应的数据字段为数组时，自动以嵌套子表形式渲染多行子数据，支持内边框对齐。
+	 */
+	import { computed } from 'vue'
+
+	defineOptions({
+		name: 'ste-sub-table',
+		options: {
+			virtualHost: true,
+		},
+	})
+
+	type SubTableProps = {
+		/** 子数据列表数组 */
+		rows ?: any[] | null,
+		/** 是否展示行间内边框 */
+		border ?: boolean,
+	}
+
+	const props = withDefaults(defineProps<SubTableProps>(), {
+		rows: () => [] as any[],
+		border: false,
+	})
+
+	/** 格式化为非空数组 */
+	const rowsList = computed(() : any[] => {
+		if (props.rows == null) return [] as any[]
+		return props.rows!
+	})
+
+	/**
+	 * 将数组单项转换为可展示文本
+	 * @param item 任意类型数组项
+	 * @returns 字符串文案
+	 */
+	function formatItemText(item : any) : string {
+		if (item == null) return '-'
+		return item.toString()
+	}
+</script>
+
+<style scoped>
+.ste-sub-table-root {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.ste-sub-table-row {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-top: 12rpx;
+	padding-bottom: 12rpx;
+}
+
+.row-border-bottom {
+	border-bottom-width: 1rpx;
+	border-bottom-style: solid;
+	border-bottom-color: #ebebeb;
+}
+
+.ste-sub-table-cell-text {
+	font-size: 24rpx;
+	color: #333333;
+}
+</style>

@@ -18,9 +18,26 @@ export interface ComponentEvents {
   version?: string
 }
 
+export interface ComponentMethods {
+  name: string
+  description: string
+  params?: { name?: string, description?: string }[]
+  returnValue?: string
+  version?: string
+}
+
+export interface ComponentSlots {
+  name: string
+  description: string
+  params?: { name?: string, description?: string }[]
+  version?: string
+}
+
 export interface ComponentDesc {
   site: string
   attr?: string[]
   props?: ComponentProps[]
   events?: ComponentEvents[]
+  methods?: ComponentMethods[]
+  slots?: ComponentSlots[]
 }

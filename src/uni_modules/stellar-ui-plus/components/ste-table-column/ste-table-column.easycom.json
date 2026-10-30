@@ -1,0 +1,76 @@
+{
+    "name": "ste-table-column",
+    "description": "",
+    "attributes": [
+        {
+            "name": "type",
+            "description": "对应列的类型",
+            "type": "String",
+            "values": [
+                {
+                    "name": "checkbox",
+                    "description": "显示多选框"
+                },
+                {
+                    "name": "radio",
+                    "description": "显示单选框"
+                },
+                {
+                    "name": "index",
+                    "description": "显示该行的索引（从 1 开始计算"
+                }
+            ]
+        },
+        {
+            "name": "label",
+            "description": "显示的标题",
+            "type": "String"
+        },
+        {
+            "name": "prop",
+            "description": "对应列内容的字段名",
+            "type": "String"
+        },
+        {
+            "name": "width",
+            "description": "对应列的宽度",
+            "type": "String"
+        },
+        {
+            "name": "minWidth",
+            "description": "对应列的最小宽度",
+            "type": "String"
+        },
+        {
+            "name": "align",
+            "description": "对齐方式",
+            "type": "String",
+            "default": "left"
+        },
+        {
+            "name": "headerAlign",
+            "description": "表头对齐方式，若不设置该项，则使用表格的对齐方式",
+            "type": "String",
+            "default": "left",
+            "values": [
+                {
+                    "name": "left",
+                    "description": "左对齐"
+                },
+                {
+                    "name": "center",
+                    "description": "居中对齐"
+                },
+                {
+                    "name": "right",
+                    "description": "右对齐"
+                }
+            ]
+        },
+        {
+            "name": "customKey",
+            "description": "自定义唯一key值",
+            "type": "String"
+        }
+    ]
+}

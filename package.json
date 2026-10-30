@@ -49,6 +49,7 @@
         "type-check": "vue-tsc --noEmit",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
+        "validate:easycom": "node scripts/validate-easycom.js",
         "postinstall": "npx simple-git-hooks | patch-package",
         "test": "vitest --ui"
     },

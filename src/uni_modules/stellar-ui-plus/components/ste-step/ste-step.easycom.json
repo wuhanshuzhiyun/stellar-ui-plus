@@ -1,0 +1,41 @@
+{
+    "name": "ste-step",
+    "description": "",
+    "attributes": [
+        {
+            "name": "title",
+            "description": "流程步骤的标题",
+            "type": "String"
+        },
+        {
+            "name": "description",
+            "description": "流程步骤的描述性文字(支持 html 结构)",
+            "type": "String"
+        },
+        {
+            "name": "icon",
+            "description": "图标",
+            "type": "String"
+        },
+        {
+            "name": "status",
+            "description": "步骤状态",
+            "type": "String"
+        },
+        {
+            "name": "[slot]title",
+            "description": "步骤标题",
+            "params": []
+        },
+        {
+            "name": "[slot]content",
+            "description": "步骤内容",
+            "params": []
+        },
+        {
+            "name": "[slot]icon",
+            "description": "步骤图标",
+            "params": []
+        }
+    ]
+}

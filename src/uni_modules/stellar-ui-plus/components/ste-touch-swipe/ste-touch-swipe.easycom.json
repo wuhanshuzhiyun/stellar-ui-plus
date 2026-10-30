@@ -77,6 +77,10 @@
                     "description": "当前展示的面板索引"
                 }
             ]
+        },
+        {
+            "name": "[method]init",
+            "description": "初始化元素信息，请在渲染完成后调用"
         }
     ]
 }

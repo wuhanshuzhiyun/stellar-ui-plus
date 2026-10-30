@@ -1,0 +1,11 @@
+{
+    "name": "ste-scroll-to-item",
+    "description": "滚动定位子项组件，需配合 ste-scroll-to 使用",
+    "attributes": [
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，自定义子项内容",
+            "params": []
+        }
+    ]
+}

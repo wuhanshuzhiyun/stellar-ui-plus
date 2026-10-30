@@ -53,6 +53,15 @@
                     "description": "(title:string,text:string)=>void"
                 }
             ]
+        },
+        {
+            "name": "[method]init",
+            "description": "初始化锚点信息，在渲染完成后调用"
+        },
+        {
+            "name": "[slot]default",
+            "description": "自定义列表内容",
+            "params": []
         }
     ]
 }

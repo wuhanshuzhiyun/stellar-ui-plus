@@ -289,6 +289,11 @@
                     "description": "(tab:TabProps)=>void"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，请传入`ste-tab`标签列表",
+            "params": []
         }
     ]
 }

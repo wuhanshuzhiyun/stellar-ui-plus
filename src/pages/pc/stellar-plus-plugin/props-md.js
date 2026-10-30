@@ -2,96 +2,143 @@ const path = require('node:path');
 const fs = require('node:fs');
 const { getDir } = require('./utils');
 
-module.exports = function (components) {
-    components.forEach(component => {
-        const filePath = path.join(getDir(), '/components', `${component}/${component}.easycom.json`);
-        const configFilePath = path.join(getDir(), '/components', `${component}/config.json`);
+/** 四类条目的输出标题（固定顺序，便于文档站按 h3 标题切分） */
+const SECTION_TITLES = {
+    props: 'Props',
+    events: 'Events',
+    methods: 'Methods',
+    slots: 'Slots',
+};
 
-        // 组件没有easycom和config文件为内置组件，无需提示和生成
-        if (!fs.existsSync(filePath)) {
-            if (fs.existsSync(configFilePath)) console.error(`组件【${component}】没有定义.easycom.json说明文件`);
+const SECTION_HEADERS = {
+    props: '| 属性名 | 说明  | 类型 | 默认值  | 可选值 | 支持版本 |\n| ----- | ----- | --- | ------- | ------ | -------- |',
+    events: '| 事件名 | 说明  | 事件参数 | 支持版本 |\n| ----- | ----- | ------- | -------- |',
+    methods: '| 方法名 | 说明  | 参数 | 返回值 | 支持版本 |\n| ----- | ----- | --- | ------ | -------- |',
+    slots: '| 插槽名 | 说明  | 参数 | 支持版本 |\n| ----- | ----- | --- | -------- |',
+};
 
-            return;
-        }
-        // 读取文件内容
-        let content = fs.readFileSync(filePath, 'utf-8');
-        if (!content) {
-            console.error(`组件【${component}】的说明文件内容为空`);
-            return;
-        }
-        content = content.replaceAll('|', '/');
-        const data = JSON.parse(content);
+/** ste-scroll-to -> ScrollTo（标题用大驼峰组件名，嵌套组件引用时可区分属性归属） */
+function toPascalCase(component) {
+    return component
+        .replace(/^ste-/, '')
+        .split('-')
+        .filter(Boolean)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+}
 
-        if (data.attributes?.length) {
-            let props = `### Props\n`;
-            props += `| 属性名 | 说明  | 类型 | 默认值  | 可选值 | 支持版本 |\n| ----- | ----- | --- | ------- | ------ | -------- |\n`;
-            let isProps = false;
-            let event = `### Events\n`;
-            event += `| 事件名 | 说明  | 事件参数 | 支持版本 |\n| ----- | ----- | ------- | -------- |\n`;
-            let isEvent = false;
-            let methods = `### Methods\n`;
-            methods += `| 方法名 | 说明  | 参数 | 返回值 | 支持版本 |\n| ----- | ----- | --- | ------ | -------- |\n`;
-            let isMethods = false;
-            let slots = `### Slots\n`;
-            slots += `| 插槽名 | 说明  | 参数 | 支持版本 |\n| ----- | ----- | --- | -------- |\n`;
-            let isSlots = false;
+function formatType(type) {
+    return `\`${type}\``;
+}
 
-            data.attributes.forEach(item => {
-                const description = item.description || '-';
-                const version = item.version ? `\`${item.version}\`` : '-';
+function formatDefault(item) {
+    if (item.default === undefined) return '-';
+    if (typeof item.default === 'object') return `\`${JSON.stringify(item.default)}\``;
+    if (item.type === '-') return `${item.default}`;
+    return `\`${item.default}\``;
+}
 
-                if (item.name?.indexOf('[event]') === 0) {
-                    // Events
-                    isEvent = true;
-                    const name = item.name.replace('[event]', '');
-                    const params = item.params?.length ? item.params.map(param => `\`${param.name}\`：${param.description}`).join('<br/>') : '-';
-                    event += `| \`${name}\` | ${description} | ${params} | ${version} |\n`;
-                } else if (item.name?.indexOf('[method]') === 0) {
-                    // Methods
-                    isMethods = true;
-                    const name = item.name.replace('[method]', '');
-                    const params = item.params?.length ? item.params.map(param => `\`${param.name}\`：${param.description}`).join('<br/>') : '-';
-                    const returnValue = item.returnValue ? `\`${item.returnValue}\`` : '-';
-                    methods += `| \`${name}\` | ${description} | ${params} | ${returnValue} | ${version} |\n`;
-                } else if (item.name?.indexOf('[slot]') === 0) {
-                    // Slots
-                    isSlots = true;
-                    const name = item.name.replace('[slot]', '');
-                    const params = item.params?.length ? item.params.map(param => `\`${param.name}\`：${param.description}`).join('<br/>') : '-';
-                    slots += `| \`${name}\` | ${description} | ${params} | ${version} |\n`;
-                } else {
-                    // Props
-                    isProps = true;
-                    const type = `\`${item.type}\``;
-                    let def = '-';
+function formatValues(values) {
+    return values?.length ? values.map(value => `\`${value.name}\`：${value.description}`).join('<br/>') : '-';
+}
 
-                    if (item.default !== undefined) {
-                        if (typeof item.default === 'object') {
-                            def = `\`${JSON.stringify(item.default)}\``;
-                        } else if (item.type == '-') {
-                            def = `${item.default}`;
-                        } else {
-                            def = `\`${item.default}\``;
-                        }
-                    }
+function formatParams(params) {
+    return params?.length ? params.map(param => `\`${param.name}\`：${param.description}`).join('<br/>') : '-';
+}
 
-                    const values = item.values?.length ? item.values.map(value => `\`${value.name}\`：${value.description}`).join('<br/>') : '-';
-                    props += `| \`${item.name}\` | ${description} | ${type} | ${def} | ${values} | ${version} |\n`;
-                }
-            });
+function formatVersion(version) {
+    return version ? `\`${version}\`` : '-';
+}
 
-            props += '\n\n';
-            event += '\n\n';
-            methods += '\n\n';
-            slots += '\n\n';
+/**
+ * 将 .easycom.json 的 attributes（props / [event] / [method] / [slot] 四类混排）
+ * 编译为 ATTRIBUTES.md 文本。纯函数、无副作用，便于单测与复用。
+ *
+ * 输出格式（无顶层 ## API，四类标题升级为 ## 并携带大驼峰组件名）：
+ *   ## ScrollTo Props
+ *   ## ScrollTo Events
+ *   ## ScrollTo Methods
+ *   ## ScrollTo Slots
+ *
+ * @param {{ attributes?: Array<Record<string, any>> }} data
+ * @param {string} component 组件目录名，如 ste-scroll-to
+ * @returns {string}
+ */
+function buildAttributesMd(data, component) {
+    const rows = { props: [], events: [], methods: [], slots: [] };
 
-            const mdFile = path.join(getDir(), '/components', `${component}/ATTRIBUTES.md`);
-            let result = '## API\n\n';
-            result += isProps ? props : '';
-            result += isEvent ? event : '';
-            result += isMethods ? methods : '';
-            result += isSlots ? slots : '';
-            fs.writeFileSync(mdFile, result, 'utf-8');
+    (data.attributes || []).forEach(item => {
+        if (!item || !item.name) return;
+
+        const description = item.description || '-';
+        const version = formatVersion(item.version);
+
+        if (item.name.indexOf('[event]') === 0) {
+            rows.events.push(`| \`${item.name.replace('[event]', '')}\` | ${description} | ${formatParams(item.params)} | ${version} |`);
+        } else if (item.name.indexOf('[method]') === 0) {
+            const returnValue = item.returnValue ? `\`${item.returnValue}\`` : '-';
+            rows.methods.push(
+                `| \`${item.name.replace('[method]', '')}\` | ${description} | ${formatParams(item.params)} | ${returnValue} | ${version} |`,
+            );
+        } else if (item.name.indexOf('[slot]') === 0) {
+            rows.slots.push(`| \`${item.name.replace('[slot]', '')}\` | ${description} | ${formatParams(item.params)} | ${version} |`);
+        } else {
+            rows.props.push(
+                `| \`${item.name}\` | ${description} | ${formatType(item.type)} | ${formatDefault(item)} | ${formatValues(item.values)} | ${version} |`,
+            );
         }
     });
+
+    const pascalName = toPascalCase(component || '');
+    let result = '';
+    for (const key of Object.keys(SECTION_TITLES)) {
+        if (!rows[key].length) continue;
+        result += `## ${pascalName} ${SECTION_TITLES[key]}\n${SECTION_HEADERS[key]}\n${rows[key].join('\n')}\n\n`;
+    }
+    return result;
+}
+
+/**
+ * 读取单个组件的 .easycom.json（带容错），返回解析后的对象。
+ * 说明：源文件中的 `|` 会被统一替换为 `/`，避免破坏 Markdown 表格。
+ */
+function readEasycomJson(component) {
+    const filePath = path.join(getDir(), '/components', `${component}/${component}.easycom.json`);
+    const configFilePath = path.join(getDir(), '/components', `${component}/config.json`);
+
+    if (!fs.existsSync(filePath)) {
+        if (fs.existsSync(configFilePath)) console.error(`组件【${component}】没有定义.easycom.json说明文件`);
+        return null;
+    }
+
+    const content = fs.readFileSync(filePath, 'utf-8');
+    if (!content) {
+        console.error(`组件【${component}】的说明文件内容为空`);
+        return null;
+    }
+
+    try {
+        return JSON.parse(content.replaceAll('|', '/'));
+    } catch (error) {
+        console.error(`组件【${component}】的 .easycom.json 解析失败：${error.message}`);
+        return null;
+    }
+}
+
+module.exports = function (components) {
+    components.forEach(component => {
+        const data = readEasycomJson(component);
+        if (!data) return;
+
+        if (!data.attributes?.length) {
+            console.warn(`组件【${component}】的 .easycom.json 未定义任何 attributes（props/event/method/slot），已跳过 ATTRIBUTES.md 生成`);
+            return;
+        }
+
+        const mdFile = path.join(getDir(), '/components', `${component}/ATTRIBUTES.md`);
+        fs.writeFileSync(mdFile, buildAttributesMd(data, component), 'utf-8');
+    });
 };
+
+module.exports.buildAttributesMd = buildAttributesMd;
+module.exports.readEasycomJson = readEasycomJson;

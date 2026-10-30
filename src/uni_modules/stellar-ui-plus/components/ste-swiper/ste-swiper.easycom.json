@@ -138,6 +138,15 @@
                     "description": "提示内容"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，请传入`ste-swiper-item`标签列表",
+            "params": []
+        },
+        {
+            "name": "[method]init",
+            "description": "初始化轮播信息，在渲染完成后调用"
         }
     ]
 }

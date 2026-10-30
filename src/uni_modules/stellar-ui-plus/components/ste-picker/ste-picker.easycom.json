@@ -1,0 +1,92 @@
+{
+    "name": "ste-picker",
+    "description": "选择器组件，需配合父级组件使用",
+    "attributes": [
+        {
+            "name": "columns",
+            "description": "选择器数据，二维数组，每列一个数组",
+            "type": "string[][]",
+            "default": []
+        },
+        {
+            "name": "itemHeight",
+            "description": "选项高度，单位px",
+            "type": "string | number",
+            "default": 44
+        },
+        {
+            "name": "visibleItemCount",
+            "description": "可见选项个数",
+            "type": "string | number",
+            "default": 5
+        },
+        {
+            "name": "showToolbar",
+            "description": "是否显示顶部标题栏",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "name": "title",
+            "description": "顶部栏标题",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "cancelText",
+            "description": "取消按钮文字",
+            "type": "string",
+            "default": "取消"
+        },
+        {
+            "name": "cancelColor",
+            "description": "取消按钮文字颜色",
+            "type": "string",
+            "default": "#969799"
+        },
+        {
+            "name": "confirmText",
+            "description": "确认按钮文字",
+            "type": "string",
+            "default": "确认"
+        },
+        {
+            "name": "confirmColor",
+            "description": "确认按钮文字颜色",
+            "type": "string",
+            "default": "#0090FF"
+        },
+        {
+            "name": "defaultIndex",
+            "description": "默认选中项下标（数组，与各列一一对应）",
+            "type": "number[]",
+            "default": []
+        },
+        {
+            "name": "rootClass",
+            "description": "根节点自定义类名",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "name": "[event]change",
+            "description": "选项变化时触发",
+            "params": [
+                {
+                    "name": "changeObj",
+                    "description": "当前选中项信息对象"
+                }
+            ]
+        },
+        {
+            "name": "[event]cancel",
+            "description": "点击取消按钮时触发",
+            "params": []
+        },
+        {
+            "name": "[event]confirm",
+            "description": "点击确认按钮时触发",
+            "params": []
+        }
+    ]
+}

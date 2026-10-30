@@ -87,6 +87,12 @@
         {
             "name": "[method]close",
             "description": "关闭滑块"
+        },
+        {
+            "name": "autoClose",
+            "description": "是否自动关闭其他swipe",
+            "type": "Boolean",
+            "default": true
         }
     ]
 }

@@ -1,0 +1,28 @@
+{
+    "name": "ste-index-item",
+    "description": "",
+    "attributes": [
+        {
+            "name": "title",
+            "description": "分组标题，这是必需的",
+            "type": "String",
+            "default": "\"\""
+        },
+        {
+            "name": "list",
+            "description": "分组字符串列表",
+            "type": "Array<String>",
+            "default": "\"\""
+        },
+        {
+            "name": "[slot]default",
+            "description": "自定义列表内容",
+            "params": []
+        },
+        {
+            "name": "[slot]title",
+            "description": "自定义标题内容",
+            "params": []
+        }
+    ]
+}

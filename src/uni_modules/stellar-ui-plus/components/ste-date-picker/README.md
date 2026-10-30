@@ -152,5 +152,7 @@ function onChange(event: DatePickerChangeEvent) {
 
 <!-- props -->
 
+<!-- ste-picker/props -->
+
 ---$
 {{fuyuwei}}

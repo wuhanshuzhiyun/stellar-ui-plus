@@ -1,0 +1,11 @@
+{
+    "name": "ste-swiper-item",
+    "description": "",
+    "attributes": [
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，在插槽中的内容会展示在标签内容区域",
+            "params": []
+        }
+    ]
+}

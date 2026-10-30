@@ -3,5 +3,39 @@
     "description": "用于扩展文字信息",
     "example": "<ste-tooltip></ste-tooltip>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=tooltip",
-    "attributes": []
+    "attributes": [
+        {
+            "name": "[method]showTooltip",
+            "description": "在目标元素旁显示气泡提示（可通过 useTooltip() 或 ref 实例调用）",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "气泡提示的文字内容"
+                },
+                {
+                    "name": "instance",
+                    "description": "触发元素所在的组件实例（getCurrentInstance()）"
+                },
+                {
+                    "name": "selector",
+                    "description": "触发元素的选择器，如 '.target-btn'"
+                },
+                {
+                    "name": "placement",
+                    "description": "弹出方向，可选 top | bottom，默认 top"
+                },
+                {
+                    "name": "maxWidth",
+                    "description": "气泡最大宽度，默认 60vw"
+                }
+            ],
+            "returnValue": "void"
+        },
+        {
+            "name": "[method]hideTooltip",
+            "description": "隐藏当前气泡提示",
+            "params": [],
+            "returnValue": "void"
+        }
+    ]
 }

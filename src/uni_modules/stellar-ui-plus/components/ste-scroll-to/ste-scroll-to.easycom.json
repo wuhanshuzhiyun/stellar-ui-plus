@@ -25,6 +25,10 @@
                     "description": "(index:number)=>void"
                 }
             ]
+        },
+        {
+            "name": "[method]init",
+            "description": "初始化元素信息，请在渲染完成后调用"
         }
     ]
 }

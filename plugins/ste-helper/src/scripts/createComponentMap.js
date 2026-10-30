@@ -25,6 +25,20 @@ function normalizeEvent(item) {
     };
 }
 
+function normalizeMethod(item) {
+    return {
+        ...item,
+        name: item.name.replace('[method]', ''),
+    };
+}
+
+function normalizeSlot(item) {
+    return {
+        ...item,
+        name: item.name.replace('[slot]', ''),
+    };
+}
+
 function genaratorComponentMap() {
     const componentMap = {};
     if (!componentDirs.length) return;
@@ -50,6 +64,12 @@ function genaratorComponentMap() {
             const events = attributes
                 .filter(item => getAttributeKind(item.name) === 'event')
                 .map(normalizeEvent);
+            const methods = attributes
+                .filter(item => getAttributeKind(item.name) === 'method')
+                .map(normalizeMethod);
+            const slots = attributes
+                .filter(item => getAttributeKind(item.name) === 'slot')
+                .map(normalizeSlot);
             const attr = props[0]?.name ? [`${props[0].name}=''`] : [];
 
             componentMap[compoName.replace(/^ste-/, '')] = {
@@ -57,6 +77,8 @@ function genaratorComponentMap() {
                 attr,
                 props,
                 events,
+                methods,
+                slots,
             };
         }
     }

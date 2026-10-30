@@ -144,6 +144,26 @@
                     "description": "当前复选框的绑定值"
                 }
             ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "复选框文本内容",
+            "params": [
+                {
+                    "name": "{ checked: boolean, disabled: boolean, readonly: boolean }",
+                    "description": ""
+                }
+            ]
+        },
+        {
+            "name": "[slot]icon",
+            "description": "复选框图标",
+            "params": [
+                {
+                    "name": "{ checked: boolean, disabled: boolean, readonly: boolean }",
+                    "description": ""
+                }
+            ]
         }
     ]
 }

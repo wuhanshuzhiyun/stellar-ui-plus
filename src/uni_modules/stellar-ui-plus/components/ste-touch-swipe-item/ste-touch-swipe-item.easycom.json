@@ -1,0 +1,12 @@
+{
+    "name": "ste-touch-swipe-item",
+    "description": "",
+    "attributes": [
+        {
+            "name": "disabled",
+            "description": "是否禁用当前子元素（禁用后无法滑动到当前子元素）",
+            "type": "Boolean",
+            "default": false
+        }
+    ]
+}

@@ -74,6 +74,29 @@ export function restsFiles() {
     return datas;
 }
 
+/**
+ * 只识别两种占位符，避免误伤 README 中的其他 HTML 注释：
+ * - <!-- props -->           本组件 ATTRIBUTES.md 完整内容
+ * - <!-- ste-xxx/props -->   目标组件 ATTRIBUTES.md 完整内容（如 <!-- ste-tab/props -->）
+ */
+const API_PLACEHOLDER_RE = /<!--\s*(props|ste-[a-z][a-z0-9-]*\/props)\s*-->/gi;
+
+function resolveApiPlaceholders(api: string, selfName: string, propsData: Obj): { api: string; missing: string[] } {
+    const missing: string[] = [];
+    const result = api.replace(API_PLACEHOLDER_RE, raw => {
+        const name = raw.replace(/^<!--\s*/, '').replace(/\s*-->$/, '');
+        // props -> 本组件；ste-xxx/props -> 目标组件
+        const key = name === 'props' ? selfName : name.replace(/^ste-/, '').replace(/\/props$/, '');
+        const target = propsData[key];
+        if (!target) {
+            missing.push(raw);
+            return '';
+        }
+        return target;
+    });
+    return { api: result, missing };
+}
+
 export function componentFiles() {
     const deg = /.*components\/ste-([\w\-]+)\/[\w\-]+\.(md|json)$/;
 
@@ -91,11 +114,18 @@ export function componentFiles() {
     const markdownsData: Obj = {};
 
     for (const k in markdowns) {
-        // let html = markdowns[k].html;
         let { html, desc, demo, api, guide } = markdowns[k];
         const name = k.replace(deg, '$1');
-        if (propsData[name] && api?.includes('<!-- props -->')) api = api.replace('<!-- props -->', propsData[name]);
-        else console.error(`组件【${name}】Props文档异常，请严格按照规范编写文档`);
+
+        if (api) {
+            const resolved = resolveApiPlaceholders(api, name, propsData);
+            api = resolved.api;
+            if (resolved.missing.length) {
+                console.warn(
+                    `组件【${name}】API 占位符解析失败：${resolved.missing.join(', ')}，请检查目标组件是否存在 ATTRIBUTES.md 或对应分节`,
+                );
+            }
+        }
 
         markdownsData[name] = {
             html: formatHtml(assembleTemplate(html)),

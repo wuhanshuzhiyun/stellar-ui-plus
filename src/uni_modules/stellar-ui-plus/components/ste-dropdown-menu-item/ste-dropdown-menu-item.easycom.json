@@ -1,0 +1,49 @@
+{
+    "name": "ste-dropdown-menu-item",
+    "description": "",
+    "attributes": [
+        {
+            "name": "value",
+            "description": "选中项对应的值",
+            "type": "String"
+        },
+        {
+            "name": "title",
+            "description": "选中项对应的标题",
+            "type": "String"
+        },
+        {
+            "name": "disabled",
+            "description": "是否禁用",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "readonly",
+            "description": "只读（不置灰）",
+            "type": "Boolean",
+            "default": false
+        },
+        {
+            "name": "[event]click",
+            "description": "选中时触发(可拦截选中)",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "当前的绑定值, `suspend`：调用暂停读取, `next`：后续的事件执行"
+                }
+            ]
+        },
+        {
+            "name": "[slot]default",
+            "description": "内容插槽",
+            "params": []
+        },
+        {
+            "name": "[slot]title",
+            "description": "标题插槽",
+            "params": [],
+            "version": "1.21.0"
+        }
+    ]
+}

@@ -51,6 +51,17 @@
             "description": "徽标数量为0时是否展示",
             "type": "boolean",
             "default": false
+        },
+        {
+            "name": "[slot]default",
+            "description": "默认插槽，在插槽中的内容会展示在标签内容区域",
+            "params": []
+        },
+        {
+            "name": "[slot]header-suffix",
+            "description": "tab栏后缀插槽",
+            "params": [],
+            "version": "v1.22.20"
         }
     ]
 }

@@ -47,12 +47,6 @@
             "default": "#fff"
         },
         {
-            "name": "progressText",
-            "description": "优惠券领券进度自定义文本（如'已抢80%'）",
-            "type": "string",
-            "default": ""
-        },
-        {
             "name": "[event]buttonClick",
             "description": "点击按钮时触发",
             "params": [
@@ -86,8 +80,5 @@
             "name": "[slot]position",
             "description": "在任意位置插入内容"
         }
-    ],
-    "uvue_diff": {
-        "progress_text": "UVue/Vue 端均支持 progressText 自定义进度说明文本"
-    }
+    ]
 }

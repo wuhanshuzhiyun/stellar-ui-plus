@@ -93,12 +93,6 @@
             "default": "false"
         },
         {
-            "name": "rootStyle",
-            "description": "根节点原生样式对象[仅UVue支持]",
-            "type": "object",
-            "default": {}
-        },
-        {
             "name": "[event]click-header",
             "description": "点击头部触发",
             "params": [
@@ -131,19 +125,6 @@
                     "description": "点击的按钮类型（可选值：`primary`,`secondary`, `more`）"
                 }
             ]
-        },
-        {
-            "name": "subTitle",
-            "description": "卡片副标题文本",
-            "type": "String",
-            "default": ""
-        },
-        {
-            "name": "[slot]head-image",
-            "description": "订单卡片头部主图自定义插槽"
         }
-    ],
-    "uvue_diff": {
-        "styling": "UVue 端新增 rootStyle 原生样式对象支持"
-    }
+    ]
 }

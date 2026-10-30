@@ -99,12 +99,6 @@
             "default": "主题色"
         },
         {
-            "name": "rootStyle",
-            "description": "根节点原生样式对象[仅UVue支持]",
-            "type": "object",
-            "default": {}
-        },
-        {
             "name": "[event]userClick",
             "description": "用户区域点击",
             "params": [
@@ -147,34 +141,6 @@
         {
             "name": "[slot]desc",
             "description": "用户描述"
-        },
-        {
-            "name": "[event]user-click",
-            "description": "点击用户头像/名称区域时触发",
-            "params": []
-        },
-        {
-            "name": "[event]data-click",
-            "description": "点击用户数据指标区域时触发",
-            "params": [
-                {
-                    "name": "item",
-                    "description": "指标项数据"
-                }
-            ]
-        },
-        {
-            "name": "[event]code-click",
-            "description": "点击会员二维码/条码图标时触发",
-            "params": []
-        },
-        {
-            "name": "[event]login-btn-click",
-            "description": "未登录状态下点击登录按钮时触发",
-            "params": []
         }
-    ],
-    "uvue_diff": {
-        "styling": "UVue 端新增 rootStyle 原生样式对象支持"
-    }
+    ]
 }

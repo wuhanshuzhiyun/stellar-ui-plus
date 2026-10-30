@@ -17,7 +17,7 @@
         },
         {
             "name": "mode",
-            "description": "选择模式（filterable/tree/date等）[仅Vue支持，UVue仅支持普通单选与多选]",
+            "description": "选择模式",
             "type": "string",
             "default": "default",
             "values": [
@@ -102,13 +102,13 @@
         },
         {
             "name": "maskClose",
-            "description": "点击背景遮罩是否允许关闭下拉框",
+            "description": "点击遮罩层是否关闭",
             "type": "boolean",
             "default": true
         },
         {
             "name": "optionsWidth",
-            "description": "下拉选项面板自定义宽度（如'100%'或数值rpx）[仅UVue支持]",
+            "description": "选项框宽度，默认跟随width",
             "type": "number | string",
             "default": "auto"
         },
@@ -301,22 +301,6 @@
                     "description": "()=>void"
                 }
             ]
-        },
-        {
-            "name": "[slot]default",
-            "description": "自定义选择框触发区域内容"
-        },
-        {
-            "name": "[slot]icon",
-            "description": "右侧自定义下拉展开指示图标插槽"
-        },
-        {
-            "name": "[slot]loading-icon",
-            "description": "加载中状态时的指示图标插槽"
         }
-    ],
-    "uvue_diff": {
-        "modes": "Vue 端支持 mode（filterable/tree/date/datetime/time/month/minute 等 7 种模式）以及 minDate, maxDate, dateUnit, childrenKey, allowCreate, optionsPosition, autoFilterable, total；UVue 端专注高性能原生下拉列表与多选，暂未支持复杂树形与日期模式",
-        "options_width": "UVue 端新增 optionsWidth 属性，用于独立自定义下拉弹窗面板宽度"
-    }
+    ]
 }

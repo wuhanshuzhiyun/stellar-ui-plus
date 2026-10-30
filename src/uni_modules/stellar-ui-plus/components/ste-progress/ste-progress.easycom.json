@@ -83,17 +83,8 @@
             "default": "{}"
         },
         {
-            "name": "showPivot",
-            "description": "是否显示进度条文字比例徽标[仅UVue支持]",
-            "type": "boolean",
-            "default": true
-        },
-        {
             "name": "[slot]default",
             "description": "进度条内容"
         }
-    ],
-    "uvue_diff": {
-        "show_pivot": "UVue 端明确声明 showPivot 属性（控制是否显示进度条内部文字标签）"
-    }
+    ]
 }

@@ -105,18 +105,6 @@
             "type": "object"
         },
         {
-            "name": "bold",
-            "description": "按钮文本是否加粗显示[UVue/Vue标准支持]",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "borderWidth",
-            "description": "按钮边框线宽，单位rpx[UVue/Vue标准支持]",
-            "type": "number | string",
-            "default": 2
-        },
-        {
             "name": "[event]click",
             "description": "非禁止并且非加载中，才能点击",
             "params": [
@@ -239,59 +227,6 @@
         {
             "name": "[slot]default",
             "description": "默认插槽"
-        },
-        {
-            "name": "[event]chooseaddress",
-            "description": "获取用户收货地址回调（需 openType 为 chooseAddress）",
-            "params": [
-                {
-                    "name": "event",
-                    "description": "微信地址对象"
-                }
-            ]
-        },
-        {
-            "name": "[event]chooseinvoicetitle",
-            "description": "获取用户发票抬头回调（需 openType 为 chooseInvoiceTitle）",
-            "params": [
-                {
-                    "name": "event",
-                    "description": "发票抬头对象"
-                }
-            ]
-        },
-        {
-            "name": "[event]subscribe",
-            "description": "订阅消息回调（需 openType 为 subscribe）",
-            "params": [
-                {
-                    "name": "event",
-                    "description": "订阅结果对象"
-                }
-            ]
-        },
-        {
-            "name": "[event]login",
-            "description": "快捷登录回调（需 openType 为 login）",
-            "params": [
-                {
-                    "name": "event",
-                    "description": "登录结果对象"
-                }
-            ]
-        },
-        {
-            "name": "[event]addgroupapp",
-            "description": "加入群聊开放能力回调",
-            "params": [
-                {
-                    "name": "event",
-                    "description": "回调事件对象"
-                }
-            ]
         }
-    ],
-    "uvue_diff": {
-        "styling": "UVue 端全面支持 bold 文本粗体与 borderWidth 边框粗细微调"
-    }
+    ]
 }

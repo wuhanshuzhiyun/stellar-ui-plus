@@ -287,7 +287,39 @@
 
 <!-- props -->
 
-<!-- ste-checkbox-group/props -->
+## CheckboxGroup 组件属性(Props)
+
+| 参数                | 说明                              | 类型            | 默认值    | 可选值                            | 支持版本  |
+| ------------------- | --------------------------------- | --------------- | --------- | --------------------------------- | --------- |
+| `value`             | 当前选中值（支持v-model双向绑定） | `Array`         | -         | -                                 | -         |
+| `direction`         | 排列方式                          | `String`        | `row`     | `column`：横向 <br/>`row`：纵向   | -         |
+| `disabled`          | 是否禁用                          | `Boolean`       | `false`   | -                                 | -         |
+| `readonly`          | 只读 (不置灰)                     | `Boolean`       | `false`   | -                                 | -         |
+| `shape`             | 形状                              | `String`        | `circle`  | `circle`：圆形 <br/>`squar`：方形 | -         |
+| `iconSize`          | 图标大小，单位rpx                 | `Number/String` | `36`      | -                                 | -         |
+| `checkedColor`      | 选中状态的图标颜色                | `String`        | `#0090FF` | -                                 | -         |
+| `textPosition`      | 文本的位置                        | `String`        | `right`   | `right`：右 <br/>`left`：左       | -         |
+| `textSize`          | 文本字体大小，单位rpx             | `Number/String` | `25`      | -                                 | -         |
+| `textlnactiveColor` | 未选中文本颜色                    | `String`        | `#000000` | -                                 | -         |
+| `textActiveColor`   | 选中文本颜色                      | `String`        | `#000000` | -                                 | -         |
+| `textDisabled`      | 禁用文本点击                      | `Boolean`       | `false`   | -                                 | -         |
+| `max`               | 最大可选数，0 为无限制            | `Number`        | `0`       | -                                 | -         |
+| `marginLeft`        | 左边距,单位rpx                    | `Number/String` | `0`       | -                                 | `v1.10.0` |
+| `marginRight`       | 右边距,单位rpx                    | `Number/String` | `0`       | -                                 | `v1.10.0` |
+| `columnGap`         | 复选框和文本间距，单位rpx         | `Number/String` | `16`      | -                                 | `v1.10.0` |
+
+## CheckboxGroup Events
+
+| 事件名   | 说明                     | 事件参数                | 支持版本 |
+| -------- | ------------------------ | ----------------------- | -------- |
+| `change` | 当绑定值变化时触发的事件 | `value`：改变后的绑定值 | -        |
+
+## Checkbox Slots
+
+| 插槽名    | 说明           | 插槽参数                                                     | 支持版本 |
+| --------- | -------------- | ------------------------------------------------------------ | -------- |
+| `default` | 复选框文本内容 | `{ checked: boolean, disabled: boolean, readonly: boolean }` | -        |
+| `icon`    | 复选框图标     | `{ checked: boolean, disabled: boolean, readonly: boolean }` | -        |
 
 ---$
 

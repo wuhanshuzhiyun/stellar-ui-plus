@@ -55,12 +55,6 @@
             "default": false
         },
         {
-            "name": "rootStyle",
-            "description": "根节点原生样式对象[仅UVue支持]",
-            "type": "object",
-            "default": {}
-        },
-        {
             "name": "[event]open",
             "description": "打开滑块时触发，参数为方向",
             "params": [
@@ -93,21 +87,6 @@
         {
             "name": "[method]close",
             "description": "关闭滑块"
-        },
-        {
-            "name": "[slot]left",
-            "description": "左侧滑动操作内容插槽"
-        },
-        {
-            "name": "[slot]right",
-            "description": "右侧滑动操作内容插槽"
-        },
-        {
-            "name": "[slot]default",
-            "description": "主体内容插槽"
         }
-    ],
-    "uvue_diff": {
-        "styling": "UVue 端新增 rootStyle 原生样式对象支持；采用纯原生触摸位移手势计算"
-    }
+    ]
 }

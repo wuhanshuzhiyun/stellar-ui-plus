@@ -100,17 +100,6 @@
             "version": "1.21.0"
         },
         {
-            "name": "modelValue",
-            "description": "当前菜单选中值，支持 v-model[仅UVue支持]",
-            "type": "string | number | Array<any>"
-        },
-        {
-            "name": "dropDownIconColor",
-            "description": "下拉箭头图标颜色[仅UVue支持]",
-            "type": "string",
-            "default": "#999999"
-        },
-        {
             "name": "[event]change",
             "description": "选项改变时触发",
             "params": [
@@ -139,53 +128,6 @@
                     "description": "() => void"
                 }
             ]
-        },
-        {
-            "name": "[slot]default",
-            "description": "内容插槽，用于承载 ste-dropdown-menu-item"
-        },
-        {
-            "name": "[slot]title",
-            "description": "自定义菜单标题插槽"
-        },
-        {
-            "name": "[slot]icon",
-            "description": "选中项对应的图标 (type 为 block 时生效)"
-        },
-        {
-            "name": "[method]open",
-            "description": "打开指定索引或当前下拉菜单",
-            "params": [
-                {
-                    "name": "index",
-                    "description": "需要打开的菜单索引（可选）"
-                }
-            ],
-            "return": "void"
-        },
-        {
-            "name": "[method]close",
-            "description": "关闭当前展开的下拉菜单",
-            "params": [],
-            "return": "void"
-        },
-        {
-            "name": "[event]item-choose",
-            "description": "选中子项时触发",
-            "params": [
-                {
-                    "name": "item",
-                    "description": "选中项数据"
-                }
-            ]
-        },
-        {
-            "name": "[event]maskClick",
-            "description": "点击遮罩层时触发",
-            "params": []
         }
-    ],
-    "uvue_diff": {
-        "model_value": "UVue 端增加 modelValue 双向绑定与 dropDownIconColor 展开图标颜色定制"
-    }
+    ]
 }

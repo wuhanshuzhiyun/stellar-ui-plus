@@ -53,12 +53,6 @@
             "default": "false"
         },
         {
-            "name": "value",
-            "description": "当前筛选选中的过滤项数据数组",
-            "type": "Array<any>",
-            "default": []
-        },
-        {
             "name": "[slot]default",
             "description": "自定义下拉菜单的触发区域"
         },
@@ -105,15 +99,6 @@
             "name": "[event]maskClose",
             "description": "点击蒙层关闭了弹窗后触发",
             "params": []
-        },
-        {
-            "name": "[method]closeMenu",
-            "description": "收起当前下拉筛选菜单弹框",
-            "params": [],
-            "return": "void"
         }
-    ],
-    "uvue_diff": {
-        "v_model": "UVue/Vue 均支持 value / modelValue 筛选结果双向绑定"
-    }
+    ]
 }

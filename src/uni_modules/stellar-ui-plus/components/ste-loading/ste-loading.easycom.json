@@ -49,10 +49,6 @@
             "description": "是否垂直排列图标和文字内容",
             "type": "Boolean",
             "default": false
-        },
-        {
-            "name": "[slot]default",
-            "description": "默认插槽，承载子内容"
         }
     ]
 }

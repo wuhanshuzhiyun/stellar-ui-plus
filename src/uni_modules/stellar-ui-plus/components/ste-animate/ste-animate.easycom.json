@@ -12,62 +12,23 @@
         },
         {
             "name": "type",
-            "description": "动画类型名称[仅Vue支持，UVue端采用内置类名控制]",
+            "description": "动画类型",
             "type": "string",
             "default": "",
             "values": [
-                {
-                    "name": "shake",
-                    "description": "抖动，建议 loop 为 true"
-                },
-                {
-                    "name": "shakeX",
-                    "description": "横向抖动，建议 loop 为 true"
-                },
-                {
-                    "name": "shakeY",
-                    "description": "竖向抖动，建议 loop 为 true"
-                },
-                {
-                    "name": "ripple",
-                    "description": "不循环则是放大后缩小，循环则是心跳"
-                },
-                {
-                    "name": "breath",
-                    "description": "呼吸灯，建议 loop 为 true"
-                },
-                {
-                    "name": "float",
-                    "description": "漂浮，建议 loop 为 true"
-                },
-                {
-                    "name": "slide-right",
-                    "description": "由右向左划入"
-                },
-                {
-                    "name": "slide-left",
-                    "description": "由左向右划入"
-                },
-                {
-                    "name": "slide-top",
-                    "description": "由上至下划入"
-                },
-                {
-                    "name": "slide-bottom",
-                    "description": "由下至上划入"
-                },
-                {
-                    "name": "jump",
-                    "description": "跳跃，建议 loop 为 true"
-                },
-                {
-                    "name": "twinkle",
-                    "description": "水波，建议 loop 为 true"
-                },
-                {
-                    "name": "flicker",
-                    "description": "擦亮按钮，建议 loop 为 true"
-                }
+                { "name": "shake", "description": "抖动，建议 loop 为 true" },
+                { "name": "shakeX", "description": "横向抖动，建议 loop 为 true" },
+                { "name": "shakeY", "description": "竖向抖动，建议 loop 为 true" },
+                { "name": "ripple", "description": "不循环则是放大后缩小，循环则是心跳" },
+                { "name": "breath", "description": "呼吸灯，建议 loop 为 true" },
+                { "name": "float", "description": "漂浮，建议 loop 为 true" },
+                { "name": "slide-right", "description": "由右向左划入" },
+                { "name": "slide-left", "description": "由左向右划入" },
+                { "name": "slide-top", "description": "由上至下划入" },
+                { "name": "slide-bottom", "description": "由下至上划入" },
+                { "name": "jump", "description": "跳跃，建议 loop 为 true" },
+                { "name": "twinkle", "description": "水波，建议 loop 为 true" },
+                { "name": "flicker", "description": "擦亮按钮，建议 loop 为 true" }
             ]
         },
         {
@@ -88,22 +49,13 @@
             "type": "string",
             "default": "",
             "values": [
-                {
-                    "name": "initial",
-                    "description": "初始化执行"
-                },
-                {
-                    "name": "click",
-                    "description": "点击执行"
-                }
+                { "name": "initial", "description": "初始化执行" },
+                { "name": "click", "description": "点击执行" }
             ]
         },
         {
             "name": "[slot]default",
             "description": "默认插槽"
         }
-    ],
-    "uvue_diff": {
-        "type_prop": "Vue 端支持 type 动画类型参数；UVue 端采用 CSS 动画类名与帧变换实现"
-    }
+    ]
 }

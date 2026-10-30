@@ -25,10 +25,6 @@
                     "description": "变化后的分类数据"
                 }
             ]
-        },
-        {
-            "name": "[slot]default",
-            "description": "默认插槽，承载子内容"
         }
     ]
 }

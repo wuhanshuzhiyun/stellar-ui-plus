@@ -20,18 +20,9 @@
                     "name": "success",
                     "description": "显示成功图标"
                 },
-                {
-                    "name": "error",
-                    "description": "显示失败图标"
-                },
-                {
-                    "name": "loading",
-                    "description": "显示加载图标"
-                },
-                {
-                    "name": "none",
-                    "description": "无图标"
-                }
+                { "name": "error", "description": "显示失败图标" },
+                { "name": "loading", "description": "显示加载图标" },
+                { "name": "none", "description": "无图标" }
             ]
         },
         {
@@ -79,12 +70,6 @@
             "type": "() => void"
         },
         {
-            "name": "rootStyle",
-            "description": "根节点原生样式对象[仅UVue支持]",
-            "type": "object",
-            "default": {}
-        },
-        {
             "name": "[method]showToast",
             "description": "提示打开函数",
             "params": [
@@ -98,8 +83,5 @@
             "name": "[method]hideToast",
             "description": "关闭提示函数"
         }
-    ],
-    "uvue_diff": {
-        "invoke": "Vue 端与 UVue 端均支持指令式与组件式调用；UVue 端提供了 useToast() 纯原生组合式契约，并补充了 success, fail, complete, close 等生命周期回调"
-    }
+    ]
 }

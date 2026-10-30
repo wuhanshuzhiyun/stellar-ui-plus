@@ -84,7 +84,6 @@ export function componentFiles() {
         const html = props[k].html;
         const name = k.replace(deg, '$1');
         propsData[name] = html;
-        propsData[`ste-${name}`] = html;
     }
 
     const markdowns: { [key: string]: Markdown } = import.meta.glob('../../../uni_modules/stellar-ui-plus/components/**/README.md', { eager: true });
@@ -95,24 +94,8 @@ export function componentFiles() {
         // let html = markdowns[k].html;
         let { html, desc, demo, api, guide } = markdowns[k];
         const name = k.replace(deg, '$1');
-        if (propsData[name] && api?.includes('<!-- props -->')) {
-            api = api.replace('<!-- props -->', propsData[name]);
-        } else if (!api?.includes('<!-- props -->') && !api?.match(/<!--\s*([a-zA-Z0-9_-]+)\/props\s*-->/)) {
-            console.error(`组件【${name}】Props文档异常，请严格按照规范编写文档`);
-        }
-
-        // 动态解析并替换子组件属性占位符，例如 <!-- ste-scroll-to-item/props --> 或 <!-- ste-touch-swipe-item/props -->
-        if (api) {
-            api = api.replace(/<!--\s*([a-zA-Z0-9_-]+)\/props\s*-->/g, (_match, subName) => {
-                const cleanName = subName.replace(/^ste-/, '');
-                const targetHtml = propsData[subName] || propsData[cleanName];
-                if (!targetHtml) {
-                    console.warn(`未找到组件【${subName}】对应的 ATTRIBUTES.md 文档，请检查对应组件目录是否已生成属性文件`);
-                    return '';
-                }
-                return targetHtml;
-            });
-        }
+        if (propsData[name] && api?.includes('<!-- props -->')) api = api.replace('<!-- props -->', propsData[name]);
+        else console.error(`组件【${name}】Props文档异常，请严格按照规范编写文档`);
 
         markdownsData[name] = {
             html: formatHtml(assembleTemplate(html)),

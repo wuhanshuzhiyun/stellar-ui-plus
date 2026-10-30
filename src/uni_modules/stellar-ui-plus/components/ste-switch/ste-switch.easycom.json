@@ -65,12 +65,6 @@
                     "description": "() => void"
                 }
             ]
-        },
-        {
-            "name": "[method]cancelPendingAction",
-            "description": "取消异步前置拦截等待中的操作状态，恢复可点击",
-            "params": [],
-            "return": "void"
         }
     ]
 }

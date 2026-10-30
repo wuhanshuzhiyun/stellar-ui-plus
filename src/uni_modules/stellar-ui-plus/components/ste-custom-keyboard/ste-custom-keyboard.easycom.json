@@ -135,12 +135,6 @@
             "default": "#ffffff"
         },
         {
-            "name": "rootStyle",
-            "description": "根节点原生样式对象[仅UVue支持]",
-            "type": "object",
-            "default": {}
-        },
-        {
             "name": "[event]change",
             "description": "输入值value改变时触发",
             "params": [
@@ -245,15 +239,6 @@
         {
             "name": "[slot]default",
             "description": "弹窗标题插槽"
-        },
-        {
-            "name": "discounts",
-            "description": "键盘右下角优惠提示文本",
-            "type": "String",
-            "default": ""
         }
-    ],
-    "uvue_diff": {
-        "styling": "UVue 端新增 rootStyle 原生样式对象支持；新增 discounts, activeInputRef, inputValues 参数"
-    }
+    ]
 }

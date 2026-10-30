@@ -47,12 +47,6 @@
             "default": []
         },
         {
-            "name": "searchTitle",
-            "description": "树节点搜索关键词，匹配项将自动高亮展示",
-            "type": "string",
-            "default": ""
-        },
-        {
             "name": "[event]click",
             "description": "点击节点时触发",
             "params": [
@@ -119,21 +113,6 @@
         {
             "name": "[method]search",
             "description": "节点搜索"
-        },
-        {
-            "name": "[slot]default",
-            "description": "树节点内容自定义渲染插槽，参数: { item, level, isLeaf, isOpen }"
-        },
-        {
-            "name": "[slot]open",
-            "description": "展开/收起状态指示图标插槽"
-        },
-        {
-            "name": "[slot]loading",
-            "description": "异步加载子节点时的加载中图标插槽"
         }
-    ],
-    "uvue_diff": {
-        "search": "UVue/Vue 均支持 searchTitle 搜索高亮与过滤"
-    }
+    ]
 }

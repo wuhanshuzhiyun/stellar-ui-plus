@@ -165,12 +165,6 @@
             "default": "[]"
         },
         {
-            "name": "suggestionList",
-            "description": "搜索框下拉联想推荐列表数据[UVue/Vue标准支持]",
-            "type": "Array<string>",
-            "default": []
-        },
-        {
             "name": "[event]input",
             "description": "输入事件",
             "params": [
@@ -248,8 +242,5 @@
             "name": "[slot]suffix",
             "description": "输入框后插槽"
         }
-    ],
-    "uvue_diff": {
-        "suggestion": "UVue 端补充 suggestionList 实时联想建议下拉数据源"
-    }
+    ]
 }

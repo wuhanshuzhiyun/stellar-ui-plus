@@ -11,15 +11,13 @@
         },
         {
             "name": "width",
-            "description": "条形码宽度(单位px/rpx)。Vue端默认300，UVue端默认480",
-            "type": "number",
-            "default": 300
+            "description": "条形码宽度，单位`px`",
+            "type": "number"
         },
         {
             "name": "height",
-            "description": "条形码高度(单位px/rpx)。Vue端默认100，UVue端默认120",
-            "type": "number",
-            "default": 100
+            "description": "条形码高度，单位`px`",
+            "type": "number"
         },
         {
             "name": "background",
@@ -28,69 +26,8 @@
         },
         {
             "name": "foreground",
-            "description": "前景色/条形码画笔线条颜色[仅Vue支持，UVue端对应为lineColor]",
-            "type": "string",
-            "default": "#000000"
-        },
-        {
-            "name": "lineColor",
-            "description": "条形码画笔线条颜色[仅UVue支持，Vue端对应为foreground]",
-            "type": "string",
-            "default": "#000000"
-        },
-        {
-            "name": "showText",
-            "description": "是否显示底部条码文字[仅UVue支持]",
-            "type": "boolean",
-            "default": true
-        },
-        {
-            "name": "textSize",
-            "description": "底部文字大小，单位rpx[仅UVue支持]",
-            "type": "number",
-            "default": 28
-        },
-        {
-            "name": "textColor",
-            "description": "底部文字颜色[仅UVue支持]",
-            "type": "string",
-            "default": "#000000"
-        },
-        {
-            "name": "textMargin",
-            "description": "文字与条码间距，单位rpx[仅UVue支持]",
-            "type": "number",
-            "default": 8
-        },
-        {
-            "name": "textAlign",
-            "description": "文字对齐方式（left/center/right）[仅UVue支持]",
-            "type": "string",
-            "default": "center"
-        },
-        {
-            "name": "borderWidth",
-            "description": "容器边框宽度，单位rpx[仅UVue支持]",
-            "type": "number",
-            "default": 0
-        },
-        {
-            "name": "borderColor",
-            "description": "容器边框颜色[仅UVue支持]",
-            "type": "string",
-            "default": "#000000"
-        },
-        {
-            "name": "borderRadius",
-            "description": "容器圆角，单位rpx[仅UVue支持]",
-            "type": "number",
-            "default": 0
-        },
-        {
-            "name": "rootStyle",
-            "description": "根节点原生样式对象[仅UVue支持]",
-            "type": "object",
-            "default": {}
+            "description": "前景色(条形码画笔颜色)",
+            "type": "string"
         },
         {
             "name": "[event]loadImage",
@@ -102,11 +39,5 @@
                 }
             ]
         }
-    ],
-    "uvue_diff": {
-        "prop_names": "Vue 端条码画笔色属性为 foreground；UVue 端统一规范为 lineColor",
-        "uvue_exclusive_props": "UVue 端新增支持 showText, textSize, textColor, textMargin, textAlign, borderWidth, borderColor, borderRadius 等完整文字与边框配置",
-        "default_dimensions": "Vue 端默认宽高为 300x100；UVue 端默认宽高为 480x120",
-        "events": "Vue 端支持 loadImage 事件返回图片临时路径；UVue 采用纯原生 Canvas 2D 异步绘制，暂未提供该事件"
-    }
+    ]
 }

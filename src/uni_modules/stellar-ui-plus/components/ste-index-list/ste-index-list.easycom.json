@@ -53,16 +53,6 @@
                     "description": "(title:string,text:string)=>void"
                 }
             ]
-        },
-        {
-            "name": "[method]init",
-            "description": "初始化锚点信息，请在渲染完成后调用",
-            "params": [],
-            "return": "void"
-        },
-        {
-            "name": "[slot]default",
-            "description": "默认插槽，自定义列表内容，放置 ste-index-item"
         }
     ]
 }

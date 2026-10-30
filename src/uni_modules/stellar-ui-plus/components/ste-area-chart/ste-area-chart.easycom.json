@@ -52,22 +52,10 @@
             "type": "string",
             "default": "easeOut",
             "values": [
-                {
-                    "name": "easeOut",
-                    "description": "由快到慢"
-                },
-                {
-                    "name": "easeIn",
-                    "description": "由慢到快"
-                },
-                {
-                    "name": "easeInOut",
-                    "description": "慢快慢"
-                },
-                {
-                    "name": "linear",
-                    "description": "匀速"
-                }
+                { "name": "easeOut", "description": "由快到慢" },
+                { "name": "easeIn", "description": "由慢到快" },
+                { "name": "easeInOut", "description": "慢快慢" },
+                { "name": "linear", "description": "匀速" }
             ]
         },
         {
@@ -98,24 +86,13 @@
             "name": "color",
             "description": "主题颜色数组，16进制颜色格式",
             "type": "array",
-            "default": [
-                "#165DFF",
-                "#14C9C9",
-                "#F7BA1E",
-                "#3491FA",
-                "#F53F3F"
-            ]
+            "default": ["#165DFF", "#14C9C9", "#F7BA1E", "#3491FA", "#F53F3F"]
         },
         {
             "name": "padding",
             "description": "画布填充边距（顺序为上右下左），单位px",
             "type": "array",
-            "default": [
-                15,
-                15,
-                0,
-                5
-            ]
+            "default": [15, 15, 0, 5]
         },
         {
             "name": "fontSize",
@@ -147,14 +124,8 @@
             "type": "string",
             "default": "solid",
             "values": [
-                {
-                    "name": "solid",
-                    "description": "实心"
-                },
-                {
-                    "name": "hollow",
-                    "description": "空心"
-                }
+                { "name": "solid", "description": "实心" },
+                { "name": "hollow", "description": "空心" }
             ]
         },
         {
@@ -181,18 +152,9 @@
             "type": "string",
             "default": "current",
             "values": [
-                {
-                    "name": "current",
-                    "description": "当前位置"
-                },
-                {
-                    "name": "left",
-                    "description": "左对齐"
-                },
-                {
-                    "name": "right",
-                    "description": "右对齐"
-                }
+                { "name": "current", "description": "当前位置" },
+                { "name": "left", "description": "左对齐" },
+                { "name": "right", "description": "右对齐" }
             ]
         },
         {
@@ -242,21 +204,6 @@
             "description": "事件",
             "type": "-",
             "default": "<a href=\"https://www.ucharts.cn/v2/#/document/index\" target=\"_blank\">文档地址</a>"
-        },
-        {
-            "name": "showLegend",
-            "description": "是否显示图例[仅UVue支持/补充声明]",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "[method]getImage",
-            "description": "获取图表生成的图片 Base64 字符串",
-            "params": [],
-            "return": "Promise<string>"
         }
-    ],
-    "uvue_diff": {
-        "engine": "UVue 端基于 uts Canvas 2D 统一引擎重构，支持 categories 坐标轴类别与 showLegend 图例控制"
-    }
+    ]
 }

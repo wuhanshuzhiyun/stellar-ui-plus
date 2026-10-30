@@ -1,4 +1,4 @@
-import useFontSize from './font-size.ts';
+import useFontSize from './font-size';
 
 const { config, fontSizeStyle } = useFontSize();
 

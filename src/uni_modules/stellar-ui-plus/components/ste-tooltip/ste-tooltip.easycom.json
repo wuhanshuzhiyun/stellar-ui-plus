@@ -3,50 +3,5 @@
     "description": "用于扩展文字信息",
     "example": "<ste-tooltip></ste-tooltip>",
     "tutorial": "https://stellar-ui.intecloud.com.cn/plus/#/?active=tooltip",
-    "attributes": [
-        {
-            "name": "text",
-            "description": "气泡提示显示的文本内容[仅UVue支持]",
-            "type": "string",
-            "default": ""
-        },
-        {
-            "name": "selector",
-            "description": "目标挂载绑定元素的 CSS 选择器（如 '#my-btn'）[仅UVue支持]",
-            "type": "string",
-            "default": ""
-        },
-        {
-            "name": "placement",
-            "description": "气泡提示弹出方位（top/bottom/left/right）[仅UVue支持]",
-            "type": "string",
-            "default": "top"
-        },
-        {
-            "name": "maxWidth",
-            "description": "气泡最大宽度，支持px/rpx[仅UVue支持]",
-            "type": "string | number",
-            "default": 300
-        },
-        {
-            "name": "[method]showTooltip",
-            "description": "显式触发打开气泡提示，传入配置参数",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "TooltipOptions 配置项"
-                }
-            ],
-            "return": "void"
-        },
-        {
-            "name": "[method]hideTooltip",
-            "description": "显式触发关闭气泡提示",
-            "params": [],
-            "return": "void"
-        }
-    ],
-    "uvue_diff": {
-        "params": "UVue 端基于 UTS 纯原生重构，明确标准化了 text, selector, instance, placement, maxWidth 等参数契约"
-    }
+    "attributes": []
 }

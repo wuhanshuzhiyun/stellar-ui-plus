@@ -8,43 +8,10 @@ import UniHelperComponents from '@uni-helper/vite-plugin-uni-components';
 import selfPlugin from './src/pages/pc/stellar-plus-plugin/index';
 import md2HtmlPlugin from './src/pages/pc/stellar-plus-plugin/md-to-html';
 
-import fs from 'node:fs';
-import path from 'node:path';
-
 import vue3InsetLoaderPlugin from './plugins/vue3-inset-loader';
-
-/**
- * 确保普通 Vue/TS 文件在导入省略后缀的模块时，优先匹配 .ts/.js 而非同名 .uts，
- * 彻底消除 uni-app 官方 extensions 数组中 .uts 优先级高于 .ts 导致的 Web 端导入冲突。
- */
-function prioritizeTsPlugin() {
-    return {
-        name: 'prioritize-ts',
-        enforce: 'pre' as const,
-        resolveId(source: string, importer?: string) {
-            if (!importer || importer.endsWith('.uvue') || importer.endsWith('.uts')) {
-                return null;
-            }
-            let target: string | null = null;
-            if (source.startsWith('.')) {
-                target = path.resolve(path.dirname(importer), source);
-            } else if (source.startsWith('@/')) {
-                target = path.resolve(__dirname, 'src', source.slice(2));
-            }
-            if (target && !path.extname(target)) {
-                if (fs.existsSync(target + '.ts')) return target + '.ts';
-                if (fs.existsSync(target + '.js')) return target + '.js';
-                if (fs.existsSync(path.join(target, 'index.ts'))) return path.join(target, 'index.ts');
-                if (fs.existsSync(path.join(target, 'index.js'))) return path.join(target, 'index.js');
-            }
-            return null;
-        },
-    };
-}
 
 export default defineConfig({
     plugins: [
-        prioritizeTsPlugin(),
         vue3InsetLoaderPlugin,
         md2HtmlPlugin(),
         UniHelperManifest(),

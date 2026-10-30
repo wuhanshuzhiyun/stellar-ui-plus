@@ -63,24 +63,6 @@
             "default": true
         },
         {
-            "name": "scale",
-            "description": "图标缩放比例[仅Vue支持，UVue端请直接使用size控制尺寸]",
-            "type": "number",
-            "default": 1
-        },
-        {
-            "name": "showBorder",
-            "description": "是否显示图标外边框[仅UVue支持]",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "name": "rootStyle",
-            "description": "根节点原生样式对象[仅UVue支持]",
-            "type": "object",
-            "default": {}
-        },
-        {
             "name": "[event]click",
             "description": "图标点击回调事件",
             "params": [
@@ -90,8 +72,5 @@
                 }
             ]
         }
-    ],
-    "uvue_diff": {
-        "scale": "Vue 端支持 scale 缩放倍率；UVue 端统一采用 size 尺寸数值控制；UVue 新增 showBorder 与 rootStyle"
-    }
+    ]
 }

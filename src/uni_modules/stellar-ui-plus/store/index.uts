@@ -1,4 +1,0 @@
-// store/index.uts - uni-app x 版本统一导出
-// 模块统一导出
-
-export * from './color.uts'

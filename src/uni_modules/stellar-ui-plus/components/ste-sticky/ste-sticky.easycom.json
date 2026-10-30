@@ -12,9 +12,9 @@
         },
         {
             "name": "customNavHeight",
-            "description": "自定义顶部导航栏高度[仅Vue支持]",
-            "type": "number",
-            "default": 0
+            "description": "航栏的高度（没有导航栏时，请设置为0）",
+            "type": "string | number",
+            "default": null
         },
         {
             "name": "disabled",
@@ -24,27 +24,15 @@
         },
         {
             "name": "background",
-            "description": "吸顶背景颜色[仅Vue支持，UVue可通过内联样式或rootStyle定制]",
+            "description": "组件背景",
             "type": "string",
-            "default": "transparent"
+            "default": "#fff"
         },
         {
             "name": "zIndex",
             "description": "吸顶时的z-index值",
             "type": "string | number",
             "default": 98
-        },
-        {
-            "name": "scrollTop",
-            "description": "当前页面滚动垂直偏移距离，由宿主页面 onPageScroll 传入[仅UVue支持]",
-            "type": "number",
-            "default": 0
-        },
-        {
-            "name": "placeholderId",
-            "description": "吸顶占位唯一节点 ID[仅UVue支持]",
-            "type": "string",
-            "default": ""
         },
         {
             "name": "[event]fixed",
@@ -65,14 +53,6 @@
                     "description": "() => void"
                 }
             ]
-        },
-        {
-            "name": "[slot]default",
-            "description": "默认插槽，承载子内容"
         }
-    ],
-    "uvue_diff": {
-        "implementation": "Vue 端使用 CSS sticky 及小程序原生粘性布局；UVue 端采用 UTS 原生页面滚动监听 scrollTop 配合 placeholderId 占位节点计算固定",
-        "props_diff": "Vue 端支持 customNavHeight, disabled, background；UVue 端支持 scrollTop, placeholderId, zIndex, offsetTop"
-    }
+    ]
 }

@@ -2,8 +2,7 @@
 import { ref, watch, computed } from 'vue';
 import { useToast } from '@/uni_modules/stellar-ui-plus/composables';
 import { useMessageBox } from '@/uni_modules/stellar-ui-plus/composables';
-// 显式指定 .ts 扩展名，使用 Vue3 响应式配置
-import useFontSize from '@/uni_modules/stellar-ui-plus/config/font-size.ts';
+import useFontSize from '@/uni_modules/stellar-ui-plus/config/font-size';
 
 const { fontSizeStyle, config } = useFontSize();
 

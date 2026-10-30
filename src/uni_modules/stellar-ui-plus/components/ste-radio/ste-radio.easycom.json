@@ -113,11 +113,6 @@
             "default": "16"
         },
         {
-            "name": "modelValue",
-            "description": "单选框当前绑定值，支持 v-model",
-            "type": "string | number | boolean"
-        },
-        {
             "name": "[event]click",
             "description": "点击单选框时触发的事件",
             "params": [
@@ -148,17 +143,6 @@
                     "description": "当前单选框的绑定值"
                 }
             ]
-        },
-        {
-            "name": "[slot]default",
-            "description": "单选框文本内容，插槽参数: { checked: boolean, disabled: boolean, readonly: boolean }"
-        },
-        {
-            "name": "[slot]icon",
-            "description": "单选框图标，插槽参数: { checked: boolean, disabled: boolean, readonly: boolean }"
         }
-    ],
-    "uvue_diff": {
-        "v_model": "UVue/Vue 均标准支持 modelValue 选中状态"
-    }
+    ]
 }

@@ -76,44 +76,7 @@
             "name": "[event]fallback",
             "description": "命中兜底更新时触发",
             "params": [
-                {
-                    "name": "data",
-                    "description": "兜底更新数据，包含 title、description、downloadUrl"
-                }
-            ]
-        },
-        {
-            "name": "required",
-            "description": "是否强制更新（为 true 时无法取消或跳过）",
-            "type": "Boolean",
-            "default": false
-        },
-        {
-            "name": "[method]start",
-            "description": "手动启动版本检查更新流程",
-            "params": [],
-            "return": "void"
-        },
-        {
-            "name": "[method]getSkippedVersions",
-            "description": "获取本地已跳过的版本号数组",
-            "params": [],
-            "return": "Array<string>"
-        },
-        {
-            "name": "[method]clearSkippedVersions",
-            "description": "清空本地已跳过的版本记录",
-            "params": [],
-            "return": "void"
-        },
-        {
-            "name": "[event]skip-version",
-            "description": "用户点击跳过此版本时触发",
-            "params": [
-                {
-                    "name": "version",
-                    "description": "跳过的版本号"
-                }
+                { "name": "data", "description": "兜底更新数据，包含 title、description、downloadUrl" }
             ]
         }
     ]

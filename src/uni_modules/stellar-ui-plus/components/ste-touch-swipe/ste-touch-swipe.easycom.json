@@ -77,45 +77,6 @@
                     "description": "当前展示的面板索引"
                 }
             ]
-        },
-        {
-            "name": "[method]init",
-            "description": "初始化元素信息并计算各滑块位置，请在渲染完成后调用",
-            "params": [],
-            "return": "void"
-        },
-        {
-            "name": "[method]prev",
-            "description": "滑动切换至上一个滑块项",
-            "params": [],
-            "return": "void"
-        },
-        {
-            "name": "[method]next",
-            "description": "滑动切换至下一个滑块项",
-            "params": [],
-            "return": "void"
-        },
-        {
-            "name": "[method]swipeTo",
-            "description": "滑动切换至指定索引项",
-            "params": [
-                {
-                    "name": "index",
-                    "description": "目标索引 (number)"
-                }
-            ],
-            "return": "void"
-        },
-        {
-            "name": "[method]resize",
-            "description": "容器尺寸变化时重新计算布局信息",
-            "params": [],
-            "return": "void"
-        },
-        {
-            "name": "[slot]default",
-            "description": "默认插槽，用于承载 ste-touch-swipe-item 滑块子项"
         }
     ]
 }

@@ -103,16 +103,6 @@
                     "description": "(value: string | number) => void"
                 }
             ]
-        },
-        {
-            "name": "[event]input",
-            "description": "验证码输入内容变化时触发",
-            "params": [
-                {
-                    "name": "value",
-                    "description": "当前输入的验证码字符串"
-                }
-            ]
         }
     ]
 }
